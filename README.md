@@ -14,11 +14,16 @@
 
 ### 数据摘要(哈希)
 
+ 支持文件, 支持超大文件,8G文件测试ok
+
 - md5
 - sha1
 - sha2系列
 - sha3
 - SM3
+- RIPEMD
+- whirpool
+- Tiger
 
 ### 对称加密
 

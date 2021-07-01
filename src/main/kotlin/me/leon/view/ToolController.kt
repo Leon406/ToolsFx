@@ -1,5 +1,6 @@
 package me.leon.view
 
+import me.leon.Digests
 import me.leon.base.base16
 import me.leon.base.base16Decode
 import me.leon.base.base32
@@ -48,15 +49,7 @@ class ToolController : Controller() {
             e.printStackTrace()
             "解码错误: ${e.message}"
         }
-}
 
-enum class EncodeType(type: String) {
-    Base64("base64"),
-    Base64Safe("base64 safe"),
-    Unicode("unicode"),
-    Hex("hex"),
-    Binary("binary"),
-    UrlEncode("urlencode"),
-    Base32("base32"),
-    Base16("base16"),
+    fun digest(method: String, data: String) = if (data.isEmpty()) "" else Digests.hash(method, data)
+    fun digestFile(method: String, path: String) = if (path.isEmpty()) "" else Digests.hashByFile(method, path)
 }

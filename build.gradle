@@ -2,8 +2,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.5.20"
     id 'application'
 }
-group = 'com.test'
-version = '1.0-SNAPSHOT'
+group = 'me.leon.toolfx'
+version = '1.0.0.alpha01'
 
 repositories {
     mavenCentral()
@@ -15,6 +15,7 @@ application {
 
 dependencies {
     implementation "no.tornado:tornadofx:$tornadofx_version"
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
 }
 
