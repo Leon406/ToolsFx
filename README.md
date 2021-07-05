@@ -16,14 +16,14 @@
 
  支持文件, 支持超大文件,8G文件测试ok
 
-- md5
-- sha1
-- sha2系列
-- sha3
-- SM3
-- RIPEMD
-- whirpool
-- Tiger
+- md系列 ✔
+- sha1 ✔
+- sha2系列 ✔
+- sha3 ✔
+- SM3 ✔
+- RIPEMD ✔
+- whirpool ✔
+- Tiger ✔
 
 ### 对称加密
 
@@ -38,14 +38,10 @@
 
 ### Todo 
 
-支持文件拖入  ✔
-
-输出类型可选, base64 ,hex 
-
-对称key, iv 支持base64 ,hex
-
-一键复制  ✔
-
-键盘事件, 快捷键
-
-项目功能单元测试
+- 支持文件拖入  ✔
+- 一键复制  ✔
+- 输出类型可选, base64 ,hex
+- 对称key, iv 支持base64 ,hex 
+- 文件解密,输出文件
+- 键盘事件, 快捷键
+- 项目功能单元测试

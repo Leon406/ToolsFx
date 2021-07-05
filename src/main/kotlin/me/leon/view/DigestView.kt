@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
+import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
@@ -61,32 +62,30 @@ class DigestView : View("哈希(摘要)") {
         }
         hbox {
             paddingAll = 8
-            label("hash 算法:") {
-                paddingAll = 8
-            }
+            alignment = Pos.CENTER_LEFT
+            label("算法:  ")
             combobox(selectedAlgItem, algs.keys.toMutableList()) {
                 cellFormat {
                     text = it
                 }
             }
-        }
 
-        hbox {
-            paddingAll = 8
-            label("hash 位数:") {
+            label("长度:  ") {
                 paddingAll = 8
             }
             cbBits = combobox(selectedBits, algs.values.first()) {
                 cellFormat {
                     text = it
                 }
+                isDisable = true
             }
         }
-        selectedAlgItem.addListener { _, _, newValue ->
 
+        selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
                 cbBits.items = algs[newValue]!!.asObservable()
                 selectedBits.set(algs[newValue]!!.first())
+                cbBits.isDisable = algs[newValue]!!.size == 1
             }
         }
 
@@ -106,7 +105,8 @@ class DigestView : View("哈希(摘要)") {
             }
         }
         hbox {
-            button("hash") {
+            alignment = Pos.CENTER_LEFT
+            button("运行") {
                 action {
                     runAsync {
                         if (fileHash.get())

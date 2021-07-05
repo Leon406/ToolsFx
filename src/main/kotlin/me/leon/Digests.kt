@@ -17,7 +17,6 @@ object Digests {
             .toHex()
 
     fun hashByFile(method: String, path: String): String {
-        println("hhhhh")
         val fis = FileInputStream(path)
         var md = MessageDigest.getInstance(method)
         val dis = DigestInputStream(fis, md)
@@ -31,7 +30,6 @@ object Digests {
     }
 
     fun hashFile2(method: String, path: String): String {
-        println("hhhhh")
         var md = MessageDigest.getInstance(method)
         File(path).inputStream().buffered().use {
             var buf = ByteArray(DEFAULT_BUFFER_SIZE)

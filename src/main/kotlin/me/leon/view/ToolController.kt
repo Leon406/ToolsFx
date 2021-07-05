@@ -51,5 +51,7 @@ class ToolController : Controller() {
         }
 
     fun digest(method: String, data: String) = if (data.isEmpty()) "" else Digests.hash(method, data)
-    fun digestFile(method: String, path: String) = if (path.isEmpty()) "" else Digests.hashByFile(method, path)
+    fun digestFile(method: String, path: String) = if (path.isEmpty()) "" else Digests.hashByFile(method, path).also { println(
+        Digests.hashFile2(method, path)
+    ) }
 }

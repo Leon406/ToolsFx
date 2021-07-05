@@ -2,6 +2,7 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
+import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
@@ -46,17 +47,20 @@ class EncodeView : View("编解码") {
         }
         hbox {
             paddingAll = 8
+            alignment = Pos.BASELINE_CENTER
             togglegroup {
                 spacing = 8.0
                 radiobutton("base64") {
                     isSelected = true
-                    tooltip("Base64是一种基于64个可打印字符来表示二进制数据的表示方法!\n" +
-                            "它是一种将二进制编码转换为可打印字符一种。它是MIME编码里面非常常见一种可逆转\n" +
-                            "换二进制方法！\n" +
-                            "由于2的6次方等于64，所以每6个位为一个单元，对应某个可打印字符。三个字节有24个位元，\n" +
-                            "可以对应4个Base64单元，因此3个字节需要用4个base64单元来表示！ 这64个可打印字符a-z,A-Z,\n" +
-                            "0-9就占62字符，剩下2个字符不同系统可能使用不同，\n" +
-                            "经常是:“+/”。base64编码后，文档大小为原先的4/3，里面所有字节（包括常见可打印字符）也编码了！\n"){
+                    tooltip(
+                        "Base64是一种基于64个可打印字符来表示二进制数据的表示方法!\n" +
+                                "它是一种将二进制编码转换为可打印字符一种。它是MIME编码里面非常常见一种可逆转\n" +
+                                "换二进制方法！\n" +
+                                "由于2的6次方等于64，所以每6个位为一个单元，对应某个可打印字符。三个字节有24个位元，\n" +
+                                "可以对应4个Base64单元，因此3个字节需要用4个base64单元来表示！ 这64个可打印字符a-z,A-Z,\n" +
+                                "0-9就占62字符，剩下2个字符不同系统可能使用不同，\n" +
+                                "经常是:“+/”。base64编码后，文档大小为原先的4/3，里面所有字节（包括常见可打印字符）也编码了！\n"
+                    ) {
                         isWrapText = true
                     }
                 }
@@ -77,24 +81,27 @@ class EncodeView : View("编解码") {
         hbox {
             togglegroup {
                 spacing = 8.0
+                alignment = Pos.BASELINE_CENTER
                 radiobutton("编码") {
                     isSelected = true
                 }
                 radiobutton("解码")
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = (new as RadioButton).text == "编码"
-                    if (isEncode)
+                    if (isEncode) {
                         output.text = controller.encode(inputText, encodeType)
-                    else
+                    } else {
                         output.text = controller.decode(inputText, encodeType)
+                    }
                 }
             }
-          button("运行") {
+            button("运行") {
                 action {
-                    if (isEncode)
+                    if (isEncode) {
                         output.text = controller.encode(inputText, encodeType)
-                    else
+                    } else {
                         output.text = controller.decode(inputText, encodeType)
+                    }
                 }
             }
 
