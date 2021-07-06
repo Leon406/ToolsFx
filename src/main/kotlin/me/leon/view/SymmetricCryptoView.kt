@@ -9,7 +9,6 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
-import me.leon.base.base64DecodeString
 import me.leon.ext.copy
 import me.leon.ext.hex2ByteArray
 import tornadofx.*

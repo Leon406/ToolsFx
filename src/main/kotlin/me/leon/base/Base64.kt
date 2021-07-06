@@ -1,11 +1,19 @@
 package me.leon.base
 
 import me.leon.ext.toBinaryString
+import java.util.*
 
 
-val map64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=/"
+val map64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 fun String.base64() =
     toByteArray().toBinaryString()
+        .chunked(6)
+//        .also { println(it.joinToString("")) }
+        .joinToString("") { map64[it.padding("0", 6).toInt(2)].toString() }
+        .padding("=", 4) // lcm (6, 8) /6 = 4
+
+fun ByteArray.base64() =
+    toBinaryString()
         .chunked(6)
 //        .also { println(it.joinToString("")) }
         .joinToString("") { map64[it.padding("0", 6).toInt(2)].toString() }
@@ -29,19 +37,21 @@ fun String.base64DecodeString() =
         toCharArray().filter { it != '=' }
             .joinToString("") { map64.indexOf(it).toString(2).padding("0", 6, false) }
             .chunked(8)
+            .filter { it.length == 8 }
 //            .also { println(it.joinToString("")) }
             .map { it.toInt(2).toByte() }
-            .filter { it.toInt() != 0 }
             .toByteArray()
     )
 
 fun String.base64Decode() =
-        toCharArray().filter { it != '=' }
-            .joinToString("") { map64.indexOf(it).toString(2).padding("0", 6, false) }
-            .chunked(8)
-            .map { it.toInt(2).toByte() }
-            .filter { it.toInt() != 0 }
-            .toByteArray()
+
+//    Base64.getDecoder().decode(this)
+    toCharArray().filter { it != '=' }
+        .joinToString("") { map64.indexOf(it).toString(2).padding("0", 6, false) }
+        .chunked(8)
+        .filter { it.length == 8 }
+        .map { (it.toInt(2) and 0xFF).toByte() }
+        .toByteArray()
 
 
 fun String.safeBase64Decode2() =
@@ -51,9 +61,8 @@ fun String.safeBase64Decode2() =
             .toCharArray().filter { it != '=' }
             .joinToString("") { map64.indexOf(it).toString(2).padding("0", 6, false) }
             .chunked(8)
-//            .also { println(it.joinToString("")) }
+            .filter { it.length == 8 }
             .map { it.toInt(2).toByte() }
-            .filter { it.toInt() != 0 }
             .toByteArray()
     )
 

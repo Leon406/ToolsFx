@@ -1,15 +1,18 @@
 package me.leon.view
 
 import me.leon.Digests
-import me.leon.base.base16
-import me.leon.base.base16Decode
-import me.leon.base.base32
-import me.leon.base.base32Decode
+import me.leon.base.*
 import me.leon.ext.*
+import org.bouncycastle.util.io.pem.PemReader
 import tornadofx.*
+import java.io.ByteArrayInputStream
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import java.security.KeyFactory
+import java.security.PublicKey
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -89,6 +92,52 @@ class ToolController : Controller() {
             else
                 cipher.init(Cipher.DECRYPT_MODE, keySpec, IvParameterSpec(iv))
             String(cipher.doFinal(Base64.getDecoder().decode(data)))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "decrypt error: ${e.message}"
+        }
+
+    fun pubEncrypt(key: String, alg: String, data: String) =
+        try {
+            println("encrypt $key  $alg $data")
+            val keySpec = X509EncodedKeySpec(key.base64Decode())
+            val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
+            val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
+            Cipher.getInstance(alg).run {
+                init(Cipher.ENCRYPT_MODE, publicKey)
+                doFinal(data.toByteArray()).base64()
+            }
+//            RsaUtils.encryptDataStr(data.toByteArray(),RsaUtils.loadPublicKey(key)!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "encrypt error: ${e.message}"
+        }
+
+    fun pubEncrypt2(key: String, alg: String, data: String) =
+        try {
+            println("encrypt $key  $alg $data")
+            val publicKey = PemReader(ByteArrayInputStream(key.toByteArray()).reader()).readPemObject() as PublicKey
+            Cipher.getInstance(alg).run {
+                init(Cipher.ENCRYPT_MODE, publicKey)
+                doFinal(data.toByteArray()).base64()
+            }
+//            RsaUtils.encryptDataStr(data.toByteArray(),RsaUtils.loadPublicKey(key)!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "encrypt error: ${e.message}"
+        }
+    fun priDecrypt(key: String, alg: String, data: String) =
+        try {
+            println("decrypt$key  $alg $data")
+            val keySpec = PKCS8EncodedKeySpec(key.base64Decode())
+            val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
+            val privateKey = KeyFactory.getInstance(keyFac).generatePrivate(keySpec)
+            Cipher.getInstance(alg).run {
+                init(Cipher.DECRYPT_MODE, privateKey)
+                String(doFinal(data.base64Decode()))
+            }
+
+//            RsaUtils.decryptDataStr(data.base64Decode(),RsaUtils.loadPrivateKey(key)!!)
         } catch (e: Exception) {
             e.printStackTrace()
             "decrypt error: ${e.message}"
