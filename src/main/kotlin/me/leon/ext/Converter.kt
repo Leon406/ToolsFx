@@ -12,6 +12,10 @@ fun String.hex2Ascii() = String(
     toCharArray().toList().chunked(2)
         .map { it.joinToString("").toInt(16).toByte() }.toByteArray()
 )
+fun String.hex2ByteArray() =
+    toCharArray().toList().chunked(2)
+        .map { it.joinToString("").toInt(16).toByte() }.toByteArray()
+
 
 fun ByteArray.toBinaryString() = joinToString("") {
     with((it.toInt() and 0xff).toString(2)) {

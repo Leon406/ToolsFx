@@ -24,7 +24,7 @@ fun String.safeBase64() =
         .replace("+", "-")
 
 
-fun String.base64Decode2() =
+fun String.base64DecodeString() =
     String(
         toCharArray().filter { it != '=' }
             .joinToString("") { map64.indexOf(it).toString(2).padding("0", 6, false) }
@@ -34,6 +34,15 @@ fun String.base64Decode2() =
             .filter { it.toInt() != 0 }
             .toByteArray()
     )
+
+fun String.base64Decode() =
+        toCharArray().filter { it != '=' }
+            .joinToString("") { map64.indexOf(it).toString(2).padding("0", 6, false) }
+            .chunked(8)
+            .map { it.toInt(2).toByte() }
+            .filter { it.toInt() != 0 }
+            .toByteArray()
+
 
 fun String.safeBase64Decode2() =
     String(

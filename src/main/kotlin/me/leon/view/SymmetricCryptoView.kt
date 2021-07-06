@@ -4,22 +4,24 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
-import javafx.scene.control.ComboBox
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.DragEvent
+import me.leon.base.base64Decode
+import me.leon.base.base64DecodeString
 import me.leon.ext.copy
-import me.leon.ext.encodeType
+import me.leon.ext.hex2ByteArray
 import tornadofx.*
 
 class SymmetricCryptoView : View("对称加密") {
     private val controller: ToolController by inject()
     override val closeable = SimpleBooleanProperty(false)
-    private val fileHash = SimpleBooleanProperty(false)
+    private val isFile = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
     private lateinit var key: TextField
     private lateinit var iv: TextField
+    var isEncrypt = true
     lateinit var output: TextArea
     private val inputText: String
         get() = input.text
@@ -27,6 +29,24 @@ class SymmetricCryptoView : View("对称加密") {
         get() = output.text
     var method = "MD5"
 
+    val keyByteArray
+        get() = when (keyEncode) {
+            "raw" -> key.text.toByteArray()
+            "hex" -> key.text.hex2ByteArray()
+            "base64" -> key.text.base64Decode()
+            else-> byteArrayOf()
+        }
+
+    var keyEncode = "raw"
+    var ivEncode = "raw"
+
+    val ivByteArray
+        get() = when (ivEncode) {
+            "raw" -> iv.text.toByteArray()
+            "hex" -> iv.text.hex2ByteArray()
+            "base64" -> iv.text.base64Decode()
+            else->byteArrayOf()
+        }
 
     private val eventHandler = EventHandler<DragEvent> {
         println("${it.dragboard.hasFiles()}______" + it.eventType)
@@ -37,22 +57,29 @@ class SymmetricCryptoView : View("对称加密") {
             }
         }
     }
-    val algs = linkedMapOf(
-        "MD5" to listOf("128"),
-        "MD4" to listOf("128"),
-        "MD2" to listOf("128"),
-        "SM3" to listOf("256"),
-        "Tiger" to listOf("192"),
-        "Whirlpool" to listOf("512"),
-        "SHA1" to listOf("160"),
-        "SHA2" to listOf("224", "256", "384", "512", "512/224", "512/256"),
-        "SHA3" to listOf("224", "256", "384", "512"),
-        "RIPEMD" to listOf("128", "160", "256", "320"),
+    val algs = mutableListOf(
+        "DES",
+        "DESEDE",
+        "AES",
+        "SM4",
+        "Blowfish",
+        "Twofish",
+        "RC2"
     )
-    val selectedAlgItem = SimpleStringProperty(algs.keys.first())
-    val selectedBits = SimpleStringProperty(algs.values.first().first())
+    val paddingsAlg = mutableListOf(
+        "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "ZeroBytePadding",
+        "NoPadding", "TBCPadding",
+        "X923Padding", "ISO7816d4Padding",
+        "ISO10126d2Padding"
+    )
+    val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM")
+    val selectedAlg = SimpleStringProperty(algs.first())
+    val selectedPadding = SimpleStringProperty(paddingsAlg.first())
+    val selectedMod = SimpleStringProperty(modes.first())
 
-    lateinit var cbBits: ComboBox<String>
+    val cipher
+        get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
+
     override val root = vbox {
         paddingAll = 8
 
@@ -71,16 +98,16 @@ class SymmetricCryptoView : View("对称加密") {
             label("算法:") {
                 paddingAll = 8
             }
-            combobox(selectedAlgItem, algs.keys.toMutableList()) {
+            combobox(selectedAlg, algs) {
                 cellFormat {
                     text = it
                 }
             }
 
-            label("分组算法:") {
+            label("mode:") {
                 paddingAll = 8
             }
-            combobox(selectedAlgItem, algs.keys.toMutableList()) {
+            combobox(selectedMod, modes) {
                 cellFormat {
                     text = it
                 }
@@ -89,7 +116,7 @@ class SymmetricCryptoView : View("对称加密") {
             label("padding:") {
                 paddingAll = 8
             }
-            combobox(selectedAlgItem, algs.keys.toMutableList()) {
+            combobox(selectedPadding, paddingsAlg) {
                 cellFormat {
                     text = it
                 }
@@ -112,9 +139,9 @@ class SymmetricCryptoView : View("对称加密") {
                         isSelected = true
                     }
                     radiobutton("hex")
-                    radiobutton("binary")
+                    radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-
+                        keyEncode = (new as RadioButton).text
                     }
                 }
             }
@@ -133,44 +160,68 @@ class SymmetricCryptoView : View("对称加密") {
                         isSelected = true
                     }
                     radiobutton("hex")
-                    radiobutton("binary")
+                    radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-
+                        ivEncode = (new as RadioButton).text
                     }
                 }
             }
         }
-        selectedAlgItem.addListener { _, _, newValue ->
+        selectedAlg.addListener { _, _, newValue ->
             newValue?.run {
-                cbBits.items = algs[newValue]!!.asObservable()
-                selectedBits.set(algs[newValue]!!.first())
-                cbBits.isDisable = algs[newValue]!!.size == 1
+                println("alg $newValue")
+            }
+        }
+
+        selectedMod.addListener { _, _, newValue ->
+            newValue?.run {
+                println("cipher $newValue")
+            }
+        }
+
+        selectedPadding.addListener { _, _, newValue ->
+            newValue?.run {
+                println("padding $newValue")
             }
         }
 
         hbox {
             alignment = Pos.CENTER_LEFT
-            button("运行") {
-                action {
-                    runAsync {
-                        if (fileHash.get())
-                            controller.digestFile(method, inputText)
-                        else controller.digest(method, inputText)
-                    } ui {
-                        output.text = it
-                    }
+
+            togglegroup {
+                spacing = 8.0
+                alignment = Pos.BASELINE_CENTER
+                radiobutton("加密") {
+                    isSelected = true
+                }
+                radiobutton("解密")
+                selectedToggleProperty().addListener { _, _, new ->
+                    isEncrypt = (new as RadioButton).text == "加密"
+                    doCrypto()
                 }
             }
+            button("运行") {
+                action {
+                    doCrypto()
+                }
+            }
+            // TODO: 2021/7/6 0006 文件支持
+//            checkbox("文件", isFile)
 
-            checkbox("文件", fileHash)
-
-            fileHash.addListener { _, _, newValue ->
+            isFile.addListener { _, _, newValue ->
                 println("fileHash__ $newValue")
                 if (newValue) {
                     println("____dddd")
                     controller.digestFile(method, inputText)
                 } else {
                     controller.digest(method, inputText)
+                }
+            }
+
+            button("上移") {
+                action {
+                    input.text = outputText
+                    output.text = ""
                 }
             }
 
@@ -186,6 +237,26 @@ class SymmetricCryptoView : View("对称加密") {
         output = textarea {
             promptText = "结果"
             isWrapText = true
+        }
+    }
+
+    private fun doCrypto() {
+        if (isEncrypt) {
+            runAsync {
+                if (isFile.get())
+                    controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
+                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
+            } ui {
+                output.text = it
+            }
+        } else {
+            runAsync {
+                if (isFile.get())
+                    controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
+                else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
+            } ui {
+                output.text = it
+            }
         }
     }
 }

@@ -1,10 +1,8 @@
 package me.leon
 
 import me.leon.ext.toHex
-import org.bouncycastle.util.encoders.Hex
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
 import java.security.DigestInputStream
 import java.security.MessageDigest
 
