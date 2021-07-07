@@ -54,7 +54,7 @@ object RsaUtils {
      * @param publicKey 公钥
      * @return 加密后的byte型数据
      */
-    fun encryptData(data: ByteArray?, publicKey: PublicKey?): ByteArray? {
+    fun encryptData(data: ByteArray?, publicKey: PublicKey?): ByteArray {
         return try {
             val cipher = Cipher.getInstance(RSA)
             // 编码前设定编码方式及密钥
@@ -63,7 +63,7 @@ object RsaUtils {
             cipher.doFinal(data)
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            byteArrayOf()
         }
     }
 
@@ -75,18 +75,9 @@ object RsaUtils {
      * @param publicKey 公钥
      * @return 加密后的String型数据
      */
-    fun encryptDataStr(data: ByteArray, publicKey: PublicKey): String? {
-        return try {
-            val cipher = Cipher.getInstance(RSA)
-            // 编码前设定编码方式及密钥
-            cipher.init(Cipher.ENCRYPT_MODE, publicKey)
-            // 传入编码数据并返回编码结果
-            cipher.doFinal(data).base64()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
+    fun encryptDataStr(data: ByteArray, publicKey: PublicKey): String =
+        encryptData(data, publicKey).base64()
+
 
     /**
      * 用私钥解密
@@ -95,13 +86,13 @@ object RsaUtils {
      * @param privateKey    私钥
      * @return
      */
-    fun decryptData(encryptedData: ByteArray?, privateKey: PrivateKey?): ByteArray? {
+    fun decryptData(encryptedData: ByteArray, privateKey: PrivateKey?): ByteArray {
         return try {
             val cipher = Cipher.getInstance(RSA)
             cipher.init(Cipher.DECRYPT_MODE, privateKey)
             cipher.doFinal(encryptedData)
         } catch (e: Exception) {
-            null
+            byteArrayOf()
         }
     }
 
@@ -112,15 +103,9 @@ object RsaUtils {
      * @param privateKey    私钥
      * @return
      */
-    fun decryptDataStr(encryptedData: ByteArray?, privateKey: PrivateKey?): String? {
-        return try {
-            val cipher = Cipher.getInstance(RSA)
-            cipher.init(Cipher.DECRYPT_MODE, privateKey)
-            String(cipher.doFinal(encryptedData))
-        } catch (e: Exception) {
-            null
-        }
-    }
+    fun decryptDataStr(encryptedData: ByteArray, privateKey: PrivateKey?): String =
+        String(decryptData(encryptedData, privateKey))
+
 
     /**
      * 通过公钥byte[](publicKey.getEncoded())将公钥还原，适用于RSA算法
@@ -298,7 +283,7 @@ object RsaUtils {
         println("PublicExponent=" + rsaPublicKey.publicExponent.toString())
         println("PublicKey=" + rsaPublicKey.encoded.base64())
         println("PrivatecPemKey=\n" + pkcs1ToPem(rsaPublicKey.encoded, true))
-        println(publicPem( rsaPublicKey.encoded.base64()))
+        println(publicPem(rsaPublicKey.encoded.base64()))
     }
 
     fun printPrivateKeyInfo(privateKey: PrivateKey) {
@@ -309,7 +294,7 @@ object RsaUtils {
         println("PrivateExponent.length=" + rsaPrivateKey.privateExponent.bitLength())
         println("PrivatecExponent=" + rsaPrivateKey.privateExponent.toString())
         println("PrivatecKey=" + rsaPrivateKey.encoded.base64())
-        println(privatePem( rsaPrivateKey.encoded.base64()))
+        println(privatePem(rsaPrivateKey.encoded.base64()))
         println("PrivatecPemKey=\n" + pkcs1ToPem(rsaPrivateKey.encoded, false))
     }
 
@@ -358,20 +343,22 @@ object RsaUtils {
             printPrivateKeyInfo(it!!.private)
             printPublicKeyInfo(it.public)
         }
-//        val priKey =
-//            "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL49TYk+THruewfw8c+LdP1gmz44q1/yY6rbKyDuQuAIT8JEqa+stdpCbMrjaduuxvaCXahl9lreNGLk9tbiZd7ACMWiLw8IM0xP6lsOkgHQaLHQy/jHQNwDeT5/Vf36EwVb7pnmSmxtDT8omdJXNv7Y1+3rT/Ztk/gEY5IUhzQ9AgMBAAECgYEAtZAkdBv1Ok5pNYcMAh0DJuAQyi2jwgrAfMx4ORGs2cyU8sA9guC/HvPOiUTKP1Rrp9F8OcA2gzsXnFsSCrxAo9Q+w57Pl1bLFsZEoYOLFsVXuG1En25YLNSVT9WwIcZU11F+dmGJ2z5EWDSbs195p+aORqK7jcR6HTGexyisVTECQQDzOO669YJ7EF3B4LuFJYAKo14R9Oz1cMDWMGfS4kRF8v95J4XjaCEMMEJ05ViC9hQJlh0xMYGZhO68eOoL2hF7AkEAyDvPQFZzwVXCO1kTGhyvzqZ54whvl15YMKomC+GYo74ybEYjJ6MINLYP5tmGRleDKUZQBvDs5XIXyX8gK29XpwJAd9MBkevoB3btqdlsqNDrvtHzQ0d2Agk1h5A7ZiKA3jEz+V0mUf134ohYBT0EGSjggESLRzQLlDVwZDvxmjspxwJASIwrBjOMkzMAQcJ/Qkm8hRIaPWD0FZLwPwmW6V0ekc06tbIf0J+oPHjugAS2OsxAUHcSTcGDA4r4BWCTBkm8JwJAUE/9Lh06Rvq+PJlDdYTgL3tKsuFxUwJF7Le7yS999MPYAz7qe6SmZZqf5t3qVzIZnFjaJOLOvzhwN6AGNDKtuQ=="
-//        val pubKey =
-//            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+PU2JPkx67nsH8PHPi3T9YJs+OKtf8mOq2ysg7kLgCE/CRKmvrLXaQmzK42nbrsb2gl2oZfZa3jRi5PbW4mXewAjFoi8PCDNMT+pbDpIB0Gix0Mv4x0DcA3k+f1X9+hMFW+6Z5kpsbQ0/KJnSVzb+2Nft60/2bZP4BGOSFIc0PQIDAQAB"
-//        val privateKey = loadPrivateKey(priKey)
-//        val publicKey = loadPublicKey(pubKey)
-//        encryptDataStr("Hello S试试".toByteArray(), publicKey!!).also {
-//            println("encrypt $it")
-//        }
-//        val encode =
-//            "VmFG/7B3Wm1SUBnI+eqcMunaJEIP934cB61jbFN7TvLfGwnVPBWmZGCrTs9PlYbWYoeX+rEnkQ6bOauXKUQ4kNuebRqOkKQe/fM2QXcVa0/p5fL1xzIG1u9at/s0usFohvH7wE6cWTFcr5sT62OKjesnS9qI+Hi07Zqtzgfs9nU="
-//
-//        val decrypt = decryptDataStr(encode.base64Decode(), privateKey)
-//        println(decrypt)
+        val priKey =
+            "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL49TYk+THruewfw8c+LdP1gmz44q1/yY6rbKyDuQuAIT8JEqa+stdpCbMrjaduuxvaCXahl9lreNGLk9tbiZd7ACMWiLw8IM0xP6lsOkgHQaLHQy/jHQNwDeT5/Vf36EwVb7pnmSmxtDT8omdJXNv7Y1+3rT/Ztk/gEY5IUhzQ9AgMBAAECgYEAtZAkdBv1Ok5pNYcMAh0DJuAQyi2jwgrAfMx4ORGs2cyU8sA9guC/HvPOiUTKP1Rrp9F8OcA2gzsXnFsSCrxAo9Q+w57Pl1bLFsZEoYOLFsVXuG1En25YLNSVT9WwIcZU11F+dmGJ2z5EWDSbs195p+aORqK7jcR6HTGexyisVTECQQDzOO669YJ7EF3B4LuFJYAKo14R9Oz1cMDWMGfS4kRF8v95J4XjaCEMMEJ05ViC9hQJlh0xMYGZhO68eOoL2hF7AkEAyDvPQFZzwVXCO1kTGhyvzqZ54whvl15YMKomC+GYo74ybEYjJ6MINLYP5tmGRleDKUZQBvDs5XIXyX8gK29XpwJAd9MBkevoB3btqdlsqNDrvtHzQ0d2Agk1h5A7ZiKA3jEz+V0mUf134ohYBT0EGSjggESLRzQLlDVwZDvxmjspxwJASIwrBjOMkzMAQcJ/Qkm8hRIaPWD0FZLwPwmW6V0ekc06tbIf0J+oPHjugAS2OsxAUHcSTcGDA4r4BWCTBkm8JwJAUE/9Lh06Rvq+PJlDdYTgL3tKsuFxUwJF7Le7yS999MPYAz7qe6SmZZqf5t3qVzIZnFjaJOLOvzhwN6AGNDKtuQ=="
+        val pubKey =
+            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+PU2JPkx67nsH8PHPi3T9YJs+OKtf8mOq2ysg7kLgCE/CRKmvrLXaQmzK42nbrsb2gl2oZfZa3jRi5PbW4mXewAjFoi8PCDNMT+pbDpIB0Gix0Mv4x0DcA3k+f1X9+hMFW+6Z5kpsbQ0/KJnSVzb+2Nft60/2bZP4BGOSFIc0PQIDAQAB"
+        val privateKey = loadPrivateKey(priKey)
+        val publicKey = loadPublicKey(pubKey)
+        encryptDataStr("Hello S试试".toByteArray(), publicKey!!).also {
+            println("encrypt $it")
+
+            println(decryptDataStr(it.base64Decode(), privateKey))
+        }
+        val encode =
+            "VmFG/7B3Wm1SUBnI+eqcMunaJEIP934cB61jbFN7TvLfGwnVPBWmZGCrTs9PlYbWYoeX+rEnkQ6bOauXKUQ4kNuebRqOkKQe/fM2QXcVa0/p5fL1xzIG1u9at/s0usFohvH7wE6cWTFcr5sT62OKjesnS9qI+Hi07Zqtzgfs9nU="
+
+        val decrypt = decryptDataStr(encode.base64Decode(), privateKey)
+        println(decrypt)
 //        printPublicKeyInfo(publicKey)
 //        printPrivateKeyInfo(privateKey!!)
     }
