@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 group = 'me.leon.toolfx'
-version = '1.0.0.alpha01'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
