@@ -41,7 +41,7 @@ class EncodeView : View("编解码") {
         }
 
         input = textarea {
-            promptText = "请输入内容或者拖动文本到此区域"
+            promptText = "请输入内容或者拖动文件到此区域"
             isWrapText = true
             onDragEntered = eventHandler
         }

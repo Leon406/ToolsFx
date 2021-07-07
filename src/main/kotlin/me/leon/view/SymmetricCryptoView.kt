@@ -82,6 +82,7 @@ class SymmetricCryptoView : View("对称加密") {
     override val root = vbox {
         paddingAll = 8
 
+
         label("待处理:") {
             paddingAll = 8
         }
@@ -124,6 +125,7 @@ class SymmetricCryptoView : View("对称加密") {
 
         hbox {
 
+            alignment = Pos.CENTER_LEFT
             paddingAll = 8
             label("key:") {
                 paddingAll = 8
@@ -134,6 +136,7 @@ class SymmetricCryptoView : View("对称加密") {
             vbox {
                 togglegroup {
                     spacing = 8.0
+                    paddingAll = 8
                     radiobutton("raw") {
                         isSelected = true
                     }
@@ -155,6 +158,7 @@ class SymmetricCryptoView : View("对称加密") {
             vbox {
                 togglegroup {
                     spacing = 8.0
+                    paddingAll = 8
                     radiobutton("raw") {
                         isSelected = true
                     }

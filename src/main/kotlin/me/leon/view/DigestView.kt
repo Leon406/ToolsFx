@@ -118,7 +118,9 @@ class DigestView : View("哈希(摘要)") {
                 }
             }
 
-            checkbox("文件", fileHash)
+            checkbox("文件", fileHash) {
+                paddingAll = 8
+            }
 
             fileHash.addListener { _, _, newValue ->
                 println("fileHash__ $newValue")

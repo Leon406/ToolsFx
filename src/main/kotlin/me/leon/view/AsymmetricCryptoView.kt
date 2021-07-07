@@ -10,7 +10,7 @@ import me.leon.ext.copy
 import me.leon.ext.openInBrowser
 import tornadofx.*
 
-class AsymmetricCryptoView : View("非对称加密") {
+class AsymmetricCryptoView : View("非对称加密 RSA") {
     private val controller: ToolController by inject()
     override val closeable = SimpleBooleanProperty(false)
     lateinit var input: TextArea
