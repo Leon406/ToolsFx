@@ -1,11 +1,14 @@
 package me.leon.view
 
 import me.leon.Digests
+import me.leon.RsaUtils
+import me.leon.RsaUtils.MAX_DECRYPT_BLOCK
 import me.leon.base.*
 import me.leon.ext.*
 import org.bouncycastle.util.io.pem.PemReader
 import tornadofx.*
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
@@ -105,7 +108,12 @@ class ToolController : Controller() {
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.ENCRYPT_MODE, publicKey)
-                doFinal(data.toByteArray()).base64()
+                data.toByteArray().toList().chunked(RsaUtils.MAX_ENCRYPT_BLOCK) {
+                    println(it.size)
+                    this.doFinal(it.toByteArray())
+                }.fold(ByteArrayOutputStream()) { acc, bytes ->
+                    acc.also { acc.write(bytes) }
+                }.toByteArray().base64()
             }
 //            RsaUtils.encryptDataStr(data.toByteArray(),RsaUtils.loadPublicKey(key)!!)
         } catch (e: Exception) {
@@ -113,19 +121,7 @@ class ToolController : Controller() {
             "encrypt error: ${e.message}"
         }
 
-    fun pubEncrypt2(key: String, alg: String, data: String) =
-        try {
-            println("encrypt $key  $alg $data")
-            val publicKey = PemReader(ByteArrayInputStream(key.toByteArray()).reader()).readPemObject() as PublicKey
-            Cipher.getInstance(alg).run {
-                init(Cipher.ENCRYPT_MODE, publicKey)
-                doFinal(data.toByteArray()).base64()
-            }
-//            RsaUtils.encryptDataStr(data.toByteArray(),RsaUtils.loadPublicKey(key)!!)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            "encrypt error: ${e.message}"
-        }
+
     fun priDecrypt(key: String, alg: String, data: String) =
         try {
             println("decrypt$key  $alg $data")
@@ -134,7 +130,12 @@ class ToolController : Controller() {
             val privateKey = KeyFactory.getInstance(keyFac).generatePrivate(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.DECRYPT_MODE, privateKey)
-                String(doFinal(data.base64Decode()))
+                data.base64Decode().toList().chunked(MAX_DECRYPT_BLOCK) {
+                    println(it.size)
+                    this.doFinal(it.toByteArray())
+                }.fold(ByteArrayOutputStream()) { acc, bytes ->
+                    acc.also { acc.write(bytes) }
+                }.toByteArray().toString(Charsets.UTF_8)
             }
 
 //            RsaUtils.decryptDataStr(data.base64Decode(),RsaUtils.loadPrivateKey(key)!!)

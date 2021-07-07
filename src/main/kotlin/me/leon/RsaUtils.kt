@@ -22,6 +22,16 @@ import javax.crypto.Cipher
 object RsaUtils {
     private const val RSA = "RSA/ECB/PKCS1Padding"
     private const val RSA_KEY_FACTORY = "RSA"
+
+    /**
+     * RSA最大加密明文大小
+     */
+     const val MAX_ENCRYPT_BLOCK = 117
+
+    /**
+     * RSA最大解密密文大小
+     */
+     const val MAX_DECRYPT_BLOCK = 128
     /**
      * 随机生成RSA密钥对
      *
@@ -54,13 +64,19 @@ object RsaUtils {
      * @param publicKey 公钥
      * @return 加密后的byte型数据
      */
-    fun encryptData(data: ByteArray?, publicKey: PublicKey?): ByteArray {
+    fun encryptData(data: ByteArray, publicKey: PublicKey?): ByteArray {
         return try {
             val cipher = Cipher.getInstance(RSA)
             // 编码前设定编码方式及密钥
             cipher.init(Cipher.ENCRYPT_MODE, publicKey)
             // 传入编码数据并返回编码结果
-            cipher.doFinal(data)
+            data.toList().chunked(MAX_ENCRYPT_BLOCK) {
+                println(it.size)
+                cipher.doFinal(it.toByteArray())
+            }.fold(ByteArrayOutputStream()) { acc, bytes ->
+                acc.also { acc.write(bytes) }
+            }.toByteArray()
+
         } catch (e: Exception) {
             e.printStackTrace()
             byteArrayOf()
@@ -90,8 +106,15 @@ object RsaUtils {
         return try {
             val cipher = Cipher.getInstance(RSA)
             cipher.init(Cipher.DECRYPT_MODE, privateKey)
-            cipher.doFinal(encryptedData)
+            println("encryptedData " + encryptedData.size)
+            encryptedData.toList().chunked(MAX_DECRYPT_BLOCK) {
+                println(it.size)
+                cipher.doFinal(it.toByteArray())
+            }.fold(ByteArrayOutputStream()) { acc, bytes ->
+                acc.also { acc.write(bytes) }
+            }.toByteArray()
         } catch (e: Exception) {
+            e.printStackTrace()
             byteArrayOf()
         }
     }
@@ -349,7 +372,7 @@ object RsaUtils {
             "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+PU2JPkx67nsH8PHPi3T9YJs+OKtf8mOq2ysg7kLgCE/CRKmvrLXaQmzK42nbrsb2gl2oZfZa3jRi5PbW4mXewAjFoi8PCDNMT+pbDpIB0Gix0Mv4x0DcA3k+f1X9+hMFW+6Z5kpsbQ0/KJnSVzb+2Nft60/2bZP4BGOSFIc0PQIDAQAB"
         val privateKey = loadPrivateKey(priKey)
         val publicKey = loadPublicKey(pubKey)
-        encryptDataStr("Hello S试试".toByteArray(), publicKey!!).also {
+        encryptDataStr("Hello S试试".repeat(16).toByteArray(), publicKey!!).also {
             println("encrypt $it")
 
             println(decryptDataStr(it.base64Decode(), privateKey))
