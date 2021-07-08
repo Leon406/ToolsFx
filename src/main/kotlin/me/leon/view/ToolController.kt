@@ -1,19 +1,16 @@
 package me.leon.view
 
 import me.leon.Digests
-import me.leon.RsaUtils
-import me.leon.RsaUtils.MAX_DECRYPT_BLOCK
 import me.leon.base.*
 import me.leon.ext.*
-import org.bouncycastle.util.io.pem.PemReader
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
 import java.security.KeyFactory
-import java.security.PublicKey
+import java.security.Security
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.*
@@ -100,7 +97,7 @@ class ToolController : Controller() {
             "decrypt error: ${e.message}"
         }
 
-    fun pubEncrypt(key: String, alg: String, data: String) =
+    fun pubEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
         try {
             println("encrypt $key  $alg $data")
             val keySpec = X509EncodedKeySpec(key.base64Decode())
@@ -108,7 +105,9 @@ class ToolController : Controller() {
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.ENCRYPT_MODE, publicKey)
-                data.toByteArray().toList().chunked(RsaUtils.MAX_ENCRYPT_BLOCK) {
+                data.toByteArray().toList().also {
+                    if (it.size > length / 8) println("长度建议大于 ${length / 8}")
+                }.chunked(length / 8 - reserved) {
                     println(it.size)
                     this.doFinal(it.toByteArray())
                 }.fold(ByteArrayOutputStream()) { acc, bytes ->
@@ -122,15 +121,15 @@ class ToolController : Controller() {
         }
 
 
-    fun priDecrypt(key: String, alg: String, data: String) =
+    fun priDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
         try {
-            println("decrypt$key  $alg $data")
+            println("decrypt $key  $alg $data")
             val keySpec = PKCS8EncodedKeySpec(key.base64Decode())
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
             val privateKey = KeyFactory.getInstance(keyFac).generatePrivate(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.DECRYPT_MODE, privateKey)
-                data.base64Decode().toList().chunked(MAX_DECRYPT_BLOCK) {
+                data.base64Decode().toList().chunked(length / 8) {
                     println(it.size)
                     this.doFinal(it.toByteArray())
                 }.fold(ByteArrayOutputStream()) { acc, bytes ->
@@ -143,4 +142,10 @@ class ToolController : Controller() {
             e.printStackTrace()
             "decrypt error: ${e.message}"
         }
+
+    companion object {
+        init {
+            Security.addProvider(BouncyCastleProvider())
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
@@ -23,10 +24,12 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
     private val keyText: String
         get() = key.text
-            .replace("-----END PUBLIC KEY-----|-----BEGIN PUBLIC KEY-----|\n|\r|\r\n".toRegex(), "")
+            .replace("-----END \\w+ KEY-----|-----BEGIN \\w+ KEY-----|\n|\r|\r\n".toRegex(), "")
 
     private var alg = "RSA"
     private var isEncrypt = true
+    private val bitsLists = mutableListOf("512", "1024", "2048", "3072", "4096")
+    val selectedBits = SimpleStringProperty("1024")
 
     private val eventHandler = EventHandler<DragEvent> {
         println("${it.dragboard.hasFiles()}______" + it.eventType)
@@ -61,6 +64,12 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         hbox {
             paddingAll = 8
             alignment = Pos.CENTER_LEFT
+            label("位数：")
+            combobox(selectedBits, bitsLists) {
+                cellFormat {
+                    text = it
+                }
+            }
             togglegroup {
                 spacing = 8.0
                 radiobutton("加密") {
@@ -112,8 +121,8 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             return
         }
         if (isEncrypt)
-            output.text = controller.pubEncrypt(keyText, alg, inputText)
+            output.text = controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
         else
-            output.text = controller.priDecrypt(keyText, alg, inputText)
+            output.text = controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
     }
 }
