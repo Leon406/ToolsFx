@@ -2,7 +2,7 @@ package me.leon.view
 
 import tornadofx.*
 
-class Home : View("开发工具集 by Leon406 https://github.com/Leon406/ToolsFx") {
+class Home : View("开发工具集 (ToolsFx) by Leon406 ") {
     override val root = tabpane {
         tab<EncodeView>()
         tab<DigestView>()

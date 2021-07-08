@@ -44,8 +44,8 @@ class DigestView : View("哈希(摘要)") {
         "SHA3" to listOf("224", "256", "384", "512"),
         "RIPEMD" to listOf("128", "160", "256", "320"),
     )
-    val selectedAlgItem = SimpleStringProperty(algs.keys.first())
-    val selectedBits = SimpleStringProperty(algs.values.first().first())
+    private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
+    private val selectedBits = SimpleStringProperty(algs.values.first().first())
 
     lateinit var cbBits: ComboBox<String>
     override val root = vbox {
