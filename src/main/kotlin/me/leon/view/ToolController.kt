@@ -98,7 +98,10 @@ class ToolController : Controller() {
                 }
             }
 
-            "加密文件路径(同选择文件目录): ${File("$path.enc").absolutePath} "
+            "加密文件路径(同选择文件目录): ${File("$path.enc").absolutePath} \n" +
+                    "alg: $alg\n" +
+                    "key(base64): ${key.base64()}\n" +
+                    "iv(base64): ${iv.base64()}\n"
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -128,7 +131,7 @@ class ToolController : Controller() {
                 }
             }
 
-            "解密文件路径(同选择文件目录): ${outFileName} "
+            "解密文件路径(同选择文件目录): $outFileName"
         } catch (e: Exception) {
             e.printStackTrace()
             "decrypt error: ${e.message}"
