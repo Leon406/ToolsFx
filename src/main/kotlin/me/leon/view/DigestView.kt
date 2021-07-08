@@ -89,7 +89,7 @@ class DigestView : View("哈希(摘要)") {
             }
         }
 
-        selectedBits.addListener { _, oldValue, newValue ->
+        selectedBits.addListener { _, _, newValue ->
             println("selectedBits __ $newValue")
             newValue?.run {
                 method = "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"

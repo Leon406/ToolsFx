@@ -28,7 +28,7 @@ class SymmetricCryptoView : View("对称加密") {
         get() = output.text
     var method = "MD5"
 
-    val keyByteArray
+    private val keyByteArray
         get() = when (keyEncode) {
             "raw" -> key.text.toByteArray()
             "hex" -> key.text.hex2ByteArray()
@@ -39,7 +39,7 @@ class SymmetricCryptoView : View("对称加密") {
     var keyEncode = "raw"
     var ivEncode = "raw"
 
-    val ivByteArray
+    private val ivByteArray
         get() = when (ivEncode) {
             "raw" -> iv.text.toByteArray()
             "hex" -> iv.text.hex2ByteArray()
@@ -56,7 +56,7 @@ class SymmetricCryptoView : View("对称加密") {
             }
         }
     }
-    val algs = mutableListOf(
+    private val algs = mutableListOf(
         "DES",
         "DESEDE",
         "AES",
@@ -65,18 +65,18 @@ class SymmetricCryptoView : View("对称加密") {
         "Twofish",
         "RC2"
     )
-    val paddingsAlg = mutableListOf(
+    private val paddingsAlg = mutableListOf(
         "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "ZeroBytePadding",
         "NoPadding", "TBCPadding",
         "X923Padding", "ISO7816d4Padding",
         "ISO10126d2Padding"
     )
-    val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM")
-    val selectedAlg = SimpleStringProperty(algs.first())
-    val selectedPadding = SimpleStringProperty(paddingsAlg.first())
-    val selectedMod = SimpleStringProperty(modes.first())
+    private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM")
+    private val selectedAlg = SimpleStringProperty(algs[2])
+    private val selectedPadding = SimpleStringProperty(paddingsAlg.first())
+    private val selectedMod = SimpleStringProperty(modes.first())
 
-    val cipher
+    private val cipher
         get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
 
     override val root = vbox {
@@ -209,7 +209,7 @@ class SymmetricCryptoView : View("对称加密") {
                 }
             }
             // TODO: 2021/7/6 0006 文件支持
-//            checkbox("文件", isFile)
+            checkbox("文件", isFile)
 
             isFile.addListener { _, _, newValue ->
                 println("fileHash__ $newValue")
@@ -247,7 +247,7 @@ class SymmetricCryptoView : View("对称加密") {
         if (isEncrypt) {
             runAsync {
                 if (isFile.get())
-                    controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
+                    controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
                 else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
             } ui {
                 output.text = it
@@ -255,7 +255,7 @@ class SymmetricCryptoView : View("对称加密") {
         } else {
             runAsync {
                 if (isFile.get())
-                    controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
+                    controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
                 else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
             } ui {
                 output.text = it
