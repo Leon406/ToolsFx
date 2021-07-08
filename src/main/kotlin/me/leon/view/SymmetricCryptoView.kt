@@ -203,13 +203,13 @@ class SymmetricCryptoView : View("对称加密") {
                     doCrypto()
                 }
             }
+
+            checkbox("文件", isFile)
             button("运行") {
                 action {
                     doCrypto()
                 }
             }
-            // TODO: 2021/7/6 0006 文件支持
-            checkbox("文件", isFile)
 
             isFile.addListener { _, _, newValue ->
                 println("fileHash__ $newValue")
