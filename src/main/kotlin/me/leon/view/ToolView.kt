@@ -7,6 +7,7 @@ class Home : View("开发工具集 (ToolsFx) by Leon406 ") {
         tab<EncodeView>()
         tab<DigestView>()
         tab<SymmetricCryptoView>()
+        tab<SymmetricCryptoStreamView>()
         tab<AsymmetricCryptoView>()
     }
 }

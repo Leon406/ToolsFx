@@ -22,8 +22,9 @@
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
+- [x] 其他 BouncyCastle支持的算法
 
-### 对称加密
+### 分组对称加密 (block cipher)
 
 - [x] DES/3DES
 - [x] AES
@@ -31,6 +32,20 @@
 - [x] Blowfish
 - [x] Twofish
 - [x] RC2
+- [x] 其他 BouncyCastle支持的算法
+
+
+### 流式对称加密 (stream cipher)
+- [x] RC4
+- [x] HC128/HC256
+- [x] ChaCha
+- [x] Salsa20
+- [x] XSalsa20
+- [x] VMPC
+- [x] Grainv1
+- [x] Grain128
+- [x] Zuc128
+- [x] Zuc128
 
 ### 非对称加密 RSA
 

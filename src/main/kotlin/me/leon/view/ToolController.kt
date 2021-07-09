@@ -81,7 +81,7 @@ class ToolController : Controller() {
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
 
-            if (alg.contains("ECB".toRegex()))
+            if (alg.contains("ECB|RC4".toRegex()))
                 cipher.init(Cipher.ENCRYPT_MODE, keySpec)
             else
                 cipher.init(Cipher.ENCRYPT_MODE, keySpec, IvParameterSpec(iv))
@@ -96,7 +96,7 @@ class ToolController : Controller() {
             println("encrypt  $alg")
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-            if (alg.contains("ECB".toRegex()))
+            if (alg.contains("ECB|RC4".toRegex()))
                 cipher.init(Cipher.ENCRYPT_MODE, keySpec)
             else
                 cipher.init(Cipher.ENCRYPT_MODE, keySpec, IvParameterSpec(iv))
@@ -126,7 +126,7 @@ class ToolController : Controller() {
             println("decrypt  $alg")
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-            if (alg.contains("ECB".toRegex()))
+            if (alg.contains("ECB|RC4".toRegex()))
                 cipher.init(Cipher.DECRYPT_MODE, keySpec)
             else
                 cipher.init(Cipher.DECRYPT_MODE, keySpec, IvParameterSpec(iv))
@@ -155,7 +155,7 @@ class ToolController : Controller() {
             println("decrypt  $alg")
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-            if (alg.contains("ECB".toRegex()))
+            if (alg.contains("ECB|RC4".toRegex()))
                 cipher.init(Cipher.DECRYPT_MODE, keySpec)
             else
                 cipher.init(Cipher.DECRYPT_MODE, keySpec, IvParameterSpec(iv))

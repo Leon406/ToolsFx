@@ -13,7 +13,7 @@ import me.leon.ext.copy
 import me.leon.ext.hex2ByteArray
 import tornadofx.*
 
-class SymmetricCryptoView : View("对称加密(block)") {
+class SymmetricCryptoStreamView : View("对称加密(stream)") {
     private val controller: ToolController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
@@ -57,43 +57,22 @@ class SymmetricCryptoView : View("对称加密(block)") {
         }
     }
     private val algs = mutableListOf(
-        "DES",
-        "DESEDE",
-        "AES",
-        "SM4",
-        "Blowfish",
-        "Twofish",
-        "Threefish-256",
-        "Threefish-512",
-        "Threefish-1024",
-        "RC2",
-        "RC5",
-        "RC6",
-        "Camellia",
-        "CAST5",
-        "CAST6",
-        "ARIA",
-        "Skipjack",
-        "Serpent",
-        "DSTU7624",
-        "IDEA",
-        "SEED",
-        "TEA",
-        "XTEA",
+        "RC4",
+        "ChaCha",
+        "VMPC",
+        "HC128",
+        "HC256",
+        "Grainv1",
+        "Grain128",
+        "Salsa20",
+        "XSalsa20",
+        "Zuc-128",
+        "Zuc-256",
     )
-    private val paddingsAlg = mutableListOf(
-        "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "ZeroBytePadding",
-        "NoPadding", "TBCPadding",
-        "X923Padding", "ISO7816d4Padding",
-        "ISO10126d2Padding"
-    )
-    private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
     private val selectedAlg = SimpleStringProperty(algs[2])
-    private val selectedPadding = SimpleStringProperty(paddingsAlg.first())
-    private val selectedMod = SimpleStringProperty(modes.first())
 
     private val cipher
-        get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
+        get() = "${selectedAlg.get()}"
 
     override val root = vbox {
         paddingAll = 8
@@ -115,24 +94,6 @@ class SymmetricCryptoView : View("对称加密(block)") {
                 paddingAll = 8
             }
             combobox(selectedAlg, algs) {
-                cellFormat {
-                    text = it
-                }
-            }
-
-            label("mode:") {
-                paddingAll = 8
-            }
-            combobox(selectedMod, modes) {
-                cellFormat {
-                    text = it
-                }
-            }
-
-            label("padding:") {
-                paddingAll = 8
-            }
-            combobox(selectedPadding, paddingsAlg) {
                 cellFormat {
                     text = it
                 }
@@ -189,18 +150,6 @@ class SymmetricCryptoView : View("对称加密(block)") {
         selectedAlg.addListener { _, _, newValue ->
             newValue?.run {
                 println("alg $newValue")
-            }
-        }
-
-        selectedMod.addListener { _, _, newValue ->
-            newValue?.run {
-                println("cipher $newValue")
-            }
-        }
-
-        selectedPadding.addListener { _, _, newValue ->
-            newValue?.run {
-                println("padding $newValue")
             }
         }
 
