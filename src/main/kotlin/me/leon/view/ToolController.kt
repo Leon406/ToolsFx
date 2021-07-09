@@ -59,8 +59,21 @@ class ToolController : Controller() {
             "解码错误: ${e.message}"
         }
 
-    fun digest(method: String, data: String) = if (data.isEmpty()) "" else Digests.hash(method, data)
-    fun digestFile(method: String, path: String) = if (path.isEmpty()) "" else Digests.hashByFile(method, path)
+    fun digest(method: String, data: String) =
+        try {
+            if (data.isEmpty()) "" else Digests.hash(method, data)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "digest error: ${e.message}"
+        }
+
+    fun digestFile(method: String, path: String) =
+        try {
+            if (path.isEmpty()) "" else Digests.hashByFile(method, path)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "digest file error: ${e.message}"
+        }
 
     fun encrypt(key: ByteArray, data: String, iv: ByteArray, alg: String) =
         try {

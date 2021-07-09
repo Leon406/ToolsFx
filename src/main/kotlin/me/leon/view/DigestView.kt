@@ -32,6 +32,7 @@ class DigestView : View("哈希(摘要)") {
             }
         }
     }
+    // https://www.bouncycastle.org/specifications.html
     val algs = linkedMapOf(
         "MD5" to listOf("128"),
         "MD4" to listOf("128"),
@@ -43,6 +44,18 @@ class DigestView : View("哈希(摘要)") {
         "SHA2" to listOf("224", "256", "384", "512", "512/224", "512/256"),
         "SHA3" to listOf("224", "256", "384", "512"),
         "RIPEMD" to listOf("128", "160", "256", "320"),
+        "Keccak" to listOf("224", "256", "288", "384", "512"),
+        "Blake2b" to listOf("160", "256", "384", "512"),
+        "Blake2s" to listOf("160", "224", "256"),
+        "DSTU7564" to listOf("256", "384", "512"),
+        "Skein" to listOf(
+            "256-160", "256-224", "256-256",
+            "512-128", "512-160", "512-224", "512-256", "512-384", "512-512",
+            "1024-384", "1024-512", "1024-1024"
+        ),
+        "GOST3411" to listOf("256"),
+        "GOST3411-2012" to listOf("256", "512"),
+        "Haraka" to listOf("256", "512"),
     )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
@@ -93,7 +106,7 @@ class DigestView : View("哈希(摘要)") {
             println("selectedBits __ $newValue")
             newValue?.run {
                 method = "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
-                    .replace("SHA2", "SHA-").replace("SHA3", "SHA3-")
+                    .replace("SHA2", "SHA-").replace("(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(), "$1-")
                 println("算法 $method")
                 if (inputText.isNotEmpty() && !fileHash.get()) {
                     runAsync {
