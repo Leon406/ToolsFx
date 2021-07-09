@@ -89,7 +89,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         }
         hbox {
             paddingAll = 8
-            alignment = Pos.BASELINE_CENTER
+            alignment = Pos.CENTER_LEFT
             label("算法:") {
                 paddingAll = 8
             }
