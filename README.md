@@ -66,4 +66,8 @@
 - [x] 对称key, iv 支持base64 ,hex
 - [x] 对称加密支持文件加密解密,输出文件 (测试m3u8 ts文件解密后正常播放)
 - [ ] 键盘事件, 快捷键
+- [ ] 不同算法提示及限制
 - [ ] UI美化
+
+
+bouncycastle文档 https://www.bouncycastle.org/specifications.html
