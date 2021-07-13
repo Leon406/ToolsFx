@@ -72,14 +72,11 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
     private val selectedAlg = SimpleStringProperty(algs[2])
 
     private val cipher
-        get() = "${selectedAlg.get()}"
+        get() = selectedAlg.get()
 
     override val root = vbox {
         paddingAll = 8
-        label("待处理:") {
-            paddingAll = 8
-        }
-
+        label("待处理:") { paddingAll = 8 }
         input = textarea {
             promptText = "请输入内容或者拖动文件到此区域"
             isWrapText = true
@@ -88,33 +85,23 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         hbox {
             paddingAll = 8
             alignment = Pos.CENTER_LEFT
-            label("算法:") {
-                paddingAll = 8
-            }
+            label("算法:") { paddingAll = 8 }
             combobox(selectedAlg, algs) {
                 cellFormat {
                     text = it
                 }
             }
         }
-
         hbox {
-
             alignment = Pos.CENTER_LEFT
             paddingAll = 8
-            label("key:") {
-                paddingAll = 8
-            }
-            key = textfield {
-                promptText = "请输入key"
-            }
+            label("key:") { paddingAll = 8 }
+            key = textfield { promptText = "请输入key" }
             vbox {
                 togglegroup {
                     spacing = 8.0
                     paddingAll = 8
-                    radiobutton("raw") {
-                        isSelected = true
-                    }
+                    radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
@@ -122,21 +109,13 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                     }
                 }
             }
-
-
-            label("iv:") {
-                paddingAll = 8
-            }
-            iv = textfield {
-                promptText = "请输入iv"
-            }
+            label("iv:") { paddingAll = 8 }
+            iv = textfield { promptText = "请输入iv" }
             vbox {
                 togglegroup {
                     spacing = 8.0
                     paddingAll = 8
-                    radiobutton("raw") {
-                        isSelected = true
-                    }
+                    radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
@@ -145,85 +124,49 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 }
             }
         }
-        selectedAlg.addListener { _, _, newValue ->
-            newValue?.run {
-                println("alg $newValue")
-            }
-        }
-
         hbox {
             alignment = Pos.CENTER_LEFT
-
             togglegroup {
                 spacing = 8.0
                 alignment = Pos.BASELINE_CENTER
-                radiobutton("加密") {
-                    isSelected = true
-                }
+                radiobutton("加密") { isSelected = true }
                 radiobutton("解密")
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = (new as RadioButton).text == "加密"
                     doCrypto()
                 }
             }
-
             checkbox("文件", isFile)
-            button("运行") {
-                action {
-                    doCrypto()
-                }
-            }
-
-            isFile.addListener { _, _, newValue ->
-                println("fileHash__ $newValue")
-                if (newValue) {
-                    println("____dddd")
-                    controller.digestFile(method, inputText)
-                } else {
-                    controller.digest(method, inputText)
-                }
-            }
-
+            button("运行") { action { doCrypto() } }
             button("上移") {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
             }
-
-            button("复制结果") {
-                action {
-                    outputText.copy()
-                }
-            }
+            button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:") {
-            paddingBottom = 8
-        }
+        label("输出内容:") { paddingBottom = 8 }
         output = textarea {
             promptText = "结果"
             isWrapText = true
         }
-
     }
 
     private fun doCrypto() {
-        if (isEncrypt) {
-            runAsync {
+        runAsync {
+            if (isEncrypt)
                 if (isFile.get())
                     controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
-            } ui {
-                output.text = it
-            }
-        } else {
-            runAsync {
+                else
+                    controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
+            else
                 if (isFile.get())
                     controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
-            } ui {
-                output.text = it
-            }
+                else
+                    controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
+        } ui {
+            output.text = it
         }
     }
 }

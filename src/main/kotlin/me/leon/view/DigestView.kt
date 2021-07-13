@@ -62,16 +62,12 @@ class DigestView : View("哈希(摘要)") {
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
     lateinit var cbBits: ComboBox<String>
-    val info
+    private val info
         get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${fileHash.get()}"
 
     override val root = vbox {
         paddingAll = 8
-
-        label("待处理:") {
-            paddingAll = 8
-        }
-
+        label("待处理:") { paddingAll = 8 }
         input = textarea {
             promptText = "请输入内容或者拖动文件到此区域"
             isWrapText = true
@@ -86,10 +82,7 @@ class DigestView : View("哈希(摘要)") {
                     text = it
                 }
             }
-
-            label("长度:  ") {
-                paddingAll = 8
-            }
+            label("长度:  ") { paddingAll = 8 }
             cbBits = combobox(selectedBits, algs.values.first()) {
                 cellFormat {
                     text = it
@@ -134,28 +127,15 @@ class DigestView : View("哈希(摘要)") {
                     }
                 }
             }
-
-            checkbox("文件", fileHash) {
-                paddingAll = 8
-            }
-
-            button("复制结果") {
-                action {
-                    outputText.copy()
-                }
-            }
+            checkbox("文件", fileHash) { paddingAll = 8 }
+            button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:") {
-            paddingBottom = 8
-        }
+        label("输出内容:") { paddingBottom = 8 }
         output = textarea {
             promptText = "结果"
             isWrapText = true
         }
-
-        infoLabel = label {
-            paddingTop = 8
-        }
+        infoLabel = label { paddingTop = 8 }
     }
 
     private fun doHash() =

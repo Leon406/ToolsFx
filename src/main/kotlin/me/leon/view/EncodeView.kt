@@ -39,11 +39,7 @@ class EncodeView : View("编解码") {
     }
     override val root = vbox {
         paddingAll = 8
-
-        label("待处理:") {
-            paddingAll = 8
-        }
-
+        label("待处理:") { paddingAll = 8 }
         input = textarea("https://github.com/Leon406/ToolsFx") {
             promptText = "请输入内容或者拖动文件到此区域"
             isWrapText = true
@@ -93,12 +89,8 @@ class EncodeView : View("编解码") {
                                 "以满足跨语言、跨平台进行文本转换、处理的要求。"
                     )
                 }
-                radiobutton("hex") {
-                    tooltip("16进制0123456789ABCDEF 表示")
-                }
-                radiobutton("binary") {
-                    tooltip("二进制 01表示")
-                }
+                radiobutton("hex") { tooltip("16进制0123456789ABCDEF 表示") }
+                radiobutton("binary") { tooltip("二进制 01表示") }
                 radiobutton("base64 safe") {
                     tooltip(
                         "base64传统编码中会出现+, /两个会被url直接转义的符号，因此如果希望通过url传输这些编码字符串，我们\n" +
@@ -118,45 +110,29 @@ class EncodeView : View("编解码") {
             togglegroup {
                 spacing = 8.0
                 alignment = Pos.BASELINE_CENTER
-                radiobutton("编码") {
-                    isSelected = true
-                }
+                radiobutton("编码") { isSelected = true }
                 radiobutton("解码")
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = (new as RadioButton).text == "编码"
                     run()
                 }
             }
-            button("运行") {
-                action {
-                    run()
-                }
-            }
-
+            button("运行") { action { run() } }
             button("上移") {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
             }
-
-            button("复制结果") {
-                action {
-                    outputText.copy()
-                }
-            }
+            button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:") {
-            paddingBottom = 8
-        }
+        label("输出内容:") { paddingBottom = 8 }
         output = textarea {
             promptText = "结果"
             isWrapText = true
         }
 
-        infoLabel = label {
-            paddingTop = 8
-        }
+        infoLabel = label { paddingTop = 8 }
     }
 
     private fun run() {
@@ -165,7 +141,6 @@ class EncodeView : View("编解码") {
         } else {
             output.text = controller.decode(inputText, encodeType)
         }
-
         infoLabel.text = info
     }
 }

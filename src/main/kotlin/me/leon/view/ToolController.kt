@@ -204,7 +204,6 @@ class ToolController : Controller() {
                     acc.also { acc.write(bytes) }
                 }.toByteArray().toString(Charsets.UTF_8)
             }
-
 //            RsaUtils.decryptDataStr(data.base64Decode(),RsaUtils.loadPrivateKey(key)!!)
         } catch (e: Exception) {
             e.printStackTrace()
