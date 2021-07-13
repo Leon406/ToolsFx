@@ -15,7 +15,7 @@ application {
 
 dependencies {
     implementation "no.tornado:tornadofx:$tornadofx_version"
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
 }
 

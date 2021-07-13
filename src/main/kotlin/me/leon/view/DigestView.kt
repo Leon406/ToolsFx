@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.ext.copy
@@ -15,13 +16,13 @@ class DigestView : View("哈希(摘要)") {
     override val closeable = SimpleBooleanProperty(false)
     private val fileHash = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
+    private lateinit var infoLabel: Label
     lateinit var output: TextArea
     private val inputText: String
         get() = input.text
     private val outputText: String
         get() = output.text
     var method = "MD5"
-
 
     private val eventHandler = EventHandler<DragEvent> {
         println("${it.dragboard.hasFiles()}______" + it.eventType)
@@ -32,6 +33,7 @@ class DigestView : View("哈希(摘要)") {
             }
         }
     }
+
     // https://www.bouncycastle.org/specifications.html
     val algs = linkedMapOf(
         "MD5" to listOf("128"),
@@ -59,8 +61,10 @@ class DigestView : View("哈希(摘要)") {
     )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
-
     lateinit var cbBits: ComboBox<String>
+    val info
+        get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${fileHash.get()}"
+
     override val root = vbox {
         paddingAll = 8
 
@@ -106,7 +110,8 @@ class DigestView : View("哈希(摘要)") {
             println("selectedBits __ $newValue")
             newValue?.run {
                 method = "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
-                    .replace("SHA2", "SHA-").replace("(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(), "$1-")
+                    .replace("SHA2", "SHA-")
+                    .replace("(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(), "$1-")
                 println("算法 $method")
                 if (inputText.isNotEmpty() && !fileHash.get()) {
                     runAsync {
@@ -122,27 +127,16 @@ class DigestView : View("哈希(摘要)") {
             button("运行") {
                 action {
                     runAsync {
-                        if (fileHash.get())
-                            controller.digestFile(method, inputText)
-                        else controller.digest(method, inputText)
+                        doHash()
                     } ui {
                         output.text = it
+                        infoLabel.text = info
                     }
                 }
             }
 
             checkbox("文件", fileHash) {
                 paddingAll = 8
-            }
-
-            fileHash.addListener { _, _, newValue ->
-                println("fileHash__ $newValue")
-                if (newValue) {
-                    println("____dddd")
-                    controller.digestFile(method, inputText)
-                } else {
-                    controller.digest(method, inputText)
-                }
             }
 
             button("复制结果") {
@@ -158,5 +152,14 @@ class DigestView : View("哈希(摘要)") {
             promptText = "结果"
             isWrapText = true
         }
+
+        infoLabel = label {
+            paddingTop = 8
+        }
     }
+
+    private fun doHash() =
+        if (fileHash.get())
+            controller.digestFile(method, inputText)
+        else controller.digest(method, inputText)
 }

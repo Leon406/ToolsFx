@@ -76,8 +76,6 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
 
     override val root = vbox {
         paddingAll = 8
-
-
         label("待处理:") {
             paddingAll = 8
         }
@@ -206,6 +204,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             promptText = "结果"
             isWrapText = true
         }
+
     }
 
     private fun doCrypto() {
