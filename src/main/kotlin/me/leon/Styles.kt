@@ -9,10 +9,17 @@ import tornadofx.px
 class Styles : Stylesheet() {
     companion object {
         val heading by cssclass()
+        val myButton by cssclass()
     }
 
     init {
         label and heading {
+            padding = box(10.px)
+            fontSize = 20.px
+            fontWeight = FontWeight.BOLD
+        }
+
+        myButton {
             padding = box(10.px)
             fontSize = 20.px
             fontWeight = FontWeight.BOLD

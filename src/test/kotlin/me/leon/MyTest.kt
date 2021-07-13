@@ -10,6 +10,5 @@ class MyTest {
         CRC32().apply {
             update("hello".toByteArray())
         }.value.also { println(it.toString(16)) }
-
     }
 }

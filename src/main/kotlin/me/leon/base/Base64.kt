@@ -1,7 +1,6 @@
 package me.leon.base
 
 import me.leon.ext.toBinaryString
-import java.util.*
 
 
 val map64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
