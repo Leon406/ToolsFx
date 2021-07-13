@@ -24,6 +24,18 @@
 - [x] Tiger
 - [x] 其他 BouncyCastle支持的算法
 
+### HMAC
+
+- [x] md系列
+- [x] sha1
+- [x] sha2系列
+- [x] sha3
+- [x] SM3
+- [x] RIPEMD
+- [x] whirpool
+- [x] Tiger
+- [x] 其他 BouncyCastle支持的算法
+
 ### 分组对称加密 (block cipher)
 
 - [x] DES/3DES
@@ -57,8 +69,6 @@
 ### 数字签名 (待定)
 
 ### 证书 (待定)
-
-### MAC (待定)
 
 ### 特性
 
