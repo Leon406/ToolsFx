@@ -120,7 +120,6 @@ class HmacView : View("HMAC") {
                 cbBits.isDisable = algs[newValue]!!.size == 1
             }
         }
-
         selectedBits.addListener { _, _, newValue ->
             println("selectedBits __ $newValue")
             newValue?.run {
@@ -138,6 +137,7 @@ class HmacView : View("HMAC") {
         }
         hbox {
             alignment = Pos.CENTER_LEFT
+            spacing = 8.0
             button("运行") { action { doMac() } }
             button("复制结果") { action { outputText.copy() } }
         }
