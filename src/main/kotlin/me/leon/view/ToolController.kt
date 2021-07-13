@@ -182,7 +182,6 @@ class ToolController : Controller() {
                     acc.also { acc.write(bytes) }
                 }.toByteArray().base64()
             }
-//            RsaUtils.encryptDataStr(data.toByteArray(),RsaUtils.loadPublicKey(key)!!)
         } catch (e: Exception) {
             e.printStackTrace()
             "encrypt error: ${e.message}"
@@ -204,7 +203,6 @@ class ToolController : Controller() {
                     acc.also { acc.write(bytes) }
                 }.toByteArray().toString(Charsets.UTF_8)
             }
-//            RsaUtils.decryptDataStr(data.base64Decode(),RsaUtils.loadPrivateKey(key)!!)
         } catch (e: Exception) {
             e.printStackTrace()
             "decrypt error: ${e.message}"

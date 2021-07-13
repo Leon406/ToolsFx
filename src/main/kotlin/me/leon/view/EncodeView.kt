@@ -40,7 +40,7 @@ class EncodeView : View("编解码") {
     override val root = vbox {
         paddingAll = 8
         label("待处理:") { paddingAll = 8 }
-        input = textarea("https://github.com/Leon406/ToolsFx") {
+        input = textarea{
             promptText = "请输入内容或者拖动文件到此区域"
             isWrapText = true
             onDragEntered = eventHandler
