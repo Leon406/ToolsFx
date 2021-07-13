@@ -26,8 +26,6 @@ class SymmetricCryptoView : View("对称加密(block)") {
         get() = input.text
     private val outputText: String
         get() = output.text
-    var method = "MD5"
-
     private val keyByteArray
         get() = when (keyEncode) {
             "raw" -> key.text.toByteArray()

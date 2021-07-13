@@ -26,8 +26,6 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         get() = input.text
     private val outputText: String
         get() = output.text
-    var method = "MD5"
-
     private val keyByteArray
         get() = when (keyEncode) {
             "raw" -> key.text.toByteArray()
@@ -69,7 +67,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         "Zuc-128",
         "Zuc-256",
     )
-    private val selectedAlg = SimpleStringProperty(algs[2])
+    private val selectedAlg = SimpleStringProperty(algs.first())
 
     private val cipher
         get() = selectedAlg.get()

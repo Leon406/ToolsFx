@@ -17,6 +17,7 @@ import java.security.spec.X509EncodedKeySpec
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.CipherOutputStream
+import javax.crypto.Mac
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -207,6 +208,28 @@ class ToolController : Controller() {
             e.printStackTrace()
             "decrypt error: ${e.message}"
         }
+
+    fun mac(msg: String, hkey: String, alg: String, outputEncode:String) =
+        try {
+            println("mac $msg  $alg $hkey")
+            Mac.getInstance(alg)
+                .apply {
+                    init(SecretKeySpec(hkey.toByteArray(), alg))
+                    update(msg.toByteArray())
+                }
+                .doFinal()
+                .run {
+                    if (outputEncode == "hex") {
+                        this.toHex()
+                    }else {
+                        this.base64()
+                    }
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "mac error: ${e.message}"
+        }
+
 
     companion object {
         init {
