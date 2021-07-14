@@ -9,7 +9,7 @@ import javafx.scene.input.DragEvent
 import me.leon.ext.copy
 import tornadofx.*
 
-class HmacView : View("HMAC") {
+class MacView : View("MAC") {
     private val controller: ToolController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
@@ -60,7 +60,14 @@ class HmacView : View("HMAC") {
         "HmacGOST3411" to listOf("256"),
         "HmacGOST3411-2012" to listOf("256", "512"),
 //        "POLY1305" to listOf("AES", "CAMELLIA", "CAST6", "NOEKEON", "SEED", "SERPENT", "Twofish"),
-//        "AESCMAC" to listOf("256"),
+        "AESCMAC" to listOf("256"),
+        "BLOWFISHCMAC" to listOf("256"),
+        "DESCMAC" to listOf("256"),
+        "DESEDECMAC" to listOf("256"),
+        "SEED-CMAC" to listOf("256"),
+        "Shacal-2CMAC" to listOf("256"),
+        "SM4-CMAC" to listOf("256"),
+        "Threefish" to listOf("256CMAC","512CMAC","1024CMAC"),
 //        "AESCCMMAC" to listOf("256"),
 //        "VMPCMAC" to listOf("256"),
     )
@@ -126,7 +133,7 @@ class HmacView : View("HMAC") {
                 method = "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
                     .replace("SHA2(?!=\\d{3})".toRegex(), "SHA")
                     .replace(
-                        "(GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein)".toRegex(),
+                        "(GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex(),
                         "$1-"
                     )
                 println("算法 $method")

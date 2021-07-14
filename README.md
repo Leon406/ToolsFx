@@ -24,7 +24,9 @@
 - [x] Tiger
 - [x] 其他 BouncyCastle支持的算法
 
-### HMAC
+### MAC
+
+#### HMAC
 
 - [x] md系列
 - [x] sha1
@@ -36,7 +38,34 @@
 - [x] Tiger
 - [x] 其他 BouncyCastle支持的算法
 
+#### CMAC
+
+- [x] AESCMAC
+- [x] BLOWFISHCMAC
+- [x] DESCMAC
+- [x] DESEDECMAC
+- [x] SEED-CMAC
+- [x] Shacal-2CMAC
+- [x] SM4-CMAC
+- [x] Threefish-256CMAC  / Threefish-512CMAC / Threefish-1024CMAC  
+
+#### POLY1305 
+
+- [x] POLY1305
+- [x] POLY1305-AES
+- [x] POLY1305-ARIA
+- [x] POLY1305-CAMELLIA
+- [x] POLY1305-CAST6
+- [x] POLY1305-NOEKEON
+- [x] POLY1305-RC6
+- [ ] POLY1305-SEED
+- [ ] POLY1305-SERPENT
+- [ ] POLY1305-SM4
+- [ ] POLY1305-Twofish
+
 ### 分组对称加密 (block cipher)
+
+#### 加密算法
 
 - [x] DES/3DES
 - [x] AES
@@ -45,6 +74,30 @@
 - [x] Twofish
 - [x] RC2
 - [x] 其他 BouncyCastle支持的算法
+
+#### 支持mode
+
+- ECB
+- CBC
+- OFB(n)
+- CFB(n)
+- SIC (also known as CTR)
+- CTS (equivalent to CBC/WithCTS)
+- CCM (AEAD)
+- EAX (AEAD)
+- GCM (AEAD)
+- OCB (AEAD)
+
+#### 支持padding scheme
+
+- No padding
+- PKCS5/7
+- ISO10126/ISO10126-2
+- ISO7816-4/ISO9797-1
+- X9.23/X923
+- TBC
+- ZeroByte
+- withCTS (if used with ECB mode)
 
 
 ### 流式对称加密 (stream cipher)

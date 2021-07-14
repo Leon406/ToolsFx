@@ -107,25 +107,14 @@ class DigestView : View("哈希(摘要)") {
                     .replace("(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(), "$1-")
                 println("算法 $method")
                 if (inputText.isNotEmpty() && !fileHash.get()) {
-                    runAsync {
-                        controller.digest(method, inputText)
-                    } ui {
-                        output.text = it
-                    }
+                    doHash()
                 }
             }
         }
         hbox {
             alignment = Pos.CENTER_LEFT
             button("运行") {
-                action {
-                    runAsync {
-                        doHash()
-                    } ui {
-                        output.text = it
-                        infoLabel.text = info
-                    }
-                }
+                action { doHash() }
             }
             checkbox("文件", fileHash) { paddingAll = 8 }
             button("复制结果") { action { outputText.copy() } }
@@ -139,7 +128,14 @@ class DigestView : View("哈希(摘要)") {
     }
 
     private fun doHash() =
-        if (fileHash.get())
-            controller.digestFile(method, inputText)
-        else controller.digest(method, inputText)
+        runAsync {
+            if (fileHash.get())
+                controller.digestFile(method, inputText)
+            else
+                controller.digest(method, inputText)
+        } ui {
+            output.text = it
+            infoLabel.text = info
+        }
+
 }
