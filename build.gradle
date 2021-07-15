@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.5.20"
     id 'application'
+    id "com.diffplug.spotless" version "5.14.1"
 }
 group = 'me.leon.toolfx'
 version = '1.1.0'
@@ -27,3 +28,18 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+spotless {
+    java {
+        target "src/**/*.java"
+        googleJavaFormat('1.8').aosp()
+    }
+    kotlin {
+        target "src/**/*.kt"
+        ktfmt('0.27').kotlinlangStyle()
+    }
+}
+//def hook = new File("$rootProject.projectDir/.git/hooks/pre-commit")
+//hook.text = """#!/bin/bash
+//echo "will run nova code format"
+//./gradlew spotlessJAp spotlessKAp
+//"""
