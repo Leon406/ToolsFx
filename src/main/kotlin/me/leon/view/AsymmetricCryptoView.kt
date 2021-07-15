@@ -23,47 +23,47 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         get() = output.text
 
     private val keyText: String
-        get() = key.text
-            .replace("-----(?:END|BEGIN) (?:RSA )?\\w+ KEY-----|\n|\r|\r\n".toRegex(), "")
+        get() =
+            key.text.replace("-----(?:END|BEGIN) (?:RSA )?\\w+ KEY-----|\n|\r|\r\n".toRegex(), "")
 
     private var alg = "RSA"
     private var isEncrypt = true
     private val bitsLists = mutableListOf("512", "1024", "2048", "3072", "4096")
     val selectedBits = SimpleStringProperty("1024")
 
-    private val eventHandler = EventHandler<DragEvent> {
-        println("${it.dragboard.hasFiles()}______" + it.eventType)
-        if (it.eventType.name == "DRAG_ENTERED") {
-            if (it.dragboard.hasFiles()) {
-                println(it.dragboard.files)
-                key.text = it.dragboard.files.first().readText()
+    private val eventHandler =
+        EventHandler<DragEvent> {
+            println("${it.dragboard.hasFiles()}______" + it.eventType)
+            if (it.eventType.name == "DRAG_ENTERED") {
+                if (it.dragboard.hasFiles()) {
+                    println(it.dragboard.files)
+                    key.text = it.dragboard.files.first().readText()
+                }
             }
         }
-    }
     override val root = vbox {
         paddingAll = 8
         label("密钥: ") { paddingAll = 8 }
         key =
-            textarea("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+PU2JPkx67nsH8PHPi3T9YJs+OKtf8mOq2ysg7kLgCE/CRKmvrLXaQmzK42nbrsb2gl2oZfZa3jRi5PbW4mXewAjFoi8PCDNMT+pbDpIB0Gix0Mv4x0DcA3k+f1X9+hMFW+6Z5kpsbQ0/KJnSVzb+2Nft60/2bZP4BGOSFIc0PQIDAQAB") {
+            textarea(
+                "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+PU2JPkx67nsH8PHPi3T9YJs+OKtf8mOq2ysg7kLgCE/CRKmvrLXaQmzK42nbrsb2gl2oZfZa3jRi5PbW4mXewAjFoi8PCDNMT+pbDpIB0Gix0Mv4x0DcA3k+f1X9+hMFW+6Z5kpsbQ0/KJnSVzb+2Nft60/2bZP4BGOSFIc0PQIDAQAB"
+            ) {
                 promptText = "请输入密钥"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         label("内容: ") { paddingAll = 8 }
-        input = textarea {
-            promptText = "请输入待加密内容或者拖动待加密的文件到此区域"
-            isWrapText = true
-        }
+        input =
+            textarea {
+                promptText = "请输入待加密内容或者拖动待加密的文件到此区域"
+                isWrapText = true
+            }
 
         hbox {
             paddingAll = 8
             alignment = Pos.CENTER_LEFT
             label("位数：")
-            combobox(selectedBits, bitsLists) {
-                cellFormat {
-                    text = it
-                }
-            }
+            combobox(selectedBits, bitsLists) { cellFormat { text = it } }
             togglegroup {
                 spacing = 8.0
                 radiobutton("加密") { isSelected = true }
@@ -84,10 +84,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             button("复制结果") { action { outputText.copy() } }
         }
         label("输出内容:") { paddingBottom = 8 }
-        output = textarea {
-            promptText = "结果"
-            isWrapText = true
-        }
+        output =
+            textarea {
+                promptText = "结果"
+                isWrapText = true
+            }
     }
 
     private fun doCrypto() {

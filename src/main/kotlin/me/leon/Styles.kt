@@ -13,11 +13,12 @@ class Styles : Stylesheet() {
     }
 
     init {
-        label and heading {
-            padding = box(10.px)
-            fontSize = 20.px
-            fontWeight = FontWeight.BOLD
-        }
+        label and
+            heading {
+                padding = box(10.px)
+                fontSize = 20.px
+                fontWeight = FontWeight.BOLD
+            }
 
         myButton {
             padding = box(10.px)

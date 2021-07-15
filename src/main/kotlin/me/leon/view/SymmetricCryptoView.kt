@@ -27,64 +27,74 @@ class SymmetricCryptoView : View("对称加密(block)") {
     private val outputText: String
         get() = output.text
     private val keyByteArray
-        get() = when (keyEncode) {
-            "raw" -> key.text.toByteArray()
-            "hex" -> key.text.hex2ByteArray()
-            "base64" -> key.text.base64Decode()
-            else -> byteArrayOf()
-        }
+        get() =
+            when (keyEncode) {
+                "raw" -> key.text.toByteArray()
+                "hex" -> key.text.hex2ByteArray()
+                "base64" -> key.text.base64Decode()
+                else -> byteArrayOf()
+            }
 
     var keyEncode = "raw"
     var ivEncode = "raw"
 
     private val ivByteArray
-        get() = when (ivEncode) {
-            "raw" -> iv.text.toByteArray()
-            "hex" -> iv.text.hex2ByteArray()
-            "base64" -> iv.text.base64Decode()
-            else -> byteArrayOf()
-        }
+        get() =
+            when (ivEncode) {
+                "raw" -> iv.text.toByteArray()
+                "hex" -> iv.text.hex2ByteArray()
+                "base64" -> iv.text.base64Decode()
+                else -> byteArrayOf()
+            }
 
-    private val eventHandler = EventHandler<DragEvent> {
-        println("${it.dragboard.hasFiles()}______" + it.eventType)
-        if (it.eventType.name == "DRAG_ENTERED") {
-            if (it.dragboard.hasFiles()) {
-                println(it.dragboard.files)
-                input.text = it.dragboard.files.first().absolutePath
+    private val eventHandler =
+        EventHandler<DragEvent> {
+            println("${it.dragboard.hasFiles()}______" + it.eventType)
+            if (it.eventType.name == "DRAG_ENTERED") {
+                if (it.dragboard.hasFiles()) {
+                    println(it.dragboard.files)
+                    input.text = it.dragboard.files.first().absolutePath
+                }
             }
         }
-    }
-    private val algs = mutableListOf(
-        "DES",
-        "DESEDE",
-        "AES",
-        "SM4",
-        "Blowfish",
-        "Twofish",
-        "Threefish-256",
-        "Threefish-512",
-        "Threefish-1024",
-        "RC2",
-        "RC5",
-        "RC6",
-        "Camellia",
-        "CAST5",
-        "CAST6",
-        "ARIA",
-        "Skipjack",
-        "Serpent",
-        "DSTU7624",
-        "IDEA",
-        "SEED",
-        "TEA",
-        "XTEA",
-    )
-    private val paddingsAlg = mutableListOf(
-        "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "ZeroBytePadding",
-        "NoPadding", "TBCPadding",
-        "X923Padding", "ISO7816d4Padding",
-        "ISO10126d2Padding"
-    )
+    private val algs =
+        mutableListOf(
+            "DES",
+            "DESEDE",
+            "AES",
+            "SM4",
+            "Blowfish",
+            "Twofish",
+            "Threefish-256",
+            "Threefish-512",
+            "Threefish-1024",
+            "RC2",
+            "RC5",
+            "RC6",
+            "Camellia",
+            "CAST5",
+            "CAST6",
+            "ARIA",
+            "Skipjack",
+            "Serpent",
+            "DSTU7624",
+            "IDEA",
+            "SEED",
+            "TEA",
+            "XTEA",
+        )
+    private val paddingsAlg =
+        mutableListOf(
+            "PKCS5Padding",
+            "PKCS7Padding",
+            "ISO10126Padding",
+            "ZeroBytePadding",
+            "NoPadding",
+            "TBCPadding",
+            "X923Padding",
+            "ISO7816d4Padding",
+            "ISO10126d2Padding"
+        )
     private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
     private val selectedAlg = SimpleStringProperty(algs[2])
     private val selectedPadding = SimpleStringProperty(paddingsAlg.first())
@@ -96,33 +106,22 @@ class SymmetricCryptoView : View("对称加密(block)") {
     override val root = vbox {
         paddingAll = 8
         label("待处理:") { paddingAll = 8 }
-        input = textarea {
-            promptText = "请输入内容或者拖动文件到此区域"
-            isWrapText = true
-            onDragEntered = eventHandler
-        }
+        input =
+            textarea {
+                promptText = "请输入内容或者拖动文件到此区域"
+                isWrapText = true
+                onDragEntered = eventHandler
+            }
         hbox {
             paddingAll = 8
             alignment = Pos.BASELINE_CENTER
             label("算法:") { paddingAll = 8 }
-            combobox(selectedAlg, algs) {
-                cellFormat {
-                    text = it
-                }
-            }
+            combobox(selectedAlg, algs) { cellFormat { text = it } }
             label("mode:") { paddingAll = 8 }
-            combobox(selectedMod, modes) {
-                cellFormat {
-                    text = it
-                }
-            }
+            combobox(selectedMod, modes) { cellFormat { text = it } }
 
             label("padding:") { paddingAll = 8 }
-            combobox(selectedPadding, paddingsAlg) {
-                cellFormat {
-                    text = it
-                }
-            }
+            combobox(selectedPadding, paddingsAlg) { cellFormat { text = it } }
         }
 
         hbox {
@@ -157,20 +156,14 @@ class SymmetricCryptoView : View("对称加密(block)") {
                 }
             }
         }
-        selectedAlg.addListener { _, _, newValue ->
-            newValue?.run {
-                println("alg $newValue")
-            }
-        }
+        selectedAlg.addListener { _, _, newValue -> newValue?.run { println("alg $newValue") } }
 
         hbox {
             alignment = Pos.CENTER_LEFT
             togglegroup {
                 spacing = 8.0
                 alignment = Pos.BASELINE_CENTER
-                radiobutton("加密") {
-                    isSelected = true
-                }
+                radiobutton("加密") { isSelected = true }
                 radiobutton("解密")
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = (new as RadioButton).text == "加密"
@@ -188,10 +181,11 @@ class SymmetricCryptoView : View("对称加密(block)") {
             button("复制结果") { action { outputText.copy() } }
         }
         label("输出内容:") { paddingBottom = 8 }
-        output = textarea {
-            promptText = "结果"
-            isWrapText = true
-        }
+        output =
+            textarea {
+                promptText = "结果"
+                isWrapText = true
+            }
     }
 
     private fun doCrypto() {
@@ -199,15 +193,10 @@ class SymmetricCryptoView : View("对称加密(block)") {
             if (isEncrypt)
                 if (isFile.get())
                     controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else
-                    controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
-            else
-                if (isFile.get())
-                    controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else
-                    controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
-        } ui {
-            output.text = it
-        }
+                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
+            else if (isFile.get())
+                controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
+            else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
+        } ui { output.text = it }
     }
 }

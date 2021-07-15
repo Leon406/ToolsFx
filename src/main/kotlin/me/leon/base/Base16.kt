@@ -2,13 +2,12 @@ package me.leon.base
 
 import me.leon.ext.toBinaryString
 
-
 val map16 = "0123456789ABCDEF"
-fun String.base16() =
-    toByteArray().toBinaryString()
-        .chunked(4)
-        .joinToString("") { map16[it.padding("0", 4).toInt(2)].toString() }
 
+fun String.base16() =
+    toByteArray().toBinaryString().chunked(4).joinToString("") {
+        map16[it.padding("0", 4).toInt(2)].toString()
+    }
 
 fun String.base16Decode() =
     String(
@@ -19,6 +18,3 @@ fun String.base16Decode() =
             .filter { it.toInt() != 0 }
             .toByteArray()
     )
-
-
-

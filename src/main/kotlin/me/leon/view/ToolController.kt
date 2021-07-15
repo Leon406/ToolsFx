@@ -1,10 +1,5 @@
 package me.leon.view
 
-import me.leon.Digests
-import me.leon.base.*
-import me.leon.ext.*
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import tornadofx.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.URLDecoder
@@ -21,22 +16,29 @@ import javax.crypto.Mac
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import me.leon.Digests
+import me.leon.base.*
+import me.leon.ext.*
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import tornadofx.*
 
 class ToolController : Controller() {
 
     fun encode(raw: String, type: EncodeType = EncodeType.Base64): String =
         try {
             if (raw.isEmpty()) ""
-            else when (type) {
-                EncodeType.Base64 -> Base64.getEncoder().encodeToString(raw.toByteArray())
-                EncodeType.Base64Safe -> Base64.getUrlEncoder().encodeToString(raw.toByteArray())
-                EncodeType.Hex -> raw.toByteArray(Charsets.UTF_8).toHex()
-                EncodeType.UrlEncode -> URLEncoder.encode(raw).replace("+", "%20")
-                EncodeType.Base32 -> raw.base32()
-                EncodeType.Base16 -> raw.base16()
-                EncodeType.Unicode -> raw.toUnicodeString()
-                EncodeType.Binary -> raw.toBinaryString()
-            }
+            else
+                when (type) {
+                    EncodeType.Base64 -> Base64.getEncoder().encodeToString(raw.toByteArray())
+                    EncodeType.Base64Safe ->
+                        Base64.getUrlEncoder().encodeToString(raw.toByteArray())
+                    EncodeType.Hex -> raw.toByteArray(Charsets.UTF_8).toHex()
+                    EncodeType.UrlEncode -> URLEncoder.encode(raw).replace("+", "%20")
+                    EncodeType.Base32 -> raw.base32()
+                    EncodeType.Base16 -> raw.base16()
+                    EncodeType.Unicode -> raw.toUnicodeString()
+                    EncodeType.Binary -> raw.toBinaryString()
+                }
         } catch (e: Exception) {
             e.printStackTrace()
             "编码错误: ${e.message}"
@@ -45,16 +47,19 @@ class ToolController : Controller() {
     fun decode(encoded: String, type: EncodeType = EncodeType.Base64): String =
         try {
             if (encoded.isEmpty()) ""
-            else when (type) {
-                EncodeType.Base64 -> Base64.getDecoder().decode(encoded).toString(Charset.defaultCharset())
-                EncodeType.Base64Safe -> Base64.getUrlDecoder().decode(encoded).toString(Charset.defaultCharset())
-                EncodeType.Hex -> encoded.hex2Ascii()
-                EncodeType.UrlEncode -> URLDecoder.decode(encoded)
-                EncodeType.Base32 -> encoded.base32Decode()
-                EncodeType.Base16 -> encoded.base16Decode()
-                EncodeType.Unicode -> encoded.unicode2String()
-                EncodeType.Binary -> encoded.binary2Ascii()
-            }
+            else
+                when (type) {
+                    EncodeType.Base64 ->
+                        Base64.getDecoder().decode(encoded).toString(Charset.defaultCharset())
+                    EncodeType.Base64Safe ->
+                        Base64.getUrlDecoder().decode(encoded).toString(Charset.defaultCharset())
+                    EncodeType.Hex -> encoded.hex2Ascii()
+                    EncodeType.UrlEncode -> URLDecoder.decode(encoded)
+                    EncodeType.Base32 -> encoded.base32Decode()
+                    EncodeType.Base16 -> encoded.base16Decode()
+                    EncodeType.Unicode -> encoded.unicode2String()
+                    EncodeType.Binary -> encoded.binary2Ascii()
+                }
         } catch (e: Exception) {
             e.printStackTrace()
             "解码错误: ${e.message}"
@@ -82,10 +87,8 @@ class ToolController : Controller() {
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
 
-            if (alg.contains("ECB|RC4".toRegex()))
-                cipher.init(Cipher.ENCRYPT_MODE, keySpec)
-            else
-                cipher.init(Cipher.ENCRYPT_MODE, keySpec, IvParameterSpec(iv))
+            if (alg.contains("ECB|RC4".toRegex())) cipher.init(Cipher.ENCRYPT_MODE, keySpec)
+            else cipher.init(Cipher.ENCRYPT_MODE, keySpec, IvParameterSpec(iv))
             Base64.getEncoder().encodeToString(cipher.doFinal(data.toByteArray()))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -97,10 +100,8 @@ class ToolController : Controller() {
             println("encrypt  $alg")
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-            if (alg.contains("ECB|RC4".toRegex()))
-                cipher.init(Cipher.ENCRYPT_MODE, keySpec)
-            else
-                cipher.init(Cipher.ENCRYPT_MODE, keySpec, IvParameterSpec(iv))
+            if (alg.contains("ECB|RC4".toRegex())) cipher.init(Cipher.ENCRYPT_MODE, keySpec)
+            else cipher.init(Cipher.ENCRYPT_MODE, keySpec, IvParameterSpec(iv))
 
             CipherOutputStream(File("$path.enc").outputStream(), cipher).use { cipherStream ->
                 File(path).inputStream().buffered().use {
@@ -113,10 +114,9 @@ class ToolController : Controller() {
             }
 
             "加密文件路径(同选择文件目录): ${File("$path.enc").absolutePath} \n" +
-                    "alg: $alg\n" +
-                    "key(base64): ${key.base64()}\n" +
-                    "iv(base64): ${iv.base64()}\n"
-
+                "alg: $alg\n" +
+                "key(base64): ${key.base64()}\n" +
+                "iv(base64): ${iv.base64()}\n"
         } catch (e: Exception) {
             e.printStackTrace()
             "encrypt error: ${e.message}"
@@ -127,14 +127,10 @@ class ToolController : Controller() {
             println("decrypt  $alg")
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-            if (alg.contains("ECB|RC4".toRegex()))
-                cipher.init(Cipher.DECRYPT_MODE, keySpec)
-            else
-                cipher.init(Cipher.DECRYPT_MODE, keySpec, IvParameterSpec(iv))
+            if (alg.contains("ECB|RC4".toRegex())) cipher.init(Cipher.DECRYPT_MODE, keySpec)
+            else cipher.init(Cipher.DECRYPT_MODE, keySpec, IvParameterSpec(iv))
 
-            val outFileName =
-                if (path.endsWith(".enc")) path.replace(".enc", "")
-                else "$path.dec"
+            val outFileName = if (path.endsWith(".enc")) path.replace(".enc", "") else "$path.dec"
             CipherOutputStream(File(outFileName).outputStream(), cipher).use { cipherStream ->
                 File(path).inputStream().buffered().use {
                     var buf = ByteArray(DEFAULT_BUFFER_SIZE)
@@ -156,10 +152,8 @@ class ToolController : Controller() {
             println("decrypt  $alg")
             val cipher = Cipher.getInstance(alg)
             val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-            if (alg.contains("ECB|RC4".toRegex()))
-                cipher.init(Cipher.DECRYPT_MODE, keySpec)
-            else
-                cipher.init(Cipher.DECRYPT_MODE, keySpec, IvParameterSpec(iv))
+            if (alg.contains("ECB|RC4".toRegex())) cipher.init(Cipher.DECRYPT_MODE, keySpec)
+            else cipher.init(Cipher.DECRYPT_MODE, keySpec, IvParameterSpec(iv))
             String(cipher.doFinal(Base64.getDecoder().decode(data)))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -174,20 +168,21 @@ class ToolController : Controller() {
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.ENCRYPT_MODE, publicKey)
-                data.toByteArray().toList().also {
-                    if (it.size > length / 8) println("长度建议大于 ${length / 8}")
-                }.chunked(length / 8 - reserved) {
-                    println(it.size)
-                    this.doFinal(it.toByteArray())
-                }.fold(ByteArrayOutputStream()) { acc, bytes ->
-                    acc.also { acc.write(bytes) }
-                }.toByteArray().base64()
+                data.toByteArray()
+                    .toList()
+                    .also { if (it.size > length / 8) println("长度建议大于 ${length / 8}") }
+                    .chunked(length / 8 - reserved) {
+                        println(it.size)
+                        this.doFinal(it.toByteArray())
+                    }
+                    .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
+                    .toByteArray()
+                    .base64()
             }
         } catch (e: Exception) {
             e.printStackTrace()
             "encrypt error: ${e.message}"
         }
-
 
     fun priDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
         try {
@@ -197,19 +192,22 @@ class ToolController : Controller() {
             val privateKey = KeyFactory.getInstance(keyFac).generatePrivate(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.DECRYPT_MODE, privateKey)
-                data.base64Decode().toList().chunked(length / 8) {
-                    println(it.size)
-                    this.doFinal(it.toByteArray())
-                }.fold(ByteArrayOutputStream()) { acc, bytes ->
-                    acc.also { acc.write(bytes) }
-                }.toByteArray().toString(Charsets.UTF_8)
+                data.base64Decode()
+                    .toList()
+                    .chunked(length / 8) {
+                        println(it.size)
+                        this.doFinal(it.toByteArray())
+                    }
+                    .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
+                    .toByteArray()
+                    .toString(Charsets.UTF_8)
             }
         } catch (e: Exception) {
             e.printStackTrace()
             "decrypt error: ${e.message}"
         }
 
-    fun mac(msg: String, hkey: String, alg: String, outputEncode:String) =
+    fun mac(msg: String, hkey: String, alg: String, outputEncode: String) =
         try {
             println("mac $msg  $alg $hkey")
             Mac.getInstance(alg)
@@ -221,7 +219,7 @@ class ToolController : Controller() {
                 .run {
                     if (outputEncode == "hex") {
                         this.toHex()
-                    }else {
+                    } else {
                         this.base64()
                     }
                 }
@@ -229,7 +227,6 @@ class ToolController : Controller() {
             e.printStackTrace()
             "mac error: ${e.message}"
         }
-
 
     companion object {
         init {
