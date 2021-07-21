@@ -42,8 +42,8 @@ spotless {
         ktfmt('0.27').kotlinlangStyle()
     }
 }
-//def hook = new File("$rootProject.projectDir/.git/hooks/pre-commit")
-//hook.text = """#!/bin/bash
-//echo "will run nova code format"
-//./gradlew spotlessJAp spotlessKAp
-//"""
+def hook = new File("$rootProject.projectDir/.git/hooks/pre-commit")
+hook.text = """#!/bin/bash
+echo "will run nova code format"
+./gradlew spotlessJAp spotlessKAp
+"""
