@@ -10,6 +10,8 @@
 - [x] hex
 - [x] binary
 
+![encode](./art/encode.gif)
+
 ### 数据摘要(哈希)
 
 支持文件, 支持超大文件,8G文件测试ok
@@ -23,6 +25,8 @@
 - [x] whirpool
 - [x] Tiger
 - [x] 其他 BouncyCastle支持的算法
+
+![hash](./art/hash.gif)
 
 ### MAC
 
@@ -53,17 +57,17 @@
 
 #### POLY1305 
 
-- [ ] POLY1305
-- [ ] POLY1305-AES
-- [ ] POLY1305-ARIA
-- [ ] POLY1305-CAMELLIA
-- [ ] POLY1305-CAST6
-- [ ] POLY1305-NOEKEON
-- [ ] POLY1305-RC6
-- [ ] POLY1305-SEED
-- [ ] POLY1305-SERPENT
-- [ ] POLY1305-SM4
-- [ ] POLY1305-Twofish
+- [x] POLY1305
+- [x] POLY1305-AES
+- [x] POLY1305-ARIA
+- [x] POLY1305-CAMELLIA
+- [x] POLY1305-CAST6
+- [x] POLY1305-NOEKEON
+- [x] POLY1305-RC6
+- [x] POLY1305-SEED
+- [x] POLY1305-SERPENT
+- [x] POLY1305-SM4
+- [x] POLY1305-Twofish
 
 ### 分组对称加密 (block cipher)
 
@@ -101,6 +105,7 @@
 - ZeroByte
 - withCTS (if used with ECB mode)
 
+![sym](./art/sym.gif)
 
 ### 流式对称加密 (stream cipher)
 - [x] RC4
@@ -121,9 +126,7 @@
 - [x]  支持长度大于RSA位数的字符解码,但实际不建议这样操作
 - [x]  支持openssl pkcs1/pkcs8 私钥格式
 
-### 数字签名 (待定)
-
-### 证书 (待定)
+![sym](./art/asy.gif)
 
 ### 特性
 
