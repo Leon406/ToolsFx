@@ -14,12 +14,15 @@ class MacView : View("MAC") {
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
     private lateinit var key: TextField
+    private lateinit var iv: TextField
     private lateinit var infoLabel: Label
     lateinit var output: TextArea
     private val inputText: String
         get() = input.text
     private val keyText: String
         get() = key.text
+    private val ivText: String
+        get() = iv.text
     private val outputText: String
         get() = output.text
     var method = "HmacMD5"
@@ -71,8 +74,32 @@ class MacView : View("MAC") {
                 ),
             "HmacGOST3411" to listOf("256"),
             "HmacGOST3411-2012" to listOf("256", "512"),
-            //        "POLY1305" to listOf("AES", "CAMELLIA", "CAST6", "NOEKEON", "SEED", "SERPENT",
-            // "Twofish"),
+            "POLY1305" to
+                listOf(
+                    "AES",
+                    "ARIA",
+                    "CAMELLIA",
+                    "CAST6",
+                    "NOEKEON",
+                    "RC6",
+                    "SEED",
+                    "SERPENT",
+                    "SM4",
+                    "Twofish"
+                ),
+            "GMAC" to
+                listOf(
+                    "AES",
+                    "ARIA",
+                    "CAMELLIA",
+                    "CAST6",
+                    "NOEKEON",
+                    "RC6",
+                    "SEED",
+                    "SERPENT",
+                    "SM4",
+                    "Twofish"
+                ),
             "AESCMAC" to listOf("256"),
             "BLOWFISHCMAC" to listOf("256"),
             "DESCMAC" to listOf("256"),
@@ -127,23 +154,36 @@ class MacView : View("MAC") {
                 }
             }
         }
+        hbox {
+            paddingAll = 8
+            alignment = Pos.CENTER_LEFT
+            label("iv: ") { paddingAll = 8 }
+            iv =
+                textfield() {
+                    promptText = "请输入iv"
+                    isDisable = true
+                }
+        }
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
                 cbBits.items = algs[newValue]!!.asObservable()
                 selectedBits.set(algs[newValue]!!.first())
                 cbBits.isDisable = algs[newValue]!!.size == 1
+                iv.isDisable = !newValue.contains("POLY1305|-GMAC".toRegex())
             }
         }
         selectedBits.addListener { _, _, newValue ->
             println("selectedBits __ $newValue")
             newValue?.run {
                 method =
-                    "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
-                        .replace("SHA2(?!=\\d{3})".toRegex(), "SHA")
-                        .replace(
-                            "(GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex(),
-                            "$1-"
-                        )
+                    if (selectedAlgItem.get() == "GMAC") "${newValue}-GMAC"
+                    else
+                        "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
+                            .replace("SHA2(?!=\\d{3})".toRegex(), "SHA")
+                            .replace(
+                                "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex(),
+                                "$1-"
+                            )
                 println("算法 $method")
                 if (inputText.isNotEmpty()) {
                     doMac()
@@ -166,7 +206,11 @@ class MacView : View("MAC") {
     }
 
     private fun doMac() =
-        runAsync { controller.mac(inputText, keyText, method, outputEncode) } ui
+        runAsync {
+            if (method.contains("POLY1305|-GMAC".toRegex()))
+                controller.macWithIv(inputText, keyText, ivText, method, outputEncode)
+            else controller.mac(inputText, keyText, method, outputEncode)
+        } ui
             {
                 output.text = it
                 infoLabel.text = info
