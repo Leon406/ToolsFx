@@ -45,9 +45,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         paddingAll = 8
         label("密钥: ") { paddingAll = 8 }
         key =
-            textarea(
-                "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+PU2JPkx67nsH8PHPi3T9YJs+OKtf8mOq2ysg7kLgCE/CRKmvrLXaQmzK42nbrsb2gl2oZfZa3jRi5PbW4mXewAjFoi8PCDNMT+pbDpIB0Gix0Mv4x0DcA3k+f1X9+hMFW+6Z5kpsbQ0/KJnSVzb+2Nft60/2bZP4BGOSFIc0PQIDAQAB"
-            ) {
+            textarea{
                 promptText = "请输入密钥"
                 isWrapText = true
                 onDragEntered = eventHandler

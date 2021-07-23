@@ -19,6 +19,7 @@ import javax.crypto.spec.SecretKeySpec
 import me.leon.Digests
 import me.leon.base.*
 import me.leon.ext.*
+import org.bouncycastle.crypto.macs.KGMac
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 
@@ -114,9 +115,9 @@ class ToolController : Controller() {
             }
 
             "加密文件路径(同选择文件目录): ${File("$path.enc").absolutePath} \n" +
-                "alg: $alg\n" +
-                "key(base64): ${key.base64()}\n" +
-                "iv(base64): ${iv.base64()}\n"
+                    "alg: $alg\n" +
+                    "key(base64): ${key.base64()}\n" +
+                    "iv(base64): ${iv.base64()}\n"
         } catch (e: Exception) {
             e.printStackTrace()
             "encrypt error: ${e.message}"
@@ -223,6 +224,57 @@ class ToolController : Controller() {
                         this.base64()
                     }
                 }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "mac error: ${e.message}"
+        }
+
+    fun macWithIv(msg: String, key: String, iv: String, alg: String, outputEncode: String) =
+        try {
+            println("mac $msg  $alg $key")
+            val data = msg.toByteArray()
+            val keyByteArray = key.toByteArray()
+            val ivByteArray = iv.toByteArray()
+            if (alg.contains("POLY1305")) {
+                Poly1305Serial.getInstance(alg).run {
+                    init(keyByteArray, ivByteArray)
+                    update(data, 0, data.size)
+                    val sig = ByteArray(macSize)
+                    doFinal(sig, 0)
+                    if (outputEncode == "hex")
+                        sig.toHex()
+                    else
+                        sig.base64()
+
+                }
+            } else if (alg.contains("GMAC")) {
+                GMac.getInstance(alg).run {
+                    if (this is org.bouncycastle.crypto.macs.GMac) {
+                        init(keyByteArray, ivByteArray)
+                        update(data, 0, data.size)
+                        val sig = ByteArray(macSize)
+                        doFinal(sig, 0)
+                        if (outputEncode == "hex") sig.toHex()
+                        else  sig.base64()
+                    } else if (this is KGMac) {
+                        init(keyByteArray, ivByteArray)
+                        update(data, 0, data.size)
+                        val sig = ByteArray(macSize)
+                        doFinal(sig, 0)
+                        if (outputEncode == "hex")
+                            sig.toHex()
+                        else
+                            sig.base64()
+
+                    } else {
+                        ""
+                    }
+                }
+            } else {
+                ""
+            }
+
+
         } catch (e: Exception) {
             e.printStackTrace()
             "mac error: ${e.message}"
