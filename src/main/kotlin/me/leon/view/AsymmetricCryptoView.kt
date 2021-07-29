@@ -39,7 +39,25 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             if (it.eventType.name == "DRAG_ENTERED") {
                 if (it.dragboard.hasFiles()) {
                     println(it.dragboard.files)
-                    key.text = it.dragboard.files.first().readText()
+                    key.text =
+                        it.dragboard.files.first().readText().also {
+                            val probablyKeySize =
+                                if (privateKeyEncrypt.get() && isEncrypt ||
+                                        !privateKeyEncrypt.get() && !isEncrypt
+                                )
+                                    it.length * 1.25f
+                                else it.length * 5
+                            println("__ $probablyKeySize")
+                            val keySize =
+                                when (probablyKeySize.toInt()) {
+                                    in 3300..4500 -> 4096
+                                    in 2600..3300 -> 3072
+                                    in 1600..2200 -> 2048
+                                    in 800..1200 -> 1024
+                                    else -> 512
+                                }
+                            selectedBits.set(keySize.toString())
+                        }
                 }
             }
         }
