@@ -16,9 +16,9 @@ import tornadofx.*
 class EncodeView : View("编解码") {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
-    lateinit var input: TextArea
-    lateinit var output: TextArea
-    lateinit var infoLabel: Label
+    private lateinit var input: TextArea
+    private lateinit var output: TextArea
+    private lateinit var infoLabel: Label
     private val info: String
         get() =
             "${if (isEncode) "编码" else "解码"}: $encodeType  输入长度: ${inputText.length}  输出长度: ${outputText.length}"

@@ -21,8 +21,8 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
     private lateinit var input: TextArea
     private lateinit var key: TextField
     private lateinit var iv: TextField
-    var isEncrypt = true
-    lateinit var output: TextArea
+    private var isEncrypt = true
+    private lateinit var output: TextArea
     private val inputText: String
         get() = input.text
     private val outputText: String
@@ -36,8 +36,8 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 else -> byteArrayOf()
             }
 
-    var keyEncode = "raw"
-    var ivEncode = "raw"
+    private var keyEncode = "raw"
+    private var ivEncode = "raw"
 
     private val ivByteArray
         get() =

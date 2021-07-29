@@ -17,7 +17,7 @@ class MacView : View("MAC") {
     private lateinit var key: TextField
     private lateinit var iv: TextField
     private lateinit var infoLabel: Label
-    lateinit var output: TextArea
+    private lateinit var output: TextArea
     private val inputText: String
         get() = input.text
     private val keyText: String
@@ -26,8 +26,8 @@ class MacView : View("MAC") {
         get() = iv.text
     private val outputText: String
         get() = output.text
-    var method = "HmacMD5"
-    var outputEncode = "hex"
+    private var method = "HmacMD5"
+    private var outputEncode = "hex"
 
     private val eventHandler =
         EventHandler<DragEvent> {
@@ -114,7 +114,7 @@ class MacView : View("MAC") {
             )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
-    lateinit var cbBits: ComboBox<String>
+    private lateinit var cbBits: ComboBox<String>
     private val info
         get() = "MAC: $method"
 
