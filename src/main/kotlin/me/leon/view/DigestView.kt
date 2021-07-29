@@ -8,11 +8,12 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
+import me.leon.controller.DigestController
 import me.leon.ext.copy
 import tornadofx.*
 
 class DigestView : View("哈希(摘要)") {
-    private val controller: ToolController by inject()
+    private val controller: DigestController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val fileHash = SimpleBooleanProperty(false)
     private lateinit var input: TextArea

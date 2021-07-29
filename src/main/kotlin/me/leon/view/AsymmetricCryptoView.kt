@@ -7,13 +7,15 @@ import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
+import me.leon.controller.AsymmetricCryptoController
 import me.leon.ext.copy
 import me.leon.ext.openInBrowser
 import tornadofx.*
 
 class AsymmetricCryptoView : View("非对称加密 RSA") {
-    private val controller: ToolController by inject()
+    private val controller: AsymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val privateKeyEncrypt = SimpleBooleanProperty(false)
     lateinit var input: TextArea
     lateinit var key: TextArea
     lateinit var output: TextArea
@@ -68,9 +70,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                 radiobutton("解密")
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = (new as RadioButton).text == "加密"
-                    doCrypto()
                 }
             }
+
+            checkbox("私钥加密", privateKeyEncrypt)
+
             button("运行") { action { doCrypto() } }
             button("上移") {
                 action {
@@ -95,8 +99,16 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             return
         }
         if (isEncrypt)
-            output.text = controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
+            output.text =
+                if (privateKeyEncrypt.get())
+                    controller.priEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                else
+                    controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
         else
-            output.text = controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+            output.text =
+                if (privateKeyEncrypt.get())
+                    controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                else
+                    controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
     }
 }

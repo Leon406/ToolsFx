@@ -6,11 +6,12 @@ import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.input.DragEvent
+import me.leon.controller.MacController
 import me.leon.ext.copy
 import tornadofx.*
 
 class MacView : View("MAC") {
-    private val controller: ToolController by inject()
+    private val controller: MacController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
     private lateinit var key: TextField

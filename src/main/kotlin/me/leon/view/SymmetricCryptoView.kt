@@ -9,12 +9,13 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
+import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.copy
 import me.leon.ext.hex2ByteArray
 import tornadofx.*
 
 class SymmetricCryptoView : View("对称加密(block)") {
-    private val controller: ToolController by inject()
+    private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
     private lateinit var input: TextArea

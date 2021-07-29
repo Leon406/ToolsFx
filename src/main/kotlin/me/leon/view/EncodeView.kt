@@ -7,13 +7,14 @@ import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
+import me.leon.controller.EncodeController
 import me.leon.ext.EncodeType
 import me.leon.ext.copy
 import me.leon.ext.encodeType
 import tornadofx.*
 
 class EncodeView : View("编解码") {
-    private val controller: ToolController by inject()
+    private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     lateinit var input: TextArea
     lateinit var output: TextArea
