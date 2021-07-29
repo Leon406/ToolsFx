@@ -41,7 +41,7 @@ class MacView : View("MAC") {
         }
 
     // https://www.bouncycastle.org/specifications.html
-    val algs =
+    private val algs =
         linkedMapOf(
             "HmacMD5" to listOf("128"),
             "HmacMD4" to listOf("128"),
@@ -160,7 +160,7 @@ class MacView : View("MAC") {
             alignment = Pos.CENTER_LEFT
             label("iv: ") { paddingAll = 8 }
             iv =
-                textfield() {
+                textfield {
                     promptText = "请输入iv"
                     isDisable = true
                 }
