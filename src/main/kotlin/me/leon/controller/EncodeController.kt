@@ -1,17 +1,17 @@
 package me.leon.controller
 
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.Charset
+import java.util.*
 import me.leon.base.base16
 import me.leon.base.base16Decode
 import me.leon.base.base32
 import me.leon.base.base32Decode
 import me.leon.ext.*
 import tornadofx.*
-import java.net.URLDecoder
-import java.net.URLEncoder
-import java.nio.charset.Charset
-import java.util.*
 
-class EncodeController :Controller() {
+class EncodeController : Controller() {
     fun encode(raw: String, type: EncodeType = EncodeType.Base64): String =
         try {
             if (raw.isEmpty()) ""

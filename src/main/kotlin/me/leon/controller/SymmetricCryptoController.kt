@@ -1,7 +1,5 @@
 package me.leon.controller
 
-import me.leon.base.base64
-import tornadofx.*
 import java.io.File
 import java.util.*
 import javax.crypto.Cipher
@@ -9,8 +7,10 @@ import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import me.leon.base.base64
+import tornadofx.*
 
-class SymmetricCryptoController :Controller() {
+class SymmetricCryptoController : Controller() {
     fun encrypt(key: ByteArray, data: String, iv: ByteArray, alg: String) =
         try {
             println("encrypt  $alg")
@@ -44,9 +44,9 @@ class SymmetricCryptoController :Controller() {
             }
 
             "加密文件路径(同选择文件目录): ${File("$path.enc").absolutePath} \n" +
-                    "alg: $alg\n" +
-                    "key(base64): ${key.base64()}\n" +
-                    "iv(base64): ${iv.base64()}\n"
+                "alg: $alg\n" +
+                "key(base64): ${key.base64()}\n" +
+                "iv(base64): ${iv.base64()}\n"
         } catch (e: Exception) {
             e.printStackTrace()
             "encrypt error: ${e.message}"

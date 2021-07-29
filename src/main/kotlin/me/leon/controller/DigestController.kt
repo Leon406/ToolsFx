@@ -3,7 +3,7 @@ package me.leon.controller
 import me.leon.Digests
 import tornadofx.*
 
-class DigestController :Controller() {
+class DigestController : Controller() {
     fun digest(method: String, data: String) =
         try {
             if (data.isEmpty()) "" else Digests.hash(method, data)

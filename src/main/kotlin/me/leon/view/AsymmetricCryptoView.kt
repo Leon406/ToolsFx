@@ -102,13 +102,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             output.text =
                 if (privateKeyEncrypt.get())
                     controller.priEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
-                else
-                    controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                else controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
         else
             output.text =
                 if (privateKeyEncrypt.get())
                     controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
-                else
-                    controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                else controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
     }
 }

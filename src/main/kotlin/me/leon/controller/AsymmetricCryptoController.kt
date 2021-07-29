@@ -106,7 +106,6 @@ class AsymmetricCryptoController : Controller() {
             "decrypt error: ${e.message}"
         }
 
-
     companion object {
         init {
             Security.addProvider(BouncyCastleProvider())
