@@ -1,10 +1,10 @@
 package me.leon
 
-import me.leon.base.base64
-import java.util.zip.CRC32
-import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
+import java.util.zip.CRC32
+import me.leon.base.base64
+import org.junit.Test
 
 class MyTest {
 
@@ -16,14 +16,13 @@ class MyTest {
     @Test
     fun split() {
         val raw = "**a*a**a"
-        raw.split("(?<!\\*)\\*a".toRegex())
-            .also { println(it) }
+        raw.split("(?<!\\*)\\*a".toRegex()).also { println(it) }
     }
 
     @Test
-
     fun cerParse() {
-        val cer = """
+        val cer =
+            """
 -----BEGIN CERTIFICATE-----
 MIIDozCCAougAwIBAgIUcJ/dZjcbIUkiThqJPy4aX1o8McAwDQYJKoZIhvcNAQEL
 BQAwYTELMAkGA1UEBhMCbGwxCzAJBgNVBAgMAmxsMQswCQYDVQQHDAJsbDELMAkG
@@ -51,8 +50,7 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
         println(cer)
         val byteArrayInputStream = ByteArrayInputStream(cer.toByteArray())
 
-        val cert = CertificateFactory.getInstance("X.509")
-            .generateCertificate(byteArrayInputStream)
+        val cert = CertificateFactory.getInstance("X.509").generateCertificate(byteArrayInputStream)
         println(cert.publicKey.encoded.base64())
     }
 }

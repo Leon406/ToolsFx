@@ -26,7 +26,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
     private val keyText: String
         get() =
-            key.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }?:key.text.replace("-----(?:END|BEGIN) (?:RSA )?\\w+ KEY-----|\n|\r|\r\n".toRegex(), "")
+            key.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
+                ?: key.text.replace(
+                    "-----(?:END|BEGIN) (?:RSA )?\\w+ KEY-----|\n|\r|\r\n".toRegex(),
+                    ""
+                )
 
     private var alg = "RSA"
     private var isEncrypt = true

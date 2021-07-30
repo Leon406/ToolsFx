@@ -1,16 +1,16 @@
 package me.leon.controller
 
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.security.KeyFactory
 import java.security.Security
+import java.security.cert.CertificateFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import me.leon.base.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
-import java.io.ByteArrayInputStream
-import java.security.cert.CertificateFactory
 
 class AsymmetricCryptoController : Controller() {
 
@@ -95,9 +95,7 @@ class AsymmetricCryptoController : Controller() {
                 init(Cipher.DECRYPT_MODE, publicKey)
                 data.base64Decode()
                     .toList()
-                    .chunked(length / 8) {
-                        this.doFinal(it.toByteArray())
-                    }
+                    .chunked(length / 8) { this.doFinal(it.toByteArray()) }
                     .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
                     .toByteArray()
                     .toString(Charsets.UTF_8)
@@ -112,11 +110,11 @@ class AsymmetricCryptoController : Controller() {
             val byteArrayInputStream = ByteArrayInputStream(key.toByteArray())
             CertificateFactory.getInstance("X.509")
                 .generateCertificate(byteArrayInputStream)
-                .publicKey.encoded
+                .publicKey
+                .encoded
         } else {
             key.base64Decode()
         }
-
 
     companion object {
         init {
