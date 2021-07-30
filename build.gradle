@@ -35,7 +35,7 @@ compileTestKotlin {
 spotless {
     java {
         target "src/**/*.java"
-        googleJavaFormat('1.7').aosp()
+        googleJavaFormat('1.8').aosp()
     }
     kotlin {
         target "src/**/*.kt"
