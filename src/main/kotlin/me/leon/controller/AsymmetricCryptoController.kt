@@ -9,13 +9,15 @@ import javax.crypto.Cipher
 import me.leon.base.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
+import java.io.ByteArrayInputStream
+import java.security.cert.CertificateFactory
 
 class AsymmetricCryptoController : Controller() {
 
     fun pubEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
         try {
             println("encrypt $key  $alg $data")
-            val keySpec = X509EncodedKeySpec(key.base64Decode())
+            val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
@@ -86,7 +88,7 @@ class AsymmetricCryptoController : Controller() {
     fun pubDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
         try {
             println("decrypt $key  $alg $data")
-            val keySpec = X509EncodedKeySpec(key.base64Decode())
+            val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
@@ -94,7 +96,6 @@ class AsymmetricCryptoController : Controller() {
                 data.base64Decode()
                     .toList()
                     .chunked(length / 8) {
-                        println(it.size)
                         this.doFinal(it.toByteArray())
                     }
                     .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
@@ -105,6 +106,17 @@ class AsymmetricCryptoController : Controller() {
             e.printStackTrace()
             "decrypt error: ${e.message}"
         }
+
+    private fun getPropPublicKey(key: String) =
+        if (key.contains("-----BEGIN CERTIFICATE-----")) {
+            val byteArrayInputStream = ByteArrayInputStream(key.toByteArray())
+            CertificateFactory.getInstance("X.509")
+                .generateCertificate(byteArrayInputStream)
+                .publicKey.encoded
+        } else {
+            key.base64Decode()
+        }
+
 
     companion object {
         init {

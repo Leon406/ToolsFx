@@ -126,6 +126,9 @@
 - [x]  支持长度大于RSA位数的字符解码,但实际不建议这样操作
 - [x]  支持公钥加密私钥解密,私钥加密公钥解密
 - [x]  支持openssl pkcs1/pkcs8 私钥格式
+- [x]  支持证书cer文件加解密
+
+note: openssl用公私钥对加解密,生成私钥pkcs8编码
 
 ![sym](./art/asy.gif)
 
