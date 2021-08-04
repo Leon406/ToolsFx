@@ -3,10 +3,7 @@ package me.leon.controller
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import me.leon.base.base64
-import me.leon.ext.GMac
-import me.leon.ext.Poly1305Serial
-import me.leon.ext.init
-import me.leon.ext.toHex
+import me.leon.ext.*
 import org.bouncycastle.crypto.macs.KGMac
 import tornadofx.*
 
@@ -28,8 +25,7 @@ class MacController : Controller() {
                     }
                 }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "mac error: ${e.message}"
+            "mac error: ${e.stacktrace()}"
         }
 
     fun macWithIv(msg: String, key: String, iv: String, alg: String, outputEncode: String) =
@@ -68,7 +64,6 @@ class MacController : Controller() {
                 ""
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "mac error: ${e.message}"
+            "mac error: ${e.stacktrace()}"
         }
 }

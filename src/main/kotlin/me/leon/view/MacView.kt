@@ -28,7 +28,8 @@ class MacView : View("MAC") {
         get() = output.text
     private var method = "HmacMD5"
     private var outputEncode = "hex"
-
+    private val regAlgReplace =
+        "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
     private val eventHandler =
         EventHandler<DragEvent> {
             println("${it.dragboard.hasFiles()}______" + it.eventType)
@@ -178,13 +179,12 @@ class MacView : View("MAC") {
             newValue?.run {
                 method =
                     if (selectedAlgItem.get() == "GMAC") "${newValue}-GMAC"
-                    else
+                    else {
+
                         "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
                             .replace("SHA2(?!=\\d{3})".toRegex(), "SHA")
-                            .replace(
-                                "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex(),
-                                "$1-"
-                            )
+                            .replace(regAlgReplace, "$1-")
+                    }
                 println("算法 $method")
                 if (inputText.isNotEmpty()) {
                     doMac()

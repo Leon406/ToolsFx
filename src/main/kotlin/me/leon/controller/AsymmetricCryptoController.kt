@@ -9,6 +9,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import me.leon.base.*
+import me.leon.ext.stacktrace
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 
@@ -34,8 +35,7 @@ class AsymmetricCryptoController : Controller() {
                     .base64()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "encrypt error: ${e.message}"
+            "encrypt error: ${e.stacktrace()}"
         }
 
     fun priDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
@@ -57,8 +57,7 @@ class AsymmetricCryptoController : Controller() {
                     .toString(Charsets.UTF_8)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "decrypt error: ${e.message}"
+            "decrypt error: ${e.stacktrace()}"
         }
 
     fun priEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
@@ -81,8 +80,7 @@ class AsymmetricCryptoController : Controller() {
                     .base64()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "encrypt error: ${e.message}"
+            "encrypt error: ${e.stacktrace()}"
         }
 
     fun pubDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
@@ -101,8 +99,7 @@ class AsymmetricCryptoController : Controller() {
                     .toString(Charsets.UTF_8)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "decrypt error: ${e.message}"
+            "decrypt error: ${e.stacktrace()}"
         }
 
     private fun getPropPublicKey(key: String) =

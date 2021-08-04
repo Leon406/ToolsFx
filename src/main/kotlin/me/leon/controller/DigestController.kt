@@ -1,6 +1,7 @@
 package me.leon.controller
 
 import me.leon.Digests
+import me.leon.ext.stacktrace
 import tornadofx.*
 
 class DigestController : Controller() {
@@ -8,15 +9,13 @@ class DigestController : Controller() {
         try {
             if (data.isEmpty()) "" else Digests.hash(method, data)
         } catch (e: Exception) {
-            e.printStackTrace()
-            "digest error: ${e.message}"
+            "digest error: ${e.stacktrace()}"
         }
 
     fun digestFile(method: String, path: String) =
         try {
             if (path.isEmpty()) "" else Digests.hashByFile(method, path)
         } catch (e: Exception) {
-            e.printStackTrace()
-            "digest file error: ${e.message}"
+            "digest file error: ${e.stacktrace()}"
         }
 }

@@ -8,6 +8,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import me.leon.base.base64
+import me.leon.ext.stacktrace
 import tornadofx.*
 
 class SymmetricCryptoController : Controller() {
@@ -17,8 +18,7 @@ class SymmetricCryptoController : Controller() {
             val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
             Base64.getEncoder().encodeToString(cipher.doFinal(data.toByteArray()))
         } catch (e: Exception) {
-            e.printStackTrace()
-            "encrypt error: ${e.message}"
+            "encrypt error: ${e.stacktrace()}"
         }
 
     private fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int) =
@@ -38,8 +38,7 @@ class SymmetricCryptoController : Controller() {
                 "key(base64): ${key.base64()}\n" +
                 "iv(base64): ${iv.base64()}\n"
         } catch (e: Exception) {
-            e.printStackTrace()
-            "encrypt error: ${e.message}"
+            "encrypt error: ${e.stacktrace()}"
         }
 
     fun decryptByFile(key: ByteArray, path: String, iv: ByteArray, alg: String) =
@@ -51,8 +50,7 @@ class SymmetricCryptoController : Controller() {
 
             "解密文件路径(同选择文件目录): $outFileName"
         } catch (e: Exception) {
-            e.printStackTrace()
-            "decrypt error: ${e.message}"
+            "decrypt error: ${e.stacktrace()}"
         }
 
     private fun doStreamCrypto(outFileName: String, cipher: Cipher, path: String) {
@@ -73,7 +71,6 @@ class SymmetricCryptoController : Controller() {
             val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)
             String(cipher.doFinal(Base64.getDecoder().decode(data)))
         } catch (e: Exception) {
-            e.printStackTrace()
-            "decrypt error: ${e.message}"
+            "decrypt error: ${e.stacktrace()}"
         }
 }

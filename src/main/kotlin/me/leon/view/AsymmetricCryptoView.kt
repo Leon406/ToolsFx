@@ -35,7 +35,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
     private var alg = "RSA"
     private var isEncrypt = true
     private val bitsLists = mutableListOf("512", "1024", "2048", "3072", "4096")
-    val selectedBits = SimpleStringProperty("1024")
+    private val selectedBits = SimpleStringProperty("1024")
 
     private val eventHandler =
         EventHandler<DragEvent> {
@@ -47,11 +47,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
                     with(keyText) {
                         val probablyKeySize =
-                            if (privateKeyEncrypt.get() && isEncrypt ||
-                                    !privateKeyEncrypt.get() && !isEncrypt
-                            )
-                                this.length * 1.25f
-                            else this.length * 5
+                            if (isPriEncryptOrPubDecrypt) this.length * 1.25f else this.length * 5
                         println("__ $probablyKeySize")
                         val keySize =
                             when (probablyKeySize.toInt()) {
@@ -66,6 +62,9 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                 }
             }
         }
+
+    private val isPriEncryptOrPubDecrypt
+        get() = privateKeyEncrypt.get() && isEncrypt || !privateKeyEncrypt.get() && !isEncrypt
     override val root = vbox {
         paddingAll = 8
         label("密钥: ") { paddingAll = 8 }

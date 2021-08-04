@@ -1,9 +1,11 @@
 package me.leon
 
 import java.io.ByteArrayInputStream
+import java.lang.NullPointerException
 import java.security.cert.CertificateFactory
 import java.util.zip.CRC32
 import me.leon.base.base64
+import me.leon.ext.stacktrace
 import org.junit.Test
 
 class MyTest {
@@ -52,5 +54,10 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
 
         val cert = CertificateFactory.getInstance("X.509").generateCertificate(byteArrayInputStream)
         println(cert.publicKey.encoded.base64())
+    }
+
+    @Test
+    fun exceptionTest() {
+        println(NullPointerException().stacktrace())
     }
 }

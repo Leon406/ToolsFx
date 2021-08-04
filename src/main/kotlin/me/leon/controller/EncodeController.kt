@@ -28,8 +28,7 @@ class EncodeController : Controller() {
                     EncodeType.Binary -> raw.toBinaryString()
                 }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "编码错误: ${e.message}"
+            "编码错误: ${e.stacktrace()}"
         }
 
     fun decode(encoded: String, type: EncodeType = EncodeType.Base64): String =
@@ -49,7 +48,6 @@ class EncodeController : Controller() {
                     EncodeType.Binary -> encoded.binary2Ascii()
                 }
         } catch (e: Exception) {
-            e.printStackTrace()
-            "解码错误: ${e.message}"
+            "解码错误: ${e.stacktrace()}"
         }
 }
