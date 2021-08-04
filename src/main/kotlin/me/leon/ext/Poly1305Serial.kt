@@ -30,6 +30,6 @@ object Poly1305Serial {
 }
 
 fun Poly1305.init(key: ByteArray, iv: ByteArray) {
-    val kpwiv: CipherParameters = ParametersWithIV(KeyParameter(key), iv)
-    init(kpwiv)
+    val params: CipherParameters = ParametersWithIV(KeyParameter(key), iv)
+    this.init(params)
 }

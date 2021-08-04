@@ -25,7 +25,6 @@ class AsymmetricCryptoController : Controller() {
                 init(Cipher.ENCRYPT_MODE, publicKey)
                 data.toByteArray()
                     .toList()
-                    .also { if (it.size > length / 8) println("长度建议大于 ${length / 8}") }
                     .chunked(length / 8 - reserved) {
                         println(it.size)
                         this.doFinal(it.toByteArray())
@@ -70,7 +69,6 @@ class AsymmetricCryptoController : Controller() {
                 init(Cipher.ENCRYPT_MODE, privateKey)
                 data.toByteArray()
                     .toList()
-                    .also { if (it.size > length / 8) println("长度建议大于 ${length / 8}") }
                     .chunked(length / 8 - reserved) {
                         println(it.size)
                         this.doFinal(it.toByteArray())

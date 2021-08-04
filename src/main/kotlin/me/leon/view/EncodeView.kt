@@ -23,7 +23,7 @@ class EncodeView : View("编解码") {
         get() =
             "${if (isEncode) "编码" else "解码"}: $encodeType  输入长度: ${inputText.length}  输出长度: ${outputText.length}"
     private val inputText: String
-        get() = input.text
+        get() = input.text.takeIf { isEncode }?: input.text.replace("\n|\r\n".toRegex(),"")
     private val outputText: String
         get() = output.text
 

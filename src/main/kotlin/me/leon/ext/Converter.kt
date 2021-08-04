@@ -20,7 +20,7 @@ fun String.hex2ByteArray() =
 fun ByteArray.toBinaryString() =
     joinToString("") {
         with((it.toInt() and 0xff).toString(2)) {
-            this.takeIf { it.length == 8 } ?: "0".repeat(8 - this.length) + this
+            this.takeIf { it.length == 8 } ?: ("0".repeat(8 - this.length) + this)
         }
     }
 
