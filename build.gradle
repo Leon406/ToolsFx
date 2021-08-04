@@ -38,6 +38,8 @@ javafx {
 apply from: "$rootProject.projectDir/config/codeQuality.gradle"
 def hook = new File("$rootProject.projectDir/.git/hooks/pre-commit")
 hook.text = """#!/bin/bash
-echo "will run nova code format"
-./gradlew spotlessJAp spotlessKAp
+echo "run code format"
+./gradlew spotlessJCh spotlessKCh
+echo "run code smell check"
+./gradlew detekt
 """
