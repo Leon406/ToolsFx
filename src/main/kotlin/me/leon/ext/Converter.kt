@@ -39,15 +39,21 @@ fun String.binary2Ascii() =
 /** unicode编解码 */
 fun String.toUnicodeString() =
     fold(StringBuilder()) { acc, c ->
-            acc.apply {
-                append("\\u")
-                append(Integer.toHexString(c.code))
-            }
+        acc.apply {
+            append("\\u")
+            append(Integer.toHexString(c.code))
         }
+    }
         .toString()
 
 fun String.unicode2String() =
-    split("\\u")
-        .filterIndexed { index, _ -> index != 0 }
-        .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(16).toChar()) } }
-        .toString()
+    if (contains("&#"))
+        "&#(\\d+);".toRegex().findAll(this)
+            .map { it.groupValues[1] }
+            .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(10).toChar()) } }
+            .toString()
+    else
+        split("\\u")
+            .filterIndexed { index, _ -> index != 0 }
+            .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(16).toChar()) } }
+            .toString()

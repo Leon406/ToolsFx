@@ -60,4 +60,15 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
     fun exceptionTest() {
         println(NullPointerException().stacktrace())
     }
+
+    @Test
+    fun decodeUnicode() {
+        val u = "&#20320;&#22909;"
+        "&#(\\d+);".toRegex().findAll(u)
+            .map {it.groupValues[1]  }
+            .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(10).toChar()) } }
+            .toString()
+            .also { println(it) }
+
+    }
 }
