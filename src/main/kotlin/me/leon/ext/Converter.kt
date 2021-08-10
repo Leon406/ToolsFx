@@ -47,10 +47,16 @@ fun String.toUnicodeString() =
         .toString()
 
 fun String.unicode2String() =
-    if (contains("&#"))
-        "&#(\\d+);".toRegex().findAll(this)
-            .map { it.groupValues[1] }
-            .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(10).toChar()) } }
+    if (contains("&#", true))
+        "(?i)&#x([0-9a-f]+);|&#(\\d+);".toRegex().findAll(this)
+            .map {
+                it.groupValues[1]
+                    .ifEmpty { it.groupValues[2] } to
+                        if (it.groupValues[0].contains("x", true)) 16 else 10
+            }
+            .fold(StringBuilder()) { acc, (c, radix) ->
+                acc.apply { append(c.toInt(radix).toChar()) }
+            }
             .toString()
     else
         split("\\u")
