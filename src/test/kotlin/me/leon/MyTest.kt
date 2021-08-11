@@ -5,6 +5,7 @@ import java.lang.NullPointerException
 import java.security.cert.CertificateFactory
 import java.util.zip.CRC32
 import me.leon.base.base64
+import me.leon.ext.hex2ByteArray
 import me.leon.ext.stacktrace
 import me.leon.ext.unicode2String
 import org.junit.Test
@@ -67,5 +68,13 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
         val u = "&#20320;&#22909;&#20013;&#22269;&#x4e2d;&#x56fd;&#X56FD;"
         println(u.unicode2String())
 
+    }
+
+    @Test
+    fun hex2Base64() {
+        val data = "e4bda0e5a5bd4c656f6e21"
+        data.hex2ByteArray().base64().also {
+            println(it)
+        }
     }
 }

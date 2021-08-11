@@ -37,9 +37,9 @@ class EncodeController : Controller() {
             else
                 when (type) {
                     EncodeType.Base64 ->
-                        Base64.getDecoder().decode(encoded).toString(Charset.defaultCharset())
+                        Base64.getDecoder().decode(encoded).toString(Charsets.UTF_8)
                     EncodeType.Base64Safe ->
-                        Base64.getUrlDecoder().decode(encoded).toString(Charset.defaultCharset())
+                        Base64.getUrlDecoder().decode(encoded).toString(Charsets.UTF_8)
                     EncodeType.Hex -> encoded.hex2Ascii()
                     EncodeType.UrlEncode -> URLDecoder.decode(encoded)
                     EncodeType.Base32 -> encoded.base32Decode()
