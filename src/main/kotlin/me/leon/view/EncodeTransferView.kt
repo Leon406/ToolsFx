@@ -95,7 +95,8 @@ class EncodeTransferView : View("编码转换") {
             alignment = Pos.BASELINE_CENTER
             paddingAll = 8.0f
             button("转换") {
-                action { run() } }
+                action { run() }
+            }
             button("上移") {
                 action {
                     input.text = outputText
@@ -103,7 +104,8 @@ class EncodeTransferView : View("编码转换") {
                 }
             }
             button("复制结果") {
-                action { outputText.copy() } }
+                action { outputText.copy() }
+            }
         }
         label("输出内容:") { paddingBottom = 8 }
         output =
@@ -116,7 +118,12 @@ class EncodeTransferView : View("编码转换") {
     }
 
     private fun run() {
-        output.text = controller.encode(controller.decode(inputText, srcEncodeType),dstEncodeType)
+        val decode = controller.decode(inputText, srcEncodeType)
+        output.text = if (decode.contains("解码错误:")) {
+            decode
+        } else {
+            controller.encode(decode, dstEncodeType)
+        }
         infoLabel.text = info
     }
 }
