@@ -70,11 +70,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         label("密钥: ") { paddingAll = 8 }
         key =
             textarea {
-                promptText = "请输入密钥"
+                promptText = "请输入密钥或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
-        label("内容: ") { paddingAll = 8 }
+        label("密文 (base64编码,其他请进行编码转换): ") { paddingAll = 8 }
         input =
             textarea {
                 promptText = "请输入待加密内容或者拖动待加密的文件到此区域"

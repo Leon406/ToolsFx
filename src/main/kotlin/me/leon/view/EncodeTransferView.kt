@@ -49,9 +49,7 @@ class EncodeTransferView : View("编码转换") {
             alignment = Pos.BASELINE_CENTER
             togglegroup {
                 spacing = 8.0
-                radiobutton("base64") {
-                    isSelected = true
-                }
+                radiobutton("base64") { isSelected = true }
                 radiobutton("urlEncode")
                 radiobutton("base32")
                 radiobutton("base16")
@@ -75,9 +73,7 @@ class EncodeTransferView : View("编码转换") {
             alignment = Pos.BASELINE_CENTER
             togglegroup {
                 spacing = 8.0
-                radiobutton("base64") {
-                    isSelected = true
-                }
+                radiobutton("base64") { isSelected = true }
                 radiobutton("urlEncode")
                 radiobutton("base32")
                 radiobutton("base16")
@@ -94,18 +90,14 @@ class EncodeTransferView : View("编码转换") {
         hbox {
             alignment = Pos.BASELINE_CENTER
             paddingAll = 8.0f
-            button("转换") {
-                action { run() }
-            }
+            button("转换") { action { run() } }
             button("上移") {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
             }
-            button("复制结果") {
-                action { outputText.copy() }
-            }
+            button("复制结果") { action { outputText.copy() } }
         }
         label("输出内容:") { paddingBottom = 8 }
         output =
@@ -119,11 +111,12 @@ class EncodeTransferView : View("编码转换") {
 
     private fun run() {
         val decode = controller.decode(inputText, srcEncodeType)
-        output.text = if (decode.contains("解码错误:")) {
-            decode
-        } else {
-            controller.encode(decode, dstEncodeType)
-        }
+        output.text =
+            if (String(decode, Charsets.UTF_8).contains("解码错误:")) {
+                String(decode, Charsets.UTF_8)
+            } else {
+                controller.encode2String(decode, dstEncodeType)
+            }
         infoLabel.text = info
     }
 }

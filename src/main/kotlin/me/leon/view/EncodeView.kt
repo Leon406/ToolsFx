@@ -104,7 +104,7 @@ class EncodeView : View("编解码") {
                 selectedToggleProperty().addListener { _, _, new ->
                     encodeType = (new as RadioButton).text.encodeType()
                     if (isEncode) {
-                        output.text = controller.encode(inputText, encodeType)
+                        output.text = controller.encode2String(inputText, encodeType)
                         infoLabel.text = info
                     }
                 }
@@ -142,9 +142,9 @@ class EncodeView : View("编解码") {
 
     private fun run() {
         if (isEncode) {
-            output.text = controller.encode(inputText, encodeType)
+            output.text = controller.encode2String(inputText, encodeType)
         } else {
-            output.text = controller.decode(inputText, encodeType)
+            output.text = controller.decode2String(inputText, encodeType)
         }
         infoLabel.text = info
     }

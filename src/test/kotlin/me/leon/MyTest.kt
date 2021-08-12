@@ -1,13 +1,19 @@
 package me.leon
 
 import java.io.ByteArrayInputStream
-import java.lang.NullPointerException
+import java.io.ByteArrayOutputStream
+import java.security.KeyFactory
+import java.security.PublicKey
 import java.security.cert.CertificateFactory
+import java.security.spec.X509EncodedKeySpec
 import java.util.zip.CRC32
+import javax.crypto.Cipher
 import me.leon.base.base64
-import me.leon.ext.hex2ByteArray
-import me.leon.ext.stacktrace
-import me.leon.ext.unicode2String
+import me.leon.base.base64Decode
+import me.leon.controller.AsymmetricCryptoController
+import me.leon.controller.EncodeController
+import me.leon.ext.*
+import org.bouncycastle.util.encoders.Hex
 import org.junit.Test
 
 class MyTest {
@@ -67,14 +73,11 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
     fun decodeUnicode() {
         val u = "&#20320;&#22909;&#20013;&#22269;&#x4e2d;&#x56fd;&#X56FD;"
         println(u.unicode2String())
-
     }
 
     @Test
     fun hex2Base64() {
         val data = "e4bda0e5a5bd4c656f6e21"
-        data.hex2ByteArray().base64().also {
-            println(it)
-        }
+        data.hex2ByteArray().base64().also { println(it) }
     }
 }
