@@ -1,19 +1,12 @@
 package me.leon
 
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.security.KeyFactory
-import java.security.PublicKey
+import java.lang.StringBuilder
+import java.math.BigInteger
 import java.security.cert.CertificateFactory
-import java.security.spec.X509EncodedKeySpec
 import java.util.zip.CRC32
-import javax.crypto.Cipher
 import me.leon.base.base64
-import me.leon.base.base64Decode
-import me.leon.controller.AsymmetricCryptoController
-import me.leon.controller.EncodeController
 import me.leon.ext.*
-import org.bouncycastle.util.encoders.Hex
 import org.junit.Test
 
 class MyTest {
@@ -79,5 +72,62 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
     fun hex2Base64() {
         val data = "e4bda0e5a5bd4c656f6e21"
         data.hex2ByteArray().base64().also { println(it) }
+    }
+
+    fun String.radix(radix: Int, maps: String = map): String {
+        var bigInteger = BigInteger(this.toByteArray())
+        var remainder: Int = -1
+        val sb = StringBuilder()
+        while (bigInteger != BigInteger.ZERO) {
+            bigInteger.divideAndRemainder(radix.toBigInteger()).run {
+                bigInteger = this[0]
+                remainder = this[1].toInt()
+            }
+            sb.append(maps[remainder])
+        }
+        return sb.reversed().toString()
+    }
+
+    fun ByteArray.radix(radix: Int, maps: String = map): String {
+        var bigInteger = BigInteger(this)
+        var remainder: Int = -1
+        val sb = StringBuilder()
+        while (bigInteger != BigInteger.ZERO) {
+            bigInteger.divideAndRemainder(radix.toBigInteger()).run {
+                bigInteger = this[0]
+                remainder = this[1].toInt()
+            }
+            sb.append(maps[remainder])
+        }
+        return sb.reversed().toString()
+    }
+
+    private val map = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    fun String.radix2(radix: Int, maps: String = map) =
+        String(
+            toCharArray()
+                .mapIndexed { index, c -> length - index - 1 to maps.indexOf(c) }
+                .fold(0.toBigInteger()) { acc, pair ->
+                    acc.add(
+                        pair.second.toBigInteger().multiply(radix.toBigInteger().pow(pair.first))
+                    )
+                }
+                .toByteArray()
+        )
+
+    @Test
+    fun radix() {
+        "ABDdd东方丽景的猜测1#".radix(58).also {
+            println(it)
+            println(it.radix2(58))
+        }
+
+        println(base58Check("ABD"))
+        println(Base58Check.encode("ABD".toByteArray()))
+    }
+
+    private fun base58Check(plain: String): String {
+        val hash = Digests.hash("SHA-256", Digests.hash("SHA-256", plain.toByteArray()))
+        return (plain.toByteArray() + hash.copyOfRange(0, 4)).radix(58)
     }
 }
