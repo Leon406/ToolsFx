@@ -12,6 +12,10 @@
 
 ![encode](./art/encode.gif)
 
+
+### 编码互转功能 (非原始字符)
+- [x] 编解码功能相互转码
+
 ### 数据摘要(哈希)
 
 支持文件, 支持超大文件,8G文件测试ok
@@ -131,6 +135,13 @@
 note: openssl用公私钥对加解密,生成私钥pkcs8编码
 
 ![sym](./art/asy.gif)
+
+公钥解密16进制数据
+
+![sym](./art/rsa_pub_decrypt_hexdata.gif)
+
+
+### 数字签名校验 (TODO) 
 
 ### 特性
 
