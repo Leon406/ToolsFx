@@ -54,7 +54,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             if (it.eventType.name == "DRAG_ENTERED") {
                 if (it.dragboard.hasFiles()) {
                     println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().absolutePath
+                    input.text =
+                        if (isFile.get()) it.dragboard.files.first().absolutePath
+                        else it.dragboard.files.first().readText()
                 }
             }
         }
@@ -76,7 +78,8 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
 
     private val cipher
         get() = selectedAlg.get()
-
+    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312","GB18030", "ISO-8859-1","BIG5")
+    private val selectedCharset = SimpleStringProperty(charsets.first())
     override val root = vbox {
         paddingAll = 8
         label("待处理:") { paddingAll = 8 }
@@ -91,6 +94,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             alignment = Pos.CENTER_LEFT
             label("算法:") { paddingAll = 8 }
             combobox(selectedAlg, algs) { cellFormat { text = it } }
+
+            label("charset:") { paddingAll = 8 }
+            combobox(selectedCharset, charsets) { cellFormat { text = it } }
         }
         hbox {
             alignment = Pos.CENTER_LEFT
@@ -159,10 +165,10 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             if (isEncrypt)
                 if (isFile.get())
                     controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
+                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher,selectedCharset.get())
             else if (isFile.get())
                 controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-            else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
+            else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher,selectedCharset.get())
         } ui { output.text = it }
     }
 }

@@ -54,7 +54,10 @@ class SymmetricCryptoView : View("对称加密(block)") {
             if (it.eventType.name == "DRAG_ENTERED") {
                 if (it.dragboard.hasFiles()) {
                     println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().absolutePath
+
+                    input.text =
+                        if (isFile.get()) it.dragboard.files.first().absolutePath
+                        else it.dragboard.files.first().readText()
                 }
             }
         }
@@ -98,7 +101,9 @@ class SymmetricCryptoView : View("对称加密(block)") {
         )
     private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
     private val selectedAlg = SimpleStringProperty(algs[2])
+    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312","GB18030", "ISO-8859-1","BIG5")
     private val selectedPadding = SimpleStringProperty(paddingsAlg.first())
+    private val selectedCharset = SimpleStringProperty(charsets.first())
     private val selectedMod = SimpleStringProperty(modes.first())
 
     private val cipher
@@ -123,6 +128,9 @@ class SymmetricCryptoView : View("对称加密(block)") {
 
             label("padding:") { paddingAll = 8 }
             combobox(selectedPadding, paddingsAlg) { cellFormat { text = it } }
+
+            label("charset:") { paddingAll = 8 }
+            combobox(selectedCharset, charsets) { cellFormat { text = it } }
         }
 
         hbox {
@@ -194,10 +202,10 @@ class SymmetricCryptoView : View("对称加密(block)") {
             if (isEncrypt)
                 if (isFile.get())
                     controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher)
+                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher,selectedCharset.get())
             else if (isFile.get())
                 controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-            else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher)
+            else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher, selectedCharset.get())
         } ui { output.text = it }
     }
 }
