@@ -78,7 +78,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
 
     private val cipher
         get() = selectedAlg.get()
-    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312","GB18030", "ISO-8859-1","BIG5")
+    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
     private val selectedCharset = SimpleStringProperty(charsets.first())
     override val root = vbox {
         paddingAll = 8
@@ -165,10 +165,24 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             if (isEncrypt)
                 if (isFile.get())
                     controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher,selectedCharset.get())
+                else
+                    controller.encrypt(
+                        keyByteArray,
+                        inputText,
+                        ivByteArray,
+                        cipher,
+                        selectedCharset.get()
+                    )
             else if (isFile.get())
                 controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-            else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher,selectedCharset.get())
+            else
+                controller.decrypt(
+                    keyByteArray,
+                    inputText,
+                    ivByteArray,
+                    cipher,
+                    selectedCharset.get()
+                )
         } ui { output.text = it }
     }
 }

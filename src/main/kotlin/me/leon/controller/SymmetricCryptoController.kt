@@ -1,6 +1,7 @@
 package me.leon.controller
 
 import java.io.File
+import java.nio.charset.Charset
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.CipherOutputStream
@@ -10,14 +11,20 @@ import javax.crypto.spec.SecretKeySpec
 import me.leon.base.base64
 import me.leon.ext.stacktrace
 import tornadofx.*
-import java.nio.charset.Charset
 
 class SymmetricCryptoController : Controller() {
-    fun encrypt(key: ByteArray, data: String, iv: ByteArray, alg: String, charset: String = "UTF-8"): String =
+    fun encrypt(
+        key: ByteArray,
+        data: String,
+        iv: ByteArray,
+        alg: String,
+        charset: String = "UTF-8"
+    ): String =
         try {
             println("encrypt  $alg")
             val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
-            Base64.getEncoder().encodeToString(cipher.doFinal(data.toByteArray(Charset.forName(charset))))
+            Base64.getEncoder()
+                .encodeToString(cipher.doFinal(data.toByteArray(Charset.forName(charset))))
         } catch (e: Exception) {
             "encrypt error: ${e.stacktrace()}"
         }
@@ -66,7 +73,13 @@ class SymmetricCryptoController : Controller() {
         }
     }
 
-    fun decrypt(key: ByteArray, data: String, iv: ByteArray, alg: String,charset: String = "UTF-8") =
+    fun decrypt(
+        key: ByteArray,
+        data: String,
+        iv: ByteArray,
+        alg: String,
+        charset: String = "UTF-8"
+    ) =
         try {
             println("decrypt  $alg")
             val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)

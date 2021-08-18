@@ -101,7 +101,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
         )
     private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
     private val selectedAlg = SimpleStringProperty(algs[2])
-    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312","GB18030", "ISO-8859-1","BIG5")
+    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
     private val selectedPadding = SimpleStringProperty(paddingsAlg.first())
     private val selectedCharset = SimpleStringProperty(charsets.first())
     private val selectedMod = SimpleStringProperty(modes.first())
@@ -202,10 +202,24 @@ class SymmetricCryptoView : View("对称加密(block)") {
             if (isEncrypt)
                 if (isFile.get())
                     controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-                else controller.encrypt(keyByteArray, inputText, ivByteArray, cipher,selectedCharset.get())
+                else
+                    controller.encrypt(
+                        keyByteArray,
+                        inputText,
+                        ivByteArray,
+                        cipher,
+                        selectedCharset.get()
+                    )
             else if (isFile.get())
                 controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
-            else controller.decrypt(keyByteArray, inputText, ivByteArray, cipher, selectedCharset.get())
+            else
+                controller.decrypt(
+                    keyByteArray,
+                    inputText,
+                    ivByteArray,
+                    cipher,
+                    selectedCharset.get()
+                )
         } ui { output.text = it }
     }
 }

@@ -1,12 +1,12 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.5.21"
     id 'application'
-    id "com.diffplug.spotless" version "5.14.1"
+    id "com.diffplug.spotless" version "5.14.2"
     id "io.gitlab.arturbosch.detekt" version "1.18.0-RC2"
     id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 group = 'me.leon.toolfx'
-version = '1.3.2'
+version = '1.4.0'
 
 repositories {
     mavenCentral()

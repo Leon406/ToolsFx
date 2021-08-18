@@ -17,7 +17,7 @@ class EncodeController : Controller() {
                     EncodeType.Base64Safe ->
                         Base64.getUrlEncoder().encodeToString(raw.toByteArray())
                     EncodeType.Hex -> raw.toByteArray().toHex()
-                    EncodeType.UrlEncode -> URLEncoder.encode(raw)?.replace("+", "%20")?:""
+                    EncodeType.UrlEncode -> URLEncoder.encode(raw)?.replace("+", "%20") ?: ""
                     EncodeType.Base32 -> raw.base32()
                     EncodeType.Base16 -> raw.base16()
                     EncodeType.Unicode -> raw.toUnicodeString()
@@ -35,8 +35,8 @@ class EncodeController : Controller() {
                     EncodeType.Base64 -> Base64.getEncoder().encodeToString(raw)
                     EncodeType.Base64Safe -> Base64.getUrlEncoder().encodeToString(raw)
                     EncodeType.Hex -> raw.toHex()
-                    EncodeType.UrlEncode -> URLEncoder.encode(raw.toString())
-                        ?.replace("+", "%20")?:""
+                    EncodeType.UrlEncode -> URLEncoder.encode(raw.toString())?.replace("+", "%20")
+                            ?: ""
                     EncodeType.Base32 -> raw.base32()
                     EncodeType.Base16 -> raw.base16()
                     EncodeType.Unicode -> String(raw, Charsets.UTF_8).toUnicodeString()
@@ -56,7 +56,7 @@ class EncodeController : Controller() {
                     EncodeType.Base64Safe ->
                         Base64.getUrlDecoder().decode(encoded).toString(Charsets.UTF_8)
                     EncodeType.Hex -> encoded.hex2Ascii()
-                    EncodeType.UrlEncode -> URLDecoder.decode(encoded)?:""
+                    EncodeType.UrlEncode -> URLDecoder.decode(encoded) ?: ""
                     EncodeType.Base32 -> encoded.base32Decode2String()
                     EncodeType.Base16 -> encoded.base16Decode2String()
                     EncodeType.Unicode -> encoded.unicode2String()
@@ -74,7 +74,8 @@ class EncodeController : Controller() {
                     EncodeType.Base64 -> Base64.getDecoder().decode(encoded)
                     EncodeType.Base64Safe -> Base64.getUrlDecoder().decode(encoded)
                     EncodeType.Hex -> encoded.hex2ByteArray()
-                    EncodeType.UrlEncode -> URLDecoder.decode(encoded)?.toByteArray()?: byteArrayOf()
+                    EncodeType.UrlEncode -> URLDecoder.decode(encoded)?.toByteArray()
+                            ?: byteArrayOf()
                     EncodeType.Base32 -> encoded.base32Decode()
                     EncodeType.Base16 -> encoded.base16Decode()
                     EncodeType.Unicode -> encoded.unicode2String().toByteArray()

@@ -1,15 +1,15 @@
 package me.leon
 
-import me.leon.base.base64
-import me.leon.ext.hex2ByteArray
-import me.leon.ext.stacktrace
-import me.leon.ext.unicode2String
-import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.math.BigInteger
 import java.net.URLDecoder
 import java.security.cert.CertificateFactory
 import java.util.zip.CRC32
+import me.leon.base.base64
+import me.leon.ext.hex2ByteArray
+import me.leon.ext.stacktrace
+import me.leon.ext.unicode2String
+import org.junit.Test
 
 class MyTest {
 
@@ -135,7 +135,8 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
 
     @Test
     fun urlDecodeTest() {
-        val raw = "https://subcon.dlj.tf/sub?target=clash&new_name=true&url=" +
+        val raw =
+            "https://subcon.dlj.tf/sub?target=clash&new_name=true&url=" +
                 "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
                 "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
                 "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
@@ -144,7 +145,6 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
                 "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
                 "er/Clash/config/ACL4SSR_Online.ini"
 
-        URLDecoder.decode(raw)
-            .also { println(it) }
+        URLDecoder.decode(raw).also { println(it) }
     }
 }
