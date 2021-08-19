@@ -42,6 +42,7 @@ class EncodeView : View("编解码") {
         }
     override val root = vbox {
         paddingAll = 8
+
         label("待处理:") { paddingAll = 8 }
         input =
             textarea {
