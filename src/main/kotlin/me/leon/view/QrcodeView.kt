@@ -96,7 +96,6 @@ class QrcodeView : View("Qrcode") {
             }
         // 绑定鼠标按下拖拽的事件
         addMouseDraggedEvent(anchorPane)
-
         // 绑定鼠标松开事件
         addMouseReleasedEvent(anchorPane, stage)
         scene.onKeyPressed =
