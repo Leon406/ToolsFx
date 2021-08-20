@@ -14,7 +14,6 @@ import javafx.util.Duration
 
 class  Toast private constructor () {
     companion object {
-        private val toastStage = Stage()
         var size: Double = 15.0
         var opacity: Double = 5.0
         fun makeText(
@@ -24,9 +23,7 @@ class  Toast private constructor () {
             fadeInDelay: Int = 500,
             fadeOutDelay: Int = 500
         ) {
-            if (toastStage.isShowing) {
-                toastStage.hide()
-            }
+            val toastStage = Stage()
             toastStage.initOwner(stage)
             toastStage.isResizable = false
             toastStage.initStyle(StageStyle.TRANSPARENT)
