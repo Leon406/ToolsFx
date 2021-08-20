@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream
 import java.math.BigInteger
 import java.net.URLDecoder
 import java.security.cert.CertificateFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
 import me.leon.base.base64
 import me.leon.ext.hex2ByteArray
@@ -146,5 +148,16 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
                 "er/Clash/config/ACL4SSR_Online.ini"
 
         URLDecoder.decode(raw).also { println(it) }
+    }
+
+    @Test
+    fun localDate() {
+
+        val now = LocalDateTime.now()
+        println(now)
+
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh-mm-ss")).also {
+            println(it)
+        }
     }
 }

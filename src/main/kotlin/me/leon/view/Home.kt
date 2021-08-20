@@ -6,7 +6,6 @@ import tornadofx.*
 
 class Home : View("开发工具集 (ToolsFx) by Leon406 ") {
     override val root = tabpane {
-        tab<QrcodeView>()
         tab<EncodeView>()
         tab<EncodeTransferView>()
         tab<DigestView>()
@@ -14,6 +13,7 @@ class Home : View("开发工具集 (ToolsFx) by Leon406 ") {
         tab<SymmetricCryptoView>()
         tab<SymmetricCryptoStreamView>()
         tab<AsymmetricCryptoView>()
+        tab<QrcodeView>()
     }
 
     companion object {
