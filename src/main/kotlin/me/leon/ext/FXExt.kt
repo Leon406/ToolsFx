@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.image.WritableImage
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
+import javafx.stage.FileChooser
+import javafx.stage.Window
 import javax.imageio.ImageIO
 
 fun String.copy() =
@@ -31,3 +33,5 @@ fun BufferedImage.toFxImg(): Image {
 fun BufferedImage.writeFile(path: String = "E:/tmp.png", format: String = "png") {
     ImageIO.write(this, format, File(path))
 }
+
+fun Window.fileChooser() = FileChooser().apply { title = "请选择文件" }.showOpenDialog(this)

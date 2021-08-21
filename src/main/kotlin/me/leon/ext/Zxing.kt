@@ -13,7 +13,7 @@ import javax.imageio.ImageIO
 
 /** 识别二维码 */
 @Throws(IOException::class, NotFoundException::class)
-fun File.qrReader(): Result? {
+fun File.qrReader(): String {
     val formatReader = MultiFormatReader()
     // 读取指定的二维码文件
     val bufferedImage = ImageIO.read(this)
@@ -27,7 +27,25 @@ fun File.qrReader(): Result? {
     println("二维码格式类型：" + result.barcodeFormat)
     println("二维码文本内容：" + result.text)
     bufferedImage.flush()
-    return result
+    return result.text
+}
+
+/** 识别二维码 */
+@Throws(IOException::class, NotFoundException::class)
+fun BufferedImage.qrReader(): String {
+    val formatReader = MultiFormatReader()
+    // 读取指定的二维码文件
+    val binaryBitmap = BinaryBitmap(HybridBinarizer(BufferedImageLuminanceSource(this)))
+    // 定义二维码参数
+    val hints = Hashtable<DecodeHintType, Any>()
+    hints[DecodeHintType.CHARACTER_SET] = "utf-8"
+    val result = formatReader.decode(binaryBitmap, hints)
+    // 输出相关的二维码信息
+    println("解析结果：$result")
+    println("二维码格式类型：" + result.barcodeFormat)
+    println("二维码文本内容：" + result.text)
+    this.flush()
+    return result.text
 }
 
 fun String.createQR(

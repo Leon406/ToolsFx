@@ -2,12 +2,13 @@ package me.leon.view
 
 import java.awt.Rectangle
 import java.awt.Robot
-import java.io.File
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.control.TextArea
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.*
@@ -20,35 +21,60 @@ import me.leon.ext.*
 import tornadofx.*
 
 class QrcodeView : View("Qrcode") {
-    override val root = vbox {
-        val bu = button("截屏") { action { this@QrcodeView.show() } }
+    // 切图区域的起始位置x
+    private var startX = 0.0
 
-        button("生成二维码") { action { iv!!.image = createQR() } }
-        button("识别二维码") { action { File("E:/qr_tmp.png").qrReader() } }
+    // 切图区域的起始位置y
+    private var startY = 0.0
+
+    // 切图区域宽
+    private var w = 0.0
+
+    // 切图区域高
+    private var h = 0.0
+
+    // 切图区域
+    private lateinit var hBox: HBox
+    private lateinit var tf: TextArea
+
+    // 切成的图片展示区域
+    private lateinit var iv: ImageView
+
+    override val closeable = SimpleBooleanProperty(false)
+
+    override val root = vbox {
+        paddingAll = 8
+        val bu = button("截屏识别") { action { this@QrcodeView.show() } }
+        button("生成二维码") {
+            action {
+                if (tf.text.isNotEmpty()) {
+                    iv.image = createQR(tf.text)
+                }
+            }
+        }
+        button("识别二维码") {
+            action {
+                primaryStage.fileChooser()?.let {
+                    iv.image = Image(it.inputStream())
+                    tf.text = it.qrReader()
+                }
+            }
+        }
+        hbox {
+            button("复制内容") {
+                action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
+            }
+            button("复制二维码") {
+                action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
+            }
+        }
+        label("二维码内容:")
+        tf = textarea() { isWrapText = true }
         iv = imageview {}
         val keyCombination: KeyCombination = KeyCombination.valueOf("ctrl+alt+p")
         val mc = Mnemonic(bu, keyCombination)
         scene?.addMnemonic(mc)
     }
-
-    private var startX // 切图区域的起始位置x
-     =
-        0.0
-    private var startY // 切图区域的起始位置y
-     =
-        0.0
-    var w // 切图区域宽
-     =
-        0.0
-    var h // 切图区域高
-     =
-        0.0
-    var hBox // 切图区域
-    : HBox? =
-        null
-    var iv // 切成的图片展示区域
-    : ImageView? =
-        null
 
     private fun show() {
         // 将主舞台缩放到任务栏
@@ -116,7 +142,7 @@ class QrcodeView : View("Qrcode") {
                 anchorPane.style = "-fx-background-color: #00000000"
                 // 添加剪切按钮，并显示在切图区域的底部
                 val b = Button("剪切")
-                hBox!!.border =
+                hBox.border =
                     Border(
                         BorderStroke(
                             Paint.valueOf("#85858544"),
@@ -125,19 +151,14 @@ class QrcodeView : View("Qrcode") {
                             BorderWidths(3.0)
                         )
                     )
-                hBox!!.children.add(b)
-                hBox!!.alignment = Pos.BOTTOM_RIGHT
+                hBox.children.add(b)
+                hBox.alignment = Pos.BOTTOM_RIGHT
                 // 为切图按钮绑定切图事件
                 b.onAction =
                     EventHandler {
-                        // 切图辅助舞台小时
+                        // 切图辅助舞台
                         stage.close()
-
-                        try {
-                            captureImg()
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
+                        runCatching { captureImg() }
                         // 主舞台还原
                         primaryStage.isIconified = false
                     }
@@ -164,8 +185,8 @@ class QrcodeView : View("Qrcode") {
                 // 计算宽高并且完成切图区域的动态效果
                 w = abs(event.sceneX - startX)
                 h = abs(event.sceneY - startY)
-                hBox!!.prefWidth = w
-                hBox!!.prefHeight = h
+                hBox.prefWidth = w
+                hBox.prefHeight = h
                 label.text = "宽：$w 高：$h"
             }
     }
@@ -176,17 +197,11 @@ class QrcodeView : View("Qrcode") {
         val re = Rectangle(startX.toInt(), startY.toInt(), w.toInt(), h.toInt())
         val screenCapture = robot.createScreenCapture(re)
         val bufferedImage = screenCapture.toFxImg()
-        iv!!.image = bufferedImage
-
-        bufferedImage.copy()
-        screenCapture.writeFile("E:/tmp.png")
-
-        File("E:/tmp.png").qrReader()
+        iv.image = bufferedImage
+        tf.text = screenCapture.qrReader()
     }
 
-    private fun createQR(data: String = "E:/tmp.png"): Image {
-        val bufferedImage = data.createQR()
-        bufferedImage.writeFile("E:/qr_tmp.png")
-        return bufferedImage.toFxImg()
+    private fun createQR(data: String = "this is test data"): Image {
+        return data.createQR().toFxImg()
     }
 }
