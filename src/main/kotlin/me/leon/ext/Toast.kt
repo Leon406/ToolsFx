@@ -12,7 +12,7 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.util.Duration
 
-class  Toast private constructor () {
+class Toast private constructor() {
     companion object {
         var size: Double = 15.0
         var opacity: Double = 5.0

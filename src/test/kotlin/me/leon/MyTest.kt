@@ -160,4 +160,9 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
             println(it)
         }
     }
+
+    @Test
+    fun sig() {
+        SignatureDemo.sigTest()
+    }
 }

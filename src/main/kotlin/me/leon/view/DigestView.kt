@@ -12,7 +12,7 @@ import me.leon.controller.DigestController
 import me.leon.ext.copy
 import tornadofx.*
 
-class DigestView : View("哈希(摘要)") {
+class DigestView : View("哈希") {
     private val controller: DigestController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val fileHash = SimpleBooleanProperty(false)
