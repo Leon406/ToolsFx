@@ -113,8 +113,6 @@ class SignatureView : View("签名与验签") {
             "SM2" to listOf("SHA256withSM2", "SM3withSM2"),
             "Ed448" to listOf("Ed448"),
             "Ed25519" to listOf("Ed25519"),
-            //            "ECGOST3410-2012" to listOf("224", "256", "384", "512", "512/224",
-            // "512/256"),
             "EC" to
                 listOf(
                     "SHA1withECNR",
@@ -157,7 +155,9 @@ class SignatureView : View("签名与验签") {
             }
             label("签名算法:  ") { paddingAll = 8 }
             cbSigs =
-                combobox(selectedSigAlg, keyPairAlgs.values.first()) { cellFormat { text = it } }
+                combobox(selectedSigAlg, keyPairAlgs.values.first()) {
+                    cellFormat { text = it }
+                }
         }
 
         selectedKeyPairAlg.addListener { _, _, newValue ->

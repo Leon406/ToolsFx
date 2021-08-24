@@ -68,8 +68,12 @@ class QrcodeView : View("Qrcode") {
                 action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
             }
         }
-        label("二维码内容:")
-        tf = textarea() { isWrapText = true }
+        label("内容:")
+        tf = textarea {
+            promptText = "请输入文本或者使用截屏识别/识别二维码"
+            isWrapText = true
+        }
+        label("二维码图片:")
         iv = imageview {}
         val keyCombination: KeyCombination = KeyCombination.valueOf("ctrl+alt+p")
         val mc = Mnemonic(bu, keyCombination)
