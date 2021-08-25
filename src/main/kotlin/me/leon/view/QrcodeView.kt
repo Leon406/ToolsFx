@@ -1,7 +1,5 @@
 package me.leon.view
 
-import java.awt.Rectangle
-import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
@@ -16,9 +14,11 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import kotlin.math.abs
 import me.leon.ext.*
 import tornadofx.*
+import java.awt.Rectangle
+import java.awt.Robot
+import kotlin.math.abs
 
 class QrcodeView : View("Qrcode") {
     // 切图区域的起始位置x
@@ -50,8 +50,14 @@ class QrcodeView : View("Qrcode") {
         hbox {
             spacing = 16.0
             label("识别：")
-            bu = button("截屏识别") { action { this@QrcodeView.show() } }
+            bu = button("截屏识别") {
+                action { this@QrcodeView.show() }
+                shortcut(KeyCombination.valueOf("Ctrl+Q"))
+                tooltip("快捷键Ctrl+Q")
+            }
             button("文件识别") {
+                shortcut(KeyCombination.valueOf("Ctrl+F"))
+                tooltip("快捷键Ctrl+F")
                 action {
                     primaryStage.fileChooser()?.let {
                         iv.image = Image(it.inputStream())
@@ -70,6 +76,8 @@ class QrcodeView : View("Qrcode") {
                         iv.image = createQR(tf.text)
                     }
                 }
+                shortcut(KeyCombination.valueOf("F9"))
+                tooltip("快捷键F9")
             }
         }
 
@@ -79,9 +87,13 @@ class QrcodeView : View("Qrcode") {
             label("内容:")
             button("复制内容") {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
+                shortcut(KeyCombination.valueOf("Ctrl+C"))
+                tooltip("快捷键Ctrl+C")
             }
             button("剪切板导入") {
                 action { tf.text = clipboardText() }
+                shortcut(KeyCombination.valueOf("Ctrl+V"))
+                tooltip("快捷键Ctrl+V")
             }
         }
         tf = textarea {
