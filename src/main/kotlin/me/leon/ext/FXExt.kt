@@ -16,8 +16,7 @@ import javax.imageio.ImageIO
 fun String.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putString(this@copy) })
 
-fun clipboardText() =
-    Clipboard.getSystemClipboard().string
+fun clipboardText() = Clipboard.getSystemClipboard().string
 
 fun Image.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putImage(this@copy) })

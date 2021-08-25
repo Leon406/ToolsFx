@@ -1,9 +1,5 @@
 package me.leon
 
-import javafx.scene.layout.BorderStrokeStyle
-import javafx.scene.shape.StrokeLineCap
-import javafx.scene.shape.StrokeLineJoin
-import javafx.scene.shape.StrokeType
 import javafx.scene.text.FontWeight
 import tornadofx.*
 
@@ -27,10 +23,10 @@ class Styles : Stylesheet() {
         button {
             fontSize = 14.px
             fontWeight = FontWeight.BOLD
-//            padding = box(10.px)
-         and(hover) {
+            //            padding = box(10.px)
+            and(hover) {
                 backgroundColor += hoverColor
-//             borderColor += box(dangerColor)
+                //             borderColor += box(dangerColor)
             }
         }
 
@@ -39,24 +35,22 @@ class Styles : Stylesheet() {
             padding = box(5.px, 10.px)
             fontWeight = FontWeight.BOLD
             maxWidth = infinity
-//            borderColor += box(dangerColor)
-//            borderStyle += BorderStrokeStyle(
-//                StrokeType.INSIDE,
-//                StrokeLineJoin.MITER,
-//                StrokeLineCap.BUTT,
-//                10.0,
-//                0.0,
-//                listOf(25.0, 5.0)
-//            )
-//            borderWidth += box(5.px)
-//
-//            and(hover) {
-//                backgroundColor += hoverColor
-//                borderColor += box(dangerColor)
-//            }
+            //            borderColor += box(dangerColor)
+            //            borderStyle += BorderStrokeStyle(
+            //                StrokeType.INSIDE,
+            //                StrokeLineJoin.MITER,
+            //                StrokeLineCap.BUTT,
+            //                10.0,
+            //                0.0,
+            //                listOf(25.0, 5.0)
+            //            )
+            //            borderWidth += box(5.px)
+            //
+            //            and(hover) {
+            //                backgroundColor += hoverColor
+            //                borderColor += box(dangerColor)
+            //            }
 
         }
-
-
     }
 }

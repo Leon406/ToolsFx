@@ -167,7 +167,7 @@ class MacView : View("MAC") {
             newValue?.run {
                 cbBits.items = algs[newValue]!!.asObservable()
                 selectedBits.set(algs[newValue]!!.first())
-                enableBits.value = algs[newValue]!!.size >1
+                enableBits.value = algs[newValue]!!.size > 1
                 enableIv.value = method.contains("POLY1305|-GMAC".toRegex())
             }
         }

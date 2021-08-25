@@ -1,5 +1,7 @@
 package me.leon.view
 
+import java.awt.Rectangle
+import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
@@ -14,11 +16,9 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import kotlin.math.abs
 import me.leon.ext.*
 import tornadofx.*
-import java.awt.Rectangle
-import java.awt.Robot
-import kotlin.math.abs
 
 class QrcodeView : View("Qrcode") {
     // 切图区域的起始位置x
@@ -50,11 +50,12 @@ class QrcodeView : View("Qrcode") {
         hbox {
             spacing = 16.0
             label("识别：")
-            bu = button("截屏识别") {
-                action { this@QrcodeView.show() }
-                shortcut(KeyCombination.valueOf("Ctrl+Q"))
-                tooltip("快捷键Ctrl+Q")
-            }
+            bu =
+                button("截屏识别") {
+                    action { this@QrcodeView.show() }
+                    shortcut(KeyCombination.valueOf("Ctrl+Q"))
+                    tooltip("快捷键Ctrl+Q")
+                }
             button("文件识别") {
                 shortcut(KeyCombination.valueOf("Ctrl+F"))
                 tooltip("快捷键Ctrl+F")
@@ -65,7 +66,6 @@ class QrcodeView : View("Qrcode") {
                     }
                 }
             }
-
         }
         hbox {
             spacing = 16.0
@@ -81,7 +81,6 @@ class QrcodeView : View("Qrcode") {
             }
         }
 
-
         hbox {
             spacing = 24.0
             label("内容:")
@@ -96,10 +95,11 @@ class QrcodeView : View("Qrcode") {
                 tooltip("快捷键Ctrl+V")
             }
         }
-        tf = textarea {
-            promptText = "请输入文本或者使用截屏识别/识别二维码"
-            isWrapText = true
-        }
+        tf =
+            textarea {
+                promptText = "请输入文本或者使用截屏识别/识别二维码"
+                isWrapText = true
+            }
         hbox {
             label("二维码图片:")
             button("复制二维码") {

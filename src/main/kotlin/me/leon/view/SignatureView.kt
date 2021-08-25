@@ -155,9 +155,7 @@ class SignatureView : View("签名与验签") {
             }
             label("签名算法:  ") { paddingAll = 8 }
             cbSigs =
-                combobox(selectedSigAlg, keyPairAlgs.values.first()) {
-                    cellFormat { text = it }
-                }
+                combobox(selectedSigAlg, keyPairAlgs.values.first()) { cellFormat { text = it } }
         }
 
         selectedKeyPairAlg.addListener { _, _, newValue ->

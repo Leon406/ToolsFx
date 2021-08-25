@@ -95,9 +95,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                 }
             }
 
-            checkbox("私钥加密", privateKeyEncrypt){
-                tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
-            }
+            checkbox("私钥加密", privateKeyEncrypt) { tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密") }
 
             button("运行") { action { doCrypto() } }
             button("上移") {

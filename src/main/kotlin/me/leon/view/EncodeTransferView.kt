@@ -3,7 +3,6 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
-import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
@@ -77,9 +76,7 @@ class EncodeTransferView : View("编码转换") {
             hgap = 16.0
             alignment = Pos.CENTER
             button("转换") {
-                action {
-                    run()
-                }
+                action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
             button("上移") {
