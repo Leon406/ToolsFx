@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
+import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
@@ -43,10 +44,12 @@ class EncodeTransferView : View("编码转换") {
         }
     override val root = vbox {
         paddingAll = 8
-        label("待处理:") { paddingAll = 8 }
+        spacing = 8.0
+
         hbox {
-            paddingAll = 8
-            alignment = Pos.BASELINE_CENTER
+            label("待处理编码:") { paddingAll = 8 }
+            alignment = Pos.CENTER_LEFT
+
             togglegroup {
                 spacing = 8.0
                 radiobutton("base64") { isSelected = true }
@@ -56,7 +59,7 @@ class EncodeTransferView : View("编码转换") {
                 radiobutton("unicode")
                 radiobutton("hex")
                 radiobutton("binary")
-                radiobutton("base64 safe")
+                radiobutton("urlBase64")
                 selectedToggleProperty().addListener { _, _, new ->
                     srcEncodeType = (new as RadioButton).text.encodeType()
                 }
@@ -68,9 +71,32 @@ class EncodeTransferView : View("编码转换") {
                 isWrapText = true
                 onDragEntered = eventHandler
             }
+
+        tilepane {
+            paddingTop = 8
+            hgap = 16.0
+            alignment = Pos.CENTER
+            button("转换") {
+                action {
+                    run()
+                }
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+            }
+            button("上移") {
+                action {
+                    input.text = outputText
+                    output.text = ""
+                }
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+            }
+            button("复制结果") {
+                action { outputText.copy() }
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+            }
+        }
         hbox {
-            paddingAll = 8
-            alignment = Pos.BASELINE_CENTER
+            label("输出内容:") { paddingBottom = 8 }
+            alignment = Pos.CENTER_LEFT
             togglegroup {
                 spacing = 8.0
                 radiobutton("base64") { isSelected = true }
@@ -80,26 +106,14 @@ class EncodeTransferView : View("编码转换") {
                 radiobutton("unicode")
                 radiobutton("hex")
                 radiobutton("binary")
-                radiobutton("base64 safe")
+                radiobutton("urlBase64")
                 selectedToggleProperty().addListener { _, _, new ->
                     dstEncodeType = (new as RadioButton).text.encodeType()
                     run()
                 }
             }
         }
-        hbox {
-            alignment = Pos.BASELINE_CENTER
-            paddingAll = 8.0f
-            button("转换") { action { run() } }
-            button("上移") {
-                action {
-                    input.text = outputText
-                    output.text = ""
-                }
-            }
-            button("复制结果") { action { outputText.copy() } }
-        }
-        label("输出内容:") { paddingBottom = 8 }
+
         output =
             textarea {
                 promptText = "结果"
