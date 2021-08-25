@@ -47,7 +47,7 @@ class EncodeTransferView : View("编码转换") {
         spacing = 8.0
 
         hbox {
-            label("待处理编码:") { paddingAll = 8 }
+            label("待处理:") { paddingAll = 8 }
             alignment = Pos.CENTER_LEFT
 
             togglegroup {

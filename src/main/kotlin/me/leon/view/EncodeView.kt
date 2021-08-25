@@ -51,7 +51,8 @@ class EncodeView : View("编解码") {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.BASELINE_CENTER
+            alignment = Pos.CENTER_LEFT
+            label("编码:")
             togglegroup {
                 spacing = 8.0
                 radiobutton("base64") {
