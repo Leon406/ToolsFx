@@ -37,7 +37,7 @@ class DigestView : View("哈希") {
         }
 
     // https://www.bouncycastle.org/specifications.html
-    val algs =
+    private val algs =
         linkedMapOf(
             "MD5" to listOf("128"),
             "MD4" to listOf("128"),
@@ -80,6 +80,7 @@ class DigestView : View("哈希") {
 
     override val root = vbox {
         paddingAll = 8
+        spacing = 8.0
         label("待处理:") { paddingAll = 8 }
         input =
             textarea {
@@ -88,7 +89,6 @@ class DigestView : View("哈希") {
                 onDragEntered = eventHandler
             }
         hbox {
-            paddingAll = 8
             alignment = Pos.CENTER_LEFT
             label("算法:  ")
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
@@ -126,11 +126,13 @@ class DigestView : View("哈希") {
         }
         hbox {
             alignment = Pos.CENTER_LEFT
+            spacing = 8.0
+            paddingLeft = 8
+            checkbox("文件模式", fileHash)
             button("运行") { action { doHash() } }
-            checkbox("文件", fileHash) { paddingAll = 8 }
             button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:") { paddingBottom = 8 }
+        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"
