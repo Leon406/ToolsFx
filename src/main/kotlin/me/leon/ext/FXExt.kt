@@ -16,7 +16,7 @@ import javax.imageio.ImageIO
 fun String.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putString(this@copy) })
 
-fun clipboardText() = Clipboard.getSystemClipboard().string
+fun clipboardText(): String? = Clipboard.getSystemClipboard().string
 
 fun Image.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putImage(this@copy) })
@@ -24,16 +24,15 @@ fun Image.copy() =
 fun String.openInBrowser() = Desktop.getDesktop().browse(URL(this).toURI())
 
 fun BufferedImage.toFxImg(): Image {
-
-    var wr: WritableImage? = null
-    wr = WritableImage(width, height)
+    var wr = WritableImage(width, height)
     val pw = wr.pixelWriter
     for (x in 0 until width) for (y in 0 until height) pw.setArgb(x, y, getRGB(x, y))
     return ImageView(wr).image
 }
 
-fun BufferedImage.writeFile(path: String = "E:/tmp.png", format: String = "png") {
+fun BufferedImage.writeFile(path: String, format: String = "png") {
     ImageIO.write(this, format, File(path))
 }
 
-fun Window.fileChooser() = FileChooser().apply { title = "请选择文件" }.showOpenDialog(this)
+fun Window.fileChooser(hint: String = "请选择文件"): File? =
+    FileChooser().apply { title = hint }.showOpenDialog(this)

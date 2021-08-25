@@ -6,7 +6,7 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 group = 'me.leon.toolfx'
-version = '1.4.0'
+version = '1.5.0'
 
 repositories {
     mavenCentral()

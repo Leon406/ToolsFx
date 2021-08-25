@@ -140,8 +140,18 @@ note: openssl用公私钥对加解密,生成私钥pkcs8编码
 
 ![sym](./art/rsa_pub_decrypt_hexdata.gif)
 
+### 数字签名校验 
 
-### 数字签名校验 (TODO) 
+- [x] RSA系列
+- [x] DSA
+- [x] ECDSA
+- [x] EC
+- [x] EdDSA(ED448/ED25192)
+- [x] SM2
+
+### 其他功能
+
+- ​	二维码功能
 
 ### 特性
 
@@ -149,8 +159,6 @@ note: openssl用公私钥对加解密,生成私钥pkcs8编码
 - [x] 对称key, iv 支持base64 ,hex
 - [x] 对称加密支持文件加密解密,输出文件 (测试m3u8 ts文件解密后正常播放)
 - [ ] 键盘事件, 快捷键
-- [ ] 不同算法提示及限制
-- [ ] UI美化
 
 bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
