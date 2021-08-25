@@ -1,7 +1,5 @@
 package me.leon.view
 
-import java.awt.Rectangle
-import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
@@ -16,9 +14,11 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import kotlin.math.abs
 import me.leon.ext.*
 import tornadofx.*
+import java.awt.Rectangle
+import java.awt.Robot
+import kotlin.math.abs
 
 class QrcodeView : View("Qrcode") {
     // 切图区域的起始位置x
@@ -35,6 +35,7 @@ class QrcodeView : View("Qrcode") {
 
     // 切图区域
     private lateinit var hBox: HBox
+    private lateinit var bu: Button
     private lateinit var tf: TextArea
 
     // 切成的图片展示区域
@@ -43,34 +44,72 @@ class QrcodeView : View("Qrcode") {
     override val closeable = SimpleBooleanProperty(false)
 
     override val root = vbox {
-        paddingAll = 8
-        val bu = button("截屏识别") { action { this@QrcodeView.show() } }
-        button("生成二维码") {
-            action {
-                if (tf.text.isNotEmpty()) {
-                    iv.image = createQR(tf.text)
+        paddingAll = 16
+        spacing = 16.0
+
+        hbox {
+            spacing = 16.0
+            label("识别：")
+            bu = button("截屏识别") {
+                action { this@QrcodeView.show() }
+                shortcut(KeyCombination.valueOf("Ctrl+Q"))
+                tooltip("快捷键Ctrl+Q")
+            }
+            button("文件识别") {
+                shortcut(KeyCombination.valueOf("Ctrl+F"))
+                tooltip("快捷键Ctrl+F")
+                action {
+                    primaryStage.fileChooser()?.let {
+                        iv.image = Image(it.inputStream())
+                        tf.text = it.qrReader()
+                    }
                 }
             }
-        }
-        button("识别二维码") {
-            action {
-                primaryStage.fileChooser()?.let {
-                    iv.image = Image(it.inputStream())
-                    tf.text = it.qrReader()
-                }
-            }
+
         }
         hbox {
+            spacing = 16.0
+            label("生成：")
+            button("生成二维码") {
+                action {
+                    if (tf.text.isNotEmpty()) {
+                        iv.image = createQR(tf.text)
+                    }
+                }
+                shortcut(KeyCombination.valueOf("F9"))
+                tooltip("快捷键F9")
+            }
+        }
+
+
+        hbox {
+            spacing = 24.0
+            label("内容:")
             button("复制内容") {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
+                shortcut(KeyCombination.valueOf("Ctrl+C"))
+                tooltip("快捷键Ctrl+C")
             }
+            button("剪切板导入") {
+                action { tf.text = clipboardText() }
+                shortcut(KeyCombination.valueOf("Ctrl+V"))
+                tooltip("快捷键Ctrl+V")
+            }
+        }
+        tf = textarea {
+            promptText = "请输入文本或者使用截屏识别/识别二维码"
+            isWrapText = true
+        }
+        hbox {
+            label("二维码图片:")
             button("复制二维码") {
                 action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
             }
         }
-        label("二维码内容:")
-        tf = textarea() { isWrapText = true }
-        iv = imageview {}
+        hbox {
+            alignment = Pos.CENTER
+            iv = imageview()
+        }
         val keyCombination: KeyCombination = KeyCombination.valueOf("ctrl+alt+p")
         val mc = Mnemonic(bu, keyCombination)
         scene?.addMnemonic(mc)
@@ -158,7 +197,10 @@ class QrcodeView : View("Qrcode") {
                     EventHandler {
                         // 切图辅助舞台
                         stage.close()
-                        runCatching { captureImg() }
+                        runCatching { captureImg() }.onFailure {
+                            it.printStackTrace()
+                            primaryStage.showToast("二维码识别错误")
+                        }
                         // 主舞台还原
                         primaryStage.isIconified = false
                     }

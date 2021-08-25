@@ -13,6 +13,7 @@ class Home : View("开发工具集 (ToolsFx) by Leon406 ") {
         tab<SymmetricCryptoView>()
         tab<SymmetricCryptoStreamView>()
         tab<AsymmetricCryptoView>()
+        tab<SignatureView>()
         tab<QrcodeView>()
     }
 

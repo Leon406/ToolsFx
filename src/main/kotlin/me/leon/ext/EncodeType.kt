@@ -2,7 +2,7 @@ package me.leon.ext
 
 enum class EncodeType(val type: String) {
     Base64("base64"),
-    Base64Safe("base64 safe"),
+    Base64Safe("urlBase64"),
     Unicode("unicode"),
     Hex("hex"),
     Binary("binary"),

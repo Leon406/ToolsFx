@@ -82,6 +82,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
     private val selectedCharset = SimpleStringProperty(charsets.first())
     override val root = vbox {
         paddingAll = 8
+        spacing = 8.0
         label("待处理:") { paddingAll = 8 }
         input =
             textarea {
@@ -90,18 +91,17 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 onDragEntered = eventHandler
             }
         hbox {
-            paddingAll = 8
             alignment = Pos.CENTER_LEFT
-            label("算法:") { paddingAll = 8 }
+            spacing = 8.0
+            label("算法:")
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
-            label("charset:") { paddingAll = 8 }
+            label("charset:")
             combobox(selectedCharset, charsets) { cellFormat { text = it } }
         }
         hbox {
             alignment = Pos.CENTER_LEFT
-            paddingAll = 8
-            label("key:") { paddingAll = 8 }
+            label("key:")
             key = textfield { promptText = "请输入key" }
             vbox {
                 togglegroup {
@@ -115,7 +115,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                     }
                 }
             }
-            label("iv:") { paddingAll = 8 }
+            label("iv:")
             iv = textfield { promptText = "请输入iv" }
             vbox {
                 togglegroup {
@@ -142,7 +142,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                     doCrypto()
                 }
             }
-            checkbox("文件", isFile)
+            checkbox("文件模式", isFile)
             button("运行") { action { doCrypto() } }
             button("上移") {
                 action {

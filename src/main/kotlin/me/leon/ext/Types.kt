@@ -3,7 +3,7 @@ package me.leon.ext
 val encodeTypeMap =
     mapOf(
         "base64" to EncodeType.Base64,
-        "base64 safe" to EncodeType.Base64Safe,
+        "urlBase64" to EncodeType.Base64Safe,
         "urlEncode" to EncodeType.UrlEncode,
         "hex" to EncodeType.Hex,
         "base32" to EncodeType.Base32,

@@ -13,6 +13,8 @@ import tornadofx.*
 class MacView : View("MAC") {
     private val controller: MacController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val enableIv = SimpleBooleanProperty(false)
+    private val enableBits = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
     private lateinit var key: TextField
     private lateinit var iv: TextField
@@ -121,15 +123,15 @@ class MacView : View("MAC") {
 
     override val root = vbox {
         paddingAll = 8
-        label("待处理:") { paddingAll = 8 }
+        spacing = 8.0
+        label("待处理:")
         input =
-            textarea("HelloWorld") {
+            textarea() {
                 promptText = "请输入内容或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
-            paddingAll = 8
             alignment = Pos.CENTER_LEFT
             label("算法:  ")
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
@@ -137,18 +139,23 @@ class MacView : View("MAC") {
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
                     cellFormat { text = it }
-                    isDisable = true
+                    enableWhen(enableBits)
                 }
         }
         hbox {
-            paddingAll = 8
             alignment = Pos.CENTER_LEFT
-            label("key: ") { paddingAll = 8 }
+            spacing = 8.0
+            label("key: ")
             key = textfield("hmac_key") { promptText = "请输入key" }
-            label("输出编码:") { paddingAll = 8 }
+            label("iv: ") { paddingAll = 8 }
+            iv =
+                textfield {
+                    enableWhen(enableIv)
+                    promptText = "请输入iv"
+                }
+            label("输出编码:")
             togglegroup {
                 spacing = 8.0
-                paddingAll = 8
                 radiobutton("hex") { isSelected = true }
                 radiobutton("base64")
                 selectedToggleProperty().addListener { _, _, new ->
@@ -156,22 +163,12 @@ class MacView : View("MAC") {
                 }
             }
         }
-        hbox {
-            paddingAll = 8
-            alignment = Pos.CENTER_LEFT
-            label("iv: ") { paddingAll = 8 }
-            iv =
-                textfield {
-                    promptText = "请输入iv"
-                    isDisable = true
-                }
-        }
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
                 cbBits.items = algs[newValue]!!.asObservable()
                 selectedBits.set(algs[newValue]!!.first())
-                cbBits.isDisable = algs[newValue]!!.size == 1
-                iv.isDisable = !newValue.contains("POLY1305|-GMAC".toRegex())
+                enableBits.value = algs[newValue]!!.size >1
+                enableIv.value = method.contains("POLY1305|-GMAC".toRegex())
             }
         }
         selectedBits.addListener { _, _, newValue ->
@@ -191,11 +188,17 @@ class MacView : View("MAC") {
                 }
             }
         }
-        hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = 8.0
-            button("运行") { action { doMac() } }
-            button("复制结果") { action { outputText.copy() } }
+        tilepane {
+            alignment = Pos.CENTER
+            hgap = 32.0
+            button("运行") {
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                action { doMac() }
+            }
+            button("复制结果") {
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                action { outputText.copy() }
+            }
         }
         label("输出内容:") { paddingBottom = 8 }
         output =

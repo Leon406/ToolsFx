@@ -67,6 +67,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
     override val root = vbox {
         paddingAll = 8
+        spacing = 8.0
         label("密钥: ") { paddingAll = 8 }
         key =
             textarea {
@@ -82,7 +83,6 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             }
 
         hbox {
-            paddingAll = 8
             alignment = Pos.CENTER_LEFT
             label("位数：")
             combobox(selectedBits, bitsLists) { cellFormat { text = it } }
@@ -95,7 +95,9 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                 }
             }
 
-            checkbox("私钥加密", privateKeyEncrypt)
+            checkbox("私钥加密", privateKeyEncrypt){
+                tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
+            }
 
             button("运行") { action { doCrypto() } }
             button("上移") {
