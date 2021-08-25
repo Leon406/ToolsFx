@@ -35,6 +35,7 @@ class QrcodeView : View("Qrcode") {
 
     // 切图区域
     private lateinit var hBox: HBox
+    private lateinit var bu: Button
     private lateinit var tf: TextArea
 
     // 切成的图片展示区域
@@ -43,38 +44,60 @@ class QrcodeView : View("Qrcode") {
     override val closeable = SimpleBooleanProperty(false)
 
     override val root = vbox {
-        paddingAll = 8
-        val bu = button("截屏识别") { action { this@QrcodeView.show() } }
-        button("生成二维码") {
-            action {
-                if (tf.text.isNotEmpty()) {
-                    iv.image = createQR(tf.text)
+        paddingAll = 16
+        spacing = 16.0
+
+        hbox {
+            spacing = 16.0
+            label("识别：")
+            bu = button("截屏识别") { action { this@QrcodeView.show() } }
+            button("文件识别") {
+                action {
+                    primaryStage.fileChooser()?.let {
+                        iv.image = Image(it.inputStream())
+                        tf.text = it.qrReader()
+                    }
                 }
             }
-        }
-        button("识别二维码") {
-            action {
-                primaryStage.fileChooser()?.let {
-                    iv.image = Image(it.inputStream())
-                    tf.text = it.qrReader()
-                }
-            }
+
         }
         hbox {
+            spacing = 16.0
+            label("生成：")
+            button("生成二维码") {
+                action {
+                    if (tf.text.isNotEmpty()) {
+                        iv.image = createQR(tf.text)
+                    }
+                }
+            }
+        }
+
+
+        hbox {
+            spacing = 24.0
+            label("内容:")
             button("复制内容") {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button("复制二维码") {
-                action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
+            button("剪切板导入") {
+                action { tf.text = clipboardText() }
             }
         }
-        label("内容:")
         tf = textarea {
             promptText = "请输入文本或者使用截屏识别/识别二维码"
             isWrapText = true
         }
-        label("二维码图片:")
-        iv = imageview {}
+        hbox {
+            label("二维码图片:")
+            button("复制二维码") {
+                action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
+            }
+        }
+        hbox {
+            alignment = Pos.CENTER
+            iv = imageview()
+        }
         val keyCombination: KeyCombination = KeyCombination.valueOf("ctrl+alt+p")
         val mc = Mnemonic(bu, keyCombination)
         scene?.addMnemonic(mc)
@@ -163,7 +186,10 @@ class QrcodeView : View("Qrcode") {
                     EventHandler {
                         // 切图辅助舞台
                         stage.close()
-                        runCatching { captureImg() }
+                        runCatching { captureImg() }.onFailure {
+                            it.printStackTrace()
+                            primaryStage.showToast("二维码识别错误")
+                        }
                         // 主舞台还原
                         primaryStage.isIconified = false
                     }

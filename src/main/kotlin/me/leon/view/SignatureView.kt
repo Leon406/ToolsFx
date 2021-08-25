@@ -131,7 +131,8 @@ class SignatureView : View("签名与验签") {
 
     override val root = vbox {
         paddingAll = 8
-        label("密钥:") { paddingAll = 8 }
+        spacing = 8.0
+        label("密钥:")
         taKey =
             textarea {
                 promptText = "请输入私钥或者拖动文件到此区域"
@@ -139,7 +140,7 @@ class SignatureView : View("签名与验签") {
                 onDragEntered = eventHandler
             }
 
-        label("原始内容:") { paddingAll = 8 }
+        label("原始内容:")
         taRaw =
             textarea {
                 promptText = "请输入公钥或者拖动文件到此区域"
@@ -147,7 +148,6 @@ class SignatureView : View("签名与验签") {
                 onDragEntered = eventHandler
             }
         hbox {
-            paddingAll = 8
             alignment = Pos.CENTER_LEFT
             label("公私钥算法:  ")
             combobox(selectedKeyPairAlg, keyPairAlgs.keys.toMutableList()) {
@@ -177,11 +177,22 @@ class SignatureView : View("签名与验签") {
                 }
             }
         }
-        hbox {
-            alignment = Pos.CENTER_LEFT
-            button("私钥签名") { action { sign() } }
-            button("公钥验签") { action { verify() } }
-            button("复制结果") { action { signText.copy() } }
+        tilepane {
+            alignment = Pos.CENTER
+            paddingTop = 8
+            hgap = 32.0
+            button("私钥签名") {
+                action { sign() }
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+            }
+            button("公钥验签") {
+                action { verify() }
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+            }
+            button("复制结果") {
+                action { signText.copy() }
+                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+            }
         }
         label("签名 (base64):") { paddingBottom = 8 }
         taSigned =
@@ -189,7 +200,7 @@ class SignatureView : View("签名与验签") {
                 promptText = "结果"
                 isWrapText = true
             }
-        infoLabel = label { paddingTop = 8 }
+        infoLabel = label()
     }
 
     private fun sign() =
