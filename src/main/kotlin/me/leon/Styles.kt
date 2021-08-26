@@ -9,7 +9,7 @@ class Styles : Stylesheet() {
         val myButton by cssclass()
 
         // Define our colors
-        val hoverColor = c("#395bae")
+        val hoverColor = c("#a1a3a6")
         val dangerColor = c("#a94442")
     }
 

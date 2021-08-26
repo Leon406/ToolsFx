@@ -83,7 +83,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
     override val root = vbox {
         paddingAll = 8
         spacing = 8.0
-        label("待处理:") { paddingAll = 8 }
+        label("待处理:")
         input =
             textarea {
                 promptText = "请输入内容或者拖动文件到此区域"

@@ -120,7 +120,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.BASELINE_CENTER
+            alignment = Pos.CENTER_LEFT
             spacing = 8.0
             label("算法:")
             combobox(selectedAlg, algs) { cellFormat { text = it } }

@@ -135,7 +135,7 @@ class SignatureView : View("签名与验签") {
         label("密钥:")
         taKey =
             textarea {
-                promptText = "请输入私钥或者拖动文件到此区域"
+                promptText = "请输入密钥或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
@@ -143,7 +143,7 @@ class SignatureView : View("签名与验签") {
         label("原始内容:")
         taRaw =
             textarea {
-                promptText = "请输入公钥或者拖动文件到此区域"
+                promptText = "请输入或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
@@ -153,7 +153,7 @@ class SignatureView : View("签名与验签") {
             combobox(selectedKeyPairAlg, keyPairAlgs.keys.toMutableList()) {
                 cellFormat { text = it }
             }
-            label("签名算法:  ") { paddingAll = 8 }
+            label("签名算法:  ")
             cbSigs =
                 combobox(selectedSigAlg, keyPairAlgs.values.first()) { cellFormat { text = it } }
         }
@@ -192,7 +192,7 @@ class SignatureView : View("签名与验签") {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
         }
-        label("签名 (base64):") { paddingBottom = 8 }
+        label("签名 (base64):")
         taSigned =
             textarea {
                 promptText = "结果"

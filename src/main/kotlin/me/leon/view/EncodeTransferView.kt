@@ -79,7 +79,7 @@ class EncodeTransferView : View("编码转换") {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button("上移") {
+            button("上移⬆") {
                 action {
                     input.text = outputText
                     output.text = ""

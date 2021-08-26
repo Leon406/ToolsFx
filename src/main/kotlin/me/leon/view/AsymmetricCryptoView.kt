@@ -68,17 +68,17 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
     override val root = vbox {
         paddingAll = 8
         spacing = 8.0
-        label("密钥: ") { paddingAll = 8 }
+        label("密钥: ")
         key =
             textarea {
                 promptText = "请输入密钥或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
-        label("密文 (base64编码,其他请进行编码转换): ") { paddingAll = 8 }
+        label("待处理 (加密时为明文, 解密时为base64编码的密文): ") { paddingAll = 8 }
         input =
             textarea {
-                promptText = "请输入待加密内容或者拖动待加密的文件到此区域"
+                promptText = "请输入或者拖动文件到此区域"
                 isWrapText = true
             }
 
@@ -107,7 +107,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             button("生成公私钥") { action { "https://miniu.alipay.com/keytool/create".openInBrowser() } }
             button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:") { paddingBottom = 8 }
+        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"
