@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "1.5.21"
+    id 'org.jetbrains.kotlin.jvm' version "1.5.30"
     id 'application'
     id "com.diffplug.spotless" version "5.14.2"
     id "io.gitlab.arturbosch.detekt" version "1.18.0"
