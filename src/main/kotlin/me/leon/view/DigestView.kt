@@ -16,6 +16,7 @@ class DigestView : View("哈希") {
     private val controller: DigestController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val fileHash = SimpleBooleanProperty(false)
+    private val isProcessing = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
     private lateinit var infoLabel: Label
     lateinit var output: TextArea
@@ -129,7 +130,10 @@ class DigestView : View("哈希") {
             spacing = 8.0
             paddingLeft = 8
             checkbox("文件模式", fileHash)
-            button("运行") { action { doHash() } }
+            button("运行") {
+                enableWhen(! isProcessing)
+                action { doHash() }
+            }
             button("复制结果") { action { outputText.copy() } }
         }
         label("输出内容:")
@@ -143,10 +147,12 @@ class DigestView : View("哈希") {
 
     private fun doHash() =
         runAsync {
+            isProcessing.value = true
             if (fileHash.get()) controller.digestFile(method, inputText)
             else controller.digest(method, inputText)
         } ui
             {
+                isProcessing.value = false
                 output.text = it
                 infoLabel.text = info
             }
