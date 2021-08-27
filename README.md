@@ -1,21 +1,34 @@
-# 项目主要功能
+
+
+## 前言
+
+**为什么开发这个工具?**
+
+- 每次加解密需要找在线工具进行处理,效率低
+- 在线工具支持的功能不全或者某些处理结果不对 (如查错网AES CFB/OFB  加密错误)
+- 大部分工具不支持文件加密
+- 第三方PC端工具功能不全,体验不好,不支持跨平台 (如PYG密码工具箱)
+
+## 主要功能
 
 ### 编解码
 
 - [x] base64
-- [x] base64safe
+- [x] urlBase64
 - [x] base16/32
 - [x] UrlEncode
 - [x] Unicode
 - [x] hex
 - [x] binary
+- [ ] base系列自定义字典
 
 ![encode](./art/encode.gif)
 
 
 ### 编码互转功能 (非原始字符)
-- [x] 编解码功能相互转码
+- [x] 编解码功能相互转换
 
+![encode](./art/encode_transfer.gif)
 ### 数据摘要(哈希)
 
 支持文件, 支持超大文件,8G文件测试ok
@@ -127,12 +140,12 @@
 
 - [x]  密钥支持pkcs1 /pkcs8
 - [x]  支持512/1024/2048/3072/4096位
-- [x]  支持长度大于RSA位数的字符解码,但实际不建议这样操作
+- [x]  支持长度大于RSA位数
 - [x]  支持公钥加密私钥解密,私钥加密公钥解密
 - [x]  支持openssl pkcs1/pkcs8 私钥格式
 - [x]  支持证书cer文件加解密
 
-note: openssl用公私钥对加解密,生成私钥pkcs8编码
+**note:** openssl用公私钥对加解密,生成私钥为pkcs8编码
 
 ![sym](./art/asy.gif)
 
@@ -143,26 +156,67 @@ note: openssl用公私钥对加解密,生成私钥pkcs8编码
 ### 数字签名校验 
 
 - [x] RSA系列
+
 - [x] DSA
+
 - [x] ECDSA
+
 - [x] EC
+
 - [x] EdDSA(ED448/ED25192)
+
 - [x] SM2
+
+- [ ] 其他
+
+  
 
 ### 其他功能
 
-- ​	二维码功能
+- [x] 二维码功能
+- [ ] 待定
+- [ ] 待定
 
 ### 特性
 
 - [x] 支持文件拖入
-- [x] 对称key, iv 支持base64 ,hex
+- [x] 对称加密key, iv 支持base64 ,hex
 - [x] 对称加密支持文件加密解密,输出文件 (测试m3u8 ts文件解密后正常播放)
+- [ ] i18n
 - [ ] 键盘事件, 快捷键
 
 bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
+## 下载地址
 
+ [github地址](https://github.com/Leon406/ToolsFx/releases) 
+
+ [码云镜像](https://gitee.com/LeonShih/ToolsFx) 
+
+下载加速 https://leon.lanzoui.com/b0d9av2kb 提取码：52pj
+
+
+
+开发测试时间较短,难免会有bug,欢迎提issue和PR
+
+## 版本选择
+
+- 有jre环境
+  - jdk8      选择jdk8的版本
+  - jdk11+  选择jdk11的版本
+- 无jre环境
+  - 选择 withjre压缩包(仅支持windows)
+
+## 如何运行
+
+- Linux/Mac OX系统双击运行 bin目录下 ToolsFx 
+- Windows 系统双击运行 bin目录下 ToolsFx.bat或者 vbs文件(去除黑窗)
+
+## CREDIT
+
+[bouncy castle](https://github.com/bcgit/bc-java) 
+
+[tornadofx](https://github.com/edvin/tornadofx)
 
 ## LICENSE
 
