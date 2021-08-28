@@ -112,9 +112,7 @@ class MacView : View("MAC") {
             "Shacal-2CMAC" to listOf("256"),
             "SM4-CMAC" to listOf("256"),
             "Threefish" to listOf("256CMAC", "512CMAC", "1024CMAC"),
-            //        "AESCCMMAC" to listOf("256"),
-            //        "VMPCMAC" to listOf("256"),
-            )
+        )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
     private lateinit var cbBits: ComboBox<String>
@@ -147,7 +145,7 @@ class MacView : View("MAC") {
             spacing = 8.0
             label("key: ")
             key = textfield("hmac_key") { promptText = "请输入key" }
-            label("iv: ") { paddingAll = 8 }
+            label("iv: ")
             iv =
                 textfield {
                     enableWhen(enableIv)
@@ -200,7 +198,7 @@ class MacView : View("MAC") {
                 action { outputText.copy() }
             }
         }
-        label("输出内容:") { paddingBottom = 8 }
+        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"

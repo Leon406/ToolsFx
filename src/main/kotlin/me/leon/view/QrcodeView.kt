@@ -86,13 +86,13 @@ class QrcodeView : View("Qrcode") {
             label("内容:")
             button("复制内容") {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
-//                shortcut(KeyCombination.valueOf("Ctrl+C"))
-//                tooltip("快捷键Ctrl+C")
+                //                shortcut(KeyCombination.valueOf("Ctrl+C"))
+                //                tooltip("快捷键Ctrl+C")
             }
             button("剪切板导入") {
                 action { tf.text = clipboardText() }
-//                shortcut(KeyCombination.valueOf("Ctrl+V"))
-//                tooltip("快捷键Ctrl+V")
+                //                shortcut(KeyCombination.valueOf("Ctrl+V"))
+                //                tooltip("快捷键Ctrl+V")
             }
         }
         tf =

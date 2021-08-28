@@ -40,10 +40,12 @@ class EncodeView : View("编解码") {
                 }
             }
         }
-    override val root = vbox {
+
+    private val centerNode = vbox {
         paddingAll = 8
         spacing = 8.0
         label("待处理:")
+
         input =
             textarea {
                 promptText = "请输入内容或者拖动文件到此区域"
@@ -143,14 +145,16 @@ class EncodeView : View("编解码") {
                 }
             }
         }
-        label("输出内容:") { paddingBottom = 8 }
+        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"
                 isWrapText = true
             }
-
-        infoLabel = label { paddingTop = 8 }
+    }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label() }
     }
 
     private fun run() {

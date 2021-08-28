@@ -27,7 +27,7 @@ class EncodeTransferView : View("编码转换") {
     private val outputText: String
         get() = output.text
 
-    private var dstEncodeType = EncodeType.Base64
+    private var dstEncodeType = EncodeType.UrlEncode
     private var srcEncodeType = EncodeType.Base64
     private var isEncode = true
 
@@ -41,14 +41,14 @@ class EncodeTransferView : View("编码转换") {
                 }
             }
         }
-    override val root = vbox {
+
+    private val centerNode = vbox {
         paddingAll = 8
         spacing = 8.0
 
         hbox {
-            label("待处理:") { paddingAll = 8 }
+            label("待处理:")
             alignment = Pos.CENTER_LEFT
-
             togglegroup {
                 spacing = 8.0
                 radiobutton("base64") { isSelected = true }
@@ -59,6 +59,7 @@ class EncodeTransferView : View("编码转换") {
                 radiobutton("hex")
                 radiobutton("binary")
                 radiobutton("urlBase64")
+                selectedToggleProperty().get()
                 selectedToggleProperty().addListener { _, _, new ->
                     srcEncodeType = (new as RadioButton).text.encodeType()
                 }
@@ -92,12 +93,12 @@ class EncodeTransferView : View("编码转换") {
             }
         }
         hbox {
-            label("输出内容:") { paddingBottom = 8 }
+            label("输出内容:")
             alignment = Pos.CENTER_LEFT
             togglegroup {
                 spacing = 8.0
-                radiobutton("base64") { isSelected = true }
-                radiobutton("urlEncode")
+                radiobutton("base64")
+                radiobutton("urlEncode") { isSelected = true }
                 radiobutton("base32")
                 radiobutton("base16")
                 radiobutton("unicode")
@@ -116,8 +117,11 @@ class EncodeTransferView : View("编码转换") {
                 promptText = "结果"
                 isWrapText = true
             }
+    }
 
-        infoLabel = label { paddingTop = 8 }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label() }
     }
 
     private fun run() {

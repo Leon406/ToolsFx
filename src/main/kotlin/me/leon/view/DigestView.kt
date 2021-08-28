@@ -82,7 +82,7 @@ class DigestView : View("哈希") {
     override val root = vbox {
         paddingAll = 8
         spacing = 8.0
-        label("待处理:") { paddingAll = 8 }
+        label("待处理:")
         input =
             textarea {
                 promptText = "请输入内容或者拖动文件到此区域"
@@ -93,7 +93,7 @@ class DigestView : View("哈希") {
             alignment = Pos.CENTER_LEFT
             label("算法:  ")
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
-            label("长度:  ") { paddingAll = 8 }
+            label("长度:  ")
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
                     cellFormat { text = it }
@@ -131,7 +131,7 @@ class DigestView : View("哈希") {
             paddingLeft = 8
             checkbox("文件模式", fileHash)
             button("运行") {
-                enableWhen(! isProcessing)
+                enableWhen(!isProcessing)
                 action { doHash() }
             }
             button("复制结果") { action { outputText.copy() } }

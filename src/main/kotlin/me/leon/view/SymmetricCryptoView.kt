@@ -18,6 +18,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
+    private val isProcessing = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
     private lateinit var key: TextField
     private lateinit var iv: TextField
@@ -178,7 +179,10 @@ class SymmetricCryptoView : View("对称加密(block)") {
                 }
             }
             checkbox("文件模式", isFile)
-            button("运行") { action { doCrypto() } }
+            button("运行") {
+                enableWhen(!isProcessing)
+                action { doCrypto() }
+            }
             button("上移") {
                 action {
                     input.text = outputText
@@ -197,6 +201,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
 
     private fun doCrypto() {
         runAsync {
+            isProcessing.value = true
             if (isEncrypt)
                 if (isFile.get())
                     controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
@@ -218,6 +223,10 @@ class SymmetricCryptoView : View("对称加密(block)") {
                     cipher,
                     selectedCharset.get()
                 )
-        } ui { output.text = it }
+        } ui
+            {
+                isProcessing.value = false
+                output.text = it
+            }
     }
 }
