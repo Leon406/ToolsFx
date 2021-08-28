@@ -118,8 +118,7 @@ class MacView : View("MAC") {
     private lateinit var cbBits: ComboBox<String>
     private val info
         get() = "MAC: $method"
-
-    override val root = vbox {
+    private val centerNode = vbox {
         paddingAll = 8
         spacing = 8.0
         label("待处理:")
@@ -204,7 +203,11 @@ class MacView : View("MAC") {
                 promptText = "结果"
                 isWrapText = true
             }
-        infoLabel = label { paddingTop = 8 }
+    }
+
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label() }
     }
 
     private fun doMac() =

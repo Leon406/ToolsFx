@@ -79,7 +79,7 @@ class DigestView : View("哈希") {
     private val info
         get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${fileHash.get()}"
 
-    override val root = vbox {
+    private val centerNode = vbox {
         paddingAll = 8
         spacing = 8.0
         label("待处理:")
@@ -142,7 +142,10 @@ class DigestView : View("哈希") {
                 promptText = "结果"
                 isWrapText = true
             }
-        infoLabel = label { paddingTop = 8 }
+    }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label() }
     }
 
     private fun doHash() =
