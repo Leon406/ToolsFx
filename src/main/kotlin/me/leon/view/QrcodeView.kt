@@ -56,6 +56,10 @@ class QrcodeView : View("Qrcode") {
                     shortcut(KeyCombination.valueOf("Ctrl+Q"))
                     tooltip("快捷键Ctrl+Q")
                 }
+
+            button("剪贴板图片") {
+                action { clipboardImage()?.toBufferImage()?.qrReader()?.let { tf.text = it } }
+            }
             button("文件识别") {
                 shortcut(KeyCombination.valueOf("Ctrl+F"))
                 tooltip("快捷键Ctrl+F")
@@ -86,14 +90,8 @@ class QrcodeView : View("Qrcode") {
             label("内容:")
             button("复制内容") {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
-                //                shortcut(KeyCombination.valueOf("Ctrl+C"))
-                //                tooltip("快捷键Ctrl+C")
             }
-            button("剪切板导入") {
-                action { tf.text = clipboardText() }
-                //                shortcut(KeyCombination.valueOf("Ctrl+V"))
-                //                tooltip("快捷键Ctrl+V")
-            }
+            button("剪贴板导入") { action { tf.text = clipboardText() } }
         }
         tf =
             textarea {

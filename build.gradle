@@ -32,6 +32,7 @@ javafx {
     version = "16"
     modules = [
             'javafx.controls',
+            'javafx.swing',
 //            if you use javafx.fxml,then uncomment it
 //            'javafx.fxml'
     ]
