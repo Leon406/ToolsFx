@@ -1,6 +1,6 @@
 
 
-## 前言
+## <span id="top">前言</span>
 
 **为什么开发这个工具?**
 
@@ -220,6 +220,10 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
 [tornadofx](https://github.com/edvin/tornadofx)
 
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/Leon406/ToolsFx.svg)](https://starchart.cc/Leon406/ToolsFx)
+
 ## LICENSE
 
 ```
@@ -239,4 +243,6 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
+
+[回到顶部](#top)
 
