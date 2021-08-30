@@ -20,6 +20,7 @@
 - [x] Unicode
 - [x] hex
 - [x] binary
+- [x] base58/base58check
 - [ ] base系列自定义字典
 
 ![encode](./art/encode.gif)
@@ -205,7 +206,8 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
   - jdk8      选择jdk8的版本
   - jdk11+  选择jdk11的版本
 - 无jre环境
-  - 选择 withjre压缩包(仅支持windows)
+  -  64位 windows系统     x64 (jre11)
+  -  32/64位 windows系统  x86 (jre8,不知道就选这个)  
 
 ## 如何运行
 
