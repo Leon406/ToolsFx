@@ -1,19 +1,17 @@
 package me.leon
 
 import java.io.ByteArrayInputStream
-import java.math.BigInteger
 import java.net.URLDecoder
 import java.security.cert.CertificateFactory
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
-import me.leon.base.base64
+import kotlin.system.measureNanoTime
+import me.leon.base.*
 import me.leon.ext.hex2ByteArray
 import me.leon.ext.stacktrace
 import me.leon.ext.unicode2String
 import org.junit.Test
-import kotlin.system.measureNanoTime
-import kotlin.system.measureTimeMillis
 
 class MyTest {
 
@@ -80,86 +78,40 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
         data.hex2ByteArray().base64().also { println(it) }
     }
 
-    fun String.baseNEncode(radix: Int, maps: String = map): String {
-        var bigInteger = BigInteger(this.toByteArray())
-        var remainder: Int
-        val sb = StringBuilder()
-        while (bigInteger != BigInteger.ZERO) {
-            bigInteger.divideAndRemainder(radix.toBigInteger()).run {
-                bigInteger = this[0]
-                remainder = this[1].toInt()
-            }
-            sb.append(maps[remainder])
-        }
-        return sb.reversed().toString()
-    }
-
-    fun ByteArray.baseNEncode(radix: Int, maps: String = map): String {
-        var bigInteger = BigInteger(this)
-        var remainder: Int
-        val sb = StringBuilder()
-        while (bigInteger != BigInteger.ZERO) {
-            bigInteger.divideAndRemainder(radix.toBigInteger()).run {
-                bigInteger = this[0]
-                remainder = this[1].toInt()
-            }
-            sb.append(maps[remainder])
-        }
-        return sb.reversed().toString()
-    }
-
-    private val map = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-    fun String.baseNDecode(radix: Int, maps: String = map) =
-        String(
-            toCharArray()
-                .mapIndexed { index, c -> length - index - 1 to maps.indexOf(c) }
-                .fold(0.toBigInteger()) { acc, pair ->
-                    acc.add(
-                        pair.second.toBigInteger().multiply(radix.toBigInteger().pow(pair.first))
-                    )
-                }
-                .toByteArray()
-        )
-
     @Test
     fun baseNEncode() {
-        "ABDdd东方丽景的猜测1#".baseNEncode(58).also {
+
+        println("ABDdd东方丽景的猜测1#".base58())
+        println("fvw2PFXr4yWZgdRoBp5UptcJeAW1c46YobuRaA".base58Decode2String())
+        measureNanoTime { println(Base58Check.encode("ABDdd东方丽景的猜测1#".toByteArray())) }.also {
             println(it)
-            println(it.baseNDecode(58))
         }
+        measureNanoTime {
+            "ABDdd东方丽景的猜测1#".toByteArray().baseCheck().also {
+                println("dddd " + String(it.baseCheckDecode()))
+            }
+        }
+            .also { println("total $it") }
 
         measureNanoTime {
-            println(base58Check("ABDdd东方丽景的猜测1#"))
-        }.also { println("total $it") }
-        measureNanoTime {
-            println(Base58Check.encode("ABDdd东方丽景的猜测1#".toByteArray()))
-        }.also { println(it) }
-    }
-
-    private fun base58Check(plain: String): String {
-        return base58Check(plain.toByteArray())
-    }
-
-    private fun base58Check(bytes: ByteArray): String {
-        val b2 = ByteArray(bytes.size + 4)
-        val hash = Digests.hash("SHA-256", Digests.hash("SHA-256", bytes))
-        System.arraycopy(bytes, 0, b2, 0, bytes.size)
-        System.arraycopy(hash, 0, b2, bytes.size, 4)
-
-        return b2.baseNEncode(58)
+            "ABDdd东方丽景的猜测1#".base58Check().also {
+                println("dddd2 " + it.base58CheckDecode2String())
+            }
+        }
+            .also { println("total2 $it") }
     }
 
     @Test
     fun urlDecodeTest() {
         val raw =
             "https://subcon.dlj.tf/sub?target=clash&new_name=true&url=" +
-                    "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
-                    "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
-                    "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
-                    "Tk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1MjBiNTRlQGd6bS5taXNha2EucmVzdDoxM" +
-                    "TQ1Mg==#%E6%97%A5%E6%9C%AC%EF%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule&inse" +
-                    "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
-                    "er/Clash/config/ACL4SSR_Online.ini"
+                "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
+                "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
+                "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
+                "Tk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1MjBiNTRlQGd6bS5taXNha2EucmVzdDoxM" +
+                "TQ1Mg==#%E6%97%A5%E6%9C%AC%EF%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule&inse" +
+                "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
+                "er/Clash/config/ACL4SSR_Online.ini"
 
         URLDecoder.decode(raw).also { println(it) }
     }

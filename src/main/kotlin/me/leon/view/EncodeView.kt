@@ -104,6 +104,8 @@ class EncodeView : View("编解码") {
                             "需要先做base64编码，随后将+和/分别替换为- _两个字符"
                     )
                 }
+                radiobutton("base58")
+                radiobutton("base58Check")
                 selectedToggleProperty().addListener { _, _, new ->
                     encodeType = (new as RadioButton).text.encodeType()
                     if (isEncode) {

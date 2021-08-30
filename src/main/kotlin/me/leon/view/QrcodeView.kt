@@ -46,7 +46,6 @@ class QrcodeView : View("Qrcode") {
     override val root = vbox {
         paddingAll = 16
         spacing = 16.0
-
         hbox {
             spacing = 16.0
             label("识别：")

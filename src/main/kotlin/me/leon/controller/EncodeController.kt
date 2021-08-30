@@ -22,6 +22,8 @@ class EncodeController : Controller() {
                     EncodeType.Base16 -> raw.base16()
                     EncodeType.Unicode -> raw.toUnicodeString()
                     EncodeType.Binary -> raw.toBinaryString()
+                    EncodeType.Base58 -> raw.base58()
+                    EncodeType.Base58Check -> raw.base58Check()
                 }
         } catch (e: Exception) {
             "编码错误: ${e.stacktrace()}"
@@ -41,6 +43,8 @@ class EncodeController : Controller() {
                     EncodeType.Base16 -> raw.base16()
                     EncodeType.Unicode -> String(raw, Charsets.UTF_8).toUnicodeString()
                     EncodeType.Binary -> raw.toBinaryString()
+                    EncodeType.Base58 -> raw.base58()
+                    EncodeType.Base58Check -> raw.base58Check()
                 }
         } catch (e: Exception) {
             "编码错误: ${e.stacktrace()}"
@@ -61,6 +65,8 @@ class EncodeController : Controller() {
                     EncodeType.Base16 -> encoded.base16Decode2String()
                     EncodeType.Unicode -> encoded.unicode2String()
                     EncodeType.Binary -> encoded.binary2Ascii()
+                    EncodeType.Base58 -> encoded.base58Decode2String()
+                    EncodeType.Base58Check -> encoded.base58CheckDecode2String()
                 }
         } catch (e: Exception) {
             "解码错误: ${e.stacktrace()}"
@@ -80,6 +86,8 @@ class EncodeController : Controller() {
                     EncodeType.Base16 -> encoded.base16Decode()
                     EncodeType.Unicode -> encoded.unicode2String().toByteArray()
                     EncodeType.Binary -> encoded.binary2ByteArray()
+                    EncodeType.Base58 -> encoded.base58Decode()
+                    EncodeType.Base58Check -> encoded.base58CheckDecode()
                 }
         } catch (e: Exception) {
             "解码错误: ${e.stacktrace()}".toByteArray()
