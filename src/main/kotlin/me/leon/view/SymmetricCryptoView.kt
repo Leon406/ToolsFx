@@ -55,7 +55,6 @@ class SymmetricCryptoView : View("对称加密(block)") {
             if (it.eventType.name == "DRAG_ENTERED") {
                 if (it.dragboard.hasFiles()) {
                     println(it.dragboard.files)
-
                     input.text =
                         if (isFile.get()) it.dragboard.files.first().absolutePath
                         else it.dragboard.files.first().readText()

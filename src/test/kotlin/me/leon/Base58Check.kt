@@ -5,7 +5,6 @@ import java.lang.NumberFormatException
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import java.util.*
 import kotlin.Throws
 
 /* Inspired from https://github.com/adamcaudill/Base58Check/blob/master/src/Base58Check/Base58CheckEncoding.cs */
@@ -65,8 +64,7 @@ object Base58Check {
             intData = intData.multiply(BASE_SIZE).add(BigInteger.valueOf(digit.toLong()))
         }
         for (element in encoded) {
-            val current = element
-            if (current == '1') {
+            if (element == '1') {
                 leadingZeros++
             } else {
                 break
@@ -95,10 +93,10 @@ object Base58Check {
 
     @Throws(NoSuchAlgorithmException::class)
     private fun verifyAndRemoveChecksum(data: ByteArray): ByteArray? {
-        val value = Arrays.copyOfRange(data, 0, data.size - CHECKSUM_SIZE)
-        val checksum = Arrays.copyOfRange(data, data.size - CHECKSUM_SIZE, data.size)
+        val value = data.copyOfRange(0, data.size - CHECKSUM_SIZE)
+        val checksum = data.copyOfRange(data.size - CHECKSUM_SIZE, data.size)
         val expectedChecksum = getChecksum(value)
-        return if (Arrays.equals(checksum, expectedChecksum)) value else null
+        return if (checksum.contentEquals(expectedChecksum)) value else null
     }
 
     @Throws(NoSuchAlgorithmException::class)
