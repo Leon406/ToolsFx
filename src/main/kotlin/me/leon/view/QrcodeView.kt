@@ -11,13 +11,33 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.input.*
-import javafx.scene.layout.*
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCombination
+import javafx.scene.input.KeyEvent
+import javafx.scene.input.MouseEvent
+import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.Border
+import javafx.scene.layout.BorderStroke
+import javafx.scene.layout.BorderStrokeStyle
+import javafx.scene.layout.BorderWidths
+import javafx.scene.layout.HBox
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import kotlin.math.abs
-import me.leon.ext.*
+import me.leon.ext.DEFAULT_SPACING_20X
+import me.leon.ext.DEFAULT_SPACING_2X
+import me.leon.ext.DEFAULT_SPACING_3X
+import me.leon.ext.DEFAULT_SPACING_4X
+import me.leon.ext.clipboardImage
+import me.leon.ext.clipboardText
+import me.leon.ext.copy
+import me.leon.ext.createQR
+import me.leon.ext.fileChooser
+import me.leon.ext.qrReader
+import me.leon.ext.showToast
+import me.leon.ext.toBufferImage
+import me.leon.ext.toFxImg
 import tornadofx.*
 
 class QrcodeView : View("Qrcode") {
@@ -107,9 +127,6 @@ class QrcodeView : View("Qrcode") {
             alignment = Pos.CENTER
             iv = imageview()
         }
-        val keyCombination: KeyCombination = KeyCombination.valueOf("ctrl+alt+p")
-        val mc = Mnemonic(bu, keyCombination)
-        scene?.addMnemonic(mc)
     }
 
     private fun show() {

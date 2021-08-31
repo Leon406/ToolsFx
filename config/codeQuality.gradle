@@ -13,6 +13,6 @@ spotless {
     }
     kotlin {
         target "src/**/*.kt"
-        ktfmt('0.27').kotlinlangStyle()
+        ktfmt('0.28').kotlinlangStyle()
     }
 }

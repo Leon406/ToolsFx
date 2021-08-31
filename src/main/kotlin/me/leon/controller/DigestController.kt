@@ -2,7 +2,7 @@ package me.leon.controller
 
 import me.leon.Digests
 import me.leon.ext.stacktrace
-import tornadofx.*
+import tornadofx.Controller
 
 class DigestController : Controller() {
     fun digest(method: String, data: String) =

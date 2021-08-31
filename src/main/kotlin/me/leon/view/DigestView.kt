@@ -10,7 +10,6 @@ import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_2X
 import me.leon.ext.copy
 import tornadofx.*
 

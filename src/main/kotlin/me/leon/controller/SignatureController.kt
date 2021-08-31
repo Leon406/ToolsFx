@@ -9,7 +9,7 @@ import java.security.spec.X509EncodedKeySpec
 import me.leon.base.base64
 import me.leon.base.base64Decode
 import me.leon.ext.stacktrace
-import tornadofx.*
+import tornadofx.Controller
 
 fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
 

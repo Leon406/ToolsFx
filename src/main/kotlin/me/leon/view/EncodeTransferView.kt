@@ -77,7 +77,7 @@ class EncodeTransferView : View("编码转换") {
 
         tilepane {
             paddingTop = DEFAULT_SPACING
-            hgap = DEFAULT_SPACING *2
+            hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
             button("转换") {
                 action { run() }

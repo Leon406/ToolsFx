@@ -3,9 +3,13 @@ package me.leon.controller
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import me.leon.base.base64
-import me.leon.ext.*
+import me.leon.ext.GMac
+import me.leon.ext.Poly1305Serial
+import me.leon.ext.init
+import me.leon.ext.stacktrace
+import me.leon.ext.toHex
 import org.bouncycastle.crypto.macs.KGMac
-import tornadofx.*
+import tornadofx.Controller
 
 class MacController : Controller() {
     fun mac(msg: String, hkey: String, alg: String, outputEncode: String) =

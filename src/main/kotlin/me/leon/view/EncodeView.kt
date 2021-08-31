@@ -8,7 +8,10 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.EncodeController
-import me.leon.ext.*
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.EncodeType
+import me.leon.ext.copy
+import me.leon.ext.encodeType
 import tornadofx.*
 
 class EncodeView : View("编解码") {

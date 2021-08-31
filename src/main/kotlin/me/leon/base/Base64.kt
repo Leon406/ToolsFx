@@ -38,8 +38,7 @@ fun String.base64DecodeString() =
         toCharArray()
             .filter { it != '=' }
             .joinToString("") {
-                BASE64_MAP.indexOf(it).toString(2)
-                    .padding("0", BASE64_BLOCK_SIZE, false)
+                BASE64_MAP.indexOf(it).toString(2).padding("0", BASE64_BLOCK_SIZE, false)
             }
             .chunked(BYTE_BITS)
             .filter { it.length == BYTE_BITS }
@@ -53,7 +52,9 @@ fun String.base64Decode() =
     //    Base64.getDecoder().decode(this)
     toCharArray()
         .filter { it != '=' }
-        .joinToString("") { BASE64_MAP.indexOf(it).toString(2).padding("0", BASE64_BLOCK_SIZE, false) }
+        .joinToString("") {
+            BASE64_MAP.indexOf(it).toString(2).padding("0", BASE64_BLOCK_SIZE, false)
+        }
         .chunked(BYTE_BITS)
         .filter { it.length == BYTE_BITS }
         .map { (it.toInt(2) and BYTE_MASK).toByte() }
@@ -65,7 +66,9 @@ fun String.safeBase64Decode2() =
             .replace("-", "+")
             .toCharArray()
             .filter { it != '=' }
-            .joinToString("") { BASE64_MAP.indexOf(it).toString(2).padding("0", BASE64_BLOCK_SIZE, false) }
+            .joinToString("") {
+                BASE64_MAP.indexOf(it).toString(2).padding("0", BASE64_BLOCK_SIZE, false)
+            }
             .chunked(BYTE_BITS)
             .filter { it.length == BYTE_BITS }
             .map { it.toInt(2).toByte() }

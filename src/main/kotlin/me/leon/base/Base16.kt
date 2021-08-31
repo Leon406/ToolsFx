@@ -15,7 +15,9 @@ fun String.base16() = toByteArray().base16()
 
 fun String.base16Decode() =
     toCharArray()
-        .joinToString("") { BASE16_MAP.indexOf(it).toString(2).padding("0", BASE16_BLOCK_SIZE, false) }
+        .joinToString("") {
+            BASE16_MAP.indexOf(it).toString(2).padding("0", BASE16_BLOCK_SIZE, false)
+        }
         .chunked(BYTE_BITS)
         .map { it.toInt(2).toByte() }
         .filter { it.toInt() != 0 }

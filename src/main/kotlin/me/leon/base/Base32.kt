@@ -16,7 +16,9 @@ fun String.base32() = toByteArray().base32()
 fun String.base32Decode() =
     toCharArray()
         .filter { it != '=' }
-        .joinToString("") { BASE32_MAP.indexOf(it).toString(2).padding("0", BASE32_BLOCK_SIZE, false) }
+        .joinToString("") {
+            BASE32_MAP.indexOf(it).toString(2).padding("0", BASE32_BLOCK_SIZE, false)
+        }
         .chunked(BYTE_BITS)
         .map { it.toInt(2).toByte() }
         .filter { it.toInt() != 0 }

@@ -780,6 +780,6 @@ style:
   VarCouldBeVal:
     active: true
   WildcardImport:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     excludeImports: ''

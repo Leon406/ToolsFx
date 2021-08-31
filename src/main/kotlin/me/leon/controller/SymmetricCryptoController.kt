@@ -2,7 +2,7 @@ package me.leon.controller
 
 import java.io.File
 import java.nio.charset.Charset
-import java.util.*
+import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
@@ -10,7 +10,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import me.leon.base.base64
 import me.leon.ext.stacktrace
-import tornadofx.*
+import tornadofx.Controller
 
 class SymmetricCryptoController : Controller() {
     fun encrypt(
