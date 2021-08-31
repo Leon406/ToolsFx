@@ -11,17 +11,23 @@ class Styles : Stylesheet() {
         // Define our colors
         val hoverColor = c("#a1a3a6")
         val dangerColor = c("#a94442")
+
+        // Define our size
+        val px14 = 14.px
+        val px5 = 5.px
+        val px10 = 10.px
+        val px20 = 20.px
     }
 
     init {
 
         myButton {
-            padding = box(10.px)
-            fontSize = 20.px
+            padding = box(px10)
+            fontSize = px20
             fontWeight = FontWeight.BOLD
         }
         button {
-            fontSize = 14.px
+            fontSize = px14
             fontWeight = FontWeight.BOLD
             //            padding = box(10.px)
             and(hover) {
@@ -31,8 +37,8 @@ class Styles : Stylesheet() {
         }
 
         label {
-            fontSize = 14.px
-            padding = box(5.px, 10.px)
+            fontSize = px14
+            padding = box(px5, px10)
             fontWeight = FontWeight.BOLD
             maxWidth = infinity
             //            borderColor += box(dangerColor)
