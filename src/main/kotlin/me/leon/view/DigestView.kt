@@ -9,6 +9,8 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.DigestController
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.DEFAULT_SPACING_2X
 import me.leon.ext.copy
 import tornadofx.*
 
@@ -80,8 +82,8 @@ class DigestView : View("哈希") {
         get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${fileHash.get()}"
 
     private val centerNode = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
         label("待处理:")
         input =
             textarea {
@@ -127,8 +129,8 @@ class DigestView : View("哈希") {
         }
         hbox {
             alignment = Pos.CENTER_LEFT
-            spacing = 8.0
-            paddingLeft = 8
+            spacing = DEFAULT_SPACING
+            paddingLeft = DEFAULT_SPACING
             checkbox("文件模式", fileHash)
             button("运行") {
                 enableWhen(!isProcessing)

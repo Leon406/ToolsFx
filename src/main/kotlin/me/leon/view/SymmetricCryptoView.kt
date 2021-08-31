@@ -10,6 +10,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
+import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.copy
 import me.leon.ext.hex2ByteArray
 import tornadofx.*
@@ -110,8 +111,8 @@ class SymmetricCryptoView : View("对称加密(block)") {
         get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
 
     override val root = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
         label("待处理:")
         input =
             textarea {
@@ -121,7 +122,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            spacing = 8.0
+            spacing = DEFAULT_SPACING
             label("算法:")
             combobox(selectedAlg, algs) { cellFormat { text = it } }
             label("mode:")
@@ -138,8 +139,8 @@ class SymmetricCryptoView : View("对称加密(block)") {
             key = textfield { promptText = "请输入key" }
             vbox {
                 togglegroup {
-                    spacing = 8.0
-                    paddingAll = 8
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
@@ -152,8 +153,8 @@ class SymmetricCryptoView : View("对称加密(block)") {
             iv = textfield { promptText = "请输入iv" }
             vbox {
                 togglegroup {
-                    spacing = 8.0
-                    paddingAll = 8
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
@@ -168,7 +169,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
         hbox {
             alignment = Pos.CENTER_LEFT
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
                 radiobutton("加密") { isSelected = true }
                 radiobutton("解密")

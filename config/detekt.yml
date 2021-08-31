@@ -645,7 +645,7 @@ style:
     active: true
     maxJumpCount: 1
   MagicNumber:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     ignoreNumbers:
       - '-1'

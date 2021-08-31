@@ -10,6 +10,8 @@ import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.DEFAULT_SPACING_4X
 import me.leon.ext.copy
 import me.leon.ext.showToast
 import tornadofx.*
@@ -130,8 +132,8 @@ class SignatureView : View("签名与验签") {
         get() = "Signature: $keyPairAlg hash: ${selectedSigAlg.get()} "
 
     override val root = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
         label("密钥:")
         taKey =
             textarea {
@@ -177,8 +179,8 @@ class SignatureView : View("签名与验签") {
         }
         tilepane {
             alignment = Pos.CENTER
-            paddingTop = 8
-            hgap = 32.0
+            paddingTop = DEFAULT_SPACING
+            hgap = DEFAULT_SPACING_4X
             button("私钥签名") {
                 action { sign() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)

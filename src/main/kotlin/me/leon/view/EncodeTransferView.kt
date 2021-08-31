@@ -8,6 +8,7 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.EncodeController
+import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.EncodeType
 import me.leon.ext.copy
 import me.leon.ext.encodeType
@@ -43,14 +44,14 @@ class EncodeTransferView : View("编码转换") {
         }
 
     private val centerNode = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
 
         hbox {
             label("待处理:")
             alignment = Pos.CENTER_LEFT
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 radiobutton("base64") { isSelected = true }
                 radiobutton("urlEncode")
                 radiobutton("base32")
@@ -75,8 +76,8 @@ class EncodeTransferView : View("编码转换") {
             }
 
         tilepane {
-            paddingTop = 8
-            hgap = 16.0
+            paddingTop = DEFAULT_SPACING
+            hgap = DEFAULT_SPACING *2
             alignment = Pos.CENTER
             button("转换") {
                 action { run() }
@@ -98,7 +99,7 @@ class EncodeTransferView : View("编码转换") {
             label("输出内容:")
             alignment = Pos.CENTER_LEFT
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 radiobutton("base64")
                 radiobutton("urlEncode") { isSelected = true }
                 radiobutton("base32")

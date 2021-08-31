@@ -8,9 +8,7 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.EncodeController
-import me.leon.ext.EncodeType
-import me.leon.ext.copy
-import me.leon.ext.encodeType
+import me.leon.ext.*
 import tornadofx.*
 
 class EncodeView : View("编解码") {
@@ -42,8 +40,8 @@ class EncodeView : View("编解码") {
         }
 
     private val centerNode = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
         label("待处理:")
 
         input =
@@ -56,7 +54,7 @@ class EncodeView : View("编解码") {
             alignment = Pos.CENTER_LEFT
             label("编码:")
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 radiobutton("base64") {
                     isSelected = true
                     tooltip(
@@ -116,9 +114,9 @@ class EncodeView : View("编解码") {
             }
         }
         hbox {
-            spacing = 8.0
+            spacing = DEFAULT_SPACING
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
                 radiobutton("编码") { isSelected = true }
                 radiobutton("解码")
@@ -129,7 +127,7 @@ class EncodeView : View("编解码") {
             }
 
             tilepane {
-                hgap = 8.0
+                hgap = DEFAULT_SPACING
                 button("运行") {
                     action { run() }
                     setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)

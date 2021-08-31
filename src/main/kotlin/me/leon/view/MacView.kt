@@ -7,6 +7,8 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.input.DragEvent
 import me.leon.controller.MacController
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.DEFAULT_SPACING_4X
 import me.leon.ext.copy
 import tornadofx.*
 
@@ -119,8 +121,8 @@ class MacView : View("MAC") {
     private val info
         get() = "MAC: $method"
     private val centerNode = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
         label("待处理:")
         input =
             textarea() {
@@ -132,7 +134,7 @@ class MacView : View("MAC") {
             alignment = Pos.CENTER_LEFT
             label("算法:  ")
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
-            label("长度:  ") { paddingAll = 8 }
+            label("长度:  ") { paddingAll = DEFAULT_SPACING }
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
                     cellFormat { text = it }
@@ -141,7 +143,7 @@ class MacView : View("MAC") {
         }
         hbox {
             alignment = Pos.CENTER_LEFT
-            spacing = 8.0
+            spacing = DEFAULT_SPACING
             label("key: ")
             key = textfield("hmac_key") { promptText = "请输入key" }
             label("iv: ")
@@ -152,7 +154,7 @@ class MacView : View("MAC") {
                 }
             label("输出编码:")
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 radiobutton("hex") { isSelected = true }
                 radiobutton("base64")
                 selectedToggleProperty().addListener { _, _, new ->
@@ -187,7 +189,7 @@ class MacView : View("MAC") {
         }
         tilepane {
             alignment = Pos.CENTER
-            hgap = 32.0
+            hgap = DEFAULT_SPACING_4X
             button("运行") {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }

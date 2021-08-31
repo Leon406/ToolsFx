@@ -10,6 +10,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
+import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.copy
 import me.leon.ext.hex2ByteArray
 import tornadofx.*
@@ -82,8 +83,8 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
     private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
     private val selectedCharset = SimpleStringProperty(charsets.first())
     override val root = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
         label("待处理:")
         input =
             textarea {
@@ -93,7 +94,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            spacing = 8.0
+            spacing = DEFAULT_SPACING
             label("算法:")
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
@@ -106,8 +107,8 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             key = textfield { promptText = "请输入key" }
             vbox {
                 togglegroup {
-                    spacing = 8.0
-                    paddingAll = 8
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
@@ -120,8 +121,8 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             iv = textfield { promptText = "请输入iv" }
             vbox {
                 togglegroup {
-                    spacing = 8.0
-                    paddingAll = 8
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
@@ -134,7 +135,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         hbox {
             alignment = Pos.CENTER_LEFT
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
                 radiobutton("加密") { isSelected = true }
                 radiobutton("解密")

@@ -25,7 +25,7 @@ class AsymmetricCryptoController : Controller() {
                 init(Cipher.ENCRYPT_MODE, publicKey)
                 data.toByteArray()
                     .toList()
-                    .chunked(length / 8 - reserved) {
+                    .chunked(length / BYTE_BITS - reserved) {
                         println(it.size)
                         this.doFinal(it.toByteArray())
                     }
@@ -47,7 +47,7 @@ class AsymmetricCryptoController : Controller() {
                 init(Cipher.DECRYPT_MODE, privateKey)
                 data.base64Decode()
                     .toList()
-                    .chunked(length / 8) {
+                    .chunked(length / BYTE_BITS) {
                         println(it.size)
                         this.doFinal(it.toByteArray())
                     }
@@ -69,7 +69,7 @@ class AsymmetricCryptoController : Controller() {
                 init(Cipher.ENCRYPT_MODE, privateKey)
                 data.toByteArray()
                     .toList()
-                    .chunked(length / 8 - reserved) {
+                    .chunked(length / BYTE_BITS - reserved) {
                         println(it.size)
                         this.doFinal(it.toByteArray())
                     }
@@ -91,7 +91,7 @@ class AsymmetricCryptoController : Controller() {
                 init(Cipher.DECRYPT_MODE, publicKey)
                 data.base64Decode()
                     .toList()
-                    .chunked(length / 8) { this.doFinal(it.toByteArray()) }
+                    .chunked(length / BYTE_BITS) { this.doFinal(it.toByteArray()) }
                     .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
                     .toByteArray()
                     .toString(Charsets.UTF_8)

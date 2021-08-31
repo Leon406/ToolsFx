@@ -44,10 +44,10 @@ class QrcodeView : View("Qrcode") {
     override val closeable = SimpleBooleanProperty(false)
 
     override val root = vbox {
-        paddingAll = 16
-        spacing = 16.0
+        paddingAll = DEFAULT_SPACING_2X
+        spacing = DEFAULT_SPACING_2X
         hbox {
-            spacing = 16.0
+            spacing = DEFAULT_SPACING_2X
             label("识别：")
             bu =
                 button("截屏识别") {
@@ -71,7 +71,7 @@ class QrcodeView : View("Qrcode") {
             }
         }
         hbox {
-            spacing = 16.0
+            spacing = DEFAULT_SPACING_2X
             label("生成：")
             button("生成二维码") {
                 action {
@@ -85,7 +85,7 @@ class QrcodeView : View("Qrcode") {
         }
 
         hbox {
-            spacing = 24.0
+            spacing = DEFAULT_SPACING_3X
             label("内容:")
             button("复制内容") {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
@@ -145,7 +145,7 @@ class QrcodeView : View("Qrcode") {
                                     Paint.valueOf("#c03700"),
                                     BorderStrokeStyle.SOLID,
                                     null,
-                                    BorderWidths(3.0)
+                                    BorderWidths(2.0)
                                 )
                             )
                     }
@@ -184,7 +184,7 @@ class QrcodeView : View("Qrcode") {
                             Paint.valueOf("#85858544"),
                             BorderStrokeStyle.SOLID,
                             null,
-                            BorderWidths(3.0)
+                            BorderWidths(2.0)
                         )
                     )
                 hBox.children.add(b)
@@ -211,14 +211,14 @@ class QrcodeView : View("Qrcode") {
                 val label =
                     Label().apply {
                         alignment = Pos.CENTER
-                        prefHeight = 30.0
-                        prefWidth = 170.0
+                        prefHeight = DEFAULT_SPACING_4X
+                        prefWidth = DEFAULT_SPACING_20X
                         textFill = Paint.valueOf("#ffffff") // 白色填充
                         style = "-fx-background-color: #000000" // 黑背景
                     }
 
                 anchorPane.children.add(label)
-                AnchorPane.setLeftAnchor(label, startX + 30)
+                AnchorPane.setLeftAnchor(label, startX + DEFAULT_SPACING_4X)
                 AnchorPane.setTopAnchor(label, startY)
 
                 // 计算宽高并且完成切图区域的动态效果

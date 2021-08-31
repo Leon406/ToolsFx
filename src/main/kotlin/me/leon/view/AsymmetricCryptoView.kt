@@ -8,6 +8,7 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.AsymmetricCryptoController
+import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.copy
 import me.leon.ext.openInBrowser
 import tornadofx.*
@@ -66,8 +67,8 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         }
 
     override val root = vbox {
-        paddingAll = 8
-        spacing = 8.0
+        paddingAll = DEFAULT_SPACING
+        spacing = DEFAULT_SPACING
         label("密钥: ")
         key =
             textarea {
@@ -75,7 +76,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                 isWrapText = true
                 onDragEntered = eventHandler
             }
-        label("待处理 (加密时为明文, 解密时为base64编码的密文): ") { paddingAll = 8 }
+        label("待处理 (加密时为明文, 解密时为base64编码的密文): ") { paddingAll = DEFAULT_SPACING }
         input =
             textarea {
                 promptText = "请输入或者拖动文件到此区域"
@@ -87,7 +88,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             label("位数：")
             combobox(selectedBits, bitsLists) { cellFormat { text = it } }
             togglegroup {
-                spacing = 8.0
+                spacing = DEFAULT_SPACING
                 radiobutton("加密") { isSelected = true }
                 radiobutton("解密")
                 selectedToggleProperty().addListener { _, _, new ->
