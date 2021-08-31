@@ -250,7 +250,7 @@ exceptions:
     exceptionNames:
       - 'ArrayIndexOutOfBoundsException'
       - 'Error'
-#      - 'Exception'
+      - 'Exception'
       - 'IllegalMonitorStateException'
       - 'NullPointerException'
       - 'IndexOutOfBoundsException'

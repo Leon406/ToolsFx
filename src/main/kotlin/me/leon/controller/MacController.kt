@@ -5,15 +5,15 @@ import javax.crypto.spec.SecretKeySpec
 import me.leon.base.base64
 import me.leon.ext.GMac
 import me.leon.ext.Poly1305Serial
+import me.leon.ext.catch
 import me.leon.ext.init
-import me.leon.ext.stacktrace
 import me.leon.ext.toHex
 import org.bouncycastle.crypto.macs.KGMac
 import tornadofx.Controller
 
 class MacController : Controller() {
     fun mac(msg: String, hkey: String, alg: String, outputEncode: String) =
-        try {
+        catch({ "mac error: $it" }) {
             println("mac $msg  $alg $hkey")
             Mac.getInstance(alg)
                 .apply {
@@ -28,12 +28,10 @@ class MacController : Controller() {
                         this.base64()
                     }
                 }
-        } catch (e: Exception) {
-            "mac error: ${e.stacktrace()}"
         }
 
     fun macWithIv(msg: String, key: String, iv: String, alg: String, outputEncode: String) =
-        try {
+        catch({ "mac error: $it" }) {
             println("mac $msg  $alg $key")
             val data = msg.toByteArray()
             val keyByteArray = key.toByteArray()
@@ -67,7 +65,5 @@ class MacController : Controller() {
             } else {
                 ""
             }
-        } catch (e: Exception) {
-            "mac error: ${e.stacktrace()}"
         }
 }

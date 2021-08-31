@@ -1,21 +1,15 @@
 package me.leon.controller
 
 import me.leon.Digests
-import me.leon.ext.stacktrace
+import me.leon.ext.catch
 import tornadofx.Controller
 
 class DigestController : Controller() {
     fun digest(method: String, data: String) =
-        try {
-            if (data.isEmpty()) "" else Digests.hash(method, data)
-        } catch (e: Exception) {
-            "digest error: ${e.stacktrace()}"
-        }
+        catch({ "digest error: $it" }) { if (data.isEmpty()) "" else Digests.hash(method, data) }
 
     fun digestFile(method: String, path: String) =
-        try {
+        catch({ "digest file error: $it" }) {
             if (path.isEmpty()) "" else Digests.hashByFile(method, path)
-        } catch (e: Exception) {
-            "digest file error: ${e.stacktrace()}"
         }
 }

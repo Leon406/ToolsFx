@@ -11,14 +11,14 @@ import javax.crypto.Cipher
 import me.leon.base.BYTE_BITS
 import me.leon.base.base64
 import me.leon.base.base64Decode
-import me.leon.ext.stacktrace
+import me.leon.ext.catch
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.Controller
 
 class AsymmetricCryptoController : Controller() {
 
     fun pubEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
-        try {
+        catch({ "encrypt error: $it}" }) {
             println("encrypt $key  $alg $data")
             val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
@@ -35,12 +35,10 @@ class AsymmetricCryptoController : Controller() {
                     .toByteArray()
                     .base64()
             }
-        } catch (e: Exception) {
-            "encrypt error: ${e.stacktrace()}"
         }
 
     fun priDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
-        try {
+        catch({ "decrypt error: $it" }) {
             println("decrypt $key  $alg $data")
             val keySpec = PKCS8EncodedKeySpec(key.base64Decode())
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
@@ -57,12 +55,10 @@ class AsymmetricCryptoController : Controller() {
                     .toByteArray()
                     .toString(Charsets.UTF_8)
             }
-        } catch (e: Exception) {
-            "decrypt error: ${e.stacktrace()}"
         }
 
     fun priEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
-        try {
+        catch({ "encrypt error: $it" }) {
             println("pri encrypt $key  $alg $data")
             val keySpec = PKCS8EncodedKeySpec(key.base64Decode())
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
@@ -79,12 +75,10 @@ class AsymmetricCryptoController : Controller() {
                     .toByteArray()
                     .base64()
             }
-        } catch (e: Exception) {
-            "encrypt error: ${e.stacktrace()}"
         }
 
     fun pubDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
-        try {
+        catch({ "decrypt error: $it" }) {
             println("decrypt $key  $alg $data")
             val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
@@ -98,8 +92,6 @@ class AsymmetricCryptoController : Controller() {
                     .toByteArray()
                     .toString(Charsets.UTF_8)
             }
-        } catch (e: Exception) {
-            "decrypt error: ${e.stacktrace()}"
         }
 
     private fun getPropPublicKey(key: String) =

@@ -8,7 +8,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import me.leon.base.base64
 import me.leon.base.base64Decode
-import me.leon.ext.stacktrace
+import me.leon.ext.catch
 import tornadofx.Controller
 
 fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
@@ -16,7 +16,7 @@ fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
 class SignatureController : Controller() {
 
     fun sign(kpAlg: String, sigAlg: String, pri: String, msg: String) =
-        try {
+        catch({ it }) {
             Signature.getInstance(sigAlg.properKeyPairAlg())
                 .apply {
                     initSign(getPrivateKey(pri, kpAlg))
@@ -24,21 +24,16 @@ class SignatureController : Controller() {
                 }
                 .sign()
                 .base64()
-        } catch (e: Exception) {
-            e.stacktrace()
         }
 
     fun verify(kpAlg: String, sigAlg: String, pub: String, msg: String, signed: ByteArray) =
-        try {
+        catch({ false }) {
             Signature.getInstance(sigAlg.properKeyPairAlg())
                 .apply {
                     initVerify(getPublicKey(pub, kpAlg))
                     update(msg.toByteArray())
                 }
                 .verify(signed)
-        } catch (e: Exception) {
-            println(e.stacktrace())
-            false
         }
 
     private fun getPrivateKey(privateKey: String, keyPairAlg: String): PrivateKey {
