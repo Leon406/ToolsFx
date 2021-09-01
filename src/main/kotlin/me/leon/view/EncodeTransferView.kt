@@ -109,7 +109,7 @@ class EncodeTransferView : View("编码转换") {
                 radiobutton("binary")
                 radiobutton("urlBase64")
                 radiobutton("base58")
-                radiobutton("baseCheck")
+                radiobutton("base58Check")
                 selectedToggleProperty().addListener { _, _, new ->
                     dstEncodeType = (new as RadioButton).text.encodeType()
                     run()

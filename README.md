@@ -212,7 +212,7 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 ## 如何运行
 
 - Linux/Mac OX系统双击运行 bin目录下 ToolsFx 
-- Windows 系统双击运行 bin目录下 ToolsFx.bat或者 vbs文件(去除黑窗)
+- Windows 系统双击运行ToolsFx.bat或者 vbs文件(去除黑窗)
 
 ## CREDIT
 
