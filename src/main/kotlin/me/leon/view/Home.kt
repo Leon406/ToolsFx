@@ -1,11 +1,13 @@
 package me.leon.view
 
+import me.leon.APP_NAME
+import me.leon.VERSION
 import java.security.Security
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.View
 import tornadofx.tabpane
 
-class Home : View("开发工具集 (ToolsFx) by Leon406 ") {
+class Home : View("$APP_NAME v.$VERSION") {
     override val root = tabpane {
         tab<EncodeView>()
         tab<EncodeTransferView>()
