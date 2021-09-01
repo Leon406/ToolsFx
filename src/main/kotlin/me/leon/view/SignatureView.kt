@@ -10,10 +10,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_4X
-import me.leon.ext.copy
-import me.leon.ext.showToast
+import me.leon.ext.*
 import tornadofx.*
 
 class SignatureView : View("签名与验签") {
@@ -134,15 +131,20 @@ class SignatureView : View("签名与验签") {
     override val root = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
-        label("密钥:")
+        hbox {
+            label("密钥:")
+            button("剪贴板导入") { action { taKey.text = clipboardText() } }
+        }
         taKey =
             textarea {
                 promptText = "请输入密钥或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
-
-        label("原始内容:")
+        hbox {
+            label("原始内容:")
+            button("剪贴板导入") { action { taRaw.text = clipboardText() } }
+        }
         taRaw =
             textarea {
                 promptText = "请输入或者拖动文件到此区域"
@@ -189,12 +191,12 @@ class SignatureView : View("签名与验签") {
                 action { verify() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button("复制结果") {
-                action { signText.copy() }
-                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-            }
         }
-        label("签名 (base64):")
+        hbox {
+            label("签名 (base64):")
+            button("复制结果") { action { signText.copy() } }
+        }
+
         taSigned =
             textarea {
                 promptText = "结果"

@@ -11,6 +11,7 @@ import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.hex2ByteArray
 import tornadofx.*
@@ -113,7 +114,10 @@ class SymmetricCryptoView : View("对称加密(block)") {
     override val root = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
-        label("待处理:")
+        hbox {
+            label("待处理:")
+            button("剪贴板导入") { action { input.text = clipboardText() } }
+        }
         input =
             textarea {
                 promptText = "请输入内容或者拖动文件到此区域"
@@ -189,9 +193,11 @@ class SymmetricCryptoView : View("对称加密(block)") {
                     output.text = ""
                 }
             }
+        }
+        hbox {
+            label("输出内容:")
             button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"
@@ -224,9 +230,9 @@ class SymmetricCryptoView : View("对称加密(block)") {
                     selectedCharset.get()
                 )
         } ui
-            {
-                isProcessing.value = false
-                output.text = it
-            }
+                {
+                    isProcessing.value = false
+                    output.text = it
+                }
     }
 }

@@ -10,6 +10,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import tornadofx.*
 
@@ -83,7 +84,10 @@ class DigestView : View("哈希") {
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
-        label("待处理:")
+        hbox {
+            label("待处理:")
+            button("剪贴板导入") { action { input.text = clipboardText() } }
+        }
         input =
             textarea {
                 promptText = "请输入内容或者拖动文件到此区域"
@@ -135,9 +139,11 @@ class DigestView : View("哈希") {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
+        }
+        hbox {
+            label("输出内容:")
             button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"

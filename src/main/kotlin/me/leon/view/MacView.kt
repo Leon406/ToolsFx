@@ -11,9 +11,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.DragEvent
 import me.leon.controller.MacController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_4X
-import me.leon.ext.copy
+import me.leon.ext.*
 import tornadofx.*
 
 class MacView : View("MAC") {
@@ -127,7 +125,10 @@ class MacView : View("MAC") {
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
-        label("待处理:")
+        hbox {
+            label("待处理:")
+            button("剪贴板导入") { action { input.text = clipboardText() } }
+        }
         input =
             textarea() {
                 promptText = "请输入内容或者拖动文件到此区域"
@@ -195,15 +196,17 @@ class MacView : View("MAC") {
             alignment = Pos.CENTER
             hgap = DEFAULT_SPACING_4X
             button("运行") {
+                prefWidth = DEFAULT_SPACING_8X
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }
             }
+        }
+        hbox {
+            label("输出内容:")
             button("复制结果") {
-                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { outputText.copy() }
             }
         }
-        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"

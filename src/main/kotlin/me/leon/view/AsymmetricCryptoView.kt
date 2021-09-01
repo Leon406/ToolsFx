@@ -9,6 +9,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.openInBrowser
 import tornadofx.*
@@ -69,14 +70,23 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
     override val root = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
-        label("密钥: ")
+        hbox {
+            label("密钥:")
+            button("剪贴板导入") { action { input.text = clipboardText() } }
+        }
         key =
             textarea {
                 promptText = "请输入密钥或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
             }
-        label("待处理 (加密时为明文, 解密时为base64编码的密文): ") { paddingAll = DEFAULT_SPACING }
+
+        hbox {
+            label("待处理 (明文/base64密文):"){
+                tooltip("加密时为明文,解密时为base64编码的密文")
+            }
+            button("剪贴板导入") { action { input.text = clipboardText() } }
+        }
         input =
             textarea {
                 promptText = "请输入或者拖动文件到此区域"
@@ -106,9 +116,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                 }
             }
             button("生成公私钥") { action { "https://miniu.alipay.com/keytool/create".openInBrowser() } }
+        }
+        hbox {
+            label("输出内容:")
             button("复制结果") { action { outputText.copy() } }
         }
-        label("输出内容:")
         output =
             textarea {
                 promptText = "结果"

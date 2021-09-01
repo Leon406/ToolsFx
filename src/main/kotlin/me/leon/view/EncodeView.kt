@@ -8,10 +8,7 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.EncodeController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.EncodeType
-import me.leon.ext.copy
-import me.leon.ext.encodeType
+import me.leon.ext.*
 import tornadofx.*
 
 class EncodeView : View("编解码") {
@@ -45,7 +42,12 @@ class EncodeView : View("编解码") {
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
-        label("待处理:")
+
+        hbox {
+            label("待处理:")
+            button("剪贴板导入") { action { input.text = clipboardText() } }
+        }
+
 
         input =
             textarea {
@@ -142,13 +144,15 @@ class EncodeView : View("编解码") {
                     }
                     setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 }
-                button("复制结果") {
-                    action { outputText.copy() }
-                    setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                }
             }
         }
-        label("输出内容:")
+        hbox {
+            label("输出内容:")
+            button("复制结果") {
+                action { outputText.copy() }
+            }
+        }
+
         output =
             textarea {
                 promptText = "结果"
