@@ -7,6 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
+import me.leon.base.base64
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.clipboardText
@@ -47,7 +48,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             if (it.eventType.name == "DRAG_ENTERED") {
                 if (it.dragboard.hasFiles()) {
                     println(it.dragboard.files)
-                    key.text = it.dragboard.files.first().readText()
+                    val firstFile = it.dragboard.files.first()
+                    key.text =
+                        if (firstFile.name.endsWith("pk8"))
+                            firstFile.readBytes().base64()
+                        else firstFile.readText()
 
                     with(keyText) {
                         val probablyKeySize =
