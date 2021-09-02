@@ -203,9 +203,7 @@ class MacView : View("MAC") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") {
-                action { outputText.copy() }
-            }
+            button("复制结果") { action { outputText.copy() } }
         }
         output =
             textarea {

@@ -230,9 +230,9 @@ class SymmetricCryptoView : View("对称加密(block)") {
                     selectedCharset.get()
                 )
         } ui
-                {
-                    isProcessing.value = false
-                    output.text = it
-                }
+            {
+                isProcessing.value = false
+                output.text = it
+            }
     }
 }

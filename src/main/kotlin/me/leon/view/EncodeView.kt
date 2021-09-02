@@ -48,7 +48,6 @@ class EncodeView : View("编解码") {
             button("剪贴板导入") { action { input.text = clipboardText() } }
         }
 
-
         input =
             textarea {
                 promptText = "请输入内容或者拖动文件到此区域"
@@ -148,9 +147,7 @@ class EncodeView : View("编解码") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") {
-                action { outputText.copy() }
-            }
+            button("复制结果") { action { outputText.copy() } }
         }
 
         output =

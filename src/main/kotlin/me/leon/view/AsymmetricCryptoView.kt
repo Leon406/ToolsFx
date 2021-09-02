@@ -82,9 +82,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             }
 
         hbox {
-            label("待处理 (明文/base64密文):"){
-                tooltip("加密时为明文,解密时为base64编码的密文")
-            }
+            label("待处理 (明文/base64密文):") { tooltip("加密时为明文,解密时为base64编码的密文") }
             button("剪贴板导入") { action { input.text = clipboardText() } }
         }
         input =
