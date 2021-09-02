@@ -145,6 +145,7 @@
 - [x]  支持公钥加密私钥解密,私钥加密公钥解密
 - [x]  支持openssl pkcs1/pkcs8 私钥格式
 - [x]  支持证书cer文件加解密
+- [x]  支持pem和pk8格式文件 :new:
 
 **note:** openssl用公私钥对加解密,生成私钥为pkcs8编码
 
@@ -157,20 +158,13 @@
 ### 数字签名校验 
 
 - [x] RSA系列
-
 - [x] DSA
-
 - [x] ECDSA
-
 - [x] EC
-
 - [x] EdDSA(ED448/ED25192)
-
 - [x] SM2
-
 - [ ] 其他
 
-  
 
 ### 其他功能
 
@@ -198,7 +192,7 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
 
 
-开发测试时间较短,难免会有bug,欢迎提issue和PR
+#### 开发测试时间较短,难免会有bug,欢迎提需求,issue和PR
 
 ## 版本选择
 
