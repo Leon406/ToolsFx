@@ -1,6 +1,11 @@
 package me.leon
 
+import java.math.BigInteger
 import kotlin.test.assertEquals
+import me.leon.base.BASE16_MAP
+import me.leon.base.BASE32_MAP
+import me.leon.base.baseNDecode2String
+import me.leon.base.baseNEncode
 import me.leon.controller.EncodeController
 import me.leon.ext.EncodeType
 import org.junit.Before
@@ -9,6 +14,7 @@ import org.junit.Test
 class EncodeTest {
 
     lateinit var controller: EncodeController
+    private val raw = "开发工具集合 by leon406@52pojie.cn"
 
     @Before
     fun setUp() {
@@ -17,20 +23,22 @@ class EncodeTest {
 
     @Test
     fun encode() {
-        val raw = "开发工具集合 by leon406@52pojie.cn"
-
         val base64 = "5byA5Y+R5bel5YW36ZuG5ZCIIGJ5IGxlb240MDZANTJwb2ppZS5jbg=="
         assertEquals(base64, controller.encode2String(raw, EncodeType.Base64))
         assertEquals(raw, controller.decode2String(base64, EncodeType.Base64))
 
         val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
         assertEquals(base32, controller.encode2String(raw, EncodeType.Base32))
+        assertEquals(base32, raw.baseNEncode(32, BASE32_MAP))
         assertEquals(raw, controller.decode2String(base32, EncodeType.Base32))
+        assertEquals(raw, base32.baseNDecode2String(32, BASE32_MAP))
 
         val base16 =
             "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
         assertEquals(base16, controller.encode2String(raw, EncodeType.Base16))
+        assertEquals(base16, raw.baseNEncode(16, BASE16_MAP))
         assertEquals(raw, controller.decode2String(base16, EncodeType.Base16))
+        assertEquals(raw, base16.baseNDecode2String(16, BASE16_MAP))
 
         val binary =
             "1110010110111100100000001110010110001111100100011110010110110111101001011110010110000" +
@@ -66,5 +74,45 @@ class EncodeTest {
         val base58Check = "2HhMuaDzQFGwDdVBD7S8MJRYAspzUi9zUGCLeQ1hsAdBGXBnq7FnKXsTc2iFp"
         assertEquals(base58Check, controller.encode2String(raw, EncodeType.Base58Check))
         assertEquals(raw, controller.decode2String(base58Check, EncodeType.Base58Check))
+
+        // test url https://www.better-converter.com/Encoders-Decoders/Base62-Encode
+        val base62Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        val base62 = "JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju"
+        assertEquals(base62, raw.baseNEncode(62, base62Map))
+        assertEquals(raw, base62.baseNDecode2String(62, base62Map))
+
+        val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        val base36 = "MAHJV1X5YMIHRRDJ0HQLTZ0WNFLYDP0W01ME2E8MTAT3QNDXRXGNH7HJYAYY5Q"
+        assertEquals(base36, raw.baseNEncode(36, base36Map))
+        assertEquals(raw, base36.baseNDecode2String(36, base36Map))
+    }
+
+    @Test
+    fun baseNTest() {
+        val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        //        val base62 = "JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju"
+        println("${0.toChar()}leon".baseNEncode(36, base36Map))
+        println(raw.baseNEncode(36, base36Map))
+        BigInteger(1, "leon".toByteArray()).toString(36).also { println(it) }
+        String(BigInteger("u2qmpa", 36).toByteArray())
+        println("0U2QMPA".baseNDecode2String(36, base36Map))
+        //        assertEquals(base62,raw.baseNEncode(36,base36Map) )
+        //        assertEquals(raw,base62.baseNDecode2String(62,base62Map) )
+
+        Base91.encode("example string".toByteArray()).also { println(String(it)) }
+
+        println(String(Base91.decode("5)GfG?ue\$y+/ZQ;mMB".toByteArray())))
+    }
+
+    @Test
+    fun b85() {
+        println(raw.base85())
+        println("jh--*O-/P5V<*E?l'mFhOGG#gGp\$p7Df.Bc2F',TE,TK*AM.J1".base85Decode())
+        println("111151".base85())
+        println("0ekC;2),(2".base85Decode())
+    }
+    @Test
+    fun asciiPrint() {
+        for (i in 33..127) print(i.toChar().toString())
     }
 }

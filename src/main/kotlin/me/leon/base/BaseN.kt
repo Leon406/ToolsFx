@@ -12,44 +12,42 @@ fun ByteArray.baseNEncode(radix: Int = 58, maps: String = BASE_58_DICT): String 
     var bigInteger = BigInteger(1, this)
     var remainder: Int
     val sb = StringBuilder()
+    val leadingZero = maps.first()
+    val base = radix.toBigInteger()
     while (bigInteger != BigInteger.ZERO) {
-        bigInteger.divideAndRemainder(radix.toBigInteger()).run {
+        bigInteger.divideAndRemainder(base).run {
             bigInteger = this[0]
             remainder = this[1].toInt()
         }
         sb.append(maps[remainder])
     }
-    return sb.reversed().toString()
+    var result = sb.reversed().toString()
+    var i = 0
+    while (i < size && this[i].toInt() == 0) {
+        result = "$leadingZero$result"
+        i++
+    }
+    return result
 }
 
 fun String.baseNDecode(radix: Int = 58, maps: String = BASE_58_DICT): ByteArray {
-    if (this.isEmpty()) {
-        return ByteArray(0)
-    }
+    if (this.isEmpty()) return ByteArray(0)
+    val leadingZero = maps.first()
     var intData = BigInteger.ZERO
     var leadingZeros = 0
+    val base = radix.toBigInteger()
     for (i in this.indices) {
         val current = this[i]
         val digit = maps.indexOf(current)
-        require(digit != -1) {
-            String.format("Invalid Base58 character `%c` at position %d", current, i)
-        }
-        intData = intData.multiply(radix.toBigInteger()).add(BigInteger.valueOf(digit.toLong()))
+        require(digit != -1) { String.format("Invalid  character `%c` at position %d", current, i) }
+        intData = intData.multiply(base).add(BigInteger.valueOf(digit.toLong()))
     }
 
     for (element in this) {
-        if (element == '1') {
-            leadingZeros++
-        } else {
-            break
-        }
+        if (element == leadingZero) leadingZeros++ else break
     }
     val bytesData: ByteArray =
-        if (intData == BigInteger.ZERO) {
-            ByteArray(0)
-        } else {
-            intData.toByteArray()
-        }
+        if (intData == BigInteger.ZERO) ByteArray(0) else intData.toByteArray()
 
     val stripSignByte = bytesData.size > 1 && bytesData[0].toInt() == 0 && bytesData[1] < 0
     val decoded = ByteArray(bytesData.size - (if (stripSignByte) 1 else 0) + leadingZeros)
