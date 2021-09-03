@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "# $2 "  >> changelog.md&&echo "## feature: " >> changelog.md&&git log $1..$2 --pretty="- %s" |grep -E "feat\(|feat:"  >> changelog.md&&echo "## bug fix: " >>changelog.md&&git log $1..$2 --pretty="- %s" |grep -E "fix\(|fix:"  >> changelog.md
