@@ -208,6 +208,10 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 - Linux/Mac OX系统双击运行 bin目录下 ToolsFx 
 - Windows 系统双击运行ToolsFx.bat或者 vbs文件(去除黑窗)
 
+## CHANGE LOG
+
+见 [changelog.md](changelog.md)
+
 ## CREDIT
 
 [bouncy castle](https://github.com/bcgit/bc-java) 
