@@ -34,24 +34,27 @@ class SymmetricCryptoController : Controller() {
             else init(cipherMode, keySpec, IvParameterSpec(iv))
         }
 
-    fun encryptByFile(key: ByteArray, path: String, iv: ByteArray, alg: String) =
-        catch({ "encrypt error: $it" }) {
+    fun encryptByFile(key: ByteArray, path: String, iv: ByteArray, alg: String): String {
+        val outFileName = path.substringBefore('.') + ".enc." + path.substringAfterLast('.')
+        return catch({ "encrypt error: $it" }) {
             println("encrypt  $alg")
             val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
-            doStreamCrypto("$path.enc", cipher, path)
-            "加密文件路径(同选择文件目录): ${File("$path.enc").absolutePath} \n" +
+            doStreamCrypto(outFileName, cipher, path)
+            "加密文件路径(同选择文件目录): ${File(outFileName).absolutePath} \n" +
                 "alg: $alg\n" +
                 "key(base64): ${key.base64()}\n" +
                 "iv(base64): ${iv.base64()}\n"
         }
+    }
 
     fun decryptByFile(key: ByteArray, path: String, iv: ByteArray, alg: String) =
         catch({ "decrypt error: $it" }) {
             println("decrypt  $alg")
             val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)
-            val outFileName = if (path.endsWith(".enc")) path.replace(".enc", "") else "$path.dec"
+            val outFileName =
+                if (path.contains(".enc")) path.replace(".enc", "_dec")
+                else path.substringBeforeLast('.') + "_dec." + path.substringAfterLast('.')
             doStreamCrypto(outFileName, cipher, path)
-
             "解密文件路径(同选择文件目录): $outFileName"
         }
 

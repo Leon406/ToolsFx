@@ -50,8 +50,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                     println(it.dragboard.files)
                     val firstFile = it.dragboard.files.first()
                     key.text =
-                        if (firstFile.name.endsWith("pk8"))
-                            firstFile.readBytes().base64()
+                        if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
                         else firstFile.readText()
 
                     with(keyText) {
