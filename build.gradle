@@ -3,8 +3,10 @@ plugins {
     id 'application'
     id "com.diffplug.spotless" version "5.14.2"
     id "io.gitlab.arturbosch.detekt" version "1.18.0"
-    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id "org.openjfx.javafxplugin" version "0.0.10" apply false
 }
+def isJdk11 = !isJdk8.toBoolean()
+if (isJdk11) apply plugin: "org.openjfx.javafxplugin"
 group = 'me.leon.toolfx'
 version = '1.5.1'
 
@@ -28,15 +30,18 @@ dependencies {
     implementation 'com.google.zxing:javase:3.4.1'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:1.5.30'
 }
-javafx {
-    version = "16"
-    modules = [
-            'javafx.controls',
-            'javafx.swing',
+if (isJdk11) {
+    javafx {
+        version = "16"
+        modules = [
+                'javafx.controls',
+                'javafx.swing',
 //            if you use javafx.fxml,then uncomment it
 //            'javafx.fxml'
-    ]
+        ]
+    }
 }
+
 
 apply from: "$rootProject.projectDir/config/codeQuality.gradle"
 def hook = new File("$rootProject.projectDir/.git/hooks/pre-commit")
