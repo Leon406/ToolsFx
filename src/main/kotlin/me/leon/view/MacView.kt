@@ -204,7 +204,7 @@ class MacView : View("MAC") {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label() }
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun doMac() =

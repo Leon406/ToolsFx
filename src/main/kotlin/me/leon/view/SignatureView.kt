@@ -192,7 +192,7 @@ class SignatureView : View("签名与验签") {
                 promptText = "结果"
                 isWrapText = true
             }
-        infoLabel = label()
+        infoLabel = label(info)
     }
 
     private fun sign() =

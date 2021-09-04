@@ -145,7 +145,7 @@ class DigestView : View("哈希") {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label() }
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun doHash() =

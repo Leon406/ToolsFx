@@ -140,7 +140,7 @@ class EncodeTransferView : View("编码转换") {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label() }
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun run() {
