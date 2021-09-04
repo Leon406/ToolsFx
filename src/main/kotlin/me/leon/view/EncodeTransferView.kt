@@ -35,10 +35,12 @@ class EncodeTransferView : View("编码转换") {
 
         hbox {
             label("待处理:")
+            paddingTop = DEFAULT_SPACING
+            paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
+            spacing = DEFAULT_SPACING
             tilepane {
                 vgap = 8.0
-
                 alignment = Pos.TOP_LEFT
                 togglegroup {
                     radiobutton("base64") {
@@ -46,18 +48,18 @@ class EncodeTransferView : View("编码转换") {
                         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                     }
                     radiobutton("urlEncode") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base32") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base16") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
                     radiobutton("unicode") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
                     radiobutton("hex") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
                     radiobutton("binary") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
                     radiobutton("urlBase64") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base16") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base32") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base36") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
                     radiobutton("base58") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
                     radiobutton("base58Check") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base32") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base16") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("unicode") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("hex") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base62") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base85") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base91") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
 
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
@@ -95,22 +97,36 @@ class EncodeTransferView : View("编码转换") {
         }
         hbox {
             label("输出内容:")
+            paddingTop = DEFAULT_SPACING
+            paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
-            togglegroup {
-                spacing = DEFAULT_SPACING
-                radiobutton("base64")
-                radiobutton("urlEncode") { isSelected = true }
-                radiobutton("base32")
-                radiobutton("base16")
-                radiobutton("unicode")
-                radiobutton("hex")
-                radiobutton("binary")
-                radiobutton("urlBase64")
-                radiobutton("base58")
-                radiobutton("base58Check")
-                selectedToggleProperty().addListener { _, _, new ->
-                    dstEncodeType = (new as RadioButton).text.encodeType()
-                    run()
+            spacing = DEFAULT_SPACING
+            tilepane {
+                vgap = 8.0
+                alignment = Pos.TOP_LEFT
+                togglegroup {
+                    radiobutton("base64") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("urlEncode") {
+                        isSelected = true
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("unicode") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("hex") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("binary") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("urlBase64") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base16") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base32") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base36") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base58") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base58Check") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base62") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base85") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    radiobutton("base91") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
+                    selectedToggleProperty().get()
+                    selectedToggleProperty().addListener { _, _, new ->
+                        dstEncodeType = (new as RadioButton).text.encodeType()
+                        run()
+                    }
                 }
             }
         }

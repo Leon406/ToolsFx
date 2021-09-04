@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.base
 
 import java.io.ByteArrayOutputStream
 import kotlin.math.ceil
@@ -105,3 +105,11 @@ object Base91 {
         for (i in 0 until BASE) DECODING_TABLE[ENCODING_TABLE[i].toInt()] = i.toByte()
     }
 }
+
+fun String.base91() = toByteArray().base91()
+
+fun ByteArray.base91() = String(Base91.encode(this))
+
+fun String.base91Decode() = Base91.decode(toByteArray())
+
+fun String.base91Decode2String() = String(base91Decode())

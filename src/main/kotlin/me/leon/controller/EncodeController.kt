@@ -3,14 +3,7 @@ package me.leon.controller
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.Base64
-import me.leon.base.base16
-import me.leon.base.base16Decode
-import me.leon.base.base32
-import me.leon.base.base32Decode
-import me.leon.base.base58
-import me.leon.base.base58Check
-import me.leon.base.base58CheckDecode
-import me.leon.base.base58Decode
+import me.leon.base.*
 import me.leon.ext.EncodeType
 import me.leon.ext.binary2ByteArray
 import me.leon.ext.catch
@@ -35,12 +28,16 @@ class EncodeController : Controller() {
                     EncodeType.Hex -> raw.toHex()
                     EncodeType.UrlEncode -> URLEncoder.encode(String(raw))?.replace("+", "%20")
                             ?: ""
-                    EncodeType.Base32 -> raw.base32()
-                    EncodeType.Base16 -> raw.base16()
                     EncodeType.Unicode -> String(raw, Charsets.UTF_8).toUnicodeString()
                     EncodeType.Binary -> raw.toBinaryString()
+                    EncodeType.Base16 -> raw.base16()
+                    EncodeType.Base32 -> raw.base32()
+                    EncodeType.Base36 -> raw.base36()
                     EncodeType.Base58 -> raw.base58()
                     EncodeType.Base58Check -> raw.base58Check()
+                    EncodeType.Base62 -> raw.base62()
+                    EncodeType.Base85 -> raw.base85()
+                    EncodeType.Base91 -> raw.base91()
                 }
         }
 
@@ -57,12 +54,16 @@ class EncodeController : Controller() {
                     EncodeType.Hex -> encoded.hex2ByteArray()
                     EncodeType.UrlEncode -> URLDecoder.decode(encoded)?.toByteArray()
                             ?: byteArrayOf()
-                    EncodeType.Base32 -> encoded.base32Decode()
-                    EncodeType.Base16 -> encoded.base16Decode()
                     EncodeType.Unicode -> encoded.unicode2String().toByteArray()
                     EncodeType.Binary -> encoded.binary2ByteArray()
+                    EncodeType.Base16 -> encoded.base16Decode()
+                    EncodeType.Base32 -> encoded.base32Decode()
+                    EncodeType.Base36 -> encoded.base36Decode()
                     EncodeType.Base58 -> encoded.base58Decode()
                     EncodeType.Base58Check -> encoded.base58CheckDecode()
+                    EncodeType.Base62 -> encoded.base62Decode()
+                    EncodeType.Base85 -> encoded.base85Decode()
+                    EncodeType.Base91 -> encoded.base91Decode()
                 }
         }
 }
