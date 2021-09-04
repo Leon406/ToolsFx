@@ -2,13 +2,11 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
-import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.*
@@ -49,11 +47,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 else -> byteArrayOf()
             }
 
-    private val eventHandler =
-        fileDraggedHandler {
-            input.text = if (isFile.get()) it.first().absolutePath
-            else it.first().readText()
-        }
+    private val eventHandler = fileDraggedHandler {
+        input.text = if (isFile.get()) it.first().absolutePath else it.first().readText()
+    }
 
     private val algs =
         mutableListOf(
@@ -188,9 +184,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                     selectedCharset.get()
                 )
         } ui
-                {
-                    isProcessing.value = false
-                    output.text = it
-                }
+            {
+                isProcessing.value = false
+                output.text = it
+            }
     }
 }

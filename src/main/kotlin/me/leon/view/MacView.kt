@@ -2,7 +2,6 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
@@ -10,7 +9,6 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
-import javafx.scene.input.DragEvent
 import me.leon.controller.MacController
 import me.leon.ext.*
 import tornadofx.*
@@ -37,10 +35,7 @@ class MacView : View("MAC") {
     private var outputEncode = "hex"
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
-    private val eventHandler = fileDraggedHandler {
-            input.text = it.first().absolutePath
-        }
-
+    private val eventHandler = fileDraggedHandler { input.text = it.first().absolutePath }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =

@@ -47,4 +47,3 @@ fun fileDraggedHandler(block: (List<File>) -> Unit) =
             }
         }
     }
-

@@ -2,13 +2,11 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
-import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
 import me.leon.ext.*
@@ -29,9 +27,7 @@ class SignatureView : View("签名与验签") {
         get() = taSigned.text
     var keyPairAlg = "RSA"
 
-    private val eventHandler =fileDraggedHandler {
-        taKey.text = it.first().readText()
-    }
+    private val eventHandler = fileDraggedHandler { taKey.text = it.first().readText() }
 
     // https://www.bouncycastle.org/specifications.html
     private val keyPairAlgs =

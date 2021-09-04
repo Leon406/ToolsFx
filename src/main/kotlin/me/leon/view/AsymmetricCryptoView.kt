@@ -2,12 +2,10 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
-import javafx.scene.input.DragEvent
 import me.leon.base.base64
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.ext.*
@@ -40,28 +38,27 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
     private val isPriEncryptOrPubDecrypt
         get() = privateKeyEncrypt.get() && isEncrypt || !privateKeyEncrypt.get() && !isEncrypt
 
-    private val eventHandler =
-        fileDraggedHandler {
-            val firstFile = it.first()
-            key.text =
-                if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
-                else firstFile.readText()
+    private val eventHandler = fileDraggedHandler {
+        val firstFile = it.first()
+        key.text =
+            if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
+            else firstFile.readText()
 
-            with(keyText) {
-                val probablyKeySize =
-                    if (isPriEncryptOrPubDecrypt) this.length * 1.25f else this.length * 5
-                println("__ $probablyKeySize")
-                val keySize =
-                    when (probablyKeySize.toInt()) {
-                        in 3300..4500 -> 4096
-                        in 2600..3300 -> 3072
-                        in 1600..2200 -> 2048
-                        in 800..1200 -> 1024
-                        else -> 512
-                    }
-                selectedBits.set(keySize.toString())
-            }
+        with(keyText) {
+            val probablyKeySize =
+                if (isPriEncryptOrPubDecrypt) this.length * 1.25f else this.length * 5
+            println("__ $probablyKeySize")
+            val keySize =
+                when (probablyKeySize.toInt()) {
+                    in 3300..4500 -> 4096
+                    in 2600..3300 -> 3072
+                    in 1600..2200 -> 2048
+                    in 800..1200 -> 1024
+                    else -> 512
+                }
+            selectedBits.set(keySize.toString())
         }
+    }
 
     override val root = vbox {
         paddingAll = DEFAULT_SPACING

@@ -2,13 +2,11 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
-import javafx.scene.input.DragEvent
 import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.clipboardText
