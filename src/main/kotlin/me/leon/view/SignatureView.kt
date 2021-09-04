@@ -7,6 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
+import javafx.scene.image.Image
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
@@ -194,7 +195,7 @@ class SignatureView : View("签名与验签") {
         }
         hbox {
             label("签名 (base64):")
-            button("复制结果") { action { signText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { signText.copy() } }
         }
 
         taSigned =

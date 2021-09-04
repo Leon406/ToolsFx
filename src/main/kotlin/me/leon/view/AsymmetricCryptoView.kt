@@ -6,6 +6,7 @@ import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
+import javafx.scene.image.Image
 import javafx.scene.input.DragEvent
 import me.leon.base.base64
 import me.leon.controller.AsymmetricCryptoController
@@ -121,7 +122,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") { action { outputText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {

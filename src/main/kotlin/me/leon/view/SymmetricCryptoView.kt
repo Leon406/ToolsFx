@@ -7,6 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.image.Image
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
@@ -196,7 +197,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") { action { outputText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {

@@ -7,6 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
+import javafx.scene.image.Image
 import javafx.scene.input.DragEvent
 import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
@@ -142,7 +143,7 @@ class DigestView : View("哈希") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") { action { outputText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
