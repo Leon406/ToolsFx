@@ -11,10 +11,7 @@ import javafx.scene.image.Image
 import javafx.scene.input.DragEvent
 import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.hex2ByteArray
+import me.leon.ext.*
 import tornadofx.*
 
 class SymmetricCryptoStreamView : View("对称加密(stream)") {
@@ -53,17 +50,11 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             }
 
     private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text =
-                        if (isFile.get()) it.dragboard.files.first().absolutePath
-                        else it.dragboard.files.first().readText()
-                }
-            }
+        fileDraggedHandler {
+            input.text = if (isFile.get()) it.first().absolutePath
+            else it.first().readText()
         }
+
     private val algs =
         mutableListOf(
             "RC4",
@@ -197,9 +188,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                     selectedCharset.get()
                 )
         } ui
-            {
-                isProcessing.value = false
-                output.text = it
-            }
+                {
+                    isProcessing.value = false
+                    output.text = it
+                }
     }
 }

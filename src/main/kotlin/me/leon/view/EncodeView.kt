@@ -29,16 +29,9 @@ class EncodeView : View("编解码") {
     private var encodeType = EncodeType.Base64
     private var isEncode = true
 
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().readText()
-                }
-            }
-        }
+    private val eventHandler =fileDraggedHandler {
+        input.text = it.first().readText()
+    }
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING

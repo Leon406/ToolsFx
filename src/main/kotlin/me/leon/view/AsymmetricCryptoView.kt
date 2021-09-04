@@ -10,10 +10,7 @@ import javafx.scene.image.Image
 import javafx.scene.input.DragEvent
 import me.leon.base.base64
 import me.leon.controller.AsymmetricCryptoController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.openInBrowser
+import me.leon.ext.*
 import tornadofx.*
 
 class AsymmetricCryptoView : View("非对称加密 RSA") {
@@ -44,31 +41,25 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         get() = privateKeyEncrypt.get() && isEncrypt || !privateKeyEncrypt.get() && !isEncrypt
 
     private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    val firstFile = it.dragboard.files.first()
-                    key.text =
-                        if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
-                        else firstFile.readText()
+        fileDraggedHandler {
+            val firstFile = it.first()
+            key.text =
+                if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
+                else firstFile.readText()
 
-                    with(keyText) {
-                        val probablyKeySize =
-                            if (isPriEncryptOrPubDecrypt) this.length * 1.25f else this.length * 5
-                        println("__ $probablyKeySize")
-                        val keySize =
-                            when (probablyKeySize.toInt()) {
-                                in 3300..4500 -> 4096
-                                in 2600..3300 -> 3072
-                                in 1600..2200 -> 2048
-                                in 800..1200 -> 1024
-                                else -> 512
-                            }
-                        selectedBits.set(keySize.toString())
+            with(keyText) {
+                val probablyKeySize =
+                    if (isPriEncryptOrPubDecrypt) this.length * 1.25f else this.length * 5
+                println("__ $probablyKeySize")
+                val keySize =
+                    when (probablyKeySize.toInt()) {
+                        in 3300..4500 -> 4096
+                        in 2600..3300 -> 3072
+                        in 1600..2200 -> 2048
+                        in 800..1200 -> 1024
+                        else -> 512
                     }
-                }
+                selectedBits.set(keySize.toString())
             }
         }
 

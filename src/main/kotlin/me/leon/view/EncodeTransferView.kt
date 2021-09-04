@@ -8,10 +8,7 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.input.DragEvent
 import me.leon.controller.EncodeController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.EncodeType
-import me.leon.ext.copy
-import me.leon.ext.encodeType
+import me.leon.ext.*
 import tornadofx.*
 
 class EncodeTransferView : View("编码转换") {
@@ -32,16 +29,9 @@ class EncodeTransferView : View("编码转换") {
     private var srcEncodeType = EncodeType.Base64
     private var isEncode = true
 
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().readText()
-                }
-            }
-        }
+    private val eventHandler = fileDraggedHandler {
+        input.text = it.first().readText()
+    }
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
@@ -50,22 +40,64 @@ class EncodeTransferView : View("编码转换") {
         hbox {
             label("待处理:")
             alignment = Pos.CENTER_LEFT
-            togglegroup {
-                spacing = DEFAULT_SPACING
-                radiobutton("base64") { isSelected = true }
-                radiobutton("urlEncode")
-                radiobutton("base32")
-                radiobutton("base16")
-                radiobutton("unicode")
-                radiobutton("hex")
-                radiobutton("binary")
-                radiobutton("urlBase64")
-                radiobutton("base58")
-                radiobutton("base58Check")
-                selectedToggleProperty().get()
-                selectedToggleProperty().addListener { _, _, new ->
-                    srcEncodeType = (new as RadioButton).text.encodeType()
+            tilepane {
+                vgap = 8.0
+
+                alignment = Pos.TOP_LEFT
+                togglegroup {
+
+
+                    radiobutton("base64") {
+                        isSelected = true
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("urlEncode") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("base32") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("base16") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("unicode") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("hex") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("binary") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("urlBase64") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("base58") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("base58Check") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("base32") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("base16") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("unicode") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+                    radiobutton("hex") {
+                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    }
+
+
+                    selectedToggleProperty().get()
+                    selectedToggleProperty().addListener { _, _, new ->
+                        srcEncodeType = (new as RadioButton).text.encodeType()
+                    }
                 }
+
             }
         }
         input =

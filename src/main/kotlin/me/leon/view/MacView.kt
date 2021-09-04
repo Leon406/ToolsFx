@@ -37,16 +37,10 @@ class MacView : View("MAC") {
     private var outputEncode = "hex"
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().absolutePath
-                }
-            }
+    private val eventHandler = fileDraggedHandler {
+            input.text = it.first().absolutePath
         }
+
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =

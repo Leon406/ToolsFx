@@ -13,6 +13,7 @@ import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
+import me.leon.ext.fileDraggedHandler
 import tornadofx.*
 
 class DigestView : View("哈希") {
@@ -29,16 +30,9 @@ class DigestView : View("哈希") {
         get() = output.text
     var method = "MD5"
 
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().absolutePath
-                }
-            }
-        }
+    private val eventHandler = fileDraggedHandler {
+        input.text = if (fileHash.get()) it.first().absolutePath else it.first().readText()
+    }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =
