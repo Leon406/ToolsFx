@@ -5,7 +5,7 @@ plugins {
     id "io.gitlab.arturbosch.detekt" version "1.18.0"
     id "org.openjfx.javafxplugin" version "0.0.10" apply false
 }
-def isJdk11 = !isJdk8.toBoolean()
+def isJdk11 = isJdk11.toBoolean()
 if (isJdk11) apply plugin: "org.openjfx.javafxplugin"
 group = 'me.leon.toolfx'
 version = '1.5.1'
