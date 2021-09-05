@@ -1,13 +1,12 @@
 package me.leon.view
 
-import java.security.Security
-import java.util.*
-import me.leon.APP_NAME
 import me.leon.VERSION
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
+import tornadofx.FX.Companion.messages
+import java.security.Security
 
-class Home : View("$APP_NAME v.$VERSION") {
+class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {
         tab<EncodeView>()
         tab<EncodeTransferView>()

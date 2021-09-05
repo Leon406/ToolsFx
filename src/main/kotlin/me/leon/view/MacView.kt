@@ -149,15 +149,7 @@ class MacView : View("MAC") {
                     enableWhen(enableIv)
                     promptText = messages["ivHint"]
                 }
-            label(messages["outputEncoding"])
-            togglegroup {
-                spacing = DEFAULT_SPACING
-                radiobutton("hex") { isSelected = true }
-                radiobutton("base64")
-                selectedToggleProperty().addListener { _, _, new ->
-                    outputEncode = (new as RadioButton).text
-                }
-            }
+
         }
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
@@ -185,8 +177,16 @@ class MacView : View("MAC") {
             }
         }
         tilepane {
-            alignment = Pos.CENTER
-            hgap = DEFAULT_SPACING_4X
+            alignment = Pos.TOP_LEFT
+            hgap = DEFAULT_SPACING
+            label(messages["outputEncoding"])
+            togglegroup {
+                radiobutton("hex") { isSelected = true }
+                radiobutton("base64")
+                selectedToggleProperty().addListener { _, _, new ->
+                    outputEncode = (new as RadioButton).text
+                }
+            }
             button(messages["run"], imageview(Image("/run.png"))) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }

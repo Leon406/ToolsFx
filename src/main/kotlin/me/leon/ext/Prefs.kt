@@ -5,6 +5,7 @@ import java.util.prefs.Preferences
 object Prefs {
     private const val IGNORE_UPDATE = "isIgnoreUpdate"
     private const val ALWAYS_ON_TOP = "alwaysOnTop"
+    private const val LANGUAGE = "language"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
     var isIgnoreUpdate
         get() = preference.getBoolean(IGNORE_UPDATE, false)
@@ -15,5 +16,10 @@ object Prefs {
         get() = preference.getBoolean(ALWAYS_ON_TOP, true)
         set(value) {
             preference.putBoolean(ALWAYS_ON_TOP, value)
+        }
+    var language
+        get() = preference.get(LANGUAGE,"zh")
+        set(value) {
+            preference.put(LANGUAGE, value)
         }
 }
