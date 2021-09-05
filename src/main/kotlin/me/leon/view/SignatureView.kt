@@ -196,7 +196,7 @@ class SignatureView : View("签名与验签") {
             textarea {
                 promptText = "结果"
                 isWrapText = true
-                prefHeight = DEFAULT_SPACING_8X
+                prefHeight = DEFAULT_SPACING_10X
             }
     }
     override val root = borderpane {

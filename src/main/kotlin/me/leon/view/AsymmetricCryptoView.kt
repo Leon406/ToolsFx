@@ -90,7 +90,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             textarea {
                 promptText = "请输入或者拖动文件到此区域"
                 isWrapText = true
-                prefHeight = DEFAULT_SPACING_8X
+                prefHeight = DEFAULT_SPACING_10X
             }
 
         hbox {

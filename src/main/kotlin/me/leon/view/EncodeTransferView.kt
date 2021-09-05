@@ -35,7 +35,7 @@ class EncodeTransferView : View("编码转换") {
         spacing = DEFAULT_SPACING
 
         hbox {
-            label("待处理:")
+            label("待 处 理:")
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
