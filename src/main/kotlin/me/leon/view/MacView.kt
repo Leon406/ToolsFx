@@ -116,22 +116,22 @@ class MacView : View("MAC") {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("待处理:")
+            label(messages["input"])
             button(graphic = imageview(Image("/import.png"))) {
                 action { input.text = clipboardText() }
             }
         }
         input =
             textarea() {
-                promptText = "请输入内容或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("算法:  ")
+            label(messages["alg"])
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
-            label("长度:  ") { paddingAll = DEFAULT_SPACING }
+            label(messages["bits"]) { paddingAll = DEFAULT_SPACING }
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
                     cellFormat { text = it }
@@ -142,14 +142,14 @@ class MacView : View("MAC") {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             label("key: ")
-            key = textfield("hmac_key") { promptText = "请输入key" }
+            key = textfield("hmac_key") { promptText = messages["keyHint"] }
             label("iv: ")
             iv =
                 textfield {
                     enableWhen(enableIv)
-                    promptText = "请输入iv"
+                    promptText = messages["ivHint"]
                 }
-            label("输出编码:")
+            label(messages["outputEncoding"])
             togglegroup {
                 spacing = DEFAULT_SPACING
                 radiobutton("hex") { isSelected = true }
@@ -193,12 +193,12 @@ class MacView : View("MAC") {
             }
         }
         hbox {
-            label("输出内容:")
+            label(messages["output"])
             button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }

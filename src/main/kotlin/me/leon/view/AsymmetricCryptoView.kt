@@ -68,52 +68,56 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("密钥:")
+            label(messages["key"])
             button(graphic = imageview(Image("/import.png"))) {
                 action { input.text = clipboardText() }
             }
         }
         key =
             textarea {
-                promptText = "请输入密钥或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
 
         hbox {
-            label("待处理 (明文/base64密文):") { tooltip("加密时为明文,解密时为base64编码的密文") }
+            label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
             button(graphic = imageview(Image("/import.png"))) {
                 action { input.text = clipboardText() }
             }
         }
         input =
             textarea {
-                promptText = "请输入或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 prefHeight = DEFAULT_SPACING_10X
             }
 
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("位数：")
+            label(messages["bits"])
             combobox(selectedBits, bitsLists) { cellFormat { text = it } }
             togglegroup {
                 spacing = DEFAULT_SPACING
-                radiobutton("加密") { isSelected = true }
-                radiobutton("解密")
+                radiobutton(messages["encrypt"]) { isSelected = true }
+                radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncrypt = (new as RadioButton).text == "加密"
+                    isEncrypt = (new as RadioButton).text == messages["encrypt"]
                 }
             }
 
-            checkbox("私钥加密", privateKeyEncrypt) { tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密") }
+            checkbox(messages["priEncrypt"], privateKeyEncrypt) {
+                tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
+            }
 
             button(messages["run"], imageview(Image("/run.png"))) { action { doCrypto() } }
-            button("生成公私钥") { action { "https://miniu.alipay.com/keytool/create".openInBrowser() } }
+            button(messages["genKeypair"]) {
+                action { "https://miniu.alipay.com/keytool/create".openInBrowser() }
+            }
         }
         hbox {
             spacing = DEFAULT_SPACING
-            label("输出内容:")
+            label(messages["output"])
             button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
             button(graphic = imageview(Image("/up.png"))) {
                 action {
@@ -124,7 +128,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         }
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }

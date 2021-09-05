@@ -83,21 +83,21 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("待处理:")
+            label(messages["input"])
             button(graphic = imageview(Image("/import.png"))) {
                 action { input.text = clipboardText() }
             }
         }
         input =
             textarea {
-                promptText = "请输入内容或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
-            label("算法:")
+            label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
             label("charset:")
@@ -106,7 +106,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         hbox {
             alignment = Pos.CENTER_LEFT
             label("key:")
-            key = textfield { promptText = "请输入key" }
+            key = textfield { promptText = messages["keyHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -120,7 +120,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 }
             }
             label("iv:")
-            iv = textfield { promptText = "请输入iv" }
+            iv = textfield { promptText = messages["ivHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -139,21 +139,21 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
-                radiobutton("加密") { isSelected = true }
-                radiobutton("解密")
+                radiobutton(messages["encrypt"]) { isSelected = true }
+                radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncrypt = (new as RadioButton).text == "加密"
+                    isEncrypt = (new as RadioButton).text == messages["encrypt"]
                     doCrypto()
                 }
             }
-            checkbox("文件模式", isFile)
+            checkbox(messages["fileMode"], isFile)
             button(messages["run"], imageview(Image("/run.png"))) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
         }
         hbox {
-            label("输出内容:")
+            label(messages["output"])
             spacing = DEFAULT_SPACING
             button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
             button(graphic = imageview(Image("/up.png"))) {
@@ -165,7 +165,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         }
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }

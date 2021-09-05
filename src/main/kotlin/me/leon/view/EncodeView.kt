@@ -11,7 +11,7 @@ import me.leon.ext.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class EncodeView : View(messages["encode"]) {
+class EncodeView : View(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
@@ -19,7 +19,8 @@ class EncodeView : View(messages["encode"]) {
     private lateinit var infoLabel: Label
     private val info: String
         get() =
-            "${if (isEncode) "编码" else "解码"}: $encodeType  输入长度: ${inputText.length}  输出长度: ${outputText.length}"
+            "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
         get() = input.text.takeIf { isEncode } ?: input.text.replace("\\s".toRegex(), "")
     private val outputText: String
@@ -34,7 +35,7 @@ class EncodeView : View(messages["encode"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("待处理:")
+            label(messages["input"])
             button(graphic = imageview(Image("/import.png"))) {
                 action { input.text = clipboardText() }
             }
@@ -42,7 +43,7 @@ class EncodeView : View(messages["encode"]) {
 
         input =
             textarea {
-                promptText = "请输入内容或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
@@ -51,7 +52,7 @@ class EncodeView : View(messages["encode"]) {
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             spacing = DEFAULT_SPACING
-            label("编码:")
+            label("${messages["encode"]}:")
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
@@ -138,10 +139,10 @@ class EncodeView : View(messages["encode"]) {
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
-                radiobutton("编码") { isSelected = true }
-                radiobutton("解码")
+                radiobutton(messages["encode"]) { isSelected = true }
+                radiobutton(messages["decode"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncode = (new as RadioButton).text == "编码"
+                    isEncode = (new as RadioButton).text == messages["encode"]
                     run()
                 }
             }
@@ -149,7 +150,7 @@ class EncodeView : View(messages["encode"]) {
         }
         hbox {
             spacing = DEFAULT_SPACING
-            label("输出内容:")
+            label(messages["output"])
             button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
             button(graphic = imageview(Image("/up.png"))) {
                 action {
@@ -161,7 +162,7 @@ class EncodeView : View(messages["encode"]) {
 
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }

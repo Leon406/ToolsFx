@@ -81,22 +81,22 @@ class DigestView : View(messages["hash"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("待处理:")
+            label(messages["input"])
             button(graphic = imageview(Image("/import.png"))) {
                 action { input.text = clipboardText() }
             }
         }
         input =
             textarea {
-                promptText = "请输入内容或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("算法:  ")
+            label(messages["alg"])
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
-            label("长度:  ")
+            label(messages["bits"])
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
                     cellFormat { text = it }
@@ -132,19 +132,19 @@ class DigestView : View(messages["hash"]) {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
-            checkbox("文件模式", fileHash)
+            checkbox(messages["fileMode"], fileHash)
             button(messages["run"], imageview(Image("/run.png"))) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
         }
         hbox {
-            label("输出内容:")
+            label(messages["output"])
             button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }

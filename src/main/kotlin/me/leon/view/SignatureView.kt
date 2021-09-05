@@ -123,37 +123,37 @@ class SignatureView : View(messages["signVerify"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("密钥:")
+            label(messages["key"])
             button(graphic = imageview(Image("/import.png"))) {
                 action { taKey.text = clipboardText() }
             }
         }
         taKey =
             textarea {
-                promptText = "请输入密钥或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
-            label("原始内容:")
+            label(messages["plain"])
             button(graphic = imageview(Image("/import.png"))) {
                 action { taRaw.text = clipboardText() }
             }
         }
         taRaw =
             textarea {
-                promptText = "请输入或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
                 prefHeight = DEFAULT_SPACING_16X
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("公私钥算法:  ")
+            label(messages["publicAlg"])
             combobox(selectedKeyPairAlg, keyPairAlgs.keys.toMutableList()) {
                 cellFormat { text = it }
             }
-            label("签名算法:  ")
+            label(messages["sigAlg"])
             cbSigs =
                 combobox(selectedSigAlg, keyPairAlgs.values.first()) { cellFormat { text = it } }
         }
@@ -179,23 +179,23 @@ class SignatureView : View(messages["signVerify"]) {
             alignment = Pos.CENTER
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING_4X
-            button("私钥签名") {
+            button(messages["priSig"]) {
                 action { sign() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button("公钥验签") {
+            button(messages["pubVerify"]) {
                 action { verify() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
         }
         hbox {
-            label("签名 (base64):")
+            label(messages["sig"])
             button(graphic = imageview(Image("/copy.png"))) { action { signText.copy() } }
         }
 
         taSigned =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
                 prefHeight = DEFAULT_SPACING_10X
             }

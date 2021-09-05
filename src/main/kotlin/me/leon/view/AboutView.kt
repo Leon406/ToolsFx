@@ -20,7 +20,7 @@ class AboutView : View(messages["about"]) {
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
         imageview(Image("/tb.png"))
-        text("版本: v$VERSION") { font = Font.font(18.0) }
+        text("${messages["ver"]}: v$VERSION") { font = Font.font(18.0) }
         text("BUILD: ${times()}")
         text("JRE: ${System.getProperty("java.runtime.version")}")
         text("VM: ${System.getProperty("java.vm.name")}")
@@ -29,8 +29,8 @@ class AboutView : View(messages["about"]) {
             font = Font.font(18.0)
             action { REPO_URL.openInBrowser() }
         }
-        hyperlink("开源协议 ISC") { action { LICENSE.openInBrowser() } }
-        button("检测新版本") { action { checkUpdate() } }
+        hyperlink(messages["license"]) { action { LICENSE.openInBrowser() } }
+        button(messages["checkUpdate"]) { action { checkUpdate() } }
         latestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
         checkUpdate(!Prefs.isIgnoreUpdate)
@@ -41,9 +41,10 @@ class AboutView : View(messages["about"]) {
         runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
             {
                 latestVersion.text =
-                    if (it.isEmpty()) "未知错误"
-                    else if (VERSION != it) "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
-                    else "已是最新版本"
+                    if (it.isEmpty()) messages["unknown"]
+                    else if (VERSION != it)
+                        "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
+                    else messages["alreadyLatest"]
             }
     }
 }

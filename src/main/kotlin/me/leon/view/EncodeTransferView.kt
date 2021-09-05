@@ -19,7 +19,8 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private lateinit var infoLabel: Label
     private val info: String
         get() =
-            " $srcEncodeType --> $dstEncodeType  输入长度: ${inputText.length}  输出长度: ${outputText.length}"
+            " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
+                "  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
         get() = input.text.takeIf { isEncode } ?: input.text.replace("\\s".toRegex(), "")
     private val outputText: String
@@ -36,7 +37,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
         spacing = DEFAULT_SPACING
 
         hbox {
-            label("待 处 理:")
+            label(messages["input"])
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
@@ -72,7 +73,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
         }
         input =
             textarea {
-                promptText = "请输入内容或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
@@ -81,24 +82,24 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
-            button("转换", imageview(Image("/run.png"))) {
+            button(messages["transfer"], imageview(Image("/run.png"))) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button("上移⬆") {
+            button(messages["up"]) {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button("复制结果") {
+            button(messages["copy"]) {
                 action { outputText.copy() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
         }
         hbox {
-            label("输出内容:")
+            label(messages["output"])
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
@@ -135,7 +136,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
 
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }

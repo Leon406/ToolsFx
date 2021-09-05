@@ -56,22 +56,22 @@ class QrcodeView : View("Qrcode") {
         spacing = DEFAULT_SPACING_2X
         hbox {
             spacing = DEFAULT_SPACING_2X
-            label("识别：")
+            label(messages["recognize"])
             bu =
-                button("截屏识别") {
+                button(messages["shotReco"]) {
                     action { this@QrcodeView.show() }
                     shortcut(KeyCombination.valueOf("Ctrl+Q"))
                     tooltip("快捷键Ctrl+Q")
                 }
 
-            button("剪贴板图片") {
+            button(messages["clipboradReco"]) {
                 action { clipboardImage()?.toBufferImage()?.qrReader()?.let { tf.text = it } }
             }
-            button("文件识别") {
+            button(messages["fileReco"]) {
                 shortcut(KeyCombination.valueOf("Ctrl+F"))
                 tooltip("快捷键Ctrl+F")
                 action {
-                    primaryStage.fileChooser()?.let {
+                    primaryStage.fileChooser(messages["chooseFile"])?.let {
                         iv.image = Image(it.inputStream())
                         tf.text = it.qrReader()
                     }
@@ -81,7 +81,7 @@ class QrcodeView : View("Qrcode") {
 
         hbox {
             spacing = DEFAULT_SPACING_3X
-            label("内容:")
+            label(messages["content"])
             button(graphic = imageview(Image("/copy.png"))) {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
@@ -91,15 +91,14 @@ class QrcodeView : View("Qrcode") {
         }
         tf =
             textarea {
-                promptText = "请输入文本或者使用截屏识别/识别二维码"
+                promptText = messages["qrHint"]
                 isWrapText = true
                 prefHeight = DEFAULT_SPACING_10X
             }
 
         hbox {
             spacing = DEFAULT_SPACING_2X
-            label("生成：")
-            button("生成二维码") {
+            button(messages["genQrcode"]) {
                 action {
                     if (tf.text.isNotEmpty()) {
                         iv.image = createQR(tf.text)
@@ -110,7 +109,7 @@ class QrcodeView : View("Qrcode") {
             }
         }
         hbox {
-            label("二维码图片:")
+            label(messages["qrImg"])
             button(graphic = imageview(Image("/copy.png"))) {
                 action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
             }
@@ -186,7 +185,7 @@ class QrcodeView : View("Qrcode") {
                 h = abs(event.sceneY - startY)
                 anchorPane.style = "-fx-background-color: #00000000"
                 // 添加剪切按钮，并显示在切图区域的底部
-                val b = Button("剪切")
+                val b = Button(messages["cut"])
                 hBox.border =
                     Border(
                         BorderStroke(
@@ -205,7 +204,7 @@ class QrcodeView : View("Qrcode") {
                         stage.close()
                         runCatching { captureImg() }.onFailure {
                             it.printStackTrace()
-                            primaryStage.showToast("二维码识别错误")
+                            primaryStage.showToast(messages["recoError"])
                         }
                         // 主舞台还原
                         primaryStage.isIconified = false
