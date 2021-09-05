@@ -12,7 +12,7 @@ import me.leon.controller.AsymmetricCryptoController
 import me.leon.ext.*
 import tornadofx.*
 
-class AsymmetricCryptoView : View("非对称加密 RSA") {
+class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private val controller: AsymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
@@ -108,7 +108,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
             checkbox("私钥加密", privateKeyEncrypt) { tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密") }
 
-            button("运行", imageview(Image("/run.png"))) { action { doCrypto() } }
+            button(messages["run"], imageview(Image("/run.png"))) { action { doCrypto() } }
             button("生成公私钥") { action { "https://miniu.alipay.com/keytool/create".openInBrowser() } }
         }
         hbox {

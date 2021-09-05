@@ -8,8 +8,9 @@ import javafx.scene.text.Text
 import me.leon.*
 import me.leon.ext.*
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class AboutView : View("关于") {
+class AboutView : View(messages["about"]) {
 
     override val closeable = SimpleBooleanProperty(false)
     lateinit var latestVersion: Text
@@ -38,11 +39,11 @@ class AboutView : View("关于") {
     private fun checkUpdate(isAuto: Boolean = true) {
         if (!isAuto) return
         runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
-                {
-                    latestVersion.text =
-                        if (it.isEmpty()) "未知错误"
-                        else if (VERSION != it) "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
-                        else "已是最新版本"
-                }
+            {
+                latestVersion.text =
+                    if (it.isEmpty()) "未知错误"
+                    else if (VERSION != it) "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
+                    else "已是最新版本"
+            }
     }
 }

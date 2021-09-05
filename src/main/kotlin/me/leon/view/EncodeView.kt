@@ -9,8 +9,9 @@ import javafx.scene.image.Image
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class EncodeView : View("编解码") {
+class EncodeView : View(messages["encode"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
@@ -32,7 +33,6 @@ class EncodeView : View("编解码") {
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
-
         hbox {
             label("待处理:")
             button(graphic = imageview(Image("/import.png"))) {
@@ -145,7 +145,7 @@ class EncodeView : View("编解码") {
                     run()
                 }
             }
-            button("运行", imageview(Image("/run.png"))) { action { run() } }
+            button(messages["run"], imageview(Image("/run.png"))) { action { run() } }
         }
         hbox {
             spacing = DEFAULT_SPACING

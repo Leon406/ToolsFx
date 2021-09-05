@@ -1,12 +1,11 @@
 package me.leon.view
 
-import javafx.stage.StageStyle
 import java.security.Security
+import java.util.*
 import me.leon.APP_NAME
 import me.leon.VERSION
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import tornadofx.View
-import tornadofx.tabpane
+import tornadofx.*
 
 class Home : View("$APP_NAME v.$VERSION") {
     override val root = tabpane {

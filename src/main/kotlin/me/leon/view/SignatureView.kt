@@ -11,8 +11,9 @@ import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
 import me.leon.ext.*
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class SignatureView : View("签名与验签") {
+class SignatureView : View(messages["signVerify"]) {
     private val controller: SignatureController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var taKey: TextArea

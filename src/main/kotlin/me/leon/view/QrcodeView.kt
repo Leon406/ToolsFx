@@ -24,8 +24,8 @@ import javafx.scene.layout.HBox
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import me.leon.ext.*
 import kotlin.math.abs
+import me.leon.ext.*
 import tornadofx.*
 
 class QrcodeView : View("Qrcode") {

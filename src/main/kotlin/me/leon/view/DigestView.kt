@@ -13,8 +13,9 @@ import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class DigestView : View("哈希") {
+class DigestView : View(messages["hash"]) {
     private val controller: DigestController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val fileHash = SimpleBooleanProperty(false)
@@ -132,7 +133,7 @@ class DigestView : View("哈希") {
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
             checkbox("文件模式", fileHash)
-            button("运行", imageview(Image("/run.png"))) {
+            button(messages["run"], imageview(Image("/run.png"))) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }

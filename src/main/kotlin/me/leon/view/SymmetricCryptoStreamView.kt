@@ -12,8 +12,9 @@ import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.*
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class SymmetricCryptoStreamView : View("对称加密(stream)") {
+class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
@@ -146,7 +147,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 }
             }
             checkbox("文件模式", isFile)
-            button("运行", imageview(Image("/run.png"))) {
+            button(messages["run"], imageview(Image("/run.png"))) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }

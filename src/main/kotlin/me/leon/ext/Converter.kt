@@ -1,13 +1,13 @@
 package me.leon.ext
 
-import java.math.BigInteger
 import me.leon.base.BYTE_BITS
 import me.leon.base.BYTE_MASK
+import tornadofx.*
 
 const val HEX_RADIX = 16
 const val DECIMAL_RADIX = 10
 /** 16进制编解码 */
-fun ByteArray.toHex() = String.format("%02x", BigInteger(1, this))
+fun ByteArray.toHex() = hex
 
 fun String.hex2Ascii() = String(hex2ByteArray(), Charsets.UTF_8)
 

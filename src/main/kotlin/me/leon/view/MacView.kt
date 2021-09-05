@@ -187,7 +187,7 @@ class MacView : View("MAC") {
         tilepane {
             alignment = Pos.CENTER
             hgap = DEFAULT_SPACING_4X
-            button("运行", imageview(Image("/run.png"))) {
+            button(messages["run"], imageview(Image("/run.png"))) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }
             }

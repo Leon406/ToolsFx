@@ -9,8 +9,9 @@ import javafx.scene.image.Image
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class EncodeTransferView : View("编码转换") {
+class EncodeTransferView : View(messages["encodeTransfer"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var input: TextArea
