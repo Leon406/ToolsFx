@@ -9,15 +9,15 @@ const val RESPONSE_OK = 200
 
 fun String.readBytesFromNet() =
     (URL(this).openConnection().apply {
-        connectTimeout = DEFAULT_CONNECT_TIME_OUT
-        readTimeout = DEFAULT_READ_TIME_OUT
-        setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
-        setRequestProperty(
-            "user-agent",
-            "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+            connectTimeout = DEFAULT_CONNECT_TIME_OUT
+            readTimeout = DEFAULT_READ_TIME_OUT
+            setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+            setRequestProperty(
+                "user-agent",
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
                     "Chrome/86.0.4240.198 Safari/537.36"
-        )
-    } as
+            )
+        } as
             HttpURLConnection)
         .takeIf {
             //            println("$this __ ${it.responseCode}")
@@ -30,5 +30,5 @@ fun String.readBytesFromNet() =
 fun String.readFromNet(resumeUrl: String = ""): String =
     runCatching { String(this.readBytesFromNet()) }.getOrElse {
         println("read err ${it.stacktrace()} ")
-       if (resumeUrl.isEmpty())  "" else  resumeUrl.readFromNet()
+        if (resumeUrl.isEmpty()) "" else resumeUrl.readFromNet()
     }

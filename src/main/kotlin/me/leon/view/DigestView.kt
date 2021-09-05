@@ -29,7 +29,9 @@ class DigestView : View("哈希") {
     var method = "MD5"
 
     private val eventHandler = fileDraggedHandler {
-        input.text = if (fileHash.get()) it.first().absolutePath else it.first().readText()
+        input.text =
+            if (fileHash.get()) it.joinToString(System.lineSeparator()) { it.absolutePath }
+            else it.first().readText()
     }
 
     // https://www.bouncycastle.org/specifications.html
@@ -151,7 +153,10 @@ class DigestView : View("哈希") {
     private fun doHash() =
         runAsync {
             isProcessing.value = true
-            if (fileHash.get()) controller.digestFile(method, inputText)
+            if (fileHash.get())
+                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                    controller.digestFile(method, it)
+                }
             else controller.digest(method, inputText)
         } ui
             {

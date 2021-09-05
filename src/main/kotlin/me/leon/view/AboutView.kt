@@ -39,8 +39,7 @@ class AboutView : View("关于") {
             {
                 latestVersion.text =
                     if (it.isEmpty()) "未知错误"
-                    else if (VERSION != it)
-                        "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
+                    else if (VERSION != it) "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
                     else "已是最新版本"
             }
     }

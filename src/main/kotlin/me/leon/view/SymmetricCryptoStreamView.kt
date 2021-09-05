@@ -48,7 +48,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             }
 
     private val eventHandler = fileDraggedHandler {
-        input.text = if (isFile.get()) it.first().absolutePath else it.first().readText()
+        input.text =
+            if (isFile.get()) it.joinToString(System.lineSeparator()) { it.absolutePath }
+            else it.first().readText()
     }
 
     private val algs =
@@ -164,7 +166,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             isProcessing.value = true
             if (isEncrypt)
                 if (isFile.get())
-                    controller.encryptByFile(keyByteArray, inputText, ivByteArray, cipher)
+                    inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                        controller.encryptByFile(keyByteArray, it, ivByteArray, cipher)
+                    }
                 else
                     controller.encrypt(
                         keyByteArray,
@@ -174,7 +178,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                         selectedCharset.get()
                     )
             else if (isFile.get())
-                controller.decryptByFile(keyByteArray, inputText, ivByteArray, cipher)
+                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                    controller.decryptByFile(keyByteArray, it, ivByteArray, cipher)
+                }
             else
                 controller.decrypt(
                     keyByteArray,
