@@ -21,3 +21,17 @@
 ## bug fix:  
 - fix:编码转换urlencode错误及hash大文件按钮点击
 - fix:快捷键冲突
+# v1.6.0  
+## feature:  
+- feat: 检测升级功能
+- feat: 新增关于模块
+- feat: 编码/转换新增 base32/base62/base85/base91 功能
+- feat: 更换复制文字为图片
+- feat:对称加密文件加密 文件名称优化
+- feat:rsa支持pk8 和pem文件加解密
+- feat:调整复制按钮位置，新增剪贴板导入
+- feat:加入app名字和版本配置
+## bug fix:  
+- fix: 时间小时格式
+- fix: 底部提示默认不显示
+- fix:base58/base58check部分字符解码错误
