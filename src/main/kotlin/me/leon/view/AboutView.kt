@@ -35,7 +35,7 @@ class AboutView : View("关于") {
 
     private fun checkUpdate(isAuto: Boolean = true) {
         if (!isAuto) return
-        runAsync { CHECK_UPDATE_URL.readFromNet() } ui
+        runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
             {
                 latestVersion.text =
                     if (it.isEmpty()) "未知错误"
