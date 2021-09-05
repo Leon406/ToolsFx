@@ -21,6 +21,10 @@
 - [x] hex
 - [x] binary
 - [x] base58/base58check
+- [x] base36
+- [x] base62
+- [x] base85
+- [x] base91
 - [ ] base系列自定义字典
 
 ![encode](./art/encode.gif)
@@ -177,7 +181,7 @@
 - [x] 支持文件拖入
 - [x] 对称加密key, iv 支持base64 ,hex
 - [x] 对称加密支持文件加密解密,输出文件 (测试m3u8 ts文件解密后正常播放)
-- [ ] i18n
+- [x] i18n
 - [ ] 键盘事件, 快捷键
 - [ ] CTF相关功能
 - [ ] PBE
