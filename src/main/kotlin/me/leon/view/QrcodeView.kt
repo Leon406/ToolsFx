@@ -24,20 +24,8 @@ import javafx.scene.layout.HBox
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import me.leon.ext.*
 import kotlin.math.abs
-import me.leon.ext.DEFAULT_SPACING_20X
-import me.leon.ext.DEFAULT_SPACING_2X
-import me.leon.ext.DEFAULT_SPACING_3X
-import me.leon.ext.DEFAULT_SPACING_4X
-import me.leon.ext.clipboardImage
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.createQR
-import me.leon.ext.fileChooser
-import me.leon.ext.qrReader
-import me.leon.ext.showToast
-import me.leon.ext.toBufferImage
-import me.leon.ext.toFxImg
 import tornadofx.*
 
 class QrcodeView : View("Qrcode") {
@@ -90,19 +78,6 @@ class QrcodeView : View("Qrcode") {
                 }
             }
         }
-        hbox {
-            spacing = DEFAULT_SPACING_2X
-            label("生成：")
-            button("生成二维码") {
-                action {
-                    if (tf.text.isNotEmpty()) {
-                        iv.image = createQR(tf.text)
-                    }
-                }
-                shortcut(KeyCombination.valueOf("F9"))
-                tooltip("快捷键F9")
-            }
-        }
 
         hbox {
             spacing = DEFAULT_SPACING_3X
@@ -118,7 +93,22 @@ class QrcodeView : View("Qrcode") {
             textarea {
                 promptText = "请输入文本或者使用截屏识别/识别二维码"
                 isWrapText = true
+                prefHeight = DEFAULT_SPACING_10X
             }
+
+        hbox {
+            spacing = DEFAULT_SPACING_2X
+            label("生成：")
+            button("生成二维码") {
+                action {
+                    if (tf.text.isNotEmpty()) {
+                        iv.image = createQR(tf.text)
+                    }
+                }
+                shortcut(KeyCombination.valueOf("F9"))
+                tooltip("快捷键F9")
+            }
+        }
         hbox {
             label("二维码图片:")
             button(graphic = imageview(Image("/copy.png"))) {

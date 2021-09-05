@@ -1,5 +1,6 @@
 package me.leon.view
 
+import javafx.stage.StageStyle
 import java.security.Security
 import me.leon.APP_NAME
 import me.leon.VERSION
@@ -19,6 +20,7 @@ class Home : View("$APP_NAME v.$VERSION") {
         tab<SignatureView>()
         tab<QrcodeView>()
         tab<AboutView>()
+        primaryStage.isAlwaysOnTop = true
     }
 
     companion object {

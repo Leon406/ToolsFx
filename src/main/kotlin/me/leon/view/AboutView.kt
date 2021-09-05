@@ -19,8 +19,10 @@ class AboutView : View("关于") {
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
         imageview(Image("/tb.png"))
-        text("版本 v$VERSION") { font = Font.font(18.0) }
-        text("构建时间 ${times()}")
+        text("版本: v$VERSION") { font = Font.font(18.0) }
+        text("BUILD: ${times()}")
+        text("JRE: ${System.getProperty("java.runtime.version")}")
+        text("VM: ${System.getProperty("java.vm.name")}")
         hyperlink("吾爱破解地址") { action { PJ52_URL.openInBrowser() } }
         hyperlink("github开源地址") {
             font = Font.font(18.0)
@@ -36,11 +38,11 @@ class AboutView : View("关于") {
     private fun checkUpdate(isAuto: Boolean = true) {
         if (!isAuto) return
         runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
-            {
-                latestVersion.text =
-                    if (it.isEmpty()) "未知错误"
-                    else if (VERSION != it) "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
-                    else "已是最新版本"
-            }
+                {
+                    latestVersion.text =
+                        if (it.isEmpty()) "未知错误"
+                        else if (VERSION != it) "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
+                        else "已是最新版本"
+                }
     }
 }
