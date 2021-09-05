@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
+import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
@@ -22,7 +23,11 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         get() = input.text
     private val outputText: String
         get() = output.text
-
+    private val info
+        get() =
+            "RSA  bits: ${selectedBits.get()}  mode: ${if (privateKeyEncrypt.get()) "private key encrypt" 
+        else "public key encrypt"} "
+    private lateinit var infoLabel: Label
     private val keyText: String
         get() =
             key.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
@@ -59,13 +64,14 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
             selectedBits.set(keySize.toString())
         }
     }
-
-    override val root = vbox {
+    private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label("密钥:")
-            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
         key =
             textarea {
@@ -76,12 +82,15 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
         hbox {
             label("待处理 (明文/base64密文):") { tooltip("加密时为明文,解密时为base64编码的密文") }
-            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
         input =
             textarea {
                 promptText = "请输入或者拖动文件到此区域"
                 isWrapText = true
+                prefHeight = DEFAULT_SPACING_8X
             }
 
         hbox {
@@ -119,21 +128,29 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
                 isWrapText = true
             }
     }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label(info) }
+    }
 
     private fun doCrypto() {
         if (keyText.isEmpty() || inputText.isEmpty()) {
             output.text = "请输入key 或者 待处理内容"
             return
         }
-        if (isEncrypt)
-            output.text =
+
+        runAsync {
+            if (isEncrypt)
                 if (privateKeyEncrypt.get())
                     controller.priEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
                 else controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
-        else
-            output.text =
-                if (privateKeyEncrypt.get())
-                    controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
-                else controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+            else if (privateKeyEncrypt.get())
+                controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+            else controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+        } ui
+            {
+                output.text = it
+                infoLabel.text = info
+            }
     }
 }

@@ -118,12 +118,14 @@ class SignatureView : View("签名与验签") {
     private val info
         get() = "Signature: $keyPairAlg hash: ${selectedSigAlg.get()} "
 
-    override val root = vbox {
+    private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label("密钥:")
-            button(graphic = imageview(Image("/import.png"))) { action { taKey.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { taKey.text = clipboardText() }
+            }
         }
         taKey =
             textarea {
@@ -133,13 +135,16 @@ class SignatureView : View("签名与验签") {
             }
         hbox {
             label("原始内容:")
-            button(graphic = imageview(Image("/import.png"))) { action { taRaw.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { taRaw.text = clipboardText() }
+            }
         }
         taRaw =
             textarea {
                 promptText = "请输入或者拖动文件到此区域"
                 isWrapText = true
                 onDragEntered = eventHandler
+                prefHeight = DEFAULT_SPACING_16X
             }
         hbox {
             alignment = Pos.CENTER_LEFT
@@ -191,8 +196,12 @@ class SignatureView : View("签名与验签") {
             textarea {
                 promptText = "结果"
                 isWrapText = true
+                prefHeight = DEFAULT_SPACING_8X
             }
-        infoLabel = label(info)
+    }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun sign() =

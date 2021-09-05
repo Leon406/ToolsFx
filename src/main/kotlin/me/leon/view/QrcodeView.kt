@@ -110,7 +110,9 @@ class QrcodeView : View("Qrcode") {
             button(graphic = imageview(Image("/copy.png"))) {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button(graphic = imageview(Image("/import.png"))) { action { tf.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { tf.text = clipboardText() }
+            }
         }
         tf =
             textarea {

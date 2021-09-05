@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
+import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -26,6 +27,9 @@ class SymmetricCryptoView : View("对称加密(block)") {
         get() = input.text
     private val outputText: String
         get() = output.text
+    private val info
+        get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} "
+    private lateinit var infoLabel: Label
     private val keyByteArray
         get() =
             when (keyEncode) {
@@ -100,12 +104,14 @@ class SymmetricCryptoView : View("对称加密(block)") {
     private val cipher
         get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
 
-    override val root = vbox {
+    private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label("待处理:")
-            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
         input =
             textarea {
@@ -195,6 +201,11 @@ class SymmetricCryptoView : View("对称加密(block)") {
             }
     }
 
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label(info) }
+    }
+
     private fun doCrypto() {
         runAsync {
             isProcessing.value = true
@@ -227,6 +238,7 @@ class SymmetricCryptoView : View("对称加密(block)") {
             {
                 isProcessing.value = false
                 output.text = it
+                infoLabel.text = info
             }
     }
 }

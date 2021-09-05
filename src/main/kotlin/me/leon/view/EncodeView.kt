@@ -35,7 +35,9 @@ class EncodeView : View("编解码") {
 
         hbox {
             label("待处理:")
-            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
 
         input =
@@ -58,20 +60,20 @@ class EncodeView : View("编解码") {
                         isSelected = true
                         tooltip(
                             "Base64是一种基于64个可打印字符来表示二进制数据的表示方法!\n" +
-                                    "它是一种将二进制编码转换为可打印字符一种。它是MIME编码里面非常常见一种可逆转\n" +
-                                    "换二进制方法！\n" +
-                                    "由于2的6次方等于64，所以每6个位为一个单元，对应某个可打印字符。三个字节有24个位元，\n" +
-                                    "可以对应4个Base64单元，因此3个字节需要用4个base64单元来表示！ 这64个可打印字符a-z,A-Z,\n" +
-                                    "0-9就占62字符，剩下2个字符不同系统可能使用不同，\n" +
-                                    "经常是:“+/”。base64编码后，文档大小为原先的4/3，里面所有字节（包括常见可打印字符）也编码了！\n"
+                                "它是一种将二进制编码转换为可打印字符一种。它是MIME编码里面非常常见一种可逆转\n" +
+                                "换二进制方法！\n" +
+                                "由于2的6次方等于64，所以每6个位为一个单元，对应某个可打印字符。三个字节有24个位元，\n" +
+                                "可以对应4个Base64单元，因此3个字节需要用4个base64单元来表示！ 这64个可打印字符a-z,A-Z,\n" +
+                                "0-9就占62字符，剩下2个字符不同系统可能使用不同，\n" +
+                                "经常是:“+/”。base64编码后，文档大小为原先的4/3，里面所有字节（包括常见可打印字符）也编码了！\n"
                         )
                         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                     }
                     radiobutton("urlEncode") {
                         tooltip(
                             "url编码解码,又叫百分号编码，是统一资源定位(URL)编码方式。\n" +
-                                    "URL地址（常说网址）规定了常用地数字，字母可以直接使用，另外一批作为\n" +
-                                    "特殊用户字符也可以直接用（/,:@等），剩下的其它所有字符必须通过%xx编码处理。 "
+                                "URL地址（常说网址）规定了常用地数字，字母可以直接使用，另外一批作为\n" +
+                                "特殊用户字符也可以直接用（/,:@等），剩下的其它所有字符必须通过%xx编码处理。 "
                         )
                         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                     }
@@ -79,8 +81,8 @@ class EncodeView : View("编解码") {
                     radiobutton("unicode") {
                         tooltip(
                             "统一码，也叫万国码、单一码（Unicode）是计算机科学领域里的一项业界标准，包括字符集、编码方案等。\n" +
-                                    "Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，\n" +
-                                    "以满足跨语言、跨平台进行文本转换、处理的要求。"
+                                "Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，\n" +
+                                "以满足跨语言、跨平台进行文本转换、处理的要求。"
                         )
                         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                     }
@@ -95,22 +97,22 @@ class EncodeView : View("编解码") {
                     radiobutton("urlBase64") {
                         tooltip(
                             "base64传统编码中会出现+, /两个会被url直接转义的符号，因此如果希望通过url传输这些编码字符串，我们\n" +
-                                    "需要先做base64编码，随后将+和/分别替换为- _两个字符"
+                                "需要先做base64编码，随后将+和/分别替换为- _两个字符"
                         )
                         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                     }
                     radiobutton("base16") {
                         tooltip(
                             "Base16编码使用16个ASCII可打印字符（数字0-9和字母A-F）对任意字节数据进行编码。\n" +
-                                    "Base16先获取输入字符串每个字节的二进制值（不足8比特在高位补0），然后将其串联进来，\n" +
-                                    "再按照4比特一组进行切分，将每组二进制数分别转换成十进制"
+                                "Base16先获取输入字符串每个字节的二进制值（不足8比特在高位补0），然后将其串联进来，\n" +
+                                "再按照4比特一组进行切分，将每组二进制数分别转换成十进制"
                         )
                         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                     }
                     radiobutton("base32") {
                         tooltip(
                             "Base32编码是使用32个可打印字符（字母A-Z和数字2-7）对任意字节数据进行编码的方案，\n" +
-                                    "编码后的字符串不用区分大小写并排除了容易混淆的字符，可以方便地由人类使用并由计算机处理。"
+                                "编码后的字符串不用区分大小写并排除了容易混淆的字符，可以方便地由人类使用并由计算机处理。"
                         )
                         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                     }

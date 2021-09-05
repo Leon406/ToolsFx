@@ -15,7 +15,7 @@ class AboutView : View("关于") {
     lateinit var latestVersion: Text
 
     override val root = vbox {
-        alignment = Pos.TOP_CENTER
+        alignment = Pos.CENTER
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
         imageview(Image("/tb.png"))

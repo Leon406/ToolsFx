@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
+import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -26,6 +27,9 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         get() = input.text
     private val outputText: String
         get() = output.text
+    private val info
+        get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} "
+    private lateinit var infoLabel: Label
     private val keyByteArray
         get() =
             when (keyEncode) {
@@ -73,12 +77,15 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         get() = selectedAlg.get()
     private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
     private val selectedCharset = SimpleStringProperty(charsets.first())
-    override val root = vbox {
+
+    private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label("待处理:")
-            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
         input =
             textarea {
@@ -143,7 +150,6 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
-
         }
         hbox {
             label("输出内容:")
@@ -161,6 +167,10 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 promptText = "结果"
                 isWrapText = true
             }
+    }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun doCrypto() {
@@ -195,6 +205,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
             {
                 isProcessing.value = false
                 output.text = it
+                infoLabel.text = info
             }
     }
 }

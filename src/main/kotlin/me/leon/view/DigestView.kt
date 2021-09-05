@@ -81,7 +81,9 @@ class DigestView : View("哈希") {
         spacing = DEFAULT_SPACING
         hbox {
             label("待处理:")
-            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
         input =
             textarea {
