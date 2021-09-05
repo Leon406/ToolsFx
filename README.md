@@ -179,6 +179,8 @@
 - [x] 对称加密支持文件加密解密,输出文件 (测试m3u8 ts文件解密后正常播放)
 - [ ] i18n
 - [ ] 键盘事件, 快捷键
+- [ ] CTF相关功能
+- [ ] PBE
 
 bouncycastle文档 https://www.bouncycastle.org/specifications.html
 

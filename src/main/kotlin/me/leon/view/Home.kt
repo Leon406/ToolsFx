@@ -18,6 +18,7 @@ class Home : View("$APP_NAME v.$VERSION") {
         tab<AsymmetricCryptoView>()
         tab<SignatureView>()
         tab<QrcodeView>()
+        tab<AboutView>()
     }
 
     companion object {

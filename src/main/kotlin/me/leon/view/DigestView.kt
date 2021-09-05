@@ -2,16 +2,16 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
-import javafx.scene.input.DragEvent
+import javafx.scene.image.Image
 import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
+import me.leon.ext.fileDraggedHandler
 import tornadofx.*
 
 class DigestView : View("哈希") {
@@ -28,16 +28,9 @@ class DigestView : View("哈希") {
         get() = output.text
     var method = "MD5"
 
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().absolutePath
-                }
-            }
-        }
+    private val eventHandler = fileDraggedHandler {
+        input.text = if (fileHash.get()) it.first().absolutePath else it.first().readText()
+    }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =
@@ -142,7 +135,7 @@ class DigestView : View("哈希") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") { action { outputText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
@@ -152,7 +145,7 @@ class DigestView : View("哈希") {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label() }
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun doHash() =

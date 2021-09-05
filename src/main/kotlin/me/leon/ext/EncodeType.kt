@@ -7,8 +7,12 @@ enum class EncodeType(val type: String) {
     Hex("hex"),
     Binary("binary"),
     UrlEncode("urlencode"),
-    Base32("base32"),
     Base16("base16"),
+    Base32("base32"),
+    Base36("base36"),
     Base58("base58"),
     Base58Check("base58Check"),
+    Base62("base62"),
+    Base85("base85"),
+    Base91("base91"),
 }

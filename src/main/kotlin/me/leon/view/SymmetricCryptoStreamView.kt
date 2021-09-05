@@ -2,18 +2,14 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.input.DragEvent
+import javafx.scene.image.Image
 import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.hex2ByteArray
+import me.leon.ext.*
 import tornadofx.*
 
 class SymmetricCryptoStreamView : View("对称加密(stream)") {
@@ -51,18 +47,10 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 else -> byteArrayOf()
             }
 
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text =
-                        if (isFile.get()) it.dragboard.files.first().absolutePath
-                        else it.dragboard.files.first().readText()
-                }
-            }
-        }
+    private val eventHandler = fileDraggedHandler {
+        input.text = if (isFile.get()) it.first().absolutePath else it.first().readText()
+    }
+
     private val algs =
         mutableListOf(
             "RC4",
@@ -162,7 +150,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") { action { outputText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {

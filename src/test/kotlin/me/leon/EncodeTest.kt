@@ -1,11 +1,7 @@
 package me.leon
 
-import java.math.BigInteger
 import kotlin.test.assertEquals
-import me.leon.base.BASE16_MAP
-import me.leon.base.BASE32_MAP
-import me.leon.base.baseNDecode2String
-import me.leon.base.baseNEncode
+import me.leon.base.*
 import me.leon.controller.EncodeController
 import me.leon.ext.EncodeType
 import org.junit.Before
@@ -79,37 +75,41 @@ class EncodeTest {
         val base62Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         val base62 = "JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju"
         assertEquals(base62, raw.baseNEncode(62, base62Map))
+        assertEquals(base62, raw.base62())
         assertEquals(raw, base62.baseNDecode2String(62, base62Map))
+        assertEquals(raw, base62.base62Decode2String())
 
         val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         val base36 = "MAHJV1X5YMIHRRDJ0HQLTZ0WNFLYDP0W01ME2E8MTAT3QNDXRXGNH7HJYAYY5Q"
         assertEquals(base36, raw.baseNEncode(36, base36Map))
+        assertEquals(base36, raw.base36())
         assertEquals(raw, base36.baseNDecode2String(36, base36Map))
+        assertEquals(raw, base36.base36Decode2String())
     }
 
     @Test
     fun baseNTest() {
         val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        //        val base62 = "JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju"
         println("${0.toChar()}leon".baseNEncode(36, base36Map))
-        println(raw.baseNEncode(36, base36Map))
-        BigInteger(1, "leon".toByteArray()).toString(36).also { println(it) }
-        String(BigInteger("u2qmpa", 36).toByteArray())
         println("0U2QMPA".baseNDecode2String(36, base36Map))
-        //        assertEquals(base62,raw.baseNEncode(36,base36Map) )
-        //        assertEquals(raw,base62.baseNDecode2String(62,base62Map) )
 
-        Base91.encode("example string".toByteArray()).also { println(String(it)) }
-
-        println(String(Base91.decode("5)GfG?ue\$y+/ZQ;mMB".toByteArray())))
+        Base91.encode(raw.toByteArray()).also { println(String(it)) }
+        println("example string".base91())
+        println(
+            String(
+                Base91.decode(
+                    "5)GfG?ue\$y+/ZQ;mMB".also { println(it.base91Decode2String()) }.toByteArray()
+                )
+            )
+        )
     }
 
     @Test
     fun b85() {
         println(raw.base85())
-        println("jh--*O-/P5V<*E?l'mFhOGG#gGp\$p7Df.Bc2F',TE,TK*AM.J1".base85Decode())
+        println("jh--*O-/P5V<*E?l'mFhOGG#gGp\$p7Df.Bc2F',TE,TK*AM.J1".base85Decode2String())
         println("111151".base85())
-        println("0ekC;2),(2".base85Decode())
+        println("0ekC;2),(2".base85Decode2String())
     }
     @Test
     fun asciiPrint() {

@@ -5,9 +5,11 @@ import java.awt.image.BufferedImage
 import java.io.File
 import java.net.URL
 import javafx.embed.swing.SwingFXUtils
+import javafx.event.EventHandler
 import javafx.scene.image.Image
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
+import javafx.scene.input.DragEvent
 import javafx.stage.FileChooser
 import javafx.stage.Window
 import javax.imageio.ImageIO
@@ -34,3 +36,14 @@ fun BufferedImage.writeFile(path: String, format: String = "png") {
 
 fun Window.fileChooser(hint: String = "请选择文件"): File? =
     FileChooser().apply { title = hint }.showOpenDialog(this)
+
+fun fileDraggedHandler(block: (List<File>) -> Unit) =
+    EventHandler<DragEvent> {
+        println("${it.dragboard.hasFiles()}______" + it.eventType)
+        if (it.eventType.name == "DRAG_ENTERED") {
+            if (it.dragboard.hasFiles()) {
+                println(it.dragboard.files)
+                block.invoke(it.dragboard.files)
+            }
+        }
+    }

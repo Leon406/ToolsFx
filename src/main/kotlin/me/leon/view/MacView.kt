@@ -2,14 +2,13 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.input.DragEvent
+import javafx.scene.image.Image
 import me.leon.controller.MacController
 import me.leon.ext.*
 import tornadofx.*
@@ -36,16 +35,7 @@ class MacView : View("MAC") {
     private var outputEncode = "hex"
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    input.text = it.dragboard.files.first().absolutePath
-                }
-            }
-        }
+    private val eventHandler = fileDraggedHandler { input.text = it.first().absolutePath }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =
@@ -203,7 +193,7 @@ class MacView : View("MAC") {
         }
         hbox {
             label("输出内容:")
-            button("复制结果") { action { outputText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
@@ -214,7 +204,7 @@ class MacView : View("MAC") {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label() }
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun doMac() =

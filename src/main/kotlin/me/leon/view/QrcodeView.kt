@@ -119,7 +119,7 @@ class QrcodeView : View("Qrcode") {
             }
         hbox {
             label("二维码图片:")
-            button("复制二维码") {
+            button(graphic = imageview(Image("/copy.png"))) {
                 action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
             }
         }

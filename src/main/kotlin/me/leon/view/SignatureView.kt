@@ -2,12 +2,11 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
-import javafx.scene.input.DragEvent
+import javafx.scene.image.Image
 import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
 import me.leon.ext.*
@@ -28,16 +27,7 @@ class SignatureView : View("签名与验签") {
         get() = taSigned.text
     var keyPairAlg = "RSA"
 
-    private val eventHandler =
-        EventHandler<DragEvent> {
-            println("${it.dragboard.hasFiles()}______" + it.eventType)
-            if (it.eventType.name == "DRAG_ENTERED") {
-                if (it.dragboard.hasFiles()) {
-                    println(it.dragboard.files)
-                    taKey.text = it.dragboard.files.first().readText()
-                }
-            }
-        }
+    private val eventHandler = fileDraggedHandler { taKey.text = it.first().readText() }
 
     // https://www.bouncycastle.org/specifications.html
     private val keyPairAlgs =
@@ -124,7 +114,7 @@ class SignatureView : View("签名与验签") {
 
     private val selectedKeyPairAlg = SimpleStringProperty(keyPairAlgs.keys.first())
     private val selectedSigAlg = SimpleStringProperty(keyPairAlgs.values.first().first())
-    lateinit var cbSigs: ComboBox<String>
+    private lateinit var cbSigs: ComboBox<String>
     private val info
         get() = "Signature: $keyPairAlg hash: ${selectedSigAlg.get()} "
 
@@ -194,7 +184,7 @@ class SignatureView : View("签名与验签") {
         }
         hbox {
             label("签名 (base64):")
-            button("复制结果") { action { signText.copy() } }
+            button(graphic = imageview(Image("/copy.png"))) { action { signText.copy() } }
         }
 
         taSigned =
@@ -202,7 +192,7 @@ class SignatureView : View("签名与验签") {
                 promptText = "结果"
                 isWrapText = true
             }
-        infoLabel = label()
+        infoLabel = label(info)
     }
 
     private fun sign() =
