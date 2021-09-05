@@ -107,10 +107,10 @@ class QrcodeView : View("Qrcode") {
         hbox {
             spacing = DEFAULT_SPACING_3X
             label("内容:")
-            button("复制内容") {
+            button(graphic = imageview(Image("/copy.png"))) {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button("剪贴板导入") { action { tf.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { tf.text = clipboardText() } }
         }
         tf =
             textarea {

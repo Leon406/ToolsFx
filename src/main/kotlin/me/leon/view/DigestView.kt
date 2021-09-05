@@ -81,7 +81,7 @@ class DigestView : View("哈希") {
         spacing = DEFAULT_SPACING
         hbox {
             label("待处理:")
-            button("剪贴板导入") { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
         }
         input =
             textarea {
@@ -130,7 +130,7 @@ class DigestView : View("哈希") {
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
             checkbox("文件模式", fileHash)
-            button("运行") {
+            button("运行", imageview(Image("/run.png"))) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }

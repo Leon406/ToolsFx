@@ -78,7 +78,7 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
         spacing = DEFAULT_SPACING
         hbox {
             label("待处理:")
-            button("剪贴板导入") { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
         }
         input =
             textarea {
@@ -139,20 +139,22 @@ class SymmetricCryptoStreamView : View("对称加密(stream)") {
                 }
             }
             checkbox("文件模式", isFile)
-            button("运行") {
+            button("运行", imageview(Image("/run.png"))) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
-            button("上移") {
+
+        }
+        hbox {
+            label("输出内容:")
+            spacing = DEFAULT_SPACING
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
+            button(graphic = imageview(Image("/up.png"))) {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
             }
-        }
-        hbox {
-            label("输出内容:")
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {

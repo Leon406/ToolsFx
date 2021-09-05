@@ -117,7 +117,7 @@ class MacView : View("MAC") {
         spacing = DEFAULT_SPACING
         hbox {
             label("待处理:")
-            button("剪贴板导入") { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
         }
         input =
             textarea() {
@@ -185,8 +185,7 @@ class MacView : View("MAC") {
         tilepane {
             alignment = Pos.CENTER
             hgap = DEFAULT_SPACING_4X
-            button("运行") {
-                prefWidth = DEFAULT_SPACING_8X
+            button("运行", imageview(Image("/run.png"))) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }
             }

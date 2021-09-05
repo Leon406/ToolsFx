@@ -123,7 +123,7 @@ class SignatureView : View("签名与验签") {
         spacing = DEFAULT_SPACING
         hbox {
             label("密钥:")
-            button("剪贴板导入") { action { taKey.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { taKey.text = clipboardText() } }
         }
         taKey =
             textarea {
@@ -133,7 +133,7 @@ class SignatureView : View("签名与验签") {
             }
         hbox {
             label("原始内容:")
-            button("剪贴板导入") { action { taRaw.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { taRaw.text = clipboardText() } }
         }
         taRaw =
             textarea {

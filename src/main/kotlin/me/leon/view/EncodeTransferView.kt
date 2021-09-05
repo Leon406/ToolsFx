@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
+import javafx.scene.image.Image
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import tornadofx.*
@@ -79,7 +80,7 @@ class EncodeTransferView : View("编码转换") {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
-            button("转换") {
+            button("转换", imageview(Image("/run.png"))) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }

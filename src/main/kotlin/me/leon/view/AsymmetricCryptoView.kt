@@ -65,7 +65,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
         spacing = DEFAULT_SPACING
         hbox {
             label("密钥:")
-            button("剪贴板导入") { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
         }
         key =
             textarea {
@@ -76,7 +76,7 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
         hbox {
             label("待处理 (明文/base64密文):") { tooltip("加密时为明文,解密时为base64编码的密文") }
-            button("剪贴板导入") { action { input.text = clipboardText() } }
+            button(graphic = imageview(Image("/import.png"))) { action { input.text = clipboardText() } }
         }
         input =
             textarea {
@@ -99,18 +99,19 @@ class AsymmetricCryptoView : View("非对称加密 RSA") {
 
             checkbox("私钥加密", privateKeyEncrypt) { tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密") }
 
-            button("运行") { action { doCrypto() } }
-            button("上移") {
+            button("运行", imageview(Image("/run.png"))) { action { doCrypto() } }
+            button("生成公私钥") { action { "https://miniu.alipay.com/keytool/create".openInBrowser() } }
+        }
+        hbox {
+            spacing = DEFAULT_SPACING
+            label("输出内容:")
+            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
+            button(graphic = imageview(Image("/up.png"))) {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
             }
-            button("生成公私钥") { action { "https://miniu.alipay.com/keytool/create".openInBrowser() } }
-        }
-        hbox {
-            label("输出内容:")
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
