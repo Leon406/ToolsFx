@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
+import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.controller.EncodeController
 import me.leon.ext.*
@@ -17,6 +18,8 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private lateinit var input: TextArea
     private lateinit var output: TextArea
     private lateinit var infoLabel: Label
+    private lateinit var customDict: TextField
+    private var enableDict = SimpleBooleanProperty(true)
     private val info: String
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
@@ -65,14 +68,28 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = (new as RadioButton).text.encodeType()
+                        enableDict.value = encodeType.type.contains("base")
+                        customDict.text = encodeType.dic
                         if (isEncode) {
-                            output.text = controller.encode2String(inputText, encodeType)
+                            output.text =
+                                controller.encode2String(inputText, encodeType, customDict.text)
                             infoLabel.text = info
                         }
                     }
                 }
             }
         }
+
+        hbox {
+            label(messages["customDict"])
+            alignment = Pos.BASELINE_LEFT
+            customDict =
+                textfield(encodeType.dic) {
+                    enableWhen { enableDict }
+                    prefWidth = DEFAULT_SPACING_80X
+                }
+        }
+
         hbox {
             spacing = DEFAULT_SPACING
             togglegroup {
@@ -112,9 +129,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
     private fun run() {
         if (isEncode) {
-            output.text = controller.encode2String(inputText, encodeType)
+            output.text = controller.encode2String(inputText, encodeType, customDict.text)
         } else {
-            output.text = controller.decode2String(inputText, encodeType)
+            output.text = controller.decode2String(inputText, encodeType, customDict.text)
         }
         infoLabel.text = info
     }

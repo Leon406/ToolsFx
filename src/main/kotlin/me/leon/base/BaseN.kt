@@ -2,13 +2,13 @@ package me.leon.base
 
 import java.math.BigInteger
 
-const val BASE_58_DICT = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+const val BASE58_DICT = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-fun String.baseNEncode(radix: Int = 58, maps: String = BASE_58_DICT): String {
+fun String.baseNEncode(radix: Int = 58, maps: String = BASE58_DICT): String {
     return toByteArray().baseNEncode(radix, maps)
 }
 
-fun ByteArray.baseNEncode(radix: Int = 58, maps: String = BASE_58_DICT): String {
+fun ByteArray.baseNEncode(radix: Int = 58, maps: String = BASE58_DICT): String {
     var bigInteger = BigInteger(1, this)
     var remainder: Int
     val sb = StringBuilder()
@@ -30,7 +30,7 @@ fun ByteArray.baseNEncode(radix: Int = 58, maps: String = BASE_58_DICT): String 
     return result
 }
 
-fun String.baseNDecode(radix: Int = 58, maps: String = BASE_58_DICT): ByteArray {
+fun String.baseNDecode(radix: Int = 58, maps: String = BASE58_DICT): ByteArray {
     if (this.isEmpty()) return ByteArray(0)
     val leadingZero = maps.first()
     var intData = BigInteger.ZERO
@@ -61,5 +61,5 @@ fun String.baseNDecode(radix: Int = 58, maps: String = BASE_58_DICT): ByteArray 
     return decoded
 }
 
-fun String.baseNDecode2String(radix: Int = 58, maps: String = BASE_58_DICT) =
+fun String.baseNDecode2String(radix: Int = 58, maps: String = BASE58_DICT) =
     String(baseNDecode(radix, maps))

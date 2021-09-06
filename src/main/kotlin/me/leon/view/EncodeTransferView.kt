@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
+import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.controller.EncodeController
 import me.leon.ext.*
@@ -17,6 +18,8 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private lateinit var input: TextArea
     private lateinit var output: TextArea
     private lateinit var infoLabel: Label
+    private lateinit var customDict: TextField
+    private var enableDict = SimpleBooleanProperty(true)
     private val info: String
         get() =
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
@@ -56,6 +59,8 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
                         srcEncodeType = (new as RadioButton).text.encodeType()
+                        enableDict.value = srcEncodeType.type.contains("base")
+                        customDict.text = srcEncodeType.dic
                     }
                 }
             }
@@ -67,6 +72,15 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 onDragEntered = eventHandler
             }
 
+        hbox {
+            label(messages["customDict"])
+            alignment = Pos.BASELINE_LEFT
+            customDict =
+                textfield(srcEncodeType.dic) {
+                    enableWhen { enableDict }
+                    prefWidth = DEFAULT_SPACING_80X
+                }
+        }
         tilepane {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
@@ -75,14 +89,14 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["up"]) {
+            button(messages["up"], imageview(Image("/up.png"))) {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["copy"]) {
+            button(messages["copy"], imageview(Image("/copy.png"))) {
                 action { outputText.copy() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
@@ -125,7 +139,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     }
 
     private fun run() {
-        val decode = controller.decode(inputText, srcEncodeType)
+        val decode = controller.decode(inputText, srcEncodeType, customDict.text)
         output.text =
             if (String(decode, Charsets.UTF_8).contains("解码错误:")) {
                 String(decode, Charsets.UTF_8)

@@ -6,7 +6,7 @@ val base58HashFunc = { bytes: ByteArray -> Digests.hash("SHA-256", Digests.hash(
 
 fun ByteArray.baseCheck(
     radix: Int = 58,
-    maps: String = BASE_58_DICT,
+    maps: String = BASE58_DICT,
     hashFuc: (ByteArray) -> ByteArray = base58HashFunc,
     hashSize: Int = 4
 ): String {
@@ -19,7 +19,7 @@ fun ByteArray.baseCheck(
 
 fun String.baseCheckDecode(
     radix: Int = 58,
-    maps: String = BASE_58_DICT,
+    maps: String = BASE58_DICT,
     hashFuc: (ByteArray) -> ByteArray = base58HashFunc,
     hashSize: Int = 4
 ): ByteArray =
@@ -32,7 +32,7 @@ fun String.baseCheckDecode(
 
 fun String.baseCheckDecode2String(
     radix: Int = 58,
-    maps: String = BASE_58_DICT,
+    maps: String = BASE58_DICT,
     hashFuc: (ByteArray) -> ByteArray = base58HashFunc,
     hashSize: Int = 4
 ) = String(baseCheckDecode(radix, maps, hashFuc, hashSize))

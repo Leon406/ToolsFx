@@ -2,36 +2,38 @@ package me.leon.base
 
 import me.leon.ext.toBinaryString
 
-const val BASE92_MAP =
+const val BASE92_DICT =
     "!#\$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}"
 
 const val BASE92_BLOCK_SIZE = 13
 const val BASE92_BLOCK_SIZE_HALF = 6
 
-fun String.base92Encode2String(dict: String = BASE92_MAP): String {
+fun String.base92Encode2String(dict: String = BASE92_DICT): String {
     if (isEmpty()) return "~"
+    val dic = dict.ifEmpty { BASE92_DICT }
     return toByteArray().toBinaryString().chunked(BASE92_BLOCK_SIZE).joinToString("") {
-        if (it.length < 7) dict[it.padding("0", BASE92_BLOCK_SIZE_HALF).toInt(2)].toString()
+        if (it.length < 7) dic[it.padding("0", BASE92_BLOCK_SIZE_HALF).toInt(2)].toString()
         else
             with(it.padding("0", BASE92_BLOCK_SIZE).toInt(2)) {
-                dict[this / 91] + dict[this % 91].toString()
+                dic[this / 91] + dic[this % 91].toString()
             }
     }
 }
 
-fun ByteArray.base92Encode(dict: String = BASE92_MAP) = String(this).base92Encode2String(dict)
+fun ByteArray.base92Encode(dict: String = BASE92_DICT) = String(this).base92Encode2String(dict)
 
-fun String.base92Decode(dict: String = BASE92_MAP): ByteArray {
+fun String.base92Decode(dict: String = BASE92_DICT): ByteArray {
     if (this == "~") return "".toByteArray()
+    val dic = dict.ifEmpty { BASE92_DICT }
     return toCharArray()
         .toList()
         .chunked(2)
         .joinToString("") {
             if (it.size > 1)
-                (dict.indexOf(it.first()) * 91 + dict.indexOf(it[1]))
+                (dic.indexOf(it.first()) * 91 + dict.indexOf(it[1]))
                     .toString(2)
                     .padding("0", BASE92_BLOCK_SIZE, false)
-            else dict.indexOf(it.first()).toString(2)
+            else dic.indexOf(it.first()).toString(2)
         }
         .chunked(BYTE_BITS)
         .filter { it.length == BYTE_BITS }
@@ -39,4 +41,4 @@ fun String.base92Decode(dict: String = BASE92_MAP): ByteArray {
         .toByteArray()
 }
 
-fun String.base92Decode2String(dict: String = BASE92_MAP) = String(base92Decode(dict))
+fun String.base92Decode2String(dict: String = BASE92_DICT) = String(base92Decode(dict))

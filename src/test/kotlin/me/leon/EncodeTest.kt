@@ -26,16 +26,16 @@ class EncodeTest {
 
         val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
         assertEquals(base32, controller.encode2String(raw, EncodeType.Base32))
-        assertEquals(base32, raw.baseNEncode(32, BASE32_MAP))
+        assertEquals(base32, raw.baseNEncode(32, BASE32_DICT))
         assertEquals(raw, controller.decode2String(base32, EncodeType.Base32))
-        assertEquals(raw, base32.baseNDecode2String(32, BASE32_MAP))
+        assertEquals(raw, base32.baseNDecode2String(32, BASE32_DICT))
 
         val base16 =
             "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
         assertEquals(base16, controller.encode2String(raw, EncodeType.Base16))
-        assertEquals(base16, raw.baseNEncode(16, BASE16_MAP))
+        assertEquals(base16, raw.baseNEncode(16, BASE16_DICT))
         assertEquals(raw, controller.decode2String(base16, EncodeType.Base16))
-        assertEquals(raw, base16.baseNDecode2String(16, BASE16_MAP))
+        assertEquals(raw, base16.baseNDecode2String(16, BASE16_DICT))
 
         val binary =
             "1110010110111100100000001110010110001111100100011110010110110111101001011110010110000" +
@@ -145,6 +145,6 @@ class EncodeTest {
     @Test
     fun baseT() {
         println("ab".base92Encode2String())
-        println("ab".baseNEncode(91, BASE92_MAP))
+        println("ab".baseNEncode(91, BASE92_DICT))
     }
 }

@@ -42,7 +42,6 @@ fun fileDraggedHandler(block: (List<File>) -> Unit) =
         println("${it.dragboard.hasFiles()}______" + it.eventType)
         if (it.eventType.name == "DRAG_ENTERED") {
             if (it.dragboard.hasFiles()) {
-                println(it.dragboard.files)
                 block.invoke(it.dragboard.files)
             }
         }

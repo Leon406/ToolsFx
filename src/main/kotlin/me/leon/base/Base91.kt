@@ -74,11 +74,15 @@ object Base91 {
     }
 }
 
-const val BASE91_MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_`{|}~\""
-fun String.base91(dict: String = BASE91_MAP) = toByteArray().base91(dict)
+const val BASE91_DICT =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_`{|}~\""
 
-fun ByteArray.base91(dict: String = BASE91_MAP) = String(Base91.encode(this, dict.toByteArray()))
+fun String.base91(dict: String = BASE91_DICT) = toByteArray().base91(dict)
 
-fun String.base91Decode(dict: String = BASE91_MAP) = Base91.decode(toByteArray(), dict.toByteArray())
+fun ByteArray.base91(dict: String = BASE91_DICT) =
+    String(Base91.encode(this, dict.ifEmpty { BASE85_DICT }.toByteArray()))
 
-fun String.base91Decode2String(dict: String = BASE91_MAP) = String(base91Decode(dict))
+fun String.base91Decode(dict: String = BASE91_DICT) =
+    Base91.decode(toByteArray(), dict.ifEmpty { BASE85_DICT }.toByteArray())
+
+fun String.base91Decode2String(dict: String = BASE91_DICT) = String(base91Decode(dict))
