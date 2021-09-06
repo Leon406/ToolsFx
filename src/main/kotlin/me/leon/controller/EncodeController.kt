@@ -4,6 +4,8 @@ import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.Base64
 import me.leon.base.*
+import me.leon.base92Decode
+import me.leon.base92Encode
 import me.leon.ext.EncodeType
 import me.leon.ext.binary2ByteArray
 import me.leon.ext.catch
@@ -38,6 +40,7 @@ class EncodeController : Controller() {
                     EncodeType.Base62 -> raw.base62()
                     EncodeType.Base85 -> raw.base85()
                     EncodeType.Base91 -> raw.base91()
+                    EncodeType.Base92 -> raw.base92Encode()
                 }
         }
 
@@ -51,7 +54,7 @@ class EncodeController : Controller() {
                 when (type) {
                     EncodeType.Base64 -> Base64.getDecoder().decode(encoded)
                     EncodeType.Base64Safe -> Base64.getUrlDecoder().decode(encoded)
-                    EncodeType.Hex -> encoded.hex2ByteArray()
+                    EncodeType.Hex -> encoded.replace("\\\\x".toRegex(), "").hex2ByteArray()
                     EncodeType.UrlEncode -> URLDecoder.decode(encoded)?.toByteArray()
                             ?: byteArrayOf()
                     EncodeType.Unicode -> encoded.unicode2String().toByteArray()
@@ -64,6 +67,7 @@ class EncodeController : Controller() {
                     EncodeType.Base62 -> encoded.base62Decode()
                     EncodeType.Base85 -> encoded.base85Decode()
                     EncodeType.Base91 -> encoded.base91Decode()
+                    EncodeType.Base92 -> encoded.base92Decode()
                 }
         }
 }

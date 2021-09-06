@@ -46,23 +46,12 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
                 togglegroup {
-                    radiobutton("base64") {
-                        isSelected = true
-                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    encodeTypeMap.forEach {
+                        radiobutton(it.key) {
+                            setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                            if (it.value == EncodeType.Base64) isSelected = true
+                        }
                     }
-                    radiobutton("urlEncode") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("unicode") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("hex") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("binary") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("urlBase64") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base16") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base32") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base36") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base58") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base58Check") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base62") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base85") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base91") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
 
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
@@ -108,23 +97,12 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
                 togglegroup {
-                    radiobutton("base64") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("urlEncode") {
-                        isSelected = true
-                        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                    encodeTypeMap.forEach {
+                        radiobutton(it.key) {
+                            setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                            if (it.value == EncodeType.UrlEncode) isSelected = true
+                        }
                     }
-                    radiobutton("unicode") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("hex") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("binary") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("urlBase64") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base16") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base32") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base36") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base58") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base58Check") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base62") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base85") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
-                    radiobutton("base91") { setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE) }
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
                         dstEncodeType = (new as RadioButton).text.encodeType()

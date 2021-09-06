@@ -18,7 +18,7 @@ object Prefs {
             preference.putBoolean(ALWAYS_ON_TOP, value)
         }
     var language
-        get() = preference.get(LANGUAGE,"zh")
+        get() = preference.get(LANGUAGE, "zh")
         set(value) {
             preference.put(LANGUAGE, value)
         }

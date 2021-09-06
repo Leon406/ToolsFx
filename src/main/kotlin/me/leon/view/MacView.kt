@@ -149,7 +149,6 @@ class MacView : View("MAC") {
                     enableWhen(enableIv)
                     promptText = messages["ivHint"]
                 }
-
         }
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {

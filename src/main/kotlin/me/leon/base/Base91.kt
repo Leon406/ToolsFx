@@ -4,35 +4,6 @@ import java.io.ByteArrayOutputStream
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
-/**
- * Modified version of Jochaim Henke's original code from http://base91.sourceforge.net/
- *
- * basE91 encoding/decoding routines
- *
- * Copyright (c) 2000-2006 Joachim Henke All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this list of conditions
- * and the following disclaimer. - Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the documentation and/or other
- * materials provided with the distribution. - Neither the name of Joachim Henke nor the names of
- * his contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * @author Joachim Henke (Original version)
- * @author Benedikt Waldvogel (Modifications)
- */
 object Base91 {
 
     private var DECODING_TABLE: ByteArray = ByteArray(256).apply { fill(-1) }
@@ -48,13 +19,18 @@ object Base91 {
         for (i in data.indices) {
             ebq = ebq or (data[i].toInt() and 255 shl en)
             en += 8
+            // 仅在位数大于13时进行处理, 2^13 8192 91*91=8281, 需要13~14位才能编码
             if (en > 13) {
+                // 取13位
                 var ev = ebq and 8191
                 if (ev > 88) {
+                    // 右移 13位
                     ebq = ebq shr 13
                     en -= 13
                 } else {
+                    // 取14位
                     ev = ebq and 16383
+                    // 右移 14位
                     ebq = ebq shr 14
                     en -= 14
                 }
@@ -72,9 +48,6 @@ object Base91 {
     }
 
     fun decode(data: ByteArray): ByteArray {
-
-        // if (data.length == 0)
-        // return new byte[] {};
         var dbq = 0
         var dn = 0
         var dv = -1
