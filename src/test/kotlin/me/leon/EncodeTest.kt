@@ -141,4 +141,10 @@ class EncodeTest {
         for (i in 33..127) print(i.toChar().toString())
         println(encodeTypeMap)
     }
+
+    @Test
+    fun baseT() {
+        println("ab".base92Encode2String())
+        println("ab".baseNEncode(91, BASE92_MAP))
+    }
 }

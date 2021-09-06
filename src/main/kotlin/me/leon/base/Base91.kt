@@ -6,12 +6,11 @@ import kotlin.math.roundToInt
 
 object Base91 {
 
-    private var DECODING_TABLE: ByteArray = ByteArray(256).apply { fill(-1) }
     private val ENCODING_TABLE =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_`{|}~\"".toByteArray()
     private val BASE = ENCODING_TABLE.size
     private const val AVERAGE_ENCODING_RATIO = 1.2297f
-    fun encode(data: ByteArray): ByteArray {
+    fun encode(data: ByteArray, dict: ByteArray = ENCODING_TABLE): ByteArray {
         val estimatedSize = ceil((data.size * AVERAGE_ENCODING_RATIO).toDouble()).toInt()
         val output = ByteArrayOutputStream(estimatedSize)
         var ebq = 0
@@ -34,30 +33,30 @@ object Base91 {
                     ebq = ebq shr 14
                     en -= 14
                 }
-                output.write(ENCODING_TABLE[ev % BASE].toInt())
-                output.write(ENCODING_TABLE[ev / BASE].toInt())
+                output.write(dict[ev % BASE].toInt())
+                output.write(dict[ev / BASE].toInt())
             }
         }
         if (en > 0) {
-            output.write(ENCODING_TABLE[ebq % BASE].toInt())
+            output.write(dict[ebq % BASE].toInt())
             if (en > 7 || ebq > 90) {
-                output.write(ENCODING_TABLE[ebq / BASE].toInt())
+                output.write(dict[ebq / BASE].toInt())
             }
         }
         return output.toByteArray()
     }
 
-    fun decode(data: ByteArray): ByteArray {
+    fun decode(data: ByteArray, dict: ByteArray = ENCODING_TABLE): ByteArray {
         var dbq = 0
         var dn = 0
         var dv = -1
         val estimatedSize = (data.size / AVERAGE_ENCODING_RATIO).roundToInt()
         val output = ByteArrayOutputStream(estimatedSize)
         for (i in data.indices) {
-            if (DECODING_TABLE[data[i].toInt()].toInt() == -1) continue
-            if (dv == -1) dv = DECODING_TABLE[data[i].toInt()].toInt()
+            if (dict.indexOf(data[i]) == -1) continue
+            if (dv == -1) dv = dict.indexOf(data[i])
             else {
-                dv += DECODING_TABLE[data[i].toInt()] * BASE
+                dv += dict.indexOf(data[i]) * BASE
                 dbq = dbq or (dv shl dn)
                 dn += if (dv and 8191 > 88) 13 else 14
                 do {
@@ -72,10 +71,6 @@ object Base91 {
             output.write(((dbq or dv shl dn).toByte()).toInt())
         }
         return output.toByteArray()
-    }
-
-    init {
-        for (i in 0 until BASE) DECODING_TABLE[ENCODING_TABLE[i].toInt()] = i.toByte()
     }
 }
 

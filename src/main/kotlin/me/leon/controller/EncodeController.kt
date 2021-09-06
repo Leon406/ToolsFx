@@ -4,8 +4,8 @@ import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.Base64
 import me.leon.base.*
-import me.leon.base92Decode
-import me.leon.base92Encode
+import me.leon.base.base92Decode
+import me.leon.base.base92Encode
 import me.leon.ext.EncodeType
 import me.leon.ext.binary2ByteArray
 import me.leon.ext.catch
