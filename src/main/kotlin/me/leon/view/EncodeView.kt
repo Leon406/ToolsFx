@@ -7,6 +7,7 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
+import me.leon.base.base64
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import tornadofx.*
@@ -49,6 +50,19 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+                contextmenu {
+                    item(messages["loadFromNet"]) {
+                        action { runAsync { inputText.readFromNet() } ui { input.text = it } }
+                    }
+                    item(messages["loadFromNet2"]) {
+                        action {
+                            runAsync { inputText.readBytesFromNet().base64() } ui
+                                {
+                                    input.text = it
+                                }
+                        }
+                    }
+                }
             }
         hbox {
             alignment = Pos.CENTER_LEFT
