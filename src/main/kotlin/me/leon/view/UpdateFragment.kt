@@ -14,8 +14,13 @@ class UpdateFragment : Fragment(messages["latestVer"]) {
         spacing = DEFAULT_SPACING_2X
         alignment = Pos.CENTER
 
-        button(messages["upgradeNow"]) { action { action { REPO_URL.openInBrowser() } } }
-        button(messages["ignoreOnce"]) { action { close() } }
+        button(messages["upgradeNow"]) { action {  REPO_URL.openInBrowser() } }
+        button(messages["ignoreOnce"]) {
+            action {
+                Prefs.isIgnoreUpdate = false
+                close()
+            }
+        }
         button(messages["ignoreForever"]) {
             action {
                 Prefs.isIgnoreUpdate = true

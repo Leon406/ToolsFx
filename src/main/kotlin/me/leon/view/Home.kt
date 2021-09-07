@@ -11,6 +11,7 @@ class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {
         tab<EncodeView>()
         tab<EncodeTransferView>()
+        tab<StringProcessView>()
         tab<DigestView>()
         tab<MacView>()
         tab<SymmetricCryptoView>()

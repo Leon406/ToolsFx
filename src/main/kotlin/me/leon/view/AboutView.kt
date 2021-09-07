@@ -21,7 +21,7 @@ class AboutView : View(messages["about"]) {
         paddingAll = DEFAULT_SPACING
         imageview(Image("/tb.png"))
         text("${messages["ver"]}: v$VERSION") { font = Font.font(18.0) }
-        text("BUILD: ${times()}")
+        text("Build: ${times()}")
         text("JRE: ${System.getProperty("java.runtime.version")}")
         text("VM: ${System.getProperty("java.vm.name")}")
         hyperlink("吾爱破解地址") { action { PJ52_URL.openInBrowser() } }
