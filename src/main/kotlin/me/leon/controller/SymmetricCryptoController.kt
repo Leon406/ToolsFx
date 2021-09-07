@@ -8,7 +8,7 @@ import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import me.leon.base.base64
+import me.leon.encode.base.base64
 import me.leon.ext.catch
 import tornadofx.Controller
 

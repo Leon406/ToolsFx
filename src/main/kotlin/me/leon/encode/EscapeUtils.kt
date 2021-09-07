@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.encode
 
 object EscapeUtils {
 
@@ -47,3 +47,11 @@ object EscapeUtils {
         return tmp.toString()
     }
 }
+
+fun String.escape() = EscapeUtils.escape(this)
+
+fun ByteArray.escape() = String(this).escape()
+
+fun String.unescape() = unescape2String().toByteArray()
+
+fun String.unescape2String() = EscapeUtils.unescape(this)

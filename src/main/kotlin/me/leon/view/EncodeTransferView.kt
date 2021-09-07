@@ -25,7 +25,11 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
                 "  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
-        get() = input.text.takeIf { isEncode } ?: input.text.replace("\\s".toRegex(), "")
+        get() =
+            input.text.takeIf {
+                isEncode || srcEncodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
+            }
+                ?: input.text.replace("\\s".toRegex(), "")
     private val outputText: String
         get() = output.text
 

@@ -1,9 +1,8 @@
 package me.leon
 
-import me.leon.base.base64
+import me.leon.encode.base.base64
 import me.leon.ext.readBytesFromNet
 import org.junit.Test
-import tornadofx.*
 
 class NetTest {
 

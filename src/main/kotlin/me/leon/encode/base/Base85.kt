@@ -1,4 +1,4 @@
-package me.leon.base
+package me.leon.encode.base
 
 const val BASE85_DICT =
     "!\"#\$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"

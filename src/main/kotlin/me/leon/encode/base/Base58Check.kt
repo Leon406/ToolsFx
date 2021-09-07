@@ -1,4 +1,4 @@
-package me.leon.base
+package me.leon.encode.base
 
 fun String.base58Check(dict: String = BASE58_DICT) =
     toByteArray().baseCheck(BASE58_RADIX, dict.ifEmpty { BASE58_DICT })

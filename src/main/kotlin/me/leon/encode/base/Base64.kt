@@ -1,4 +1,4 @@
-package me.leon.base
+package me.leon.encode.base
 
 import me.leon.ext.toBinaryString
 

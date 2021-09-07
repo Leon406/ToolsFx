@@ -7,8 +7,8 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
-import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages

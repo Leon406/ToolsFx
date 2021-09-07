@@ -7,8 +7,8 @@ import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
-import me.leon.base.base64
 import me.leon.controller.AsymmetricCryptoController
+import me.leon.encode.base.base64
 import me.leon.ext.*
 import tornadofx.*
 

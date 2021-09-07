@@ -1,4 +1,4 @@
-package me.leon.base
+package me.leon.encode.base
 
 const val BASE58_RADIX = 58
 

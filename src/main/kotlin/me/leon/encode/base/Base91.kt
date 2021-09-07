@@ -1,4 +1,4 @@
-package me.leon.base
+package me.leon.encode.base
 
 import java.io.ByteArrayOutputStream
 import kotlin.math.ceil

@@ -1,7 +1,7 @@
 package me.leon.ext
 
-import me.leon.base.BYTE_BITS
-import me.leon.base.BYTE_MASK
+import me.leon.encode.base.BYTE_BITS
+import me.leon.encode.base.BYTE_MASK
 import tornadofx.*
 
 const val HEX_RADIX = 16

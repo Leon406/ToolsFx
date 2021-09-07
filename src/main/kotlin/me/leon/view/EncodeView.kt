@@ -7,8 +7,8 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
-import me.leon.base.base64
 import me.leon.controller.EncodeController
+import me.leon.encode.base.base64
 import me.leon.ext.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -26,7 +26,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
-        get() = input.text.takeIf { isEncode } ?: input.text.replace("\\s".toRegex(), "")
+        get() =
+            input.text.takeIf {
+                isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
+            }
+                ?: input.text.replace("\\s".toRegex(), "")
     private val outputText: String
         get() = output.text
 

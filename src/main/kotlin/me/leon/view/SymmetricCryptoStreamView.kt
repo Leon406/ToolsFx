@@ -8,8 +8,8 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
-import me.leon.base.base64Decode
 import me.leon.controller.SymmetricCryptoController
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages

@@ -1,12 +1,14 @@
 package me.leon.ext
 
-import me.leon.base.*
+import me.leon.encode.base.*
 
 enum class EncodeType(val type: String, val dic: String = "") {
     Base64("base64", BASE64_DICT),
     UrlEncode("urlencode"),
     Unicode("unicode"),
     Hex("hex"),
+    Decimal("decimal"),
+    Octal("octal"),
     Binary("binary"),
     Base64Safe("urlBase64", BASE64_URL_DICT),
     Base16("base16", BASE16_DICT),
@@ -18,4 +20,5 @@ enum class EncodeType(val type: String, val dic: String = "") {
     Base85("base85", BASE85_DICT),
     Base91("base91", BASE91_DICT),
     Base92("base92", BASE92_DICT),
+    Escape("escape"),
 }

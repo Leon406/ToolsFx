@@ -1,4 +1,4 @@
-package me.leon.base
+package me.leon.encode.base
 
 const val BASE36_RADIX = 36
 const val BASE36_DICT = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"

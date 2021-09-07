@@ -2,9 +2,15 @@ package me.leon.controller
 
 import java.net.URLDecoder
 import java.net.URLEncoder
-import me.leon.base.*
-import me.leon.base.base92Decode
-import me.leon.base.base92Encode
+import me.leon.encode.base.*
+import me.leon.encode.base.base92Decode
+import me.leon.encode.base.base92Encode
+import me.leon.encode.decimal
+import me.leon.encode.decimalDecode
+import me.leon.encode.escape
+import me.leon.encode.octal
+import me.leon.encode.octalDecode
+import me.leon.encode.unescape
 import me.leon.ext.EncodeType
 import me.leon.ext.binary2ByteArray
 import me.leon.ext.catch
@@ -45,6 +51,9 @@ class EncodeController : Controller() {
                     EncodeType.Base85 -> raw.base85(dic)
                     EncodeType.Base91 -> raw.base91(dic)
                     EncodeType.Base92 -> raw.base92Encode(dic)
+                    EncodeType.Octal -> raw.octal()
+                    EncodeType.Decimal -> raw.decimal()
+                    EncodeType.Escape -> raw.escape()
                 }
         }
 
@@ -76,6 +85,9 @@ class EncodeController : Controller() {
                     EncodeType.Base85 -> encoded.base85Decode(dic)
                     EncodeType.Base91 -> encoded.base91Decode(dic)
                     EncodeType.Base92 -> encoded.base92Decode(dic)
+                    EncodeType.Octal -> encoded.octalDecode()
+                    EncodeType.Decimal -> encoded.decimalDecode()
+                    EncodeType.Escape -> encoded.unescape()
                 }
         }
 }

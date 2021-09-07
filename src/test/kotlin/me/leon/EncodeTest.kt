@@ -1,8 +1,16 @@
 package me.leon
 
 import kotlin.test.assertEquals
-import me.leon.base.*
 import me.leon.controller.EncodeController
+import me.leon.encode.EscapeUtils
+import me.leon.encode.base.*
+import me.leon.encode.decimal
+import me.leon.encode.decimalDecode2String
+import me.leon.encode.escape
+import me.leon.encode.octal
+import me.leon.encode.octalDecode2String
+import me.leon.encode.unescape
+import me.leon.encode.unescape2String
 import me.leon.ext.EncodeType
 import me.leon.ext.encodeTypeMap
 import org.junit.Before
@@ -152,10 +160,10 @@ class EncodeTest {
     fun escape() {
         val d = "%u5F00%u53D1%u5DE5%u5177%u96C6%u5408%20by%20leon406@52pojie.cn"
         println(EscapeUtils.escape(5.toChar() + raw))
+        println(raw.escape())
         println(EscapeUtils.unescape(d))
+        println(d.unescape2String())
         println(raw.octal().also { println(it.octalDecode2String()) })
-        println(raw.octal2().also { println(it.octalDecode2String2()) })
         println(raw.decimal().also { println(it.decimalDecode2String()) })
-        println(raw.decimal2().also { println(it.decimalDecode2String2()) })
     }
 }
