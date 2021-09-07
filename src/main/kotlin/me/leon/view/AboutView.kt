@@ -8,26 +8,29 @@ import javafx.scene.text.Text
 import me.leon.*
 import me.leon.ext.*
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class AboutView : View("关于") {
+class AboutView : View(messages["about"]) {
 
     override val closeable = SimpleBooleanProperty(false)
-    lateinit var latestVersion: Text
+    private lateinit var latestVersion: Text
 
     override val root = vbox {
-        alignment = Pos.TOP_CENTER
+        alignment = Pos.CENTER
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
         imageview(Image("/tb.png"))
-        text("版本 v$VERSION") { font = Font.font(18.0) }
-        text("构建时间 ${times()}")
+        text("${messages["ver"]}: v$VERSION") { font = Font.font(18.0) }
+        text("Build: ${times()}")
+        text("JRE: ${System.getProperty("java.runtime.version")}")
+        text("VM: ${System.getProperty("java.vm.name")}")
         hyperlink("吾爱破解地址") { action { PJ52_URL.openInBrowser() } }
         hyperlink("github开源地址") {
             font = Font.font(18.0)
             action { REPO_URL.openInBrowser() }
         }
-        hyperlink("开源协议 ISC") { action { LICENSE.openInBrowser() } }
-        button("检测新版本") { action { checkUpdate() } }
+        hyperlink(messages["license"]) { action { LICENSE.openInBrowser() } }
+        button(messages["checkUpdate"]) { action { checkUpdate() } }
         latestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
         checkUpdate(!Prefs.isIgnoreUpdate)
@@ -38,10 +41,10 @@ class AboutView : View("关于") {
         runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
             {
                 latestVersion.text =
-                    if (it.isEmpty()) "未知错误"
+                    if (it.isEmpty()) messages["unknown"]
                     else if (VERSION != it)
-                        "发现新版本 v$it".also { find<UpdateFragment>().openModal() }
-                    else "已是最新版本"
+                        "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
+                    else messages["alreadyLatest"]
             }
     }
 }

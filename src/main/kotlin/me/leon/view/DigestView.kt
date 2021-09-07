@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -13,8 +14,9 @@ import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class DigestView : View("哈希") {
+class DigestView : View(messages["hash"]) {
     private val controller: DigestController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val fileHash = SimpleBooleanProperty(false)
@@ -29,7 +31,10 @@ class DigestView : View("哈希") {
     var method = "MD5"
 
     private val eventHandler = fileDraggedHandler {
-        input.text = if (fileHash.get()) it.first().absolutePath else it.first().readText()
+        input.text =
+            if (fileHash.get())
+                it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
+            else it.first().readText()
     }
 
     // https://www.bouncycastle.org/specifications.html
@@ -78,20 +83,22 @@ class DigestView : View("哈希") {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("待处理:")
-            button("剪贴板导入") { action { input.text = clipboardText() } }
+            label(messages["input"])
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
         input =
             textarea {
-                promptText = "请输入内容或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("算法:  ")
+            label(messages["alg"])
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
-            label("长度:  ")
+            label(messages["bits"])
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
                     cellFormat { text = it }
@@ -127,19 +134,19 @@ class DigestView : View("哈希") {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
-            checkbox("文件模式", fileHash)
-            button("运行") {
+            checkbox(messages["fileMode"], fileHash)
+            button(messages["run"], imageview(Image("/run.png"))) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
         }
         hbox {
-            label("输出内容:")
+            label(messages["output"])
             button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }
@@ -151,7 +158,10 @@ class DigestView : View("哈希") {
     private fun doHash() =
         runAsync {
             isProcessing.value = true
-            if (fileHash.get()) controller.digestFile(method, inputText)
+            if (fileHash.get())
+                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                    controller.digestFile(method, it)
+                }
             else controller.digest(method, inputText)
         } ui
             {

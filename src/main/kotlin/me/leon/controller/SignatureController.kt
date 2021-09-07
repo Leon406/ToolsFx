@@ -6,8 +6,8 @@ import java.security.PublicKey
 import java.security.Signature
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
-import me.leon.base.base64
-import me.leon.base.base64Decode
+import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 import me.leon.ext.catch
 import tornadofx.Controller
 

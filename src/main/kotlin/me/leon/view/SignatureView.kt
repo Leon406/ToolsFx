@@ -7,25 +7,26 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
-import me.leon.base.base64Decode
 import me.leon.controller.SignatureController
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class SignatureView : View("签名与验签") {
+class SignatureView : View(messages["signVerify"]) {
     private val controller: SignatureController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var taKey: TextArea
     private lateinit var taRaw: TextArea
     private lateinit var infoLabel: Label
-    lateinit var taSigned: TextArea
+    private lateinit var taSigned: TextArea
     private val key: String
         get() = taKey.text
     private val msg: String
         get() = taRaw.text
     private val signText: String
         get() = taSigned.text
-    var keyPairAlg = "RSA"
+    private var keyPairAlg = "RSA"
 
     private val eventHandler = fileDraggedHandler { taKey.text = it.first().readText() }
 
@@ -118,36 +119,41 @@ class SignatureView : View("签名与验签") {
     private val info
         get() = "Signature: $keyPairAlg hash: ${selectedSigAlg.get()} "
 
-    override val root = vbox {
+    private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("密钥:")
-            button("剪贴板导入") { action { taKey.text = clipboardText() } }
+            label(messages["key"])
+            button(graphic = imageview(Image("/import.png"))) {
+                action { taKey.text = clipboardText() }
+            }
         }
         taKey =
             textarea {
-                promptText = "请输入密钥或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
-            label("原始内容:")
-            button("剪贴板导入") { action { taRaw.text = clipboardText() } }
+            label(messages["plain"])
+            button(graphic = imageview(Image("/import.png"))) {
+                action { taRaw.text = clipboardText() }
+            }
         }
         taRaw =
             textarea {
-                promptText = "请输入或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+                prefHeight = DEFAULT_SPACING_16X
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("公私钥算法:  ")
+            label(messages["publicAlg"])
             combobox(selectedKeyPairAlg, keyPairAlgs.keys.toMutableList()) {
                 cellFormat { text = it }
             }
-            label("签名算法:  ")
+            label(messages["sigAlg"])
             cbSigs =
                 combobox(selectedSigAlg, keyPairAlgs.values.first()) { cellFormat { text = it } }
         }
@@ -173,26 +179,30 @@ class SignatureView : View("签名与验签") {
             alignment = Pos.CENTER
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING_4X
-            button("私钥签名") {
+            button(messages["priSig"]) {
                 action { sign() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button("公钥验签") {
+            button(messages["pubVerify"]) {
                 action { verify() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
         }
         hbox {
-            label("签名 (base64):")
+            label(messages["sig"])
             button(graphic = imageview(Image("/copy.png"))) { action { signText.copy() } }
         }
 
         taSigned =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
+                prefHeight = DEFAULT_SPACING_10X
             }
-        infoLabel = label(info)
+    }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { infoLabel = label(info) }
     }
 
     private fun sign() =

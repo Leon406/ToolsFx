@@ -1,22 +1,19 @@
 package me.leon.ext
 
-import java.math.BigInteger
-import me.leon.base.BYTE_BITS
-import me.leon.base.BYTE_MASK
+import me.leon.encode.base.BYTE_BITS
+import me.leon.encode.base.BYTE_MASK
+import tornadofx.*
 
 const val HEX_RADIX = 16
 const val DECIMAL_RADIX = 10
+
 /** 16进制编解码 */
-fun ByteArray.toHex() = String.format("%02x", BigInteger(1, this))
+fun ByteArray.toHex() = hex
 
 fun String.hex2Ascii() = String(hex2ByteArray(), Charsets.UTF_8)
 
 fun String.hex2ByteArray() =
-    toCharArray()
-        .toList()
-        .chunked(2)
-        .map { it.joinToString("").toInt(HEX_RADIX).toByte() }
-        .toByteArray()
+    toList().chunked(2).map { it.joinToString("").toInt(HEX_RADIX).toByte() }.toByteArray()
 
 fun ByteArray.toBinaryString() =
     joinToString("") {
@@ -31,11 +28,7 @@ fun String.toBinaryString() = toByteArray().toBinaryString()
 fun String.binary2Ascii() = String(binary2ByteArray(), Charsets.UTF_8)
 
 fun String.binary2ByteArray() =
-    toCharArray()
-        .toList()
-        .chunked(BYTE_BITS)
-        .map { it.joinToString("").toInt(2).toByte() }
-        .toByteArray()
+    toList().chunked(BYTE_BITS).map { it.joinToString("").toInt(2).toByte() }.toByteArray()
 
 /** unicode编解码 */
 fun String.toUnicodeString() =
@@ -61,7 +54,7 @@ fun String.unicode2String() =
             }
             .toString()
     else
-        split("\\u")
+        split("\\\\u\\+?".toRegex())
             .filterIndexed { index, _ -> index != 0 }
             .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(HEX_RADIX).toChar()) } }
             .toString()

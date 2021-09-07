@@ -1,17 +1,18 @@
+<div align=center><img  src="https://gitee.com/LeonShih/Image/raw/master/tb.png"/></div>
+
+<h1 align="center">ToolsFx</h1>
+
+[![GitHub release](https://img.shields.io/github/release/Leon406/ToolsFx.svg)](https://github.com/Leon406/ToolsFx/releases/latest)![ci](https://github.com/Leon406/ToolsFx/actions/workflows/detekt-analysis.yml/badge.svg)
+
+[English](README.md) | [中文](README-zh.md)
 
 
-## <span id="top">前言</span>
+------
 
-**为什么开发这个工具?**
 
-- 每次加解密需要找在线工具进行处理,效率低
-- 在线工具支持的功能不全或者某些处理结果不对 (如查错网AES CFB/OFB  加密错误)
-- 大部分工具不支持文件加密
-- 第三方PC端工具功能不全,体验不好,不支持跨平台 (如PYG密码工具箱)
+## Function
 
-## 主要功能
-
-### 编解码
+### Encoding
 
 - [x] base64
 - [x] urlBase64
@@ -21,28 +22,33 @@
 - [x] hex
 - [x] binary
 - [x] base58/base58check
-- [ ] base系列自定义字典
+- [x] base36
+- [x] base62
+- [x] base85
+- [x] base91
+- [x] base92
+- [x] custom base serial dict
 
 ![encode](./art/encode.gif)
 
 
-### 编码互转功能 (非原始字符)
-- [x] 编解码功能相互转换
+### Encoding Transfer (not raw data)
+- [x] Transfer
 
 ![encode](./art/encode_transfer.gif)
-### 数据摘要(哈希)
+### Digest(Hash)
 
-支持文件, 支持超大文件,8G文件测试ok
+ support file, big file which is larger than 8Gi
 
-- [x] md系列
+- [x] md serial
 - [x] sha1
-- [x] sha2系列
+- [x] sha2serial
 - [x] sha3
 - [x] SM3
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] 其他 BouncyCastle支持的算法
+- [x] other BouncyCastle support alogrithms
 
 ![hash](./art/hash.gif)
 
@@ -50,15 +56,15 @@
 
 #### HMAC
 
-- [x] md系列
+- [x] md serial
 - [x] sha1
-- [x] sha2系列
+- [x] sha2serial
 - [x] sha3
 - [x] SM3
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] 其他 BouncyCastle支持的算法
+- [x] other BouncyCastle support algorithms
 
 #### CMAC
 
@@ -87,9 +93,9 @@
 - [x] POLY1305-SM4
 - [x] POLY1305-Twofish
 
-### 分组对称加密 (block cipher)
+### Symmetric Crypto(block cipher)
 
-#### 加密算法
+#### Encrypt Algorithm
 
 - [x] DES/3DES
 - [x] AES
@@ -97,9 +103,9 @@
 - [x] Blowfish
 - [x] Twofish
 - [x] RC2
-- [x] 其他 BouncyCastle支持的算法
+- [x] other BouncyCastle support alogrithms
 
-#### 支持mode
+#### support mode
 
 - ECB
 - CBC
@@ -112,7 +118,7 @@
 - GCM (AEAD)
 - OCB (AEAD)
 
-#### 支持padding scheme
+#### support padding scheme
 
 - No padding
 - PKCS5/7
@@ -125,7 +131,7 @@
 
 ![sym](./art/sym.gif)
 
-### 流式对称加密 (stream cipher)
+### Symmetric Crypto (stream cipher)
 - [x] RC4
 - [x] HC128/HC256
 - [x] ChaCha
@@ -137,82 +143,82 @@
 - [x] Zuc128
 - [x] Zuc128
 
-### 非对称加密 RSA
+### Asymmetric Crypto RSA
 
-- [x]  密钥支持pkcs1 /pkcs8
-- [x]  支持512/1024/2048/3072/4096位
-- [x]  支持长度大于RSA位数
-- [x]  支持公钥加密私钥解密,私钥加密公钥解密
-- [x]  支持openssl pkcs1/pkcs8 私钥格式
-- [x]  支持证书cer文件加解密
-- [x]  支持pem和pk8格式文件 :new:
-
-**note:** openssl用公私钥对加解密,生成私钥为pkcs8编码
+- [x]  support pkcs1 /pkcs8 key
+- [x]  supprot 512/1024/2048/3072/4096 bit
+- [x]  support plain text length longer than key size
+- [x]  support public key encryt and private key encrypt
+- [x]  support openssl pkcs1/pkcs8  privte key format
+- [x]  support certification cer file
+- [x]  support pem and pk8 format :new:
 
 ![sym](./art/asy.gif)
 
-公钥解密16进制数据
+ **public key decrypt hex encoded data**
 
 ![sym](./art/rsa_pub_decrypt_hexdata.gif)
 
-### 数字签名校验 
+### Digital Signature 
 
-- [x] RSA系列
+- [x] RSA serial
 - [x] DSA
 - [x] ECDSA
 - [x] EC
 - [x] EdDSA(ED448/ED25192)
 - [x] SM2
-- [ ] 其他
+- [ ] other
 
 
-### 其他功能
+### Others
 
-- [x] 二维码功能
-- [ ] 待定
-- [ ] 待定
+- [x] Qrcode
+- [ ] TBD
+- [ ] TBD
 
-### 特性
+### Features
 
-- [x] 支持文件拖入
-- [x] 对称加密key, iv 支持base64 ,hex
-- [x] 对称加密支持文件加密解密,输出文件 (测试m3u8 ts文件解密后正常播放)
-- [ ] i18n
-- [ ] 键盘事件, 快捷键
-- [ ] CTF相关功能
+- [x] support drag file
+- [x] Symmetirc Crypto support base64/hex encoded key, iv
+- [x] Digest and Symmetirc  Crypto support multi files
+- [x] i18n
+- [ ] Shortcut
+- [ ] CTF releated
 - [ ] PBE
 
-bouncycastle文档 https://www.bouncycastle.org/specifications.html
+[bouncycastle document](https://www.bouncycastle.org/specifications.html) 
 
-## 下载地址
+## Downloads
 
- [github地址](https://github.com/Leon406/ToolsFx/releases) 
+ [github release](https://github.com/Leon406/ToolsFx/releases) 
 
- [码云镜像](https://gitee.com/LeonShih/ToolsFx) 
+ [gitte miror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
 
-下载加速 https://leon.lanzoui.com/b0d9av2kb 提取码：52pj
+download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
 
 
 
-#### 开发测试时间较短,难免会有bug,欢迎提需求,issue和PR
+### Issues, PRs are welcome!!!
 
-## 版本选择
 
-- 有jre环境
-  - jdk8      选择jdk8的版本
-  - jdk11+  选择jdk11的版本
-- 无jre环境
-  -  64位 windows系统     x64 (jre11)
-  -  32/64位 windows系统  x86 (jre8,不知道就选这个)  
 
-## 如何运行
+## Version Choose
 
-- Linux/Mac OX系统双击运行 bin目录下 ToolsFx 
-- Windows 系统双击运行ToolsFx.bat或者 vbs文件(去除黑窗)
+- with jre environment
+  - jdk8      choose suffix with jdk8
+  - jdk11+   choose suffix with jdk11
+- w/o jre environment(Windows user only)
+  -  64bit Windows      x64 (jre11)
+  -  32/64bit Windows x86 (jre8,have no idea, choose this)  
+
+## How to Run
+
+- Linux/Mac OS double click ToolsFx  in directory bin
+- Windows double click ToolsFx.bat or vbs file(remove black command window)
 
 ## CHANGE LOG
 
-见 [changelog.md](changelog.md)
+see [changelog.md](changelog.md)
 
 ## CREDIT
 
@@ -244,5 +250,5 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-[回到顶部](#top)
+[Go Top](#top)
 

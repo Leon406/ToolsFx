@@ -1,9 +1,18 @@
 package me.leon
 
 import kotlin.test.assertEquals
-import me.leon.base.*
 import me.leon.controller.EncodeController
+import me.leon.encode.EscapeUtils
+import me.leon.encode.base.*
+import me.leon.encode.decimal
+import me.leon.encode.decimalDecode2String
+import me.leon.encode.escape
+import me.leon.encode.octal
+import me.leon.encode.octalDecode2String
+import me.leon.encode.unescape
+import me.leon.encode.unescape2String
 import me.leon.ext.EncodeType
+import me.leon.ext.encodeTypeMap
 import org.junit.Before
 import org.junit.Test
 
@@ -25,16 +34,16 @@ class EncodeTest {
 
         val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
         assertEquals(base32, controller.encode2String(raw, EncodeType.Base32))
-        assertEquals(base32, raw.baseNEncode(32, BASE32_MAP))
+        assertEquals(base32, raw.baseNEncode(32, BASE32_DICT))
         assertEquals(raw, controller.decode2String(base32, EncodeType.Base32))
-        assertEquals(raw, base32.baseNDecode2String(32, BASE32_MAP))
+        assertEquals(raw, base32.baseNDecode2String(32, BASE32_DICT))
 
         val base16 =
             "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
         assertEquals(base16, controller.encode2String(raw, EncodeType.Base16))
-        assertEquals(base16, raw.baseNEncode(16, BASE16_MAP))
+        assertEquals(base16, raw.baseNEncode(16, BASE16_DICT))
         assertEquals(raw, controller.decode2String(base16, EncodeType.Base16))
-        assertEquals(raw, base16.baseNDecode2String(16, BASE16_MAP))
+        assertEquals(raw, base16.baseNDecode2String(16, BASE16_DICT))
 
         val binary =
             "1110010110111100100000001110010110001111100100011110010110110111101001011110010110000" +
@@ -105,14 +114,56 @@ class EncodeTest {
     }
 
     @Test
-    fun b85() {
-        println(raw.base85())
-        println("jh--*O-/P5V<*E?l'mFhOGG#gGp\$p7Df.Bc2F',TE,TK*AM.J1".base85Decode2String())
-        println("111151".base85())
-        println("0ekC;2),(2".base85Decode2String())
+    fun b92() {
+        //        println('#'.base92Int())
+        //        println('!'.base92Int())
+        //        println('_'.base92Int())
+        //        println('0'.base92Int())
+        //        println('}'.base92Int())
+        //        println('D'.base92Int())
+        //        println('8'.base92Int())
+        //        println('*'.base92Int())
+        //
+        //        println(0.base92Char())
+        //        println(1.base92Char())
+        //        println(34.base92Char())
+        //        println(10.base92Char())
+        //        println(61.base92Char())
+        //        println(62.base92Char())
+        //        println(90.base92Char())
+
+        println(String(Base91.encode(raw.toByteArray())))
+        println("a".base92Encode2String())
+        //        println("a".())
+        println("D,".base92Decode2String())
+        println("sjT_Vni^B1<]D9f:XapY99'b/v8l*vMG4B\$E!<Ws\$JmoAFJMHa".base92Decode2String())
+        println("a[:hQLeff={07_Q]1SQUCG}LfVG!U^;m1t*EplJB2TX6},?iTB".base91Decode2String())
+        //        println(String("".base92Encode()))
+        //        println("D81RPya.)hgNA(%s".base92Decode())
+        //        println("~".base92Decode())
+        //        println(String("aaaaaaaaaaaaa".base92Encode()))
     }
+
     @Test
     fun asciiPrint() {
         for (i in 33..127) print(i.toChar().toString())
+        println(encodeTypeMap)
+    }
+
+    @Test
+    fun baseT() {
+        println("ab".base92Encode2String())
+        println("ab".baseNEncode(91, BASE92_DICT))
+    }
+
+    @Test
+    fun escape() {
+        val d = "%u5F00%u53D1%u5DE5%u5177%u96C6%u5408%20by%20leon406@52pojie.cn"
+        println(EscapeUtils.escape(5.toChar() + raw))
+        println(raw.escape())
+        println(EscapeUtils.unescape(d))
+        println(d.unescape2String())
+        println(raw.octal().also { println(it.octalDecode2String()) })
+        println(raw.decimal().also { println(it.decimalDecode2String()) })
     }
 }

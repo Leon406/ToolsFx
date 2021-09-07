@@ -116,20 +116,22 @@ class MacView : View("MAC") {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label("待处理:")
-            button("剪贴板导入") { action { input.text = clipboardText() } }
+            label(messages["input"])
+            button(graphic = imageview(Image("/import.png"))) {
+                action { input.text = clipboardText() }
+            }
         }
         input =
             textarea() {
-                promptText = "请输入内容或者拖动文件到此区域"
+                promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
             }
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("算法:  ")
+            label(messages["alg"])
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
-            label("长度:  ") { paddingAll = DEFAULT_SPACING }
+            label(messages["bits"]) { paddingAll = DEFAULT_SPACING }
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
                     cellFormat { text = it }
@@ -140,22 +142,13 @@ class MacView : View("MAC") {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             label("key: ")
-            key = textfield("hmac_key") { promptText = "请输入key" }
+            key = textfield("hmac_key") { promptText = messages["keyHint"] }
             label("iv: ")
             iv =
                 textfield {
                     enableWhen(enableIv)
-                    promptText = "请输入iv"
+                    promptText = messages["ivHint"]
                 }
-            label("输出编码:")
-            togglegroup {
-                spacing = DEFAULT_SPACING
-                radiobutton("hex") { isSelected = true }
-                radiobutton("base64")
-                selectedToggleProperty().addListener { _, _, new ->
-                    outputEncode = (new as RadioButton).text
-                }
-            }
         }
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
@@ -183,21 +176,28 @@ class MacView : View("MAC") {
             }
         }
         tilepane {
-            alignment = Pos.CENTER
-            hgap = DEFAULT_SPACING_4X
-            button("运行") {
-                prefWidth = DEFAULT_SPACING_8X
+            alignment = Pos.TOP_LEFT
+            hgap = DEFAULT_SPACING
+            label(messages["outputEncoding"])
+            togglegroup {
+                radiobutton("hex") { isSelected = true }
+                radiobutton("base64")
+                selectedToggleProperty().addListener { _, _, new ->
+                    outputEncode = (new as RadioButton).text
+                }
+            }
+            button(messages["run"], imageview(Image("/run.png"))) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }
             }
         }
         hbox {
-            label("输出内容:")
+            label(messages["output"])
             button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
         }
         output =
             textarea {
-                promptText = "结果"
+                promptText = messages["outputHint"]
                 isWrapText = true
             }
     }

@@ -5,8 +5,8 @@ import java.security.*
 import java.security.spec.ECGenParameterSpec
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
-import me.leon.base.base64
-import me.leon.base.base64Decode
+import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 

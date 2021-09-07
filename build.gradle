@@ -1,14 +1,14 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.5.30"
     id 'application'
-    id "com.diffplug.spotless" version "5.14.2"
-    id "io.gitlab.arturbosch.detekt" version "1.18.0"
+    id "com.diffplug.spotless" version "5.15.0"
+    id "io.gitlab.arturbosch.detekt" version "1.18.1"
     id "org.openjfx.javafxplugin" version "0.0.10" apply false
 }
 def isJdk11 = isJdk11.toBoolean()
 if (isJdk11) apply plugin: "org.openjfx.javafxplugin"
 group = 'me.leon.toolfx'
-version = '1.6.0'
+version = '1.6.1.beta'
 
 repositories {
     mavenCentral()
@@ -32,7 +32,7 @@ dependencies {
 }
 if (isJdk11) {
     javafx {
-        version = "16"
+        version = "18-ea+2"
         modules = [
                 'javafx.controls',
                 'javafx.swing',

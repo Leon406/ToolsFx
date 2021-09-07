@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
-import me.leon.base.*
+import me.leon.encode.base.*
 import me.leon.ext.hex2ByteArray
 import me.leon.ext.stacktrace
 import me.leon.ext.unicode2String
