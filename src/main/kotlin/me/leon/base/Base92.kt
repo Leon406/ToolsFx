@@ -25,8 +25,7 @@ fun ByteArray.base92Encode(dict: String = BASE92_DICT) = String(this).base92Enco
 fun String.base92Decode(dict: String = BASE92_DICT): ByteArray {
     if (this == "~") return "".toByteArray()
     val dic = dict.ifEmpty { BASE92_DICT }
-    return toCharArray()
-        .toList()
+    return toList()
         .chunked(2)
         .joinToString("") {
             if (it.size > 1)
