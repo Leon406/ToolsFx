@@ -147,4 +147,15 @@ class EncodeTest {
         println("ab".base92Encode2String())
         println("ab".baseNEncode(91, BASE92_DICT))
     }
+
+    @Test
+    fun escape() {
+        val d = "%u5F00%u53D1%u5DE5%u5177%u96C6%u5408%20by%20leon406@52pojie.cn"
+        println(EscapeUtils.escape(5.toChar() + raw))
+        println(EscapeUtils.unescape(d))
+        println(raw.octal().also { println(it.octalDecode2String()) })
+        println(raw.octal2().also { println(it.octalDecode2String2()) })
+        println(raw.decimal().also { println(it.decimalDecode2String()) })
+        println(raw.decimal2().also { println(it.decimalDecode2String2()) })
+    }
 }
