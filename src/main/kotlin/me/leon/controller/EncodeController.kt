@@ -61,7 +61,8 @@ class EncodeController : Controller() {
                 when (type) {
                     EncodeType.Base64 -> encoded.base64Decode(dic)
                     EncodeType.Base64Safe -> encoded.safeBase64Decode(dic)
-                    EncodeType.Hex -> encoded.replace("\\\\x".toRegex(), "").hex2ByteArray()
+                    EncodeType.Hex ->
+                        encoded.replace("""\\x|\s|0x|\\""".toRegex(), "").hex2ByteArray()
                     EncodeType.UrlEncode -> URLDecoder.decode(encoded)?.toByteArray()
                             ?: byteArrayOf()
                     EncodeType.Unicode -> encoded.unicode2String().toByteArray()
