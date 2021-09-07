@@ -64,7 +64,7 @@ class QrcodeView : View("Qrcode") {
                     tooltip("快捷键Ctrl+Q")
                 }
 
-            button(messages["clipboradReco"]) {
+            button(messages["clipboardReco"]) {
                 action { clipboardImage()?.toBufferImage()?.qrReader()?.let { tf.text = it } }
             }
             button(messages["fileReco"]) {
@@ -204,7 +204,7 @@ class QrcodeView : View("Qrcode") {
                         stage.close()
                         runCatching { captureImg() }.onFailure {
                             it.printStackTrace()
-                            primaryStage.showToast(messages["recoError"])
+                            primaryStage.showToast(messages["recognizeError"])
                         }
                         // 主舞台还原
                         primaryStage.isIconified = false

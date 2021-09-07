@@ -29,11 +29,7 @@ class Styles : Stylesheet() {
         button {
             fontSize = px14
             fontWeight = FontWeight.BOLD
-            //            padding = box(10.px)
-            and(hover) {
-                backgroundColor += hoverColor
-                //             borderColor += box(dangerColor)
-            }
+            and(hover) { backgroundColor += hoverColor }
         }
 
         label {
@@ -41,22 +37,6 @@ class Styles : Stylesheet() {
             padding = box(px5, px10)
             fontWeight = FontWeight.BOLD
             maxWidth = infinity
-            //            borderColor += box(dangerColor)
-            //            borderStyle += BorderStrokeStyle(
-            //                StrokeType.INSIDE,
-            //                StrokeLineJoin.MITER,
-            //                StrokeLineCap.BUTT,
-            //                10.0,
-            //                0.0,
-            //                listOf(25.0, 5.0)
-            //            )
-            //            borderWidth += box(5.px)
-            //
-            //            and(hover) {
-            //                backgroundColor += hoverColor
-            //                borderColor += box(dangerColor)
-            //            }
-
         }
     }
 }

@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -54,7 +55,8 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
 
     private val eventHandler = fileDraggedHandler {
         input.text =
-            if (isFile.get()) it.joinToString(System.lineSeparator()) { it.absolutePath }
+            if (isFile.get())
+                it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else it.first().readText()
     }
     private val algs =

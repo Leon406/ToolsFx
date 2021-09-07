@@ -20,10 +20,7 @@ fun String.readBytesFromNet() =
                 )
             } as
                 HttpURLConnection)
-            .takeIf {
-                //            println("$this __ ${it.responseCode}")
-                it.responseCode == RESPONSE_OK
-            }
+            .takeIf { it.responseCode == RESPONSE_OK }
             ?.inputStream
             ?.readBytes()
             ?: byteArrayOf()

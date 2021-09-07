@@ -145,11 +145,9 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private fun run() {
         val decode = controller.decode(inputText, srcEncodeType, customDict.text)
         output.text =
-            if (String(decode, Charsets.UTF_8).contains("解码错误:")) {
-                String(decode, Charsets.UTF_8)
-            } else {
-                controller.encode2String(decode, dstEncodeType)
-            }
+            String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
+                ?: controller.encode2String(decode, dstEncodeType)
+
         infoLabel.text = info
     }
 }

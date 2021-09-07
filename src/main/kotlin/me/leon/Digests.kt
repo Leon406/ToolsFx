@@ -9,8 +9,9 @@ object Digests {
     fun hash(method: String, data: String) =
         MessageDigest.getInstance(method).apply { update(data.toByteArray()) }.digest().toHex()
 
-    fun hash(method: String, data: ByteArray) =
+    fun hash(method: String, data: ByteArray): ByteArray =
         MessageDigest.getInstance(method).apply { update(data) }.digest()
+
     fun hashByFile(method: String, path: String): String {
         val fis = FileInputStream(path)
         var md = MessageDigest.getInstance(method)

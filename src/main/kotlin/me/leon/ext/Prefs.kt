@@ -17,7 +17,7 @@ object Prefs {
         set(value) {
             preference.putBoolean(ALWAYS_ON_TOP, value)
         }
-    var language
+    var language: String
         get() = preference.get(LANGUAGE, "zh")
         set(value) {
             preference.put(LANGUAGE, value)

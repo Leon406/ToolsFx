@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -31,7 +32,8 @@ class DigestView : View(messages["hash"]) {
 
     private val eventHandler = fileDraggedHandler {
         input.text =
-            if (fileHash.get()) it.joinToString(System.lineSeparator()) { it.absolutePath }
+            if (fileHash.get())
+                it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else it.first().readText()
     }
 

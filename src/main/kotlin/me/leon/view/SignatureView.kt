@@ -19,14 +19,14 @@ class SignatureView : View(messages["signVerify"]) {
     private lateinit var taKey: TextArea
     private lateinit var taRaw: TextArea
     private lateinit var infoLabel: Label
-    lateinit var taSigned: TextArea
+    private lateinit var taSigned: TextArea
     private val key: String
         get() = taKey.text
     private val msg: String
         get() = taRaw.text
     private val signText: String
         get() = taSigned.text
-    var keyPairAlg = "RSA"
+    private var keyPairAlg = "RSA"
 
     private val eventHandler = fileDraggedHandler { taKey.text = it.first().readText() }
 
