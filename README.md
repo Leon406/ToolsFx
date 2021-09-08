@@ -1,10 +1,16 @@
 <div align=center><img  src="https://gitee.com/LeonShih/Image/raw/master/tb.png"/></div>
 
 <h1 align="center">ToolsFx</h1>
-
-[![GitHub release](https://img.shields.io/github/release/Leon406/ToolsFx.svg)](https://github.com/Leon406/ToolsFx/releases/latest)![ci](https://github.com/Leon406/ToolsFx/actions/workflows/detekt-analysis.yml/badge.svg)
-
-[English](README.md) | [中文](README-zh.md)
+<p align="center">
+<a href="https://github.com/Leon406/ToolsFx/releases/latest"><img src="https://img.shields.io/github/release/Leon406/ToolsFx.svg"/></a>
+<a href="https://github.com/Leon406/ToolsFx/actions/workflows/detekt-analysis.yml/badge.svg"><img src="https://github.com/Leon406/ToolsFx/actions/workflows/detekt-analysis.yml/badge.svg"/></a><img src="https://img.shields.io/badge/language-kotlin-orange.svg"/>
+<a href="changelog.md"><img src="https://img.shields.io/badge/updates-%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-brightgreen"/></a>
+<img src="https://img.shields.io/badge/license-ISC-green"/>
+<img src="https://img.shields.io/github/downloads/Leon406/Toolsfx/total"/>
+</p>
+<p align="center">
+<a href="README.md">English</a>|<a href="README.md-zh">中文</a>
+</p>
 
 
 ------
@@ -225,6 +231,8 @@ see [changelog.md](changelog.md)
 [bouncy castle](https://github.com/bcgit/bc-java) 
 
 [tornadofx](https://github.com/edvin/tornadofx)
+
+[badge maker](https://shields.io/)
 
 ## Stargazers over time
 
