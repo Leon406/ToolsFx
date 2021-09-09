@@ -24,6 +24,8 @@ application {
 dependencies {
     implementation "no.tornado:tornadofx:$tornadofx_version"
     implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
+    runtimeOnly "org.jetbrains.kotlin:kotlin-reflect:1.5.30"
+    implementation 'org.glassfish:javax.json:1.1.4'
 //    implementation 'com.jfoenix:jfoenix:8.0.10'
 //    implementation 'com.github.bkenn:kfoenix:0.1.3'
 

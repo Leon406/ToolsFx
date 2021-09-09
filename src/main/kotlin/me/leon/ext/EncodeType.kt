@@ -20,5 +20,9 @@ enum class EncodeType(val type: String, val dic: String = "") {
     Base85("base85", BASE85_DICT),
     Base91("base91", BASE91_DICT),
     Base92("base92", BASE92_DICT),
-    Escape("escape"),
+    Escape("escape");
+
+    fun decode(){
+        //if needed
+    }
 }
