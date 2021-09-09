@@ -1,6 +1,5 @@
 package me.leon.view
 
-import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -13,8 +12,24 @@ import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
-import tornadofx.*
 import tornadofx.FX.Companion.messages
+import tornadofx.View
+import tornadofx.action
+import tornadofx.asObservable
+import tornadofx.borderpane
+import tornadofx.button
+import tornadofx.checkbox
+import tornadofx.combobox
+import tornadofx.enableWhen
+import tornadofx.get
+import tornadofx.hbox
+import tornadofx.imageview
+import tornadofx.label
+import tornadofx.paddingAll
+import tornadofx.paddingLeft
+import tornadofx.textarea
+import tornadofx.vbox
+import java.io.File
 
 class DigestView : View(messages["hash"]) {
     private val controller: DigestController by inject()

@@ -8,9 +8,32 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.controller.EncodeController
-import me.leon.ext.*
-import tornadofx.*
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.DEFAULT_SPACING_80X
+import me.leon.ext.EncodeType
+import me.leon.ext.copy
+import me.leon.ext.encodeType
+import me.leon.ext.encodeTypeMap
+import me.leon.ext.fileDraggedHandler
 import tornadofx.FX.Companion.messages
+import tornadofx.View
+import tornadofx.action
+import tornadofx.borderpane
+import tornadofx.button
+import tornadofx.enableWhen
+import tornadofx.get
+import tornadofx.hbox
+import tornadofx.imageview
+import tornadofx.label
+import tornadofx.paddingAll
+import tornadofx.paddingBottom
+import tornadofx.paddingTop
+import tornadofx.radiobutton
+import tornadofx.textarea
+import tornadofx.textfield
+import tornadofx.tilepane
+import tornadofx.togglegroup
+import tornadofx.vbox
 
 class EncodeTransferView : View(messages["encodeTransfer"]) {
     private val controller: EncodeController by inject()
@@ -64,7 +87,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                     selectedToggleProperty().addListener { _, _, new ->
                         srcEncodeType = (new as RadioButton).text.encodeType()
                         enableDict.value = srcEncodeType.type.contains("base")
-                        customDict.text = srcEncodeType.dic
+                        customDict.text = srcEncodeType.defaultDict
                     }
                 }
             }
@@ -80,7 +103,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             label(messages["customDict"])
             alignment = Pos.BASELINE_LEFT
             customDict =
-                textfield(srcEncodeType.dic) {
+                textfield(srcEncodeType.defaultDict) {
                     enableWhen { enableDict }
                     prefWidth = DEFAULT_SPACING_80X
                 }

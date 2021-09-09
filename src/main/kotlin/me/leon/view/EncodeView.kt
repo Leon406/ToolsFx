@@ -9,9 +9,37 @@ import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.controller.EncodeController
 import me.leon.encode.base.base64
-import me.leon.ext.*
-import tornadofx.*
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.DEFAULT_SPACING_80X
+import me.leon.ext.EncodeType
+import me.leon.ext.clipboardText
+import me.leon.ext.copy
+import me.leon.ext.encodeType
+import me.leon.ext.encodeTypeMap
+import me.leon.ext.fileDraggedHandler
+import me.leon.ext.readBytesFromNet
+import me.leon.ext.readFromNet
 import tornadofx.FX.Companion.messages
+import tornadofx.View
+import tornadofx.action
+import tornadofx.borderpane
+import tornadofx.button
+import tornadofx.contextmenu
+import tornadofx.enableWhen
+import tornadofx.get
+import tornadofx.hbox
+import tornadofx.imageview
+import tornadofx.item
+import tornadofx.label
+import tornadofx.paddingAll
+import tornadofx.paddingBottom
+import tornadofx.paddingTop
+import tornadofx.radiobutton
+import tornadofx.textarea
+import tornadofx.textfield
+import tornadofx.tilepane
+import tornadofx.togglegroup
+import tornadofx.vbox
 
 class EncodeView : View(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
@@ -87,7 +115,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = (new as RadioButton).text.encodeType()
                         enableDict.value = encodeType.type.contains("base")
-                        customDict.text = encodeType.dic
+                        customDict.text = encodeType.defaultDict
                         if (isEncode) {
                             output.text =
                                 controller.encode2String(inputText, encodeType, customDict.text)
@@ -102,7 +130,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             label(messages["customDict"])
             alignment = Pos.BASELINE_LEFT
             customDict =
-                textfield(encodeType.dic) {
+                textfield(encodeType.defaultDict) {
                     enableWhen { enableDict }
                     prefWidth = DEFAULT_SPACING_80X
                 }

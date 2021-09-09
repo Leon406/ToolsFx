@@ -7,9 +7,31 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.encode.base.base64
-import me.leon.ext.*
-import tornadofx.*
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.EncodeType
+import me.leon.ext.clipboardText
+import me.leon.ext.copy
+import me.leon.ext.fileDraggedHandler
+import me.leon.ext.readBytesFromNet
+import me.leon.ext.readFromNet
 import tornadofx.FX.Companion.messages
+import tornadofx.View
+import tornadofx.action
+import tornadofx.borderpane
+import tornadofx.button
+import tornadofx.checkbox
+import tornadofx.contextmenu
+import tornadofx.get
+import tornadofx.hbox
+import tornadofx.imageview
+import tornadofx.item
+import tornadofx.label
+import tornadofx.paddingAll
+import tornadofx.paddingBottom
+import tornadofx.paddingTop
+import tornadofx.textarea
+import tornadofx.textfield
+import tornadofx.vbox
 
 class StringProcessView : View(messages["stringProcess"]) {
     override val closeable = SimpleBooleanProperty(false)
@@ -19,44 +41,46 @@ class StringProcessView : View(messages["stringProcess"]) {
     private lateinit var output: TextArea
     private lateinit var replaceFrom: TextField
     private var replaceFromText
-        get() = replaceFrom.text.replace("\\n", "\n")
-            .replace("\\r", "\r")
-            .replace("\\t", "\t")
+        get() = replaceFrom.text.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")
         set(value) {
             replaceFrom.text = value
         }
 
     private lateinit var replaceTo: TextField
     private var replaceToText
-        get() = replaceTo.text.replace("\\n", "\n")
-            .replace("\\r", "\r")
-            .replace("\\t", "\t")
+        get() = replaceTo.text.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")
         set(value) {
             replaceTo.text = value
         }
     private lateinit var splitLength: TextField
     private var splitLengthText
-        get() = runCatching { splitLength.text.toInt() }.getOrElse {
-            splitLength.text = "8"
-            8
-        }
+        get() =
+            runCatching { splitLength.text.toInt() }.getOrElse {
+                splitLength.text = "8"
+                8
+            }
         set(value) {
             splitLength.text = value.toString()
         }
 
     private lateinit var seprator: TextField
     private var sepratorText
-        get() = seprator.text.also { println(it) }.replace("\\n", "\n")
-            .replace("\\r", "\r")
-            .replace("\\t", "\t")
-            .also { println("__${it}___") }
+        get() =
+            seprator
+                .text
+                .also { println(it) }
+                .replace("\\n", "\n")
+                .replace("\\r", "\r")
+                .replace("\\t", "\t")
+                .also { println("__${it}___") }
         set(value) {
             seprator.text = value
         }
 
     private lateinit var infoLabel: Label
     private val info: String
-        get() = " ${messages["inputLength"]}:" +
+        get() =
+            " ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private var inputText: String
         get() =
@@ -87,17 +111,28 @@ class StringProcessView : View(messages["stringProcess"]) {
             button(graphic = imageview(Image("/import.png"))) {
                 action { input.text = clipboardText() }
             }
-            button(graphic = imageview(Image("/uppercase.png"))) { action { outputText = inputText.uppercase() } }
-            button(graphic = imageview(Image("/lowercase.png"))) { action { outputText = inputText.lowercase() } }
+            button(graphic = imageview(Image("/uppercase.png"))) {
+                action { outputText = inputText.uppercase() }
+            }
+            button(graphic = imageview(Image("/lowercase.png"))) {
+                action { outputText = inputText.lowercase() }
+            }
             button(graphic = imageview(Image("/ascend.png"))) {
                 action {
-                    outputText = inputText.split("\n|\r\n".toRegex()).sorted().joinToString(System.lineSeparator())
+                    outputText =
+                        inputText
+                            .split("\n|\r\n".toRegex())
+                            .sorted()
+                            .joinToString(System.lineSeparator())
                 }
             }
             button(graphic = imageview(Image("/descend.png"))) {
                 action {
                     outputText =
-                        inputText.split("\n|\r\n".toRegex()).sortedDescending().joinToString(System.lineSeparator())
+                        inputText
+                            .split("\n|\r\n".toRegex())
+                            .sortedDescending()
+                            .joinToString(System.lineSeparator())
                 }
             }
         }
@@ -114,9 +149,9 @@ class StringProcessView : View(messages["stringProcess"]) {
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
-                                    {
-                                        input.text = it
-                                    }
+                                {
+                                    input.text = it
+                                }
                         }
                     }
                 }
@@ -127,12 +162,8 @@ class StringProcessView : View(messages["stringProcess"]) {
             paddingBottom = DEFAULT_SPACING
             spacing = DEFAULT_SPACING
             label(messages["replace"])
-            replaceFrom = textfield {
-                promptText = messages["text2Replaced"]
-            }
-            replaceTo = textfield {
-                promptText = messages["replaced"]
-            }
+            replaceFrom = textfield { promptText = messages["text2Replaced"] }
+            replaceTo = textfield { promptText = messages["replaced"] }
             checkbox(messages["regexp"], isRegexp)
             button(messages["run"], imageview(Image("/run.png"))) { action { doReplace() } }
         }
@@ -142,18 +173,11 @@ class StringProcessView : View(messages["stringProcess"]) {
             paddingBottom = DEFAULT_SPACING
             spacing = DEFAULT_SPACING
             label(messages["split"])
-            splitLength = textfield{
-                promptText = messages["splitLength"]
-            }
-            seprator = textfield {
-                promptText = messages["seprator"]
-            }
-            checkbox(messages["regexp"], isSplitRegexp) {
-                isVisible = false
-            }
+            splitLength = textfield { promptText = messages["splitLength"] }
+            seprator = textfield { promptText = messages["seprator"] }
+            checkbox(messages["regexp"], isSplitRegexp) { isVisible = false }
             button(messages["run"], imageview(Image("/run.png"))) { action { doSplit() } }
         }
-
 
         hbox {
             spacing = DEFAULT_SPACING
@@ -176,7 +200,9 @@ class StringProcessView : View(messages["stringProcess"]) {
 
     private fun doSplit() {
         outputText =
-            inputText.toList().chunked(splitLengthText).joinToString(sepratorText) { it.joinToString("") }
+            inputText.toList().chunked(splitLengthText).joinToString(sepratorText) {
+                it.joinToString("")
+            }
         infoLabel.text = info
     }
 
@@ -185,13 +211,12 @@ class StringProcessView : View(messages["stringProcess"]) {
         bottom = hbox { infoLabel = label(info) }
     }
 
-
     private fun doReplace() {
         if (replaceFromText.isNotEmpty()) {
             println(replaceToText)
-            outputText = if (isRegexp.get())
-                inputText.replace(replaceFromText.toRegex(), replaceToText)
-            else inputText.replace(replaceFromText, replaceToText)
+            outputText =
+                if (isRegexp.get()) inputText.replace(replaceFromText.toRegex(), replaceToText)
+                else inputText.replace(replaceFromText, replaceToText)
         }
         infoLabel.text = info
     }
