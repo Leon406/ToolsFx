@@ -1,7 +1,5 @@
 package me.leon.view
 
-import java.awt.Rectangle
-import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
@@ -24,9 +22,34 @@ import javafx.scene.layout.HBox
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import me.leon.ext.DEFAULT_SPACING_10X
+import me.leon.ext.DEFAULT_SPACING_20X
+import me.leon.ext.DEFAULT_SPACING_2X
+import me.leon.ext.DEFAULT_SPACING_3X
+import me.leon.ext.DEFAULT_SPACING_4X
+import me.leon.ext.clipboardImage
+import me.leon.ext.clipboardText
+import me.leon.ext.copy
+import me.leon.ext.createQR
+import me.leon.ext.fileChooser
+import me.leon.ext.qrReader
+import me.leon.ext.showToast
+import me.leon.ext.toBufferImage
+import me.leon.ext.toFxImg
+import tornadofx.View
+import tornadofx.action
+import tornadofx.button
+import tornadofx.get
+import tornadofx.hbox
+import tornadofx.imageview
+import tornadofx.label
+import tornadofx.paddingAll
+import tornadofx.textarea
+import tornadofx.tooltip
+import tornadofx.vbox
+import java.awt.Rectangle
+import java.awt.Robot
 import kotlin.math.abs
-import me.leon.ext.*
-import tornadofx.*
 
 class QrcodeView : View("Qrcode") {
     // 切图区域的起始位置x

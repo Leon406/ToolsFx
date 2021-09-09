@@ -1,6 +1,5 @@
 package me.leon.view
 
-import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -11,9 +10,30 @@ import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
-import me.leon.ext.*
-import tornadofx.*
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.clipboardText
+import me.leon.ext.copy
+import me.leon.ext.fileDraggedHandler
+import me.leon.ext.hex2ByteArray
 import tornadofx.FX.Companion.messages
+import tornadofx.View
+import tornadofx.action
+import tornadofx.borderpane
+import tornadofx.button
+import tornadofx.checkbox
+import tornadofx.combobox
+import tornadofx.enableWhen
+import tornadofx.get
+import tornadofx.hbox
+import tornadofx.imageview
+import tornadofx.label
+import tornadofx.paddingAll
+import tornadofx.radiobutton
+import tornadofx.textarea
+import tornadofx.textfield
+import tornadofx.togglegroup
+import tornadofx.vbox
+import java.io.File
 
 class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private val controller: SymmetricCryptoController by inject()

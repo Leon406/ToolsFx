@@ -5,10 +5,28 @@ import javafx.geometry.Pos
 import javafx.scene.image.Image
 import javafx.scene.text.Font
 import javafx.scene.text.Text
-import me.leon.*
-import me.leon.ext.*
-import tornadofx.*
+import me.leon.CHECK_UPDATE_URL
+import me.leon.CHECK_UPDATE_URL2
+import me.leon.LAN_ZOU_DOWNLOAD_URL
+import me.leon.LICENSE
+import me.leon.PJ52_URL
+import me.leon.REPO_URL
+import me.leon.VERSION
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.Prefs
+import me.leon.ext.openInBrowser
+import me.leon.ext.readFromNet
+import me.leon.ext.times
 import tornadofx.FX.Companion.messages
+import tornadofx.View
+import tornadofx.action
+import tornadofx.button
+import tornadofx.get
+import tornadofx.hyperlink
+import tornadofx.imageview
+import tornadofx.paddingAll
+import tornadofx.text
+import tornadofx.vbox
 
 class AboutView : View(messages["about"]) {
 

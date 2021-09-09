@@ -10,8 +10,28 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.controller.MacController
-import me.leon.ext.*
-import tornadofx.*
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.clipboardText
+import me.leon.ext.copy
+import me.leon.ext.fileDraggedHandler
+import tornadofx.View
+import tornadofx.action
+import tornadofx.asObservable
+import tornadofx.borderpane
+import tornadofx.button
+import tornadofx.combobox
+import tornadofx.enableWhen
+import tornadofx.get
+import tornadofx.hbox
+import tornadofx.imageview
+import tornadofx.label
+import tornadofx.paddingAll
+import tornadofx.radiobutton
+import tornadofx.textarea
+import tornadofx.textfield
+import tornadofx.tilepane
+import tornadofx.togglegroup
+import tornadofx.vbox
 
 class MacView : View("MAC") {
     private val controller: MacController by inject()
