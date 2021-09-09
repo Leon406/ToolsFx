@@ -34,4 +34,17 @@
 ## bug fix:  
 - fix: 时间小时格式
 - fix: 底部提示默认不显示
-- fix:base58/base58check部分字符解码错误
+- fix:base58/base58check部分字符解码错误 
+# v1.7.0  
+## feature:  
+- feat: 新增字符处理模块
+- feat: add new encode octal/decimal/escape
+- feat: 增强hex/unicode解码
+- feat: 右键置顶/语言选择功能
+- feat: 编码base系列支持自定义字典
+- feat: 新增base92
+- feat: i18n 
+- feat: 新增jre/vm信息显示, 置顶APP
+- feat: UI美化
+- feat: hash/对称加密支持多个文件操作
+
