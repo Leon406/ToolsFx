@@ -40,24 +40,24 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var key: TextField
-    private lateinit var iv: TextField
+    private lateinit var taInput: TextArea
+    private lateinit var tfKey: TextField
+    private lateinit var tfIv: TextField
     private var isEncrypt = true
-    private lateinit var output: TextArea
+    private lateinit var taOutput: TextArea
     private val inputText: String
-        get() = input.text
+        get() = taInput.text
     private val outputText: String
-        get() = output.text
+        get() = taOutput.text
     private val info
         get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} "
-    private lateinit var infoLabel: Label
+    private lateinit var labelInfo: Label
     private val keyByteArray
         get() =
             when (keyEncode) {
-                "raw" -> key.text.toByteArray()
-                "hex" -> key.text.hex2ByteArray()
-                "base64" -> key.text.base64Decode()
+                "raw" -> tfKey.text.toByteArray()
+                "hex" -> tfKey.text.hex2ByteArray()
+                "base64" -> tfKey.text.base64Decode()
                 else -> byteArrayOf()
             }
 
@@ -67,14 +67,14 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private val ivByteArray
         get() =
             when (ivEncode) {
-                "raw" -> iv.text.toByteArray()
-                "hex" -> iv.text.hex2ByteArray()
-                "base64" -> iv.text.base64Decode()
+                "raw" -> tfIv.text.toByteArray()
+                "hex" -> tfIv.text.hex2ByteArray()
+                "base64" -> tfIv.text.base64Decode()
                 else -> byteArrayOf()
             }
 
     private val eventHandler = fileDraggedHandler {
-        input.text =
+        taInput.text =
             if (isFile.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else it.first().readText()
@@ -132,9 +132,9 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
+            button(graphic = imageview("/import.png")) { action { taInput.text = clipboardText() } }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -156,7 +156,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         hbox {
             alignment = Pos.CENTER_LEFT
             label("key:")
-            key = textfield { promptText = messages["keyHint"] }
+            tfKey = textfield { promptText = messages["keyHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -170,7 +170,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 }
             }
             label("iv:")
-            iv = textfield { promptText = messages["ivHint"] }
+            tfIv = textfield { promptText = messages["ivHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -210,12 +210,12 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
             button(graphic = imageview("/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    taInput.text = outputText
+                    taOutput.text = ""
                 }
             }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -224,7 +224,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doCrypto() {
@@ -258,8 +258,8 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         } ui
             {
                 isProcessing.value = false
-                output.text = it
-                infoLabel.text = info
+                taOutput.text = it
+                labelInfo.text = info
             }
     }
 }

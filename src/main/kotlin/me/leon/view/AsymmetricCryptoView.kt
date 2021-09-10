@@ -37,27 +37,36 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private val controller: AsymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
-    lateinit var input: TextArea
-    lateinit var key: TextArea
-    lateinit var output: TextArea
-    private val inputText: String
-        get() = input.text
-    private val outputText: String
-        get() = output.text
+    lateinit var taInput: TextArea
+    lateinit var taKey: TextArea
+    lateinit var taOutput: TextArea
+    private var inputText: String
+        get() = taInput.text
+        set(value) {
+            taInput.text = value
+        }
+    private var outputText: String
+        get() = taOutput.text
+        set(value) {
+            taOutput.text = value
+        }
     private val info
         get() =
             "RSA  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) "private key encrypt"
                 else "public key encrypt"
             } "
-    private lateinit var infoLabel: Label
-    private val keyText: String
+    private lateinit var labelInfo: Label
+    private var keyText: String
         get() =
-            key.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
-                ?: key.text.replace(
+            taKey.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
+                ?: taKey.text.replace(
                     "-----(?:END|BEGIN) (?:RSA )?\\w+ KEY-----|\n|\r|\r\n".toRegex(),
                     ""
                 )
+        set(value) {
+            taKey.text = value
+        }
 
     private var alg = "RSA"
     private var isEncrypt = true
@@ -68,7 +77,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
     private val eventHandler = fileDraggedHandler {
         val firstFile = it.first()
-        key.text =
+        keyText =
             if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
             else firstFile.readText()
 
@@ -92,9 +101,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["key"])
-            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
+            button(graphic = imageview("/import.png")) { action { keyText = clipboardText() } }
         }
-        key =
+        taKey =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -103,9 +112,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
         hbox {
             label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
-            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
+            button(graphic = imageview("/import.png")) { action { inputText = clipboardText() } }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -140,12 +149,12 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
             button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
             button(graphic = imageview("/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    inputText = outputText
+                    outputText = ""
                 }
             }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -153,12 +162,12 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doCrypto() {
         if (keyText.isEmpty() || inputText.isEmpty()) {
-            output.text = "请输入key 或者 待处理内容"
+            outputText = "请输入key 或者 待处理内容"
             return
         }
 
@@ -171,9 +180,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
             else controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
         } ui
-            {
-                output.text = it
-                infoLabel.text = info
-            }
+                {
+                    outputText = it
+                    labelInfo.text = info
+                }
     }
 }

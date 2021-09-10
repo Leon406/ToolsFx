@@ -32,8 +32,7 @@ import tornadofx.vbox
 class AboutView : View(messages["about"]) {
 
     override val closeable = SimpleBooleanProperty(false)
-    private lateinit var latestVersion: Text
-
+    private lateinit var txtLatestVersion: Text
     override val root = vbox {
         alignment = Pos.CENTER
         spacing = DEFAULT_SPACING
@@ -51,7 +50,7 @@ class AboutView : View(messages["about"]) {
         hyperlink(messages["license"]) { action { LICENSE.openInBrowser() } }
         button(messages["checkUpdate"]) { action { checkUpdate() } }
         button(messages["checkUpdateDev"]) { action { checkUpdateDev() } }
-        latestVersion = text()
+        txtLatestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
         checkUpdate(!Prefs.isIgnoreUpdate)
     }
@@ -59,7 +58,7 @@ class AboutView : View(messages["about"]) {
     private fun checkUpdateDev() {
         runAsync { DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2) } ui
             {
-                latestVersion.text =
+                txtLatestVersion.text =
                     if (it.isEmpty()) messages["unknown"]
                     else if (VERSION != it)
                         "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
@@ -71,7 +70,7 @@ class AboutView : View(messages["about"]) {
         if (!isAuto) return
         runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
             {
-                latestVersion.text =
+                txtLatestVersion.text =
                     if (it.isEmpty()) messages["unknown"]
                     else if (!VERSION.contains("beta") && VERSION != it)
                         "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }

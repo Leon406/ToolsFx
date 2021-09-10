@@ -40,24 +40,24 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var key: TextField
-    private lateinit var iv: TextField
+    private lateinit var taInput: TextArea
+    private lateinit var taKey: TextField
+    private lateinit var taIv: TextField
     private var isEncrypt = true
-    private lateinit var output: TextArea
+    private lateinit var taOutput: TextArea
     private val inputText: String
-        get() = input.text
+        get() = taInput.text
     private val outputText: String
-        get() = output.text
+        get() = taOutput.text
     private val info
         get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} "
     private lateinit var infoLabel: Label
     private val keyByteArray
         get() =
             when (keyEncode) {
-                "raw" -> key.text.toByteArray()
-                "hex" -> key.text.hex2ByteArray()
-                "base64" -> key.text.base64Decode()
+                "raw" -> taKey.text.toByteArray()
+                "hex" -> taKey.text.hex2ByteArray()
+                "base64" -> taKey.text.base64Decode()
                 else -> byteArrayOf()
             }
 
@@ -67,14 +67,14 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private val ivByteArray
         get() =
             when (ivEncode) {
-                "raw" -> iv.text.toByteArray()
-                "hex" -> iv.text.hex2ByteArray()
-                "base64" -> iv.text.base64Decode()
+                "raw" -> taIv.text.toByteArray()
+                "hex" -> taIv.text.hex2ByteArray()
+                "base64" -> taIv.text.base64Decode()
                 else -> byteArrayOf()
             }
 
     private val eventHandler = fileDraggedHandler {
-        input.text =
+        taInput.text =
             if (isFile.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else it.first().readText()
@@ -106,9 +106,9 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
+            button(graphic = imageview("/import.png")) { action { taInput.text = clipboardText() } }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -126,7 +126,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         hbox {
             alignment = Pos.CENTER_LEFT
             label("key:")
-            key = textfield { promptText = messages["keyHint"] }
+            taKey = textfield { promptText = messages["keyHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -140,7 +140,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 }
             }
             label("iv:")
-            iv = textfield { promptText = messages["ivHint"] }
+            taIv = textfield { promptText = messages["ivHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -178,12 +178,12 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
             button(graphic = imageview("/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    taInput.text = outputText
+                    taOutput.text = ""
                 }
             }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -225,7 +225,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         } ui
             {
                 isProcessing.value = false
-                output.text = it
+                taOutput.text = it
                 infoLabel.text = info
             }
     }

@@ -66,8 +66,8 @@ class QrcodeView : View("Qrcode") {
 
     // 切图区域
     private lateinit var hBox: HBox
-    private lateinit var bu: Button
-    private lateinit var tf: TextArea
+    private lateinit var button: Button
+    private lateinit var ta: TextArea
 
     // 切成的图片展示区域
     private lateinit var iv: ImageView
@@ -80,7 +80,7 @@ class QrcodeView : View("Qrcode") {
         hbox {
             spacing = DEFAULT_SPACING_2X
             label(messages["recognize"])
-            bu =
+            button =
                 button(messages["shotReco"]) {
                     action { this@QrcodeView.show() }
                     shortcut(KeyCombination.valueOf("Ctrl+Q"))
@@ -88,7 +88,7 @@ class QrcodeView : View("Qrcode") {
                 }
 
             button(messages["clipboardReco"]) {
-                action { clipboardImage()?.toBufferImage()?.qrReader()?.let { tf.text = it } }
+                action { clipboardImage()?.toBufferImage()?.qrReader()?.let { ta.text = it } }
             }
             button(messages["fileReco"]) {
                 shortcut(KeyCombination.valueOf("Ctrl+F"))
@@ -96,7 +96,7 @@ class QrcodeView : View("Qrcode") {
                 action {
                     primaryStage.fileChooser(messages["chooseFile"])?.let {
                         iv.image = Image(it.inputStream())
-                        tf.text = it.qrReader()
+                        ta.text = it.qrReader()
                     }
                 }
             }
@@ -106,11 +106,11 @@ class QrcodeView : View("Qrcode") {
             spacing = DEFAULT_SPACING_3X
             label(messages["content"])
             button(graphic = imageview("/copy.png")) {
-                action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
+                action { ta.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button(graphic = imageview("/import.png")) { action { tf.text = clipboardText() } }
+            button(graphic = imageview("/import.png")) { action { ta.text = clipboardText() } }
         }
-        tf =
+        ta =
             textarea {
                 promptText = messages["qrHint"]
                 isWrapText = true
@@ -121,8 +121,8 @@ class QrcodeView : View("Qrcode") {
             spacing = DEFAULT_SPACING_2X
             button(messages["genQrcode"]) {
                 action {
-                    if (tf.text.isNotEmpty()) {
-                        iv.image = createQR(tf.text)
+                    if (ta.text.isNotEmpty()) {
+                        iv.image = createQR(ta.text)
                     }
                 }
                 shortcut(KeyCombination.valueOf("F9"))
@@ -266,7 +266,7 @@ class QrcodeView : View("Qrcode") {
         val screenCapture = robot.createScreenCapture(re)
         val bufferedImage = screenCapture.toFxImg()
         iv.image = bufferedImage
-        tf.text = screenCapture.qrReader()
+        ta.text = screenCapture.qrReader()
     }
 
     private fun createQR(data: String = "this is test data"): Image {

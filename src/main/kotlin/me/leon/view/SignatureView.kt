@@ -38,7 +38,7 @@ class SignatureView : View(messages["signVerify"]) {
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var taKey: TextArea
     private lateinit var taRaw: TextArea
-    private lateinit var infoLabel: Label
+    private lateinit var labelInfo: Label
     private lateinit var taSigned: TextArea
     private val key: String
         get() = taKey.text
@@ -218,14 +218,14 @@ class SignatureView : View(messages["signVerify"]) {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun sign() =
         runAsync { controller.sign(selectedKeyPairAlg.get(), selectedSigAlg.get(), key, msg) } ui
             {
                 taSigned.text = it
-                infoLabel.text = info
+                labelInfo.text = info
             }
     private fun verify() =
         runAsync {
@@ -239,6 +239,6 @@ class SignatureView : View(messages["signVerify"]) {
         } ui
             { state ->
                 primaryStage.showToast("验签成功".takeIf { state } ?: "验签失败")
-                infoLabel.text = info
+                labelInfo.text = info
             }
 }

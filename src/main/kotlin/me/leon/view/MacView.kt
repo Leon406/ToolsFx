@@ -38,24 +38,24 @@ class MacView : View("MAC") {
     override val closeable = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)
     private val enableBits = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var key: TextField
-    private lateinit var iv: TextField
-    private lateinit var infoLabel: Label
-    private lateinit var output: TextArea
+    private lateinit var taInput: TextArea
+    private lateinit var tfKey: TextField
+    private lateinit var tfIv: TextField
+    private lateinit var labelInfo: Label
+    private lateinit var taOutput: TextArea
     private val inputText: String
-        get() = input.text
+        get() = taInput.text
     private val keyText: String
-        get() = key.text
+        get() = tfKey.text
     private val ivText: String
-        get() = iv.text
+        get() = tfIv.text
     private val outputText: String
-        get() = output.text
+        get() = taOutput.text
     private var method = "HmacMD5"
     private var outputEncode = "hex"
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
-    private val eventHandler = fileDraggedHandler { input.text = it.first().absolutePath }
+    private val eventHandler = fileDraggedHandler { taInput.text = it.first().absolutePath }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =
@@ -137,9 +137,9 @@ class MacView : View("MAC") {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
+            button(graphic = imageview("/import.png")) { action { taInput.text = clipboardText() } }
         }
-        input =
+        taInput =
             textarea() {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -160,9 +160,9 @@ class MacView : View("MAC") {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             label("key: ")
-            key = textfield("hmac_key") { promptText = messages["keyHint"] }
+            tfKey = textfield("hmac_key") { promptText = messages["keyHint"] }
             label("iv: ")
-            iv =
+            tfIv =
                 textfield {
                     enableWhen(enableIv)
                     promptText = messages["ivHint"]
@@ -213,7 +213,7 @@ class MacView : View("MAC") {
             label(messages["output"])
             button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -222,7 +222,7 @@ class MacView : View("MAC") {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doMac() =
@@ -232,7 +232,7 @@ class MacView : View("MAC") {
             else controller.mac(inputText, keyText, method, outputEncode)
         } ui
             {
-                output.text = it
-                infoLabel.text = info
+                taOutput.text = it
+                labelInfo.text = info
             }
 }
