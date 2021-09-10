@@ -6,7 +6,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import me.leon.controller.EncodeController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_80X
@@ -113,18 +112,18 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
-            button(messages["transfer"], imageview(Image("/run.png"))) {
+            button(messages["transfer"], imageview("/run.png")) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["up"], imageview(Image("/up.png"))) {
+            button(messages["up"], imageview("/up.png")) {
                 action {
                     input.text = outputText
                     output.text = ""
                 }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["copy"], imageview(Image("/copy.png"))) {
+            button(messages["copy"], imageview("/copy.png")) {
                 action { outputText.copy() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }

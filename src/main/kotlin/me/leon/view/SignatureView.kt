@@ -6,7 +6,6 @@ import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
-import javafx.scene.image.Image
 import me.leon.controller.SignatureController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.DEFAULT_SPACING
@@ -145,9 +144,7 @@ class SignatureView : View(messages["signVerify"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["key"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { taKey.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { taKey.text = clipboardText() } }
         }
         taKey =
             textarea {
@@ -157,9 +154,7 @@ class SignatureView : View(messages["signVerify"]) {
             }
         hbox {
             label(messages["plain"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { taRaw.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { taRaw.text = clipboardText() } }
         }
         taRaw =
             textarea {
@@ -211,7 +206,7 @@ class SignatureView : View(messages["signVerify"]) {
         }
         hbox {
             label(messages["sig"])
-            button(graphic = imageview(Image("/copy.png"))) { action { signText.copy() } }
+            button(graphic = imageview("/copy.png")) { action { signText.copy() } }
         }
 
         taSigned =

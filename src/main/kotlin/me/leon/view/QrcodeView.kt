@@ -105,12 +105,10 @@ class QrcodeView : View("Qrcode") {
         hbox {
             spacing = DEFAULT_SPACING_3X
             label(messages["content"])
-            button(graphic = imageview(Image("/copy.png"))) {
+            button(graphic = imageview("/copy.png")) {
                 action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button(graphic = imageview(Image("/import.png"))) {
-                action { tf.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { tf.text = clipboardText() } }
         }
         tf =
             textarea {
@@ -133,7 +131,7 @@ class QrcodeView : View("Qrcode") {
         }
         hbox {
             label(messages["qrImg"])
-            button(graphic = imageview(Image("/copy.png"))) {
+            button(graphic = imageview("/copy.png")) {
                 action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
             }
         }

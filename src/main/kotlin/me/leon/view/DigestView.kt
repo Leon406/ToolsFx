@@ -7,7 +7,6 @@ import javafx.geometry.Pos
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
-import javafx.scene.image.Image
 import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.clipboardText
@@ -100,9 +99,7 @@ class DigestView : View(messages["hash"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
         }
         input =
             textarea {
@@ -151,14 +148,14 @@ class DigestView : View(messages["hash"]) {
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
             checkbox(messages["fileMode"], fileHash)
-            button(messages["run"], imageview(Image("/run.png"))) {
+            button(messages["run"], imageview("/run.png")) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
         }
         hbox {
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
+            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
         }
         output =
             textarea {

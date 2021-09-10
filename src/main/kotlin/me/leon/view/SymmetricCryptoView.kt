@@ -8,7 +8,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.DEFAULT_SPACING
@@ -133,9 +132,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
         }
         input =
             textarea {
@@ -202,7 +199,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 }
             }
             checkbox(messages["fileMode"], isFile)
-            button(messages["run"], imageview(Image("/run.png"))) {
+            button(messages["run"], imageview("/run.png")) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
@@ -210,8 +207,8 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
-            button(graphic = imageview(Image("/up.png"))) {
+            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/up.png")) {
                 action {
                     input.text = outputText
                     output.text = ""

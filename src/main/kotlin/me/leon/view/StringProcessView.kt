@@ -5,7 +5,6 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.EncodeType
@@ -109,16 +108,14 @@ class StringProcessView : View(messages["stringProcess"]) {
         hbox {
             label(messages["input"])
             spacing = DEFAULT_SPACING
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
-            }
-            button(graphic = imageview(Image("/uppercase.png"))) {
+            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
+            button(graphic = imageview("/uppercase.png")) {
                 action { outputText = inputText.uppercase() }
             }
-            button(graphic = imageview(Image("/lowercase.png"))) {
+            button(graphic = imageview("/lowercase.png")) {
                 action { outputText = inputText.lowercase() }
             }
-            button(graphic = imageview(Image("/ascend.png"))) {
+            button(graphic = imageview("/ascend.png")) {
                 action {
                     outputText =
                         inputText
@@ -127,7 +124,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .joinToString(System.lineSeparator())
                 }
             }
-            button(graphic = imageview(Image("/descend.png"))) {
+            button(graphic = imageview("/descend.png")) {
                 action {
                     outputText =
                         inputText
@@ -136,7 +133,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .joinToString(System.lineSeparator())
                 }
             }
-            button(graphic = imageview(Image("/statisc.png"))) {
+            button(graphic = imageview("/statisc.png")) {
                 action {
                     outputText =
                         inputText
@@ -182,7 +179,7 @@ class StringProcessView : View(messages["stringProcess"]) {
             replaceFrom = textfield { promptText = messages["text2Replaced"] }
             replaceTo = textfield { promptText = messages["replaced"] }
             checkbox(messages["regexp"], isRegexp)
-            button(messages["run"], imageview(Image("/run.png"))) { action { doReplace() } }
+            button(messages["run"], imageview("/run.png")) { action { doReplace() } }
         }
         hbox {
             alignment = Pos.CENTER_LEFT
@@ -193,14 +190,14 @@ class StringProcessView : View(messages["stringProcess"]) {
             splitLength = textfield { promptText = messages["splitLength"] }
             seprator = textfield { promptText = messages["seprator"] }
             checkbox(messages["regexp"], isSplitRegexp) { isVisible = false }
-            button(messages["run"], imageview(Image("/run.png"))) { action { doSplit() } }
+            button(messages["run"], imageview("/run.png")) { action { doSplit() } }
         }
 
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
-            button(graphic = imageview(Image("/up.png"))) {
+            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/up.png")) {
                 action {
                     input.text = outputText
                     output.text = ""

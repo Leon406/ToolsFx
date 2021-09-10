@@ -8,7 +8,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import me.leon.controller.MacController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.cast
@@ -138,9 +137,7 @@ class MacView : View("MAC") {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
         }
         input =
             textarea() {
@@ -207,14 +204,14 @@ class MacView : View("MAC") {
                     outputEncode = new.cast<RadioButton>().text
                 }
             }
-            button(messages["run"], imageview(Image("/run.png"))) {
+            button(messages["run"], imageview("/run.png")) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }
             }
         }
         hbox {
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
+            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
         }
         output =
             textarea {

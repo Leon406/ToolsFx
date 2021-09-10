@@ -6,7 +6,6 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
-import javafx.scene.image.Image
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
@@ -93,9 +92,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["key"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
         }
         key =
             textarea {
@@ -106,9 +103,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
         hbox {
             label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
-            }
+            button(graphic = imageview("/import.png")) { action { input.text = clipboardText() } }
         }
         input =
             textarea {
@@ -134,7 +129,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
             }
 
-            button(messages["run"], imageview(Image("/run.png"))) { action { doCrypto() } }
+            button(messages["run"], imageview("/run.png")) { action { doCrypto() } }
             button(messages["genKeypair"]) {
                 action { "https://miniu.alipay.com/keytool/create".openInBrowser() }
             }
@@ -142,8 +137,8 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
-            button(graphic = imageview(Image("/up.png"))) {
+            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/up.png")) {
                 action {
                     input.text = outputText
                     output.text = ""

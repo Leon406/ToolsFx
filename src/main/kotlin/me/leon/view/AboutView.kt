@@ -2,7 +2,6 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
-import javafx.scene.image.Image
 import javafx.scene.text.Font
 import javafx.scene.text.Text
 import me.leon.CHECK_UPDATE_URL
@@ -39,7 +38,7 @@ class AboutView : View(messages["about"]) {
         alignment = Pos.CENTER
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
-        imageview(Image("/tb.png"))
+        imageview("/tb.png")
         text("${messages["ver"]}: v$VERSION") { font = Font.font(18.0) }
         text("Build: ${times()}")
         text("JRE: ${System.getProperty("java.runtime.version")}")
