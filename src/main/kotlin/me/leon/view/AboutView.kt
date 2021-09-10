@@ -7,6 +7,8 @@ import javafx.scene.text.Font
 import javafx.scene.text.Text
 import me.leon.CHECK_UPDATE_URL
 import me.leon.CHECK_UPDATE_URL2
+import me.leon.DEV_UPDATE_URL
+import me.leon.DEV_UPDATE_URL2
 import me.leon.LAN_ZOU_DOWNLOAD_URL
 import me.leon.LICENSE
 import me.leon.PJ52_URL
@@ -49,9 +51,21 @@ class AboutView : View(messages["about"]) {
         }
         hyperlink(messages["license"]) { action { LICENSE.openInBrowser() } }
         button(messages["checkUpdate"]) { action { checkUpdate() } }
+        button(messages["checkUpdateDev"]) { action { checkUpdateDev() } }
         latestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
         checkUpdate(!Prefs.isIgnoreUpdate)
+    }
+
+    private fun checkUpdateDev() {
+        runAsync { DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2) } ui
+            {
+                latestVersion.text =
+                    if (it.isEmpty()) messages["unknown"]
+                    else if (VERSION != it)
+                        "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
+                    else messages["alreadyLatest"]
+            }
     }
 
     private fun checkUpdate(isAuto: Boolean = true) {
@@ -60,7 +74,7 @@ class AboutView : View(messages["about"]) {
             {
                 latestVersion.text =
                     if (it.isEmpty()) messages["unknown"]
-                    else if (VERSION != it)
+                    else if (!VERSION.contains("beta") && VERSION != it)
                         "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
                     else messages["alreadyLatest"]
             }

@@ -11,6 +11,7 @@ import me.leon.controller.EncodeController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_80X
 import me.leon.ext.EncodeType
+import me.leon.ext.cast
 import me.leon.ext.copy
 import me.leon.ext.encodeType
 import me.leon.ext.encodeTypeMap
@@ -85,7 +86,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
 
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
-                        srcEncodeType = (new as RadioButton).text.encodeType()
+                        srcEncodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value = srcEncodeType.type.contains("base")
                         customDict.text = srcEncodeType.defaultDict
                     }
@@ -146,7 +147,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                     }
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
-                        dstEncodeType = (new as RadioButton).text.encodeType()
+                        dstEncodeType = new.cast<RadioButton>().text.encodeType()
                         run()
                     }
                 }

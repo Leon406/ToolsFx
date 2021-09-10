@@ -7,8 +7,8 @@ plugins {
 }
 def isJdk11 = isJdk11.toBoolean()
 if (isJdk11) apply plugin: "org.openjfx.javafxplugin"
-group = 'me.leon.toolfx'
-version = '1.7.0'
+group = 'me.leon.toolsfx'
+version = '1.7.1.beta'
 
 repositories {
     mavenCentral()

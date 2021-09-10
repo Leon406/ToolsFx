@@ -1,8 +1,10 @@
 package me.leon
 
 import me.leon.encode.base.base64
+import me.leon.ext.cast
 import me.leon.ext.readBytesFromNet
 import me.leon.ext.readHeadersFromNet
+import me.leon.ext.safeAs
 import org.junit.Test
 
 class NetTest {
@@ -24,5 +26,16 @@ class NetTest {
                 "19098&keySource=VodBuildInKMS")
             .readHeadersFromNet()
             .also { println(it) }
+    }
+
+    @Test
+    fun fetchJson() {
+
+        var l: MutableList<String>? = mutableListOf("", "")
+        l.safeAs<HashSet<String>>().also { println(it) }
+        //        l?.cast<HashSet<String>>()
+        l = null
+        l.safeAs<HashSet<String>>().also { println(it) }
+        l.cast<HashSet<String>>()
     }
 }

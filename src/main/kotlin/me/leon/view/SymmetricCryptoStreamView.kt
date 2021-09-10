@@ -12,6 +12,7 @@ import javafx.scene.image.Image
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
@@ -137,7 +138,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-                        keyEncode = (new as RadioButton).text
+                        keyEncode = new.cast<RadioButton>().text
                     }
                 }
             }
@@ -151,7 +152,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-                        ivEncode = (new as RadioButton).text
+                        ivEncode = new.cast<RadioButton>().text
                     }
                 }
             }
@@ -164,7 +165,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncrypt = (new as RadioButton).text == messages["encrypt"]
+                    isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     doCrypto()
                 }
             }

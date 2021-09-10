@@ -3,16 +3,17 @@ package me.leon.ext
 import java.net.HttpURLConnection
 import java.net.URL
 
-private const val DEFAULT_READ_TIME_OUT = 30000
-private const val DEFAULT_CONNECT_TIME_OUT = 30000
+private const val DEFAULT_TIME_OUT = 10000
 const val RESPONSE_OK = 200
 
-fun String.readBytesFromNet(method: String = "GET") =
+fun String.readBytesFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME_OUT) =
     runCatching {
-        (URL(this).openConnection() as HttpURLConnection)
+        URL(this)
+            .openConnection()
+            .cast<HttpURLConnection>()
             .apply {
-                connectTimeout = DEFAULT_CONNECT_TIME_OUT
-                readTimeout = DEFAULT_READ_TIME_OUT
+                connectTimeout = timeout
+                readTimeout = timeout
                 setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
                 setRequestProperty(
                     "user-agent",
@@ -37,12 +38,14 @@ fun String.readFromNet(resumeUrl: String = ""): String =
         if (resumeUrl.isEmpty()) "" else resumeUrl.readFromNet()
     }
 
-fun String.readHeadersFromNet() =
+fun String.readHeadersFromNet(timeout: Int = DEFAULT_TIME_OUT) =
     runCatching {
-        (URL(this).openConnection() as HttpURLConnection)
+        URL(this)
+            .openConnection()
+            .cast<HttpURLConnection>()
             .apply {
-                connectTimeout = DEFAULT_CONNECT_TIME_OUT
-                readTimeout = DEFAULT_READ_TIME_OUT
+                connectTimeout = timeout
+                readTimeout = timeout
                 setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
                 setRequestProperty(
                     "user-agent",
@@ -57,8 +60,7 @@ fun String.readHeadersFromNet() =
                     .foldIndexed(StringBuilder()) { i, acc, s ->
                         acc.apply {
                             acc.append("${it.first}: $s").apply {
-                                if (i != it.second.lastIndex)
-                                    append(System.lineSeparator()).also { println("_____") }
+                                if (i != it.second.lastIndex) append(System.lineSeparator())
                             }
                         }
                     }

@@ -11,6 +11,7 @@ import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import me.leon.controller.MacController
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
@@ -203,7 +204,7 @@ class MacView : View("MAC") {
                 radiobutton("hex") { isSelected = true }
                 radiobutton("base64")
                 selectedToggleProperty().addListener { _, _, new ->
-                    outputEncode = (new as RadioButton).text
+                    outputEncode = new.cast<RadioButton>().text
                 }
             }
             button(messages["run"], imageview(Image("/run.png"))) {

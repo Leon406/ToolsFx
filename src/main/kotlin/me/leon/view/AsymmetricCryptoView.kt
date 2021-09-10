@@ -11,6 +11,7 @@ import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_10X
+import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
@@ -46,8 +47,10 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         get() = output.text
     private val info
         get() =
-            "RSA  bits: ${selectedBits.get()}  mode: ${if (privateKeyEncrypt.get()) "private key encrypt" 
-        else "public key encrypt"} "
+            "RSA  bits: ${selectedBits.get()}  mode: ${
+                if (privateKeyEncrypt.get()) "private key encrypt"
+                else "public key encrypt"
+            } "
     private lateinit var infoLabel: Label
     private val keyText: String
         get() =
@@ -123,7 +126,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncrypt = (new as RadioButton).text == messages["encrypt"]
+                    isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                 }
             }
 

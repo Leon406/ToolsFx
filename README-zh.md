@@ -224,8 +224,11 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
   - jdk8      选择jdk8的版本
   - jdk11+  选择jdk11的版本
 - 无jre环境
-  -  64位 windows系统     x64 (jre11)
-  -  32/64位 windows系统  x86 (jre8,不知道就选这个)  
+  - 64位 windows系统     x64 (jre11)
+  - 32/64位 windows系统  x86 (jre8,不知道就选这个)  
+- beta版 (jar文件)
+
+  需要复制到lib目录,同时删除ToolsFx.jar
 
 ## 如何运行
 

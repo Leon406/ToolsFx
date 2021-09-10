@@ -214,8 +214,11 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
   - jdk8      choose suffix with jdk8
   - jdk11+   choose suffix with jdk11
 - w/o jre environment(Windows user only)
-  -  64bit Windows      x64 (jre11)
-  -  32/64bit Windows x86 (jre8,have no idea, choose this)  
+  - 64bit Windows      x64 (jre11)
+  - 32/64bit Windows x86 (jre8,have no idea, choose this)  
+- beta (jar file)
+  copy jar file to lib directory and delete ToolsFx-xxx.jar
+  
 
 ## How to Run
 

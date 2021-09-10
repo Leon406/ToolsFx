@@ -12,6 +12,7 @@ import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_80X
 import me.leon.ext.EncodeType
+import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.encodeType
@@ -122,7 +123,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
-                        encodeType = (new as RadioButton).text.encodeType()
+                        encodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value = encodeType.type.contains("base")
                         customDict.text = encodeType.defaultDict
                         if (isEncode) {
@@ -155,7 +156,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
                 checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncode = (new as RadioButton).text == messages["encode"]
+                    isEncode = new.cast<RadioButton>().text == messages["encode"]
                     run()
                 }
             }
