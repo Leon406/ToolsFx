@@ -19,11 +19,13 @@ import me.leon.ext.encodeTypeMap
 import me.leon.ext.fileDraggedHandler
 import me.leon.ext.readBytesFromNet
 import me.leon.ext.readFromNet
+import me.leon.ext.readHeadersFromNet
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
 import tornadofx.borderpane
 import tornadofx.button
+import tornadofx.checkbox
 import tornadofx.contextmenu
 import tornadofx.enableWhen
 import tornadofx.get
@@ -44,6 +46,7 @@ import tornadofx.vbox
 class EncodeView : View(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private lateinit var input: TextArea
     private lateinit var output: TextArea
     private lateinit var infoLabel: Label
@@ -58,7 +61,8 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             input.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
-                ?: input.text.replace("\\s".toRegex(), "")
+                ?: input.text.takeUnless { decodeIgnoreSpace.get() }
+                    ?: input.text.replace("\\s".toRegex(), "")
     private val outputText: String
         get() = output.text
 
@@ -92,6 +96,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                                 {
                                     input.text = it
                                 }
+                        }
+                    }
+                    item(messages["readHeadersFromNet"]) {
+                        action {
+                            runAsync { inputText.readHeadersFromNet() } ui { input.text = it }
                         }
                     }
                 }
@@ -143,6 +152,8 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 alignment = Pos.BASELINE_CENTER
                 radiobutton(messages["encode"]) { isSelected = true }
                 radiobutton(messages["decode"])
+
+                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = (new as RadioButton).text == messages["encode"]
                     run()

@@ -1,5 +1,6 @@
 package me.leon.ext
 
+import java.net.URLEncoder
 import me.leon.encode.base.BASE16_DICT
 import me.leon.encode.base.BASE32_DICT
 import me.leon.encode.base.BASE36_DICT
@@ -37,7 +38,6 @@ import me.leon.encode.escape
 import me.leon.encode.octal
 import me.leon.encode.octalDecode
 import me.leon.encode.unescape
-import java.net.URLEncoder
 
 enum class EncodeType(val type: String, val defaultDict: String = "") {
     Base64("base64", BASE64_DICT) {

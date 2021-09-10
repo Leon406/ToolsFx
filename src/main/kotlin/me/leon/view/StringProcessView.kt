@@ -14,6 +14,7 @@ import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
 import me.leon.ext.readBytesFromNet
 import me.leon.ext.readFromNet
+import me.leon.ext.readHeadersFromNet
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
@@ -135,6 +136,17 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .joinToString(System.lineSeparator())
                 }
             }
+            button(graphic = imageview(Image("/statisc.png"))) {
+                action {
+                    outputText =
+                        inputText
+                            .fold(mutableMapOf<Char, Int>()) { acc, c ->
+                                acc.apply { acc[c] = (acc[c] ?: 0) + 1 }
+                            }
+                            .toList()
+                            .joinToString(System.lineSeparator()) { "${it.first}: ${it.second}" }
+                }
+            }
         }
 
         input =
@@ -152,6 +164,11 @@ class StringProcessView : View(messages["stringProcess"]) {
                                 {
                                     input.text = it
                                 }
+                        }
+                    }
+                    item(messages["readHeadersFromNet"]) {
+                        action {
+                            runAsync { inputText.readHeadersFromNet() } ui { input.text = it }
                         }
                     }
                 }

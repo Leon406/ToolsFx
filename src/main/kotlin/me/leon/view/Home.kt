@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.security.Security
 import me.leon.VERSION
 import me.leon.ext.Prefs
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -11,7 +12,6 @@ import tornadofx.get
 import tornadofx.item
 import tornadofx.menu
 import tornadofx.tabpane
-import java.security.Security
 
 class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {

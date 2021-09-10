@@ -1,12 +1,12 @@
 package me.leon
 
+import java.util.*
 import javafx.scene.image.Image
 import me.leon.ext.Prefs
 import me.leon.view.Home
 import tornadofx.App
 import tornadofx.FX
 import tornadofx.addStageIcon
-import java.util.*
 
 class ToolsApp : App(Home::class, Styles::class) {
     init {

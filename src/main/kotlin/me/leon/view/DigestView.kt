@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -29,7 +30,6 @@ import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.textarea
 import tornadofx.vbox
-import java.io.File
 
 class DigestView : View(messages["hash"]) {
     private val controller: DigestController by inject()
@@ -87,6 +87,7 @@ class DigestView : View(messages["hash"]) {
             "GOST3411" to listOf("256"),
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
+            "CRC" to listOf("32"),
         )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
