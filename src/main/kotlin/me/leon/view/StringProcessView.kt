@@ -96,7 +96,12 @@ class StringProcessView : View(messages["stringProcess"]) {
         set(value) {
             taOutput.text = value
         }
-
+    private lateinit var tfExtract: TextField
+    private var extractReg
+        get() = tfExtract.text.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")
+        set(value) {
+            tfExtract.text = value
+        }
     private var encodeType = EncodeType.Base64
     private var isEncode = true
 
@@ -108,14 +113,16 @@ class StringProcessView : View(messages["stringProcess"]) {
         hbox {
             label(messages["input"])
             spacing = DEFAULT_SPACING
-            button(graphic = imageview("/import.png")) { action { taInput.text = clipboardText() } }
-            button(graphic = imageview("/uppercase.png")) {
+            button(graphic = imageview("/img/import.png")) {
+                action { inputText = clipboardText() }
+            }
+            button(graphic = imageview("/img/uppercase.png")) {
                 action { outputText = inputText.uppercase() }
             }
-            button(graphic = imageview("/lowercase.png")) {
+            button(graphic = imageview("/img/lowercase.png")) {
                 action { outputText = inputText.lowercase() }
             }
-            button(graphic = imageview("/ascend.png")) {
+            button(graphic = imageview("/img/ascend.png")) {
                 action {
                     outputText =
                         inputText
@@ -124,7 +131,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .joinToString(System.lineSeparator())
                 }
             }
-            button(graphic = imageview("/descend.png")) {
+            button(graphic = imageview("/img/descend.png")) {
                 action {
                     outputText =
                         inputText
@@ -133,7 +140,17 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .joinToString(System.lineSeparator())
                 }
             }
-            button(graphic = imageview("/statisc.png")) {
+
+            button(graphic = imageview("/img/deduplicate.png")) {
+                action {
+                    outputText =
+                        inputText
+                            .split("\n|\r\n".toRegex())
+                            .distinct()
+                            .joinToString(System.lineSeparator())
+                }
+            }
+            button(graphic = imageview("/img/statistic.png")) {
                 action {
                     outputText =
                         inputText
@@ -179,7 +196,7 @@ class StringProcessView : View(messages["stringProcess"]) {
             tfReplaceFrom = textfield { promptText = messages["text2Replaced"] }
             tfReplaceTo = textfield { promptText = messages["replaced"] }
             checkbox(messages["regexp"], isRegexp)
-            button(messages["run"], imageview("/run.png")) { action { doReplace() } }
+            button(messages["run"], imageview("/img/run.png")) { action { doReplace() } }
         }
         hbox {
             alignment = Pos.CENTER_LEFT
@@ -190,14 +207,29 @@ class StringProcessView : View(messages["stringProcess"]) {
             tfSplitLength = textfield { promptText = messages["splitLength"] }
             tfSeprator = textfield { promptText = messages["seprator"] }
             checkbox(messages["regexp"], isSplitRegexp) { isVisible = false }
-            button(messages["run"], imageview("/run.png")) { action { doSplit() } }
+            button(messages["run"], imageview("/img/run.png")) { action { doSplit() } }
+        }
+
+        hbox {
+            alignment = Pos.CENTER_LEFT
+            paddingTop = DEFAULT_SPACING
+            paddingBottom = DEFAULT_SPACING
+            spacing = DEFAULT_SPACING
+            label(messages["extract"])
+            tfExtract =
+                textfield {
+                    promptText = messages["extractHint"]
+                    prefWidth = 330.0
+                }
+            checkbox(messages["regexp"]) { isVisible = false }
+            button(messages["run"], imageview("/img/run.png")) { action { doExtract() } }
         }
 
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
-            button(graphic = imageview("/up.png")) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
@@ -210,6 +242,11 @@ class StringProcessView : View(messages["stringProcess"]) {
                 promptText = messages["outputHint"]
                 isWrapText = true
             }
+    }
+
+    private fun doExtract() {
+        outputText = extractReg.toRegex().findAll(inputText).map { it.value }.joinToString("\n")
+        labelInfo.text = info
     }
 
     private fun doSplit() {

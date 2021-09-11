@@ -10,11 +10,13 @@ import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_10X
+import me.leon.ext.Prefs
 import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
 import me.leon.ext.openInBrowser
+import me.leon.ext.showToast
 import tornadofx.FX
 import tornadofx.View
 import tornadofx.action
@@ -101,7 +103,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["key"])
-            button(graphic = imageview("/import.png")) { action { keyText = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) { action { keyText = clipboardText() } }
         }
         taKey =
             textarea {
@@ -112,7 +114,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
         hbox {
             label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
-            button(graphic = imageview("/import.png")) { action { inputText = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action { inputText = clipboardText() }
+            }
         }
         taInput =
             textarea {
@@ -138,7 +142,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
             }
 
-            button(messages["run"], imageview("/run.png")) { action { doCrypto() } }
+            button(messages["run"], imageview("/img/run.png")) { action { doCrypto() } }
             button(messages["genKeypair"]) {
                 action { "https://miniu.alipay.com/keytool/create".openInBrowser() }
             }
@@ -146,8 +150,8 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
-            button(graphic = imageview("/up.png")) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
                     inputText = outputText
                     outputText = ""
@@ -180,9 +184,10 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
             else controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
         } ui
-                {
-                    outputText = it
-                    labelInfo.text = info
-                }
+            {
+                outputText = it
+                labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
     }
 }

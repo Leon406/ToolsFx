@@ -2,8 +2,10 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
+import javafx.scene.Parent
 import javafx.scene.control.Label
 import javafx.scene.control.RadioButton
+import javafx.scene.control.TabPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import me.leon.controller.EncodeController
@@ -11,6 +13,7 @@ import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_80X
 import me.leon.ext.EncodeType
+import me.leon.ext.Prefs
 import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
@@ -20,6 +23,8 @@ import me.leon.ext.fileDraggedHandler
 import me.leon.ext.readBytesFromNet
 import me.leon.ext.readFromNet
 import me.leon.ext.readHeadersFromNet
+import me.leon.ext.safeAs
+import me.leon.ext.showToast
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
@@ -76,7 +81,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview("/import.png")) { action { taInput.text = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action { taInput.text = clipboardText() }
+            }
         }
 
         taInput =
@@ -112,7 +119,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns  = 7
+                prefColumns = 7
                 togglegroup {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
@@ -124,11 +131,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                         encodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value = encodeType.type.contains("base")
                         tfCustomDict.text = encodeType.defaultDict
-                        if (isEncode) {
-                            taOutput.text =
-                                controller.encode2String(inputText, encodeType, tfCustomDict.text)
-                            lableInfo.text = info
-                        }
+                        if (isEncode) run()
                     }
                 }
             }
@@ -158,16 +161,26 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     run()
                 }
             }
-            button(messages["run"], imageview("/run.png")) { action { run() } }
+            button(messages["run"], imageview("/img/run.png")) { action { run() } }
         }
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
-            button(graphic = imageview("/up.png")) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
+                }
+            }
+            button(graphic = imageview("/img/jump.png")) {
+                action {
+                    var tmp: Parent? = parent
+                    while (tmp != null) {
+                        if (tmp is TabPane) break
+                        tmp = tmp.parent
+                    }
+                    tmp.safeAs<TabPane>()?.selectionModel?.select(2)
                 }
             }
         }
@@ -184,11 +197,10 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     }
 
     private fun run() {
-        if (isEncode) {
-            taOutput.text = controller.encode2String(inputText, encodeType, tfCustomDict.text)
-        } else {
-            taOutput.text = controller.decode2String(inputText, encodeType, tfCustomDict.text)
-        }
+        taOutput.text =
+            if (isEncode) controller.encode2String(inputText, encodeType, tfCustomDict.text)
+            else controller.decode2String(inputText, encodeType, tfCustomDict.text)
+        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         lableInfo.text = info
     }
 }

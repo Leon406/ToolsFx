@@ -28,19 +28,26 @@ class Home : View("${messages["appName"]} v.$VERSION") {
         tab<AboutView>()
         primaryStage.isAlwaysOnTop = Prefs.alwaysOnTop
         contextmenu {
-            item("Top ${"√".takeIf { Prefs.alwaysOnTop } ?: ""}") {
+            item("Top ${"  √".takeIf { Prefs.alwaysOnTop } ?: ""}") {
                 action {
                     Prefs.alwaysOnTop = !Prefs.alwaysOnTop
                     primaryStage.isAlwaysOnTop = Prefs.alwaysOnTop
-                    text = "Top ${"√".takeIf { Prefs.alwaysOnTop } ?: ""}"
+                    text = "Top ${"  √".takeIf { Prefs.alwaysOnTop } ?: ""}"
                 }
             }
             menu("Language") {
-                item("English(need restart)${"√".takeIf { Prefs.language != "zh" } ?: ""}") {
+                item("English(need restart)${"  √".takeIf { Prefs.language != "zh" } ?: ""}") {
                     action { Prefs.language = "en" }
                 }
-                item("中文(需重启)${"√".takeIf { Prefs.language == "zh" } ?: ""}") {
+                item("中文(需重启)${"  √".takeIf { Prefs.language == "zh" } ?: ""}") {
                     action { Prefs.language = "zh" }
+                }
+            }
+
+            item("${messages["autoCopy"]}${"  √".takeIf { Prefs.autoCopy } ?: ""}") {
+                action {
+                    Prefs.autoCopy = !Prefs.autoCopy
+                    text = "${messages["autoCopy"]}${"  √".takeIf { Prefs.autoCopy } ?: ""}"
                 }
             }
         }

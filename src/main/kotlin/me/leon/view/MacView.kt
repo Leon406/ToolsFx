@@ -10,10 +10,12 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import me.leon.controller.MacController
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.Prefs
 import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
+import me.leon.ext.showToast
 import tornadofx.View
 import tornadofx.action
 import tornadofx.asObservable
@@ -137,7 +139,9 @@ class MacView : View("MAC") {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview("/import.png")) { action { taInput.text = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action { taInput.text = clipboardText() }
+            }
         }
         taInput =
             textarea() {
@@ -204,14 +208,14 @@ class MacView : View("MAC") {
                     outputEncode = new.cast<RadioButton>().text
                 }
             }
-            button(messages["run"], imageview("/run.png")) {
+            button(messages["run"], imageview("/img/run.png")) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action { doMac() }
             }
         }
         hbox {
             label(messages["output"])
-            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
         }
         taOutput =
             textarea {
@@ -234,5 +238,7 @@ class MacView : View("MAC") {
             {
                 taOutput.text = it
                 labelInfo.text = info
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
             }
 }

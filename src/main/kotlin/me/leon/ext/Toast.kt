@@ -74,6 +74,6 @@ class Toast private constructor() {
     }
 }
 
-fun Stage.showToast(msg: String) {
-    Toast.makeText(this, msg)
+fun Stage.showToast(msg: String, time: Int = 0) {
+    Toast.makeText(this, msg, time)
 }

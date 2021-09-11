@@ -37,7 +37,7 @@ class AboutView : View(messages["about"]) {
         alignment = Pos.CENTER
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
-        imageview("/tb.png")
+        imageview("/img/tb.png")
         text("${messages["ver"]}: v$VERSION") { font = Font.font(18.0) }
         text("Build: ${times()}")
         text("JRE: ${System.getProperty("java.runtime.version")}")

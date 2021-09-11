@@ -12,6 +12,7 @@ import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_10X
 import me.leon.ext.DEFAULT_SPACING_16X
 import me.leon.ext.DEFAULT_SPACING_4X
+import me.leon.ext.Prefs
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
@@ -144,7 +145,9 @@ class SignatureView : View(messages["signVerify"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["key"])
-            button(graphic = imageview("/import.png")) { action { taKey.text = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action { taKey.text = clipboardText() }
+            }
         }
         taKey =
             textarea {
@@ -154,7 +157,9 @@ class SignatureView : View(messages["signVerify"]) {
             }
         hbox {
             label(messages["plain"])
-            button(graphic = imageview("/import.png")) { action { taRaw.text = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action { taRaw.text = clipboardText() }
+            }
         }
         taRaw =
             textarea {
@@ -206,7 +211,7 @@ class SignatureView : View(messages["signVerify"]) {
         }
         hbox {
             label(messages["sig"])
-            button(graphic = imageview("/copy.png")) { action { signText.copy() } }
+            button(graphic = imageview("/img/copy.png")) { action { signText.copy() } }
         }
 
         taSigned =
@@ -226,6 +231,7 @@ class SignatureView : View(messages["signVerify"]) {
             {
                 taSigned.text = it
                 labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
     private fun verify() =
         runAsync {

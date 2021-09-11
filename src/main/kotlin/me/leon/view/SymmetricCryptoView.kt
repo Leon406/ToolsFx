@@ -11,11 +11,13 @@ import javafx.scene.control.TextField
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.Prefs
 import me.leon.ext.cast
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
 import me.leon.ext.hex2ByteArray
+import me.leon.ext.showToast
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
@@ -132,7 +134,9 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview("/import.png")) { action { taInput.text = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action { taInput.text = clipboardText() }
+            }
         }
         taInput =
             textarea {
@@ -199,7 +203,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 }
             }
             checkbox(messages["fileMode"], isFile)
-            button(messages["run"], imageview("/run.png")) {
+            button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
@@ -207,8 +211,8 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
-            button(graphic = imageview("/up.png")) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
@@ -260,6 +264,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 isProcessing.value = false
                 taOutput.text = it
                 labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
     }
 }

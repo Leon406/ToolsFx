@@ -6,6 +6,7 @@ object Prefs {
     private const val IGNORE_UPDATE = "isIgnoreUpdate"
     private const val ALWAYS_ON_TOP = "alwaysOnTop"
     private const val LANGUAGE = "language"
+    private const val AUTO_COPY = "autoCopy"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
     var isIgnoreUpdate
         get() = preference.getBoolean(IGNORE_UPDATE, false)
@@ -21,5 +22,10 @@ object Prefs {
         get() = preference.get(LANGUAGE, "zh")
         set(value) {
             preference.put(LANGUAGE, value)
+        }
+    var autoCopy: Boolean
+        get() = preference.getBoolean(AUTO_COPY, false)
+        set(value) {
+            preference.putBoolean(AUTO_COPY, value)
         }
 }

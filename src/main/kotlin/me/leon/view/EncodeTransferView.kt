@@ -10,11 +10,13 @@ import me.leon.controller.EncodeController
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_80X
 import me.leon.ext.EncodeType
+import me.leon.ext.Prefs
 import me.leon.ext.cast
 import me.leon.ext.copy
 import me.leon.ext.encodeType
 import me.leon.ext.encodeTypeMap
 import me.leon.ext.fileDraggedHandler
+import me.leon.ext.showToast
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
@@ -76,7 +78,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns  = 7
+                prefColumns = 7
                 togglegroup {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
@@ -114,18 +116,18 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
-            button(messages["transfer"], imageview("/run.png")) {
+            button(messages["transfer"], imageview("/img/run.png")) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["up"], imageview("/up.png")) {
+            button(messages["up"], imageview("/img/up.png")) {
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
                 }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["copy"], imageview("/copy.png")) {
+            button(messages["copy"], imageview("/img/copy.png")) {
                 action { outputText.copy() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
@@ -139,7 +141,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns  = 7
+                prefColumns = 7
                 togglegroup {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
@@ -173,7 +175,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
         taOutput.text =
             String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
                 ?: controller.encode2String(decode, dstEncodeType)
-
+        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         labelInfo.text = info
     }
 }

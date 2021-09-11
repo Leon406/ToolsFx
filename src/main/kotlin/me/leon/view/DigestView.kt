@@ -9,9 +9,11 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import me.leon.controller.DigestController
 import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.Prefs
 import me.leon.ext.clipboardText
 import me.leon.ext.copy
 import me.leon.ext.fileDraggedHandler
+import me.leon.ext.showToast
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
@@ -75,20 +77,20 @@ class DigestView : View(messages["hash"]) {
             "Blake2s" to listOf("160", "224", "256"),
             "DSTU7564" to listOf("256", "384", "512"),
             "Skein" to
-                    listOf(
-                        "256-160",
-                        "256-224",
-                        "256-256",
-                        "512-128",
-                        "512-160",
-                        "512-224",
-                        "512-256",
-                        "512-384",
-                        "512-512",
-                        "1024-384",
-                        "1024-512",
-                        "1024-1024"
-                    ),
+                listOf(
+                    "256-160",
+                    "256-224",
+                    "256-256",
+                    "512-128",
+                    "512-160",
+                    "512-224",
+                    "512-256",
+                    "512-384",
+                    "512-512",
+                    "1024-384",
+                    "1024-512",
+                    "1024-1024"
+                ),
             "GOST3411" to listOf("256"),
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
@@ -105,7 +107,9 @@ class DigestView : View(messages["hash"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview("/import.png")) { action { inputText = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action { inputText = clipboardText() }
+            }
         }
         taInput =
             textarea {
@@ -154,14 +158,14 @@ class DigestView : View(messages["hash"]) {
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
             checkbox(messages["fileMode"], isFileMode)
-            button(messages["run"], imageview("/run.png")) {
+            button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
         }
         hbox {
             label(messages["output"])
-            button(graphic = imageview("/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
         }
         taOutput =
             textarea {
@@ -183,9 +187,11 @@ class DigestView : View(messages["hash"]) {
                 }
             else controller.digest(method, inputText)
         } ui
-                {
-                    isProcessing.value = false
-                    outputText = it
-                    labelInfo.text = info
-                }
+            {
+                isProcessing.value = false
+                outputText = it
+                labelInfo.text = info
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
 }
