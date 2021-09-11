@@ -2,7 +2,7 @@ package me.leon.controller
 
 import me.leon.ext.EncodeType
 import me.leon.ext.catch
-import tornadofx.Controller
+import tornadofx.*
 
 class EncodeController : Controller() {
     fun encode2String(raw: String, type: EncodeType = EncodeType.Base64, dic: String = ""): String =

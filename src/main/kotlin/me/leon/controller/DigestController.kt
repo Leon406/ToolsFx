@@ -1,10 +1,8 @@
 package me.leon.controller
 
 import me.leon.Digests
-import me.leon.ext.catch
-import me.leon.ext.crc32
-import me.leon.ext.crc32File
-import tornadofx.Controller
+import me.leon.ext.*
+import tornadofx.*
 
 class DigestController : Controller() {
     fun digest(method: String, data: String) =

@@ -1,8 +1,6 @@
 package me.leon.ext
 
-import javafx.animation.KeyFrame
-import javafx.animation.KeyValue
-import javafx.animation.Timeline
+import javafx.animation.*
 import javafx.scene.Scene
 import javafx.scene.layout.StackPane
 import javafx.scene.paint.Color

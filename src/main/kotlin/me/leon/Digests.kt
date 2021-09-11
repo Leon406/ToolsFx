@@ -1,9 +1,9 @@
 package me.leon
 
+import me.leon.ext.toHex
 import java.io.FileInputStream
 import java.security.DigestInputStream
 import java.security.MessageDigest
-import me.leon.ext.toHex
 
 object Digests {
     fun hash(method: String, data: String) =

@@ -1,15 +1,12 @@
 package me.leon.controller
 
-import java.security.KeyFactory
-import java.security.PrivateKey
-import java.security.PublicKey
-import java.security.Signature
-import java.security.spec.PKCS8EncodedKeySpec
-import java.security.spec.X509EncodedKeySpec
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.catch
-import tornadofx.Controller
+import tornadofx.*
+import java.security.*
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
 
 fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
 

@@ -1,5 +1,9 @@
 package me.leon.controller
 
+import me.leon.encode.base.*
+import me.leon.ext.catch
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import tornadofx.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.security.KeyFactory
@@ -8,12 +12,6 @@ import java.security.cert.CertificateFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
-import me.leon.encode.base.BYTE_BITS
-import me.leon.encode.base.base64
-import me.leon.encode.base.base64Decode
-import me.leon.ext.catch
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import tornadofx.Controller
 
 class AsymmetricCryptoController : Controller() {
 

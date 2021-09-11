@@ -1,12 +1,7 @@
 package me.leon
 
 import javafx.scene.text.FontWeight
-import tornadofx.Stylesheet
-import tornadofx.box
-import tornadofx.c
-import tornadofx.cssclass
-import tornadofx.infinity
-import tornadofx.px
+import tornadofx.*
 
 class Styles : Stylesheet() {
     companion object {

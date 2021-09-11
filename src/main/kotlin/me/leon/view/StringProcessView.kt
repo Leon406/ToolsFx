@@ -2,37 +2,22 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import me.leon.SimpleMsgEvent
 import me.leon.encode.base.base64
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.EncodeType
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.fileDraggedHandler
-import me.leon.ext.readBytesFromNet
-import me.leon.ext.readFromNet
-import me.leon.ext.readHeadersFromNet
+import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.checkbox
-import tornadofx.contextmenu
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.item
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.paddingBottom
-import tornadofx.paddingTop
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.vbox
+import kotlin.collections.chunked
+import kotlin.collections.contains
+import kotlin.collections.distinct
+import kotlin.collections.first
+import kotlin.collections.joinToString
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
+import kotlin.collections.sorted
+import kotlin.collections.sortedDescending
+import kotlin.collections.toList
 
 class StringProcessView : View(messages["stringProcess"]) {
     override val closeable = SimpleBooleanProperty(false)

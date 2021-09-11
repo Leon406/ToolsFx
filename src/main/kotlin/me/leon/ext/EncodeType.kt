@@ -1,43 +1,8 @@
 package me.leon.ext
 
+import me.leon.encode.*
+import me.leon.encode.base.*
 import java.net.URLEncoder
-import me.leon.encode.base.BASE16_DICT
-import me.leon.encode.base.BASE32_DICT
-import me.leon.encode.base.BASE36_DICT
-import me.leon.encode.base.BASE58_DICT
-import me.leon.encode.base.BASE62_DICT
-import me.leon.encode.base.BASE64_DICT
-import me.leon.encode.base.BASE64_URL_DICT
-import me.leon.encode.base.BASE85_DICT
-import me.leon.encode.base.BASE91_DICT
-import me.leon.encode.base.BASE92_DICT
-import me.leon.encode.base.base16
-import me.leon.encode.base.base16Decode
-import me.leon.encode.base.base32
-import me.leon.encode.base.base32Decode
-import me.leon.encode.base.base36
-import me.leon.encode.base.base36Decode
-import me.leon.encode.base.base58
-import me.leon.encode.base.base58Check
-import me.leon.encode.base.base58CheckDecode
-import me.leon.encode.base.base58Decode
-import me.leon.encode.base.base62
-import me.leon.encode.base.base62Decode
-import me.leon.encode.base.base64
-import me.leon.encode.base.base64Decode
-import me.leon.encode.base.base85
-import me.leon.encode.base.base85Decode
-import me.leon.encode.base.base91
-import me.leon.encode.base.base91Decode
-import me.leon.encode.base.base92Decode
-import me.leon.encode.base.base92Encode
-import me.leon.encode.base.safeBase64Decode
-import me.leon.encode.decimal
-import me.leon.encode.decimalDecode
-import me.leon.encode.escape
-import me.leon.encode.octal
-import me.leon.encode.octalDecode
-import me.leon.encode.unescape
 
 enum class EncodeType(val type: String, val defaultDict: String = "") {
     Base64("base64", BASE64_DICT) {

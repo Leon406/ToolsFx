@@ -1,16 +1,14 @@
 package me.leon.controller
 
-import java.io.File
-import java.nio.charset.Charset
-import java.util.Base64
-import javax.crypto.Cipher
-import javax.crypto.CipherOutputStream
-import javax.crypto.SecretKey
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 import me.leon.encode.base.base64
 import me.leon.ext.catch
-import tornadofx.Controller
+import tornadofx.*
+import java.io.File
+import java.nio.charset.Charset
+import java.util.*
+import javax.crypto.*
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 class SymmetricCryptoController : Controller() {
     fun encrypt(

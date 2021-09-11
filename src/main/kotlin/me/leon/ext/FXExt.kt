@@ -1,17 +1,15 @@
 package me.leon.ext
 
+import javafx.embed.swing.SwingFXUtils
+import javafx.event.EventHandler
+import javafx.scene.image.Image
+import javafx.scene.input.*
+import javafx.stage.FileChooser
+import javafx.stage.Window
 import java.awt.Desktop
 import java.awt.image.BufferedImage
 import java.io.File
 import java.net.URL
-import javafx.embed.swing.SwingFXUtils
-import javafx.event.EventHandler
-import javafx.scene.image.Image
-import javafx.scene.input.Clipboard
-import javafx.scene.input.ClipboardContent
-import javafx.scene.input.DragEvent
-import javafx.stage.FileChooser
-import javafx.stage.Window
 import javax.imageio.ImageIO
 
 fun String.copy() =
