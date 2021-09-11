@@ -48,7 +48,13 @@
 ![encode](./art/encode.gif)
 
 
+
+**字符处理(以分割为例)**
+
+![encode_split](./art/encode_split.gif)
+
 ### 编码互转功能 (非原始字符)
+
 - [x] 编解码功能相互转换
 
 ![encode](./art/encode_transfer.gif)
@@ -191,7 +197,7 @@
 ### 其他功能
 
 - [x] 二维码功能
-- [ ] 待定
+- [x] 字符处理
 - [ ] 待定
 
 ### 特性

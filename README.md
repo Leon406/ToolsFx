@@ -38,7 +38,15 @@
 ![encode](./art/encode.gif)
 
 
+
+**String Process(eg. Split)**
+
+![encode_split](E:/github/ToolsFx/art/encode_split.gif)
+
+
+
 ### Encoding Transfer (not raw data)
+
 - [x] Transfer
 
 ![encode](./art/encode_transfer.gif)
@@ -54,7 +62,7 @@
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] other BouncyCastle support alogrithms
+- [x] other BouncyCastle supported alogrithms
 
 ![hash](./art/hash.gif)
 
@@ -70,7 +78,7 @@
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] other BouncyCastle support algorithms
+- [x] other BouncyCastle supported algorithms
 
 #### CMAC
 
@@ -109,7 +117,7 @@
 - [x] Blowfish
 - [x] Twofish
 - [x] RC2
-- [x] other BouncyCastle support alogrithms
+- [x] other BouncyCastle supported alogrithms
 
 #### support mode
 
@@ -179,7 +187,7 @@
 ### Others
 
 - [x] Qrcode
-- [ ] TBD
+- [x] String Process
 - [ ] TBD
 
 ### Features
