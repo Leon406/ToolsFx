@@ -1,5 +1,4 @@
-val isJdk11: String by rootProject
-val tornadofx_version: String by rootProject
+
 plugins {
     kotlin("jvm") version "1.5.30"
     application
@@ -9,6 +8,7 @@ plugins {
 }
 group = "me.leon.toolsfx"
 version = "1.7.1.beta"
+val tornadofx_version: String by rootProject
 
 repositories {
     mavenCentral()
@@ -31,18 +31,17 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.5.30")
 }
-if (isJdk11.toBoolean()) {
-    apply(plugin = "org.openjfx.javafxplugin")
-    javafx {
-        version = "18-ea+2"
-        modules = listOf(
-            "javafx.controls",
-            "javafx.swing",
+
+javafx {
+    version = "18-ea+2"
+    modules = listOf(
+        "javafx.controls",
+        "javafx.swing",
 //            if you use javafx.fxml,then uncomment it
 //            'javafx.fxml'
-        )
-    }
+    )
 }
+
 
 
 apply(from = "${rootProject.projectDir}/config/codeQuality.gradle")
