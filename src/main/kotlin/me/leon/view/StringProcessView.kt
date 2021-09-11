@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import me.leon.SimpleMsgEvent
 import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.EncodeType
@@ -242,6 +243,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                 promptText = messages["outputHint"]
                 isWrapText = true
             }
+        subscribe<SimpleMsgEvent> { inputText = it.msg }
     }
 
     private fun doExtract() {

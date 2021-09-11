@@ -8,6 +8,7 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import me.leon.SimpleMsgEvent
 import me.leon.controller.EncodeController
 import me.leon.encode.base.base64
 import me.leon.ext.DEFAULT_SPACING
@@ -202,5 +203,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             else controller.decode2String(inputText, encodeType, tfCustomDict.text)
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         lableInfo.text = info
+
+        fire(SimpleMsgEvent(taOutput.text, 1))
     }
 }
