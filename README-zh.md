@@ -32,17 +32,11 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32
+- [x] base16/32/36/58/62/85/91/92
+- [x] base58check
 - [x] UrlEncode
 - [x] Unicode
-- [x] hex
-- [x] binary
-- [x] base58/base58check
-- [x] base36
-- [x] base62
-- [x] base85
-- [x] base91
-- [x] base92
+- [x] binary/octal/decimal/hex
 - [x] base系列自定义字典
 
 ![encode](./art/encode.gif)

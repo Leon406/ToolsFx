@@ -22,17 +22,11 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32
+- [x] base16/32/36/58/62/85/91/92
+- [x] base58check
 - [x] UrlEncode
 - [x] Unicode
-- [x] hex
-- [x] binary
-- [x] base58/base58check
-- [x] base36
-- [x] base62
-- [x] base85
-- [x] base91
-- [x] base92
+- [x] binary/octal/decimal/hex
 - [x] custom base serial dict
 
 ![encode](./art/encode.gif)
@@ -62,7 +56,7 @@
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] other BouncyCastle supported alogrithms
+- [x] etc.
 
 ![hash](./art/hash.gif)
 
@@ -78,7 +72,7 @@
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] other BouncyCastle supported algorithms
+- [x] etc.
 
 #### CMAC
 
@@ -117,7 +111,7 @@
 - [x] Blowfish
 - [x] Twofish
 - [x] RC2
-- [x] other BouncyCastle supported alogrithms
+- [x] etc.
 
 #### support mode
 
