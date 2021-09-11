@@ -1,5 +1,7 @@
 package me.leon.view
 
+import java.awt.Rectangle
+import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
@@ -12,11 +14,9 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import kotlin.math.abs
 import me.leon.ext.*
 import tornadofx.*
-import java.awt.Rectangle
-import java.awt.Robot
-import kotlin.math.abs
 
 class QrcodeView : View("Qrcode") {
     // 切图区域的起始位置x

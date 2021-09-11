@@ -1,8 +1,8 @@
 package me.leon.ext
 
+import java.net.URLEncoder
 import me.leon.encode.*
 import me.leon.encode.base.*
-import java.net.URLEncoder
 
 enum class EncodeType(val type: String, val defaultDict: String = "") {
     Base64("base64", BASE64_DICT) {

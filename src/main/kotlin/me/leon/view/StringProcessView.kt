@@ -3,11 +3,6 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import me.leon.SimpleMsgEvent
-import me.leon.encode.base.base64
-import me.leon.ext.*
-import tornadofx.*
-import tornadofx.FX.Companion.messages
 import kotlin.collections.chunked
 import kotlin.collections.contains
 import kotlin.collections.distinct
@@ -18,6 +13,11 @@ import kotlin.collections.set
 import kotlin.collections.sorted
 import kotlin.collections.sortedDescending
 import kotlin.collections.toList
+import me.leon.SimpleMsgEvent
+import me.leon.encode.base.base64
+import me.leon.ext.*
+import tornadofx.*
+import tornadofx.FX.Companion.messages
 
 class StringProcessView : View(messages["stringProcess"]) {
     override val closeable = SimpleBooleanProperty(false)

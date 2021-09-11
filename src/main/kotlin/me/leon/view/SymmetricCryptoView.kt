@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -25,7 +26,6 @@ import tornadofx.textarea
 import tornadofx.textfield
 import tornadofx.togglegroup
 import tornadofx.vbox
-import java.io.File
 
 class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private val controller: SymmetricCryptoController by inject()

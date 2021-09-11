@@ -1,10 +1,10 @@
 package me.leon
 
+import java.util.*
 import javafx.scene.image.Image
 import me.leon.ext.Prefs
 import me.leon.view.Home
 import tornadofx.*
-import java.util.*
 
 class ToolsApp : App(Home::class, Styles::class) {
     init {

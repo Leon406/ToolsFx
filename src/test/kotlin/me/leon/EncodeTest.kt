@@ -166,4 +166,21 @@ class EncodeTest {
         println(raw.octal().also { println(it.octalDecode2String()) })
         println(raw.decimal().also { println(it.decimalDecode2String()) })
     }
+    @Test
+    fun xxEncodeTest() {
+        "http://www.wikipedia.org".xxEncode().also { println(it) }
+        "http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org"
+            .uuEncode()
+            .also {
+                println(it.uuDecode2String())
+                println(it)
+            }
+        //        "Cat".uuEncode().also { println(it) }
+        "中文http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org"
+            .xxEncode()
+            .also {
+                println(it.xxDecode2String())
+                println(it)
+            }
+    }
 }

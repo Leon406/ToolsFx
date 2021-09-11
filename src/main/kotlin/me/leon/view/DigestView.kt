@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -23,7 +24,6 @@ import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.textarea
 import tornadofx.vbox
-import java.io.File
 
 class DigestView : View(messages["hash"]) {
     private val controller: DigestController by inject()
