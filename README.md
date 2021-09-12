@@ -35,7 +35,7 @@
 
 **String Process(eg. Split)**
 
-![encode_split](E:/github/ToolsFx/art/encode_split.gif)
+![encode_split](./art/encode_split.gif)
 
 
 
