@@ -1,8 +1,10 @@
 package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import me.leon.CHARSETS
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import tornadofx.*
@@ -32,6 +34,8 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private var dstEncodeType = EncodeType.UrlEncode
     private var srcEncodeType = EncodeType.Base64
     private var isEncode = true
+    private val selectedSrcCharset = SimpleStringProperty(CHARSETS.first())
+    private val selectedDstCharset = SimpleStringProperty(CHARSETS.first())
 
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
 
@@ -40,7 +44,10 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
         spacing = DEFAULT_SPACING
 
         hbox {
-            label(messages["input"])
+            vbox {
+                label(messages["input"])
+                combobox(selectedSrcCharset, CHARSETS) { cellFormat { text = it } }
+            }
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
@@ -104,7 +111,11 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             }
         }
         hbox {
-            label(messages["output"])
+            vbox {
+                label(messages["output"])
+                combobox(selectedDstCharset, CHARSETS) { cellFormat { text = it } }
+            }
+
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
@@ -143,9 +154,14 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
 
     private fun run() {
         val decode = controller.decode(inputText, srcEncodeType, tfCustomDict.text)
+
         taOutput.text =
             String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
-                ?: controller.encode2String(decode, dstEncodeType)
+                ?: controller.encode2String(
+                    decode.charsetChange(selectedSrcCharset.get(), selectedDstCharset.get()),
+                    dstEncodeType
+                )
+
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         labelInfo.text = info
     }
