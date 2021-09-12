@@ -11,16 +11,17 @@ class EncodeController : Controller() {
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
         charset: String = "UTF-8"
-    ): String = encode2String(raw.toByteArray(Charset.forName(charset)), type, dic)
+    ): String = encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
 
     fun encode2String(
         raw: ByteArray,
         type: EncodeType = EncodeType.Base64,
-        dic: String = ""
+        dic: String = "",
+        charset: String = "UTF-8"
     ): String =
         catch({ "编码错误: $it" }) {
-            println("$type $dic")
-            if (raw.isEmpty()) "" else type.encode2String(raw, dic)
+            println("encode2String $type $dic $charset ${String(raw, Charset.forName(charset))}")
+            if (raw.isEmpty()) "" else type.encode2String(raw, dic, charset)
         }
 
     fun decode2String(
@@ -28,10 +29,16 @@ class EncodeController : Controller() {
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
         charset: String = "UTF-8"
-    ): String = String(decode(encoded, type, dic), Charset.forName(charset))
+    ): String = String(decode(encoded, type, dic, charset), Charset.forName(charset))
 
-    fun decode(encoded: String, type: EncodeType = EncodeType.Base64, dic: String = ""): ByteArray =
+    fun decode(
+        encoded: String,
+        type: EncodeType = EncodeType.Base64,
+        dic: String = "",
+        charset: String = "UTF-8"
+    ): ByteArray =
         catch({ "解码错误: $it".toByteArray() }) {
-            if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic)
+            println("decode $type $dic $charset $encoded")
+            if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
         }
 }

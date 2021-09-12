@@ -1,6 +1,7 @@
 package me.leon.encode.base
 
 import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
@@ -77,12 +78,16 @@ object Base91 {
 const val BASE91_DICT =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_`{|}~\""
 
-fun String.base91(dict: String = BASE91_DICT) = toByteArray().base91(dict)
+fun String.base91(dict: String = BASE91_DICT, charset: String = "UTF-8") =
+    toByteArray().base91(dict, charset)
 
-fun ByteArray.base91(dict: String = BASE91_DICT) =
-    String(Base91.encode(this, dict.ifEmpty { BASE85_DICT }.toByteArray()))
+fun ByteArray.base91(dict: String = BASE91_DICT, charset: String = "UTF-8") =
+    String(
+        Base91.encode(this, dict.ifEmpty { BASE91_DICT }.toByteArray()),
+        Charset.forName(charset)
+    )
 
 fun String.base91Decode(dict: String = BASE91_DICT) =
-    Base91.decode(toByteArray(), dict.ifEmpty { BASE85_DICT }.toByteArray())
+    Base91.decode(toByteArray(), dict.ifEmpty { BASE91_DICT }.toByteArray())
 
 fun String.base91Decode2String(dict: String = BASE91_DICT) = String(base91Decode(dict))

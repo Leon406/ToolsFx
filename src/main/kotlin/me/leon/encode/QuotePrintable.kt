@@ -6,7 +6,9 @@ import me.leon.ext.*
 object QuotePrintable {
 
     fun encode(src: String, charset: String = "UTF-8") =
-        src.toCharArray()
+        src
+            .also { println("encode $src $charset") }
+            .toCharArray()
             .map {
                 when (it.code) {
                     in 33..60 -> it
@@ -63,13 +65,16 @@ object QuotePrintable {
     }
 }
 
-fun String.quotePrintable() = QuotePrintable.encode(this)
+fun String.quotePrintable(charset: String = "UTF-8") = QuotePrintable.encode(this, charset)
 
-fun ByteArray.quotePrintable() = String(this).quotePrintable()
+fun ByteArray.quotePrintable(charset: String = "UTF-8") =
+    String(this, Charset.forName(charset)).quotePrintable(charset)
 
-fun String.quotePrintableDecode() = quotePrintableDecode2String().toByteArray()
+fun String.quotePrintableDecode(charset: String = "UTF-8") =
+    quotePrintableDecode2String(charset).toByteArray(Charset.forName(charset))
 
-fun String.quotePrintableDecode2String() = QuotePrintable.decode(this)
+fun String.quotePrintableDecode2String(charset: String = "UTF-8") =
+    QuotePrintable.decode(this, charset)
 
 fun main() {
 

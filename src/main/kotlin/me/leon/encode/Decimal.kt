@@ -1,9 +1,14 @@
 package me.leon.encode
 
-fun String.decimal() = toByteArray().decimal()
+import java.nio.charset.Charset
 
-fun ByteArray.decimal() = String(this).toCharArray().joinToString(" ") { (it.code).toString() }
+fun String.decimal(charset: String = "UTF-8") =
+    toByteArray(Charset.forName(charset)).decimal(charset)
 
-fun String.decimalDecode() = decimalDecode2String().toByteArray()
+fun ByteArray.decimal(charset: String = "UTF-8") =
+    String(this, Charset.forName(charset)).toCharArray().joinToString(" ") { (it.code).toString() }
+
+fun String.decimalDecode(charset: String = "UTF-8") =
+    decimalDecode2String().toByteArray(Charset.forName(charset))
 
 fun String.decimalDecode2String() = split(" +".toRegex()).map { Char(it.toInt()) }.joinToString("")
