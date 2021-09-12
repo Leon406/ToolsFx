@@ -1,5 +1,6 @@
 package me.leon.ext
 
+import java.nio.charset.Charset
 import me.leon.encode.base.BYTE_BITS
 import me.leon.encode.base.BYTE_MASK
 import tornadofx.*
@@ -10,10 +11,9 @@ const val DECIMAL_RADIX = 10
 /** 16进制编解码 */
 fun ByteArray.toHex() = hex
 
-fun String.hex2Ascii() = String(hex2ByteArray(), Charsets.UTF_8)
+fun String.hex2String(charset: String = "UTF-8") = String(hex2ByteArray(), Charset.forName(charset))
 
-fun String.hex2ByteArray() =
-    toList().chunked(2).map { it.joinToString("").toInt(HEX_RADIX).toByte() }.toByteArray()
+fun String.hex2ByteArray() = chunked(2).map { it.toInt(HEX_RADIX).toByte() }.toByteArray()
 
 fun ByteArray.toBinaryString() =
     joinToString("") {

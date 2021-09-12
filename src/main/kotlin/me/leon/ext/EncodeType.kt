@@ -13,6 +13,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     UrlEncode("urlencode") {
         override fun decode(encoded: String, dict: String) =
             (URLDecoder.decode(encoded) ?: "").toByteArray()
+
         override fun encode2String(bytes: ByteArray, dict: String) =
             URLEncoder.encode(String(bytes))?.replace("+", "%20") ?: ""
     },
@@ -92,6 +93,10 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     XxEncode("xxEncode") {
         override fun decode(encoded: String, dict: String) = encoded.xxDecode(dict)
         override fun encode2String(bytes: ByteArray, dict: String) = bytes.xxEncode(dict)
+    },
+    QuotePrintable("Quoted-P") {
+        override fun decode(encoded: String, dict: String) = encoded.quotePrintableDecode()
+        override fun encode2String(bytes: ByteArray, dict: String) = bytes.quotePrintable()
     };
 
     abstract fun decode(encoded: String, dic: String): ByteArray
