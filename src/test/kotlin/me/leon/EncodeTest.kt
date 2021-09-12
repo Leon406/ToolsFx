@@ -163,19 +163,15 @@ class EncodeTest {
     fun xxEncodeTest() {
 
         for (i in 0..5) {
-            raw.repeat(i)
-                .uuEncode()
-                .also {
-                    println(it)
-                    println(it.uuDecode2String())
-                }
+            raw.repeat(i).uuEncode().also {
+                println(it)
+                println(it.uuDecode2String())
+            }
 
-            raw.repeat(i).xxEncode()
-                .also {
-                    println(it)
-                    println(it.xxDecode2String())
-                }
+            raw.repeat(i).xxEncode().also {
+                println(it)
+                println(it.xxDecode2String())
+            }
         }
-
     }
 }

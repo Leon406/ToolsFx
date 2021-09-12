@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
@@ -90,8 +91,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
 
     private val cipher
         get() = selectedAlg.get()
-    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
-    private val selectedCharset = SimpleStringProperty(charsets.first())
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
@@ -115,7 +115,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
             label("charset:")
-            combobox(selectedCharset, charsets) { cellFormat { text = it } }
+            combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
         hbox {
             alignment = Pos.CENTER_LEFT

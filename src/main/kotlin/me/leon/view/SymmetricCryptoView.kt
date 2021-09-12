@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
@@ -111,9 +112,8 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         )
     private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
     private val selectedAlg = SimpleStringProperty(algs[2])
-    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
     private val selectedPadding = SimpleStringProperty(paddingsAlg.first())
-    private val selectedCharset = SimpleStringProperty(charsets.first())
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
     private val selectedMod = SimpleStringProperty(modes.first())
 
     private val cipher
@@ -144,7 +144,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             label("padding:")
             combobox(selectedPadding, paddingsAlg) { cellFormat { text = it } }
             label("charset:")
-            combobox(selectedCharset, charsets) { cellFormat { text = it } }
+            combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
 
         hbox {

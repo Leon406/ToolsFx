@@ -12,10 +12,12 @@ fun ByteArray.xxEncode(dict: String = XX_DICT) =
     toBinaryString().chunked(8 * 45).joinToString("") {
         val leadChar = XX_DICT[(it.length / 8)]
         "$leadChar" +
-                it.chunked(BASE64_BLOCK_SIZE).joinToString("") {
+            it.chunked(BASE64_BLOCK_SIZE)
+                .joinToString("") {
                     dict.ifEmpty { XX_DICT }[it.padding("0", BASE64_BLOCK_SIZE).toInt(2)].toString()
-                }.padding("+", BASE64_PADDING_SIZE) +
-                if (leadChar == 'h') System.lineSeparator() else ""
+                }
+                .padding("+", BASE64_PADDING_SIZE) +
+            if (leadChar == 'h') System.lineSeparator() else ""
     }
 
 fun String.xxDecode(dict: String = XX_DICT) =

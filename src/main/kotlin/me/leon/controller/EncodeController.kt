@@ -1,12 +1,17 @@
 package me.leon.controller
 
+import java.nio.charset.Charset
 import me.leon.ext.EncodeType
 import me.leon.ext.catch
 import tornadofx.*
 
 class EncodeController : Controller() {
-    fun encode2String(raw: String, type: EncodeType = EncodeType.Base64, dic: String = ""): String =
-        encode2String(raw.toByteArray(), type, dic)
+    fun encode2String(
+        raw: String,
+        type: EncodeType = EncodeType.Base64,
+        dic: String = "",
+        charset: String = "UTF-8"
+    ): String = encode2String(raw.toByteArray(Charset.forName(charset)), type, dic)
 
     fun encode2String(
         raw: ByteArray,
@@ -21,8 +26,9 @@ class EncodeController : Controller() {
     fun decode2String(
         encoded: String,
         type: EncodeType = EncodeType.Base64,
-        dic: String = ""
-    ): String = String(decode(encoded, type, dic))
+        dic: String = "",
+        charset: String = "UTF-8"
+    ): String = String(decode(encoded, type, dic), Charset.forName(charset))
 
     fun decode(encoded: String, type: EncodeType = EncodeType.Base64, dic: String = ""): ByteArray =
         catch({ "解码错误: $it".toByteArray() }) {

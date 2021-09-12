@@ -1,9 +1,11 @@
 package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.Parent
 import javafx.scene.control.*
+import me.leon.CHARSETS
 import me.leon.SimpleMsgEvent
 import me.leon.controller.EncodeController
 import me.leon.encode.base.base64
@@ -36,6 +38,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
     private var encodeType = EncodeType.Base64
     private var isEncode = true
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
 
@@ -115,6 +118,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
+                label("charset:")
+                combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
+
                 radiobutton(messages["encode"]) { isSelected = true }
                 radiobutton(messages["decode"])
 
@@ -161,8 +167,20 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
     private fun run() {
         taOutput.text =
-            if (isEncode) controller.encode2String(inputText, encodeType, tfCustomDict.text)
-            else controller.decode2String(inputText, encodeType, tfCustomDict.text)
+            if (isEncode)
+                controller.encode2String(
+                    inputText,
+                    encodeType,
+                    tfCustomDict.text,
+                    selectedCharset.get()
+                )
+            else
+                controller.decode2String(
+                    inputText,
+                    encodeType,
+                    tfCustomDict.text,
+                    selectedCharset.get()
+                )
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         lableInfo.text = info
 
