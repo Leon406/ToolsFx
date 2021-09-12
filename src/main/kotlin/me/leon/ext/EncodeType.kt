@@ -1,5 +1,6 @@
 package me.leon.ext
 
+import java.net.URLDecoder
 import java.net.URLEncoder
 import me.leon.encode.*
 import me.leon.encode.base.*
@@ -10,7 +11,8 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
         override fun encode2String(bytes: ByteArray, dict: String) = bytes.base64(dict)
     },
     UrlEncode("urlencode") {
-        override fun decode(encoded: String, dict: String) = encoded.base64Decode(dict)
+        override fun decode(encoded: String, dict: String) =
+            (URLDecoder.decode(encoded) ?: "").toByteArray()
         override fun encode2String(bytes: ByteArray, dict: String) =
             URLEncoder.encode(String(bytes))?.replace("+", "%20") ?: ""
     },
@@ -39,8 +41,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     },
     Base64Safe("urlBase64", BASE64_URL_DICT) {
         override fun decode(encoded: String, dict: String) = encoded.safeBase64Decode(dict)
-        override fun encode2String(bytes: ByteArray, dict: String) =
-            URLEncoder.encode(String(bytes))?.replace("+", "%20") ?: ""
+        override fun encode2String(bytes: ByteArray, dict: String) = bytes.safeBase64(dict)
     },
     Base16("base16", BASE16_DICT) {
         override fun decode(encoded: String, dict: String) = encoded.base16Decode(dict)
