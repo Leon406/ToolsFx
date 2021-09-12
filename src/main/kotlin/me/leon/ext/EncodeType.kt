@@ -22,6 +22,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     Hex("hex") {
         override fun decode(encoded: String, dict: String) =
             encoded.replace("""\\x|\s|0x|\\""".toRegex(), "").hex2ByteArray()
+
         override fun encode2String(bytes: ByteArray, dict: String) = bytes.toHex()
     },
     Decimal("decimal") {
@@ -82,6 +83,14 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     Escape("escape") {
         override fun decode(encoded: String, dict: String) = encoded.unescape()
         override fun encode2String(bytes: ByteArray, dict: String) = bytes.escape()
+    },
+    UuEncode("uuEncode") {
+        override fun decode(encoded: String, dict: String) = encoded.uuDecode(dict)
+        override fun encode2String(bytes: ByteArray, dict: String) = bytes.uuEncode(dict)
+    },
+    XxEncode("xxEncode") {
+        override fun decode(encoded: String, dict: String) = encoded.xxDecode(dict)
+        override fun encode2String(bytes: ByteArray, dict: String) = bytes.xxEncode(dict)
     };
 
     abstract fun decode(encoded: String, dic: String): ByteArray

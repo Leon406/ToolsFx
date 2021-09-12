@@ -1,6 +1,6 @@
-package me.leon
+package me.leon.encode
 
-import me.leon.encode.base.BYTE_BITS
+import me.leon.encode.base.*
 import me.leon.ext.toBinaryString
 
 /** https://en.wikipedia.org/wiki/Xxencoding */
@@ -12,17 +12,19 @@ fun ByteArray.uuEncode(dict: String = UU_DICT) =
     toBinaryString().chunked(8 * 45).joinToString("") {
         val leadChar = (it.length / 8 + 32).toChar()
         "$leadChar" +
-            it.chunked(BASE64_BLOCK_SIZE).joinToString("") {
-                dict.ifEmpty { UU_DICT }[it.padding("0", BASE64_BLOCK_SIZE).toInt(2)].toString()
-            } +
-            if (leadChar == 'M') System.lineSeparator() else ""
+                it.chunked(BASE64_BLOCK_SIZE).joinToString("") {
+                    dict.ifEmpty { UU_DICT }[it.padding("0", BASE64_BLOCK_SIZE).toInt(2)].toString()
+                }.padding("`", BASE64_PADDING_SIZE) +
+                if (leadChar == 'M') System.lineSeparator() else ""
     }
 
 fun String.uuDecode(dict: String = UU_DICT) =
     this.filterNot { it == '\r' || it == '\n' }
         .chunked(61)
         .joinToString("") {
-            it.substring(1, (it.first().code - 32) * 4 / 3 + 1)
+            it
+                .substring(1)
+                .also { println(it) }
                 .map {
                     dict
                         .ifEmpty { UU_DICT }
@@ -33,7 +35,7 @@ fun String.uuDecode(dict: String = UU_DICT) =
                 .joinToString("")
         }
         .chunked(BYTE_BITS)
-        .filter { it.length == BYTE_BITS }
+        .filterNot { it.length != BYTE_BITS || it == "00000000" }
         .map { (it.toInt(2) and BYTE_MASK).toByte() }
         .toByteArray()
 

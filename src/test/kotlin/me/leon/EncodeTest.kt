@@ -2,15 +2,8 @@ package me.leon
 
 import kotlin.test.assertEquals
 import me.leon.controller.EncodeController
-import me.leon.encode.EscapeUtils
+import me.leon.encode.*
 import me.leon.encode.base.*
-import me.leon.encode.decimal
-import me.leon.encode.decimalDecode2String
-import me.leon.encode.escape
-import me.leon.encode.octal
-import me.leon.encode.octalDecode2String
-import me.leon.encode.unescape
-import me.leon.encode.unescape2String
 import me.leon.ext.EncodeType
 import me.leon.ext.encodeTypeMap
 import org.junit.Before
@@ -168,19 +161,21 @@ class EncodeTest {
     }
     @Test
     fun xxEncodeTest() {
-        "http://www.wikipedia.org".xxEncode().also { println(it) }
-        "http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org"
-            .uuEncode()
-            .also {
-                println(it.uuDecode2String())
-                println(it)
-            }
-        //        "Cat".uuEncode().also { println(it) }
-        "中文http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org http://www.wikipedia.org"
-            .xxEncode()
-            .also {
-                println(it.xxDecode2String())
-                println(it)
-            }
+
+        for (i in 0..5) {
+            raw.repeat(i)
+                .uuEncode()
+                .also {
+                    println(it)
+                    println(it.uuDecode2String())
+                }
+
+            raw.repeat(i).xxEncode()
+                .also {
+                    println(it)
+                    println(it.xxDecode2String())
+                }
+        }
+
     }
 }
