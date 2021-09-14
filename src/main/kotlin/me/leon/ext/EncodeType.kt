@@ -132,11 +132,17 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.xxEncode(dict)
     },
-    QuotePrintable("Quoted-P") {
+    QuotePrintable("quotedPrintable") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.quotePrintableDecode(charset)
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.quotePrintable(charset)
+    },
+    PunyCode("punyCode") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.punyCodeDecode(charset)
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.punyCode(charset)
     };
 
     abstract fun decode(encoded: String, dict: String, charset: String): ByteArray

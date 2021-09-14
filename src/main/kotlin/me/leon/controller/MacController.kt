@@ -8,12 +8,12 @@ import org.bouncycastle.crypto.macs.KGMac
 import tornadofx.*
 
 class MacController : Controller() {
-    fun mac(msg: String, hkey: String, alg: String, outputEncode: String) =
+    fun mac(msg: String, keyByteArray: ByteArray, alg: String, outputEncode: String) =
         catch({ "mac error: $it" }) {
-            println("mac $msg  $alg $hkey")
+            println("mac $msg  $alg ")
             Mac.getInstance(alg)
                 .apply {
-                    init(SecretKeySpec(hkey.toByteArray(), alg))
+                    init(SecretKeySpec(keyByteArray, alg))
                     update(msg.toByteArray())
                 }
                 .doFinal()
@@ -26,12 +26,17 @@ class MacController : Controller() {
                 }
         }
 
-    fun macWithIv(msg: String, key: String, iv: String, alg: String, outputEncode: String) =
+    fun macWithIv(
+        msg: String,
+        keyByteArray: ByteArray,
+        ivByteArray: ByteArray,
+        alg: String,
+        outputEncode: String
+    ) =
         catch({ "mac error: $it" }) {
-            println("mac $msg  $alg $key")
+            println("mac $msg  $alg")
             val data = msg.toByteArray()
-            val keyByteArray = key.toByteArray()
-            val ivByteArray = iv.toByteArray()
+
             if (alg.contains("POLY1305")) {
                 Poly1305Serial.getInstance(alg).run {
                     init(keyByteArray, ivByteArray)

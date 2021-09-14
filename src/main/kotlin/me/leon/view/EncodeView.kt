@@ -42,6 +42,14 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
 
+    private val encodeTypeWithSpace =
+        arrayOf(
+            EncodeType.UuEncode,
+            EncodeType.XxEncode,
+            EncodeType.QuotePrintable,
+            EncodeType.PunyCode,
+        )
+
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
@@ -97,6 +105,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                         encodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value = encodeType.type.contains("base")
                         tfCustomDict.text = encodeType.defaultDict
+
+                        println()
+                        val isIgnore = encodeType !in encodeTypeWithSpace
+                        decodeIgnoreSpace.set(isIgnore)
+                        println("${decodeIgnoreSpace.get()} $isIgnore")
                         if (isEncode) run()
                     }
                 }
@@ -124,7 +137,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 radiobutton(messages["encode"]) { isSelected = true }
                 radiobutton(messages["decode"])
 
-                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
+                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
+                    selectedProperty().addListener { observable, oldValue, newValue ->
+                        println("$observable $oldValue  $newValue")
+                    }
+                }
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = new.cast<RadioButton>().text == messages["encode"]
                     run()

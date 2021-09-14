@@ -2,7 +2,6 @@
 plugins {
     kotlin("jvm") version "1.5.30"
     application
-    java
     id("com.diffplug.spotless") version "5.15.0"
     id("io.gitlab.arturbosch.detekt") version "1.18.1"
     id("org.openjfx.javafxplugin") version "0.0.10"
@@ -20,7 +19,6 @@ repositories {
 
 application {
     mainClass.set("me.leon.MainKt")
-//    mainClassName = "me.leon.MainKt"
 }
 
 dependencies {

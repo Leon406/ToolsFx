@@ -200,7 +200,7 @@
 
  [github release](https://github.com/Leon406/ToolsFx/releases) 
 
- [gitte miror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
+ [gitte mirror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
 
 download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
 

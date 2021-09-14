@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.MacController
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
 
@@ -20,10 +21,6 @@ class MacView : View("MAC") {
     private lateinit var taOutput: TextArea
     private val inputText: String
         get() = taInput.text
-    private val keyText: String
-        get() = tfKey.text
-    private val ivText: String
-        get() = tfIv.text
     private val outputText: String
         get() = taOutput.text
     private var method = "HmacMD5"
@@ -107,6 +104,25 @@ class MacView : View("MAC") {
     private lateinit var cbBits: ComboBox<String>
     private val info
         get() = "MAC: $method"
+    private var keyEncode = "raw"
+    private var ivEncode = "raw"
+    private val keyByteArray
+        get() =
+            when (keyEncode) {
+                "raw" -> tfKey.text.toByteArray()
+                "hex" -> tfKey.text.hex2ByteArray()
+                "base64" -> tfKey.text.base64Decode()
+                else -> byteArrayOf()
+            }
+
+    private val ivByteArray
+        get() =
+            when (ivEncode) {
+                "raw" -> tfIv.text.toByteArray()
+                "hex" -> tfIv.text.hex2ByteArray()
+                "base64" -> tfIv.text.base64Decode()
+                else -> byteArrayOf()
+            }
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
@@ -135,15 +151,39 @@ class MacView : View("MAC") {
         }
         hbox {
             alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
-            label("key: ")
-            tfKey = textfield("hmac_key") { promptText = messages["keyHint"] }
-            label("iv: ")
+            label("key:")
+            tfKey = textfield { promptText = messages["keyHint"] }
+            vbox {
+                togglegroup {
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("hex")
+                    radiobutton("base64")
+                    selectedToggleProperty().addListener { _, _, new ->
+                        keyEncode = new.cast<RadioButton>().text
+                    }
+                }
+            }
+            label("iv:")
             tfIv =
                 textfield {
-                    enableWhen(enableIv)
                     promptText = messages["ivHint"]
+                    enableWhen(enableIv)
                 }
+            vbox {
+                enableWhen(enableIv)
+                togglegroup {
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("hex")
+                    radiobutton("base64")
+                    selectedToggleProperty().addListener { _, _, new ->
+                        ivEncode = new.cast<RadioButton>().text
+                    }
+                }
+            }
         }
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
@@ -205,8 +245,8 @@ class MacView : View("MAC") {
     private fun doMac() =
         runAsync {
             if (method.contains("POLY1305|-GMAC".toRegex()))
-                controller.macWithIv(inputText, keyText, ivText, method, outputEncode)
-            else controller.mac(inputText, keyText, method, outputEncode)
+                controller.macWithIv(inputText, keyByteArray, ivByteArray, method, outputEncode)
+            else controller.mac(inputText, keyByteArray, method, outputEncode)
         } ui
             {
                 taOutput.text = it
