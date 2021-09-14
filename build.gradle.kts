@@ -32,7 +32,8 @@ dependencies {
 }
 
 javafx {
-    version = "18-ea+2"
+    //latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
+    version = "17"
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
