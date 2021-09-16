@@ -9,6 +9,7 @@ import tornadofx.FX.Companion.messages
 
 class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {
+        tab<PBEView>()
         tab<EncodeView>()
         tab<EncodeTransferView>()
         tab<StringProcessView>()
