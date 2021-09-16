@@ -9,7 +9,6 @@ import tornadofx.FX.Companion.messages
 
 class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {
-        tab<PBEView>()
         tab<EncodeView>()
         tab<EncodeTransferView>()
         tab<StringProcessView>()
@@ -20,6 +19,7 @@ class Home : View("${messages["appName"]} v.$VERSION") {
         tab<AsymmetricCryptoView>()
         tab<SignatureView>()
         tab<QrcodeView>()
+        tab<PBEView>()
         tab<AboutView>()
         primaryStage.isAlwaysOnTop = Prefs.alwaysOnTop
         contextmenu {

@@ -5,7 +5,7 @@ import javax.crypto.SecretKey
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.PBEParameterSpec
-import me.leon.encode.base.base64
+import me.leon.encode.base.*
 import me.leon.ext.PBE
 import me.leon.ext.catch
 import tornadofx.Controller
@@ -54,9 +54,9 @@ class PBEController : Controller() {
         catch({ "decrypt error: $it" }) {
             if (alg.contains("HMAC"))
                 return@catch generatePBEKey(key, salt, alg, keyLength, iteration).encoded.base64()
-            println("decrypt  $alg")
+            println("decrypt  $alg $data")
             val cipher = makeCipher(alg, key, salt, iteration, keyLength, Cipher.DECRYPT_MODE)
-            cipher.doFinal(data.toByteArray()).base64()
+            cipher.doFinal(data.base64Decode()).decodeToString()
         }
 
     private fun generatePBEKey(
@@ -73,4 +73,6 @@ class PBEController : Controller() {
         val skf = SecretKeyFactory.getInstance(alg)
         return skf.generateSecret(spec)
     }
+
+    fun getSalt(length: Int) = PBE.getSalt(length)
 }

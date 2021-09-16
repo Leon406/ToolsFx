@@ -96,29 +96,17 @@ class PBEView : View("PBE") {
         }
         hbox {
             alignment = Pos.CENTER_LEFT
-            label("password:")
+            label("密码:")
             tfPwd = textfield { promptText = messages["keyHint"] }
 
-            label("key length:")
-            tfKeyLength =
-                textfield("128") {
-                    promptText = messages["ivHint"]
-                    prefWidth = DEFAULT_SPACING_8X
-                }
-            label("salt length:")
-            tfSaltLength =
-                textfield("16") {
-                    promptText = messages["ivHint"]
-                    prefWidth = DEFAULT_SPACING_8X
-                }
+            label("key长度:")
+            tfKeyLength = textfield("128") { prefWidth = DEFAULT_SPACING_8X }
+            label("salt长度:")
+            tfSaltLength = textfield("16") { prefWidth = DEFAULT_SPACING_8X }
             label("iteration:")
-            tfIteration =
-                textfield("1000") {
-                    promptText = messages["ivHint"]
-                    prefWidth = DEFAULT_SPACING_8X
-                }
+            tfIteration = textfield("1000") { prefWidth = DEFAULT_SPACING_8X }
             label("salt:")
-            tfSalt = textfield { promptText = messages["ivHint"] }
+            tfSalt = textfield()
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -142,6 +130,11 @@ class PBEView : View("PBE") {
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     doCrypto()
+                }
+            }
+            button("重新生成salt", imageview("/img/run.png")) {
+                action {
+                    controller.getSalt(tfSaltLength.text.toInt()).also { tfSalt.text = it.toHex() }
                 }
             }
             button(messages["run"], imageview("/img/run.png")) {
@@ -173,7 +166,7 @@ class PBEView : View("PBE") {
 
     private fun doCrypto() {
         runAsync {
-            if (tfPwd.text.isEmpty()) return@runAsync ""
+            if (tfPwd.text.isEmpty() || taInput.text.isEmpty()) return@runAsync ""
             isProcessing.value = true
             if (isEncrypt)
                 controller.encrypt(
