@@ -9,7 +9,7 @@
 <img src="https://img.shields.io/github/downloads/Leon406/Toolsfx/total"/>
 </p>
 <p align="center">
-<a href="README.md">English</a>|<a href="README.md-zh">中文</a>
+<a href="README.md">English</a>|<a href="README-zh.md">中文</a>
 </p>
 
 <h4 align="center">Visitors :eyes:</h4>
