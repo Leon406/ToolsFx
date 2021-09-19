@@ -38,6 +38,12 @@ fun String.readFromNet(resumeUrl: String = ""): String =
         if (resumeUrl.isEmpty()) "" else resumeUrl.readFromNet()
     }
 
+fun String.simpleReadFromNet(): String {
+    val split = split(" ")
+    val loop = if (split.size == 1) 1 else split.first().toInt()
+    return (0 until loop).joinToString(System.lineSeparator()) { URL(split.last()).readText() }
+}
+
 fun String.readHeadersFromNet(timeout: Int = DEFAULT_TIME_OUT) =
     runCatching {
         URL(this)

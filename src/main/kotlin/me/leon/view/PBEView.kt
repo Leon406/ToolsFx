@@ -120,7 +120,7 @@ class PBEView : View("PBE") {
             }
 
             checkbox(messages["singleLine"], isSingleLine)
-            button("重新生成salt", imageview("/img/run.png")) {
+            button("generate salt", imageview("/img/run.png")) {
                 action {
                     controller.getSalt(tfSaltLength.text.toInt()).also { tfSalt.text = it.toHex() }
                 }

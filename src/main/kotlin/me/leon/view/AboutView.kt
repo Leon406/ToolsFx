@@ -28,8 +28,18 @@ class AboutView : View(messages["about"]) {
             action { REPO_URL.openInBrowser() }
         }
         hyperlink(messages["license"]) { action { LICENSE.openInBrowser() } }
-        button(messages["checkUpdate"]) { action { checkUpdate() } }
-        button(messages["checkUpdateDev"]) { action { checkUpdateDev() } }
+        button(messages["checkUpdate"]) {
+            action {
+                Prefs.isIgnoreUpdate = false
+                checkUpdate()
+            }
+        }
+        button(messages["checkUpdateDev"]) {
+            action {
+                Prefs.isIgnoreUpdate = false
+                checkUpdateDev()
+            }
+        }
         txtLatestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
         checkUpdate(!Prefs.isIgnoreUpdate)

@@ -67,7 +67,8 @@ class StringProcessView : View(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}:" +
-                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
+                    " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                    "lines(input/output):${inputText.lineCount()} / ${outputText.lineCount()}"
     private var inputText: String
         get() =
             taInput.text.takeIf {
@@ -100,7 +101,10 @@ class StringProcessView : View(messages["stringProcess"]) {
             label(messages["input"])
             spacing = DEFAULT_SPACING
             button(graphic = imageview("/img/import.png")) {
-                action { inputText = clipboardText() }
+                action {
+                    inputText = clipboardText()
+                    labelInfo.text = info
+                }
             }
             button(graphic = imageview("/img/uppercase.png")) {
                 action { outputText = inputText.uppercase() }
@@ -115,6 +119,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .split("\n|\r\n".toRegex())
                             .sorted()
                             .joinToString(System.lineSeparator())
+                    labelInfo.text = info
                 }
             }
             button(graphic = imageview("/img/descend.png")) {
@@ -124,6 +129,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .split("\n|\r\n".toRegex())
                             .sortedDescending()
                             .joinToString(System.lineSeparator())
+                    labelInfo.text = info
                 }
             }
 
@@ -134,6 +140,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                             .split("\n|\r\n".toRegex())
                             .distinct()
                             .joinToString(System.lineSeparator())
+                    labelInfo.text = info
                 }
             }
             button(graphic = imageview("/img/statistic.png")) {
@@ -145,6 +152,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                             }
                             .toList()
                             .joinToString(System.lineSeparator()) { "${it.first}: ${it.second}" }
+                    labelInfo.text = info
                 }
             }
         }
@@ -161,9 +169,9 @@ class StringProcessView : View(messages["stringProcess"]) {
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
-                                {
-                                    taInput.text = it
-                                }
+                                    {
+                                        taInput.text = it
+                                    }
                         }
                     }
                     item(messages["readHeadersFromNet"]) {

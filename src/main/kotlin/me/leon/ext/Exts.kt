@@ -17,5 +17,7 @@ inline fun <T> String.lineAction(action: (String) -> T) =
 
 fun String.lineSplit() = split("\n|\r\n".toRegex())
 
+fun String.lineCount() = split("\n|\r\n".toRegex()).size
+
 fun String.lineActionIndex(action: (String, Int) -> String) =
     split("\n|\r\n".toRegex()).mapIndexed { index, s -> action.invoke(s, index) }.joinToString("\n")

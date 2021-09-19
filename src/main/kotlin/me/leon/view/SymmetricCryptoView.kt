@@ -9,24 +9,8 @@ import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.checkbox
-import tornadofx.combobox
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.togglegroup
-import tornadofx.vbox
 
 class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private val controller: SymmetricCryptoController by inject()
@@ -134,6 +118,13 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+                contextmenu {
+                    item(messages["loadFromNetLoop"]) {
+                        action {
+                            runAsync { inputText.simpleReadFromNet() } ui { taInput.text = it }
+                        }
+                    }
+                }
             }
         hbox {
             alignment = Pos.CENTER_LEFT

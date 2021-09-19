@@ -70,6 +70,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     item(messages["loadFromNet"]) {
                         action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
                     }
+                    item(messages["loadFromNetLoop"]) {
+                        action {
+                            runAsync { inputText.simpleReadFromNet() } ui { taInput.text = it }
+                        }
+                    }
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
