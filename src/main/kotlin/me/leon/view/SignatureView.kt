@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.SignatureController
-import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -13,6 +12,7 @@ import tornadofx.FX.Companion.messages
 class SignatureView : View(messages["signVerify"]) {
     private val controller: SignatureController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private lateinit var taKey: TextArea
     private lateinit var taRaw: TextArea
     private lateinit var labelInfo: Label
@@ -176,6 +176,7 @@ class SignatureView : View(messages["signVerify"]) {
             alignment = Pos.CENTER
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING_4X
+            checkbox(messages["singleLine"], isSingleLine)
             button(messages["priSig"]) {
                 action { sign() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
@@ -203,12 +204,21 @@ class SignatureView : View(messages["signVerify"]) {
     }
 
     private fun sign() =
-        runAsync { controller.sign(selectedKeyPairAlg.get(), selectedSigAlg.get(), key, msg) } ui
+        runAsync {
+            controller.sign(
+                selectedKeyPairAlg.get(),
+                selectedSigAlg.get(),
+                key,
+                msg,
+                isSingleLine.get()
+            )
+        } ui
             {
                 taSigned.text = it
                 labelInfo.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
+
     private fun verify() =
         runAsync {
             controller.verify(
@@ -216,11 +226,12 @@ class SignatureView : View(messages["signVerify"]) {
                 selectedSigAlg.get(),
                 key,
                 msg,
-                signText.base64Decode()
+                signText,
+                isSingleLine.get()
             )
         } ui
             { state ->
-                primaryStage.showToast("验签成功".takeIf { state } ?: "验签失败")
+                primaryStage.showToast("验签结果: \n$state")
                 labelInfo.text = info
             }
 }

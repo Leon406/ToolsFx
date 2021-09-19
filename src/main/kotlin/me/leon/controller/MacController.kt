@@ -8,7 +8,18 @@ import org.bouncycastle.crypto.macs.KGMac
 import tornadofx.*
 
 class MacController : Controller() {
-    fun mac(msg: String, keyByteArray: ByteArray, alg: String, outputEncode: String) =
+
+    fun mac(
+        msg: String,
+        keyByteArray: ByteArray,
+        alg: String,
+        outputEncode: String,
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine) msg.lineAction2String { mac(it, keyByteArray, alg, outputEncode) }
+        else mac(msg, keyByteArray, alg, outputEncode)
+
+    private fun mac(msg: String, keyByteArray: ByteArray, alg: String, outputEncode: String) =
         catch({ "mac error: $it" }) {
             println("mac $msg  $alg ")
             Mac.getInstance(alg)
@@ -27,6 +38,18 @@ class MacController : Controller() {
         }
 
     fun macWithIv(
+        msg: String,
+        keyByteArray: ByteArray,
+        ivByteArray: ByteArray,
+        alg: String,
+        outputEncode: String,
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine)
+            msg.lineAction2String { macWithIv(it, keyByteArray, ivByteArray, alg, outputEncode) }
+        else macWithIv(msg, keyByteArray, ivByteArray, alg, outputEncode)
+
+    private fun macWithIv(
         msg: String,
         keyByteArray: ByteArray,
         ivByteArray: ByteArray,

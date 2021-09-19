@@ -14,6 +14,7 @@ class MacView : View("MAC") {
     override val closeable = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)
     private val enableBits = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
     private lateinit var tfKey: TextField
     private lateinit var tfIv: TextField
@@ -21,8 +22,11 @@ class MacView : View("MAC") {
     private lateinit var taOutput: TextArea
     private val inputText: String
         get() = taInput.text
-    private val outputText: String
+    private var outputText: String
         get() = taOutput.text
+        set(value) {
+            taOutput.text = value
+        }
     private var method = "HmacMD5"
     private var outputEncode = "hex"
     private val regAlgReplace =
@@ -221,9 +225,15 @@ class MacView : View("MAC") {
                     outputEncode = new.cast<RadioButton>().text
                 }
             }
+            checkbox(messages["singleLine"], isSingleLine)
             button(messages["run"], imageview("/img/run.png")) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                action { doMac() }
+                action {
+                    if (inputText.isNotEmpty()) doMac()
+                    else {
+                        outputText = ""
+                    }
+                }
             }
         }
         hbox {
@@ -245,11 +255,18 @@ class MacView : View("MAC") {
     private fun doMac() =
         runAsync {
             if (method.contains("POLY1305|-GMAC".toRegex()))
-                controller.macWithIv(inputText, keyByteArray, ivByteArray, method, outputEncode)
-            else controller.mac(inputText, keyByteArray, method, outputEncode)
+                controller.macWithIv(
+                    inputText,
+                    keyByteArray,
+                    ivByteArray,
+                    method,
+                    outputEncode,
+                    isSingleLine.get()
+                )
+            else controller.mac(inputText, keyByteArray, method, outputEncode, isSingleLine.get())
         } ui
             {
-                taOutput.text = it
+                outputText = it
                 labelInfo.text = info
                 if (Prefs.autoCopy)
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }

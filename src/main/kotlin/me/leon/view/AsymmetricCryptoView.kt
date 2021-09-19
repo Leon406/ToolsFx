@@ -12,6 +12,7 @@ import tornadofx.*
 class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private val controller: AsymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
     lateinit var taInput: TextArea
     lateinit var taKey: TextArea
@@ -111,7 +112,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                 }
             }
-
+            checkbox(messages["singleLine"], isSingleLine)
             checkbox(messages["priEncrypt"], privateKeyEncrypt) {
                 tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
             }
@@ -152,11 +153,37 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         runAsync {
             if (isEncrypt)
                 if (privateKeyEncrypt.get())
-                    controller.priEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
-                else controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                    controller.priEncrypt(
+                        keyText,
+                        alg,
+                        inputText,
+                        selectedBits.get().toInt(),
+                        isSingleLine.get()
+                    )
+                else
+                    controller.pubEncrypt(
+                        keyText,
+                        alg,
+                        inputText,
+                        selectedBits.get().toInt(),
+                        isSingleLine.get()
+                    )
             else if (privateKeyEncrypt.get())
-                controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
-            else controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                controller.pubDecrypt(
+                    keyText,
+                    alg,
+                    inputText,
+                    selectedBits.get().toInt(),
+                    isSingleLine.get()
+                )
+            else
+                controller.priDecrypt(
+                    keyText,
+                    alg,
+                    inputText,
+                    selectedBits.get().toInt(),
+                    isSingleLine.get()
+                )
         } ui
             {
                 outputText = it

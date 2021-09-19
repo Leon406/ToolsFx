@@ -5,7 +5,10 @@ import me.leon.ext.*
 import tornadofx.*
 
 class DigestController : Controller() {
-    fun digest(method: String, data: String) =
+    fun digest(method: String, data: String, isSingleLine: Boolean = false) =
+        if (isSingleLine) data.lineAction2String { digest(method, it) } else digest(method, data)
+
+    private fun digest(method: String, data: String) =
         catch({ "digest error: $it" }) {
             if (data.isEmpty()) ""
             else if (method.startsWith("CRC")) data.crc32() else Digests.hash(method, data)

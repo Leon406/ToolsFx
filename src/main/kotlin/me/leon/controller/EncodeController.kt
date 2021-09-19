@@ -1,12 +1,22 @@
 package me.leon.controller
 
 import java.nio.charset.Charset
-import me.leon.ext.EncodeType
-import me.leon.ext.catch
+import me.leon.ext.*
 import tornadofx.*
 
 class EncodeController : Controller() {
+
     fun encode2String(
+        raw: String,
+        type: EncodeType = EncodeType.Base64,
+        dic: String = "",
+        charset: String = "UTF-8",
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine) raw.lineAction2String { encode2String(it, type, dic, charset) }
+        else encode2String(raw, type, dic, charset)
+
+    private fun encode2String(
         raw: String,
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
@@ -28,8 +38,18 @@ class EncodeController : Controller() {
         encoded: String,
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
+        charset: String = "UTF-8",
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine) encoded.lineAction2String { decode2String(it, type, dic, charset) }
+        else decode2String(encoded, type, dic, charset)
+
+    private fun decode2String(
+        encoded: String,
+        type: EncodeType = EncodeType.Base64,
+        dic: String = "",
         charset: String = "UTF-8"
-    ): String = String(decode(encoded, type, dic, charset), Charset.forName(charset))
+    ) = String(decode(encoded, type, dic, charset), Charset.forName(charset))
 
     fun decode(
         encoded: String,

@@ -16,6 +16,7 @@ import tornadofx.FX.Companion.messages
 class EncodeView : View(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
@@ -136,7 +137,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
                 radiobutton(messages["encode"]) { isSelected = true }
                 radiobutton(messages["decode"])
-
+                checkbox(messages["singleLine"], isSingleLine) {
+                    selectedProperty().addListener { _, _, newValue ->
+                        decodeIgnoreSpace.set(!newValue)
+                    }
+                }
                 checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
                     selectedProperty().addListener { observable, oldValue, newValue ->
                         println("$observable $oldValue  $newValue")
@@ -189,14 +194,16 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     inputText,
                     encodeType,
                     tfCustomDict.text,
-                    selectedCharset.get()
+                    selectedCharset.get(),
+                    isSingleLine.get()
                 )
             else
                 controller.decode2String(
                     inputText,
                     encodeType,
                     tfCustomDict.text,
-                    selectedCharset.get()
+                    selectedCharset.get(),
+                    isSingleLine.get()
                 )
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         lableInfo.text = info

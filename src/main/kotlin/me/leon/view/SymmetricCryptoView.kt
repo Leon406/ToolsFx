@@ -33,6 +33,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
     private lateinit var tfKey: TextField
     private lateinit var tfIv: TextField
@@ -193,6 +194,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 }
             }
             checkbox(messages["fileMode"], isFile)
+            checkbox(messages["singleLine"], isSingleLine)
             button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
@@ -226,7 +228,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             isProcessing.value = true
             if (isEncrypt)
                 if (isFile.get())
-                    inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                    inputText.lineAction2String {
                         controller.encryptByFile(keyByteArray, it, ivByteArray, cipher)
                     }
                 else
@@ -235,20 +237,23 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                         inputText,
                         ivByteArray,
                         cipher,
-                        selectedCharset.get()
+                        selectedCharset.get(),
+                        isSingleLine.get()
                     )
             else if (isFile.get())
-                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                inputText.lineAction2String {
                     controller.decryptByFile(keyByteArray, it, ivByteArray, cipher)
                 }
-            else
+            else {
                 controller.decrypt(
                     keyByteArray,
                     inputText,
                     ivByteArray,
                     cipher,
-                    selectedCharset.get()
+                    selectedCharset.get(),
+                    isSingleLine.get()
                 )
+            }
         } ui
             {
                 isProcessing.value = false

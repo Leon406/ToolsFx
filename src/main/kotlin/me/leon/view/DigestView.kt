@@ -30,6 +30,7 @@ class DigestView : View(messages["hash"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isFileMode = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
     private lateinit var labelInfo: Label
     lateinit var taOutput: TextArea
@@ -151,6 +152,7 @@ class DigestView : View(messages["hash"]) {
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
             checkbox(messages["fileMode"], isFileMode)
+            checkbox(messages["singleLine"], isSingleLine)
             button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doHash() }
@@ -174,11 +176,8 @@ class DigestView : View(messages["hash"]) {
     private fun doHash() =
         runAsync {
             isProcessing.value = true
-            if (isFileMode.get())
-                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
-                    controller.digestFile(method, it)
-                }
-            else controller.digest(method, inputText)
+            if (isFileMode.get()) inputText.lineAction2String { controller.digestFile(method, it) }
+            else controller.digest(method, inputText, isSingleLine.get())
         } ui
             {
                 isProcessing.value = false

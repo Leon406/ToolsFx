@@ -8,26 +8,12 @@ import me.leon.CHARSETS
 import me.leon.controller.PBEController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.combobox
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.togglegroup
-import tornadofx.vbox
+import tornadofx.*
 
 class PBEView : View("PBE") {
     private val controller: PBEController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
 
     private val isProcessing = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
@@ -132,6 +118,8 @@ class PBEView : View("PBE") {
                     doCrypto()
                 }
             }
+
+            checkbox(messages["singleLine"], isSingleLine)
             button("重新生成salt", imageview("/img/run.png")) {
                 action {
                     controller.getSalt(tfSaltLength.text.toInt()).also { tfSalt.text = it.toHex() }
@@ -175,7 +163,8 @@ class PBEView : View("PBE") {
                     saltByteArray,
                     cipher,
                     tfIteration.text.toInt(),
-                    tfKeyLength.text.toInt()
+                    tfKeyLength.text.toInt(),
+                    isSingleLine.get()
                 )
             else
                 controller.decrypt(
@@ -184,7 +173,8 @@ class PBEView : View("PBE") {
                     saltByteArray,
                     cipher,
                     tfIteration.text.toInt(),
-                    tfKeyLength.text.toInt()
+                    tfKeyLength.text.toInt(),
+                    isSingleLine.get()
                 )
         } ui
             {

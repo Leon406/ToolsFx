@@ -92,7 +92,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private val cipher
         get() = selectedAlg.get()
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
-
+    private val isSingleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
@@ -161,6 +161,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 }
             }
             checkbox(messages["fileMode"], isFile)
+            checkbox(messages["singleLine"], isSingleLine)
             button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
@@ -193,7 +194,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             isProcessing.value = true
             if (isEncrypt)
                 if (isFile.get())
-                    inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                    inputText.lineAction2String {
                         controller.encryptByFile(keyByteArray, it, ivByteArray, cipher)
                     }
                 else
@@ -202,10 +203,11 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                         inputText,
                         ivByteArray,
                         cipher,
-                        selectedCharset.get()
+                        selectedCharset.get(),
+                        isSingleLine.get()
                     )
             else if (isFile.get())
-                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                inputText.lineAction2String {
                     controller.decryptByFile(keyByteArray, it, ivByteArray, cipher)
                 }
             else
@@ -214,7 +216,8 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                     inputText,
                     ivByteArray,
                     cipher,
-                    selectedCharset.get()
+                    selectedCharset.get(),
+                    isSingleLine.get()
                 )
         } ui
             {

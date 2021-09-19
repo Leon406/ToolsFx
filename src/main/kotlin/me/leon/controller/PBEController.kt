@@ -6,11 +6,23 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.PBEParameterSpec
 import me.leon.encode.base.*
-import me.leon.ext.PBE
-import me.leon.ext.catch
+import me.leon.ext.*
 import tornadofx.Controller
 
 class PBEController : Controller() {
+    fun encrypt(
+        password: String,
+        data: String,
+        salt: ByteArray,
+        alg: String,
+        iteration: Int,
+        keyLength: Int,
+        isSingleLine: Boolean
+    ) =
+        if (isSingleLine)
+            data.lineAction2String { encrypt(password, it, salt, alg, iteration, keyLength) }
+        else encrypt(password, data, salt, alg, iteration, keyLength)
+
     fun encrypt(
         password: String,
         data: String,
@@ -42,6 +54,19 @@ class PBEController : Controller() {
             this.init(cipherMode, key, pbeParameterSpec)
             println("key ${key.encoded.base64()}  iv ${iv?.base64()}")
         }
+
+    fun decrypt(
+        password: String,
+        data: String,
+        salt: ByteArray,
+        alg: String,
+        iteration: Int,
+        keyLength: Int,
+        isSingleLine: Boolean
+    ) =
+        if (isSingleLine)
+            data.lineAction2String { decrypt(password, it, salt, alg, iteration, keyLength) }
+        else decrypt(password, data, salt, alg, iteration, keyLength)
 
     fun decrypt(
         key: String,

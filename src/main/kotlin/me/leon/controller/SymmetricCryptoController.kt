@@ -8,10 +8,22 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import me.leon.encode.base.base64
 import me.leon.ext.catch
+import me.leon.ext.lineAction2String
 import tornadofx.*
 
 class SymmetricCryptoController : Controller() {
     fun encrypt(
+        key: ByteArray,
+        data: String,
+        iv: ByteArray,
+        alg: String,
+        charset: String = "UTF-8",
+        isSingleLine: Boolean = false
+    ): String =
+        if (isSingleLine) data.lineAction2String { encrypt(key, it, iv, alg, charset) }
+        else encrypt(key, data, iv, alg, charset)
+
+    private fun encrypt(
         key: ByteArray,
         data: String,
         iv: ByteArray,
@@ -69,6 +81,17 @@ class SymmetricCryptoController : Controller() {
     }
 
     fun decrypt(
+        key: ByteArray,
+        data: String,
+        iv: ByteArray,
+        alg: String,
+        charset: String = "UTF-8",
+        isSingleLine: Boolean = false
+    ): String =
+        if (isSingleLine) data.lineAction2String { decrypt(key, it, iv, alg, charset) }
+        else decrypt(key, data, iv, alg, charset)
+
+    private fun decrypt(
         key: ByteArray,
         data: String,
         iv: ByteArray,
