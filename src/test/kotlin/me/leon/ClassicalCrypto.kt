@@ -1,7 +1,6 @@
 package me.leon
 
-import me.leon.Caesar.virgeneneDecode
-import me.leon.Caesar.virgeneneEncode
+import me.leon.classical.*
 import org.junit.Test
 
 class ClassicalCrypto {

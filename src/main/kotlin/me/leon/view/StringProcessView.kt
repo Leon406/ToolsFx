@@ -67,8 +67,8 @@ class StringProcessView : View(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}:" +
-                    " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "lines(input/output):${inputText.lineCount()} / ${outputText.lineCount()}"
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "lines(input/output):${inputText.lineCount()} / ${outputText.lineCount()}"
     private var inputText: String
         get() =
             taInput.text.takeIf {
@@ -169,9 +169,9 @@ class StringProcessView : View(messages["stringProcess"]) {
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
-                                    {
-                                        taInput.text = it
-                                    }
+                                {
+                                    taInput.text = it
+                                }
                         }
                     }
                     item(messages["readHeadersFromNet"]) {

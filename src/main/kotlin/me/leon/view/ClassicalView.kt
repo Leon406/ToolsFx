@@ -1,55 +1,46 @@
 package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.Parent
 import javafx.scene.control.*
-import me.leon.CHARSETS
 import me.leon.SimpleMsgEvent
-import me.leon.controller.EncodeController
+import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class EncodeView : View(messages["encodeAndDecode"]) {
-    private val controller: EncodeController by inject()
+class ClassicalView : View(messages["classical"]) {
+    private val controller: ClassicalController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
-    private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
+    private lateinit var tfParam1: TextField
+    private lateinit var tfParam2: TextField
+    private lateinit var tfParam3: TextField
     private lateinit var labelInfo: Label
-    private lateinit var tfCustomDict: TextField
-    private var enableDict = SimpleBooleanProperty(true)
     private val info: String
         get() =
-            "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
+            "${if (isEncrypt) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
-        get() =
-            taInput.text.takeIf {
-                isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
-            }
-                ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                    ?: taInput.text.replace("\\s".toRegex(), "")
+        get() = taInput.text
     private val outputText: String
         get() = taOutput.text
 
-    private var encodeType = EncodeType.Base64
-    private var isEncode = true
-    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
+    private var encodeType = ClassicalCryptoType.CAESAR
+    private var isEncrypt = true
+
+    private val cryptoParams
+        get() =
+            mutableMapOf(
+                "p1" to tfParam1.text,
+                "p2" to tfParam2.text,
+                "p3" to tfParam3.text,
+            )
 
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
-
-    private val encodeTypeWithSpace =
-        arrayOf(
-            EncodeType.UuEncode,
-            EncodeType.XxEncode,
-            EncodeType.QuotePrintable,
-            EncodeType.PunyCode,
-        )
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
@@ -101,35 +92,25 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 alignment = Pos.TOP_LEFT
                 prefColumns = 7
                 togglegroup {
-                    encodeTypeMap.forEach {
+                    classicalTypeMap.forEach {
                         radiobutton(it.key) {
                             setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == EncodeType.Base64) isSelected = true
+                            if (it.value == ClassicalCryptoType.CAESAR) isSelected = true
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
-                        encodeType = new.cast<RadioButton>().text.encodeType()
-                        enableDict.value = encodeType.type.contains("base")
-                        tfCustomDict.text = encodeType.defaultDict
-
-                        println()
-                        val isIgnore = encodeType !in encodeTypeWithSpace
-                        decodeIgnoreSpace.set(isIgnore)
-                        println("${decodeIgnoreSpace.get()} $isIgnore")
-                        if (isEncode) run()
+                        encodeType = new.cast<RadioButton>().text.classicalType()
+                        if (isEncrypt) run()
                     }
                 }
             }
         }
-
         hbox {
-            label(messages["customDict"])
-            alignment = Pos.BASELINE_LEFT
-            tfCustomDict =
-                textfield(encodeType.defaultDict) {
-                    enableWhen { enableDict }
-                    prefWidth = DEFAULT_SPACING_80X
-                }
+            spacing = DEFAULT_SPACING
+            alignment = Pos.BASELINE_CENTER
+            tfParam1 = textfield { promptText = "param1" }
+            tfParam2 = textfield { promptText = "param2" }
+            tfParam3 = textfield { promptText = "param3" }
         }
 
         hbox {
@@ -137,23 +118,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
-                label("charset:")
-                combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
-
-                radiobutton(messages["encode"]) { isSelected = true }
-                radiobutton(messages["decode"])
-                checkbox(messages["singleLine"], isSingleLine) {
-                    selectedProperty().addListener { _, _, newValue ->
-                        decodeIgnoreSpace.set(!newValue)
-                    }
-                }
-                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
-                    selectedProperty().addListener { observable, oldValue, newValue ->
-                        println("$observable $oldValue  $newValue")
-                    }
-                }
+                radiobutton(messages["encrypt"]) { isSelected = true }
+                radiobutton(messages["decrypt"])
+                checkbox(messages["singleLine"], isSingleLine)
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncode = new.cast<RadioButton>().text == messages["encode"]
+                    isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     run()
                 }
             }
@@ -167,16 +136,6 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
-                }
-            }
-            button(graphic = imageview("/img/jump.png")) {
-                action {
-                    var tmp: Parent? = parent
-                    while (tmp != null) {
-                        if (tmp is TabPane) break
-                        tmp = tmp.parent
-                    }
-                    tmp.safeAs<TabPane>()?.selectionModel?.select(2)
                 }
             }
         }
@@ -194,22 +153,14 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
     private fun run() {
         taOutput.text =
-            if (isEncode)
-                controller.encode2String(
+            if (isEncrypt)
+                controller.encrypt(
                     inputText,
                     encodeType,
-                    tfCustomDict.text,
-                    selectedCharset.get(),
-                    isSingleLine.get()
+                    cryptoParams,
+                    isSingleLine.get(),
                 )
-            else
-                controller.decode2String(
-                    inputText,
-                    encodeType,
-                    tfCustomDict.text,
-                    selectedCharset.get(),
-                    isSingleLine.get()
-                )
+            else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         labelInfo.text = info
 
