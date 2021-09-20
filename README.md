@@ -12,6 +12,11 @@
 <a href="README.md">English</a>|<a href="README-zh.md">中文</a>
 </p>
 
+<h4 align="center">Visitors :eyes:</h4>
+
+<p align="center"><img src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx :: Visitor's Count" />
+ <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
+</p>
 
 ------
 
