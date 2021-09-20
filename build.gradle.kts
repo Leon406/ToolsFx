@@ -37,6 +37,7 @@ javafx {
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
+        "javafx.web",
 //            if you use javafx.fxml,then uncomment it
 //            'javafx.fxml'
     )

@@ -1,6 +1,7 @@
 package me.leon.view
 
 import java.security.Security
+import me.leon.ToolsApp.Companion.isEnableClassical
 import me.leon.VERSION
 import me.leon.ext.Prefs
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -9,8 +10,11 @@ import tornadofx.FX.Companion.messages
 
 class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {
-        tab<ClassicalView>()
+        if (isEnableClassical) {
+            tab<ClassicalView>()
+        }
         tab<EncodeView>()
+        tab<OnlineWebView>()
         tab<EncodeTransferView>()
         tab<StringProcessView>()
         tab<DigestView>()
