@@ -6,7 +6,7 @@ import java.nio.charset.Charset
 import org.junit.Test
 
 class Charset {
-    val raw = "开发工具集合 by leon406@52pojie.cn"
+    private val raw = "开发工具集合 by leon406@52pojie.cn"
     @Test
     fun urlEncode() {
         URLEncoder.encode(raw, "utf-8").also {

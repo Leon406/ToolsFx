@@ -6,6 +6,11 @@ import org.junit.Test
 class ClassicalTest {
     @Test
     fun caesar() {
+        "ATTACKATDAWN".virgeneneEncode("LEMONLEMONLE").also { println(it) }
+        "CRYPTO IS SHORT FOR CRYPTOGRAPHY".virgeneneEncode("ABCDEF AB CDEFA BCD EFABCDEFABCD")
+            .also { println(it) }
+        "LXFOPVEFRNHR".virgeneneDecode("LEMONLEMONLE").also { println(it) }
+
         val plain = "hello! yoshiko"
         println(plain.shift26(26))
         val encrypt = "PELCGBTENCUL"

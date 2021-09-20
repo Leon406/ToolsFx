@@ -1,5 +1,8 @@
 package me.leon
 
+import me.leon.encode.base.*
+import me.leon.ext.*
+import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.net.URLDecoder
 import java.nio.charset.Charset
@@ -8,9 +11,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
-import me.leon.encode.base.*
-import me.leon.ext.*
-import org.junit.Test
 
 class MyTest {
 
@@ -82,9 +82,7 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
 
         println("ABDdd东方丽景的猜测1#".base58())
         println("fvw2PFXr4yWZgdRoBp5UptcJeAW1c46YobuRaA".base58Decode2String())
-        measureNanoTime { println(Base58Check.encode("ABDdd东方丽景的猜测1#".toByteArray())) }.also {
-            println(it)
-        }
+
         measureNanoTime {
             "ABDdd东方丽景的猜测1#".toByteArray().baseCheck().also {
                 println("dddd " + String(it.baseCheckDecode()))
