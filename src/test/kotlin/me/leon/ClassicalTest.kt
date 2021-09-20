@@ -23,8 +23,8 @@ class ClassicalTest {
     fun rotTest() {
         val rot13 =
             "How can you tell an extrovert from an\n" +
-                    "introvert at NSA? Va gur ryringbef,\n" +
-                    "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
+                "introvert at NSA? Va gur ryringbef,\n" +
+                "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
 
         println(rot13)
 
@@ -85,8 +85,9 @@ class ClassicalTest {
     @Test
     fun polybius() {
         println("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG".polybius())
-        println("442315 4145241325 1242345233 213453 2445323543 34511542 442315 31115554 143422".polybiusDecrypt())
-
+        println(
+            "442315 4145241325 1242345233 213453 2445323543 34511542 442315 31115554 143422".polybiusDecrypt()
+        )
     }
 
     @Test
@@ -103,23 +104,24 @@ class ClassicalTest {
         val key = "MASKL NSFLD FKJPQ"
         val data = "This is an example"
         val encrypted = "FHACTFSSPAFWYAU"
-        //check length
+        // check length
         val k2 = key.filter { it.isLetter() }.uppercase()
         val d2 = data.filter { it.isLetter() }.uppercase()
         val isSameSize = k2.length == d2.length
         println(isSameSize)
-        //do add
-        d2.mapIndexed { index, c ->
-            'A' + (c.code + k2[index].code - 130) % 26
-        }.joinToString("").also { println(it) }
+        // do add
+        d2
+            .mapIndexed { index, c -> 'A' + (c.code + k2[index].code - 130) % 26 }
+            .joinToString("")
+            .also { println(it) }
 
-        encrypted.mapIndexed { index, c ->
-            'A' + (c.code - k2[index].code + 26) % 26
-        }.joinToString("").also { println(it) }
+        encrypted
+            .mapIndexed { index, c -> 'A' + (c.code - k2[index].code + 26) % 26 }
+            .joinToString("")
+            .also { println(it) }
 
         println()
         println(data.oneTimePad(key))
         println(encrypted.oneTimePadDecrypt(key))
     }
-
 }

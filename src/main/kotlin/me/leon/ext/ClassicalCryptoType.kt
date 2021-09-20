@@ -55,13 +55,16 @@ enum class ClassicalCryptoType(val type: String) {
     },
     POLYBIUS("polybius") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.polybius(params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP)
+            raw.polybius(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
-            raw.polybiusDecrypt(params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP)
-
+            raw.polybiusDecrypt(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
     },
     BACON24("bacon24") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.baconEncrypt24()
@@ -74,9 +77,11 @@ enum class ClassicalCryptoType(val type: String) {
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.baconDecrypt26()
     },
     OTP("oneTimePad") {
-        override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.oneTimePad(params[P1]!!)
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.oneTimePad(params[P1]!!)
 
-        override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.oneTimePadDecrypt(params[P1]!!)
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.oneTimePadDecrypt(params[P1]!!)
     };
 
     abstract fun encrypt(raw: String, params: MutableMap<String, String>): String

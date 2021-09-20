@@ -1,8 +1,5 @@
 package me.leon
 
-import me.leon.encode.base.*
-import me.leon.ext.*
-import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.net.URLDecoder
 import java.nio.charset.Charset
@@ -11,6 +8,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
+import me.leon.encode.base.*
+import me.leon.ext.*
+import org.junit.Test
 
 class MyTest {
 

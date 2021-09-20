@@ -128,9 +128,7 @@ class ClassicalView : View(messages["classical"]) {
                 }
             }
             button(messages["run"], imageview("/img/run.png")) { action { run() } }
-            button(messages["codeFrequency"]) {
-                action { "https://quipqiup.com/".openInBrowser() }
-            }
+            button(messages["codeFrequency"]) { action { "https://quipqiup.com/".openInBrowser() } }
         }
         hbox {
             spacing = DEFAULT_SPACING
