@@ -18,8 +18,8 @@ class ClassicalTest {
     fun rotTest() {
         val rot13 =
             "How can you tell an extrovert from an\n" +
-                "introvert at NSA? Va gur ryringbef,\n" +
-                "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
+                    "introvert at NSA? Va gur ryringbef,\n" +
+                    "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
 
         println(rot13)
 
@@ -66,5 +66,30 @@ class ClassicalTest {
     fun morse() {
         println("Leon406".morseEncrypt())
         println(".-.. . --- -. ....- ----- -....".morseDecrypt())
+    }
+
+    @Test
+    fun mapReverse() {
+        val map = mapOf(1 to 100, 2 to 200, 3 to 300)
+        val mapRe = mutableMapOf<Int, Int>()
+        mapRe.putAll(map.values.zip(map.keys))
+        println(map)
+        println(mapRe)
+    }
+
+    @Test
+    fun polybius() {
+        println("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG".polybius())
+        println("442315 4145241325 1242345233 213453 2445323543 34511542 442315 31115554 143422".polybiusDecrypt())
+
+    }
+
+    @Test
+    fun bacon() {
+        println("Leon 406 Hello".baconEncrypt24())
+        println("ABABAAABAAABBABABBAA 406 AABBBAABAAABABAABABAABBAB".baconDecrypt24())
+        println("Leon 406 Hhaha".baconEncrypt26())
+        println("ABABBAABAAABBBAABBAB".baconDecrypt26())
+        println("ABABBAABAAABBBAABBAB 406 AABBBAABBBAAAAAAABBBAAAAA".baconDecrypt26())
     }
 }

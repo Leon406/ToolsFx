@@ -1,16 +1,25 @@
 package me.leon.classical
 
+import kotlin.math.ceil
 import kotlin.math.floor
 
-/** @link https://en.wikipedia.org/wiki/Rail_fence_cipher */
+/**
+ * normal @link https://ctf.bugku.com/tool/railfence
+ * type w @link https://en.wikipedia.org/wiki/Rail_fence_cipher
+ * https://ctf.bugku.com/tool/railfence
+ * */
+
+/**
+ * count必须为长度的公约数
+ */
 fun String.railFenceEncrypt(count: Int) =
     String(
         toList().chunked(count).foldIndexed(CharArray(length)) { index, acc, list ->
             acc.apply {
-                val d = floor(length / count.toFloat()).toInt()
+                val d = ceil(length / count.toFloat()).toInt()
                 for (i in (0 until count)) {
                     val cur = d * i + index
-                    println("$i $cur / $length ${list[i]}")
+                    println("$i $cur / $length $list")
                     if (cur >= length) break
 
                     acc[cur] = list[i]
@@ -19,20 +28,24 @@ fun String.railFenceEncrypt(count: Int) =
         }
     )
 
+/**
+ * count必须为长度的公约数
+ */
 fun String.railFenceDecrypt(count: Int) =
     toList()
-        .chunked(count)
-        .foldIndexed(CharArray(length)) { index, acc, list ->
-            acc.apply {
-                for (i in (0 until count)) {
-                    acc[index * count + i] = list[i]
-                }
+        .chunked(floor(length / count.toFloat()).toInt())
+        .toList()
+        .run {
+            val sb = StringBuilder()
+            for (i in (0 until first().size)) {
+                sb.append(map { it[i] }.joinToString(""))
             }
+            sb.toString()
         }
-        .toString()
+
 
 fun main() {
-    println("ATTACKATDAWN".railFenceEncrypt(3))
+    println("ATTACKATDAWN".railFenceEncrypt(6))
 
-    println("WECRUOERDSOEERNTNEAIVDAC".railFenceDecrypt(3))
+    println("ATCADWTAKTAN".railFenceDecrypt(2))
 }

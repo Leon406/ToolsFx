@@ -6,6 +6,4 @@ fun String.caesar(bias: Int) =
         .joinToString("")
 
 fun String.caesar25() =
-    (1..25)
-        .mapIndexed { index, i -> "shift%02d: %s".format(i, caesar(i)) }
-        .joinToString(System.lineSeparator())
+    (1..25).joinToString(System.lineSeparator()) { "shift%02d: %s".format(it, caesar(it)) }

@@ -86,11 +86,11 @@ class ClassicalView : View(messages["classical"]) {
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             spacing = DEFAULT_SPACING
-            label("${messages["encode"]}:")
+            label("${messages["encrypt"]}:")
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns = 7
+                prefColumns = 6
                 togglegroup {
                     classicalTypeMap.forEach {
                         radiobutton(it.key) {
@@ -115,6 +115,7 @@ class ClassicalView : View(messages["classical"]) {
 
         hbox {
             spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
@@ -127,6 +128,9 @@ class ClassicalView : View(messages["classical"]) {
                 }
             }
             button(messages["run"], imageview("/img/run.png")) { action { run() } }
+            button(messages["codeFrequency"]) {
+                action { "https://quipqiup.com/".openInBrowser() }
+            }
         }
         hbox {
             spacing = DEFAULT_SPACING
