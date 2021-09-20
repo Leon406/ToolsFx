@@ -97,4 +97,29 @@ class ClassicalTest {
         println("ABABBAABAAABBBAABBAB".baconDecrypt26())
         println("ABABBAABAAABBBAABBAB 406 AABBBAABBBAAAAAAABBBAAAAA".baconDecrypt26())
     }
+
+    @Test
+    fun oneTimePad() {
+        val key = "MASKL NSFLD FKJPQ"
+        val data = "This is an example"
+        val encrypted = "FHACTFSSPAFWYAU"
+        //check length
+        val k2 = key.filter { it.isLetter() }.uppercase()
+        val d2 = data.filter { it.isLetter() }.uppercase()
+        val isSameSize = k2.length == d2.length
+        println(isSameSize)
+        //do add
+        d2.mapIndexed { index, c ->
+            'A' + (c.code + k2[index].code - 130) % 26
+        }.joinToString("").also { println(it) }
+
+        encrypted.mapIndexed { index, c ->
+            'A' + (c.code - k2[index].code + 26) % 26
+        }.joinToString("").also { println(it) }
+
+        println()
+        println(data.oneTimePad(key))
+        println(encrypted.oneTimePadDecrypt(key))
+    }
+
 }

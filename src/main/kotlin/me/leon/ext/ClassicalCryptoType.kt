@@ -72,6 +72,11 @@ enum class ClassicalCryptoType(val type: String) {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.baconEncrypt26()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.baconDecrypt26()
+    },
+    OTP("oneTimePad") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.oneTimePad(params[P1]!!)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.oneTimePadDecrypt(params[P1]!!)
     };
 
     abstract fun encrypt(raw: String, params: MutableMap<String, String>): String
