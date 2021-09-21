@@ -30,7 +30,19 @@ class ToolsApp : App(Home::class, Styles::class) {
         val properties: Properties = Properties()
         val isEnableClassical: Boolean
             get() = properties["isEnableClassical"].toString().toBoolean()
+        val isEnablePBE: Boolean
+            get() = properties["isEnablePBE"].toString().toBoolean()
+        val isEnableInternalWebview: Boolean
+            get() = properties["isEnableInternalWebview"].toString().toBoolean()
         val extUrls: List<String>
             get() = properties["extUrls"].toString().split(",")
+        val isEnableSignature: Boolean
+            get() = properties["isEnableSignature"].toString().toBoolean()
+        val isEnableMac: Boolean
+            get() = properties["isEnableMac"].toString().toBoolean()
+        val isEnableSymmetricStream: Boolean
+            get() = properties["isEnableSymmetricStream"].toString().toBoolean()
+        val isEnableQrcode: Boolean
+            get() = properties["isEnableQrcode"].toString().toBoolean()
     }
 }
