@@ -195,9 +195,9 @@
 - [x] Symmetirc Crypto support base64/hex encoded key, iv
 - [x] Digest and Symmetirc  Crypto support multi files
 - [x] i18n
-- [ ] Shortcut
-- [ ] CTF releated
-- [ ] PBE
+- [x] CTF releated
+- [x] PBE
+- [x] module configable,support online url
 
 [bouncycastle document](https://www.bouncycastle.org/specifications.html) 
 
@@ -231,6 +231,21 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
 
 - Linux/Mac OS double click ToolsFx  in directory bin
 - Windows double click ToolsFx.bat or vbs file(remove black command window)
+
+## How to Config
+When Application is running ,it will generate ToolsFx.properties automatically , just modify the value. Below are the details.
+
+| key                     | value                                             |
+| ----------------------- | ------------------------------------------------- |
+| isEnableClassical       | Classical module switch,default is false          |
+| isEnablePBE             | PBE module switch,default is false                |
+| isEnableSignature       | Signature module switch,default is  true          |
+| isEnableMac             | MAC module switch,default is  true                |
+| isEnableSymmetricStream | Symmetric( Stream) module switch,default is  true |
+| isEnableQrcode          | Qrcode module switch,default is  true             |
+| isEnableInternalWebview | Internal Browser switch,default is false          |
+| extUrls                 | Internal Browser favourite urls, spit with comma  |
+
 
 ## CHANGE LOG
 
