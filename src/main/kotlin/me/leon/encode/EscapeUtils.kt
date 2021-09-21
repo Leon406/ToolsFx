@@ -1,5 +1,7 @@
 package me.leon.encode
 
+import java.nio.charset.Charset
+
 object EscapeUtils {
 
     fun escape(src: String) =
@@ -50,8 +52,9 @@ object EscapeUtils {
 
 fun String.escape() = EscapeUtils.escape(this)
 
-fun ByteArray.escape() = String(this).escape()
+fun ByteArray.escape(charset: String = "UTF-8") = String(this, Charset.forName(charset)).escape()
 
-fun String.unescape() = unescape2String().toByteArray()
+fun String.unescape(charset: String = "UTF-8") =
+    unescape2String().toByteArray(Charset.forName(charset))
 
 fun String.unescape2String() = EscapeUtils.unescape(this)

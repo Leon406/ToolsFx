@@ -3,21 +3,28 @@ package me.leon.controller
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import me.leon.encode.base.base64
-import me.leon.ext.GMac
-import me.leon.ext.Poly1305Serial
-import me.leon.ext.catch
-import me.leon.ext.init
-import me.leon.ext.toHex
+import me.leon.ext.*
 import org.bouncycastle.crypto.macs.KGMac
-import tornadofx.Controller
+import tornadofx.*
 
 class MacController : Controller() {
-    fun mac(msg: String, hkey: String, alg: String, outputEncode: String) =
+
+    fun mac(
+        msg: String,
+        keyByteArray: ByteArray,
+        alg: String,
+        outputEncode: String,
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine) msg.lineAction2String { mac(it, keyByteArray, alg, outputEncode) }
+        else mac(msg, keyByteArray, alg, outputEncode)
+
+    private fun mac(msg: String, keyByteArray: ByteArray, alg: String, outputEncode: String) =
         catch({ "mac error: $it" }) {
-            println("mac $msg  $alg $hkey")
+            println("mac $msg  $alg ")
             Mac.getInstance(alg)
                 .apply {
-                    init(SecretKeySpec(hkey.toByteArray(), alg))
+                    init(SecretKeySpec(keyByteArray, alg))
                     update(msg.toByteArray())
                 }
                 .doFinal()
@@ -30,12 +37,29 @@ class MacController : Controller() {
                 }
         }
 
-    fun macWithIv(msg: String, key: String, iv: String, alg: String, outputEncode: String) =
+    fun macWithIv(
+        msg: String,
+        keyByteArray: ByteArray,
+        ivByteArray: ByteArray,
+        alg: String,
+        outputEncode: String,
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine)
+            msg.lineAction2String { macWithIv(it, keyByteArray, ivByteArray, alg, outputEncode) }
+        else macWithIv(msg, keyByteArray, ivByteArray, alg, outputEncode)
+
+    private fun macWithIv(
+        msg: String,
+        keyByteArray: ByteArray,
+        ivByteArray: ByteArray,
+        alg: String,
+        outputEncode: String
+    ) =
         catch({ "mac error: $it" }) {
-            println("mac $msg  $alg $key")
+            println("mac $msg  $alg")
             val data = msg.toByteArray()
-            val keyByteArray = key.toByteArray()
-            val ivByteArray = iv.toByteArray()
+
             if (alg.contains("POLY1305")) {
                 Poly1305Serial.getInstance(alg).run {
                     init(keyByteArray, ivByteArray)

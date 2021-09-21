@@ -1,8 +1,11 @@
 package me.leon.encode
 
-fun String.octal() = toByteArray().octal()
+import java.nio.charset.Charset
 
-fun ByteArray.octal() = String(this).toCharArray().joinToString(" ") { (it.code).toString(8) }
+fun String.octal(charset: String = "UTF-8") = toByteArray().octal(charset)
+
+fun ByteArray.octal(charset: String = "UTF-8") =
+    String(this, Charset.forName(charset)).toCharArray().joinToString(" ") { (it.code).toString(8) }
 
 fun String.octalDecode() = octalDecode2String().toByteArray()
 

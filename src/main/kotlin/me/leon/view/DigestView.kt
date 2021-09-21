@@ -1,17 +1,12 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.ComboBox
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
-import javafx.scene.image.Image
+import javafx.scene.control.*
 import me.leon.controller.DigestController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.fileDraggedHandler
+import me.leon.ext.*
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
@@ -29,25 +24,31 @@ import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.textarea
 import tornadofx.vbox
-import java.io.File
 
 class DigestView : View(messages["hash"]) {
     private val controller: DigestController by inject()
     override val closeable = SimpleBooleanProperty(false)
-    private val fileHash = SimpleBooleanProperty(false)
+    private val isFileMode = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var infoLabel: Label
-    lateinit var output: TextArea
-    private val inputText: String
-        get() = input.text
-    private val outputText: String
-        get() = output.text
+    private val isSingleLine = SimpleBooleanProperty(false)
+    private lateinit var taInput: TextArea
+    private lateinit var labelInfo: Label
+    lateinit var taOutput: TextArea
+    private var inputText: String
+        get() = taInput.text
+        set(value) {
+            taInput.text = value
+        }
+    private var outputText: String
+        get() = taOutput.text
+        set(value) {
+            taOutput.text = value
+        }
     var method = "MD5"
 
     private val eventHandler = fileDraggedHandler {
-        input.text =
-            if (fileHash.get())
+        inputText =
+            if (isFileMode.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else it.first().readText()
     }
@@ -87,23 +88,24 @@ class DigestView : View(messages["hash"]) {
             "GOST3411" to listOf("256"),
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
+            "CRC" to listOf("32"),
         )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
     lateinit var cbBits: ComboBox<String>
     private val info
-        get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${fileHash.get()}"
+        get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${isFileMode.get()}"
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
+            button(graphic = imageview("/img/import.png")) {
+                action { inputText = clipboardText() }
             }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -140,7 +142,7 @@ class DigestView : View(messages["hash"]) {
                             "$1-"
                         )
                 println("算法 $method")
-                if (inputText.isNotEmpty() && !fileHash.get()) {
+                if (inputText.isNotEmpty() && !isFileMode.get()) {
                     doHash()
                 }
             }
@@ -149,17 +151,18 @@ class DigestView : View(messages["hash"]) {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
-            checkbox(messages["fileMode"], fileHash)
-            button(messages["run"], imageview(Image("/run.png"))) {
+            checkbox(messages["fileMode"], isFileMode)
+            checkbox(messages["singleLine"], isSingleLine)
+            button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
         }
         hbox {
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -167,21 +170,20 @@ class DigestView : View(messages["hash"]) {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doHash() =
         runAsync {
             isProcessing.value = true
-            if (fileHash.get())
-                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
-                    controller.digestFile(method, it)
-                }
-            else controller.digest(method, inputText)
+            if (isFileMode.get()) inputText.lineAction2String { controller.digestFile(method, it) }
+            else controller.digest(method, inputText, isSingleLine.get())
         } ui
             {
                 isProcessing.value = false
-                output.text = it
-                infoLabel.text = info
+                outputText = it
+                labelInfo.text = info
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
             }
 }

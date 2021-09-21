@@ -7,9 +7,7 @@ import java.net.URL
 import javafx.embed.swing.SwingFXUtils
 import javafx.event.EventHandler
 import javafx.scene.image.Image
-import javafx.scene.input.Clipboard
-import javafx.scene.input.ClipboardContent
-import javafx.scene.input.DragEvent
+import javafx.scene.input.*
 import javafx.stage.FileChooser
 import javafx.stage.Window
 import javax.imageio.ImageIO
@@ -17,7 +15,7 @@ import javax.imageio.ImageIO
 fun String.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putString(this@copy) })
 
-fun clipboardText(): String? = Clipboard.getSystemClipboard().string
+fun clipboardText(): String = Clipboard.getSystemClipboard().string ?: ""
 
 fun clipboardImage(): Image? = Clipboard.getSystemClipboard().image
 

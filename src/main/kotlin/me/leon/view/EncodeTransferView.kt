@@ -1,47 +1,23 @@
 package me.leon.view
 
+import java.nio.charset.Charset
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
-import javafx.scene.image.Image
+import javafx.scene.control.*
+import me.leon.CHARSETS
 import me.leon.controller.EncodeController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_80X
-import me.leon.ext.EncodeType
-import me.leon.ext.copy
-import me.leon.ext.encodeType
-import me.leon.ext.encodeTypeMap
-import me.leon.ext.fileDraggedHandler
+import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.paddingBottom
-import tornadofx.paddingTop
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.tilepane
-import tornadofx.togglegroup
-import tornadofx.vbox
 
 class EncodeTransferView : View(messages["encodeTransfer"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var output: TextArea
-    private lateinit var infoLabel: Label
-    private lateinit var customDict: TextField
+    private lateinit var taInput: TextArea
+    private lateinit var taOutput: TextArea
+    private lateinit var labelInfo: Label
+    private lateinit var tfCustomDict: TextField
     private var enableDict = SimpleBooleanProperty(true)
     private val info: String
         get() =
@@ -49,32 +25,39 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 "  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
         get() =
-            input.text.takeIf {
+            taInput.text.takeIf {
                 isEncode || srcEncodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
-                ?: input.text.replace("\\s".toRegex(), "")
+                ?: taInput.text.replace("\\s".toRegex(), "")
     private val outputText: String
-        get() = output.text
+        get() = taOutput.text
 
     private var dstEncodeType = EncodeType.UrlEncode
     private var srcEncodeType = EncodeType.Base64
     private var isEncode = true
+    private val selectedSrcCharset = SimpleStringProperty(CHARSETS.first())
+    private val selectedDstCharset = SimpleStringProperty(CHARSETS.first())
 
-    private val eventHandler = fileDraggedHandler { input.text = it.first().readText() }
+    private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
 
         hbox {
-            label(messages["input"])
+            vbox {
+                label(messages["input"])
+                combobox(selectedSrcCharset, CHARSETS) { cellFormat { text = it } }
+            }
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
+
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
+                prefColumns = 7
                 togglegroup {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
@@ -85,14 +68,14 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
 
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
-                        srcEncodeType = (new as RadioButton).text.encodeType()
+                        srcEncodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value = srcEncodeType.type.contains("base")
-                        customDict.text = srcEncodeType.defaultDict
+                        tfCustomDict.text = srcEncodeType.defaultDict
                     }
                 }
             }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -102,7 +85,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
         hbox {
             label(messages["customDict"])
             alignment = Pos.BASELINE_LEFT
-            customDict =
+            tfCustomDict =
                 textfield(srcEncodeType.defaultDict) {
                     enableWhen { enableDict }
                     prefWidth = DEFAULT_SPACING_80X
@@ -112,24 +95,28 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
-            button(messages["transfer"], imageview(Image("/run.png"))) {
+            button(messages["transfer"], imageview("/img/run.png")) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["up"], imageview(Image("/up.png"))) {
+            button(messages["up"], imageview("/img/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    taInput.text = outputText
+                    taOutput.text = ""
                 }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["copy"], imageview(Image("/copy.png"))) {
+            button(messages["copy"], imageview("/img/copy.png")) {
                 action { outputText.copy() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
         }
         hbox {
-            label(messages["output"])
+            vbox {
+                label(messages["output"])
+                combobox(selectedDstCharset, CHARSETS) { cellFormat { text = it } }
+            }
+
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
@@ -137,6 +124,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
+                prefColumns = 7
                 togglegroup {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
@@ -146,14 +134,14 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                     }
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
-                        dstEncodeType = (new as RadioButton).text.encodeType()
+                        dstEncodeType = new.cast<RadioButton>().text.encodeType()
                         run()
                     }
                 }
             }
         }
 
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -162,15 +150,25 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun run() {
-        val decode = controller.decode(inputText, srcEncodeType, customDict.text)
-        output.text =
-            String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
-                ?: controller.encode2String(decode, dstEncodeType)
+        val decode =
+            controller.decode(inputText, srcEncodeType, tfCustomDict.text, selectedSrcCharset.get())
 
-        infoLabel.text = info
+        val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
+        println("transfer $encodeString")
+        taOutput.text =
+            String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
+                ?: controller.encode2String(
+                    encodeString,
+                    dstEncodeType,
+                    "",
+                    selectedDstCharset.get()
+                )
+
+        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+        labelInfo.text = info
     }
 }

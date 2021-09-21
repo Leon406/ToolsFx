@@ -1,53 +1,27 @@
 package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
-import javafx.scene.image.Image
+import javafx.scene.Parent
+import javafx.scene.control.*
+import me.leon.CHARSETS
+import me.leon.SimpleMsgEvent
 import me.leon.controller.EncodeController
 import me.leon.encode.base.base64
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_80X
-import me.leon.ext.EncodeType
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.encodeType
-import me.leon.ext.encodeTypeMap
-import me.leon.ext.fileDraggedHandler
-import me.leon.ext.readBytesFromNet
-import me.leon.ext.readFromNet
+import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.contextmenu
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.item
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.paddingBottom
-import tornadofx.paddingTop
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.tilepane
-import tornadofx.togglegroup
-import tornadofx.vbox
 
 class EncodeView : View(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var output: TextArea
-    private lateinit var infoLabel: Label
-    private lateinit var customDict: TextField
+    private val isSingleLine = SimpleBooleanProperty(false)
+    private val decodeIgnoreSpace = SimpleBooleanProperty(true)
+    private lateinit var taInput: TextArea
+    private lateinit var taOutput: TextArea
+    private lateinit var labelInfo: Label
+    private lateinit var tfCustomDict: TextField
     private var enableDict = SimpleBooleanProperty(true)
     private val info: String
         get() =
@@ -55,43 +29,63 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
         get() =
-            input.text.takeIf {
+            taInput.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
-                ?: input.text.replace("\\s".toRegex(), "")
+                ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
+                    ?: taInput.text.replace("\\s".toRegex(), "")
     private val outputText: String
-        get() = output.text
+        get() = taOutput.text
 
     private var encodeType = EncodeType.Base64
     private var isEncode = true
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
-    private val eventHandler = fileDraggedHandler { input.text = it.first().readText() }
+    private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
+
+    private val encodeTypeWithSpace =
+        arrayOf(
+            EncodeType.UuEncode,
+            EncodeType.XxEncode,
+            EncodeType.QuotePrintable,
+            EncodeType.PunyCode,
+        )
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
+            button(graphic = imageview("/img/import.png")) {
+                action { taInput.text = clipboardText() }
             }
         }
 
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
                 contextmenu {
                     item(messages["loadFromNet"]) {
-                        action { runAsync { inputText.readFromNet() } ui { input.text = it } }
+                        action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
+                    }
+                    item(messages["loadFromNetLoop"]) {
+                        action {
+                            runAsync { inputText.simpleReadFromNet() } ui { taInput.text = it }
+                        }
                     }
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
                                 {
-                                    input.text = it
+                                    taInput.text = it
                                 }
+                        }
+                    }
+                    item(messages["readHeadersFromNet"]) {
+                        action {
+                            runAsync { inputText.readHeadersFromNet() } ui { taInput.text = it }
                         }
                     }
                 }
@@ -105,6 +99,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
+                prefColumns = 7
                 togglegroup {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
@@ -113,14 +108,15 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
-                        encodeType = (new as RadioButton).text.encodeType()
+                        encodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value = encodeType.type.contains("base")
-                        customDict.text = encodeType.defaultDict
-                        if (isEncode) {
-                            output.text =
-                                controller.encode2String(inputText, encodeType, customDict.text)
-                            infoLabel.text = info
-                        }
+                        tfCustomDict.text = encodeType.defaultDict
+
+                        println()
+                        val isIgnore = encodeType !in encodeTypeWithSpace
+                        decodeIgnoreSpace.set(isIgnore)
+                        println("${decodeIgnoreSpace.get()} $isIgnore")
+                        if (isEncode) run()
                     }
                 }
             }
@@ -129,7 +125,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
         hbox {
             label(messages["customDict"])
             alignment = Pos.BASELINE_LEFT
-            customDict =
+            tfCustomDict =
                 textfield(encodeType.defaultDict) {
                     enableWhen { enableDict }
                     prefWidth = DEFAULT_SPACING_80X
@@ -141,28 +137,51 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
+                label("charset:")
+                combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
+
                 radiobutton(messages["encode"]) { isSelected = true }
                 radiobutton(messages["decode"])
+                checkbox(messages["singleLine"], isSingleLine) {
+                    selectedProperty().addListener { _, _, newValue ->
+                        decodeIgnoreSpace.set(!newValue)
+                    }
+                }
+                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
+                    selectedProperty().addListener { observable, oldValue, newValue ->
+                        println("$observable $oldValue  $newValue")
+                    }
+                }
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncode = (new as RadioButton).text == messages["encode"]
+                    isEncode = new.cast<RadioButton>().text == messages["encode"]
                     run()
                 }
             }
-            button(messages["run"], imageview(Image("/run.png"))) { action { run() } }
+            button(messages["run"], imageview("/img/run.png")) { action { run() } }
         }
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
-            button(graphic = imageview(Image("/up.png"))) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    taInput.text = outputText
+                    taOutput.text = ""
+                }
+            }
+            button(graphic = imageview("/img/jump.png")) {
+                action {
+                    var tmp: Parent? = parent
+                    while (tmp != null) {
+                        if (tmp is TabPane) break
+                        tmp = tmp.parent
+                    }
+                    tmp.safeAs<TabPane>()?.selectionModel?.select(2)
                 }
             }
         }
 
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -170,15 +189,30 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun run() {
-        if (isEncode) {
-            output.text = controller.encode2String(inputText, encodeType, customDict.text)
-        } else {
-            output.text = controller.decode2String(inputText, encodeType, customDict.text)
-        }
-        infoLabel.text = info
+        taOutput.text =
+            if (isEncode)
+                controller.encode2String(
+                    inputText,
+                    encodeType,
+                    tfCustomDict.text,
+                    selectedCharset.get(),
+                    isSingleLine.get()
+                )
+            else
+                controller.decode2String(
+                    inputText,
+                    encodeType,
+                    tfCustomDict.text,
+                    selectedCharset.get(),
+                    isSingleLine.get()
+                )
+        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+        labelInfo.text = info
+
+        fire(SimpleMsgEvent(taOutput.text, 1))
     }
 }

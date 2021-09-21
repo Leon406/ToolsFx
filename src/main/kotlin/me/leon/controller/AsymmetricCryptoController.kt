@@ -8,14 +8,24 @@ import java.security.cert.CertificateFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
-import me.leon.encode.base.BYTE_BITS
-import me.leon.encode.base.base64
-import me.leon.encode.base.base64Decode
+import me.leon.encode.base.*
 import me.leon.ext.catch
+import me.leon.ext.lineAction2String
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import tornadofx.Controller
+import tornadofx.*
 
 class AsymmetricCryptoController : Controller() {
+
+    fun pubEncrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        isSingleLine: Boolean = false,
+        reserved: Int = 11
+    ) =
+        if (isSingleLine) data.lineAction2String { pubEncrypt(key, alg, it, length, reserved) }
+        else pubEncrypt(key, alg, data, length, reserved)
 
     fun pubEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
         catch({ "encrypt error: $it}" }) {
@@ -37,6 +47,16 @@ class AsymmetricCryptoController : Controller() {
             }
         }
 
+    fun priDecrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine) data.lineAction2String { priDecrypt(key, alg, it, length) }
+        else priDecrypt(key, alg, data, length)
+
     fun priDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
         catch({ "decrypt error: $it" }) {
             println("decrypt $key  $alg $data")
@@ -56,6 +76,17 @@ class AsymmetricCryptoController : Controller() {
                     .toString(Charsets.UTF_8)
             }
         }
+
+    fun priEncrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        isSingleLine: Boolean = false,
+        reserved: Int = 11
+    ) =
+        if (isSingleLine) data.lineAction2String { priEncrypt(key, alg, it, length, reserved) }
+        else priEncrypt(key, alg, data, length, reserved)
 
     fun priEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
         catch({ "encrypt error: $it" }) {
@@ -77,7 +108,17 @@ class AsymmetricCryptoController : Controller() {
             }
         }
 
-    fun pubDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
+    fun pubDecrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        isSingleLine: Boolean = false
+    ) =
+        if (isSingleLine) data.lineAction2String { pubDecrypt(key, alg, it, length) }
+        else pubDecrypt(key, alg, data, length)
+
+    private fun pubDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
         catch({ "decrypt error: $it" }) {
             println("decrypt $key  $alg $data")
             val keySpec = X509EncodedKeySpec(getPropPublicKey(key))

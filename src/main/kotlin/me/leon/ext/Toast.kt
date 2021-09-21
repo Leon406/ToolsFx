@@ -1,8 +1,6 @@
 package me.leon.ext
 
-import javafx.animation.KeyFrame
-import javafx.animation.KeyValue
-import javafx.animation.Timeline
+import javafx.animation.*
 import javafx.scene.Scene
 import javafx.scene.layout.StackPane
 import javafx.scene.paint.Color
@@ -74,6 +72,6 @@ class Toast private constructor() {
     }
 }
 
-fun Stage.showToast(msg: String) {
-    Toast.makeText(this, msg)
+fun Stage.showToast(msg: String, time: Int = 0) {
+    Toast.makeText(this, msg, time)
 }

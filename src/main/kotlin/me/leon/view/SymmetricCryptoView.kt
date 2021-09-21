@@ -1,63 +1,41 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
-import javafx.scene.image.Image
+import javafx.scene.control.*
+import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.fileDraggedHandler
-import me.leon.ext.hex2ByteArray
+import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.checkbox
-import tornadofx.combobox
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.togglegroup
-import tornadofx.vbox
-import java.io.File
 
 class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var key: TextField
-    private lateinit var iv: TextField
+    private val isSingleLine = SimpleBooleanProperty(false)
+    private lateinit var taInput: TextArea
+    private lateinit var tfKey: TextField
+    private lateinit var tfIv: TextField
     private var isEncrypt = true
-    private lateinit var output: TextArea
+    private lateinit var taOutput: TextArea
     private val inputText: String
-        get() = input.text
+        get() = taInput.text
     private val outputText: String
-        get() = output.text
+        get() = taOutput.text
     private val info
         get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} "
-    private lateinit var infoLabel: Label
+    private lateinit var labelInfo: Label
     private val keyByteArray
         get() =
             when (keyEncode) {
-                "raw" -> key.text.toByteArray()
-                "hex" -> key.text.hex2ByteArray()
-                "base64" -> key.text.base64Decode()
+                "raw" -> tfKey.text.toByteArray()
+                "hex" -> tfKey.text.hex2ByteArray()
+                "base64" -> tfKey.text.base64Decode()
                 else -> byteArrayOf()
             }
 
@@ -67,14 +45,14 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private val ivByteArray
         get() =
             when (ivEncode) {
-                "raw" -> iv.text.toByteArray()
-                "hex" -> iv.text.hex2ByteArray()
-                "base64" -> iv.text.base64Decode()
+                "raw" -> tfIv.text.toByteArray()
+                "hex" -> tfIv.text.hex2ByteArray()
+                "base64" -> tfIv.text.base64Decode()
                 else -> byteArrayOf()
             }
 
     private val eventHandler = fileDraggedHandler {
-        input.text =
+        taInput.text =
             if (isFile.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else it.first().readText()
@@ -119,9 +97,8 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         )
     private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
     private val selectedAlg = SimpleStringProperty(algs[2])
-    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
     private val selectedPadding = SimpleStringProperty(paddingsAlg.first())
-    private val selectedCharset = SimpleStringProperty(charsets.first())
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
     private val selectedMod = SimpleStringProperty(modes.first())
 
     private val cipher
@@ -132,15 +109,22 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
+            button(graphic = imageview("/img/import.png")) {
+                action { taInput.text = clipboardText() }
             }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+                contextmenu {
+                    item(messages["loadFromNetLoop"]) {
+                        action {
+                            runAsync { inputText.simpleReadFromNet() } ui { taInput.text = it }
+                        }
+                    }
+                }
             }
         hbox {
             alignment = Pos.CENTER_LEFT
@@ -152,13 +136,13 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             label("padding:")
             combobox(selectedPadding, paddingsAlg) { cellFormat { text = it } }
             label("charset:")
-            combobox(selectedCharset, charsets) { cellFormat { text = it } }
+            combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
 
         hbox {
             alignment = Pos.CENTER_LEFT
             label("key:")
-            key = textfield { promptText = messages["keyHint"] }
+            tfKey = textfield { promptText = messages["keyHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -167,12 +151,12 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-                        keyEncode = (new as RadioButton).text
+                        keyEncode = new.cast<RadioButton>().text
                     }
                 }
             }
             label("iv:")
-            iv = textfield { promptText = messages["ivHint"] }
+            tfIv = textfield { promptText = messages["ivHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -181,7 +165,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-                        ivEncode = (new as RadioButton).text
+                        ivEncode = new.cast<RadioButton>().text
                     }
                 }
             }
@@ -196,12 +180,13 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncrypt = (new as RadioButton).text == messages["encrypt"]
+                    isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     doCrypto()
                 }
             }
             checkbox(messages["fileMode"], isFile)
-            button(messages["run"], imageview(Image("/run.png"))) {
+            checkbox(messages["singleLine"], isSingleLine)
+            button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
@@ -209,15 +194,15 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
-            button(graphic = imageview(Image("/up.png"))) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    taInput.text = outputText
+                    taOutput.text = ""
                 }
             }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -226,7 +211,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doCrypto() {
@@ -234,7 +219,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             isProcessing.value = true
             if (isEncrypt)
                 if (isFile.get())
-                    inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                    inputText.lineAction2String {
                         controller.encryptByFile(keyByteArray, it, ivByteArray, cipher)
                     }
                 else
@@ -243,25 +228,29 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                         inputText,
                         ivByteArray,
                         cipher,
-                        selectedCharset.get()
+                        selectedCharset.get(),
+                        isSingleLine.get()
                     )
             else if (isFile.get())
-                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                inputText.lineAction2String {
                     controller.decryptByFile(keyByteArray, it, ivByteArray, cipher)
                 }
-            else
+            else {
                 controller.decrypt(
                     keyByteArray,
                     inputText,
                     ivByteArray,
                     cipher,
-                    selectedCharset.get()
+                    selectedCharset.get(),
+                    isSingleLine.get()
                 )
+            }
         } ui
             {
                 isProcessing.value = false
-                output.text = it
-                infoLabel.text = info
+                taOutput.text = it
+                labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
     }
 }

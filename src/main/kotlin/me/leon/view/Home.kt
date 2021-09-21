@@ -1,46 +1,60 @@
 package me.leon.view
 
+import java.security.Security
+import me.leon.ToolsApp.Companion.isEnableClassical
+import me.leon.ToolsApp.Companion.isEnableInternalWebview
+import me.leon.ToolsApp.Companion.isEnableMac
+import me.leon.ToolsApp.Companion.isEnablePBE
+import me.leon.ToolsApp.Companion.isEnableQrcode
+import me.leon.ToolsApp.Companion.isEnableSignature
+import me.leon.ToolsApp.Companion.isEnableSymmetricStream
 import me.leon.VERSION
 import me.leon.ext.Prefs
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.contextmenu
-import tornadofx.get
-import tornadofx.item
-import tornadofx.menu
-import tornadofx.tabpane
-import java.security.Security
 
 class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {
+        if (isEnableClassical) tab<ClassicalView>()
         tab<EncodeView>()
         tab<EncodeTransferView>()
         tab<StringProcessView>()
         tab<DigestView>()
-        tab<MacView>()
+        if (isEnableMac) tab<MacView>()
         tab<SymmetricCryptoView>()
-        tab<SymmetricCryptoStreamView>()
+        if (isEnableSymmetricStream) tab<SymmetricCryptoStreamView>()
         tab<AsymmetricCryptoView>()
-        tab<SignatureView>()
-        tab<QrcodeView>()
+        if (isEnableSignature) tab<SignatureView>()
+        if (isEnableQrcode) tab<QrcodeView>()
+        if (isEnablePBE) tab<PBEView>()
+        if (isEnableInternalWebview)
+            runCatching { Class.forName("javafx.scene.web.WebView") }.onSuccess {
+                tab<OnlineWebView>()
+            }
         tab<AboutView>()
         primaryStage.isAlwaysOnTop = Prefs.alwaysOnTop
         contextmenu {
-            item("Top ${"√".takeIf { Prefs.alwaysOnTop } ?: ""}") {
+            item("Top ${"  √".takeIf { Prefs.alwaysOnTop } ?: ""}") {
                 action {
                     Prefs.alwaysOnTop = !Prefs.alwaysOnTop
                     primaryStage.isAlwaysOnTop = Prefs.alwaysOnTop
-                    text = "Top ${"√".takeIf { Prefs.alwaysOnTop } ?: ""}"
+                    text = "Top ${"  √".takeIf { Prefs.alwaysOnTop } ?: ""}"
                 }
             }
             menu("Language") {
-                item("English(need restart)${"√".takeIf { Prefs.language != "zh" } ?: ""}") {
+                item("English(need restart)${"  √".takeIf { Prefs.language != "zh" } ?: ""}") {
                     action { Prefs.language = "en" }
                 }
-                item("中文(需重启)${"√".takeIf { Prefs.language == "zh" } ?: ""}") {
+                item("中文(需重启)${"  √".takeIf { Prefs.language == "zh" } ?: ""}") {
                     action { Prefs.language = "zh" }
+                }
+            }
+
+            item("${messages["autoCopy"]}${"  √".takeIf { Prefs.autoCopy } ?: ""}") {
+                action {
+                    Prefs.autoCopy = !Prefs.autoCopy
+                    text = "${messages["autoCopy"]}${"  √".takeIf { Prefs.autoCopy } ?: ""}"
                 }
             }
         }

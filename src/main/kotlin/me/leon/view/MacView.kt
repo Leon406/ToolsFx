@@ -3,59 +3,35 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.ComboBox
-import javafx.scene.control.Label
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
-import javafx.scene.image.Image
+import javafx.scene.control.*
 import me.leon.controller.MacController
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.fileDraggedHandler
-import tornadofx.View
-import tornadofx.action
-import tornadofx.asObservable
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.combobox
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.tilepane
-import tornadofx.togglegroup
-import tornadofx.vbox
+import me.leon.encode.base.base64Decode
+import me.leon.ext.*
+import tornadofx.*
 
 class MacView : View("MAC") {
     private val controller: MacController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)
     private val enableBits = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var key: TextField
-    private lateinit var iv: TextField
-    private lateinit var infoLabel: Label
-    private lateinit var output: TextArea
+    private val isSingleLine = SimpleBooleanProperty(false)
+    private lateinit var taInput: TextArea
+    private lateinit var tfKey: TextField
+    private lateinit var tfIv: TextField
+    private lateinit var labelInfo: Label
+    private lateinit var taOutput: TextArea
     private val inputText: String
-        get() = input.text
-    private val keyText: String
-        get() = key.text
-    private val ivText: String
-        get() = iv.text
-    private val outputText: String
-        get() = output.text
+        get() = taInput.text
+    private var outputText: String
+        get() = taOutput.text
+        set(value) {
+            taOutput.text = value
+        }
     private var method = "HmacMD5"
     private var outputEncode = "hex"
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
-    private val eventHandler = fileDraggedHandler { input.text = it.first().absolutePath }
+    private val eventHandler = fileDraggedHandler { taInput.text = it.first().absolutePath }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =
@@ -132,16 +108,35 @@ class MacView : View("MAC") {
     private lateinit var cbBits: ComboBox<String>
     private val info
         get() = "MAC: $method"
+    private var keyEncode = "raw"
+    private var ivEncode = "raw"
+    private val keyByteArray
+        get() =
+            when (keyEncode) {
+                "raw" -> tfKey.text.toByteArray()
+                "hex" -> tfKey.text.hex2ByteArray()
+                "base64" -> tfKey.text.base64Decode()
+                else -> byteArrayOf()
+            }
+
+    private val ivByteArray
+        get() =
+            when (ivEncode) {
+                "raw" -> tfIv.text.toByteArray()
+                "hex" -> tfIv.text.hex2ByteArray()
+                "base64" -> tfIv.text.base64Decode()
+                else -> byteArrayOf()
+            }
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
+            button(graphic = imageview("/img/import.png")) {
+                action { taInput.text = clipboardText() }
             }
         }
-        input =
+        taInput =
             textarea() {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -160,15 +155,39 @@ class MacView : View("MAC") {
         }
         hbox {
             alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
-            label("key: ")
-            key = textfield("hmac_key") { promptText = messages["keyHint"] }
-            label("iv: ")
-            iv =
-                textfield {
-                    enableWhen(enableIv)
-                    promptText = messages["ivHint"]
+            label("key:")
+            tfKey = textfield { promptText = messages["keyHint"] }
+            vbox {
+                togglegroup {
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("hex")
+                    radiobutton("base64")
+                    selectedToggleProperty().addListener { _, _, new ->
+                        keyEncode = new.cast<RadioButton>().text
+                    }
                 }
+            }
+            label("iv:")
+            tfIv =
+                textfield {
+                    promptText = messages["ivHint"]
+                    enableWhen(enableIv)
+                }
+            vbox {
+                enableWhen(enableIv)
+                togglegroup {
+                    spacing = DEFAULT_SPACING
+                    paddingAll = DEFAULT_SPACING
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("hex")
+                    radiobutton("base64")
+                    selectedToggleProperty().addListener { _, _, new ->
+                        ivEncode = new.cast<RadioButton>().text
+                    }
+                }
+            }
         }
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
@@ -203,19 +222,25 @@ class MacView : View("MAC") {
                 radiobutton("hex") { isSelected = true }
                 radiobutton("base64")
                 selectedToggleProperty().addListener { _, _, new ->
-                    outputEncode = (new as RadioButton).text
+                    outputEncode = new.cast<RadioButton>().text
                 }
             }
-            button(messages["run"], imageview(Image("/run.png"))) {
+            checkbox(messages["singleLine"], isSingleLine)
+            button(messages["run"], imageview("/img/run.png")) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                action { doMac() }
+                action {
+                    if (inputText.isNotEmpty()) doMac()
+                    else {
+                        outputText = ""
+                    }
+                }
             }
         }
         hbox {
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -224,17 +249,26 @@ class MacView : View("MAC") {
 
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doMac() =
         runAsync {
             if (method.contains("POLY1305|-GMAC".toRegex()))
-                controller.macWithIv(inputText, keyText, ivText, method, outputEncode)
-            else controller.mac(inputText, keyText, method, outputEncode)
+                controller.macWithIv(
+                    inputText,
+                    keyByteArray,
+                    ivByteArray,
+                    method,
+                    outputEncode,
+                    isSingleLine.get()
+                )
+            else controller.mac(inputText, keyByteArray, method, outputEncode, isSingleLine.get())
         } ui
             {
-                output.text = it
-                infoLabel.text = info
+                outputText = it
+                labelInfo.text = info
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
             }
 }

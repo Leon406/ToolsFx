@@ -3,59 +3,47 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
-import javafx.scene.image.Image
+import javafx.scene.control.*
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_10X
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.fileDraggedHandler
-import me.leon.ext.openInBrowser
-import tornadofx.FX
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.checkbox
-import tornadofx.combobox
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.togglegroup
-import tornadofx.tooltip
-import tornadofx.vbox
+import me.leon.ext.*
+import tornadofx.*
 
 class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private val controller: AsymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
-    lateinit var input: TextArea
-    lateinit var key: TextArea
-    lateinit var output: TextArea
-    private val inputText: String
-        get() = input.text
-    private val outputText: String
-        get() = output.text
+    lateinit var taInput: TextArea
+    lateinit var taKey: TextArea
+    lateinit var taOutput: TextArea
+    private var inputText: String
+        get() = taInput.text
+        set(value) {
+            taInput.text = value
+        }
+    private var outputText: String
+        get() = taOutput.text
+        set(value) {
+            taOutput.text = value
+        }
     private val info
         get() =
-            "RSA  bits: ${selectedBits.get()}  mode: ${if (privateKeyEncrypt.get()) "private key encrypt" 
-        else "public key encrypt"} "
-    private lateinit var infoLabel: Label
-    private val keyText: String
+            "RSA  bits: ${selectedBits.get()}  mode: ${
+                if (privateKeyEncrypt.get()) "private key encrypt"
+                else "public key encrypt"
+            } "
+    private lateinit var labelInfo: Label
+    private var keyText: String
         get() =
-            key.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
-                ?: key.text.replace(
+            taKey.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
+                ?: taKey.text.replace(
                     "-----(?:END|BEGIN) (?:RSA )?\\w+ KEY-----|\n|\r|\r\n".toRegex(),
                     ""
                 )
+        set(value) {
+            taKey.text = value
+        }
 
     private var alg = "RSA"
     private var isEncrypt = true
@@ -66,7 +54,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
     private val eventHandler = fileDraggedHandler {
         val firstFile = it.first()
-        key.text =
+        keyText =
             if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
             else firstFile.readText()
 
@@ -90,11 +78,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["key"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
-            }
+            button(graphic = imageview("/img/import.png")) { action { keyText = clipboardText() } }
         }
-        key =
+        taKey =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -103,11 +89,11 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
         hbox {
             label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
+            button(graphic = imageview("/img/import.png")) {
+                action { inputText = clipboardText() }
             }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -123,15 +109,15 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncrypt = (new as RadioButton).text == messages["encrypt"]
+                    isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                 }
             }
-
+            checkbox(messages["singleLine"], isSingleLine)
             checkbox(messages["priEncrypt"], privateKeyEncrypt) {
                 tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
             }
 
-            button(messages["run"], imageview(Image("/run.png"))) { action { doCrypto() } }
+            button(messages["run"], imageview("/img/run.png")) { action { doCrypto() } }
             button(messages["genKeypair"]) {
                 action { "https://miniu.alipay.com/keytool/create".openInBrowser() }
             }
@@ -139,15 +125,15 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
-            button(graphic = imageview(Image("/up.png"))) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    inputText = outputText
+                    outputText = ""
                 }
             }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -155,27 +141,54 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doCrypto() {
         if (keyText.isEmpty() || inputText.isEmpty()) {
-            output.text = "请输入key 或者 待处理内容"
+            outputText = "请输入key 或者 待处理内容"
             return
         }
 
         runAsync {
             if (isEncrypt)
                 if (privateKeyEncrypt.get())
-                    controller.priEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
-                else controller.pubEncrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                    controller.priEncrypt(
+                        keyText,
+                        alg,
+                        inputText,
+                        selectedBits.get().toInt(),
+                        isSingleLine.get()
+                    )
+                else
+                    controller.pubEncrypt(
+                        keyText,
+                        alg,
+                        inputText,
+                        selectedBits.get().toInt(),
+                        isSingleLine.get()
+                    )
             else if (privateKeyEncrypt.get())
-                controller.pubDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
-            else controller.priDecrypt(keyText, alg, inputText, selectedBits.get().toInt())
+                controller.pubDecrypt(
+                    keyText,
+                    alg,
+                    inputText,
+                    selectedBits.get().toInt(),
+                    isSingleLine.get()
+                )
+            else
+                controller.priDecrypt(
+                    keyText,
+                    alg,
+                    inputText,
+                    selectedBits.get().toInt(),
+                    isSingleLine.get()
+                )
         } ui
             {
-                output.text = it
-                infoLabel.text = info
+                outputText = it
+                labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
     }
 }

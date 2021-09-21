@@ -1,55 +1,22 @@
 package me.leon.view
 
+import java.awt.Rectangle
+import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCombination
-import javafx.scene.input.KeyEvent
-import javafx.scene.input.MouseEvent
-import javafx.scene.layout.AnchorPane
-import javafx.scene.layout.Border
-import javafx.scene.layout.BorderStroke
-import javafx.scene.layout.BorderStrokeStyle
-import javafx.scene.layout.BorderWidths
-import javafx.scene.layout.HBox
+import javafx.scene.input.*
+import javafx.scene.layout.*
 import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import me.leon.ext.DEFAULT_SPACING_10X
-import me.leon.ext.DEFAULT_SPACING_20X
-import me.leon.ext.DEFAULT_SPACING_2X
-import me.leon.ext.DEFAULT_SPACING_3X
-import me.leon.ext.DEFAULT_SPACING_4X
-import me.leon.ext.clipboardImage
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.createQR
-import me.leon.ext.fileChooser
-import me.leon.ext.qrReader
-import me.leon.ext.showToast
-import me.leon.ext.toBufferImage
-import me.leon.ext.toFxImg
-import tornadofx.View
-import tornadofx.action
-import tornadofx.button
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.textarea
-import tornadofx.tooltip
-import tornadofx.vbox
-import java.awt.Rectangle
-import java.awt.Robot
 import kotlin.math.abs
+import me.leon.ext.*
+import tornadofx.*
 
 class QrcodeView : View("Qrcode") {
     // 切图区域的起始位置x
@@ -66,8 +33,8 @@ class QrcodeView : View("Qrcode") {
 
     // 切图区域
     private lateinit var hBox: HBox
-    private lateinit var bu: Button
-    private lateinit var tf: TextArea
+    private lateinit var button: Button
+    private lateinit var ta: TextArea
 
     // 切成的图片展示区域
     private lateinit var iv: ImageView
@@ -80,7 +47,7 @@ class QrcodeView : View("Qrcode") {
         hbox {
             spacing = DEFAULT_SPACING_2X
             label(messages["recognize"])
-            bu =
+            button =
                 button(messages["shotReco"]) {
                     action { this@QrcodeView.show() }
                     shortcut(KeyCombination.valueOf("Ctrl+Q"))
@@ -88,7 +55,7 @@ class QrcodeView : View("Qrcode") {
                 }
 
             button(messages["clipboardReco"]) {
-                action { clipboardImage()?.toBufferImage()?.qrReader()?.let { tf.text = it } }
+                action { clipboardImage()?.toBufferImage()?.qrReader()?.let { ta.text = it } }
             }
             button(messages["fileReco"]) {
                 shortcut(KeyCombination.valueOf("Ctrl+F"))
@@ -96,7 +63,7 @@ class QrcodeView : View("Qrcode") {
                 action {
                     primaryStage.fileChooser(messages["chooseFile"])?.let {
                         iv.image = Image(it.inputStream())
-                        tf.text = it.qrReader()
+                        ta.text = it.qrReader()
                     }
                 }
             }
@@ -105,14 +72,12 @@ class QrcodeView : View("Qrcode") {
         hbox {
             spacing = DEFAULT_SPACING_3X
             label(messages["content"])
-            button(graphic = imageview(Image("/copy.png"))) {
-                action { tf.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
+            button(graphic = imageview("/img/copy.png")) {
+                action { ta.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button(graphic = imageview(Image("/import.png"))) {
-                action { tf.text = clipboardText() }
-            }
+            button(graphic = imageview("/img/import.png")) { action { ta.text = clipboardText() } }
         }
-        tf =
+        ta =
             textarea {
                 promptText = messages["qrHint"]
                 isWrapText = true
@@ -123,8 +88,8 @@ class QrcodeView : View("Qrcode") {
             spacing = DEFAULT_SPACING_2X
             button(messages["genQrcode"]) {
                 action {
-                    if (tf.text.isNotEmpty()) {
-                        iv.image = createQR(tf.text)
+                    if (ta.text.isNotEmpty()) {
+                        iv.image = createQR(ta.text)
                     }
                 }
                 shortcut(KeyCombination.valueOf("F9"))
@@ -133,7 +98,7 @@ class QrcodeView : View("Qrcode") {
         }
         hbox {
             label(messages["qrImg"])
-            button(graphic = imageview(Image("/copy.png"))) {
+            button(graphic = imageview("/img/copy.png")) {
                 action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
             }
         }
@@ -268,7 +233,7 @@ class QrcodeView : View("Qrcode") {
         val screenCapture = robot.createScreenCapture(re)
         val bufferedImage = screenCapture.toFxImg()
         iv.image = bufferedImage
-        tf.text = screenCapture.qrReader()
+        ta.text = screenCapture.qrReader()
     }
 
     private fun createQR(data: String = "this is test data"): Image {

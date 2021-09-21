@@ -2,19 +2,9 @@ package me.leon.view
 
 import javafx.geometry.Pos
 import me.leon.REPO_URL
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_20X
-import me.leon.ext.DEFAULT_SPACING_2X
-import me.leon.ext.DEFAULT_SPACING_40X
-import me.leon.ext.Prefs
-import me.leon.ext.openInBrowser
+import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.Fragment
-import tornadofx.action
-import tornadofx.button
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.paddingAll
 
 class UpdateFragment : Fragment(messages["latestVer"]) {
     override val root = hbox {

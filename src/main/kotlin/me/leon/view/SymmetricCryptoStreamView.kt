@@ -1,20 +1,14 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
-import javafx.scene.image.Image
+import javafx.scene.control.*
+import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
 import me.leon.encode.base.base64Decode
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.fileDraggedHandler
-import me.leon.ext.hex2ByteArray
+import me.leon.ext.*
 import tornadofx.FX.Companion.messages
 import tornadofx.View
 import tornadofx.action
@@ -33,31 +27,30 @@ import tornadofx.textarea
 import tornadofx.textfield
 import tornadofx.togglegroup
 import tornadofx.vbox
-import java.io.File
 
 class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var input: TextArea
-    private lateinit var key: TextField
-    private lateinit var iv: TextField
+    private lateinit var taInput: TextArea
+    private lateinit var taKey: TextField
+    private lateinit var taIv: TextField
     private var isEncrypt = true
-    private lateinit var output: TextArea
+    private lateinit var taOutput: TextArea
     private val inputText: String
-        get() = input.text
+        get() = taInput.text
     private val outputText: String
-        get() = output.text
+        get() = taOutput.text
     private val info
         get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} "
     private lateinit var infoLabel: Label
     private val keyByteArray
         get() =
             when (keyEncode) {
-                "raw" -> key.text.toByteArray()
-                "hex" -> key.text.hex2ByteArray()
-                "base64" -> key.text.base64Decode()
+                "raw" -> taKey.text.toByteArray()
+                "hex" -> taKey.text.hex2ByteArray()
+                "base64" -> taKey.text.base64Decode()
                 else -> byteArrayOf()
             }
 
@@ -67,14 +60,14 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private val ivByteArray
         get() =
             when (ivEncode) {
-                "raw" -> iv.text.toByteArray()
-                "hex" -> iv.text.hex2ByteArray()
-                "base64" -> iv.text.base64Decode()
+                "raw" -> taIv.text.toByteArray()
+                "hex" -> taIv.text.hex2ByteArray()
+                "base64" -> taIv.text.base64Decode()
                 else -> byteArrayOf()
             }
 
     private val eventHandler = fileDraggedHandler {
-        input.text =
+        taInput.text =
             if (isFile.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else it.first().readText()
@@ -98,19 +91,18 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
 
     private val cipher
         get() = selectedAlg.get()
-    private val charsets = mutableListOf("UTF-8", "GBK", "GB2312", "GB18030", "ISO-8859-1", "BIG5")
-    private val selectedCharset = SimpleStringProperty(charsets.first())
-
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
+    private val isSingleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            button(graphic = imageview(Image("/import.png"))) {
-                action { input.text = clipboardText() }
+            button(graphic = imageview("/img/import.png")) {
+                action { taInput.text = clipboardText() }
             }
         }
-        input =
+        taInput =
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
@@ -123,12 +115,12 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
             label("charset:")
-            combobox(selectedCharset, charsets) { cellFormat { text = it } }
+            combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
         hbox {
             alignment = Pos.CENTER_LEFT
             label("key:")
-            key = textfield { promptText = messages["keyHint"] }
+            taKey = textfield { promptText = messages["keyHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -137,12 +129,12 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-                        keyEncode = (new as RadioButton).text
+                        keyEncode = new.cast<RadioButton>().text
                     }
                 }
             }
             label("iv:")
-            iv = textfield { promptText = messages["ivHint"] }
+            taIv = textfield { promptText = messages["ivHint"] }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -151,7 +143,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                     radiobutton("hex")
                     radiobutton("base64")
                     selectedToggleProperty().addListener { _, _, new ->
-                        ivEncode = (new as RadioButton).text
+                        ivEncode = new.cast<RadioButton>().text
                     }
                 }
             }
@@ -164,12 +156,13 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
-                    isEncrypt = (new as RadioButton).text == messages["encrypt"]
+                    isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     doCrypto()
                 }
             }
             checkbox(messages["fileMode"], isFile)
-            button(messages["run"], imageview(Image("/run.png"))) {
+            checkbox(messages["singleLine"], isSingleLine)
+            button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
@@ -177,15 +170,15 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         hbox {
             label(messages["output"])
             spacing = DEFAULT_SPACING
-            button(graphic = imageview(Image("/copy.png"))) { action { outputText.copy() } }
-            button(graphic = imageview(Image("/up.png"))) {
+            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/up.png")) {
                 action {
-                    input.text = outputText
-                    output.text = ""
+                    taInput.text = outputText
+                    taOutput.text = ""
                 }
             }
         }
-        output =
+        taOutput =
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
@@ -201,7 +194,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             isProcessing.value = true
             if (isEncrypt)
                 if (isFile.get())
-                    inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                    inputText.lineAction2String {
                         controller.encryptByFile(keyByteArray, it, ivByteArray, cipher)
                     }
                 else
@@ -210,10 +203,11 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                         inputText,
                         ivByteArray,
                         cipher,
-                        selectedCharset.get()
+                        selectedCharset.get(),
+                        isSingleLine.get()
                     )
             else if (isFile.get())
-                inputText.split("\n|\r\n".toRegex()).joinToString("\n") {
+                inputText.lineAction2String {
                     controller.decryptByFile(keyByteArray, it, ivByteArray, cipher)
                 }
             else
@@ -222,13 +216,15 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                     inputText,
                     ivByteArray,
                     cipher,
-                    selectedCharset.get()
+                    selectedCharset.get(),
+                    isSingleLine.get()
                 )
         } ui
             {
                 isProcessing.value = false
-                output.text = it
+                taOutput.text = it
                 infoLabel.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
     }
 }

@@ -27,23 +27,25 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32
+- [x] base16/32/36/58/62/85/91/92
+- [x] base58check
 - [x] UrlEncode
 - [x] Unicode
-- [x] hex
-- [x] binary
-- [x] base58/base58check
-- [x] base36
-- [x] base62
-- [x] base85
-- [x] base91
-- [x] base92
+- [x] binary/octal/decimal/hex
 - [x] custom base serial dict
 
 ![encode](./art/encode.gif)
 
 
+
+**String Process(eg. Split)**
+
+![encode_split](./art/encode_split.gif)
+
+
+
 ### Encoding Transfer (not raw data)
+
 - [x] Transfer
 
 ![encode](./art/encode_transfer.gif)
@@ -59,7 +61,7 @@
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] other BouncyCastle support alogrithms
+- [x] etc.
 
 ![hash](./art/hash.gif)
 
@@ -75,7 +77,7 @@
 - [x] RIPEMD
 - [x] whirpool
 - [x] Tiger
-- [x] other BouncyCastle support algorithms
+- [x] etc.
 
 #### CMAC
 
@@ -114,7 +116,7 @@
 - [x] Blowfish
 - [x] Twofish
 - [x] RC2
-- [x] other BouncyCastle support alogrithms
+- [x] etc.
 
 #### support mode
 
@@ -184,7 +186,7 @@
 ### Others
 
 - [x] Qrcode
-- [ ] TBD
+- [x] String Process
 - [ ] TBD
 
 ### Features
@@ -203,7 +205,7 @@
 
  [github release](https://github.com/Leon406/ToolsFx/releases) 
 
- [gitte miror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
+ [gitte mirror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
 
 download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
 
@@ -219,8 +221,11 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
   - jdk8      choose suffix with jdk8
   - jdk11+   choose suffix with jdk11
 - w/o jre environment(Windows user only)
-  -  64bit Windows      x64 (jre11)
-  -  32/64bit Windows x86 (jre8,have no idea, choose this)  
+  - 64bit Windows      x64 (jre11)
+  - 32/64bit Windows x86 (jre8,have no idea, choose this)  
+- beta (jar file)
+  copy jar file to lib directory and delete ToolsFx-xxx.jar
+  
 
 ## How to Run
 

@@ -2,15 +2,14 @@ package me.leon
 
 import java.io.ByteArrayInputStream
 import java.net.URLDecoder
+import java.nio.charset.Charset
 import java.security.cert.CertificateFactory
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
 import me.leon.encode.base.*
-import me.leon.ext.hex2ByteArray
-import me.leon.ext.stacktrace
-import me.leon.ext.unicode2String
+import me.leon.ext.*
 import org.junit.Test
 
 class MyTest {
@@ -83,9 +82,7 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
 
         println("ABDdd东方丽景的猜测1#".base58())
         println("fvw2PFXr4yWZgdRoBp5UptcJeAW1c46YobuRaA".base58Decode2String())
-        measureNanoTime { println(Base58Check.encode("ABDdd东方丽景的猜测1#".toByteArray())) }.also {
-            println(it)
-        }
+
         measureNanoTime {
             "ABDdd东方丽景的猜测1#".toByteArray().baseCheck().also {
                 println("dddd " + String(it.baseCheckDecode()))
@@ -130,5 +127,28 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
     @Test
     fun sig() {
         SignatureDemo.sigTest()
+    }
+
+    @Test
+    fun charset() {
+        val r = "中国China 666"
+        val uft8Bytes = r.toByteArray()
+        val gbkBytes = r.toByteArray(Charset.forName("gb2312"))
+        val big5Bytes = r.toByteArray(Charset.forName("BIG5"))
+        val iso88591 = r.toByteArray(Charset.forName("ISO8859-1"))
+        uft8Bytes.contentToString().also { println(it) }
+        println(gbkBytes.charsetChange("gbk", "utf-8").contentToString())
+        println(big5Bytes.charsetChange("BIG5", "utf-8").contentToString())
+        println(iso88591.charsetChange("ISO8859-1", "utf-8").contentToString())
+        gbkBytes.contentToString().also { println(it) }
+        big5Bytes.contentToString().also { println(it) }
+        iso88591.contentToString().also { println(it) }
+
+        String(iso88591).also { println(it) }
+        String(uft8Bytes).also { println(it) }
+        String(uft8Bytes, Charset.forName("gb2312")).also { println(it) }
+        String(gbkBytes, Charset.forName("gbk")).also { println(it) }
+        String(big5Bytes, Charset.forName("big5")).also { println(it) }
+        String(iso88591, Charset.forName("utf-8")).also { println(it) }
     }
 }

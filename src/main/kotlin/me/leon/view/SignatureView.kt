@@ -3,43 +3,19 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.ComboBox
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
-import javafx.scene.image.Image
+import javafx.scene.control.*
 import me.leon.controller.SignatureController
-import me.leon.encode.base.base64Decode
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_10X
-import me.leon.ext.DEFAULT_SPACING_16X
-import me.leon.ext.DEFAULT_SPACING_4X
-import me.leon.ext.clipboardText
-import me.leon.ext.copy
-import me.leon.ext.fileDraggedHandler
-import me.leon.ext.showToast
+import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.asObservable
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.combobox
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.paddingTop
-import tornadofx.textarea
-import tornadofx.tilepane
-import tornadofx.vbox
 
 class SignatureView : View(messages["signVerify"]) {
     private val controller: SignatureController by inject()
     override val closeable = SimpleBooleanProperty(false)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private lateinit var taKey: TextArea
     private lateinit var taRaw: TextArea
-    private lateinit var infoLabel: Label
+    private lateinit var labelInfo: Label
     private lateinit var taSigned: TextArea
     private val key: String
         get() = taKey.text
@@ -145,7 +121,7 @@ class SignatureView : View(messages["signVerify"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["key"])
-            button(graphic = imageview(Image("/import.png"))) {
+            button(graphic = imageview("/img/import.png")) {
                 action { taKey.text = clipboardText() }
             }
         }
@@ -157,7 +133,7 @@ class SignatureView : View(messages["signVerify"]) {
             }
         hbox {
             label(messages["plain"])
-            button(graphic = imageview(Image("/import.png"))) {
+            button(graphic = imageview("/img/import.png")) {
                 action { taRaw.text = clipboardText() }
             }
         }
@@ -200,6 +176,7 @@ class SignatureView : View(messages["signVerify"]) {
             alignment = Pos.CENTER
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING_4X
+            checkbox(messages["singleLine"], isSingleLine)
             button(messages["priSig"]) {
                 action { sign() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
@@ -211,7 +188,7 @@ class SignatureView : View(messages["signVerify"]) {
         }
         hbox {
             label(messages["sig"])
-            button(graphic = imageview(Image("/copy.png"))) { action { signText.copy() } }
+            button(graphic = imageview("/img/copy.png")) { action { signText.copy() } }
         }
 
         taSigned =
@@ -223,15 +200,25 @@ class SignatureView : View(messages["signVerify"]) {
     }
     override val root = borderpane {
         center = centerNode
-        bottom = hbox { infoLabel = label(info) }
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun sign() =
-        runAsync { controller.sign(selectedKeyPairAlg.get(), selectedSigAlg.get(), key, msg) } ui
+        runAsync {
+            controller.sign(
+                selectedKeyPairAlg.get(),
+                selectedSigAlg.get(),
+                key,
+                msg,
+                isSingleLine.get()
+            )
+        } ui
             {
                 taSigned.text = it
-                infoLabel.text = info
+                labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
+
     private fun verify() =
         runAsync {
             controller.verify(
@@ -239,11 +226,12 @@ class SignatureView : View(messages["signVerify"]) {
                 selectedSigAlg.get(),
                 key,
                 msg,
-                signText.base64Decode()
+                signText,
+                isSingleLine.get()
             )
         } ui
             { state ->
-                primaryStage.showToast("验签成功".takeIf { state } ?: "验签失败")
-                infoLabel.text = info
+                primaryStage.showToast("验签结果: \n$state")
+                labelInfo.text = info
             }
 }

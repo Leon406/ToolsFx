@@ -48,3 +48,22 @@
 - feat: UI美化
 - feat: hash/对称加密支持多个文件操作
 
+# v1.8.0  
+## feature:  
+- feat: 新增模块启用配置
+- feat: 新增配置及加载网页功能
+- feat: ctf 加入one time pad
+- feat: add  classical bacon and polybius cipher
+- feat: add module classical
+- feat: 支持多次网络加载及优化检测升级
+- feat: actions can be line by line
+- feat: add PBE
+- feat: add punycode & mac key, iv base64/hex format
+- feat: encode transfer supports charset
+- feat: encode supports charset
+- feat: add xxEncode/uuEncode
+- feat: add eventbus
+- feat: add auto copy & string extract, adjust UI
+- feat: add crc32,character statistic ,read http headers
+## bug fix:
+- fix: urlbase64  urlencode error

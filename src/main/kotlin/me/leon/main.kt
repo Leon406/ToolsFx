@@ -1,6 +1,6 @@
 package me.leon
 
-import tornadofx.launch
+import tornadofx.*
 
 fun main() {
     launch<ToolsApp>()

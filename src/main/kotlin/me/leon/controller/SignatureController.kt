@@ -1,19 +1,20 @@
 package me.leon.controller
 
-import java.security.KeyFactory
-import java.security.PrivateKey
-import java.security.PublicKey
-import java.security.Signature
+import java.security.*
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
-import me.leon.ext.catch
-import tornadofx.Controller
+import me.leon.ext.*
+import tornadofx.*
 
 fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
 
 class SignatureController : Controller() {
+
+    fun sign(kpAlg: String, sigAlg: String, pri: String, msg: String, isSingleLine: Boolean) =
+        if (isSingleLine) msg.lineAction2String { sign(kpAlg, sigAlg, pri, it) }
+        else sign(kpAlg, sigAlg, pri, msg)
 
     fun sign(kpAlg: String, sigAlg: String, pri: String, msg: String) =
         catch({ it }) {
@@ -25,6 +26,20 @@ class SignatureController : Controller() {
                 .sign()
                 .base64()
         }
+
+    fun verify(
+        kpAlg: String,
+        sigAlg: String,
+        pub: String,
+        msg: String,
+        signed: String,
+        isSingleLine: Boolean
+    ) =
+        if (isSingleLine)
+            msg.lineActionIndex { s, i ->
+                verify(kpAlg, sigAlg, pub, s, signed.lineSplit()[i].base64Decode()).toString()
+            }
+        else verify(kpAlg, sigAlg, pub, msg, signed.base64Decode())
 
     fun verify(kpAlg: String, sigAlg: String, pub: String, msg: String, signed: ByteArray) =
         catch({ false }) {

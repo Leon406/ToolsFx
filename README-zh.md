@@ -9,7 +9,7 @@
 <img src="https://img.shields.io/github/downloads/Leon406/Toolsfx/total"/>
 </p>
 <p align="center">
-<a href="README.md">English</a>|<a href="README.md-zh">中文</a>
+<a href="README.md">English</a>|<a href="README-zh.md">中文</a>
 </p>
 <p align="center"><img src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx :: Visitor's Count" />
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
@@ -35,23 +35,23 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32
+- [x] base16/32/36/58/62/85/91/92
+- [x] base58check
 - [x] UrlEncode
 - [x] Unicode
-- [x] hex
-- [x] binary
-- [x] base58/base58check
-- [x] base36
-- [x] base62
-- [x] base85
-- [x] base91
-- [x] base92
+- [x] binary/octal/decimal/hex
 - [x] base系列自定义字典
 
 ![encode](./art/encode.gif)
 
 
+
+**字符处理(以分割为例)**
+
+![encode_split](./art/encode_split.gif)
+
 ### 编码互转功能 (非原始字符)
+
 - [x] 编解码功能相互转换
 
 ![encode](./art/encode_transfer.gif)
@@ -194,7 +194,7 @@
 ### 其他功能
 
 - [x] 二维码功能
-- [ ] 待定
+- [x] 字符处理
 - [ ] 待定
 
 ### 特性
@@ -227,8 +227,11 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
   - jdk8      选择jdk8的版本
   - jdk11+  选择jdk11的版本
 - 无jre环境
-  -  64位 windows系统     x64 (jre11)
-  -  32/64位 windows系统  x86 (jre8,不知道就选这个)  
+  - 64位 windows系统     x64 (jre11)
+  - 32/64位 windows系统  x86 (jre8,不知道就选这个)  
+- beta版 (jar文件)
+
+  需要复制到lib目录,同时删除ToolsFx.jar
 
 ## 如何运行
 
