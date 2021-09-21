@@ -203,9 +203,9 @@
 - [x] 对称加密key, iv 支持base64 ,hex
 - [x] 哈希/对称加密支持多个文件加密解密
 - [x] i18n
-- [ ] 键盘事件, 快捷键
-- [ ] CTF相关功能
-- [ ] PBE
+- [x] CTF相关功能
+- [x] PBE
+- [x] 可配置模块,支持第三方网址
 
 bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
@@ -237,6 +237,24 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
 - Linux/Mac OX系统双击运行 bin目录下 ToolsFx 
 - Windows 系统双击运行ToolsFx.bat或者 vbs文件(去除黑窗)
+
+## 如何配置
+
+启动时,默认会生成配置文件ToolsFx.properties, 修改对应的值即可
+
+| key                     | value                                     |
+| ----------------------- | ----------------------------------------- |
+| isEnableClassical       | 古典密码学启用开关,默认false              |
+| isEnablePBE             | PBE启用开关,默认false                     |
+| isEnableSignature       | 签名启用开关,默认true                     |
+| isEnableMac             | MAC启用开关,默认true                      |
+| isEnableSymmetricStream | 对称加密(stream)启用开关,默认true         |
+| isEnableQrcode          | 二维码启用开关,默认true                   |
+| isEnableInternalWebview | 内置浏览器启用开关,默认false              |
+| extUrls                 | 内置浏览器默认收藏链接,多个用英文逗号分隔 |
+
+
+
 
 ## CHANGE LOG
 
