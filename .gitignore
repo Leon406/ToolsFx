@@ -1,5 +1,6 @@
 # Project exclude paths
 /.gradle/
-/build/
+build/
 /.idea
 /out
+/ToolsFx.properties
