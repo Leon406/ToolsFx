@@ -7,7 +7,7 @@ plugins {
     id("org.openjfx.javafxplugin") version "0.0.10"
 }
 group = "me.leon.toolsfx"
-version = "1.7.4.beta"
+version = "1.8.0"
 val tornadofx_version: String by rootProject
 
 repositories {
