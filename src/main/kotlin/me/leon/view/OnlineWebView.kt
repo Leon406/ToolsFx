@@ -1,7 +1,6 @@
 package me.leon.view
 
 import javafx.beans.property.SimpleStringProperty
-import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
 import javafx.geometry.Pos
 import javafx.scene.control.TextField
@@ -63,12 +62,9 @@ class OnlineWebView : View("Browser") {
         center =
             vbox {
                 web =
-                    webview() {
+                    webview {
                         engine.load(ToolsApp.extUrls.first())
-                        engine.loadWorker.stateProperty().addListener {
-                            ov: ObservableValue<out Worker.State>?,
-                            oldState: Worker.State?,
-                            newState: Worker.State ->
+                        engine.loadWorker.stateProperty().addListener { _, _, newState ->
                             println("loading $newState")
 
                             if (newState == Worker.State.SUCCEEDED) {

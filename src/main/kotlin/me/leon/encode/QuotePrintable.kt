@@ -34,7 +34,7 @@ object QuotePrintable {
         preHandle.also { println(it) }
         val sb = StringBuilder()
         val hex = StringBuilder()
-        var curPos = 0
+        var curPos: Int
         var lastPos = 0
         println(preHandle.length)
         while (lastPos < preHandle.length) {

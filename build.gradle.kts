@@ -1,6 +1,6 @@
 
 plugins {
-    kotlin("jvm") version "1.5.30"
+    kotlin("jvm") version "1.5.31"
     application
     id("com.diffplug.spotless") version "5.15.0"
     id("io.gitlab.arturbosch.detekt") version "1.18.1"
@@ -24,11 +24,11 @@ application {
 dependencies {
     implementation("no.tornado:tornadofx:$tornadofx_version")
     implementation("org.bouncycastle:bcprov-jdk15on:1.69")
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.5.30")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
     implementation("org.glassfish:javax.json:1.1.4")
     implementation("com.google.zxing:javase:3.4.1")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.5.30")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.5.31")
 }
 
 javafx {
