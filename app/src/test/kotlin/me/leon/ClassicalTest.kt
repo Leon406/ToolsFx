@@ -1,5 +1,6 @@
 package me.leon
 
+import BrainfuckEngine
 import me.leon.classical.affineDecrypt
 import me.leon.classical.affineEncrypt
 import me.leon.classical.atBash
@@ -22,6 +23,7 @@ import me.leon.classical.shift94
 import me.leon.classical.virgeneneDecode
 import me.leon.classical.virgeneneEncode
 import org.junit.Test
+
 
 class ClassicalTest {
     @Test
@@ -161,4 +163,14 @@ class ClassicalTest {
         println(encoded)
         println(encoded.base100Decode2String())
     }
+
+    @Test
+    fun brainFuck() {
+
+
+        BrainfuckEngine(8,System.out, "Hello".byteInputStream())
+
+
+    }
+
 }
