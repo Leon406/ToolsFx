@@ -1,6 +1,26 @@
 package me.leon
 
-import me.leon.classical.*
+import me.leon.classical.affineDecrypt
+import me.leon.classical.affineEncrypt
+import me.leon.classical.atBash
+import me.leon.classical.baconDecrypt24
+import me.leon.classical.baconDecrypt26
+import me.leon.classical.baconEncrypt24
+import me.leon.classical.baconEncrypt26
+import me.leon.classical.morseDecrypt
+import me.leon.classical.morseEncrypt
+import me.leon.classical.oneTimePad
+import me.leon.classical.oneTimePadDecrypt
+import me.leon.classical.polybius
+import me.leon.classical.polybiusDecrypt
+import me.leon.classical.qweDecrypt
+import me.leon.classical.qweEncrypt
+import me.leon.classical.rot18
+import me.leon.classical.shift10
+import me.leon.classical.shift26
+import me.leon.classical.shift94
+import me.leon.classical.virgeneneDecode
+import me.leon.classical.virgeneneEncode
 import org.junit.Test
 
 class ClassicalTest {
@@ -132,5 +152,13 @@ class ClassicalTest {
         println("QWERTYUIOP".qweDecrypt())
         println("ASDFGHJKL".qweDecrypt())
         println("ZXCVBNM ".qweDecrypt())
+    }
+
+    @Test
+    fun b100() {
+        val s = "hello开发工具箱".toByteArray()
+        val encoded = s.base100()
+        println(encoded)
+        println(encoded.base100Decode2String())
     }
 }

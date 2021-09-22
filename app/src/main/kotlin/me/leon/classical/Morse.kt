@@ -40,10 +40,8 @@ val DEFAULT_MORSE =
         '0' to "-----",
     )
 
-val DEFAULT_MORSE_DECODE = mutableMapOf<String, Char>().apply {
-    putAll(DEFAULT_MORSE.values.zip(DEFAULT_MORSE.keys))
-}
-
+val DEFAULT_MORSE_DECODE =
+    mutableMapOf<String, Char>().apply { putAll(DEFAULT_MORSE.values.zip(DEFAULT_MORSE.keys)) }
 
 fun String.morseEncrypt() =
     uppercase().replace("\\s".toRegex(), "").toList().joinToString(" ") { DEFAULT_MORSE[it]!! }
