@@ -53,6 +53,11 @@ enum class ClassicalCryptoType(val type: String) {
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.morseDecrypt()
     },
+    QWE("qwe") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.qweEncrypt()
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.qweDecrypt()
+    },
     POLYBIUS("polybius") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.polybius(

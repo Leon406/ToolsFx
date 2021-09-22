@@ -23,8 +23,8 @@ class ClassicalTest {
     fun rotTest() {
         val rot13 =
             "How can you tell an extrovert from an\n" +
-                "introvert at NSA? Va gur ryringbef,\n" +
-                "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
+                    "introvert at NSA? Va gur ryringbef,\n" +
+                    "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
 
         println(rot13)
 
@@ -69,8 +69,8 @@ class ClassicalTest {
 
     @Test
     fun morse() {
-        println("Leon406".morseEncrypt())
-        println(".-.. . --- -. ....- ----- -....".morseDecrypt())
+        println("ATTACKATDOWN".morseEncrypt())
+        println(".- - - .- -.-. -.- .- - -.. --- .-- -.".morseDecrypt())
     }
 
     @Test
@@ -123,5 +123,14 @@ class ClassicalTest {
         println()
         println(data.oneTimePad(key))
         println(encrypted.oneTimePadDecrypt(key))
+    }
+
+    @Test
+    fun qwe() {
+        println("Hello Leon".qweEncrypt())
+        println("ITSSGSTGF".qweDecrypt())
+        println("QWERTYUIOP".qweDecrypt())
+        println("ASDFGHJKL".qweDecrypt())
+        println("ZXCVBNM ".qweDecrypt())
     }
 }
