@@ -36,6 +36,13 @@ enum class ClassicalCryptoType(val type: String) {
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
             raw.affineDecrypt(params[P1]!!.toInt(), params[P2]!!.toInt())
     },
+    RAILFENCE("railFence") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.railFenceEncrypt(params[P1]!!.toInt())
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.railFenceDecrypt(params[P1]!!.toInt())
+    },
     VIRGENENE("virgenene") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.virgeneneEncode(params[P1]!!)
@@ -87,6 +94,13 @@ enum class ClassicalCryptoType(val type: String) {
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
             raw.oneTimePadDecrypt(params[P1]!!)
+    },
+    SOCIALISM("SocialistCoreValue") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.socialistCoreValues()
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.socialistCoreValuesDecrypt()
     };
 
     abstract fun encrypt(raw: String, params: MutableMap<String, String>): String

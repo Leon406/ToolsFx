@@ -35,7 +35,7 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32/36/58/62/85/91/92
+- [x] base16/32/36/58/62/85/91/92/100
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
@@ -189,6 +189,26 @@
 - [x] EdDSA(ED448/ED25192)
 - [x] SM2
 - [ ] 其他
+
+### 古典密码 (for CTF)
+
+- [x] 凯撒
+- [x] rot5/rot13/rot18/rot47
+- [x] 仿射
+- [x] virgenene
+- [x] atbash
+- [x] 摩尔斯密码
+- [x] qwe键盘加密
+- [x] polybius
+- [x] 培根24/培根26
+- [x] 一次性密码
+- [x] 社会主义核心价值观
+- [ ] ADFGX/ADFGVX
+- [ ] 栅栏密码 /栅栏密码 w
+- [ ] polyfair
+- [ ] brainfuck/ook
+
+
 
 
 ### 其他功能

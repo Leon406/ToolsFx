@@ -10,6 +10,7 @@ const val DECIMAL_RADIX = 10
 
 /** 16进制编解码 */
 fun ByteArray.toHex() = hex
+fun String.toHex() = toByteArray().toHex()
 
 fun String.hex2String(charset: String = "UTF-8") = String(hex2ByteArray(), Charset.forName(charset))
 

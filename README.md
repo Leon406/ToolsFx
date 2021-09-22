@@ -27,7 +27,7 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32/36/58/62/85/91/92
+- [x] base16/32/36/58/62/85/91/92/100
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
@@ -181,6 +181,24 @@
 - [x] EdDSA(ED448/ED25192)
 - [x] SM2
 - [ ] other
+
+### Classical Crypto (for CTF)
+
+- [x] caesar
+- [x] rot5/rot13/rot18/rot47
+- [x] affine
+- [x] virgenene
+- [x] atbash
+- [x] morse
+- [x] qwe keyborad
+- [x] polybius
+- [x] bacon 24/bacon26
+- [x] one time pad
+- [x] socialist core value
+- [ ] ADFGX/ADFGVX
+- [ ] railfence normal /railfence w-type
+- [ ] polyfair
+- [ ] brainfuck/ook
 
 
 ### Others
