@@ -1,28 +1,16 @@
 package me.leon
 
 import BrainfuckEngine
-import me.leon.classical.affineDecrypt
-import me.leon.classical.affineEncrypt
-import me.leon.classical.atBash
-import me.leon.classical.baconDecrypt24
-import me.leon.classical.baconDecrypt26
-import me.leon.classical.baconEncrypt24
-import me.leon.classical.baconEncrypt26
-import me.leon.classical.morseDecrypt
-import me.leon.classical.morseEncrypt
-import me.leon.classical.oneTimePad
-import me.leon.classical.oneTimePadDecrypt
-import me.leon.classical.polybius
-import me.leon.classical.polybiusDecrypt
-import me.leon.classical.qweDecrypt
-import me.leon.classical.qweEncrypt
-import me.leon.classical.rot18
-import me.leon.classical.shift10
-import me.leon.classical.shift26
-import me.leon.classical.shift94
-import me.leon.classical.virgeneneDecode
-import me.leon.classical.virgeneneEncode
+import me.leon.classical.*
+import me.leon.encode.base.BASE16_DICT
+import me.leon.encode.base.padding
+import me.leon.ext.hex2String
+import me.leon.ext.toHex
 import org.junit.Test
+import java.lang.StringBuilder
+import kotlin.math.floor
+import kotlin.random.Random
+import kotlin.test.assertEquals
 
 
 class ClassicalTest {
@@ -165,11 +153,58 @@ class ClassicalTest {
     }
 
     @Test
-    fun brainFuck() {
+    fun coreValues() {
+        println("hello开发工具箱".socialistCoreValues())
+        var tmp = 0
+        ("公正爱国公正平等公正诚信文明公正诚信文明公正诚信平等友善爱国平等诚信民主诚信文明爱国富强友善爱国平等爱国诚信平等敬业民主诚信自由平等友善平等法治诚信富强平等友善爱国平等爱国平等诚信民主法治诚信自由法治友善自由友善爱国友善平等民主")
+            .socialistCoreValuesDecrypt()
+            .also {
+                println(it)
+            }
+    }
 
+    @Test
+    fun railFence() {
+        val msg = "ATTACKATDAWN"
+        val count = 5
+        println(msg.railFenceEncrypt(count))
 
-        BrainfuckEngine(8,System.out, "Hello".byteInputStream())
+        val encrypt = "AKWTANTT@AD@CA@"
+        println(encrypt.railFenceDecrypt(5))
+        assertEquals(msg, encrypt.railFenceDecrypt(5))
+    }
 
+    @Test
+    fun railFenceW() {
+        val msg = "ATTACKATDAWN"
+        val count = 4
+
+        val factor = 2 * (count - 1)
+
+        (msg[0] + msg.substring(1).padding("@", factor )).toList()
+            .foldIndexed(mutableMapOf<Int, MutableList<Char>>()) { index, acc, c ->
+                acc.apply {
+                    val propIndex = (index % factor).takeIf { it < count - 1 } ?: (factor - index % factor)
+                    println("index $index     prop $propIndex")
+                    this[propIndex]?.add(c) ?: kotlin.run { this[propIndex] = mutableListOf(c) }
+                }
+            }.values.joinToString("") { it.joinToString("") }
+            .also { println(it) }
+//        val encrypt = "ATCADWTAKTAN"  //2
+        var encrypt = "ACDTAKTANTAW"  //3
+        encrypt = "AATKTNTCDWAA"  //4
+//        encrypt = "ADTTATAWAKNC"  //5
+//        encrypt = "AWTANTDATCAK"  //6
+        encrypt.toList().foldIndexed(CharArray(encrypt.length)) { index, acc, c ->
+            acc.apply {
+                println(c)
+                when (index % factor) {
+                    0 -> this[index / factor]
+                    factor - 1 -> ""
+                    else -> ""
+                }
+            }
+        }.also { println(String(it)) }
 
     }
 
