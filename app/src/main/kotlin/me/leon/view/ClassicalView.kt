@@ -14,6 +14,7 @@ class ClassicalView : View(messages["classical"]) {
     private val controller: ClassicalController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
     private lateinit var tfParam1: TextField
@@ -25,7 +26,9 @@ class ClassicalView : View(messages["classical"]) {
             "${if (isEncrypt) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
-        get() = taInput.text
+        get() =
+            taInput.text.takeUnless { decodeIgnoreSpace.get() }
+                ?: taInput.text.replace("\\s".toRegex(), "")
     private val outputText: String
         get() = taOutput.text
 
@@ -121,6 +124,11 @@ class ClassicalView : View(messages["classical"]) {
                 alignment = Pos.BASELINE_CENTER
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
+                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
+                    selectedProperty().addListener { observable, oldValue, newValue ->
+                        println("$observable $oldValue  $newValue")
+                    }
+                }
                 checkbox(messages["singleLine"], isSingleLine)
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]

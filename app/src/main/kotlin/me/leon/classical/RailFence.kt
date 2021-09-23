@@ -1,7 +1,7 @@
 package me.leon.classical
 
-import me.leon.encode.base.padding
 import kotlin.math.floor
+import me.leon.encode.base.padding
 
 /**
  * normal @link https://ctf.bugku.com/tool/railfence type w @link
@@ -10,9 +10,12 @@ import kotlin.math.floor
 
 /** count必须为长度的公约数 */
 fun String.railFenceEncrypt(count: Int) =
-    padding("@", count).toList().mapIndexed { index, c -> index to c }.groupBy { it.first % count }
-        .values.joinToString("") { it.joinToString("") { it.second.toString() } }
-
+    padding("@", count)
+        .toList()
+        .mapIndexed { index, c -> index to c }
+        .groupBy { it.first % count }
+        .values
+        .joinToString("") { it.joinToString("") { it.second.toString() } }
 
 /** count必须为长度的公约数 */
 fun String.railFenceDecrypt(count: Int) =

@@ -1,33 +1,30 @@
-import me.leon.encode.base.Base64Kt;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import me.leon.encode.base.Base64Kt;
 
 /**
- * 明文I Love You小可爱无密匙加密后密文为U2FsdGVkX1/ouFei55jKdzY1fWNS4jxHVNf/AfKWjnBrOGY=
- * 明文I Love You 521无密匙加密后密文为U2FsdGVkX19DvuEo5PvBA8TuLrM2t+EZBvUkzlAa
- * 明文I Love You 521密匙为666加密后密文为U2FsdGVkX18w6vxXxux/ivRVwo3xMzTxmUyk7cHz
+ * 明文I Love You小可爱无密匙加密后密文为U2FsdGVkX1/ouFei55jKdzY1fWNS4jxHVNf/AfKWjnBrOGY= 明文I Love You
+ * 521无密匙加密后密文为U2FsdGVkX19DvuEo5PvBA8TuLrM2t+EZBvUkzlAa 明文I Love You
+ * 521密匙为666加密后密文为U2FsdGVkX18w6vxXxux/ivRVwo3xMzTxmUyk7cHz
  */
 public class RabbitTest {
     public static void main(String[] args) {
         RabbitTest test = new RabbitTest();
-//        test.test(new Rabbit());
+        //        test.test(new Rabbit());
         byte[] key = "6666666666666666666".getBytes(StandardCharsets.UTF_8);
 
         byte[] data = "I Love You 521".getBytes(StandardCharsets.UTF_8);
         byte[] iv = null;
-//        iv = "".getBytes(StandardCharsets.UTF_8);
+        //        iv = "".getBytes(StandardCharsets.UTF_8);
         Rabbit rabbit = new Rabbit();
         rabbit.reset();
         rabbit.setupKey(key);
-        if (iv != null)
-            rabbit.setupIV(iv);
+        if (iv != null) rabbit.setupIV(iv);
         byte[] crypt = rabbit.crypt(data.clone());
-        System.out.println(Base64Kt.base64(crypt,Base64Kt.BASE64_DICT));
+        System.out.println(Base64Kt.base64(crypt, Base64Kt.BASE64_DICT));
         rabbit.reset();
         rabbit.setupKey(key);
-        if (iv != null)
-            rabbit.setupIV(iv);
+        if (iv != null) rabbit.setupIV(iv);
         rabbit.crypt(crypt);
     }
 
@@ -54,13 +51,11 @@ public class RabbitTest {
     private void test(Rabbit rabbit, byte[] key, byte[] iv, byte[] data) {
         rabbit.reset();
         rabbit.setupKey(key);
-        if (iv != null)
-            rabbit.setupIV(iv);
+        if (iv != null) rabbit.setupIV(iv);
         byte[] crypt = rabbit.crypt(data.clone());
         rabbit.reset();
         rabbit.setupKey(key);
-        if (iv != null)
-            rabbit.setupIV(iv);
+        if (iv != null) rabbit.setupIV(iv);
         rabbit.crypt(crypt);
         if (Arrays.equals(data, crypt)) {
             System.out.println("SUCCESS");
@@ -76,9 +71,10 @@ public class RabbitTest {
         System.out.println();
         System.out.println("A.1. Testing without IV Setup");
 
-        //TEST 1
+        // TEST 1
         System.out.print("\tTEST 1... ");
-        test(rabbit,
+        test(
+                rabbit,
                 convertData("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"),
                 null,
                 convertData(
@@ -87,7 +83,8 @@ public class RabbitTest {
                         "F4 16 A1 C3 70 0C D4 51 DA 68 D1 88 16 73 D6 96"));
 
         System.out.print("\tTEST 2... ");
-        test(rabbit,
+        test(
+                rabbit,
                 convertData("91 28 13 29 2E 3D 36 FE 3B FC 62 F1 DC 51 C3 AC"),
                 null,
                 convertData(
@@ -96,7 +93,8 @@ public class RabbitTest {
                         "E5 54 74 73 FB DB 43 50 8A E5 3B 20 20 4D 4C 5E"));
 
         System.out.print("\tTEST 3... ");
-        test(rabbit,
+        test(
+                rabbit,
                 convertData("83 95 74 15 87 E0 C7 33 E9 E9 AB 01 C0 9B 00 43"),
                 null,
                 convertData(
@@ -108,7 +106,8 @@ public class RabbitTest {
         System.out.println("A.2. Testing with IV Setup");
 
         System.out.print("\tTEST 1... ");
-        test(rabbit,
+        test(
+                rabbit,
                 convertData("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"),
                 convertIVData("00 00 00 00 00 00 00 00"),
                 convertData(
@@ -117,7 +116,8 @@ public class RabbitTest {
                         "2A DE 82 2B 29 DE 6C 1E E5 2B DB 8A 47 BF 8F 66"));
 
         System.out.print("\tTEST 2... ");
-        test(rabbit,
+        test(
+                rabbit,
                 convertData("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"),
                 convertIVData("C3 73 F5 75 C1 26 7E 59"),
                 convertData(
@@ -126,7 +126,8 @@ public class RabbitTest {
                         "EB C1 12 C3 93 E7 38 39 23 56 BD D0 12 02 9B A7"));
 
         System.out.print("\tTEST 3... ");
-        test(rabbit,
+        test(
+                rabbit,
                 convertData("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"),
                 convertIVData("A6 EB 56 1A D2 F4 17 27"),
                 convertData(

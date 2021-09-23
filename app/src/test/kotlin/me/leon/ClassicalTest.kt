@@ -1,17 +1,14 @@
 package me.leon
 
-import BrainfuckEngine
-import me.leon.classical.*
-import me.leon.encode.base.BASE16_DICT
-import me.leon.encode.base.padding
-import me.leon.ext.hex2String
-import me.leon.ext.toHex
-import org.junit.Test
-import java.lang.StringBuilder
-import kotlin.math.floor
-import kotlin.random.Random
 import kotlin.test.assertEquals
-
+import me.leon.classical.*
+import me.leon.ctf.BrainfuckEngine
+import me.leon.ctf.OokEngine
+import me.leon.ctf.TrollScriptEngine
+import me.leon.ctf.socialistCoreValues
+import me.leon.ctf.socialistCoreValuesDecrypt
+import me.leon.encode.base.padding
+import org.junit.Test
 
 class ClassicalTest {
     @Test
@@ -33,8 +30,8 @@ class ClassicalTest {
     fun rotTest() {
         val rot13 =
             "How can you tell an extrovert from an\n" +
-                    "introvert at NSA? Va gur ryringbef,\n" +
-                    "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
+                "introvert at NSA? Va gur ryringbef,\n" +
+                "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
 
         println(rot13)
 
@@ -155,12 +152,10 @@ class ClassicalTest {
     @Test
     fun coreValues() {
         println("hello开发工具箱".socialistCoreValues())
-        var tmp = 0
-        ("公正爱国公正平等公正诚信文明公正诚信文明公正诚信平等友善爱国平等诚信民主诚信文明爱国富强友善爱国平等爱国诚信平等敬业民主诚信自由平等友善平等法治诚信富强平等友善爱国平等爱国平等诚信民主法治诚信自由法治友善自由友善爱国友善平等民主")
+        ("公正爱国公正平等公正诚信文明公正诚信文明公正诚信平等友善爱国平等诚信民主诚信文明爱国富强友善爱国平等爱国诚信平等敬业民主诚信自由平等" +
+                "友善平等法治诚信富强平等友善爱国平等爱国平等诚信民主法治诚信自由法治友善自由友善爱国友善平等民主")
             .socialistCoreValuesDecrypt()
-            .also {
-                println(it)
-            }
+            .also { println(it) }
     }
 
     @Test
@@ -181,31 +176,98 @@ class ClassicalTest {
 
         val factor = 2 * (count - 1)
 
-        (msg[0] + msg.substring(1).padding("@", factor )).toList()
+        (msg[0] + msg.substring(1).padding("@", factor))
+            .toList()
             .foldIndexed(mutableMapOf<Int, MutableList<Char>>()) { index, acc, c ->
                 acc.apply {
-                    val propIndex = (index % factor).takeIf { it < count - 1 } ?: (factor - index % factor)
+                    val propIndex =
+                        (index % factor).takeIf { it < count - 1 } ?: (factor - index % factor)
                     println("index $index     prop $propIndex")
                     this[propIndex]?.add(c) ?: kotlin.run { this[propIndex] = mutableListOf(c) }
                 }
-            }.values.joinToString("") { it.joinToString("") }
+            }
+            .values
+            .joinToString("") { it.joinToString("") }
             .also { println(it) }
-//        val encrypt = "ATCADWTAKTAN"  //2
-        var encrypt = "ACDTAKTANTAW"  //3
-        encrypt = "AATKTNTCDWAA"  //4
-//        encrypt = "ADTTATAWAKNC"  //5
-//        encrypt = "AWTANTDATCAK"  //6
-        encrypt.toList().foldIndexed(CharArray(encrypt.length)) { index, acc, c ->
-            acc.apply {
-                println(c)
-                when (index % factor) {
-                    0 -> this[index / factor]
-                    factor - 1 -> ""
-                    else -> ""
+        //        val encrypt = "ATCADWTAKTAN"  //2
+        var encrypt = "ACDTAKTANTAW" // 3
+        encrypt = "AATKTNTCDWAA" // 4
+        //        encrypt = "ADTTATAWAKNC"  //5
+        //        encrypt = "AWTANTDATCAK"  //6
+        encrypt
+            .toList()
+            .foldIndexed(CharArray(encrypt.length)) { index, acc, c ->
+                acc.apply {
+                    println(c)
+                    when (index % factor) {
+                        0 -> this[index / factor]
+                        factor - 1 -> ""
+                        else -> ""
+                    }
                 }
             }
-        }.also { println(String(it)) }
-
+            .also { println(String(it)) }
     }
 
+    @Test
+    fun brainFuck() {
+        val data =
+            "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! " +
+                "Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. " +
+                "Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook! Ook! Ook! " +
+                "Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! " +
+                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. " +
+                "Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
+                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
+                "Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook! Ook. " +
+                "Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! " +
+                "Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! " +
+                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? " +
+                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? " +
+                "Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
+                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. " +
+                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
+                "Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
+                "Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook."
+        println(data)
+        val ookEngine = OokEngine(8)
+        println(ookEngine.interpret(data))
+        println(ookEngine.interpret(data))
+        val bf = "++++++++++[>+++++++++>++++++++>+++++++<<<-]>---.>+.---.-.-.>+.-----."
+
+        println(BrainfuckEngine(1024).interpret(bf))
+        val troll =
+            "Trooloolooloolooloolooloolooloolollooooolooloolooloolooloolooooolooloolooloolooloolo" +
+                "oloolooloooooloolooloooooloooloolooloololllllooooloololoooooololooolooloolooloolooloololool" +
+                "ooolooloololooooooloololooooloololooloolooloolooloolooloolooloolooloolooloololoooooloooloolool" +
+                "olooollollollollollolllooollollollollollollollollloooooololooooolooll"
+        println(troll)
+        println(TrollScriptEngine(1024).interpret(troll))
+    }
 }
