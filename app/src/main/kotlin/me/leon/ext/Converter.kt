@@ -56,7 +56,7 @@ fun String.unicode2String() =
             }
             .toString()
     else
-        split("\\\\u\\+?".toRegex())
+        split("(?i)\\\\u\\+?".toRegex())
             .filterIndexed { index, _ -> index != 0 }
             .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(HEX_RADIX).toChar()) } }
             .toString()
