@@ -92,7 +92,11 @@ constructor(
                             tokenPointer++
                             if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true))
                                 level++
-                            else if (tokens[tokenPointer].equals(Token.BRACKET_RIGHT, ignoreCase = true))
+                            else if (tokens[tokenPointer].equals(
+                                    Token.BRACKET_RIGHT,
+                                    ignoreCase = true
+                                )
+                            )
                                 level--
                         }
                     }
@@ -103,7 +107,11 @@ constructor(
                             tokenPointer--
                             if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true))
                                 level--
-                            else if (tokens[tokenPointer].equals(Token.BRACKET_RIGHT, ignoreCase = true))
+                            else if (tokens[tokenPointer].equals(
+                                    Token.BRACKET_RIGHT,
+                                    ignoreCase = true
+                                )
+                            )
                                 level++
                         }
                     }
@@ -121,14 +129,14 @@ constructor(
      */
     private fun isValidToken(token: String): Boolean {
         return (token.equals(Token.START, ignoreCase = true) ||
-                token.equals(Token.NEXT, ignoreCase = true) ||
-                token.equals(Token.PREVIOUS, ignoreCase = true) ||
-                token.equals(Token.PLUS, ignoreCase = true) ||
-                token.equals(Token.MINUS, ignoreCase = true) ||
-                token.equals(Token.OUTPUT, ignoreCase = true) ||
-                token.equals(Token.INPUT, ignoreCase = true) ||
-                token.equals(Token.BRACKET_LEFT, ignoreCase = true) ||
-                token.equals(Token.BRACKET_RIGHT, ignoreCase = true) ||
-                token.equals(Token.END, ignoreCase = true))
+            token.equals(Token.NEXT, ignoreCase = true) ||
+            token.equals(Token.PREVIOUS, ignoreCase = true) ||
+            token.equals(Token.PLUS, ignoreCase = true) ||
+            token.equals(Token.MINUS, ignoreCase = true) ||
+            token.equals(Token.OUTPUT, ignoreCase = true) ||
+            token.equals(Token.INPUT, ignoreCase = true) ||
+            token.equals(Token.BRACKET_LEFT, ignoreCase = true) ||
+            token.equals(Token.BRACKET_RIGHT, ignoreCase = true) ||
+            token.equals(Token.END, ignoreCase = true))
     }
 }

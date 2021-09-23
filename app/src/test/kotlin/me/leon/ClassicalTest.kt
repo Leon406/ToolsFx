@@ -7,7 +7,6 @@ import me.leon.ctf.OokEngine
 import me.leon.ctf.TrollScriptEngine
 import me.leon.ctf.socialistCoreValues
 import me.leon.ctf.socialistCoreValuesDecrypt
-import me.leon.encode.base.padding
 import org.junit.Test
 
 class ClassicalTest {
@@ -172,41 +171,12 @@ class ClassicalTest {
     @Test
     fun railFenceW() {
         val msg = "ATTACKATDAWN"
-        val count = 4
-
-        val factor = 2 * (count - 1)
-
-        (msg[0] + msg.substring(1).padding("@", factor))
-            .toList()
-            .foldIndexed(mutableMapOf<Int, MutableList<Char>>()) { index, acc, c ->
-                acc.apply {
-                    val propIndex =
-                        (index % factor).takeIf { it < count - 1 } ?: (factor - index % factor)
-                    println("index $index     prop $propIndex")
-                    this[propIndex]?.add(c) ?: kotlin.run { this[propIndex] = mutableListOf(c) }
-                }
-            }
-            .values
-            .joinToString("") { it.joinToString("") }
-            .also { println(it) }
-        //        val encrypt = "ATCADWTAKTAN"  //2
-        var encrypt = "ACDTAKTANTAW" // 3
-        encrypt = "AATKTNTCDWAA" // 4
-        //        encrypt = "ADTTATAWAKNC"  //5
-        //        encrypt = "AWTANTDATCAK"  //6
-        encrypt
-            .toList()
-            .foldIndexed(CharArray(encrypt.length)) { index, acc, c ->
-                acc.apply {
-                    println(c)
-                    when (index % factor) {
-                        0 -> this[index / factor]
-                        factor - 1 -> ""
-                        else -> ""
-                    }
-                }
-            }
-            .also { println(String(it)) }
+        repeat(11) {
+            println("${it + 2}")
+            val message = msg.railFenceWEncrypt(it + 2)
+            println(message)
+            println(message.railFenceWDecrypt(it + 2))
+        }
     }
 
     @Test

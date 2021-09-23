@@ -36,6 +36,8 @@ import me.leon.ctf.socialistCoreValues
 import me.leon.ctf.socialistCoreValuesDecrypt
 import me.leon.ctf.trollScriptDecrypt
 import me.leon.ctf.trollScriptEncrypt
+import me.leon.railFenceWDecrypt
+import me.leon.railFenceWEncrypt
 
 enum class ClassicalCryptoType(val type: String) {
     CAESAR("caesar") {
@@ -76,6 +78,13 @@ enum class ClassicalCryptoType(val type: String) {
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
             raw.railFenceDecrypt(params[P1]!!.toInt())
+    },
+    RAILFENCEW("railFenceW") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.railFenceWEncrypt(params[P1]!!.toInt())
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.railFenceWDecrypt(params[P1]!!.toInt())
     },
     VIRGENENE("virgenene") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
