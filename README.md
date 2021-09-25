@@ -198,7 +198,7 @@
 - [x] ADFGX/ADFGVX
 - [x] Auto Key
 - [x] railfence normal /railfence w-type
-- [ ] polyfair
+- [x] playfair
 - [x] brainfuck/ook
 
 

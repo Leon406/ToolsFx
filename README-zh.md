@@ -206,7 +206,7 @@
 - [x] ADFGX/ADFGVX
 - [x] Auto Key
 - [x] 栅栏密码 /栅栏密码 w
-- [ ] polyfair
+- [x] playfair
 - [x] brainfuck/ook
 
 
