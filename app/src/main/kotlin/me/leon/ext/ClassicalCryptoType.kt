@@ -122,6 +122,15 @@ enum class ClassicalCryptoType(val type: String) {
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
     },
+    PLAYFAIR("playFair") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.playFair(params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.playFairDecrypt(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE
+            )
+    },
     AUTOKEY("autoKey") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.autoKey(params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE)

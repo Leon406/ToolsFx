@@ -266,4 +266,13 @@ class ClassicalTest {
         println("QNXEPVYTWTWP".autoKeyDecrypt(key))
         println("QNXEPV YT WTWP".autoKeyDecrypt(key))
     }
+
+    @Test
+    fun playFair() {
+        val key = "playfair example".replace(" ", "")
+        var msg = "Hide the gold in the tree stump"
+        println(msg.playFair(key))
+        println("BMODZBXDNABEKUDMUIMXMOVUIFYE".playFairDecrypt(key))
+        println("BM OD ZB XD NA BE KU DM UI MX MO VU IF YE".playFairDecrypt(key))
+    }
 }

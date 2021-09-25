@@ -1,6 +1,6 @@
+import java.nio.charset.StandardCharsets
 import me.leon.encode.base.BASE64_DICT
 import me.leon.encode.base.base64
-import java.nio.charset.StandardCharsets
 
 fun main() {
     // http://cdn.esjson.com/esjson/js/encryencode/rabbit.js?v=202003311412
