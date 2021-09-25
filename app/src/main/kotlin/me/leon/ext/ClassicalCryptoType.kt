@@ -96,6 +96,19 @@ enum class ClassicalCryptoType(val type: String) {
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
     },
+    NIHILIST("nihilist") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.nihilist(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.nihilistDecrypt(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
+    },
     ADFGX("ADFGX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.adfgx(
