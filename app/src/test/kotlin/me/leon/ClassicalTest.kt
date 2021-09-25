@@ -2,11 +2,7 @@ package me.leon
 
 import kotlin.test.assertEquals
 import me.leon.classical.*
-import me.leon.ctf.BrainfuckEngine
-import me.leon.ctf.OokEngine
-import me.leon.ctf.TrollScriptEngine
-import me.leon.ctf.socialistCoreValues
-import me.leon.ctf.socialistCoreValuesDecrypt
+import me.leon.ctf.*
 import org.junit.Test
 
 class ClassicalTest {
@@ -239,5 +235,35 @@ class ClassicalTest {
                 "olooollollollollollolllooollollollollollollollollloooooololooooolooll"
         println(troll)
         println(TrollScriptEngine(1024).interpret(troll))
+    }
+
+    @Test
+    fun adfgx() {
+        val msg = "implementedByleonJill".replace("\\s".toRegex(), "")
+        var table = "phqgmeaynofdxkrcvszwbutil"
+        val key = "chinacc".toList().distinct().joinToString("")
+        val encrypted = msg.adfgx(table, key)
+        println(encrypted)
+        println(encrypted.adfgxDecrypt(table, key))
+    }
+
+    @Test
+    fun adfgvx() {
+        val msg = "implementedByleonJillds123".replace("\\s".toRegex(), "")
+        var table = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        val key = "chinacc".toList().distinct().joinToString("")
+        val encrypted = msg.adfgvx(table, key)
+        println(encrypted)
+        println(encrypted.adfgvxDecrypt(table, key))
+    }
+
+    @Test
+    fun autoKey() {
+        val msg = "ATTACK AT DAWN"
+        val key = "QUEENLY"
+        // 它的密钥开头是一个关键词，之后则是明文的重复
+        println(msg.autoKey(key))
+        println("QNXEPVYTWTWP".autoKeyDecrypt(key))
+        println("QNXEPV YT WTWP".autoKeyDecrypt(key))
     }
 }

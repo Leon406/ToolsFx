@@ -6,14 +6,18 @@ const val DEFAULT_POLYBIUS_ENCODE_MAP = "12345"
 
 fun String.polybius(
     table: String = DEFAULT_POLYBIUS_TABLE,
-    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
+    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
+    replacePair: Pair<String, String> = "J" to "I"
 ): String {
     val map =
-        table.associateWith {
-            val i = table.indexOf(it)
-            "${encodeMap[i / 5]}${encodeMap[i % 5]}"
+        table.uppercase().associateWith {
+            val i = table.uppercase().indexOf(it)
+            "${encodeMap[i / encodeMap.length]}${encodeMap[i % encodeMap.length]}"
         }
-    return uppercase().replace("J", "I").map { map[it] ?: it }.joinToString("")
+    return uppercase()
+        .replace(replacePair.first, replacePair.second)
+        .map { map[it] ?: it }
+        .joinToString("")
 }
 
 fun String.polybiusDecrypt(
@@ -21,16 +25,16 @@ fun String.polybiusDecrypt(
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
 ): String {
     val map =
-        table.associateBy {
-            val i = table.indexOf(it)
-            "${encodeMap[i / 5]}${encodeMap[i % 5]}"
+        table.uppercase().associateBy {
+            val i = table.uppercase().indexOf(it)
+            "${encodeMap[i / encodeMap.length]}${encodeMap[i % encodeMap.length]}"
         }
     val sb = StringBuilder()
     val tmp = StringBuilder()
 
     for (c in this) {
         when {
-            c.isDigit() ->
+            c.isDigit() || c.isLetter() ->
                 if (tmp.length == 1) {
                     tmp.append(c)
                     sb.append(map[tmp.toString()] ?: tmp.toString())
@@ -39,6 +43,5 @@ fun String.polybiusDecrypt(
             else -> sb.append(c)
         }
     }
-
     return sb.toString()
 }

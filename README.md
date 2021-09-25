@@ -195,10 +195,11 @@
 - [x] bacon 24/bacon26
 - [x] one time pad
 - [x] socialist core value
-- [ ] ADFGX/ADFGVX
-- [ ] railfence normal /railfence w-type
+- [x] ADFGX/ADFGVX
+- [x] Auto Key
+- [x] railfence normal /railfence w-type
 - [ ] polyfair
-- [ ] brainfuck/ook
+- [x] brainfuck/ook
 
 
 ### Others

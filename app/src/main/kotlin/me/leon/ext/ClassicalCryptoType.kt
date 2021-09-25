@@ -2,32 +2,7 @@ package me.leon.ext
 
 import me.leon.P1
 import me.leon.P2
-import me.leon.classical.DEFAULT_POLYBIUS_ENCODE_MAP
-import me.leon.classical.DEFAULT_POLYBIUS_TABLE
-import me.leon.classical.affineDecrypt
-import me.leon.classical.affineEncrypt
-import me.leon.classical.atBash
-import me.leon.classical.baconDecrypt24
-import me.leon.classical.baconDecrypt26
-import me.leon.classical.baconEncrypt24
-import me.leon.classical.baconEncrypt26
-import me.leon.classical.caesar25
-import me.leon.classical.morseDecrypt
-import me.leon.classical.morseEncrypt
-import me.leon.classical.oneTimePad
-import me.leon.classical.oneTimePadDecrypt
-import me.leon.classical.polybius
-import me.leon.classical.polybiusDecrypt
-import me.leon.classical.qweDecrypt
-import me.leon.classical.qweEncrypt
-import me.leon.classical.railFenceDecrypt
-import me.leon.classical.railFenceEncrypt
-import me.leon.classical.rot18
-import me.leon.classical.shift10
-import me.leon.classical.shift26
-import me.leon.classical.shift94
-import me.leon.classical.virgeneneDecode
-import me.leon.classical.virgeneneEncode
+import me.leon.classical.*
 import me.leon.ctf.brainFuckDecrypt
 import me.leon.ctf.brainFuckEncrypt
 import me.leon.ctf.ookDecrypt
@@ -119,6 +94,41 @@ enum class ClassicalCryptoType(val type: String) {
             raw.polybiusDecrypt(
                 params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
+    },
+    ADFGX("ADFGX") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.adfgx(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.adfgxDecrypt(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
+    },
+    ADFGVX("ADFGVX") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.adfgvx(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.adfgvxDecrypt(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+            )
+    },
+    AUTOKEY("autoKey") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.autoKey(params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.autoKeyDecrypt(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE
             )
     },
     BACON24("bacon24") {

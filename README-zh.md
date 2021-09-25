@@ -203,10 +203,11 @@
 - [x] 培根24/培根26
 - [x] 一次性密码
 - [x] 社会主义核心价值观
-- [ ] ADFGX/ADFGVX
-- [ ] 栅栏密码 /栅栏密码 w
+- [x] ADFGX/ADFGVX
+- [x] Auto Key
+- [x] 栅栏密码 /栅栏密码 w
 - [ ] polyfair
-- [ ] brainfuck/ook
+- [x] brainfuck/ook
 
 
 
