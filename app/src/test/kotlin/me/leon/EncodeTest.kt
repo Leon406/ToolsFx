@@ -174,4 +174,14 @@ class EncodeTest {
             }
         }
     }
+
+    @Test
+    fun bubbleBabble() {
+        println("".bubbleBabble())
+        println("1234567890".bubbleBabble().bubbleBabbleDecode2String())
+        println("Pineap ple3ddfdsf dsf".bubbleBabble().bubbleBabbleDecode2String())
+        println("xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String())
+        println("xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String())
+        "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String()
+    }
 }
