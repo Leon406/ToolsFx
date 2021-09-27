@@ -22,18 +22,19 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private lateinit var taOutput: TextArea
     private lateinit var labelInfo: Label
     private lateinit var tfCustomDict: TextField
+    private lateinit var tfCount: TextField
     private var enableDict = SimpleBooleanProperty(true)
     private val info: String
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
-                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
+                    " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
         get() =
             taInput.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                    ?: taInput.text.replace("\\s".toRegex(), "")
+                ?: taInput.text.replace("\\s".toRegex(), "")
     private val outputText: String
         get() = taOutput.text
 
@@ -78,9 +79,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
-                                {
-                                    taInput.text = it
-                                }
+                                    {
+                                        taInput.text = it
+                                    }
                         }
                     }
                     item(messages["readHeadersFromNet"]) {
@@ -134,9 +135,10 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
         hbox {
             spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER
             togglegroup {
                 spacing = DEFAULT_SPACING
-                alignment = Pos.BASELINE_CENTER
+                alignment = Pos.CENTER
                 label("charset:")
                 combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
 
@@ -151,6 +153,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     selectedProperty().addListener { observable, oldValue, newValue ->
                         println("$observable $oldValue  $newValue")
                     }
+                }
+
+                label("times:")
+                tfCount = textfield("1") {
+                    prefWidth = DEFAULT_SPACING_8X
                 }
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = new.cast<RadioButton>().text == messages["encode"]
@@ -193,10 +200,12 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     }
 
     private fun run() {
-        taOutput.text =
-            if (isEncode)
+
+        var result =inputText
+        repeat(tfCount.text.toInt()) {
+            result = if (isEncode)
                 controller.encode2String(
-                    inputText,
+                    result,
                     encodeType,
                     tfCustomDict.text,
                     selectedCharset.get(),
@@ -204,12 +213,15 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 )
             else
                 controller.decode2String(
-                    inputText,
+                    result,
                     encodeType,
                     tfCustomDict.text,
                     selectedCharset.get(),
                     isSingleLine.get()
                 )
+        }
+
+        taOutput.text = result
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         labelInfo.text = info
 

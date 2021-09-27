@@ -118,10 +118,10 @@ class ClassicalView : View(messages["classical"]) {
 
         hbox {
             spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            alignment = Pos.CENTER
             togglegroup {
                 spacing = DEFAULT_SPACING
-                alignment = Pos.BASELINE_CENTER
+                alignment = Pos.CENTER
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
                 checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
