@@ -42,7 +42,7 @@ fun String.railFenceWDecrypt(count: Int): String {
     //    println(list)
     var curList = 0
 
-    this.forEachIndexed { index, c ->
+    this.forEach { c ->
         list[curList].run {
             if (first.size < second) first.add(c) else list[++curList].first.add(c)
         }
@@ -51,7 +51,7 @@ fun String.railFenceWDecrypt(count: Int): String {
 
     // fill data
     return CharArray(this.length)
-        .mapIndexed { index, c ->
+        .mapIndexed { index, _ ->
             val listIndex = with(index % factor) { if (this < count - 1) this else factor - this }
             val pair = map[listIndex]
             //        println("$listIndex $index ${pair.first}")

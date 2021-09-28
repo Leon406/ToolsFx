@@ -50,7 +50,13 @@ class DigestView : View(messages["hash"]) {
         inputText =
             if (isFileMode.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
-            else it.first().readText()
+            else
+                with(it.first()) {
+                    if (length() <= 10 * 1024 * 1024)
+                        if (realExtension() in unsupportedExts) "unsupported file extension"
+                        else readText()
+                    else "not support file larger than 10M"
+                }
     }
 
     // https://www.bouncycastle.org/specifications.html

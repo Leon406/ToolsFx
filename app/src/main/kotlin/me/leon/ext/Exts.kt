@@ -24,7 +24,7 @@ fun String.lineActionIndex(action: (String, Int) -> String) =
 
 inline fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
     val ranges =
-        split.foldIndexed(mutableListOf<IntRange>()) { index, acc, i ->
+        split.foldIndexed(mutableListOf<IntRange>()) { index, acc, _ ->
             acc.apply {
                 add(
                     split.take(index).sum() until

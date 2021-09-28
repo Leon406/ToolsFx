@@ -182,13 +182,13 @@ enum class ClassicalCryptoType(val type: String) {
             raw.brainFuckEncrypt()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
-            raw.brainFuckDecrypt() ?: ""
+            raw.brainFuckDecrypt()
     },
     Ook("Ook") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.ookEncrypt()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
-            raw.ookDecrypt() ?: ""
+            raw.ookDecrypt()
     },
     TROLLSCRIPT("troll script") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =

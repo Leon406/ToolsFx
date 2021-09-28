@@ -31,7 +31,15 @@ class MacView : View("MAC") {
     private var outputEncode = "hex"
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
-    private val eventHandler = fileDraggedHandler { taInput.text = it.first().absolutePath }
+    private val eventHandler = fileDraggedHandler {
+        taInput.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =

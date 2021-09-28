@@ -27,14 +27,14 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private val info: String
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
-                    " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
         get() =
             taInput.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                ?: taInput.text.replace("\\s".toRegex(), "")
+                    ?: taInput.text.replace("\\s".toRegex(), "")
     private val outputText: String
         get() = taOutput.text
 
@@ -42,7 +42,15 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private var isEncode = true
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
-    private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
+    private val eventHandler = fileDraggedHandler {
+        taInput.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
 
     private val encodeTypeWithSpace =
         arrayOf(
@@ -79,9 +87,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
-                                    {
-                                        taInput.text = it
-                                    }
+                                {
+                                    taInput.text = it
+                                }
                         }
                     }
                     item(messages["readHeadersFromNet"]) {
@@ -156,9 +164,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 }
 
                 label("times:")
-                tfCount = textfield("1") {
-                    prefWidth = DEFAULT_SPACING_8X
-                }
+                tfCount = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = new.cast<RadioButton>().text == messages["encode"]
                     run()
@@ -201,24 +207,25 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
     private fun run() {
 
-        var result =inputText
+        var result = inputText
         repeat(tfCount.text.toInt()) {
-            result = if (isEncode)
-                controller.encode2String(
-                    result,
-                    encodeType,
-                    tfCustomDict.text,
-                    selectedCharset.get(),
-                    isSingleLine.get()
-                )
-            else
-                controller.decode2String(
-                    result,
-                    encodeType,
-                    tfCustomDict.text,
-                    selectedCharset.get(),
-                    isSingleLine.get()
-                )
+            result =
+                if (isEncode)
+                    controller.encode2String(
+                        result,
+                        encodeType,
+                        tfCustomDict.text,
+                        selectedCharset.get(),
+                        isSingleLine.get()
+                    )
+                else
+                    controller.decode2String(
+                        result,
+                        encodeType,
+                        tfCustomDict.text,
+                        selectedCharset.get(),
+                        isSingleLine.get()
+                    )
         }
 
         taOutput.text = result

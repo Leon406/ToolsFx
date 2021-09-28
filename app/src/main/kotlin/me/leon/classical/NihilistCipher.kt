@@ -1,7 +1,6 @@
 package me.leon.classical
 
-/** like polybius  @link https://ctf-wiki.org/crypto/classical/polyalphabetic/#nihilist */
-
+/** like polybius @link https://ctf-wiki.org/crypto/classical/polyalphabetic/#nihilist */
 fun String.nihilist(
     keyword: String,
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
