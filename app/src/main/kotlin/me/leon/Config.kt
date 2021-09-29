@@ -9,7 +9,7 @@ const val LAN_ZOU_DOWNLOAD_URL = "https://leon.lanzoui.com/b0d9av2kb"
 const val CHECK_UPDATE_URL =
     "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/main/current"
 const val CHECK_UPDATE_URL2 = "https://gitee.com/LeonShih/ToolsFx/raw/main/current"
-const val DEV_UPDATE_URL = "https://raw.githubusercontent.com/Leon406/ToolsFx/dev/current"
+const val DEV_UPDATE_URL = "https://raw.fastgit.org/Leon406/ToolsFx/dev/current"
 const val DEV_UPDATE_URL2 =
     "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/dev/current"
 const val LICENSE = "https://cdn.staticaly.com/gh/Leon406/ToolsFx/main/LICENSE"

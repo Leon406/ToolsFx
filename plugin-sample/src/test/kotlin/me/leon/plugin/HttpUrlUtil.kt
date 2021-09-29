@@ -125,18 +125,8 @@ object HttpUrlUtil {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        File("C:\\Users\\Leon\\Desktop\\anji_lawyere.txt").readLines().forEach {
-            get(
-                "https://device.jpush.cn/v3/aliases/" + it,
-                mutableMapOf(),
-                mutableMapOf(
-                    "Authorization" to
-                        "Basic NTgxMjE1ZTk2OWM4NzliOGVjYzk5NDhlOjNhYmI4OGU1M2ZkYjRhZDI4MzA3NTRmNQ=="
-                )
-            )
-        }
 
-        //        get("https://www.baidu.com")
+                get("https://www.baidu.com")
         //
         // get("http://sf.0575.org/plugin/api/2019/getinfo?action=userlist&page=1&filterArea=373")
         //        get("http://wifi.vivo.com.cn/generate_204")
