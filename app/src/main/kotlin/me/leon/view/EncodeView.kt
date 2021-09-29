@@ -3,7 +3,6 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.Parent
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.SimpleMsgEvent
@@ -18,6 +17,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(true)
+    private val isProcessing = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
     private lateinit var labelInfo: Label
@@ -170,7 +170,10 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     run()
                 }
             }
-            button(messages["run"], imageview("/img/run.png")) { action { run() } }
+            button(messages["run"], imageview("/img/run.png")) {
+                enableWhen(!isProcessing)
+                action { run() }
+            }
         }
         hbox {
             spacing = DEFAULT_SPACING
@@ -184,12 +187,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             }
             button(graphic = imageview("/img/jump.png")) {
                 action {
-                    var tmp: Parent? = parent
-                    while (tmp != null) {
-                        if (tmp is TabPane) break
-                        tmp = tmp.parent
-                    }
-                    tmp.safeAs<TabPane>()?.selectionModel?.select(2)
+                    fire(SimpleMsgEvent(taOutput.text, 1))
+                    val tabPane = findParentOfType(TabPane::class)
+                    tabPane?.selectionModel?.select(
+                        tabPane.tabs.first { it.text == messages["stringProcess"] }
+                    )
                 }
             }
         }
@@ -208,30 +210,36 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private fun run() {
 
         var result = inputText
-        repeat(tfCount.text.toInt()) {
-            result =
-                if (isEncode)
-                    controller.encode2String(
-                        result,
-                        encodeType,
-                        tfCustomDict.text,
-                        selectedCharset.get(),
-                        isSingleLine.get()
-                    )
-                else
-                    controller.decode2String(
-                        result,
-                        encodeType,
-                        tfCustomDict.text,
-                        selectedCharset.get(),
-                        isSingleLine.get()
-                    )
-        }
-
-        taOutput.text = result
-        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-        labelInfo.text = info
-
-        fire(SimpleMsgEvent(taOutput.text, 1))
+        runAsync {
+            isProcessing.value = true
+            repeat(
+                tfCount.text.toInt().takeIf { it <= 40 } ?: 40.also { tfCount.text = it.toString() }
+            ) {
+                result =
+                    if (isEncode)
+                        controller.encode2String(
+                            result,
+                            encodeType,
+                            tfCustomDict.text,
+                            selectedCharset.get(),
+                            isSingleLine.get()
+                        )
+                    else
+                        controller.decode2String(
+                            result,
+                            encodeType,
+                            tfCustomDict.text,
+                            selectedCharset.get(),
+                            isSingleLine.get()
+                        )
+            }
+        } ui
+            {
+                isProcessing.value = false
+                taOutput.text = result
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                labelInfo.text = info
+            }
     }
 }
