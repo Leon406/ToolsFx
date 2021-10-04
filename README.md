@@ -238,7 +238,7 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
 
 - with jre environment
   - jdk8      choose suffix with jdk8
-  - jdk11+   choose suffix with jdk11
+  - jdk11+   choose suffix with jdk11 & also need to config javafx environment
 - w/o jre environment(Windows user only)
   - 64bit Windows      x64 (jre11)
   - 32/64bit Windows x86 (jre8,have no idea, choose this)  

@@ -246,7 +246,8 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
 - 有jre环境
   - jdk8      选择jdk8的版本
-  - jdk11+  选择jdk11的版本
+  - jdk11+  选择jdk11的版本 + 同时需要配置javafx环境
+
 - 无jre环境
   - 64位 windows系统     x64 (jre11)
   - 32/64位 windows系统  x86 (jre8,不知道就选这个)  
