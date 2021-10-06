@@ -104,9 +104,7 @@ public class CRC64 implements Checksum {
 
     /** Update CRC64 with new byte. */
     public void update(byte b) {
-        System.out.println("start: " + value);
         this.value = ~this.value;
-        System.out.println("reverse: " + value);
         this.value = table[((int) (this.value ^ b)) & 0xff] ^ (this.value >>> 8);
         this.value = ~this.value;
     }
