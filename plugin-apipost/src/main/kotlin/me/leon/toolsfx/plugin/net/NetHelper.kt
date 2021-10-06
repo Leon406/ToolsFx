@@ -1,4 +1,4 @@
-package me.leon.ade
+package me.leon.toolsfx.plugin.net
 
 import java.net.HttpURLConnection
 import java.net.URLDecoder

@@ -2,6 +2,7 @@ package me.leon.plugin
 
 import java.io.File
 import java.util.Base64
+import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import org.junit.Test
 
 class HttpTest {
@@ -117,5 +118,32 @@ class HttpTest {
             ),
             "image"
         )
+    }
+
+    @Test
+    fun params() {
+        val headers =
+            """
+            accept: */*
+            accept-encoding: gzip, deflate, br
+            accept-language: zh-CN,zh;q=0.9,en;q=0.8
+            dnt: 1
+            origin: https://blog.csdn.net
+            referer: https://blog.csdn.net/qq_39658819/article/details/77527670
+            sec-fetch-dest: empty
+            sec-fetch-mode: cors
+            sec-fetch-site: same-site
+            user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+             Chrome/86.0.4240.198 Safari/537.36
+        """.trimIndent()
+
+        println(headers)
+        val regexHeader = "([^:]+?): *(.*) *\\s+".toRegex()
+        regexHeader
+            .findAll(headers)
+            .fold(mutableMapOf<String?, Any>()) { acc, matchResult ->
+                acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
+            }
+            .also { println(it) }
     }
 }

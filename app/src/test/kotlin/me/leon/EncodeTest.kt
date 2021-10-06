@@ -5,10 +5,8 @@ import me.leon.controller.EncodeController
 import me.leon.encode.*
 import me.leon.encode.base.*
 import me.leon.ext.*
-import me.leon.third.CRC64
 import org.junit.Before
 import org.junit.Test
-import tornadofx.*
 
 class EncodeTest {
 
@@ -202,10 +200,20 @@ class EncodeTest {
 
     @Test
     fun crc() {
+        println((-0x3693a86a2878f0be).toULong().toLong().toString(16))
+        println((0xD80000000000000).toULong().toLong())
+        val toLong = 0xD80000000000000
+        println(toLong.toULong())
         val path = "D:\\360极速浏览器下载\\0013_FLASHDRIVER_Addr_04.txt"
         val readBytes = path.toFile().readBytes()
         readBytes.run {
-            CRC64().apply { update(this@run) }.value.toULong().toString(16).also { println(it) }
+            CRC64()
+                .apply {
+                    update(this@run)
+                    println(this.crcHex())
+                }
+                .crcDecimal()
+                .also { println(it) }
         }
     }
 }

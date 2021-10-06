@@ -1,10 +1,9 @@
-package me.leon.plugin
+package me.leon.toolsfx.plugin.net
 
 import java.io.*
 import java.net.*
 import java.util.UUID
 import kotlin.system.measureTimeMillis
-import me.leon.ade.NetHelper
 import tornadofx.JsonBuilder
 
 object HttpUrlUtil {
@@ -26,7 +25,7 @@ object HttpUrlUtil {
     }
 
     fun setupProxy(proxy: Proxy = Proxy.NO_PROXY) {
-        this.proxy = proxy
+        HttpUrlUtil.proxy = proxy
     }
 
     fun addPreHandle(action: (Request) -> Unit) {
@@ -85,10 +84,8 @@ object HttpUrlUtil {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
-                acc,
-                mutableEntry ->
-                acc.apply { this[mutableEntry.key] = mutableEntry.value }
+            conn.headerFields.entries.fold(mutableMapOf<String?, Any>()) { acc, mutableEntry ->
+                acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
     }
@@ -109,9 +106,9 @@ object HttpUrlUtil {
         url: String,
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf()
-    ) {
+    ): Response {
         headers["X-HTTP-Method-Override"] = "PATCH"
-        request(url, "POST", params, headers)
+        return request(url, "POST", params, headers)
     }
 
     fun delete(
@@ -126,12 +123,13 @@ object HttpUrlUtil {
         headers: MutableMap<String, Any> = mutableMapOf()
     ) = request(url, "OPTIONS", params, headers)
 
-    private fun request(
+    fun request(
         url: String,
         method: String,
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf()
     ): Response {
+        if (method == "PATCH") return patch(url, params, headers)
         val req = Request(url, method, params, headers)
         preAction(req)
         val realUrl =
@@ -156,10 +154,8 @@ object HttpUrlUtil {
         }
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
-                acc,
-                mutableEntry ->
-                acc.apply { this[mutableEntry.key] = mutableEntry.value }
+            conn.headerFields.entries.fold(mutableMapOf<String?, Any>()) { acc, mutableEntry ->
+                acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
     }
@@ -177,13 +173,20 @@ object HttpUrlUtil {
         url: String,
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf(),
-        isJson: Boolean = false
+        isJson: Boolean = false,
     ): Response {
         val req = Request(url, "POST", params, headers)
         preAction(req)
+        val data = if (isJson) req.params.toJson() else req.params.toParams()
+        return postData(url, data, headers)
+    }
+
+    fun postData(url: String, data: String, headers: MutableMap<String, Any>): Response {
+        val req = Request(url, "POST", mutableMapOf(), headers)
+        preAction(req)
         val conn = URL(url).openConnection(proxy) as HttpURLConnection
         var rsp: String
-        val data = if (isJson) req.params.toJson() else req.params.toParams()
+
         val header = makeHeaders(req.headers)
         val dataBytes = data.toByteArray()
         val time = measureTimeMillis {
@@ -208,10 +211,8 @@ object HttpUrlUtil {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
-                acc,
-                mutableEntry ->
-                acc.apply { this[mutableEntry.key] = mutableEntry.value }
+            conn.headerFields.entries.fold(mutableMapOf<String?, Any>()) { acc, mutableEntry ->
+                acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
     }
@@ -264,22 +265,20 @@ object HttpUrlUtil {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
-                acc,
-                mutableEntry ->
-                acc.apply { this[mutableEntry.key] = mutableEntry.value }
+            conn.headerFields.entries.fold(mutableMapOf<String?, Any>()) { acc, mutableEntry ->
+                acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
     }
 
     private fun makeMultipartFileBody(
-        BOUNDARY: String,
+        boundary: String,
         name: String,
         file: File
     ): java.lang.StringBuilder? {
         val sb =
             StringBuilder(PREFIX)
-                .append(BOUNDARY)
+                .append(boundary)
                 .append(LINE_END)
                 .append("Content-Disposition: form-data; name=\"$name\"; filename=\"${file.name}\"")
                 .append(LINE_END)
@@ -289,12 +288,12 @@ object HttpUrlUtil {
         return sb
     }
 
-    private fun makeMultiPartParamBody(req: Request, BOUNDARY: String): StringBuilder {
+    private fun makeMultiPartParamBody(req: Request, boundary: String): StringBuilder {
         val sbParams = StringBuilder()
         for ((k, v) in req.params) {
             sbParams
                 .append(PREFIX)
-                .append(BOUNDARY)
+                .append(boundary)
                 .append(LINE_END)
                 .append("Content-Disposition: form-data; name=\"$k\"")
                 .append(LINE_END)

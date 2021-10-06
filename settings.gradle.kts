@@ -1,2 +1,7 @@
 rootProject.name = "ToolsFx"
-include("app","plugin-lib","plugin-sample")
+include(
+    "app",
+    "plugin-lib",
+    "plugin-sample",
+    "plugin-apipost",
+)

@@ -3,7 +3,7 @@ package me.leon.ext
 import java.io.File
 import java.util.zip.CRC32
 import java.util.zip.CheckedInputStream
-import me.leon.third.CRC64
+import me.leon.CRC64
 
 fun String.crc32() = CRC32().apply { update(this@crc32.toByteArray()) }.value.toULong().toString(16)
 
