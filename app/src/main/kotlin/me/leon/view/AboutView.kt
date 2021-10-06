@@ -49,24 +49,24 @@ class AboutView : View(messages["about"]) {
     private fun checkUpdateDev(isAuto: Boolean = true) {
         if (!isAuto) return
         runAsync { DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2) } ui
-                {
-                    txtLatestVersion.text =
-                        if (it.isEmpty()) messages["unknown"]
-                        else if (VERSION != it)
-                            "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
-                        else messages["alreadyLatest"]
-                }
+            {
+                txtLatestVersion.text =
+                    if (it.isEmpty()) messages["unknown"]
+                    else if (VERSION != it)
+                        "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
+                    else messages["alreadyLatest"]
+            }
     }
 
     private fun checkUpdate(isAuto: Boolean = true) {
         if (!isAuto) return
         runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
-                {
-                    txtLatestVersion.text =
-                        if (it.isEmpty()) messages["unknown"]
-                        else if (!VERSION.contains("beta") && VERSION != it)
-                            "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
-                        else messages["alreadyLatest"]
-                }
+            {
+                txtLatestVersion.text =
+                    if (it.isEmpty()) messages["unknown"]
+                    else if (!VERSION.contains("beta") && VERSION != it)
+                        "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
+                    else messages["alreadyLatest"]
+            }
     }
 }

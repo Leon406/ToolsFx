@@ -94,7 +94,7 @@ class DigestView : View(messages["hash"]) {
             "GOST3411" to listOf("256"),
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
-            "CRC" to listOf("32"),
+            "CRC" to listOf("32", "64"),
         )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())

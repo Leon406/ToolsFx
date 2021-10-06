@@ -43,7 +43,7 @@ object HttpUrlUtil {
             "Connection" to "Keep-Alive",
             "content-type" to "application/json; charset=utf-8",
             "User-Agent" to
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -85,8 +85,9 @@ object HttpUrlUtil {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) { acc,
-                                                                                                    mutableEntry ->
+            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
+                acc,
+                mutableEntry ->
                 acc.apply { this[mutableEntry.key] = mutableEntry.value }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
@@ -155,8 +156,9 @@ object HttpUrlUtil {
         }
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) { acc,
-                                                                                                    mutableEntry ->
+            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
+                acc,
+                mutableEntry ->
                 acc.apply { this[mutableEntry.key] = mutableEntry.value }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
@@ -206,8 +208,9 @@ object HttpUrlUtil {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) { acc,
-                                                                                                    mutableEntry ->
+            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
+                acc,
+                mutableEntry ->
                 acc.apply { this[mutableEntry.key] = mutableEntry.value }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
@@ -221,7 +224,7 @@ object HttpUrlUtil {
         headers: MutableMap<String, Any> = mutableMapOf()
     ): Response {
         val req = Request(url, "POST", params, headers)
-        val boundary ="Leon406_"+ UUID.randomUUID().toString().replace("-", "")
+        val boundary = "Leon406_" + UUID.randomUUID().toString().replace("-", "")
 
         preAction(req)
         val conn = URL(url).openConnection(proxy) as HttpURLConnection
@@ -261,8 +264,9 @@ object HttpUrlUtil {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
-            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) { acc,
-                                                                                                    mutableEntry ->
+            conn.headerFields.entries.filter { it.key != null }.fold(mutableMapOf<String, Any>()) {
+                acc,
+                mutableEntry ->
                 acc.apply { this[mutableEntry.key] = mutableEntry.value }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
@@ -273,14 +277,15 @@ object HttpUrlUtil {
         name: String,
         file: File
     ): java.lang.StringBuilder? {
-        val sb = StringBuilder(PREFIX)
-            .append(BOUNDARY)
-            .append(LINE_END)
-            .append("Content-Disposition: form-data; name=\"$name\"; filename=\"${file.name}\"")
-            .append(LINE_END)
-            .append("Content-Type: image/png; charset=UTF-8")
-            .append(LINE_END)
-            .append(LINE_END)
+        val sb =
+            StringBuilder(PREFIX)
+                .append(BOUNDARY)
+                .append(LINE_END)
+                .append("Content-Disposition: form-data; name=\"$name\"; filename=\"${file.name}\"")
+                .append(LINE_END)
+                .append("Content-Type: image/png; charset=UTF-8")
+                .append(LINE_END)
+                .append(LINE_END)
         return sb
     }
 
@@ -292,7 +297,8 @@ object HttpUrlUtil {
                 .append(BOUNDARY)
                 .append(LINE_END)
                 .append("Content-Disposition: form-data; name=\"$k\"")
-                .append(LINE_END).append(LINE_END) // 参数头设置完以后需要两个换行，然后才是参数内容
+                .append(LINE_END)
+                .append(LINE_END) // 参数头设置完以后需要两个换行，然后才是参数内容
                 .append(v)
                 .append(LINE_END)
         }

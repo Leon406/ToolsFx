@@ -3,8 +3,9 @@ package me.leon.ext
 import java.io.File
 import java.util.zip.CRC32
 import java.util.zip.CheckedInputStream
+import me.leon.third.CRC64
 
-fun String.crc32() = CRC32().apply { update("hello".toByteArray()) }.value.toString(16)
+fun String.crc32() = CRC32().apply { update(this@crc32.toByteArray()) }.value.toULong().toString(16)
 
 fun String.crc32File() =
     File(this).inputStream().use {
@@ -14,5 +15,18 @@ fun String.crc32File() =
                 // if needed
             }
         }
-        crc.value.toString(16)
+        crc.value.toULong().toString(16)
+    }
+
+fun String.crc64() = CRC64().apply { update(this@crc64.toByteArray()) }.value.toULong().toString(16)
+
+fun String.crc64File() =
+    File(this).inputStream().use {
+        val crc = CRC64()
+        CheckedInputStream(it, crc).use {
+            while (it.read() != -1) {
+                // if needed
+            }
+        }
+        crc.value.also { println(it) }.toULong().toString(16)
     }

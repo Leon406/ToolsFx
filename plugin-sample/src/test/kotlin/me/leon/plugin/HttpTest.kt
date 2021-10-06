@@ -9,9 +9,9 @@ class HttpTest {
     fun getTest() {
         HttpUrlUtil.get(
             "https://d006.eduyun.cn/videoworks/mda-ki0cfj2mmzb2j5vr/ykt_tbkt_hls_1080_7/video/%E5%88%9D%E4%" +
-                    "B8%89%E3%80%90%E6%95%B0%E5%AD%A6%EF%BC%88%E4%BA%BA%E6%95%99%E7%89%88%EF%BC%89%E3%80%9122.1." +
-                    "3%E4%BA%8C%E6%AC%A1%E5%87%BD%E6%95%B0y=a(x-h)%C2%B2+k%E7%9A%84%E5%9B%BE%E8%B1%A1%E5%92%8C" +
-                    "%E6%80%A7%E8%B4%A8%EF%BC%884%EF%BC%89.m3u8"
+                "B8%89%E3%80%90%E6%95%B0%E5%AD%A6%EF%BC%88%E4%BA%BA%E6%95%99%E7%89%88%EF%BC%89%E3%80%9122.1." +
+                "3%E4%BA%8C%E6%AC%A1%E5%87%BD%E6%95%B0y=a(x-h)%C2%B2+k%E7%9A%84%E5%9B%BE%E8%B1%A1%E5%92%8C" +
+                "%E6%80%A7%E8%B4%A8%EF%BC%884%EF%BC%89.m3u8"
         )
     }
 
@@ -59,7 +59,7 @@ class HttpTest {
     fun downloadTest() {
         val url =
             "https://pics6.baidu.com/feed/42a98226cffc1e17b0a7684e8fbbc70a738de96e.jpeg" +
-                    "?token=19433714addc862045404c72677e91b3"
+                "?token=19433714addc862045404c72677e91b3"
         HttpUrlUtil.get(url, isDownload = true)
     }
 
@@ -68,7 +68,7 @@ class HttpTest {
         HttpUrlUtil.setupProxy(java.net.Proxy.Type.SOCKS, "127.0.0.1", 7890)
         val url =
             "https://pics6.baidu.com/feed/42a98226cffc1e17b0a7684e8fbbc70a738de96e.jpeg" +
-                    "?token=19433714addc862045404c72677e91b3"
+                "?token=19433714addc862045404c72677e91b3"
         HttpUrlUtil.get(url, isDownload = true)
     }
 
@@ -78,7 +78,7 @@ class HttpTest {
 
         val url =
             "https://pics6.baidu.com/feed/42a98226cffc1e17b0a7684e8fbbc70a738de96e.jpeg" +
-                    "?token=19433714addc862045404c72677e91b3"
+                "?token=19433714addc862045404c72677e91b3"
         HttpUrlUtil.get(url, isDownload = true)
     }
 
@@ -87,7 +87,7 @@ class HttpTest {
 
         val url =
             "https://pics6.baidu.com/feed/42a98226cffc1e17b0a7684e8fbbc70a738de96e.jpeg" +
-                    "?token=19433714addc862045404c72677e91b3"
+                "?token=19433714addc862045404c72677e91b3"
         HttpUrlUtil.get(url, isDownload = true)
     }
 
