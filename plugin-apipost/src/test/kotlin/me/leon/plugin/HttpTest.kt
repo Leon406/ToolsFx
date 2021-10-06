@@ -102,7 +102,7 @@ class HttpTest {
             ),
             "image",
             mutableMapOf(
-                "apiType" to "bilibili,chaoxing,muke,vimcn",
+                "apiType" to "bilibili,muke",
                 "token" to "5c483f653d928ef0c83d3547efb12792",
             )
         )

@@ -49,7 +49,7 @@ class ApiPostView : PluginView("ApiPost") {
     private val reqTableParams
         get() =
             requestParams
-                .filter { it.isEnable == "true" && it.key.isNotEmpty() }
+                .filter { it.isEnable == "true" && it.key.isNotEmpty() && it.isFile != "true" }
                 .associate { it.key to it.value }
                 .toMutableMap()
     private val uploadParams

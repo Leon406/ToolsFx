@@ -276,16 +276,14 @@ object HttpUrlUtil {
         name: String,
         file: File
     ): java.lang.StringBuilder? {
-        val sb =
-            StringBuilder(PREFIX)
-                .append(boundary)
-                .append(LINE_END)
-                .append("Content-Disposition: form-data; name=\"$name\"; filename=\"${file.name}\"")
-                .append(LINE_END)
-                .append("Content-Type: image/png; charset=UTF-8")
-                .append(LINE_END)
-                .append(LINE_END)
-        return sb
+        return StringBuilder(PREFIX)
+            .append(boundary)
+            .append(LINE_END)
+            .append("Content-Disposition: form-data; name=\"$name\"; filename=\"${file.name}\"")
+            .append(LINE_END)
+            .append("Content-Type: application/octet-stream; charset=UTF-8")
+            .append(LINE_END)
+            .append(LINE_END)
     }
 
     private fun makeMultiPartParamBody(req: Request, boundary: String): StringBuilder {
