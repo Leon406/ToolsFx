@@ -21,7 +21,7 @@ class OnlineWebView : View("Browser") {
                 spacing = DEFAULT_SPACING
                 paddingAll = DEFAULT_SPACING
                 alignment = Pos.BASELINE_LEFT
-                button("back") {
+                button(graphic = imageview("img/back.png")) {
                     action {
                         web.engine.history.run {
                             println("currentIndex $currentIndex  $entries.size")
@@ -29,7 +29,7 @@ class OnlineWebView : View("Browser") {
                         }
                     }
                 }
-                button("forward") {
+                button(graphic = imageview("/img/forward.png")) {
                     action {
                         web.engine.history.run {
                             println("forward currentIndex $currentIndex  ${entries.size}")
@@ -37,7 +37,7 @@ class OnlineWebView : View("Browser") {
                         }
                     }
                 }
-
+                button(graphic = imageview("/img/refresh.png")) { action { web.engine.reload() } }
                 tfUrl =
                     textfield(selectedUrl.get()) {
                         promptText = "input url"
@@ -51,13 +51,13 @@ class OnlineWebView : View("Browser") {
                     println("selectedUrl2 ${tfUrl.text}")
                     web.engine.load(tfUrl.text)
                 }
-                button("load") {
+                button(graphic = imageview("/img/run.png")) {
                     action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
                 }
-                button("refresh") { action { web.engine.reload() } }
-                button("inject") {
-                    action { web.engine.executeScript("\$('.navbar-header').hide()") }
-                }
+
+//                button("inject") {
+//                    action { web.engine.executeScript("\$('.navbar-header').hide()") }
+//                }
             }
         center =
             vbox {

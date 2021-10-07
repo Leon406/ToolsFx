@@ -7,6 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.text.Text
+import javafx.util.StringConverter
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.net.*
 import tornadofx.*
@@ -41,7 +42,8 @@ class ApiPostView : PluginView("ApiPost") {
     private val showRspHeader = SimpleBooleanProperty(false)
     private val showReqHeader = SimpleBooleanProperty(false)
     private val showReqTable = SimpleBooleanProperty(false)
-    private var requestParams = FXCollections.observableArrayList<HttpParams>()
+    private val isRunning = SimpleBooleanProperty(false)
+    private var requestParams = FXCollections.observableArrayList<HttpParams>(HttpParams())
     private val showTableList = listOf("json", "form-data")
 
     private val reqHeaders
@@ -49,20 +51,19 @@ class ApiPostView : PluginView("ApiPost") {
     private val reqTableParams
         get() =
             requestParams
-                .filter { it.isEnable == "true" && it.key.isNotEmpty() && it.isFile != "true" }
+                .filter { it.isEnable && it.key.isNotEmpty() && it.isFile }
                 .associate { it.key to it.value }
                 .toMutableMap()
     private val uploadParams
         get() =
             requestParams.firstOrNull {
-                it.isEnable == "true" && it.key.isNotEmpty() && it.isFile == "true"
+                it.isEnable && it.key.isNotEmpty() && it.isFile
             }
 
     private val eventHandler = fileDraggedHandler {
         with(it.first()) {
             println(absolutePath)
-
-            table.selectionModel.selectedItem.also { println(it) }.value = absolutePath
+            table.selectionModel.selectedItem.value = absolutePath
         }
     }
     override val root = vbox {
@@ -79,9 +80,16 @@ class ApiPostView : PluginView("ApiPost") {
                     promptText = "input your url"
                 }
 
-            button("request") {
+            button(graphic = imageview("/img/run.png")) {
+                enableWhen(!isRunning)
                 action {
-                    val req =
+                    if (tfUrl.text.isEmpty() || !tfUrl.text.startsWith("http") && tfUrl.text.length < 11) {
+                        primaryStage.showToast("plz input legal url")
+                        return@action
+                    }
+                    isRunning.value = true
+
+                    runCatching {
                         if (selectedMethod.get() == "POST")
                             when (bodyTypeMap[selectedBodyType.get()]) {
                                 BodyType.JSON, BodyType.FORM_DATA ->
@@ -110,10 +118,17 @@ class ApiPostView : PluginView("ApiPost") {
                                 reqTableParams as MutableMap<String, Any>,
                                 reqHeaders,
                             )
-                    req.run {
-                        textRspStatus.text = statusInfo
-                        taRspHeaders.text = headerInfo
-                        taRspContent.text = data
+
+                    }.onSuccess {
+                        textRspStatus.text = it.statusInfo
+                        taRspHeaders.text = it.headerInfo
+                        taRspContent.text = it.data
+                        isRunning.value = false
+                    }.onFailure {
+                        textRspStatus.text = it.message
+                        taRspHeaders.text = ""
+                        taRspContent.text = it.stacktrace()
+                        isRunning.value = false
                     }
                 }
             }
@@ -159,23 +174,46 @@ class ApiPostView : PluginView("ApiPost") {
                 }
             table =
                 tableview(requestParams) {
-                    prefHeight = 200.0
                     visibleWhen(showReqTable)
-                    column("isEnable", HttpParams::isEnable).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn<HttpParams>()
-                    }
+
                     column("key", HttpParams::key).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn<HttpParams>()
-                        prefWidth = 200.0
+                        cellFactory = TextFieldTableCell.forTableColumn()
+                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.3))
                     }
                     column("value", HttpParams::value).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn<HttpParams>()
-                        prefWidth = 200.0
+                        cellFactory = TextFieldTableCell.forTableColumn()
+                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.5))
                         onDragEntered = eventHandler
                     }
                     column("isFile", HttpParams::isFile).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn()
-                        prefWidth = 100.0
+
+                        cellFactory = TextFieldTableCell.forTableColumn<HttpParams, Boolean>(object :
+                            StringConverter<Boolean?>() {
+                            override fun toString(obj: Boolean?): String {
+                                return obj.toString()
+                            }
+
+                            override fun fromString(string: String?): Boolean? {
+                                return string.toBoolean()
+                            }
+
+                        })
+
+
+                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
+                    }
+                    column("isEnable", HttpParams::isEnable).apply {
+                        cellFactory = TextFieldTableCell.forTableColumn<HttpParams, Boolean>(object :
+                            StringConverter<Boolean?>() {
+                            override fun toString(obj: Boolean?): String {
+                                return obj.toString()
+                            }
+
+                            override fun fromString(string: String?): Boolean? {
+                                return string.toBoolean()
+                            }
+                        })
+                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
                     isEditable = true
                 }

@@ -153,7 +153,7 @@ class MacView : View("MAC") {
         hbox {
             alignment = Pos.CENTER_LEFT
             label(messages["alg"])
-            combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
+            combobox(selectedAlgItem, algs.keys.toMutableList())
             label(messages["bits"]) { paddingAll = DEFAULT_SPACING }
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
@@ -177,14 +177,16 @@ class MacView : View("MAC") {
                     }
                 }
             }
-            label("iv:")
+            label("iv:"){
+                visibleWhen(enableIv)
+            }
             tfIv =
                 textfield {
                     promptText = messages["ivHint"]
-                    enableWhen(enableIv)
+                    visibleWhen(enableIv)
                 }
             vbox {
-                enableWhen(enableIv)
+                visibleWhen(enableIv)
                 togglegroup {
                     spacing = DEFAULT_SPACING
                     paddingAll = DEFAULT_SPACING
