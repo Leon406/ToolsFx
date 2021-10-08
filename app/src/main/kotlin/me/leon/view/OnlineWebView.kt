@@ -55,9 +55,10 @@ class OnlineWebView : View("Browser") {
                     action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
                 }
 
-//                button("inject") {
-//                    action { web.engine.executeScript("\$('.navbar-header').hide()") }
-//                }
+                //                button("inject") {
+                //                    action {
+                // web.engine.executeScript("\$('.navbar-header').hide()") }
+                //                }
             }
         center =
             vbox {

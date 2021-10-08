@@ -21,7 +21,9 @@ object HttpUrlUtil {
     const val CONTENT_TYPE_FORM_DATA = "multipart/form-data"
 
     fun setupProxy(type: Proxy.Type, host: String, port: Int) {
-        proxy = Proxy(type, InetSocketAddress(host, port))
+        proxy =
+            if (type == Proxy.Type.DIRECT) Proxy.NO_PROXY
+            else Proxy(type, InetSocketAddress(host, port))
     }
 
     fun setupProxy(proxy: Proxy = Proxy.NO_PROXY) {

@@ -127,6 +127,7 @@ class HttpTest {
             accept: */*
             accept-encoding: gzip, deflate, br
             accept-language: zh-CN,zh;q=0.9,en;q=0.8
+            Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
             dnt: 1
             origin: https://blog.csdn.net
             referer: https://blog.csdn.net/qq_39658819/article/details/77527670

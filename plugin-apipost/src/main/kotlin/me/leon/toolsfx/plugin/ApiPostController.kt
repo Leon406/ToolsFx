@@ -54,9 +54,5 @@ class ApiPostController : Controller() {
         return HttpUrlUtil.postFile(url, files, fileParamName, params, headers)
     }
 
-    private val regexHeader = "([^:]+?): *(.*) *\\s+".toRegex()
-    fun parseHeaderString(headers: String) =
-        regexHeader.findAll(headers).fold(mutableMapOf<String, Any>()) { acc, matchResult ->
-            acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
-        }
+    fun parseHeaderString(headers: String) = NetHelper.parseHeaderString(headers)
 }

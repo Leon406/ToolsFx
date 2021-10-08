@@ -165,9 +165,7 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
         init {
             for (n in 0..255) {
                 var crc = n.toLong()
-                repeat(8){
-                    crc = if (crc and 1 == 1L) crc ushr 1 xor POLY else crc ushr 1
-                }
+                repeat(8) { crc = if (crc and 1 == 1L) crc ushr 1 xor POLY else crc ushr 1 }
                 table[n] = crc
             }
         }

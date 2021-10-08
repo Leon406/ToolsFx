@@ -9,6 +9,7 @@ import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.text.Text
 import javafx.util.StringConverter
 import me.leon.ext.*
+import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
 import tornadofx.*
 
@@ -51,14 +52,11 @@ class ApiPostView : PluginView("ApiPost") {
     private val reqTableParams
         get() =
             requestParams
-                .filter { it.isEnable && it.key.isNotEmpty() && it.isFile }
+                .filter { it.isEnable && it.key.isNotEmpty() && !it.isFile }
                 .associate { it.key to it.value }
                 .toMutableMap()
     private val uploadParams
-        get() =
-            requestParams.firstOrNull {
-                it.isEnable && it.key.isNotEmpty() && it.isFile
-            }
+        get() = requestParams.firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
 
     private val eventHandler = fileDraggedHandler {
         with(it.first()) {
@@ -67,6 +65,7 @@ class ApiPostView : PluginView("ApiPost") {
         }
     }
     override val root = vbox {
+        resortFromConfig()
         prefWidth = 800.0
         spacing = 8.0
         paddingAll = 8
@@ -75,7 +74,7 @@ class ApiPostView : PluginView("ApiPost") {
             combobox(selectedMethod, methods)
 
             tfUrl =
-                textfield {
+                textfield("https://www.baidu.com") {
                     prefWidth = 400.0
                     promptText = "input your url"
                 }
@@ -83,53 +82,68 @@ class ApiPostView : PluginView("ApiPost") {
             button(graphic = imageview("/img/run.png")) {
                 enableWhen(!isRunning)
                 action {
-                    if (tfUrl.text.isEmpty() || !tfUrl.text.startsWith("http") && tfUrl.text.length < 11) {
+                    if (tfUrl.text.isEmpty() ||
+                            !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
+                    ) {
                         primaryStage.showToast("plz input legal url")
                         return@action
                     }
                     isRunning.value = true
-
-                    runCatching {
-                        if (selectedMethod.get() == "POST")
-                            when (bodyTypeMap[selectedBodyType.get()]) {
-                                BodyType.JSON, BodyType.FORM_DATA ->
-                                    uploadParams?.run {
-                                        controller.uploadFile(
+                    runAsync {
+                        runCatching {
+                            if (selectedMethod.get() == "POST")
+                                when (bodyTypeMap[selectedBodyType.get()]) {
+                                    BodyType.JSON, BodyType.FORM_DATA ->
+                                        uploadParams?.run {
+                                            controller.uploadFile(
+                                                tfUrl.text,
+                                                listOf(this.value.toFile()),
+                                                this.key,
+                                                reqTableParams as MutableMap<String, Any>,
+                                                reqHeaders,
+                                            )
+                                        }
+                                            ?: controller.post(
+                                                tfUrl.text,
+                                                reqTableParams as MutableMap<String, Any>,
+                                                reqHeaders,
+                                                bodyTypeMap[selectedBodyType.get()] == BodyType.JSON
+                                            )
+                                    else ->
+                                        controller.postRaw(
                                             tfUrl.text,
-                                            listOf(this.value.toFile()),
-                                            this.key,
-                                            reqTableParams as MutableMap<String, Any>,
-                                            reqHeaders,
+                                            taReqContent.text,
+                                            reqHeaders
                                         )
-                                    }
-                                        ?: controller.post(
-                                            tfUrl.text,
-                                            reqTableParams as MutableMap<String, Any>,
-                                            reqHeaders,
-                                            bodyTypeMap[selectedBodyType.get()] == BodyType.JSON
-                                        )
-                                else ->
-                                    controller.postRaw(tfUrl.text, taReqContent.text, reqHeaders)
+                                }
+                            else
+                                controller.request(
+                                    tfUrl.text,
+                                    selectedMethod.get(),
+                                    reqTableParams as MutableMap<String, Any>,
+                                    reqHeaders,
+                                )
+                        }
+                            .onSuccess {
+                                textRspStatus.text = it.statusInfo
+                                taRspHeaders.text = it.headerInfo
+                                taRspContent.text = it.data
+                                this@ApiPostView.isRunning.value = false
                             }
-                        else
-                            controller.request(
-                                tfUrl.text,
-                                selectedMethod.get(),
-                                reqTableParams as MutableMap<String, Any>,
-                                reqHeaders,
-                            )
-
-                    }.onSuccess {
-                        textRspStatus.text = it.statusInfo
-                        taRspHeaders.text = it.headerInfo
-                        taRspContent.text = it.data
-                        isRunning.value = false
-                    }.onFailure {
-                        textRspStatus.text = it.message
-                        taRspHeaders.text = ""
-                        taRspContent.text = it.stacktrace()
-                        isRunning.value = false
+                            .onFailure {
+                                textRspStatus.text = it.message
+                                taRspHeaders.text = ""
+                                taRspContent.text = it.stacktrace()
+                                this@ApiPostView.isRunning.value = false
+                            }
                     }
+                }
+            }
+
+            button(graphic = imageview("/img/settings.png")) {
+                action {
+                    // 代理设置/全局头
+                    openInternalWindow<SettingsView>()
                 }
             }
         }
@@ -138,18 +152,25 @@ class ApiPostView : PluginView("ApiPost") {
             spacing = 8.0
             alignment = Pos.CENTER_LEFT
             label("Request:")
-            button("Body") {
-                action {
-                    showReqHeader.value = false
-                    showReqTable.value = selectedBodyType.get() in showTableList
+            hbox {
+                togglegroup {
+                    togglebutton("Body") {
+                        style = "-fx-base: lightblue;"
+                        action {
+                            showReqHeader.value = false
+                            showReqTable.value = selectedBodyType.get() in showTableList
+                        }
+                    }
+                    togglebutton("Header") {
+                        style = "-fx-base: lightblue;"
+                        action {
+                            showReqHeader.value = true
+                            showReqTable.value = false
+                        }
+                    }
                 }
             }
-            button("Header") {
-                action {
-                    showReqHeader.value = true
-                    showReqTable.value = false
-                }
-            }
+
             combobox(selectedBodyType, bodyType)
             selectedBodyType.addListener { _, _, newValue ->
                 println(newValue)
@@ -186,33 +207,34 @@ class ApiPostView : PluginView("ApiPost") {
                         onDragEntered = eventHandler
                     }
                     column("isFile", HttpParams::isFile).apply {
+                        cellFactory =
+                            TextFieldTableCell.forTableColumn<HttpParams, Boolean>(
+                                object : StringConverter<Boolean?>() {
+                                    override fun toString(obj: Boolean?): String {
+                                        return obj.toString()
+                                    }
 
-                        cellFactory = TextFieldTableCell.forTableColumn<HttpParams, Boolean>(object :
-                            StringConverter<Boolean?>() {
-                            override fun toString(obj: Boolean?): String {
-                                return obj.toString()
-                            }
-
-                            override fun fromString(string: String?): Boolean? {
-                                return string.toBoolean()
-                            }
-
-                        })
-
+                                    override fun fromString(string: String?): Boolean? {
+                                        return string.toBoolean()
+                                    }
+                                }
+                            )
 
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
                     column("isEnable", HttpParams::isEnable).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn<HttpParams, Boolean>(object :
-                            StringConverter<Boolean?>() {
-                            override fun toString(obj: Boolean?): String {
-                                return obj.toString()
-                            }
+                        cellFactory =
+                            TextFieldTableCell.forTableColumn<HttpParams, Boolean>(
+                                object : StringConverter<Boolean?>() {
+                                    override fun toString(obj: Boolean?): String {
+                                        return obj.toString()
+                                    }
 
-                            override fun fromString(string: String?): Boolean? {
-                                return string.toBoolean()
-                            }
-                        })
+                                    override fun fromString(string: String?): Boolean? {
+                                        return string.toBoolean()
+                                    }
+                                }
+                            )
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
                     isEditable = true
@@ -228,8 +250,20 @@ class ApiPostView : PluginView("ApiPost") {
             alignment = Pos.CENTER_LEFT
             label("Response:")
             spacing = 8.0
-            button("Body") { action { showRspHeader.value = false } }
-            button("Header") { action { showRspHeader.value = true } }
+            hbox {
+                togglegroup {
+                    togglebutton("Body") {
+                        style = "-fx-base: lightblue;"
+                        action { showRspHeader.value = false }
+                    }
+                    togglebutton("Header") {
+                        style = "-fx-base: lightblue;"
+                        action { showRspHeader.value = true }
+                    }
+                }
+            }
+            button("Pretty") { action { taRspContent.text = taRspContent.text.prettyJson() } }
+            button(graphic = imageview("/img/copy.png")) { action { taRspContent.text.copy() } }
         }
         stackpane {
             alignment = Pos.CENTER_RIGHT

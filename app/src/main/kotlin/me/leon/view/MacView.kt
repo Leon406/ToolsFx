@@ -177,9 +177,7 @@ class MacView : View("MAC") {
                     }
                 }
             }
-            label("iv:"){
-                visibleWhen(enableIv)
-            }
+            label("iv:") { visibleWhen(enableIv) }
             tfIv =
                 textfield {
                     promptText = messages["ivHint"]

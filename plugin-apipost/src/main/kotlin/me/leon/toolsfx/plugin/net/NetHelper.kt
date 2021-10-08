@@ -1,7 +1,6 @@
 package me.leon.toolsfx.plugin.net
 
-import java.net.HttpURLConnection
-import java.net.URLDecoder
+import java.net.*
 import java.util.regex.Pattern
 
 object NetHelper {
@@ -65,4 +64,18 @@ object NetHelper {
         }
         return null
     }
+
+    private val regexHeader = "([^:]+?): *(.*) *\\s+".toRegex()
+    fun parseHeaderString(headers: String) =
+        regexHeader.findAll(headers).fold(mutableMapOf<String, Any>()) { acc, matchResult ->
+            acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
+        }
+
+    fun String.proxyType() =
+        when (this) {
+            "DIRECT" -> Proxy.Type.DIRECT
+            "SOCKET4", "SOCKET5" -> Proxy.Type.SOCKS
+            "HTTP" -> Proxy.Type.HTTP
+            else -> Proxy.Type.DIRECT
+        }
 }
