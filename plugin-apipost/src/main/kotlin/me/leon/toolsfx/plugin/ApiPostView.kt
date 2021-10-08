@@ -71,6 +71,7 @@ class ApiPostView : PluginView("ApiPost") {
         paddingAll = 8
         hbox {
             spacing = 8.0
+            alignment = Pos.CENTER_LEFT
             combobox(selectedMethod, methods)
 
             tfUrl =
@@ -153,6 +154,7 @@ class ApiPostView : PluginView("ApiPost") {
             alignment = Pos.CENTER_LEFT
             label("Request:")
             hbox {
+                alignment = Pos.CENTER
                 togglegroup {
                     togglebutton("Body") {
                         style = "-fx-base: lightblue;"
@@ -251,6 +253,7 @@ class ApiPostView : PluginView("ApiPost") {
             label("Response:")
             spacing = 8.0
             hbox {
+                alignment = Pos.CENTER
                 togglegroup {
                     togglebutton("Body") {
                         style = "-fx-base: lightblue;"
