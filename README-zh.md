@@ -275,7 +275,9 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 | isEnableInternalWebview | 内置浏览器启用开关,默认false              |
 | extUrls                 | 内置浏览器默认收藏链接,多个用英文逗号分隔 |
 
+## [插件](README-plugin-zh.md)
 
+- ApiPost 接口调试工具
 
 
 ## CHANGE LOG

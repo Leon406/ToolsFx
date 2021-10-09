@@ -266,6 +266,11 @@ When Application is running ,it will generate ToolsFx.properties automatically ,
 | extUrls                 | Internal Browser favourite urls, spit with comma  |
 
 
+
+## [PLUGIN](README-plugin.md)
+
+- ApiPost   Netword Debug Tools
+
 ## CHANGE LOG
 
 see [changelog.md](changelog.md)
