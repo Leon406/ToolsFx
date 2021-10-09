@@ -78,4 +78,27 @@ object NetHelper {
             "HTTP" -> Proxy.Type.HTTP
             else -> Proxy.Type.DIRECT
         }
+
+    fun String.parseCurl() =
+        replace("""\^|\\""".toRegex(), "")
+            .also { println(this) }
+            .split("""\s*[\^\\]*\n""".toRegex())
+            .map { it.trim() }
+            .fold(Request(this)) { acc, s ->
+                acc.apply {
+                    when {
+                        s.startsWith("curl") -> acc.url = s.substring(6, s.lastIndex)
+                        s.startsWith("--data-raw") ->
+                            acc.method = "POST".also { acc.rawBody = s.substring(12, s.lastIndex) }
+                        s.startsWith("--data-binary") ->
+                            acc.method = "POST".also { acc.rawBody = s.substring(15, s.lastIndex) }
+                        s.startsWith("-H") ->
+                            with(s.substring(4, s.lastIndex)) {
+                                acc.headers.put(substringBefore(":"), substringAfter(":").trim())
+                            }
+                        else -> ""
+                    }
+                }
+            }
+            .also { println(it) }
 }

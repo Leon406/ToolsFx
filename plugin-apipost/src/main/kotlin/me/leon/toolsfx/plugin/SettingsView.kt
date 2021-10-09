@@ -16,10 +16,13 @@ class SettingsView : View("Setting") {
     private lateinit var taHeaders: TextArea
     private lateinit var tfIp: TextField
     private lateinit var tfPort: TextField
+    private lateinit var tfTime: TextField
     override val root = vbox {
         paddingAll = 8
         spacing = 8.0
         alignment = Pos.CENTER
+        label("TimeOut")
+        tfTime = textfield(ApiConfig.timeOut.toString()) { promptText = "global header" }
         label("Proxy")
         hbox {
             spacing = 8.0
@@ -47,7 +50,8 @@ class SettingsView : View("Setting") {
                     taHeaders.text,
                     selectedProxy.get(),
                     tfIp.text,
-                    tfPort.text
+                    tfPort.text,
+                    tfTime.text.toInt()
                 )
                 close()
             }

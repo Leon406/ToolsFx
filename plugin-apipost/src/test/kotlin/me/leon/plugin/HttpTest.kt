@@ -53,9 +53,12 @@ class HttpTest {
 
     @Test
     fun patch() {
-        println(javaClass.module)
         HttpUrlUtil.patch("http://httpbin.org/anything")
         HttpUrlUtil.patch("https://httpbin.org/anything")
+    }
+    @Test
+    fun trace() {
+        HttpUrlUtil.trace("https://httpbin.org/anything")
     }
     @Test
     fun downloadTest() {
@@ -86,7 +89,6 @@ class HttpTest {
 
     @Test
     fun postHandle() {
-
         val url =
             "https://pics6.baidu.com/feed/42a98226cffc1e17b0a7684e8fbbc70a738de96e.jpeg" +
                 "?token=19433714addc862045404c72677e91b3"

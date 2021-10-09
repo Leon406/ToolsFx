@@ -1,7 +1,7 @@
 package me.leon.plugin
 
-import org.junit.Test
 import java.sql.DriverManager
+import org.junit.Test
 
 class DbTest {
     @Test
@@ -9,12 +9,14 @@ class DbTest {
         val connection = DriverManager.getConnection("jdbc:sqlite:sample.db")
         connection.createStatement().apply {
             queryTimeout = 30
-//            executeUpdate("drop table if exists person")
-            executeUpdate("create table if not exists  person (id INTEGER PRIMARY KEY  AUTOINCREMENT  , name string)")
+            //            executeUpdate("drop table if exists person")
+            executeUpdate(
+                "create table if not exists  person (id INTEGER PRIMARY KEY  AUTOINCREMENT  , name string)"
+            )
 
             runCatching {
-//                executeUpdate("insert into person values(1, 'leo')")
-//                executeUpdate("insert into person values(2, 'yui')")
+                //                executeUpdate("insert into person values(1, 'leo')")
+                //                executeUpdate("insert into person values(2, 'yui')")
                 executeUpdate("insert into person(name) values('yui')")
                 executeUpdate("insert into person(name) values('leon')")
                 executeUpdate("insert into person(name) values('lamb')")

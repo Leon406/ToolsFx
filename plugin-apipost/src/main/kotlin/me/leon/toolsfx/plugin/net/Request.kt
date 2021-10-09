@@ -5,4 +5,5 @@ data class Request(
     var method: String = "GET",
     val params: MutableMap<String, Any> = mutableMapOf(),
     val headers: MutableMap<String, Any> = mutableMapOf(),
+    var rawBody: String = ""
 )

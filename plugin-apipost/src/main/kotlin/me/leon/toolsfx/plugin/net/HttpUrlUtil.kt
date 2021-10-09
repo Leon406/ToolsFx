@@ -1,19 +1,23 @@
 package me.leon.toolsfx.plugin.net
 
-
-import tornadofx.JsonBuilder
 import java.io.DataOutputStream
 import java.io.File
 import java.net.*
 import java.util.UUID
 import javax.net.ssl.HttpsURLConnection
 import kotlin.system.measureTimeMillis
-
+import tornadofx.JsonBuilder
 
 object HttpUrlUtil {
+    private val httpsDelegate by lazy {
+        val clazz = Class.forName("sun.net.www.protocol.https.HttpsURLConnectionImpl")
+        clazz.getDeclaredField("delegate").apply { isAccessible = true }
+    }
+
     var DEFAULT_PRE_ACTION: (Request) -> Unit = {}
     var DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
     var isDebug = true
+    var timeOut = 10000
     private var proxy: Proxy = Proxy.NO_PROXY
     var downloadFolder: String =
         File(File("").absoluteFile, "downloads").also { if (!it.exists()) it.mkdirs() }.absolutePath
@@ -48,7 +52,7 @@ object HttpUrlUtil {
             "Connection" to "Keep-Alive",
             "content-type" to "application/json; charset=utf-8",
             "User-Agent" to
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -70,6 +74,8 @@ object HttpUrlUtil {
             for ((k, v) in realHeaders) conn.setRequestProperty(k, v.toString())
             conn.doOutput = true
             conn.instanceFollowRedirects = true
+            conn.readTimeout = timeOut
+            conn.connectTimeout = timeOut
             showRequestInfo(conn, "")
             conn.connect()
             if (isDownload) {
@@ -148,11 +154,12 @@ object HttpUrlUtil {
         var rsp: String
         val header = makeHeaders(req.headers)
         val time = measureTimeMillis {
-            if (method == "PATCH") patchConnection(conn)
-            else conn.requestMethod = req.method
+            if (method == "PATCH") patchConnection(conn) else conn.requestMethod = req.method
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
             conn.doOutput = true
             conn.instanceFollowRedirects = true
+            conn.readTimeout = timeOut
+            conn.connectTimeout = timeOut
 
             showRequestInfo(conn, "")
             conn.connect()
@@ -172,13 +179,7 @@ object HttpUrlUtil {
     }
 
     private fun patchConnection(http: HttpURLConnection) {
-        var target: Any = http
-        if (http is HttpsURLConnection) {
-            val clazz = Class.forName("sun.net.www.protocol.https.HttpsURLConnectionImpl")
-            val delegate = clazz.getDeclaredField("delegate")
-            delegate.isAccessible = true
-            target = delegate.get(http)
-        }
+        var target = if (http is HttpsURLConnection) httpsDelegate.get(http) else http
         val f = HttpURLConnection::class.java.getDeclaredField("method")
         f.isAccessible = true
         f.set(target, "PATCH")
@@ -220,6 +221,8 @@ object HttpUrlUtil {
                 conn.addRequestProperty("Content-Length", dataBytes.size.toString())
             conn.doOutput = true
             conn.instanceFollowRedirects = true
+            conn.readTimeout = timeOut
+            conn.connectTimeout = timeOut
             showRequestInfo(conn, data)
             conn.connect()
             conn.outputStream.write(dataBytes)
@@ -259,6 +262,8 @@ object HttpUrlUtil {
             conn.requestMethod = req.method
             conn.doOutput = true
             conn.instanceFollowRedirects = true
+            conn.readTimeout = timeOut
+            conn.connectTimeout = timeOut
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
 
             conn.setRequestProperty("content-type", "$CONTENT_TYPE_FORM_DATA; boundary=$boundary")

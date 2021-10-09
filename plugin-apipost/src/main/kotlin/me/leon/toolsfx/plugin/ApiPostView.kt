@@ -11,6 +11,7 @@ import javafx.util.StringConverter
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
+import me.leon.toolsfx.plugin.net.NetHelper.parseCurl
 import tornadofx.*
 
 class ApiPostView : PluginView("ApiPost") {
@@ -35,6 +36,7 @@ class ApiPostView : PluginView("ApiPost") {
             "HEAD",
             "DELETE",
             "OPTIONS",
+            "TRACE",
         )
     private val bodyType = BodyType.values().map { it.type }
 
@@ -44,7 +46,7 @@ class ApiPostView : PluginView("ApiPost") {
     private val showReqHeader = SimpleBooleanProperty(false)
     private val showReqTable = SimpleBooleanProperty(false)
     private val isRunning = SimpleBooleanProperty(false)
-    private var requestParams = FXCollections.observableArrayList<HttpParams>(HttpParams())
+    private var requestParams = FXCollections.observableArrayList(HttpParams())
     private val showTableList = listOf("json", "form-data")
 
     private val reqHeaders
@@ -79,7 +81,7 @@ class ApiPostView : PluginView("ApiPost") {
                     prefWidth = 400.0
                     promptText = "input your url"
                 }
-
+            button(graphic = imageview("/img/import.png")) { action { resetUi(clipboardText()) } }
             button(graphic = imageview("/img/run.png")) {
                 enableWhen(!isRunning)
                 action {
@@ -142,10 +144,7 @@ class ApiPostView : PluginView("ApiPost") {
             }
 
             button(graphic = imageview("/img/settings.png")) {
-                action {
-                    // 代理设置/全局头
-                    openInternalWindow<SettingsView>()
-                }
+                action { openInternalWindow<SettingsView>() }
             }
         }
 
@@ -178,6 +177,14 @@ class ApiPostView : PluginView("ApiPost") {
                 println(newValue)
                 showReqTable.value = (newValue as String) in showTableList
             }
+
+            button("Pretty") {
+                action {
+                    visibleWhen(!showReqTable)
+                    taReqContent.text = taReqContent.text.prettyJson()
+                }
+            }
+
             button("add") {
                 visibleWhen(showReqTable)
                 action { requestParams.add(HttpParams()) }
@@ -189,10 +196,11 @@ class ApiPostView : PluginView("ApiPost") {
         }
         stackpane {
             spacing = 8.0
-
+            prefHeight = 200.0
             taReqContent =
                 textarea() {
-                    promptText = "request params"
+                    promptText = "request body"
+                    isWrapText = true
                     visibleWhen(!showReqHeader)
                 }
             table =
@@ -244,6 +252,7 @@ class ApiPostView : PluginView("ApiPost") {
             taReqHeaders =
                 textarea {
                     promptText = "request headers"
+                    isWrapText = true
                     visibleWhen(showReqHeader)
                 }
         }
@@ -279,16 +288,28 @@ class ApiPostView : PluginView("ApiPost") {
                 textarea {
                     promptText = "response headers"
                     isEditable = false
+                    isWrapText = true
                     visibleWhen(showRspHeader)
                 }
             taRspContent =
                 textarea {
-                    promptText = "response content"
+                    promptText = "response body"
                     isEditable = false
                     isWrapText = true
                     visibleWhen(!showRspHeader)
                 }
         }
         title = "ApiPost"
+    }
+
+    private fun resetUi(clipboardText: String) {
+        clipboardText.parseCurl().run {
+            selectedMethod.value = method
+            tfUrl.text = url
+            taReqHeaders.text = headers.entries.joinToString("\n") { "${it.key}: ${it.value} " }
+            taReqContent.text = rawBody
+            selectedBodyType.value = BodyType.RAW.type
+            showReqTable.value = false
+        }
     }
 }

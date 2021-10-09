@@ -11,6 +11,7 @@ object ApiConfig {
     private const val PROXY_TYPE = "proxyType"
     private const val PROXY_HOST = "proxyHost"
     private const val PROXY_PORT = "proxyPort"
+    private const val TIME_OUT = "timeout"
     var isEnableProxy
         get() = Prefs.preference().getBoolean(IS_ENABLE_PROXY, false)
         set(value) {
@@ -38,12 +39,19 @@ object ApiConfig {
             Prefs.preference().put(PROXY_PORT, value)
         }
 
+    var timeOut: Int
+        get() = Prefs.preference().getInt(TIME_OUT, 10000)
+        set(value) {
+            Prefs.preference().putInt(TIME_OUT, value)
+        }
+
     fun resortFromConfig() {
         if (isEnableProxy)
             HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
         HttpUrlUtil.globalHeaders.putAll(
             parseHeaderString(globalHeaders) as MutableMap<String, String>
         )
+        HttpUrlUtil.timeOut = timeOut
     }
 
     fun saveConfig(
@@ -51,7 +59,8 @@ object ApiConfig {
         headers: String,
         pType: String,
         pHost: String,
-        pPort: String
+        pPort: String,
+        tOut: Int,
     ) {
         isEnableProxy = isEnablePro
         if (isEnableProxy)
@@ -67,5 +76,7 @@ object ApiConfig {
         proxyType = pType
         proxyHost = pHost
         proxyPort = pPort
+        HttpUrlUtil.timeOut = tOut
+        timeOut = tOut
     }
 }
