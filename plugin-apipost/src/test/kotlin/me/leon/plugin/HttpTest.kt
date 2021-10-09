@@ -38,24 +38,25 @@ class HttpTest {
 
     @Test
     fun options() {
-        HttpUrlUtil.options("https://lab.magiconch.com/api/nbnhhsh/guess")
+        HttpUrlUtil.options("https://httpbin.org/anything")
     }
 
     @Test
     fun put() {
-        HttpUrlUtil.put("https://lab.magiconch.com/api/nbnhhsh/guess")
+        HttpUrlUtil.put("https://httpbin.org/anything")
     }
 
     @Test
     fun delete() {
-        HttpUrlUtil.delete("https://lab.magiconch.com/api/nbnhhsh/guess")
+        HttpUrlUtil.delete("https://httpbin.org/anything")
     }
 
     @Test
     fun patch() {
-        HttpUrlUtil.patch("https://lab.magiconch.com/api/nbnhhsh/guess")
+        println(javaClass.module)
+        HttpUrlUtil.patch("http://httpbin.org/anything")
+        HttpUrlUtil.patch("https://httpbin.org/anything")
     }
-
     @Test
     fun downloadTest() {
         val url =

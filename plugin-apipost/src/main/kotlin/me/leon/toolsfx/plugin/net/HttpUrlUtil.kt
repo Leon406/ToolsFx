@@ -1,10 +1,14 @@
 package me.leon.toolsfx.plugin.net
 
-import java.io.*
+
+import tornadofx.JsonBuilder
+import java.io.DataOutputStream
+import java.io.File
 import java.net.*
 import java.util.UUID
+import javax.net.ssl.HttpsURLConnection
 import kotlin.system.measureTimeMillis
-import tornadofx.JsonBuilder
+
 
 object HttpUrlUtil {
     var DEFAULT_PRE_ACTION: (Request) -> Unit = {}
@@ -44,7 +48,7 @@ object HttpUrlUtil {
             "Connection" to "Keep-Alive",
             "content-type" to "application/json; charset=utf-8",
             "User-Agent" to
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -104,13 +108,18 @@ object HttpUrlUtil {
         headers: MutableMap<String, Any> = mutableMapOf()
     ) = request(url, "PUT", params, headers)
 
+    fun trace(
+        url: String,
+        params: MutableMap<String, Any> = mutableMapOf(),
+        headers: MutableMap<String, Any> = mutableMapOf()
+    ) = request(url, "TRACE", params, headers)
+
     fun patch(
         url: String,
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf()
     ): Response {
-        headers["X-HTTP-Method-Override"] = "PATCH"
-        return request(url, "POST", params, headers)
+        return request(url, "PATCH", params, headers)
     }
 
     fun delete(
@@ -131,7 +140,6 @@ object HttpUrlUtil {
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf()
     ): Response {
-        if (method == "PATCH") return patch(url, params, headers)
         val req = Request(url, method, params, headers)
         preAction(req)
         val realUrl =
@@ -140,7 +148,8 @@ object HttpUrlUtil {
         var rsp: String
         val header = makeHeaders(req.headers)
         val time = measureTimeMillis {
-            conn.requestMethod = req.method
+            if (method == "PATCH") patchConnection(conn)
+            else conn.requestMethod = req.method
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
             conn.doOutput = true
             conn.instanceFollowRedirects = true
@@ -160,6 +169,19 @@ object HttpUrlUtil {
                 acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
+    }
+
+    private fun patchConnection(http: HttpURLConnection) {
+        var target: Any = http
+        if (http is HttpsURLConnection) {
+            val clazz = Class.forName("sun.net.www.protocol.https.HttpsURLConnectionImpl")
+            val delegate = clazz.getDeclaredField("delegate")
+            delegate.isAccessible = true
+            target = delegate.get(http)
+        }
+        val f = HttpURLConnection::class.java.getDeclaredField("method")
+        f.isAccessible = true
+        f.set(target, "PATCH")
     }
 
     private fun makeHeaders(headers: MutableMap<String, Any>): MutableMap<String, Any> {
