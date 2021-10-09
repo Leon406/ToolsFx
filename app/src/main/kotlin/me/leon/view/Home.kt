@@ -15,6 +15,7 @@ import me.leon.toolsfx.plugin.PluginView
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 import tornadofx.FX.Companion.messages
+import java.util.ServiceLoader
 
 class Home : View("${messages["appName"]} v.$VERSION") {
     override val root = tabpane {
@@ -42,6 +43,16 @@ class Home : View("${messages["appName"]} v.$VERSION") {
                     this.text = this@with.description
                     println(this.text)
                 }
+            }
+        }
+
+        // support library
+        val sl: ServiceLoader<PluginView> = ServiceLoader.load(PluginView::class.java)
+        println(sl.findFirst())
+        sl.forEach {
+            tab(it) {
+                this.text = it.description
+                println(this.text)
             }
         }
         tab<AboutView>()

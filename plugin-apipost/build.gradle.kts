@@ -21,6 +21,8 @@ dependencies {
 //    implementation("no.tornado:tornadofx:$tornadofx_version")
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
+
+    testImplementation ("org.xerial:sqlite-jdbc:3.36.0.3")
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
 }

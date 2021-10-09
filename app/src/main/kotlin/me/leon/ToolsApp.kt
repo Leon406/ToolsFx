@@ -1,13 +1,13 @@
 package me.leon
 
-import java.io.File
-import java.net.URLClassLoader
-import java.util.*
 import javafx.scene.image.Image
 import me.leon.ext.Prefs
 import me.leon.toolsfx.plugin.PluginView
 import me.leon.view.Home
 import tornadofx.*
+import java.io.File
+import java.net.URLClassLoader
+import java.util.*
 
 class ToolsApp : App(Home::class, Styles::class) {
 
@@ -25,7 +25,10 @@ class ToolsApp : App(Home::class, Styles::class) {
         File(PLUGIN_DIR).listFiles { _, name -> name.endsWith(".jar") }?.fold(plugins) { acc, file
             ->
             println("find plugin: $file")
-            acc.apply { acc.add(loadPlugin(file.absolutePath)!!) }
+            acc.apply {
+                if (file.absolutePath.contains("me.leon.toolsfx.plugin"))
+                    acc.add(loadPlugin(file.absolutePath)!!)
+            }
         }
     }
 
