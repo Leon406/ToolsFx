@@ -7,7 +7,6 @@ class CurlParse {
     @Test
     fun parse() {
 
-
         val raw =
             """
   curl "http://47.98.112.234:9101/sys/login" ^
@@ -23,7 +22,6 @@ class CurlParse {
   --compressed ^
   --insecure
         """.trimIndent()
-
 
         println(raw.parseCurl())
         println("http://www.baidu.com".parseCurl())

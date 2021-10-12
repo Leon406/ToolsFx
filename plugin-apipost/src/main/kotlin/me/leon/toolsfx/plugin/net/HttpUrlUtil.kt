@@ -52,7 +52,7 @@ object HttpUrlUtil {
             "Connection" to "Keep-Alive",
             "content-type" to "application/json; charset=utf-8",
             "User-Agent" to
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -207,7 +207,11 @@ object HttpUrlUtil {
         return postData(url, data, headers)
     }
 
-    fun postData(url: String, data: String, headers: MutableMap<String, Any>): Response {
+    fun postData(
+        url: String,
+        data: String,
+        headers: MutableMap<String, Any> = mutableMapOf()
+    ): Response {
         val req = Request(url, "POST", mutableMapOf(), headers)
         preAction(req)
         val conn = URL(url).openConnection(proxy) as HttpURLConnection

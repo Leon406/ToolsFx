@@ -1,0 +1,1 @@
+keytool -import -v -alias leon -file %1 -keystore %2 -storepass %3 -noprompt

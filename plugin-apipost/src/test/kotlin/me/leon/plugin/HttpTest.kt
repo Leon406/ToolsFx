@@ -2,8 +2,7 @@ package me.leon.plugin
 
 import java.io.File
 import java.util.Base64
-import me.leon.toolsfx.plugin.net.HttpUrlUtil
-import me.leon.toolsfx.plugin.net.NetHelper
+import me.leon.toolsfx.plugin.net.*
 import org.junit.Test
 
 class HttpTest {
@@ -52,10 +51,9 @@ class HttpTest {
         HttpUrlUtil.delete("https://httpbin.org/anything")
     }
 
-
     @Test
     fun connect() {
-        HttpUrlUtil.request("https://httpbin.org/anything","CONNECT")
+        HttpUrlUtil.request("https://httpbin.org/anything", "CONNECT")
     }
 
     @Test
@@ -63,10 +61,12 @@ class HttpTest {
         HttpUrlUtil.patch("http://httpbin.org/anything")
         HttpUrlUtil.patch("https://httpbin.org/anything")
     }
+
     @Test
     fun trace() {
         HttpUrlUtil.trace("https://www.baidu.com")
     }
+
     @Test
     fun downloadTest() {
         val url =
@@ -147,9 +147,34 @@ class HttpTest {
             user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
              Chrome/86.0.4240.198 Safari/537.36
         """.trimIndent()
-       val header2 = "Max-Forwards:44\n" +
-                "aa:bb"
+        val header2 = "Max-Forwards:44\n" + "aa:bb"
         println(NetHelper.parseHeaderString(headers))
         println(NetHelper.parseHeaderString(header2))
+    }
+
+    private val httpConfigPath = File(File("").absoluteFile.parentFile, "/testdata/https")
+
+    @Test
+    fun cert() {
+        TrustManager.parseFromCertification("$httpConfigPath/baidu.cer")
+        HttpUrlUtil.get("https://www.baidu.com")
+        // error cer
+        TrustManager.parseFromCertification("$httpConfigPath/jianshu.cer")
+        HttpUrlUtil.get("https://www.baidu.com")
+    }
+
+    @Test
+    fun pkcs12() {
+
+        println(httpConfigPath)
+        TrustManager.parseFromPkcs12("$httpConfigPath/sq_client.p12", "bulianglin")
+        HttpUrlUtil.postData(
+            "https://193.110.201.185:11000/find_cached_nodes",
+            "{\"network\":\"pnet\",\"target_id\":\"dzlOMk52c2RCU1Q4NmZHZnlTT2ZzSkUxY0tPWFlqV3dzdzVtc1k4REtwWTZiR" +
+                "kxYcmo5dW4yNmQ0RWtsRVpKcQ==\",\"local_continent_code\":\"AS\",\"local_country_code\":\"CN\",\"tar" +
+                "get_country_code\":\"KR\",\"num_nodes\":20}"
+        )
+        TrustManager.parseFromPkcs12("$httpConfigPath/baidu.p12", "123456")
+        HttpUrlUtil.get("https://www.baidu.com")
     }
 }

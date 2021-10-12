@@ -1,0 +1,1 @@
+keytool -export -alias test -keystore %1 -storepass %2 -file out.cer
