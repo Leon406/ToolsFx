@@ -52,7 +52,7 @@ object HttpUrlUtil {
             "Connection" to "Keep-Alive",
             "content-type" to "application/json; charset=utf-8",
             "User-Agent" to
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -154,7 +154,8 @@ object HttpUrlUtil {
         var rsp: String
         val header = makeHeaders(req.headers)
         val time = measureTimeMillis {
-            if (method == "PATCH") patchConnection(conn) else conn.requestMethod = req.method
+            if (method == "PATCH" || method == "CONNECT") patchConnection(conn, method)
+            else conn.requestMethod = req.method
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
             conn.doOutput = true
             conn.instanceFollowRedirects = true
@@ -178,11 +179,11 @@ object HttpUrlUtil {
         return Response(conn.responseCode, rsp, responseHeaders, time)
     }
 
-    private fun patchConnection(http: HttpURLConnection) {
+    private fun patchConnection(http: HttpURLConnection, method: String = "PATCH") {
         var target = if (http is HttpsURLConnection) httpsDelegate.get(http) else http
         val f = HttpURLConnection::class.java.getDeclaredField("method")
         f.isAccessible = true
-        f.set(target, "PATCH")
+        f.set(target, method)
     }
 
     private fun makeHeaders(headers: MutableMap<String, Any>): MutableMap<String, Any> {

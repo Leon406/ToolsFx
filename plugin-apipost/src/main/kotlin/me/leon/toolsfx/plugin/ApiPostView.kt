@@ -37,6 +37,7 @@ class ApiPostView : PluginView("ApiPost") {
             "DELETE",
             "OPTIONS",
             "TRACE",
+            "CONNECT",
         )
     private val bodyType = BodyType.values().map { it.type }
 

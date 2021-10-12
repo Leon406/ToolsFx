@@ -52,6 +52,12 @@ class HttpTest {
         HttpUrlUtil.delete("https://httpbin.org/anything")
     }
 
+
+    @Test
+    fun connect() {
+        HttpUrlUtil.request("https://httpbin.org/anything","CONNECT")
+    }
+
     @Test
     fun patch() {
         HttpUrlUtil.patch("http://httpbin.org/anything")
@@ -59,7 +65,7 @@ class HttpTest {
     }
     @Test
     fun trace() {
-        HttpUrlUtil.trace("https://httpbin.org/anything")
+        HttpUrlUtil.trace("https://www.baidu.com")
     }
     @Test
     fun downloadTest() {
@@ -143,6 +149,7 @@ class HttpTest {
         """.trimIndent()
        val header2 = "Max-Forwards:44\n" +
                 "aa:bb"
+        println(NetHelper.parseHeaderString(headers))
         println(NetHelper.parseHeaderString(header2))
     }
 }
