@@ -67,3 +67,28 @@
 - feat: add crc32,character statistic ,read http headers
 ## bug fix:
 - fix: urlbase64  urlencode error
+# v1.9.0  
+## feature:  
+- feat: support custom client certification
+- feat: add CONNECT request method
+- feat: plugin support spi mode
+- feat: api post 模块新增全局请求头,代理设置,页面优化
+- feat: 新增crc64
+- feat: 优化双通道升级检测
+- feat: 网络请求模块
+- feat: 加入拖动文件大小及后缀限制,避免未响应
+- feat: 编码支持执行多次
+- feat: add new cipher nihilist
+- feat: 新增playfair cipher
+- feat: 新增cipher ADFGX/ADFGVX/Autokey
+- feat: add W type rail fence
+- feat: add brainfuck/ook/troll script decrypt
+- feat: add 社会主义核心价值价值观/栅栏加密
+- feat: 新增base100编码
+- feat: 新增qwe加密
+## bug fix:  
+- fix: request header parse error
+- fix: patch方法错误
+- fix: encode QuotePrintable capital letters decode error
+- fix: autoKey keyword小写加密不一致
+- fix: unicode解码支持大写U
