@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.8.0.4.beta"
+version = "1.9.0"
 
 plugins {
     application

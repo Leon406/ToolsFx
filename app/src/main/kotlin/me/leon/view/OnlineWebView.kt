@@ -20,7 +20,7 @@ class OnlineWebView : View("Browser") {
             hbox {
                 spacing = DEFAULT_SPACING
                 paddingAll = DEFAULT_SPACING
-                alignment = Pos.BASELINE_LEFT
+                alignment = Pos.CENTER_LEFT
                 button(graphic = imageview("img/back.png")) {
                     action {
                         web.engine.history.run {
@@ -54,11 +54,6 @@ class OnlineWebView : View("Browser") {
                 button(graphic = imageview("/img/run.png")) {
                     action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
                 }
-
-                //                button("inject") {
-                //                    action {
-                // web.engine.executeScript("\$('.navbar-header').hide()") }
-                //                }
             }
         center =
             vbox {

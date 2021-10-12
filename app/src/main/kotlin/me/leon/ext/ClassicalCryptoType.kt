@@ -195,7 +195,7 @@ enum class ClassicalCryptoType(val type: String) {
             raw.trollScriptEncrypt()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
-            raw.trollScriptDecrypt() ?: ""
+            raw.trollScriptDecrypt()
     };
 
     abstract fun encrypt(raw: String, params: MutableMap<String, String>): String

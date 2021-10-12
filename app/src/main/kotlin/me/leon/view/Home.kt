@@ -48,7 +48,6 @@ class Home : View("${messages["appName"]} v.$VERSION") {
 
         // support library
         val sl: ServiceLoader<PluginView> = ServiceLoader.load(PluginView::class.java)
-        println(sl.findFirst())
         sl.forEach {
             tab(it) {
                 this.text = it.description

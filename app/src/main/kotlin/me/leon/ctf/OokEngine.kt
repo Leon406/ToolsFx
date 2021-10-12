@@ -40,8 +40,7 @@ constructor(
         // It fine that all Ook! tokens are 9 characters long :)
         // So we aren't going to loop through all characters..
         while (charPointer < str.length) {
-            var token = ""
-            token =
+            var token =
                 if (charPointer + defaultTokenLength <= str.length) // The string we found.
                  str.substring(charPointer, charPointer + defaultTokenLength)
                 else str.substring(charPointer, charPointer + (str.length - charPointer))
