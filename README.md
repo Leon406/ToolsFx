@@ -269,7 +269,7 @@ When Application is running ,it will generate ToolsFx.properties automatically ,
 
 ## [PLUGIN](README-plugin.md)
 
-- ApiPost   Netword Debug Tools
+- ApiPost   Network Debug Tools
 
 ## CHANGE LOG
 
