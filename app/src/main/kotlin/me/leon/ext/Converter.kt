@@ -11,6 +11,8 @@ const val DECIMAL_RADIX = 10
 /** 16进制编解码 */
 fun ByteArray.toHex() = hex
 
+fun String.toHex() = toByteArray().toHex()
+
 fun String.hex2String(charset: String = "UTF-8") = String(hex2ByteArray(), Charset.forName(charset))
 
 fun String.hex2ByteArray() = chunked(2).map { it.toInt(HEX_RADIX).toByte() }.toByteArray()
@@ -54,7 +56,7 @@ fun String.unicode2String() =
             }
             .toString()
     else
-        split("\\\\u\\+?".toRegex())
+        split("(?i)\\\\u\\+?".toRegex())
             .filterIndexed { index, _ -> index != 0 }
             .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(HEX_RADIX).toChar()) } }
             .toString()

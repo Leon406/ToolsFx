@@ -31,7 +31,15 @@ class MacView : View("MAC") {
     private var outputEncode = "hex"
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
-    private val eventHandler = fileDraggedHandler { taInput.text = it.first().absolutePath }
+    private val eventHandler = fileDraggedHandler {
+        taInput.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
 
     // https://www.bouncycastle.org/specifications.html
     private val algs =
@@ -145,7 +153,7 @@ class MacView : View("MAC") {
         hbox {
             alignment = Pos.CENTER_LEFT
             label(messages["alg"])
-            combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
+            combobox(selectedAlgItem, algs.keys.toMutableList())
             label(messages["bits"]) { paddingAll = DEFAULT_SPACING }
             cbBits =
                 combobox(selectedBits, algs.values.first()) {
@@ -169,14 +177,14 @@ class MacView : View("MAC") {
                     }
                 }
             }
-            label("iv:")
+            label("iv:") { visibleWhen(enableIv) }
             tfIv =
                 textfield {
                     promptText = messages["ivHint"]
-                    enableWhen(enableIv)
+                    visibleWhen(enableIv)
                 }
             vbox {
-                enableWhen(enableIv)
+                visibleWhen(enableIv)
                 togglegroup {
                     spacing = DEFAULT_SPACING
                     paddingAll = DEFAULT_SPACING

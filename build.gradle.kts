@@ -12,11 +12,12 @@ repositories {
     maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
     maven { url = uri("https://maven.aliyun.com/repository/google") }
 }
-val tornadofx_version: String by rootProject
 
-//注意以下内容
+apply(from = "${rootProject.projectDir}/config/Versions.gradle.kts")
+
 subprojects {
     apply(from = "${rootProject.projectDir}/config/codeQuality.gradle")
+
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     repositories {

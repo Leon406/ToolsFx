@@ -27,7 +27,7 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32/36/58/62/85/91/92
+- [x] base16/32/36/58/62/85/91/92/100
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
@@ -182,6 +182,25 @@
 - [x] SM2
 - [ ] other
 
+### Classical Crypto (for CTF)
+
+- [x] caesar
+- [x] rot5/rot13/rot18/rot47
+- [x] affine
+- [x] virgenene
+- [x] atbash
+- [x] morse
+- [x] qwe keyborad
+- [x] polybius
+- [x] bacon 24/bacon26
+- [x] one time pad
+- [x] socialist core value
+- [x] ADFGX/ADFGVX
+- [x] Auto Key
+- [x] railfence normal /railfence w-type
+- [x] playfair
+- [x] brainfuck/ook
+
 
 ### Others
 
@@ -219,7 +238,7 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
 
 - with jre environment
   - jdk8      choose suffix with jdk8
-  - jdk11+   choose suffix with jdk11
+  - jdk11+   choose suffix with jdk11 & also need to config javafx environment
 - w/o jre environment(Windows user only)
   - 64bit Windows      x64 (jre11)
   - 32/64bit Windows x86 (jre8,have no idea, choose this)  
@@ -246,6 +265,11 @@ When Application is running ,it will generate ToolsFx.properties automatically ,
 | isEnableInternalWebview | Internal Browser switch,default is false          |
 | extUrls                 | Internal Browser favourite urls, spit with comma  |
 
+
+
+## [PLUGIN](README-plugin.md)
+
+- ApiPost   Netword Debug Tools
 
 ## CHANGE LOG
 

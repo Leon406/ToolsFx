@@ -4,10 +4,10 @@ version = "1.0.0"
 plugins {
     `java-library`
 }
-val tornadofx_version: String by rootProject
+
 javafx {
     //latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
-    version = "17"
+    version = rootProject.extra["jfx_version"] as String
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
@@ -18,5 +18,7 @@ javafx {
 }
 
 dependencies {
-    api("no.tornado:tornadofx:$tornadofx_version")
+    api("no.tornado:tornadofx:${rootProject.extra["tornadofx_version"]}")
+    api("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
+    api("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
 }

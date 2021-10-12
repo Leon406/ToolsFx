@@ -42,10 +42,12 @@ class AboutView : View(messages["about"]) {
         }
         txtLatestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
-        checkUpdate(!Prefs.isIgnoreUpdate)
+        if (VERSION.endsWith("beta")) checkUpdateDev(!Prefs.isIgnoreUpdate)
+        else checkUpdate(!Prefs.isIgnoreUpdate)
     }
 
-    private fun checkUpdateDev() {
+    private fun checkUpdateDev(isAuto: Boolean = true) {
+        if (!isAuto) return
         runAsync { DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2) } ui
             {
                 txtLatestVersion.text =

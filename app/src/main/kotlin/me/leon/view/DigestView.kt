@@ -50,7 +50,13 @@ class DigestView : View(messages["hash"]) {
         inputText =
             if (isFileMode.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
-            else it.first().readText()
+            else
+                with(it.first()) {
+                    if (length() <= 10 * 1024 * 1024)
+                        if (realExtension() in unsupportedExts) "unsupported file extension"
+                        else readText()
+                    else "not support file larger than 10M"
+                }
     }
 
     // https://www.bouncycastle.org/specifications.html
@@ -88,7 +94,7 @@ class DigestView : View(messages["hash"]) {
             "GOST3411" to listOf("256"),
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
-            "CRC" to listOf("32"),
+            "CRC" to listOf("32", "64"),
         )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())

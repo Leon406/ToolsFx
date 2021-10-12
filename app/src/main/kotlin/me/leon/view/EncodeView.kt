@@ -3,7 +3,6 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.Parent
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.SimpleMsgEvent
@@ -18,10 +17,12 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(true)
+    private val isProcessing = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
     private lateinit var labelInfo: Label
     private lateinit var tfCustomDict: TextField
+    private lateinit var tfCount: TextField
     private var enableDict = SimpleBooleanProperty(true)
     private val info: String
         get() =
@@ -41,7 +42,15 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private var isEncode = true
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
-    private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
+    private val eventHandler = fileDraggedHandler {
+        taInput.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
 
     private val encodeTypeWithSpace =
         arrayOf(
@@ -134,9 +143,10 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
         hbox {
             spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER
             togglegroup {
                 spacing = DEFAULT_SPACING
-                alignment = Pos.BASELINE_CENTER
+                alignment = Pos.CENTER
                 label("charset:")
                 combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
 
@@ -152,12 +162,18 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                         println("$observable $oldValue  $newValue")
                     }
                 }
+
+                label("times:")
+                tfCount = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = new.cast<RadioButton>().text == messages["encode"]
                     run()
                 }
             }
-            button(messages["run"], imageview("/img/run.png")) { action { run() } }
+            button(messages["run"], imageview("/img/run.png")) {
+                enableWhen(!isProcessing)
+                action { run() }
+            }
         }
         hbox {
             spacing = DEFAULT_SPACING
@@ -171,12 +187,11 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             }
             button(graphic = imageview("/img/jump.png")) {
                 action {
-                    var tmp: Parent? = parent
-                    while (tmp != null) {
-                        if (tmp is TabPane) break
-                        tmp = tmp.parent
-                    }
-                    tmp.safeAs<TabPane>()?.selectionModel?.select(2)
+                    fire(SimpleMsgEvent(taOutput.text, 1))
+                    val tabPane = findParentOfType(TabPane::class)
+                    tabPane?.selectionModel?.select(
+                        tabPane.tabs.first { it.text == messages["stringProcess"] }
+                    )
                 }
             }
         }
@@ -193,26 +208,38 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     }
 
     private fun run() {
-        taOutput.text =
-            if (isEncode)
-                controller.encode2String(
-                    inputText,
-                    encodeType,
-                    tfCustomDict.text,
-                    selectedCharset.get(),
-                    isSingleLine.get()
-                )
-            else
-                controller.decode2String(
-                    inputText,
-                    encodeType,
-                    tfCustomDict.text,
-                    selectedCharset.get(),
-                    isSingleLine.get()
-                )
-        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-        labelInfo.text = info
 
-        fire(SimpleMsgEvent(taOutput.text, 1))
+        var result = inputText
+        runAsync {
+            isProcessing.value = true
+            repeat(
+                tfCount.text.toInt().takeIf { it <= 40 } ?: 40.also { tfCount.text = it.toString() }
+            ) {
+                result =
+                    if (isEncode)
+                        controller.encode2String(
+                            result,
+                            encodeType,
+                            tfCustomDict.text,
+                            selectedCharset.get(),
+                            isSingleLine.get()
+                        )
+                    else
+                        controller.decode2String(
+                            result,
+                            encodeType,
+                            tfCustomDict.text,
+                            selectedCharset.get(),
+                            isSingleLine.get()
+                        )
+            }
+        } ui
+            {
+                isProcessing.value = false
+                taOutput.text = result
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                labelInfo.text = info
+            }
     }
 }

@@ -151,4 +151,12 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
         String(big5Bytes, Charset.forName("big5")).also { println(it) }
         String(iso88591, Charset.forName("utf-8")).also { println(it) }
     }
+
+    @Test
+    fun collectionSpit() {
+        val l = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        l.sliceList(mutableListOf(1, 2, 3, 4)).also { println(it) }
+        val l2 = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+        l2.sliceList(mutableListOf(4, 2, 3, 1)).also { println(it) }
+    }
 }

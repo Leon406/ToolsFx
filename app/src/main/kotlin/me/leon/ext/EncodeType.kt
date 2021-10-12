@@ -3,6 +3,8 @@ package me.leon.ext
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import me.leon.base100
+import me.leon.base100Decode
 import me.leon.encode.*
 import me.leon.encode.base.*
 
@@ -115,6 +117,12 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
             encoded.base92Decode(dict, charset)
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base92Encode(dict, charset)
+    },
+    Base100("base100", "") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base100Decode()
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base100()
     },
     Escape("escape") {
         override fun decode(encoded: String, dict: String, charset: String) =

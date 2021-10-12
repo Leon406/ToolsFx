@@ -25,7 +25,10 @@ class ToolsApp : App(Home::class, Styles::class) {
         File(PLUGIN_DIR).listFiles { _, name -> name.endsWith(".jar") }?.fold(plugins) { acc, file
             ->
             println("find plugin: $file")
-            acc.apply { acc.add(loadPlugin(file.absolutePath)!!) }
+            acc.apply {
+                if (file.absolutePath.contains("me.leon.toolsfx.plugin"))
+                    acc.add(loadPlugin(file.absolutePath)!!)
+            }
         }
     }
 

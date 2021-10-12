@@ -11,13 +11,16 @@ class DigestController : Controller() {
     private fun digest(method: String, data: String) =
         catch({ "digest error: $it" }) {
             if (data.isEmpty()) ""
-            else if (method.startsWith("CRC")) data.crc32() else Digests.hash(method, data)
+            else if (method.startsWith("CRC"))
+                if (method.contains("32")) data.crc32() else data.crc64()
+            else Digests.hash(method, data)
         }
 
     fun digestFile(method: String, path: String) =
         catch({ "digest file error: $it" }) {
             if (path.isEmpty()) ""
-            else if (method.startsWith("CRC")) path.crc32File()
+            else if (method.startsWith("CRC"))
+                if (method.contains("32")) path.crc32File() else path.crc64File()
             else Digests.hashByFile(method, path)
         }
 }

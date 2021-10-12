@@ -1,6 +1,7 @@
 package me.leon.view
 
 import java.security.Security
+import java.util.ServiceLoader
 import me.leon.ToolsApp.Companion.isEnableClassical
 import me.leon.ToolsApp.Companion.isEnableInternalWebview
 import me.leon.ToolsApp.Companion.isEnableMac
@@ -42,6 +43,15 @@ class Home : View("${messages["appName"]} v.$VERSION") {
                     this.text = this@with.description
                     println(this.text)
                 }
+            }
+        }
+
+        // support library
+        val sl: ServiceLoader<PluginView> = ServiceLoader.load(PluginView::class.java)
+        sl.forEach {
+            tab(it) {
+                this.text = it.description
+                println(this.text)
             }
         }
         tab<AboutView>()

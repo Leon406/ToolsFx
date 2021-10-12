@@ -14,6 +14,7 @@ class ClassicalView : View(messages["classical"]) {
     private val controller: ClassicalController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
     private lateinit var tfParam1: TextField
@@ -25,7 +26,9 @@ class ClassicalView : View(messages["classical"]) {
             "${if (isEncrypt) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
-        get() = taInput.text
+        get() =
+            taInput.text.takeUnless { decodeIgnoreSpace.get() }
+                ?: taInput.text.replace("\\s".toRegex(), "")
     private val outputText: String
         get() = taOutput.text
 
@@ -40,8 +43,15 @@ class ClassicalView : View(messages["classical"]) {
                 "p3" to tfParam3.text,
             )
 
-    private val eventHandler = fileDraggedHandler { taInput.text = it.first().readText() }
-
+    private val eventHandler = fileDraggedHandler {
+        taInput.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
@@ -115,12 +125,17 @@ class ClassicalView : View(messages["classical"]) {
 
         hbox {
             spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            alignment = Pos.CENTER
             togglegroup {
                 spacing = DEFAULT_SPACING
-                alignment = Pos.BASELINE_CENTER
+                alignment = Pos.CENTER
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
+                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
+                    selectedProperty().addListener { observable, oldValue, newValue ->
+                        println("$observable $oldValue  $newValue")
+                    }
+                }
                 checkbox(messages["singleLine"], isSingleLine)
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]

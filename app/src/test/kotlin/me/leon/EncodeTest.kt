@@ -4,8 +4,7 @@ import kotlin.test.assertEquals
 import me.leon.controller.EncodeController
 import me.leon.encode.*
 import me.leon.encode.base.*
-import me.leon.ext.EncodeType
-import me.leon.ext.encodeTypeMap
+import me.leon.ext.*
 import org.junit.Before
 import org.junit.Test
 
@@ -159,6 +158,7 @@ class EncodeTest {
         println(raw.octal().also { println(it.octalDecode2String()) })
         println(raw.decimal().also { println(it.decimalDecode2String()) })
     }
+
     @Test
     fun xxEncodeTest() {
 
@@ -172,6 +172,48 @@ class EncodeTest {
                 println(it)
                 println(it.xxDecode2String())
             }
+        }
+    }
+
+    @Test
+    fun bubbleBabble() {
+        println("".bubbleBabble())
+        println("1234567890".bubbleBabble().bubbleBabbleDecode2String())
+        println("Pineap ple3ddfdsf dsf".bubbleBabble().bubbleBabbleDecode2String())
+        println("xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String())
+        println("xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String())
+        "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String()
+    }
+
+    @Test
+    fun hexx() {
+        // -107 10010101
+        //        "95".hex2ByteArray().also { println(it.contentToString()) }.toBinaryString().also
+        // {
+        //            println(it)
+        //        }
+
+        println(Long.MAX_VALUE)
+        println(0x7FFFFFFFFFFFFFFFL)
+        println("123".crc64())
+    }
+
+    @Test
+    fun crc() {
+        println((-0x3693a86a2878f0be).toULong().toLong().toString(16))
+        println((0xD80000000000000).toULong().toLong())
+        val toLong = 0xD80000000000000
+        println(toLong.toULong())
+        val path = "D:\\360极速浏览器下载\\0013_FLASHDRIVER_Addr_04.txt"
+        val readBytes = path.toFile().readBytes()
+        readBytes.run {
+            CRC64()
+                .apply {
+                    update(this@run)
+                    println(this.crcHex())
+                }
+                .crcDecimal()
+                .also { println(it) }
         }
     }
 }

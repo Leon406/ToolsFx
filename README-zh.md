@@ -35,7 +35,7 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32/36/58/62/85/91/92
+- [x] base16/32/36/58/62/85/91/92/100
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
@@ -190,6 +190,27 @@
 - [x] SM2
 - [ ] 其他
 
+### 古典密码 (for CTF)
+
+- [x] 凯撒
+- [x] rot5/rot13/rot18/rot47
+- [x] 仿射
+- [x] virgenene
+- [x] atbash
+- [x] 摩尔斯密码
+- [x] qwe键盘加密
+- [x] polybius
+- [x] 培根24/培根26
+- [x] 一次性密码
+- [x] 社会主义核心价值观
+- [x] ADFGX/ADFGVX
+- [x] Auto Key
+- [x] 栅栏密码 /栅栏密码 w
+- [x] playfair
+- [x] brainfuck/ook
+
+
+
 
 ### 其他功能
 
@@ -225,7 +246,8 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
 - 有jre环境
   - jdk8      选择jdk8的版本
-  - jdk11+  选择jdk11的版本
+  - jdk11+  选择jdk11的版本 + 同时需要配置javafx环境
+
 - 无jre环境
   - 64位 windows系统     x64 (jre11)
   - 32/64位 windows系统  x86 (jre8,不知道就选这个)  
@@ -253,7 +275,9 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 | isEnableInternalWebview | 内置浏览器启用开关,默认false              |
 | extUrls                 | 内置浏览器默认收藏链接,多个用英文逗号分隔 |
 
+## [插件](README-plugin-zh.md)
 
+- ApiPost 接口调试工具
 
 
 ## CHANGE LOG

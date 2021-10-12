@@ -25,7 +25,24 @@ class SignatureView : View(messages["signVerify"]) {
         get() = taSigned.text
     private var keyPairAlg = "RSA"
 
-    private val eventHandler = fileDraggedHandler { taKey.text = it.first().readText() }
+    private val eventHandler = fileDraggedHandler {
+        taKey.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
+    private val inputEventHandler = fileDraggedHandler {
+        taKey.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
 
     // https://www.bouncycastle.org/specifications.html
     private val keyPairAlgs =
@@ -141,7 +158,7 @@ class SignatureView : View(messages["signVerify"]) {
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
-                onDragEntered = eventHandler
+                onDragEntered = inputEventHandler
                 prefHeight = DEFAULT_SPACING_16X
             }
         hbox {

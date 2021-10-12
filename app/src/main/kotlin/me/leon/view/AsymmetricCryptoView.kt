@@ -56,7 +56,13 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         val firstFile = it.first()
         keyText =
             if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
-            else firstFile.readText()
+            else
+                with(firstFile) {
+                    if (length() <= 10 * 1024 * 1024)
+                        if (realExtension() in unsupportedExts) "unsupported file extension"
+                        else readText()
+                    else "not support file larger than 10M"
+                }
 
         with(keyText) {
             val probablyKeySize =
@@ -73,6 +79,16 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
             selectedBits.set(keySize.toString())
         }
     }
+    private val inputEventHandler = fileDraggedHandler {
+        taInput.text =
+            with(it.first()) {
+                if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
+            }
+    }
+
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
@@ -98,6 +114,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 prefHeight = DEFAULT_SPACING_10X
+                onDragEntered = inputEventHandler
             }
 
         hbox {

@@ -55,7 +55,13 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         taInput.text =
             if (isFile.get())
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
-            else it.first().readText()
+            else
+                with(it.first()) {
+                    if (length() <= 10 * 1024 * 1024)
+                        if (realExtension() in unsupportedExts) "unsupported file extension"
+                        else readText()
+                    else "not support file larger than 10M"
+                }
     }
     private val algs =
         mutableListOf(
