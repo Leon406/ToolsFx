@@ -3,6 +3,7 @@ package me.leon.plugin
 import java.io.File
 import java.util.Base64
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
+import me.leon.toolsfx.plugin.net.NetHelper
 import org.junit.Test
 
 class HttpTest {
@@ -140,14 +141,8 @@ class HttpTest {
             user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
              Chrome/86.0.4240.198 Safari/537.36
         """.trimIndent()
-
-        println(headers)
-        val regexHeader = "([^:]+?): *(.*) *\\s+".toRegex()
-        regexHeader
-            .findAll(headers)
-            .fold(mutableMapOf<String?, Any>()) { acc, matchResult ->
-                acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
-            }
-            .also { println(it) }
+       val header2 = "Max-Forwards:44\n" +
+                "aa:bb"
+        println(NetHelper.parseHeaderString(header2))
     }
 }
