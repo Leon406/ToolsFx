@@ -248,7 +248,7 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
 
 ## How to Run
 
-- Linux/Mac OS double click ToolsFx  in directory bin
+- Linux/Mac OS double click ToolsFx  in  root directory 
 - Windows double click ToolsFx.bat or vbs file(remove black command window)
 
 ## How to Config
