@@ -88,6 +88,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+                textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }
 
         hbox {

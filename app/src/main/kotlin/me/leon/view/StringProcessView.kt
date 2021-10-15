@@ -188,6 +188,7 @@ class StringProcessView : View(messages["stringProcess"]) {
                         }
                     }
                 }
+                textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }
         hbox {
             alignment = Pos.CENTER_LEFT

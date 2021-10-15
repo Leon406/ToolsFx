@@ -98,6 +98,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                         }
                     }
                 }
+                textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }
         hbox {
             alignment = Pos.CENTER_LEFT
