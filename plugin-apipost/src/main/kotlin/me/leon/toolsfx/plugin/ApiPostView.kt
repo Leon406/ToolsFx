@@ -66,6 +66,16 @@ class ApiPostView : PluginView("ApiPost") {
             table.selectionModel.selectedItem.valueProperty.value = absolutePath
         }
     }
+    private val curlFileHandler = fileDraggedHandler {
+        with(it.first()) {
+            println(absolutePath)
+            if (length() <= 10 * 1024 * 1024)
+                if (realExtension() in unsupportedExts) "unsupported file extension"
+                else resetUi(readText())
+            else "not support file larger than 10M"
+
+        }
+    }
     override val root = vbox {
         resortFromConfig()
         prefWidth = 800.0
@@ -80,13 +90,14 @@ class ApiPostView : PluginView("ApiPost") {
                 textfield("https://httpbin.org/anything") {
                     prefWidth = 400.0
                     promptText = "input your url"
+                    onDragEntered = curlFileHandler
                 }
             button(graphic = imageview("/img/import.png")) { action { resetUi(clipboardText()) } }
             button(graphic = imageview("/img/run.png")) {
                 enableWhen(!isRunning)
                 action {
                     if (tfUrl.text.isEmpty() ||
-                            !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
+                        !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
                     ) {
                         primaryStage.showToast("plz input legal url")
                         return@action
@@ -211,15 +222,7 @@ class ApiPostView : PluginView("ApiPost") {
                         cellFactory = CheckBoxTableCell.forTableColumn(this)
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
-                    //                    column("key", HttpParams::keyProperty).apply {
-                    //                        cellFactory = TextFieldTableCell.forTableColumn()
-                    //                        setOnEditCancel {
-                    //
-                    //                            println("${it.newValue} ${it.oldValue}")
-                    //                        }
-                    //
-                    // prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.3))
-                    //                    }
+
                     column("key", HttpParams::keyProperty).apply {
                         cellFactory = EditingCell.forTableColumn()
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.3))
@@ -296,9 +299,32 @@ class ApiPostView : PluginView("ApiPost") {
             selectedMethod.value = method
             tfUrl.text = url
             taReqHeaders.text = headers.entries.joinToString("\n") { "${it.key}: ${it.value} " }
-            taReqContent.text = rawBody
-            selectedBodyType.value = BodyType.RAW.type
-            showReqTable.value = false
+            if (params.isNotEmpty()) {
+                showReqTable.value = true
+                showReqHeader.value = false
+                selectedBodyType.value = bodyType[1]
+
+                val tmpParam = params.entries
+                    .fold(mutableListOf<HttpParams>()) { acc, mutableEntry ->
+                        acc.apply {
+                            add(
+                                HttpParams().apply {
+                                    keyProperty.value = mutableEntry.key
+                                    valueProperty.value = mutableEntry.value.toString()
+                                }
+                            )
+                        }
+                    }.distinct()
+
+                requestParams.clear()
+                requestParams.addAll(tmpParam)
+
+            } else {
+                taReqContent.text = rawBody
+                selectedBodyType.value = BodyType.RAW.type
+                showReqTable.value = false
+            }
+
         }
     }
 }

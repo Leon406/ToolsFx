@@ -4,6 +4,12 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 
 class HttpParams {
+
+    val keyProperty = SimpleStringProperty("")
+    val valueProperty = SimpleStringProperty("")
+    val isFileProperty = SimpleBooleanProperty(false)
+    val enableProperty = SimpleBooleanProperty(true)
+
     val isFile: Boolean
         get() = isFileProperty.get()
     val isEnable: Boolean
@@ -15,8 +21,14 @@ class HttpParams {
     val value: String
         get() = valueProperty.get()
 
-    val keyProperty = SimpleStringProperty()
-    val valueProperty = SimpleStringProperty()
-    val isFileProperty = SimpleBooleanProperty(false)
-    val enableProperty = SimpleBooleanProperty(true)
+    override fun equals(other: Any?): Boolean {
+        return if (other is HttpParams)
+            this.keyProperty.value == other.key
+        else
+            false
+    }
+
+    override fun hashCode(): Int {
+        return key.hashCode()
+    }
 }
