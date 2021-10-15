@@ -1,17 +1,16 @@
 package me.leon.toolsfx.plugin
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.*
 import javafx.collections.FXCollections
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.control.cell.CheckBoxTableCell
-import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.text.Text
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
 import me.leon.toolsfx.plugin.net.NetHelper.parseCurl
+import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginView("ApiPost") {
@@ -212,12 +211,22 @@ class ApiPostView : PluginView("ApiPost") {
                         cellFactory = CheckBoxTableCell.forTableColumn(this)
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
+                    //                    column("key", HttpParams::keyProperty).apply {
+                    //                        cellFactory = TextFieldTableCell.forTableColumn()
+                    //                        setOnEditCancel {
+                    //
+                    //                            println("${it.newValue} ${it.oldValue}")
+                    //                        }
+                    //
+                    // prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.3))
+                    //                    }
                     column("key", HttpParams::keyProperty).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn()
+                        cellFactory = EditingCell.forTableColumn()
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.3))
                     }
+
                     column("value", HttpParams::valueProperty).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn()
+                        cellFactory = EditingCell.forTableColumn()
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.5))
                         onDragEntered = eventHandler
                     }
