@@ -5,9 +5,9 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.text.Text
-import javafx.util.StringConverter
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
@@ -64,7 +64,7 @@ class ApiPostView : PluginView("ApiPost") {
     private val eventHandler = fileDraggedHandler {
         with(it.first()) {
             println(absolutePath)
-            table.selectionModel.selectedItem.value = absolutePath
+            table.selectionModel.selectedItem.valueProperty.value = absolutePath
         }
     }
     override val root = vbox {
@@ -78,7 +78,7 @@ class ApiPostView : PluginView("ApiPost") {
             combobox(selectedMethod, methods)
 
             tfUrl =
-                textfield("https://www.baidu.com") {
+                textfield("https://httpbin.org/anything") {
                     prefWidth = 400.0
                     promptText = "input your url"
                 }
@@ -208,48 +208,27 @@ class ApiPostView : PluginView("ApiPost") {
                 tableview(requestParams) {
                     visibleWhen(showReqTable)
 
-                    column("key", HttpParams::key).apply {
+                    column("isEnable", HttpParams::enableProperty).apply {
+                        cellFactory = CheckBoxTableCell.forTableColumn(this)
+                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
+                    }
+                    column("key", HttpParams::keyProperty).apply {
                         cellFactory = TextFieldTableCell.forTableColumn()
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.3))
                     }
-                    column("value", HttpParams::value).apply {
+                    column("value", HttpParams::valueProperty).apply {
                         cellFactory = TextFieldTableCell.forTableColumn()
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.5))
                         onDragEntered = eventHandler
                     }
-                    column("isFile", HttpParams::isFile).apply {
-                        cellFactory =
-                            TextFieldTableCell.forTableColumn<HttpParams, Boolean>(
-                                object : StringConverter<Boolean?>() {
-                                    override fun toString(obj: Boolean?): String {
-                                        return obj.toString()
-                                    }
-
-                                    override fun fromString(string: String?): Boolean? {
-                                        return string.toBoolean()
-                                    }
-                                }
-                            )
-
+                    column("isFile", HttpParams::isFileProperty) {
+                        cellFactory = CheckBoxTableCell.forTableColumn(this)
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
-                    column("isEnable", HttpParams::isEnable).apply {
-                        cellFactory =
-                            TextFieldTableCell.forTableColumn<HttpParams, Boolean>(
-                                object : StringConverter<Boolean?>() {
-                                    override fun toString(obj: Boolean?): String {
-                                        return obj.toString()
-                                    }
 
-                                    override fun fromString(string: String?): Boolean? {
-                                        return string.toBoolean()
-                                    }
-                                }
-                            )
-                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
-                    }
                     isEditable = true
                 }
+
             taReqHeaders =
                 textarea {
                     promptText = "request headers"
