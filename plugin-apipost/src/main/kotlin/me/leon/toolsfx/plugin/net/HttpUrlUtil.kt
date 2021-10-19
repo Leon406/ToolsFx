@@ -52,7 +52,7 @@ object HttpUrlUtil {
             "Connection" to "Keep-Alive",
             "content-type" to "application/json; charset=utf-8",
             "User-Agent" to
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -273,19 +273,21 @@ object HttpUrlUtil {
 
             conn.setRequestProperty("content-type", "$CONTENT_TYPE_FORM_DATA; boundary=$boundary")
             showRequestInfo(conn, "octet-stream")
-            DataOutputStream(conn.outputStream).use {
+            DataOutputStream(conn.outputStream).use { out->
                 val sbParams = makeMultiPartParamBody(req, boundary)
-                it.write(sbParams.toString().also { println(it) }.toByteArray())
+                out.write(sbParams.toString().also { println(it) }.toByteArray())
                 for (file in files) {
                     val sb = makeMultipartFileBody(boundary, name, file)
-                    it.write(sb.toString().also { println(it) }.toByteArray())
-                    it.write(file.inputStream().readBytes().also { println(it.decodeToString()) })
-                    it.write(LINE_END.toByteArray())
-                    it.write(
+                    out.write(sb.toString().also { println(it) }.toByteArray())
+                    file.inputStream().use {
+                        out.write(it.readBytes().also { println(it.decodeToString()) })
+                    }
+                    out.write(LINE_END.toByteArray())
+                    out.write(
                         (PREFIX + boundary + PREFIX + LINE_END).also { println(it) }.toByteArray()
                     )
                 }
-                it.flush()
+                out.flush()
             }
 
             conn.connect()

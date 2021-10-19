@@ -295,6 +295,8 @@ class ApiPostView : PluginView("ApiPost") {
         title = "ApiPost"
     }
 
+    private val fileKeys = arrayOf("file", "files", "image", "images")
+
     private fun resetUi(clipboardText: String) {
         clipboardText.parseCurl().run {
             selectedMethod.value = method
@@ -312,6 +314,7 @@ class ApiPostView : PluginView("ApiPost") {
                                 HttpParams().apply {
                                     keyProperty.value = mutableEntry.key
                                     valueProperty.value = mutableEntry.value.toString()
+                                    isFileProperty.value = mutableEntry.key in fileKeys
                                 }
                             )
                         }
