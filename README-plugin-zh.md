@@ -1,10 +1,8 @@
-<p>
-    <h1 align="center">ToolsFx 插件指南</h1>
+<p> <h1 align="center">ToolsFx 插件指南</h1></p>
 <p align="center">
 <a href="README-plugin.md">English</a>|<a href="README-plugin-zh.md">中文</a>
 </p>
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
-</p>
 
 ------
 
@@ -36,3 +34,19 @@ classloader目前遇到插件resource资源无法加载的问题,临时只能将
 ## 开发相关
 
 参考 plugin-sample 或者 plugin-apipost
+
+## 插件
+
+- ### ApiPost
+
+  **支持方法**
+
+![sym](/art/plugin/apipost_methods.gif)
+
+**数据与请求头**
+
+![sym](/art/plugin/apipost_post.gif)
+
+**文件上传**
+
+![sym](/art/plugin/apipost-upload.gif)
