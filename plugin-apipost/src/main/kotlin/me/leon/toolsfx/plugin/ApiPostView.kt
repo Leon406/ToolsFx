@@ -120,7 +120,15 @@ class ApiPostView : PluginView("ApiPost") {
                                             ?: controller.post(
                                                 tfUrl.text,
                                                 reqTableParams as MutableMap<String, Any>,
-                                                reqHeaders,
+                                                reqHeaders.apply {
+                                                    if (selectedBodyType.get() ==
+                                                            BodyType.FORM_DATA.type
+                                                    )
+                                                        put(
+                                                            "Content-Type",
+                                                            "application/x-www-form-urlencoded"
+                                                        )
+                                                },
                                                 bodyTypeMap[selectedBodyType.get()] == BodyType.JSON
                                             )
                                     else ->
