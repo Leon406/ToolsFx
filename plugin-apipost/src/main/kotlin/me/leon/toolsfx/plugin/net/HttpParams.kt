@@ -22,10 +22,7 @@ class HttpParams {
         get() = valueProperty.get()
 
     override fun equals(other: Any?): Boolean {
-        return if (other is HttpParams)
-            this.keyProperty.value == other.key
-        else
-            false
+        return if (other is HttpParams) this.keyProperty.value == other.key else false
     }
 
     override fun hashCode(): Int {

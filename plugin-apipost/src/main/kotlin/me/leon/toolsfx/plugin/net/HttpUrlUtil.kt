@@ -14,9 +14,9 @@ object HttpUrlUtil {
         clazz.getDeclaredField("delegate").apply { isAccessible = true }
     }
 
-    var DEFAULT_PRE_ACTION: (Request) -> Unit = {}
-    var DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
-    var isDebug = true
+    private var DEFAULT_PRE_ACTION: (Request) -> Unit = {}
+    private var DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
+    private var isDebug = true
     var timeOut = 10000
     private var proxy: Proxy = Proxy.NO_PROXY
     var downloadFolder: String =
@@ -24,9 +24,9 @@ object HttpUrlUtil {
     private var preAction: (Request) -> Unit = DEFAULT_PRE_ACTION
     private var postAction: (ByteArray) -> String = DEFAULT_POST_ACTION
 
-    const val PREFIX = "--"
-    const val LINE_END = "\r\n"
-    const val CONTENT_TYPE_FORM_DATA = "multipart/form-data"
+    private const val PREFIX = "--"
+    private const val LINE_END = "\r\n"
+    private const val CONTENT_TYPE_FORM_DATA = "multipart/form-data"
 
     fun setupProxy(type: Proxy.Type, host: String, port: Int) {
         proxy =
@@ -50,9 +50,9 @@ object HttpUrlUtil {
         mutableMapOf(
             "Accept" to "*/*",
             "Connection" to "Keep-Alive",
-            "content-type" to "application/json; charset=utf-8",
+            "Content-Type" to "application/json; charset=utf-8",
             "User-Agent" to
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -67,16 +67,12 @@ object HttpUrlUtil {
         val realUrl =
             URL(req.url.takeIf { req.params.isEmpty() } ?: "${req.url}?${req.params.toParams()}")
         val conn = realUrl.openConnection(proxy) as HttpURLConnection
-        var rsp = ""
+        var rsp: String
         val realHeaders = makeHeaders(req.headers)
         val time = measureTimeMillis {
             conn.requestMethod = req.method
             for ((k, v) in realHeaders) conn.setRequestProperty(k, v.toString())
-            conn.doOutput = true
-            conn.instanceFollowRedirects = true
-            conn.readTimeout = timeOut
-            conn.connectTimeout = timeOut
-            showRequestInfo(conn, "")
+            httpConfig(conn)
             conn.connect()
             if (isDownload) {
                 File(downloadFolder, NetHelper.getNetFileName(conn))
@@ -93,6 +89,18 @@ object HttpUrlUtil {
                     }
             }
         }
+        return afterResponse(conn, time, rsp)
+    }
+
+    private fun httpConfig(conn: HttpURLConnection, info: String = "") {
+        conn.doOutput = true
+        conn.instanceFollowRedirects = true
+        conn.readTimeout = timeOut
+        conn.connectTimeout = timeOut
+        showRequestInfo(conn, info)
+    }
+
+    private fun afterResponse(conn: HttpURLConnection, time: Long, rsp: String): Response {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
@@ -101,44 +109,6 @@ object HttpUrlUtil {
             }
         return Response(conn.responseCode, rsp, responseHeaders, time)
     }
-
-    fun head(
-        url: String,
-        params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
-    ) = request(url, "HEAD", params, headers)
-
-    fun put(
-        url: String,
-        params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
-    ) = request(url, "PUT", params, headers)
-
-    fun trace(
-        url: String,
-        params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
-    ) = request(url, "TRACE", params, headers)
-
-    fun patch(
-        url: String,
-        params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
-    ): Response {
-        return request(url, "PATCH", params, headers)
-    }
-
-    fun delete(
-        url: String,
-        params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
-    ) = request(url, "DELETE", params, headers)
-
-    fun options(
-        url: String,
-        params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
-    ) = request(url, "OPTIONS", params, headers)
 
     fun request(
         url: String,
@@ -157,12 +127,7 @@ object HttpUrlUtil {
             if (method == "PATCH" || method == "CONNECT") patchConnection(conn, method)
             else conn.requestMethod = req.method
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
-            conn.doOutput = true
-            conn.instanceFollowRedirects = true
-            conn.readTimeout = timeOut
-            conn.connectTimeout = timeOut
-
-            showRequestInfo(conn, "")
+            httpConfig(conn)
             conn.connect()
             rsp =
                 if (conn.responseCode == HttpURLConnection.HTTP_OK) {
@@ -171,16 +136,11 @@ object HttpUrlUtil {
                     conn.body().decodeToString()
                 }
         }
-        showResponseInfo(conn, time, rsp)
-        val responseHeaders =
-            conn.headerFields.entries.fold(mutableMapOf<String?, Any>()) { acc, mutableEntry ->
-                acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
-            }
-        return Response(conn.responseCode, rsp, responseHeaders, time)
+        return afterResponse(conn, time, rsp)
     }
 
     private fun patchConnection(http: HttpURLConnection, method: String = "PATCH") {
-        var target = if (http is HttpsURLConnection) httpsDelegate.get(http) else http
+        val target = if (http is HttpsURLConnection) httpsDelegate.get(http) else http
         val f = HttpURLConnection::class.java.getDeclaredField("method")
         f.isAccessible = true
         f.set(target, method)
@@ -224,11 +184,7 @@ object HttpUrlUtil {
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
             if (dataBytes.isNotEmpty())
                 conn.addRequestProperty("Content-Length", dataBytes.size.toString())
-            conn.doOutput = true
-            conn.instanceFollowRedirects = true
-            conn.readTimeout = timeOut
-            conn.connectTimeout = timeOut
-            showRequestInfo(conn, data)
+            httpConfig(conn)
             conn.connect()
             conn.outputStream.write(dataBytes)
             conn.outputStream.flush()
@@ -240,13 +196,8 @@ object HttpUrlUtil {
                     conn.body().decodeToString()
                 }
         }
-        if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
-        showResponseInfo(conn, time, rsp)
-        val responseHeaders =
-            conn.headerFields.entries.fold(mutableMapOf<String?, Any>()) { acc, mutableEntry ->
-                acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
-            }
-        return Response(conn.responseCode, rsp, responseHeaders, time)
+
+        return afterResponse(conn, time, rsp)
     }
 
     fun postFile(
@@ -265,15 +216,11 @@ object HttpUrlUtil {
         val header = makeHeaders(req.headers)
         val time = measureTimeMillis {
             conn.requestMethod = req.method
-            conn.doOutput = true
-            conn.instanceFollowRedirects = true
-            conn.readTimeout = timeOut
-            conn.connectTimeout = timeOut
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
 
-            conn.setRequestProperty("content-type", "$CONTENT_TYPE_FORM_DATA; boundary=$boundary")
-            showRequestInfo(conn, "octet-stream")
-            DataOutputStream(conn.outputStream).use { out->
+            conn.setRequestProperty("Content-Type", "$CONTENT_TYPE_FORM_DATA; boundary=$boundary")
+            httpConfig(conn, "octet-stream")
+            DataOutputStream(conn.outputStream).use { out ->
                 val sbParams = makeMultiPartParamBody(req, boundary)
                 out.write(sbParams.toString().also { println(it) }.toByteArray())
                 for (file in files) {
@@ -298,13 +245,7 @@ object HttpUrlUtil {
                     conn.body().decodeToString()
                 }
         }
-        if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
-        showResponseInfo(conn, time, rsp)
-        val responseHeaders =
-            conn.headerFields.entries.fold(mutableMapOf<String?, Any>()) { acc, mutableEntry ->
-                acc.apply { this[mutableEntry.key] = mutableEntry.value.joinToString(";") }
-            }
-        return Response(conn.responseCode, rsp, responseHeaders, time)
+        return afterResponse(conn, time, rsp)
     }
 
     private fun makeMultipartFileBody(
@@ -372,7 +313,6 @@ object HttpUrlUtil {
             .append(conn.requestMethod)
             .append(" ")
             .append(conn.url.toString())
-            //            .append(" HTTP/1.1")
             .appendLine()
         conn.requestProperties.entries.fold(sb) { acc, mutableEntry ->
             acc.apply {
@@ -389,9 +329,9 @@ object HttpUrlUtil {
         println(sb.toString())
     }
 
-    fun Map<String, Any>.toParams() = entries.joinToString("&") { it.key + "=" + it.value }
+    private fun Map<String, Any>.toParams() = entries.joinToString("&") { it.key + "=" + it.value }
 
-    fun Map<String, Any>.toJson(): String =
+    private fun Map<String, Any>.toJson(): String =
         entries
             .fold(JsonBuilder()) { acc, entry ->
                 acc.apply {

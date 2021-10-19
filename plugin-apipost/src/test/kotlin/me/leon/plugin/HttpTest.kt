@@ -33,38 +33,38 @@ class HttpTest {
 
     @Test
     fun headTest() {
-        HttpUrlUtil.head("https://lab.magiconch.com/api/nbnhhsh/guess")
+        HttpMethod.head("https://lab.magiconch.com/api/nbnhhsh/guess")
     }
 
     @Test
     fun options() {
-        HttpUrlUtil.options("https://httpbin.org/anything")
+        HttpMethod.options("https://httpbin.org/anything")
     }
 
     @Test
     fun put() {
-        HttpUrlUtil.put("https://httpbin.org/anything")
+        HttpMethod.put("https://httpbin.org/anything")
     }
 
     @Test
     fun delete() {
-        HttpUrlUtil.delete("https://httpbin.org/anything")
+        HttpMethod.delete("https://httpbin.org/anything")
     }
 
     @Test
     fun connect() {
-        HttpUrlUtil.request("https://httpbin.org/anything", "CONNECT")
+        HttpMethod.connect("https://httpbin.org/anything")
     }
 
     @Test
     fun patch() {
-        HttpUrlUtil.patch("http://httpbin.org/anything")
-        HttpUrlUtil.patch("https://httpbin.org/anything")
+        HttpMethod.patch("http://httpbin.org/anything")
+        HttpMethod.patch("https://httpbin.org/anything")
     }
 
     @Test
     fun trace() {
-        HttpUrlUtil.trace("https://www.baidu.com")
+        HttpMethod.trace("https://www.baidu.com")
     }
 
     @Test

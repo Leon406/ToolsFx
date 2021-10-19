@@ -74,7 +74,6 @@ class ApiPostView : PluginView("ApiPost") {
                 if (realExtension() in unsupportedExts) "unsupported file extension"
                 else resetUi(readText())
             else "not support file larger than 10M"
-
         }
     }
     override val root = vbox {
@@ -98,7 +97,7 @@ class ApiPostView : PluginView("ApiPost") {
                 enableWhen(!isRunning)
                 action {
                     if (tfUrl.text.isEmpty() ||
-                        !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
+                            !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
                     ) {
                         primaryStage.showToast("plz input legal url")
                         return@action
@@ -307,28 +306,29 @@ class ApiPostView : PluginView("ApiPost") {
                 showReqHeader.value = false
                 selectedBodyType.value = bodyType[1]
 
-                val tmpParam = params.entries
-                    .fold(mutableListOf<HttpParams>()) { acc, mutableEntry ->
-                        acc.apply {
-                            add(
-                                HttpParams().apply {
-                                    keyProperty.value = mutableEntry.key
-                                    valueProperty.value = mutableEntry.value.toString()
-                                    isFileProperty.value = mutableEntry.key in fileKeys
-                                }
-                            )
+                val tmpParam =
+                    params
+                        .entries
+                        .fold(mutableListOf<HttpParams>()) { acc, mutableEntry ->
+                            acc.apply {
+                                add(
+                                    HttpParams().apply {
+                                        keyProperty.value = mutableEntry.key
+                                        valueProperty.value = mutableEntry.value.toString()
+                                        isFileProperty.value = mutableEntry.key in fileKeys
+                                    }
+                                )
+                            }
                         }
-                    }.distinct()
+                        .distinct()
 
                 requestParams.clear()
                 requestParams.addAll(tmpParam)
-
             } else {
                 taReqContent.text = rawBody
                 selectedBodyType.value = BodyType.RAW.type
                 showReqTable.value = false
             }
-
         }
     }
 }

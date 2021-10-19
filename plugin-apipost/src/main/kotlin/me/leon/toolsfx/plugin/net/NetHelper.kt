@@ -12,7 +12,7 @@ object NetHelper {
 
     const val COMMON_UA =
         "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) " +
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36"
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36"
 
     /** 根据响应头或者url获取文件名 */
     fun getNetFileName(response: HttpURLConnection) =
@@ -20,8 +20,8 @@ object NetHelper {
             URLDecoder.decode(
                 response.getHeaderField("Content-Disposition")?.let { getFileName(it) }
                     ?: response.getHeaderField("content-disposition")?.let { getFileName(it) }
-                    ?: getUrlFileName(response.url.toString())
-                    ?: "unknownfile_${System.currentTimeMillis()}"
+                        ?: getUrlFileName(response.url.toString())
+                        ?: "unknownfile_${System.currentTimeMillis()}"
             )
         )
 
@@ -91,17 +91,19 @@ object NetHelper {
                         s.startsWith("--data-raw") ->
                             acc.method = "POST".also { acc.rawBody = s.substring(12, s.lastIndex) }
                         s.startsWith("-d") ->
-                            acc.method = "POST".also {
-                               val value = s.substring(4, s.lastIndex)
-                                acc.params[value.substringBefore("=")] =
-                                    value.substringAfter("=")
-                            }
+                            acc.method =
+                                "POST".also {
+                                    val value = s.substring(4, s.lastIndex)
+                                    acc.params[value.substringBefore("=")] =
+                                        value.substringAfter("=")
+                                }
                         s.startsWith("--data") ->
-                            acc.method = "POST".also {
-                               val value = s.substring(8, s.lastIndex)
-                                acc.params[value.substringBefore("=")] =
-                                    value.substringAfter("=")
-                            }
+                            acc.method =
+                                "POST".also {
+                                    val value = s.substring(8, s.lastIndex)
+                                    acc.params[value.substringBefore("=")] =
+                                        value.substringAfter("=")
+                                }
                         s.startsWith("--data-binary") ->
                             acc.method = "POST".also { acc.rawBody = s.substring(15, s.lastIndex) }
                         s.startsWith("-H") ->
