@@ -12,7 +12,7 @@ import tornadofx.*
 
 class SettingsView : View("Setting") {
 
-    private val proxies = listOf("DIRECT", "SOCKET4", "SOCKET5", "HTTP")
+    private val proxies = listOf( "HTTP","SOCKET4", "SOCKET5")
     private val selectedProxy = SimpleStringProperty(ApiConfig.proxyType)
     private val isEnableProxy = SimpleBooleanProperty(ApiConfig.isEnableProxy)
     private val isP12 = SimpleBooleanProperty(false)
