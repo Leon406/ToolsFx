@@ -16,9 +16,14 @@ import tornadofx.*
 
 class ApiPostView : PluginView("ApiPost") {
     override val version = "v1.0.0.beta"
-    override val date: String = "2021-10-06"
+    override val date: String = times()
     override val author = "Leon406"
     override val description = "ApiPost"
+
+    init {
+        println("Plugin Info:$description $version $date $author  ")
+    }
+
     private val controller: ApiPostController by inject()
     private lateinit var tfUrl: TextField
     private lateinit var taReqHeaders: TextArea
