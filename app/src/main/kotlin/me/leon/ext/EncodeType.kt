@@ -8,10 +8,11 @@ import me.leon.base100Decode
 import me.leon.encode.*
 import me.leon.encode.base.*
 
-enum class EncodeType(val type: String, val defaultDict: String = "") {
+enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode {
     Base64("base64", BASE64_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base64Decode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base64(dict)
     },
@@ -42,6 +43,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     Decimal("decimal") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.decimalDecode(charset)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.decimal(charset)
     },
@@ -53,24 +55,28 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     Binary("binary") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.binary2ByteArray()
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.toBinaryString()
     },
     Base64Safe("urlBase64", BASE64_URL_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.safeBase64Decode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.safeBase64(dict)
     },
     Base16("base16", BASE16_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base16Decode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base16(dict)
     },
     Base32("base32", BASE32_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base32Decode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base32(dict)
     },
@@ -84,18 +90,21 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     Base58("base58", BASE58_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base58Decode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base58(dict)
     },
     Base58Check("base58Check", BASE58_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base58CheckDecode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base58Check(dict)
     },
     Base62("base62", BASE62_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base62Decode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base62(dict)
     },
@@ -109,24 +118,28 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     Base91("base91", BASE91_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base91Decode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base91(dict)
     },
     Base92("base92", BASE92_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base92Decode(dict, charset)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base92Encode(dict, charset)
     },
     Base100("base100", "") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base100Decode()
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base100()
     },
     Escape("escape") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.unescape(charset)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.escape(charset)
     },
@@ -143,16 +156,15 @@ enum class EncodeType(val type: String, val defaultDict: String = "") {
     QuotePrintable("quotedPrintable") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.quotePrintableDecode(charset)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.quotePrintable(charset)
     },
     PunyCode("punyCode") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.punyCodeDecode(charset)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.punyCode(charset)
-    };
-
-    abstract fun decode(encoded: String, dict: String, charset: String): ByteArray
-    abstract fun encode2String(bytes: ByteArray, dict: String, charset: String): String
+    }
 }
