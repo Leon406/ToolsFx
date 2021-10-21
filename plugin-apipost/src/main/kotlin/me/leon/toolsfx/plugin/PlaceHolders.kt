@@ -17,8 +17,7 @@ fun uuid() = java.util.UUID.randomUUID().toString()
 fun uuid2() = uuid().replace("-", "")
 
 fun String.replacePlaceHolders() =
-    this.also { println("start replace $it") }
-        .replace(UUID, uuid())
+    replace(UUID, uuid())
         .replace(UUID2, uuid2())
         .replace(TIMESTAMP2, (timeStamp() / 1000).toString())
         .replace(TIMESTAMP, timeStamp().toString())
@@ -51,7 +50,7 @@ fun String.methodCall(args: String): String {
 }
 
 fun String.methodParse(): String {
-    return METHOD.find(this.also { println("methodParse $it") })?.run {
+    return METHOD.find(this)?.run {
         println(this.groupValues)
         var tmp = this.groupValues[2]
         while (METHOD.matches(tmp)) {

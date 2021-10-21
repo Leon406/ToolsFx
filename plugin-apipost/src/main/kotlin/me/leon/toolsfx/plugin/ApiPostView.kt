@@ -15,7 +15,7 @@ import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginView("ApiPost") {
-    override val version = "v1.0.0.beta"
+    override val version = "v1.1.2.beta"
     override val date: String = times()
     override val author = "Leon406"
     override val description = "ApiPost"

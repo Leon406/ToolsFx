@@ -7,7 +7,6 @@ import tornadofx.*
 class ApiPostController : Controller() {
 
     private fun replacePlaceHolder(maps: MutableMap<String, Any>): MutableMap<String, Any> {
-        println(maps)
         maps.entries.filter { it.value is String }.forEach { entry ->
             maps[entry.key] = (entry.value as String).replacePlaceHolders()
         }
@@ -88,6 +87,5 @@ class ApiPostController : Controller() {
         )
     }
 
-    fun parseHeaderString(headers: String) =
-        NetHelper.parseHeaderString(headers).also { println("$headers parseHeaderString $it") }
+    fun parseHeaderString(headers: String) = NetHelper.parseHeaderString(headers)
 }
