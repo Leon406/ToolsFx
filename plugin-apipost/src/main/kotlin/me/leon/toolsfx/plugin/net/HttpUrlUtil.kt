@@ -16,7 +16,7 @@ object HttpUrlUtil {
 
     private var DEFAULT_PRE_ACTION: (Request) -> Unit = {}
     private var DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
-    private var isDebug = true
+    private var isDebug = false
     var timeOut = 10000
     private var proxy: Proxy = Proxy.NO_PROXY
     var downloadFolder: String =

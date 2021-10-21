@@ -6,9 +6,9 @@ import tornadofx.*
 
 class ApiPostController : Controller() {
 
-    private val preDefine = listOf(UUID, UUID2, TIMESTAMP)
     private fun replacePlaceHolder(maps: MutableMap<String, Any>): MutableMap<String, Any> {
-        maps.entries.filter { it.value is String && it.value in preDefine }.forEach { entry ->
+        println(maps)
+        maps.entries.filter { it.value is String }.forEach { entry ->
             maps[entry.key] = (entry.value as String).replacePlaceHolders()
         }
         return maps
@@ -88,5 +88,6 @@ class ApiPostController : Controller() {
         )
     }
 
-    fun parseHeaderString(headers: String) = NetHelper.parseHeaderString(headers)
+    fun parseHeaderString(headers: String) =
+        NetHelper.parseHeaderString(headers).also { println("$headers parseHeaderString $it") }
 }
