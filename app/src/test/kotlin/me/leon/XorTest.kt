@@ -1,8 +1,9 @@
 package me.leon
 
-import java.io.File
+import me.leon.classical.*
 import me.leon.ext.*
 import org.junit.Test
+import java.io.File
 
 class XorTest {
 
@@ -15,6 +16,9 @@ class XorTest {
             .toByteArray()
             .mapIndexed { index, c -> c.toInt() xor key[index % key.length].code }
             .also { println(it) }
+
+        println("你好".toByteArray().xor(key).xor(key).decodeToString())
+        println("你好".xorBase64(key).xorBase64Decode(key))
 
         encoded
             .mapIndexed { index, c -> (c xor key[index % key.length].code).toByte() }

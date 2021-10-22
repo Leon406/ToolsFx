@@ -196,5 +196,12 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.trollScriptDecrypt()
+    },
+    XOR("xorBase64") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.xorBase64(params[P1]!!).also { println("xor $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.xorBase64Decode(params[P1]!!)
     }
 }
