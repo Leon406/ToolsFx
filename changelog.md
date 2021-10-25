@@ -67,7 +67,7 @@
 - feat: add crc32,character statistic ,read http headers
 ## bug fix:
 - fix: urlbase64  urlencode error
-# v1.9.1.beta  
+# v1.9.2.beta  
 ## feature:  
 - feat: support custom client certification
 - feat: add CONNECT request method
