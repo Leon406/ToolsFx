@@ -16,6 +16,4 @@ fun String.xorBase64Decode(key: String) =
         .base64()
 
 fun ByteArray.xor(key: String) =
-    mapIndexed { index, c -> (c.toInt() xor key[index % key.length].code).toByte() }
-        .toByteArray()
-
+    mapIndexed { index, c -> (c.toInt() xor key[index % key.length].code).toByte() }.toByteArray()

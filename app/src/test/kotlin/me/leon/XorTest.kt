@@ -1,9 +1,9 @@
 package me.leon
 
+import java.io.File
 import me.leon.classical.*
 import me.leon.ext.*
 import org.junit.Test
-import java.io.File
 
 class XorTest {
 
