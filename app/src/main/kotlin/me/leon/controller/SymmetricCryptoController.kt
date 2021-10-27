@@ -47,10 +47,11 @@ class SymmetricCryptoController : Controller() {
                 }
             val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
 
+            val bytes = cipher.doFinal(inputBytes)
             if (outputEncode == "base64") {
-                Base64.getEncoder().encodeToString(cipher.doFinal(inputBytes))
+                Base64.getEncoder().encodeToString(bytes)
             } else if (outputEncode == "hex") {
-                cipher.doFinal(inputBytes).toHex()
+                bytes.toHex()
             } else {
                 throw IllegalArgumentException("output encode error")
             }
@@ -133,10 +134,11 @@ class SymmetricCryptoController : Controller() {
                 }
             val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)
 
+            val bytes = cipher.doFinal(inputBytes)
             when (outputEncode) {
-                "raw" -> String(cipher.doFinal(inputBytes), Charset.forName(charset))
-                "base64" -> cipher.doFinal(inputBytes).base64()
-                "hex" -> cipher.doFinal(inputBytes).toHex()
+                "raw" -> String(bytes, Charset.forName(charset))
+                "base64" -> bytes.base64()
+                "hex" -> bytes.toHex()
                 else -> throw IllegalArgumentException("input encode error")
             }
         }
