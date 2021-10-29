@@ -1,13 +1,15 @@
 package me.leon
 
-import java.io.File
-import java.net.URLClassLoader
-import java.util.*
 import javafx.scene.image.Image
 import me.leon.ext.Prefs
 import me.leon.toolsfx.plugin.PluginView
 import me.leon.view.Home
 import tornadofx.*
+import java.io.File
+import java.net.URLClassLoader
+import java.util.Locale
+import java.util.Properties
+
 
 class ToolsApp : App(Home::class, Styles::class) {
 
