@@ -13,8 +13,10 @@ import tornadofx.*
 class OnlineWebView : View("Browser") {
     private lateinit var web: WebView
     private lateinit var tfUrl: TextField
-    private val fixFontJS =
-        "document.body.style.fontFamily=\"tahoma,arial,'Microsoft YaHei',SimHei,FangSong,simsun\""
+    private val fontJS
+            by lazy {
+                javaClass.getResourceAsStream("/js/font.js").readAllBytes().decodeToString().also { println(it) }
+            }
 
     private val selectedUrl = SimpleStringProperty(ToolsApp.extUrls.first())
     override val root = borderpane {
@@ -70,7 +72,7 @@ class OnlineWebView : View("Browser") {
                                     "load ${engine.history.entries[engine.history.currentIndex].url}"
                                 )
                                 tfUrl.text = engine.history.entries[engine.history.currentIndex].url
-                                web.engine.executeScript(fixFontJS)
+                                web.engine.executeScript(fontJS).also { println(it) }
                             }
                         }
                     }
