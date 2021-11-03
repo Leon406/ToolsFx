@@ -1,8 +1,8 @@
 
 plugins {
     kotlin("jvm") version "1.5.31"
-    id("com.diffplug.spotless") version "5.15.0"
-    id("io.gitlab.arturbosch.detekt") version "1.18.1"
+    id("com.diffplug.spotless") version "5.17.1"
+    id("io.gitlab.arturbosch.detekt") version "1.19.0-RC1"
     id("org.openjfx.javafxplugin") version "0.0.10"
 }
 
