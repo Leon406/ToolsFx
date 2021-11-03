@@ -7,6 +7,9 @@
 ```
 --module-path \javafx路径\lib --add-modules=javafx.controls,javafx.fxml   
 ```
+sdk路径  D:\AndroidSdk\javafx-sdk-17.0.0.1,完整配置参如下
+
+--module-path D:\AndroidSdk\javafx-sdk-17.0.0.1\lib --add-modules=javafx.controls,javafx.fxml   
 
 反射open
 

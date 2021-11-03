@@ -29,4 +29,5 @@ dependencies {
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
     implementation(project(":plugin-lib"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
+    testImplementation("com.google.code.gson:gson:2.8.8")
 }

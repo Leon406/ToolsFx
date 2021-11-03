@@ -76,19 +76,17 @@ class OnlineWebView : View("Browser") {
                     }
             }
 
-        bottom = hbox {
-            paddingAll = DEFAULT_SPACING
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+        bottom =
+            hbox {
+                paddingAll = DEFAULT_SPACING
+                spacing = DEFAULT_SPACING
+                alignment = Pos.CENTER_LEFT
 
-            val tf = textfield("document.body.style.fontFamily=\"SimSun\"") {
-                prefWidth = DEFAULT_SPACING_40X
+                val tf =
+                    textfield("document.body.style.fontFamily=\"SimSun\"") {
+                        prefWidth = DEFAULT_SPACING_40X
+                    }
+                button("inject js") { action { web.engine.executeScript(tf.text) } }
             }
-            button("inject js") {
-                action {
-                    web.engine.executeScript(tf.text)
-                }
-            }
-        }
     }
 }
