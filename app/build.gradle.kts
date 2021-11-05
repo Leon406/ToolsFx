@@ -21,7 +21,6 @@ application {
 }
 
 dependencies {
-
     implementation("no.tornado:tornadofx:${rootProject.extra["tornadofx_version"]}")
     implementation("org.bouncycastle:bcprov-jdk15on:${rootProject.extra["bouncycastle_version"]}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
