@@ -97,6 +97,8 @@ object NetHelper {
                                     acc.params[value.substringBefore("=")] =
                                         value.substringAfter("=")
                                 }
+                        s.startsWith("--data-binary") ->
+                            acc.method = "POST".also { acc.rawBody = s.substring(15, s.lastIndex) }
                         s.startsWith("--data") ->
                             acc.method =
                                 "POST".also {
@@ -104,8 +106,6 @@ object NetHelper {
                                     acc.params[value.substringBefore("=")] =
                                         value.substringAfter("=")
                                 }
-                        s.startsWith("--data-binary") ->
-                            acc.method = "POST".also { acc.rawBody = s.substring(15, s.lastIndex) }
                         s.startsWith("-H") ->
                             with(s.substring(4, s.lastIndex)) {
                                 acc.headers.put(substringBefore(":"), substringAfter(":").trim())
