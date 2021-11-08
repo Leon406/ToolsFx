@@ -13,4 +13,4 @@ sdk路径  D:\AndroidSdk\javafx-sdk-17.0.0.1,完整配置参如下
 
 反射open
 
-set JAVA_OPTS=--add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/sun.net.www.protocol.https=ALL-UNNAMED
+set JAVA_OPTS=--add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-opens javafx.graphics/com.sun.glass.ui=ALL-UNNAMED
