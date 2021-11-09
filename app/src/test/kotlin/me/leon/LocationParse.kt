@@ -28,11 +28,11 @@ class LocationParse {
                     it.getJsonArray("geocodes").map { it.asJsonObject() }.forEach { jo ->
                         jo.getString("location").split(",").run {
                             CoordinatorTransform.distance(
-                                addr[4].toDouble(),
-                                addr[3].toDouble(),
-                                this[1].toDouble(),
-                                this[0].toDouble()
-                            )
+                                    addr[4].toDouble(),
+                                    addr[3].toDouble(),
+                                    this[1].toDouble(),
+                                    this[0].toDouble()
+                                )
                                 .also {
                                     if (it > 200)
                                         println(
@@ -50,7 +50,6 @@ class LocationParse {
         key: String = "282f521c5c372f233da702769e43bfba",
         city: String = "杭州"
     ) {
-
         val location =
             (addr[1] + addr[2] + addr.last().replace("上城区".toRegex(), ""))
                 .replace("流动人口服务室|便民服务中心|公共法律服务(?:站|中心)".toRegex(), "")
@@ -79,11 +78,12 @@ class LocationParse {
                                     .getOrElse { jo.address.toString() }
                                     .preHandle(addr[1], addr[2])
 
-                            location2.contains(preHandle)
-                                .also { if (it) println("location1 $addr full matched $preHandle") }
-                                    || location2.contains(preHandle2).also {
-                                if (it) println("location2 $addr full matched $preHandle")
-                            }
+                            location2.contains(preHandle).also {
+                                if (it) println("location1 $addr full matched $preHandle")
+                            } ||
+                                location2.contains(preHandle2).also {
+                                    if (it) println("location2 $addr full matched $preHandle")
+                                }
                         }
                             ?: bean.pois?.firstOrNull {
                                 it.name?.run {
@@ -91,27 +91,31 @@ class LocationParse {
                                 }
                                     ?: false
                             }
-                            ?: bean.pois?.first().also {
+                                ?: bean.pois?.first().also {
                                 println("$location 可能不准确  \n\t\t${bean.pois}")
                             }
 
-                    poi?.location?.split(",")?.run {
-                        CoordinatorTransform.distance(
-                            addr[4].toDouble(),
-                            addr[3].toDouble(),
-                            this[1].toDouble(),
-                            this[0].toDouble()
-                        )
-                            .also {
-                                if (it > 200)
-                                    println(
-                                        "\t\t$location  ${poi.address} ${poi.adname}${poi.name}" +
-                                                " \t\t误差: $it db $addr amap ${this@run}  "
-                                    )
-                            }
-                    }
+                    calculateDistance(poi, addr, location)
                 }
             }
+    }
+
+    private fun calculateDistance(poi: AmapSearchBean.Poi?, addr: List<String>, location: String) {
+        poi?.location?.split(",")?.run {
+            CoordinatorTransform.distance(
+                    addr[4].toDouble(),
+                    addr[3].toDouble(),
+                    this[1].toDouble(),
+                    this[0].toDouble()
+                )
+                .also {
+                    if (it > 200)
+                        println(
+                            "\t\t$location  ${poi.address} ${poi.adname}${poi.name}" +
+                                " \t\t误差: $it db $addr amap ${this@run}  "
+                        )
+                }
+        }
     }
 
     private fun String.preHandle(pre: String = "", pre2: String = "") =

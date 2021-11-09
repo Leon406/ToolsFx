@@ -26,7 +26,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
     implementation("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
+    api("com.google.code.gson:gson:2.8.9")
     implementation(project(":plugin-lib"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
-    testImplementation("com.google.code.gson:gson:2.8.8")
 }

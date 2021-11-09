@@ -4,4 +4,5 @@ include(
     "plugin-lib",
     "plugin-sample",
     "plugin-apipost",
+    "plugin-location",
 )
