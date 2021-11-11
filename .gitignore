@@ -4,3 +4,4 @@ build/
 /.idea
 out/
 /ToolsFx.properties
+/local.properties
