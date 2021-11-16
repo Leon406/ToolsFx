@@ -171,7 +171,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
         taOutput.text =
             String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
                 ?: controller.encode2String(
-                    encodeString,
+                    decode,
                     dstEncodeType,
                     "",
                     selectedDstCharset.get()
