@@ -1,0 +1,3 @@
+curl 'https://cleanuri.com/api/v1/shorten'
+-X POST 
+-d 'url=https://baidu.com'
