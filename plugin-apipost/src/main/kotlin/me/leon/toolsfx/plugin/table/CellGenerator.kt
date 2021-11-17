@@ -100,8 +100,8 @@ internal object CellGenerator {
             EventHandler {
                 checkNotNull(converter) {
                     ("Attempting to convert text input into Object, but provided " +
-                        "StringConverter is null. Be sure to set a StringConverter " +
-                        "in your cell factory.")
+                            "StringConverter is null. Be sure to set a StringConverter " +
+                            "in your cell factory.")
                 }
                 cell.commitEdit(converter.fromString(textField.text))
             }
@@ -130,8 +130,8 @@ internal object CellGenerator {
                 KeyCode.ENTER -> {
                     checkNotNull(converter) {
                         ("Attempting to convert text input into Object, but provided " +
-                            "StringConverter is null. Be sure to set a StringConverter " +
-                            "in your cell factory.")
+                                "StringConverter is null. Be sure to set a StringConverter " +
+                                "in your cell factory.")
                     }
                     cell.commitEdit(converter.fromString(textField.text))
                     event.consume()
@@ -140,6 +140,9 @@ internal object CellGenerator {
                     cell.commitEdit(converter!!.fromString(textField.text))
                     cellEdit.setNextColumn(event)
                     event.consume()
+                }
+                else -> {
+                    //nop
                 }
             }
         }
