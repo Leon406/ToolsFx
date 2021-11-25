@@ -202,13 +202,8 @@ class ApiPostView : PluginView("ApiPost") {
                 showReqTable.value = (newValue as String) in showTableList
             }
 
-            button("Pretty") {
-                action {
-                    visibleWhen(!showReqTable)
-                    taReqContent.text = taReqContent.text.prettyJson()
-                }
-            }
-
+            button("Pretty") { action { taReqContent.text = taReqContent.text.prettyJson() } }
+            button("Ugly") { action { taReqContent.text = taReqContent.text.uglyJson() } }
             button("add") {
                 visibleWhen(showReqTable)
                 action { requestParams.add(HttpParams()) }
@@ -280,6 +275,7 @@ class ApiPostView : PluginView("ApiPost") {
                 }
             }
             button("Pretty") { action { taRspContent.text = taRspContent.text.prettyJson() } }
+            button("Ugly") { action { taRspContent.text = taRspContent.text.uglyJson() } }
             button(graphic = imageview("/img/copy.png")) { action { taRspContent.text.copy() } }
         }
         stackpane {
