@@ -5,12 +5,13 @@ fun String.prettyJson(): String {
     var indentNumber = 0
     // two space
     val s = "  "
-    return fold(StringBuilder()) { acc, c ->
+    return foldIndexed(StringBuilder()) {index, acc, c->
             acc.apply {
+
                 when (c) {
                     '{', '[' -> append(c).appendLine().append(s.repeat(++indentNumber))
                     ',' -> append(c).appendLine().append(s.repeat(indentNumber))
-                    ':' -> append(c).append(" ")
+                    ':' ->  if (this@prettyJson[index-1]=='"')  append(c).append(" ") else append(c)
                     '}', ']' -> appendLine().append(s.repeat(--indentNumber)).append(c)
                     else -> append(c)
                 }
