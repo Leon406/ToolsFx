@@ -187,6 +187,10 @@ class StringProcessView : View(messages["stringProcess"]) {
                             runAsync { inputText.readHeadersFromNet() } ui { taInput.text = it }
                         }
                     }
+
+                    item(messages["recoverEncoding"]) {
+                        action { runAsync { inputText.recoverEncoding() } ui { taInput.text = it } }
+                    }
                 }
                 textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }

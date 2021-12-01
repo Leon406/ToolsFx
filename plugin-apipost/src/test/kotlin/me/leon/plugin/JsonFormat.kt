@@ -39,8 +39,16 @@ class JsonFormat {
 
         raw =
             "{\"data\": \"{\\\"one\\\":\\\"AAA\\\",\\\"two\\\":[\\\"BBB\\\",\\\"CCC\\\"],\\\"three\\\":{\\\"four\\\":" +
-                    "\\\"DDD\\\",\\\"five\\\":[\\\"EEE\\\",\\\"FFF\\\"]}}\"}"
+                "\\\"DDD\\\",\\\"five\\\":[\\\"EEE\\\",\\\"FFF\\\"]}}\"}"
         println(raw)
         println(raw.prettyJson())
+    }
+
+    @Test
+    fun ipTest() {
+        val mask = "255.255.255.0".split(".").map { it.toInt() }
+        val ip = "192.168.177.129".split(".").map { it.toInt() }
+
+        ip.zip(mask) { a, b -> a and b }.forEach { println(it) }
     }
 }
