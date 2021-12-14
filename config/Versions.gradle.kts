@@ -1,4 +1,4 @@
-extra.set("kotlin_version", "1.6.0")
+extra.set("kotlin_version", "1.6.10")
 extra.set("tornadofx_version", "1.7.20")
 extra.set("jfx_version", "17.0.1")
 extra.set("bouncycastle_version", "1.69")

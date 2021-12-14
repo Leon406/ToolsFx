@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.1.2.beta"
+version = "1.2.0"
 
 plugins {
     `java-library`
