@@ -14,7 +14,7 @@ import me.leon.ctf.trollScriptEncrypt
 import me.leon.railFenceWDecrypt
 import me.leon.railFenceWEncrypt
 
-enum class ClassicalCryptoType(val type: String) {
+enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.caesar25()
 
@@ -196,8 +196,12 @@ enum class ClassicalCryptoType(val type: String) {
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.trollScriptDecrypt()
-    };
+    },
+    XOR("xorBase64") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.xorBase64(params[P1]!!).also { println("xor $raw $params") }
 
-    abstract fun encrypt(raw: String, params: MutableMap<String, String>): String
-    abstract fun decrypt(raw: String, params: MutableMap<String, String>): String
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.xorBase64Decode(params[P1]!!)
+    }
 }

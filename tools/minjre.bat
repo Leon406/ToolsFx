@@ -1,0 +1,1 @@
+jlink.exe --module-path jmods --add-modules java.base,java.desktop,java.logging,jdk.crypto.ec,jdk.unsupported,java.net.http,java.prefs,java.xml,java.datatransfer --output jre

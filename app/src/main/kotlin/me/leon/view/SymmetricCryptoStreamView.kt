@@ -36,6 +36,8 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private lateinit var taInput: TextArea
     private lateinit var taKey: TextField
     private lateinit var taIv: TextField
+    private lateinit var tgInput: ToggleGroup
+    private lateinit var tgOutput: ToggleGroup
     private var isEncrypt = true
     private lateinit var taOutput: TextArea
     private val inputText: String
@@ -56,6 +58,8 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
 
     private var keyEncode = "raw"
     private var ivEncode = "raw"
+    private var inputEncode = "raw"
+    private var outputEncode = "base64"
 
     private val ivByteArray
         get() =
@@ -104,6 +108,18 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
+            spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
+            tgInput =
+                togglegroup {
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("base64")
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        inputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
+
             button(graphic = imageview("/img/import.png")) {
                 action { taInput.text = clipboardText() }
             }
@@ -163,6 +179,8 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
+                    tgOutput.selectToggle(tgOutput.toggles[if (isEncrypt) 1 else 0])
+                    if (isEncrypt) tgInput.selectToggle(tgInput.toggles[0])
                     doCrypto()
                 }
             }
@@ -174,13 +192,27 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             }
         }
         hbox {
-            label(messages["output"])
             spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
+            label(messages["output"])
+            tgOutput =
+                togglegroup {
+                    radiobutton("raw")
+                    radiobutton("base64") { isSelected = true }
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        println("output ${newValue.cast<RadioButton>().text}")
+                        outputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
             button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
             button(graphic = imageview("/img/up.png")) {
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
+                    tgInput.selectToggle(
+                        tgInput.toggles[tgOutput.toggles.indexOf(tgOutput.selectedToggle)]
+                    )
                 }
             }
         }
@@ -210,7 +242,9 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                         ivByteArray,
                         cipher,
                         selectedCharset.get(),
-                        isSingleLine.get()
+                        isSingleLine.get(),
+                        inputEncode,
+                        outputEncode
                     )
             else if (isFile.get())
                 inputText.lineAction2String {
@@ -223,7 +257,9 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                     ivByteArray,
                     cipher,
                     selectedCharset.get(),
-                    isSingleLine.get()
+                    isSingleLine.get(),
+                    inputEncode,
+                    outputEncode
                 )
         } ui
             {

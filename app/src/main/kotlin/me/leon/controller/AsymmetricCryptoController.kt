@@ -9,8 +9,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import me.leon.encode.base.*
-import me.leon.ext.catch
-import me.leon.ext.lineAction2String
+import me.leon.ext.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 
@@ -22,12 +21,25 @@ class AsymmetricCryptoController : Controller() {
         data: String,
         length: Int = 1024,
         isSingleLine: Boolean = false,
-        reserved: Int = 11
+        reserved: Int = 11,
+        inputEncode: String = "raw",
+        outputEncode: String = "base64"
     ) =
-        if (isSingleLine) data.lineAction2String { pubEncrypt(key, alg, it, length, reserved) }
-        else pubEncrypt(key, alg, data, length, reserved)
+        if (isSingleLine)
+            data.lineAction2String {
+                pubEncrypt(key, alg, it, length, reserved, inputEncode, outputEncode)
+            }
+        else pubEncrypt(key, alg, data, length, reserved, inputEncode, outputEncode)
 
-    fun pubEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
+    private fun pubEncrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        reserved: Int = 11,
+        inputEncode: String = "raw",
+        outputEncode: String = "base64"
+    ) =
         catch({ "encrypt error: $it}" }) {
             println("encrypt $key  $alg $data")
             val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
@@ -35,7 +47,7 @@ class AsymmetricCryptoController : Controller() {
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.ENCRYPT_MODE, publicKey)
-                data.toByteArray()
+                data.decodeToByteArray(inputEncode)
                     .toList()
                     .chunked(length / BYTE_BITS - reserved) {
                         println(it.size)
@@ -43,7 +55,7 @@ class AsymmetricCryptoController : Controller() {
                     }
                     .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
                     .toByteArray()
-                    .base64()
+                    .encodeTo(outputEncode)
             }
         }
 
@@ -52,12 +64,22 @@ class AsymmetricCryptoController : Controller() {
         alg: String,
         data: String,
         length: Int = 1024,
-        isSingleLine: Boolean = false
+        isSingleLine: Boolean = false,
+        inputEncode: String = "base64",
+        outputEncode: String = "raw"
     ) =
-        if (isSingleLine) data.lineAction2String { priDecrypt(key, alg, it, length) }
-        else priDecrypt(key, alg, data, length)
+        if (isSingleLine)
+            data.lineAction2String { priDecrypt(key, alg, it, length, inputEncode, outputEncode) }
+        else priDecrypt(key, alg, data, length, inputEncode, outputEncode)
 
-    fun priDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
+    fun priDecrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        inputEncode: String = "base64",
+        outputEncode: String = "raw"
+    ) =
         catch({ "decrypt error: $it" }) {
             println("decrypt $key  $alg $data")
             val keySpec = PKCS8EncodedKeySpec(key.base64Decode())
@@ -65,7 +87,7 @@ class AsymmetricCryptoController : Controller() {
             val privateKey = KeyFactory.getInstance(keyFac).generatePrivate(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.DECRYPT_MODE, privateKey)
-                data.base64Decode()
+                data.decodeToByteArray(inputEncode)
                     .toList()
                     .chunked(length / BYTE_BITS) {
                         println(it.size)
@@ -73,7 +95,7 @@ class AsymmetricCryptoController : Controller() {
                     }
                     .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
                     .toByteArray()
-                    .toString(Charsets.UTF_8)
+                    .encodeTo(outputEncode)
             }
         }
 
@@ -83,12 +105,25 @@ class AsymmetricCryptoController : Controller() {
         data: String,
         length: Int = 1024,
         isSingleLine: Boolean = false,
-        reserved: Int = 11
+        reserved: Int = 11,
+        inputEncode: String = "raw",
+        outputEncode: String = "base64"
     ) =
-        if (isSingleLine) data.lineAction2String { priEncrypt(key, alg, it, length, reserved) }
-        else priEncrypt(key, alg, data, length, reserved)
+        if (isSingleLine)
+            data.lineAction2String {
+                priEncrypt(key, alg, it, length, reserved, inputEncode, outputEncode)
+            }
+        else priEncrypt(key, alg, data, length, reserved, inputEncode, outputEncode)
 
-    fun priEncrypt(key: String, alg: String, data: String, length: Int = 1024, reserved: Int = 11) =
+    fun priEncrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        reserved: Int = 11,
+        inputEncode: String = "base64",
+        outputEncode: String = "raw"
+    ) =
         catch({ "encrypt error: $it" }) {
             println("pri encrypt $key  $alg $data")
             val keySpec = PKCS8EncodedKeySpec(key.base64Decode())
@@ -96,7 +131,7 @@ class AsymmetricCryptoController : Controller() {
             val privateKey = KeyFactory.getInstance(keyFac).generatePrivate(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.ENCRYPT_MODE, privateKey)
-                data.toByteArray()
+                data.decodeToByteArray(inputEncode)
                     .toList()
                     .chunked(length / BYTE_BITS - reserved) {
                         println(it.size)
@@ -104,7 +139,7 @@ class AsymmetricCryptoController : Controller() {
                     }
                     .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
                     .toByteArray()
-                    .base64()
+                    .encodeTo(outputEncode)
             }
         }
 
@@ -113,25 +148,36 @@ class AsymmetricCryptoController : Controller() {
         alg: String,
         data: String,
         length: Int = 1024,
-        isSingleLine: Boolean = false
+        isSingleLine: Boolean = false,
+        inputEncode: String = "base64",
+        outputEncode: String = "raw"
     ) =
-        if (isSingleLine) data.lineAction2String { pubDecrypt(key, alg, it, length) }
-        else pubDecrypt(key, alg, data, length)
+        if (isSingleLine)
+            data.lineAction2String { pubDecrypt(key, alg, it, length, inputEncode, outputEncode) }
+        else pubDecrypt(key, alg, data, length, inputEncode, outputEncode)
 
-    private fun pubDecrypt(key: String, alg: String, data: String, length: Int = 1024) =
+    private fun pubDecrypt(
+        key: String,
+        alg: String,
+        data: String,
+        length: Int = 1024,
+        inputEncode: String = "base64",
+        outputEncode: String = "raw"
+    ) =
         catch({ "decrypt error: $it" }) {
             println("decrypt $key  $alg $data")
+
             val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
                 init(Cipher.DECRYPT_MODE, publicKey)
-                data.base64Decode()
+                data.decodeToByteArray(inputEncode)
                     .toList()
                     .chunked(length / BYTE_BITS) { this.doFinal(it.toByteArray()) }
                     .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
                     .toByteArray()
-                    .toString(Charsets.UTF_8)
+                    .encodeTo(outputEncode)
             }
         }
 
@@ -151,4 +197,20 @@ class AsymmetricCryptoController : Controller() {
             Security.addProvider(BouncyCastleProvider())
         }
     }
+
+    fun String.decodeToByteArray(encode: String) =
+        when (encode) {
+            "raw" -> toByteArray()
+            "base64" -> base64Decode()
+            "hex" -> hex2ByteArray()
+            else -> throw IllegalArgumentException("input encode error")
+        }
+
+    fun ByteArray.encodeTo(encode: String) =
+        when (encode) {
+            "raw" -> decodeToString()
+            "base64" -> base64()
+            "hex" -> toHex()
+            else -> throw IllegalArgumentException("input encode error")
+        }
 }

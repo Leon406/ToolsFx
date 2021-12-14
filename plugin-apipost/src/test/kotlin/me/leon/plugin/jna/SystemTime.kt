@@ -1,4 +1,4 @@
-package me.leon.plugin
+package me.leon.plugin.jna
 
 import com.sun.jna.Structure
 

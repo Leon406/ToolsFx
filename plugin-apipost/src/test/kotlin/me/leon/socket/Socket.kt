@@ -6,13 +6,10 @@ object Socket {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        if (tcpMode)
-            tcpTest()
-        else
-            udpTest()
+        if (tcpMode) tcpTest() else udpTest()
 
         while (true) {
-            //if needed
+            // if needed
         }
     }
 
@@ -23,5 +20,4 @@ object Socket {
     private fun udpTest() {
         UdpClient("localhost", 11112, 11113).apply { fromConsole() }
     }
-
 }

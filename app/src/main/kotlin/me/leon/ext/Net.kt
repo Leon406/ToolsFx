@@ -1,5 +1,6 @@
 package me.leon.ext
 
+import java.lang.IllegalStateException
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -30,6 +31,30 @@ fun String.readBytesFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME_
         .getOrElse {
             println("read bytes err ${it.stacktrace()} ")
             byteArrayOf()
+        }
+
+fun String.readStreamFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME_OUT) =
+    runCatching {
+        URL(this)
+            .openConnection()
+            .cast<HttpURLConnection>()
+            .apply {
+                connectTimeout = timeout
+                readTimeout = timeout
+                setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+                setRequestProperty(
+                    "user-agent",
+                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                        "Chrome/86.0.4240.198 Safari/537.36"
+                )
+                requestMethod = method
+            }
+            .takeIf { it.responseCode == RESPONSE_OK }
+            ?.inputStream
+    }
+        .getOrElse {
+            println("read bytes err ${it.stacktrace()} ")
+            throw IllegalStateException()
         }
 
 fun String.readFromNet(resumeUrl: String = ""): String =

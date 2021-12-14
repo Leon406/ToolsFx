@@ -5,20 +5,25 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import javafx.scene.control.cell.TextFieldTableCell
+import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.text.Text
-import javafx.util.StringConverter
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
 import me.leon.toolsfx.plugin.net.NetHelper.parseCurl
+import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginView("ApiPost") {
-    override val version = "v1.0.0.beta"
-    override val date: String = "2021-10-06"
+    override val version = "v1.1.2.beta"
+    override val date: String = times()
     override val author = "Leon406"
     override val description = "ApiPost"
+
+    init {
+        println("Plugin Info:$description $version $date $author  ")
+    }
+
     private val controller: ApiPostController by inject()
     private lateinit var tfUrl: TextField
     private lateinit var taReqHeaders: TextArea
@@ -64,7 +69,16 @@ class ApiPostView : PluginView("ApiPost") {
     private val eventHandler = fileDraggedHandler {
         with(it.first()) {
             println(absolutePath)
-            table.selectionModel.selectedItem.value = absolutePath
+            table.selectionModel.selectedItem.valueProperty.value = absolutePath
+        }
+    }
+    private val curlFileHandler = fileDraggedHandler {
+        with(it.first()) {
+            println(absolutePath)
+            if (length() <= 10 * 1024 * 1024)
+                if (realExtension() in unsupportedExts) "unsupported file extension"
+                else resetUi(readText())
+            else "not support file larger than 10M"
         }
     }
     override val root = vbox {
@@ -78,9 +92,10 @@ class ApiPostView : PluginView("ApiPost") {
             combobox(selectedMethod, methods)
 
             tfUrl =
-                textfield("https://www.baidu.com") {
+                textfield("https://httpbin.org/anything") {
                     prefWidth = 400.0
                     promptText = "input your url"
+                    onDragEntered = curlFileHandler
                 }
             button(graphic = imageview("/img/import.png")) { action { resetUi(clipboardText()) } }
             button(graphic = imageview("/img/run.png")) {
@@ -110,7 +125,15 @@ class ApiPostView : PluginView("ApiPost") {
                                             ?: controller.post(
                                                 tfUrl.text,
                                                 reqTableParams as MutableMap<String, Any>,
-                                                reqHeaders,
+                                                reqHeaders.apply {
+                                                    if (selectedBodyType.get() ==
+                                                            BodyType.FORM_DATA.type
+                                                    )
+                                                        put(
+                                                            "Content-Type",
+                                                            "application/x-www-form-urlencoded"
+                                                        )
+                                                },
                                                 bodyTypeMap[selectedBodyType.get()] == BodyType.JSON
                                             )
                                     else ->
@@ -179,13 +202,8 @@ class ApiPostView : PluginView("ApiPost") {
                 showReqTable.value = (newValue as String) in showTableList
             }
 
-            button("Pretty") {
-                action {
-                    visibleWhen(!showReqTable)
-                    taReqContent.text = taReqContent.text.prettyJson()
-                }
-            }
-
+            button("Pretty") { action { taReqContent.text = taReqContent.text.prettyJson() } }
+            button("Ugly") { action { taReqContent.text = taReqContent.text.uglyJson() } }
             button("add") {
                 visibleWhen(showReqTable)
                 action { requestParams.add(HttpParams()) }
@@ -208,48 +226,29 @@ class ApiPostView : PluginView("ApiPost") {
                 tableview(requestParams) {
                     visibleWhen(showReqTable)
 
-                    column("key", HttpParams::key).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn()
+                    column("isEnable", HttpParams::enableProperty).apply {
+                        cellFactory = CheckBoxTableCell.forTableColumn(this)
+                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
+                    }
+
+                    column("key", HttpParams::keyProperty).apply {
+                        cellFactory = EditingCell.forTableColumn()
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.3))
                     }
-                    column("value", HttpParams::value).apply {
-                        cellFactory = TextFieldTableCell.forTableColumn()
+
+                    column("value", HttpParams::valueProperty).apply {
+                        cellFactory = EditingCell.forTableColumn()
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.5))
                         onDragEntered = eventHandler
                     }
-                    column("isFile", HttpParams::isFile).apply {
-                        cellFactory =
-                            TextFieldTableCell.forTableColumn<HttpParams, Boolean>(
-                                object : StringConverter<Boolean?>() {
-                                    override fun toString(obj: Boolean?): String {
-                                        return obj.toString()
-                                    }
-
-                                    override fun fromString(string: String?): Boolean? {
-                                        return string.toBoolean()
-                                    }
-                                }
-                            )
-
+                    column("isFile", HttpParams::isFileProperty) {
+                        cellFactory = CheckBoxTableCell.forTableColumn(this)
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
-                    column("isEnable", HttpParams::isEnable).apply {
-                        cellFactory =
-                            TextFieldTableCell.forTableColumn<HttpParams, Boolean>(
-                                object : StringConverter<Boolean?>() {
-                                    override fun toString(obj: Boolean?): String {
-                                        return obj.toString()
-                                    }
 
-                                    override fun fromString(string: String?): Boolean? {
-                                        return string.toBoolean()
-                                    }
-                                }
-                            )
-                        prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
-                    }
                     isEditable = true
                 }
+
             taReqHeaders =
                 textarea {
                     promptText = "request headers"
@@ -276,6 +275,7 @@ class ApiPostView : PluginView("ApiPost") {
                 }
             }
             button("Pretty") { action { taRspContent.text = taRspContent.text.prettyJson() } }
+            button("Ugly") { action { taRspContent.text = taRspContent.text.uglyJson() } }
             button(graphic = imageview("/img/copy.png")) { action { taRspContent.text.copy() } }
         }
         stackpane {
@@ -303,14 +303,41 @@ class ApiPostView : PluginView("ApiPost") {
         title = "ApiPost"
     }
 
+    private val fileKeys = arrayOf("file", "files", "image", "images")
+
     private fun resetUi(clipboardText: String) {
         clipboardText.parseCurl().run {
             selectedMethod.value = method
             tfUrl.text = url
             taReqHeaders.text = headers.entries.joinToString("\n") { "${it.key}: ${it.value} " }
-            taReqContent.text = rawBody
-            selectedBodyType.value = BodyType.RAW.type
-            showReqTable.value = false
+            if (params.isNotEmpty()) {
+                showReqTable.value = true
+                showReqHeader.value = false
+                selectedBodyType.value = bodyType[1]
+
+                val tmpParam =
+                    params
+                        .entries
+                        .fold(mutableListOf<HttpParams>()) { acc, mutableEntry ->
+                            acc.apply {
+                                add(
+                                    HttpParams().apply {
+                                        keyProperty.value = mutableEntry.key
+                                        valueProperty.value = mutableEntry.value.toString()
+                                        isFileProperty.value = mutableEntry.key in fileKeys
+                                    }
+                                )
+                            }
+                        }
+                        .distinct()
+
+                requestParams.clear()
+                requestParams.addAll(tmpParam)
+            } else {
+                taReqContent.text = rawBody
+                selectedBodyType.value = BodyType.RAW.type
+                showReqTable.value = false
+            }
         }
     }
 }

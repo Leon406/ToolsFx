@@ -88,6 +88,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+                textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }
 
         hbox {
@@ -169,12 +170,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
         println("transfer $encodeString")
         taOutput.text =
             String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
-                ?: controller.encode2String(
-                    encodeString,
-                    dstEncodeType,
-                    "",
-                    selectedDstCharset.get()
-                )
+                ?: controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
 
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         labelInfo.text = info

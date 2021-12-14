@@ -67,7 +67,7 @@
 - feat: add crc32,character statistic ,read http headers
 ## bug fix:
 - fix: urlbase64  urlencode error
-# v1.9.0  
+# v1.9.2.beta  
 ## feature:  
 - feat: support custom client certification
 - feat: add CONNECT request method
@@ -92,3 +92,26 @@
 - fix: encode QuotePrintable capital letters decode error
 - fix: autoKey keyword小写加密不一致
 - fix: unicode解码支持大写U
+ 
+# v1.10.0  
+## feature:  
+- feat(app): 字符处理 乱码还原功能
+- feat: new module plugin-location
+- feat(app): 非对称加密支持编码选择
+- feat(app): 加密可以选择输入编码
+- feat(app): add xorbase
+- feat(plugin-apipost): release 1.1.2.beta
+- feat(plugin-apipost): 新增内置变量
+- feat(plugin-apipost): optimize import curl
+- feat(plugin-apipost): 优化table输入
+- feat(plugin-apipost): 提升易用性,跳转UI
+- feat: optimize qrcode module & update input text length at real time
+## bug fix:  
+- fix(plugin-apipost): 优化json格式化
+- fix(plugin-apipost): json格式化网址会添加空格
+- fix(plugin-apipost): 导入部分curl解析错误
+- fix(app): #18
+- fix(plugin-apipost): curl --data-binary 解析错误
+- fix(app): webview显示乱码
+- fix(plugin-apipost): form-data 加入默认请求头form-data url encode
+- fix(plugin-apipost): 文件上传后,文件占用

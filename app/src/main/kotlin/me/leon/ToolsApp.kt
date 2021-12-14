@@ -2,7 +2,8 @@ package me.leon
 
 import java.io.File
 import java.net.URLClassLoader
-import java.util.*
+import java.util.Locale
+import java.util.Properties
 import javafx.scene.image.Image
 import me.leon.ext.Prefs
 import me.leon.toolsfx.plugin.PluginView

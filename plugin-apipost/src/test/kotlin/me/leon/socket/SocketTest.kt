@@ -9,7 +9,7 @@ class SocketTest {
         tcpServer.receive()
 
         while (true) {
-            //if needed
+            // if needed
         }
     }
 
@@ -19,7 +19,7 @@ class SocketTest {
         tcpServer.receive()
 
         while (true) {
-            //if needed
+            // if needed
         }
     }
 }

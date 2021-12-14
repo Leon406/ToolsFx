@@ -22,7 +22,7 @@ fun String.lineCount() = split("\n|\r\n".toRegex()).size
 fun String.lineActionIndex(action: (String, Int) -> String) =
     split("\n|\r\n".toRegex()).mapIndexed { index, s -> action.invoke(s, index) }.joinToString("\n")
 
-inline fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
+fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
     val ranges =
         split.foldIndexed(mutableListOf<IntRange>()) { index, acc, _ ->
             acc.apply {
@@ -38,5 +38,5 @@ inline fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
     }
 }
 
-inline fun String.sliceList(split: List<Int>, separator: String = " ") =
+fun String.sliceList(split: List<Int>, separator: String = " ") =
     toList().sliceList(split).joinToString(separator) { it.joinToString("") }

@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.9.0"
+version = "1.10.0"
 
 plugins {
     application
@@ -21,12 +21,12 @@ application {
 }
 
 dependencies {
-
     implementation("no.tornado:tornadofx:${rootProject.extra["tornadofx_version"]}")
     implementation("org.bouncycastle:bcprov-jdk15on:${rootProject.extra["bouncycastle_version"]}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
     implementation("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
+    api("com.google.code.gson:gson:2.8.9")
     implementation(project(":plugin-lib"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
 }

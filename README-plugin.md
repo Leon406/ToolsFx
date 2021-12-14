@@ -1,10 +1,10 @@
 <p>
-    <h1 align="center">ToolsFx Plugin Guide</h1>
+    <h1 align="center">ToolsFx Plugin Guide</h1></p>
 <p align="center">
 <a href="README-plugin.md">English</a>|<a href="README-plugin-zh.md">中文</a>
 </p>
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
-</p>
+
 
 
 ------
@@ -35,4 +35,24 @@ Host application will instantces all interface implementations by  ServiceLoader
 ## Develop Related
 
 see **plugin-sample**  or  *plugin-apipost*
+
+
+
+## Plugins
+
+- ### ApiPost
+
+  **support methods**
+
+![sym](/art/plugin/apipost_methods.gif)
+
+  **data and headers**
+
+![sym](/art/plugin/apipost_post.gif)
+
+  **file upload**
+
+![sym](/art/plugin/apipost-upload.gif)
+
+  
 

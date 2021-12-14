@@ -3,6 +3,7 @@ package me.leon
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import me.leon.ext.recoverEncoding
 import org.junit.Test
 
 class Charset {
@@ -24,5 +25,11 @@ class Charset {
                 .also { println(it) }
 
         URLDecoder.decode(encoded, "gbk").toByteArray()
+    }
+
+    @Test
+    fun ee() {
+        val dd = "璋冭В瀹℃牳绠＄悊".also { println(it.recoverEncoding()) }
+        dd.toByteArray(Charsets.UTF_8).toString(Charset.forName("gbk")).also { println(it) }
     }
 }

@@ -216,4 +216,16 @@ class EncodeTest {
                 .also { println(it) }
         }
     }
+
+    @Test
+    fun charsets() {
+        val raw = "你好"
+        val charset = Charsets.UTF_16BE
+        val charset2 = Charsets.UTF_16LE
+        charset.encode(raw).also { println(charset.decode(it)) }
+        raw.toHex().also { println(it) }
+        raw.toByteArray(Charsets.UTF_16).toHex().also { println(it) }
+        raw.toByteArray(charset).toHex().also { println(it) }
+        raw.toByteArray(charset2).toHex().also { println(it) }
+    }
 }

@@ -49,10 +49,10 @@ fun BufferedImage.qrReader(): String {
 }
 
 fun String.createQR(
-    width: Int = 300,
-    height: Int = 300,
+    width: Int = 400,
+    height: Int = 400,
     charset: String = "utf-8",
-    errorCorrectionLevel: ErrorCorrectionLevel = ErrorCorrectionLevel.H,
+    errorCorrectionLevel: ErrorCorrectionLevel = ErrorCorrectionLevel.L,
     margin: Int = 1
 ): BufferedImage {
     val hints = Hashtable<EncodeHintType, Any>()

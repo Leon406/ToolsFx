@@ -80,18 +80,40 @@ object NetHelper {
         }
 
     fun String.parseCurl() =
-        replace("""\^|\\""".toRegex(), "")
+        trim()
+            .replace("""\^|\\""".toRegex(), "")
             .also { println(this) }
             .split("""\s*[\^\\]*\n""".toRegex())
-            .map { it.trim() }
+            .map { it.trim().also { println(it) } }
             .fold(Request(this)) { acc, s ->
                 acc.apply {
                     when {
-                        s.startsWith("curl") -> acc.url = s.substring(6, s.lastIndex)
+                        s.startsWith("curl") ->
+                            acc.url = s.substring(5, s.lastIndex).removeFirstAndEndQuotes()
                         s.startsWith("--data-raw") ->
                             acc.method = "POST".also { acc.rawBody = s.substring(12, s.lastIndex) }
+                        s.startsWith("-d") ->
+                            acc.method =
+                                "POST".also {
+                                    val value = s.substring(4, s.lastIndex)
+                                    if (this@parseCurl.contains("Content-Type: application/json"))
+                                        acc.rawBody = value
+                                    else
+                                        acc.params[value.substringBefore("=")] =
+                                            value.substringAfter("=")
+                                }
                         s.startsWith("--data-binary") ->
                             acc.method = "POST".also { acc.rawBody = s.substring(15, s.lastIndex) }
+                        s.startsWith("--data") ->
+                            acc.method =
+                                "POST".also {
+                                    val value = s.substring(8, s.lastIndex)
+                                    if (this@parseCurl.contains("Content-Type: application/json"))
+                                        acc.rawBody = value
+                                    else
+                                        acc.params[value.substringBefore("=")] =
+                                            value.substringAfter("=")
+                                }
                         s.startsWith("-H") ->
                             with(s.substring(4, s.lastIndex)) {
                                 acc.headers.put(substringBefore(":"), substringAfter(":").trim())
@@ -101,4 +123,12 @@ object NetHelper {
                 }
             }
             .also { println(it) }
+
+    fun String.removeFirstAndEndQuotes() =
+        replace("^[\"'](.*)[\"']?$".toRegex(), "$1").replace("'", "").trim()
+
+    @JvmStatic
+    fun main(args: Array<String>) {
+        "'Content-Type: application/json'".removeFirstAndEndQuotes().also { println(it) }
+    }
 }

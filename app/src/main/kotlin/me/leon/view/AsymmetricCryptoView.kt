@@ -47,6 +47,10 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
     private var alg = "RSA"
     private var isEncrypt = true
+    private var inputEncode = "raw"
+    private var outputEncode = "base64"
+    private lateinit var tgInput: ToggleGroup
+    private lateinit var tgOutput: ToggleGroup
     private val bitsLists = mutableListOf("512", "1024", "2048", "3072", "4096")
     private val selectedBits = SimpleStringProperty("1024")
     private val isPriEncryptOrPubDecrypt
@@ -92,6 +96,32 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
+
+        hbox {
+            spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
+            label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
+            tgInput =
+                togglegroup {
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("base64")
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        inputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
+            button(graphic = imageview("/img/import.png")) {
+                action { inputText = clipboardText() }
+            }
+        }
+        taInput =
+            textarea {
+                promptText = messages["inputHint"]
+                isWrapText = true
+                prefHeight = DEFAULT_SPACING_16X
+                onDragEntered = inputEventHandler
+            }
+
         hbox {
             label(messages["key"])
             button(graphic = imageview("/img/import.png")) { action { keyText = clipboardText() } }
@@ -104,20 +134,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
             }
 
         hbox {
-            label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
-            button(graphic = imageview("/img/import.png")) {
-                action { inputText = clipboardText() }
-            }
-        }
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                prefHeight = DEFAULT_SPACING_10X
-                onDragEntered = inputEventHandler
-            }
-
-        hbox {
+            spacing = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
             label(messages["bits"])
             combobox(selectedBits, bitsLists) { cellFormat { text = it } }
@@ -127,6 +144,8 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                 radiobutton(messages["decrypt"])
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
+                    tgOutput.selectToggle(tgOutput.toggles[if (isEncrypt) 1 else 0])
+                    if (isEncrypt) tgInput.selectToggle(tgInput.toggles[0])
                 }
             }
             checkbox(messages["singleLine"], isSingleLine)
@@ -141,12 +160,26 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         }
         hbox {
             spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
             label(messages["output"])
+            tgOutput =
+                togglegroup {
+                    radiobutton("raw")
+                    radiobutton("base64") { isSelected = true }
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        println("output ${newValue.cast<RadioButton>().text}")
+                        outputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
             button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
             button(graphic = imageview("/img/up.png")) {
                 action {
                     inputText = outputText
                     outputText = ""
+                    tgInput.selectToggle(
+                        tgInput.toggles[tgOutput.toggles.indexOf(tgOutput.selectedToggle)]
+                    )
                 }
             }
         }
@@ -175,7 +208,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                         alg,
                         inputText,
                         selectedBits.get().toInt(),
-                        isSingleLine.get()
+                        isSingleLine.get(),
+                        inputEncode = inputEncode,
+                        outputEncode = outputEncode
                     )
                 else
                     controller.pubEncrypt(
@@ -183,7 +218,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                         alg,
                         inputText,
                         selectedBits.get().toInt(),
-                        isSingleLine.get()
+                        isSingleLine.get(),
+                        inputEncode = inputEncode,
+                        outputEncode = outputEncode
                     )
             else if (privateKeyEncrypt.get())
                 controller.pubDecrypt(
@@ -191,7 +228,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     alg,
                     inputText,
                     selectedBits.get().toInt(),
-                    isSingleLine.get()
+                    isSingleLine.get(),
+                    inputEncode,
+                    outputEncode
                 )
             else
                 controller.priDecrypt(
@@ -199,7 +238,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     alg,
                     inputText,
                     selectedBits.get().toInt(),
-                    isSingleLine.get()
+                    isSingleLine.get(),
+                    inputEncode,
+                    outputEncode
                 )
         } ui
             {

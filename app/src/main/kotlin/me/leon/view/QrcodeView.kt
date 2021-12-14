@@ -1,8 +1,10 @@
 package me.leon.view
 
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import java.awt.Rectangle
 import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.Scene
@@ -12,6 +14,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.*
 import javafx.scene.layout.*
 import javafx.scene.paint.Paint
+import javafx.scene.text.Text
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import kotlin.math.abs
@@ -35,9 +38,13 @@ class QrcodeView : View("Qrcode") {
     private lateinit var hBox: HBox
     private lateinit var button: Button
     private lateinit var ta: TextArea
+    private lateinit var textCount: Text
 
     // 切成的图片展示区域
     private lateinit var iv: ImageView
+
+    private val errorLvs = listOf("L ~7%", "M ~15%", "Q ~25%", "H ~30%")
+    private val selectedErrLv = SimpleStringProperty(errorLvs.first())
 
     override val closeable = SimpleBooleanProperty(false)
 
@@ -77,19 +84,34 @@ class QrcodeView : View("Qrcode") {
             }
             button(graphic = imageview("/img/import.png")) { action { ta.text = clipboardText() } }
         }
-        ta =
-            textarea {
-                promptText = messages["qrHint"]
-                isWrapText = true
-                prefHeight = DEFAULT_SPACING_10X
-            }
+        vbox {
+            alignment = Pos.CENTER_RIGHT
+            spacing = DEFAULT_SPACING
+            ta =
+                textarea {
+                    promptText = messages["qrHint"]
+                    isWrapText = true
+                    prefHeight = DEFAULT_SPACING_10X
+                    textProperty().addListener { _, _, newValue ->
+                        println(newValue.length)
+                        textCount.text = "text count: ${newValue.length}"
+                    }
+                }
+
+            textCount = text("text count: 0")
+        }
 
         hbox {
             spacing = DEFAULT_SPACING_2X
+
+            alignment = Pos.CENTER_LEFT
+
+            combobox(selectedErrLv, errorLvs)
             button(messages["genQrcode"]) {
                 action {
                     if (ta.text.isNotEmpty()) {
-                        iv.image = createQR(ta.text)
+                        runCatching { iv.image = createQR(ta.text, selectedErrLv.get().errLevel()) }
+                            .onFailure { primaryStage.showToast(it.message ?: "unknown exception") }
                     }
                 }
                 shortcut(KeyCombination.valueOf("F9"))
@@ -236,7 +258,19 @@ class QrcodeView : View("Qrcode") {
         ta.text = screenCapture.qrReader()
     }
 
-    private fun createQR(data: String = "this is test data"): Image {
-        return data.createQR().toFxImg()
+    private fun createQR(
+        data: String = "this is test data",
+        errLv: ErrorCorrectionLevel = ErrorCorrectionLevel.L
+    ): Image {
+        return data.createQR(errorCorrectionLevel = errLv).toFxImg()
     }
+
+    private fun String.errLevel() =
+        when {
+            startsWith("L") -> ErrorCorrectionLevel.L
+            startsWith("M") -> ErrorCorrectionLevel.M
+            startsWith("Q") -> ErrorCorrectionLevel.Q
+            startsWith("H") -> ErrorCorrectionLevel.H
+            else -> ErrorCorrectionLevel.L
+        }
 }

@@ -1,0 +1,5 @@
+curl https://api.rebrandly.com/v1/links \
+  -H 'Content-Type: application/json' \
+  -H 'apikey: YOUR_API_KEY' \
+  -H 'workspace: YOUR_WORKSPACE_ID' \
+  -d '{"destination": "https://www.youtube.com/channel/UCHK4HD0ltu1-I212icLPt3g","domain":{"fullName":"rebrand.ly"}}'

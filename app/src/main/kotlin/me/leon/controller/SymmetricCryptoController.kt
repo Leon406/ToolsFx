@@ -7,8 +7,8 @@ import javax.crypto.*
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import me.leon.encode.base.base64
-import me.leon.ext.catch
-import me.leon.ext.lineAction2String
+import me.leon.encode.base.base64Decode
+import me.leon.ext.*
 import tornadofx.*
 
 class SymmetricCryptoController : Controller() {
@@ -18,23 +18,43 @@ class SymmetricCryptoController : Controller() {
         iv: ByteArray,
         alg: String,
         charset: String = "UTF-8",
-        isSingleLine: Boolean = false
+        isSingleLine: Boolean = false,
+        inputEncode: String = "raw",
+        outputEncode: String = "base64",
     ): String =
-        if (isSingleLine) data.lineAction2String { encrypt(key, it, iv, alg, charset) }
-        else encrypt(key, data, iv, alg, charset)
+        if (isSingleLine)
+            data.lineAction2String { encrypt(key, it, iv, alg, charset, inputEncode, outputEncode) }
+        else encrypt(key, data, iv, alg, charset, inputEncode, outputEncode)
 
     private fun encrypt(
         key: ByteArray,
         data: String,
         iv: ByteArray,
         alg: String,
-        charset: String = "UTF-8"
+        charset: String = "UTF-8",
+        inputEncode: String = "raw",
+        outputEncode: String = "base64",
     ): String =
         catch({ "encrypt error: $it" }) {
             println("encrypt  $alg")
+
+            val inputBytes =
+                when (inputEncode) {
+                    "raw" -> data.toByteArray(Charset.forName(charset))
+                    "base64" -> data.base64Decode()
+                    "hex" -> data.hex2ByteArray()
+                    else -> throw IllegalArgumentException("input encode error")
+                }
             val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
-            Base64.getEncoder()
-                .encodeToString(cipher.doFinal(data.toByteArray(Charset.forName(charset))))
+
+            val bytes = cipher.doFinal(inputBytes)
+            if (outputEncode == "base64") {
+                Base64.getEncoder().encodeToString(bytes)
+            } else if (outputEncode == "hex") {
+                bytes.toHex()
+            } else {
+                throw IllegalArgumentException("output encode error")
+            }
         }
 
     private fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int) =
@@ -86,21 +106,40 @@ class SymmetricCryptoController : Controller() {
         iv: ByteArray,
         alg: String,
         charset: String = "UTF-8",
-        isSingleLine: Boolean = false
+        isSingleLine: Boolean = false,
+        inputEncode: String = "raw",
+        outputEncode: String = "base64",
     ): String =
-        if (isSingleLine) data.lineAction2String { decrypt(key, it, iv, alg, charset) }
-        else decrypt(key, data, iv, alg, charset)
+        if (isSingleLine)
+            data.lineAction2String { decrypt(key, it, iv, alg, charset, inputEncode, outputEncode) }
+        else decrypt(key, data, iv, alg, charset, inputEncode, outputEncode)
 
     private fun decrypt(
         key: ByteArray,
         data: String,
         iv: ByteArray,
         alg: String,
-        charset: String = "UTF-8"
+        charset: String = "UTF-8",
+        inputEncode: String = "base64",
+        outputEncode: String = "raw",
     ) =
         catch({ "decrypt error: $it" }) {
             println("decrypt  $alg")
+            val inputBytes =
+                when (inputEncode) {
+                    "raw" -> data.toByteArray(Charset.forName(charset))
+                    "base64" -> data.base64Decode()
+                    "hex" -> data.hex2ByteArray()
+                    else -> throw IllegalArgumentException("input encode error")
+                }
             val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)
-            String(cipher.doFinal(Base64.getDecoder().decode(data)), Charset.forName(charset))
+
+            val bytes = cipher.doFinal(inputBytes)
+            when (outputEncode) {
+                "raw" -> String(bytes, Charset.forName(charset))
+                "base64" -> bytes.base64()
+                "hex" -> bytes.toHex()
+                else -> throw IllegalArgumentException("input encode error")
+            }
         }
 }

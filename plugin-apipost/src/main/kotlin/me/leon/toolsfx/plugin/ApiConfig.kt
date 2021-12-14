@@ -24,7 +24,7 @@ object ApiConfig {
             Prefs.preference().put(GLOBAL_HEADERS, value)
         }
     var proxyType: String
-        get() = Prefs.preference().get(PROXY_TYPE, "DIRECT")
+        get() = Prefs.preference().get(PROXY_TYPE, "HTTP")
         set(value) {
             Prefs.preference().put(PROXY_TYPE, value)
         }
