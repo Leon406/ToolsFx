@@ -1,5 +1,6 @@
 package me.leon.toolsfx.plugin
 
+import me.leon.Digests
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 import me.leon.toolsfx.domain.AmapGeo
@@ -74,8 +75,11 @@ enum class LocationServiceType(val type: String) : ILocationService {
     },
     GEO_AMPA("geoAmap") {
         override fun process(raw: String, params: MutableMap<String, String>): String {
-            return ("https://restapi.amap.com/v3/geocode/geo?address=${raw.urlEncoded}" +
-                    "&output=json&key=282f521c5c372f233da702769e43bfba")
+            val address ="address=${raw.urlEncoded}"
+            val queries ="address=${raw}&key=282f521c5c372f233da702769e43bfba&output=json"
+            return ("https://restapi.amap.com/v3/geocode/geo?$address&key=282f521c5c372f233da702769e43bfba&output=json" +
+                    "&sig=${Digests.hash("md5",queries+"57b0452167c85d33217472e4e53028ec")}")
+                .also { println(it) }
                 .readFromNet()
                 .also { println(it) }
                 .fromJson(AmapGeo::class.java)
