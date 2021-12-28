@@ -9,7 +9,7 @@
 ```
 sdk路径  D:\AndroidSdk\javafx-sdk-17.0.0.1,完整配置参如下
 
---module-path D:\AndroidSdk\javafx-sdk-17.0.0.1\lib --add-modules=javafx.controls,javafx.fxml   
+--module-path D:\AndroidSdk\javafx-sdk-17.0.0.1\lib --add-modules=javafx.controls,javafx.fxml  --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-opens javafx.graphics/com.sun.glass.ui=ALL-UNNAMED 
 
 反射open
 

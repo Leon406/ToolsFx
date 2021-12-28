@@ -11,6 +11,7 @@ import kotlin.system.measureNanoTime
 import me.leon.encode.base.*
 import me.leon.ext.*
 import org.junit.Test
+import java.time.ZoneOffset
 
 class MyTest {
 
@@ -118,6 +119,10 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
 
         val now = LocalDateTime.now()
         println(now)
+        LocalDateTime.parse("2020-10-11 10:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toInstant(
+            ZoneOffset.of("+8")).toEpochMilli().also {
+            println(it)
+        }
 
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh-mm-ss")).also {
             println(it)
