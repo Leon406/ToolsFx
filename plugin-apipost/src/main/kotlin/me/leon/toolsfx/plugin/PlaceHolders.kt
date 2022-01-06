@@ -1,10 +1,10 @@
 package me.leon.toolsfx.plugin
 
+import java.time.*
+import java.time.format.DateTimeFormatter
 import me.leon.Digests
 import me.leon.encode.base.base64
 import me.leon.ext.toBinaryString
-import java.time.*
-import java.time.format.DateTimeFormatter
 
 const val TIMESTAMP = "{{timestamp}}"
 const val TIMESTAMP2 = "{{timestamp2}}"
@@ -52,14 +52,20 @@ fun String.methodCall(args: String): String {
         "binary" -> args.toBinaryString()
         "uppercase" -> args.uppercase()
         "lowercase" -> args.lowercase()
-        "date2Mills" ->  LocalDateTime.parse("$args 00:00:00", timeFormatter).toInstant(
-            ZoneOffset.of("+8")).toEpochMilli().toString()
-        "datetime2Mills" -> LocalDateTime.parse(args, timeFormatter).toInstant(
-            ZoneOffset.of("+8")).toEpochMilli().toString()
-
+        "date2Mills" ->
+            LocalDateTime.parse("$args 00:00:00", timeFormatter)
+                .toInstant(ZoneOffset.of("+8"))
+                .toEpochMilli()
+                .toString()
+        "datetime2Mills" ->
+            LocalDateTime.parse(args, timeFormatter)
+                .toInstant(ZoneOffset.of("+8"))
+                .toEpochMilli()
+                .toString()
         else -> this
     }
 }
+
 val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
 fun String.methodParse(): String {

@@ -19,6 +19,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private lateinit var labelInfo: Label
     private lateinit var tfCustomDict: TextField
     private var enableDict = SimpleBooleanProperty(true)
+    private val isSingleLine = SimpleBooleanProperty(false)
     private val info: String
         get() =
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
@@ -104,6 +105,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
+            checkbox(messages["singleLine"], isSingleLine)
             button(messages["transfer"], imageview("/img/run.png")) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
@@ -163,15 +165,33 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     }
 
     private fun run() {
-        val decode =
-            controller.decode(inputText, srcEncodeType, tfCustomDict.text, selectedSrcCharset.get())
-
-        val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
-        println("transfer $encodeString")
         taOutput.text =
-            String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
-                ?: controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
-
+            if (isSingleLine.get())
+                inputText.lineAction2String {
+                    val decode =
+                        controller.decode(
+                            it,
+                            srcEncodeType,
+                            tfCustomDict.text,
+                            selectedSrcCharset.get()
+                        )
+                    val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
+                    println("transfer $encodeString")
+                    controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
+                }
+            else {
+                val decode =
+                    controller.decode(
+                        inputText,
+                        srcEncodeType,
+                        tfCustomDict.text,
+                        selectedSrcCharset.get()
+                    )
+                val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
+                println("transfer $encodeString")
+                String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
+                    ?: controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
+            }
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
         labelInfo.text = info
     }

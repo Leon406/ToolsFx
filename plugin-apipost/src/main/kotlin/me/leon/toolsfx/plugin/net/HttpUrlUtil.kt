@@ -184,7 +184,7 @@ object HttpUrlUtil {
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
             if (dataBytes.isNotEmpty())
                 conn.addRequestProperty("Content-Length", dataBytes.size.toString())
-            httpConfig(conn,data)
+            httpConfig(conn, data)
             conn.connect()
             conn.outputStream.write(dataBytes)
             conn.outputStream.flush()
