@@ -110,6 +110,10 @@ class ClassicalView : View(messages["classical"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.classicalType()
+                        decodeIgnoreSpace.set(
+                            encodeType !in
+                                arrayOf(ClassicalCryptoType.MORSE, ClassicalCryptoType.Ook)
+                        )
                         if (isEncrypt) run()
                     }
                 }
