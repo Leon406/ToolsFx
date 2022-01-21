@@ -65,6 +65,13 @@ constructor(
                 else charPointer++
         }
 
+        loopAllTokens(tokens)
+        // Clear all data.
+        initiate(data!!.size)
+        return outWriter.toString()
+    }
+
+    private fun loopAllTokens(tokens: MutableList<Token>) {
         // Loop through all tokens.
         var tokenPointer = 0
         while (tokenPointer < tokens.size) {
@@ -98,8 +105,5 @@ constructor(
             }
             tokenPointer++
         }
-        // Clear all data.
-        initiate(data!!.size)
-        return outWriter.toString()
     }
 }
