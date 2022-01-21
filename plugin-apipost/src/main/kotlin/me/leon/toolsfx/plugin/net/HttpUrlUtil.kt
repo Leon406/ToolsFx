@@ -167,6 +167,39 @@ object HttpUrlUtil {
         return postData(url, data, headers)
     }
 
+    fun getBody(
+        url: String,
+        data: String,
+        headers: MutableMap<String, Any> = mutableMapOf()
+    ): Response {
+        val req = Request(url, "GET", mutableMapOf(), headers)
+        preAction(req)
+        val conn = URL(url).openConnection(proxy) as HttpURLConnection
+        var rsp: String
+
+        val header = makeHeaders(req.headers)
+        val dataBytes = data.toByteArray()
+        val time = measureTimeMillis {
+            conn.requestMethod = req.method
+            for ((k, v) in header) conn.setRequestProperty(k, v.toString())
+            if (dataBytes.isNotEmpty())
+                conn.addRequestProperty("Content-Length", dataBytes.size.toString())
+            httpConfig(conn, data)
+            conn.connect()
+            conn.outputStream.write(dataBytes)
+            conn.outputStream.flush()
+            conn.outputStream.close()
+            rsp =
+                if (conn.responseCode == HttpURLConnection.HTTP_OK) {
+                    conn.inputStream.use { postAction(it.readBytes()) }
+                } else {
+                    conn.body().decodeToString()
+                }
+        }
+
+        return afterResponse(conn, time, rsp)
+    }
+
     fun postData(
         url: String,
         data: String,

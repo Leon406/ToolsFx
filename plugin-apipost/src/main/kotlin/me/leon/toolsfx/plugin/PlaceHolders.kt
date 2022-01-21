@@ -66,7 +66,7 @@ fun String.methodCall(args: String): String {
     }
 }
 
-val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
 fun String.methodParse(): String {
     return METHOD.find(this)?.run {

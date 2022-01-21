@@ -72,7 +72,9 @@ class ClassicalTest {
     @Test
     fun morse() {
         println("ATTACKATDOWN".morseEncrypt())
+
         println(".- - - .- -.-. -.- .- - -.. --- .-- -.".morseDecrypt())
+        println("-- --- -..- .. -- --- -..- ..".morseDecrypt())
     }
 
     @Test

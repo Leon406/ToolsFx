@@ -9,7 +9,7 @@ val charsets =
         Charset.forName("windows-1252"),
         Charset.forName("Shift_Jis"),
         Charset.forName("Big5"),
-        Charset.forName("GBK"),
+        Charset.forName("GBK")
     )
 
 fun String.recoverEncoding() =
