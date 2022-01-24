@@ -89,10 +89,8 @@ fun String.readHeadersFromNet(timeout: Int = DEFAULT_TIME_OUT) =
             .joinToString(System.lineSeparator()) {
                 it.second
                     .foldIndexed(StringBuilder()) { i, acc, s ->
-                        acc.apply {
-                            acc.append("${it.first}: $s").apply {
-                                if (i != it.second.lastIndex) append(System.lineSeparator())
-                            }
+                        acc.append("${it.first}: $s").apply {
+                            if (i != it.second.lastIndex) append(System.lineSeparator())
                         }
                     }
                     .toString()
