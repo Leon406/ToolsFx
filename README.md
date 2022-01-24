@@ -31,6 +31,7 @@
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
+- [x] js hex(\x61)/js octal(\140)
 - [x] binary/octal/decimal/hex
 - [x] custom base serial dict
 
@@ -199,7 +200,8 @@
 - [x] Auto Key
 - [x] railfence normal /railfence w-type
 - [x] playfair
-- [x] brainfuck/ook
+- [x] brainfuck/troll/ook
+- [x] Braille
 
 
 ### Others

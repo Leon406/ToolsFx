@@ -39,6 +39,7 @@
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
+- [x] js hex(\x61)/js octal(\140)
 - [x] binary/octal/decimal/hex
 - [x] base系列自定义字典
 
@@ -207,7 +208,8 @@
 - [x] Auto Key
 - [x] 栅栏密码 /栅栏密码 w
 - [x] playfair
-- [x] brainfuck/ook
+- [x] brainfuck/troll/ook
+- [x] 盲文
 
 
 
