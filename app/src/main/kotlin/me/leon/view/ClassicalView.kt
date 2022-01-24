@@ -112,7 +112,11 @@ class ClassicalView : View(messages["classical"]) {
                         encodeType = new.cast<RadioButton>().text.classicalType()
                         decodeIgnoreSpace.set(
                             encodeType !in
-                                arrayOf(ClassicalCryptoType.MORSE, ClassicalCryptoType.Ook)
+                                arrayOf(
+                                    ClassicalCryptoType.MORSE,
+                                    ClassicalCryptoType.Ook,
+                                    ClassicalCryptoType.BauDot
+                                )
                         )
                         if (isEncrypt) run()
                     }

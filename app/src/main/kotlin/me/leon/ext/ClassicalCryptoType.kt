@@ -199,9 +199,16 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     Braille("Braille") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.blindEncode().also { println("xor $raw $params") }
+            raw.blindEncode().also { println("Braille $raw $params") }
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.blindDecode()
+    },
+    BauDot("baudot") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.baudot().also { println("baudot $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.baudotDecode()
     }
 }
