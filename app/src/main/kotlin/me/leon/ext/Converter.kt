@@ -7,6 +7,7 @@ import tornadofx.*
 
 const val HEX_RADIX = 16
 const val DECIMAL_RADIX = 10
+const val OCTAL_RADIX = 8
 
 /** 16进制编解码 */
 fun ByteArray.toHex() = hex
@@ -34,12 +35,29 @@ fun String.binary2ByteArray() =
 
 /** unicode编解码 */
 fun String.toUnicodeString() =
-    fold(StringBuilder()) { acc, c ->
-            acc.apply {
-                append("\\u")
-                append(Integer.toHexString(c.code))
-            }
-        }
+    fold(StringBuilder()) { acc, c -> acc.append("\\u").append(c.code.toString()) }.toString()
+
+/** js hex 编解码 \x61 */
+fun String.toJsHexEncodeString() =
+    fold(StringBuilder()) { acc, c -> acc.append("\\x").append(c.code.toString(HEX_RADIX)) }
+        .toString()
+/** js hex 编解码 \x61 */
+fun String.jsHexDecodeString() =
+    split("(?i)\\\\x".toRegex())
+        .filterIndexed { index, _ -> index != 0 }
+        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toChar()) }
+        .toString()
+
+/** js hex 编解码 \x61 */
+fun String.jsOctalDecodeString() =
+    split("(?i)\\\\".toRegex())
+        .filterIndexed { index, _ -> index != 0 }
+        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(OCTAL_RADIX).toChar()) }
+        .toString()
+
+/** js hex 编解码编解码 \141 */
+fun String.toJsOctalEncodeString() =
+    fold(StringBuilder()) { acc, c -> acc.append("\\").append(c.code.toString(OCTAL_RADIX)) }
         .toString()
 
 fun String.unicode2String() =
@@ -51,12 +69,10 @@ fun String.unicode2String() =
                 it.groupValues[1].ifEmpty { it.groupValues[2] } to
                     if (it.groupValues[0].contains("x", true)) HEX_RADIX else DECIMAL_RADIX
             }
-            .fold(StringBuilder()) { acc, (c, radix) ->
-                acc.apply { append(c.toInt(radix).toChar()) }
-            }
+            .fold(StringBuilder()) { acc, (c, radix) -> acc.append(c.toInt(radix).toChar()) }
             .toString()
     else
         split("(?i)\\\\u\\+?".toRegex())
             .filterIndexed { index, _ -> index != 0 }
-            .fold(StringBuilder()) { acc, c -> acc.apply { append(c.toInt(HEX_RADIX).toChar()) } }
+            .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toChar()) }
             .toString()
