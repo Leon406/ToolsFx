@@ -210,6 +210,8 @@
 - [x] playfair
 - [x] brainfuck/troll/ook
 - [x] 盲文
+- [x] 字母位置
+- [x] 01248(云影)
 
 
 

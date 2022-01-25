@@ -6,9 +6,11 @@ import javafx.scene.control.*
 import me.leon.SimpleMsgEvent
 import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
+import java.math.BigInteger
 
 class ClassicalView : View(messages["classical"]) {
     private val controller: ClassicalController by inject()
@@ -115,7 +117,10 @@ class ClassicalView : View(messages["classical"]) {
                                 arrayOf(
                                     ClassicalCryptoType.MORSE,
                                     ClassicalCryptoType.Ook,
-                                    ClassicalCryptoType.BauDot
+                                    ClassicalCryptoType.BauDot,
+                                    ClassicalCryptoType.ROT47,
+                                    ClassicalCryptoType.ATBASH,
+                                    ClassicalCryptoType.AlphabetIndex,
                                 )
                         )
                         if (isEncrypt) run()
@@ -169,8 +174,23 @@ class ClassicalView : View(messages["classical"]) {
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
+                contextmenu {
+                    item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
+                    item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
+                    item("reverse") {
+                        action {
+                            taOutput.text =
+                                taOutput.text.split("\r\n|\n".toRegex()).joinToString("\r\n") {
+                                    it.reversed()
+                                }
+                        }
+                    }
+
+                    item("clear") { action { taOutput.text = "" } }
+                }
             }
     }
+
     override val root = borderpane {
         center = centerNode
         bottom = hbox { labelInfo = label(info) }

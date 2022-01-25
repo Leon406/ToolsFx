@@ -210,5 +210,19 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.baudotDecode()
-    }
+    },
+    AlphabetIndex("alphabetIndex") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.alphabetIndex().also { println("alphabetIndex $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.alphabetIndexDecode()
+    },
+    Zero1248("01248") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.zero1248().also { println("01248 $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.zero1248Decode()
+    },
 }

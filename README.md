@@ -202,6 +202,8 @@
 - [x] playfair
 - [x] brainfuck/troll/ook
 - [x] Braille
+- [x] alphabet index
+- [x] 01248
 
 
 ### Others

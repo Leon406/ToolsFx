@@ -3,7 +3,10 @@ package me.leon
 import kotlin.test.assertEquals
 import me.leon.classical.*
 import me.leon.ctf.*
+import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 import org.junit.Test
+import java.math.BigInteger
 
 class ClassicalTest {
     @Test
@@ -301,5 +304,16 @@ class ClassicalTest {
     @Test
     fun baudot() {
         "adfdad12314sadf/.,,".baudot().also { println(it) }.also { println(it.baudotDecode()) }
+    }
+
+    @Test
+    fun alphaIndex() {
+        "alphabet index".alphabetIndex().also { println(it) }
+        "1 12 16,8;1 2 5 20 9 14 4 5 24".alphabetIndexDecode().also { println(it) }
+    }
+    @Test
+    fun zero1234() {
+        "alphabet index".zero1248().also { println(it) }
+        "8842101220480224404014224202480122".zero1248Decode().also { println(it) }
     }
 }
