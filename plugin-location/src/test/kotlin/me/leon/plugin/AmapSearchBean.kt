@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.plugin
 
 data class AmapSearchBean(
     val suggestion: Suggestion?,

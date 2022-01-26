@@ -29,4 +29,10 @@ dependencies {
     api("com.google.code.gson:gson:2.8.9")
     implementation(project(":plugin-lib"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
+    testImplementation("org.apache.commons:commons-compress:1.21")
+//    testImplementation("com.github.veithen.cosmos.bootstrap:org.tukaani.xz:0.3")
+    testImplementation("com.github.luben:zstd-jni:1.5.2-1")
+    testImplementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
+    testImplementation("org.tukaani:xz:1.9")
+    testImplementation("org.brotli:dec:0.1.2")
 }

@@ -3,10 +3,7 @@ package me.leon
 import kotlin.test.assertEquals
 import me.leon.classical.*
 import me.leon.ctf.*
-import me.leon.encode.base.base64
-import me.leon.encode.base.base64Decode
 import org.junit.Test
-import java.math.BigInteger
 
 class ClassicalTest {
     @Test

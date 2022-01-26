@@ -1,5 +1,6 @@
 package me.leon.encode.base
 
+import java.nio.charset.Charset
 import me.leon.ext.toBinaryString
 
 const val BASE64_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -8,7 +9,8 @@ const val BASE64_BLOCK_SIZE = 6
 const val BASE64_PADDING_SIZE = 4
 const val BYTE_MASK = 0xFF
 
-fun String.base64(dict: String = BASE64_DICT) = toByteArray().base64(dict)
+fun String.base64(dict: String = BASE64_DICT, charset: Charset = Charsets.UTF_8) =
+    toByteArray(charset).base64(dict)
 
 fun ByteArray.base64(dict: String = BASE64_DICT) =
     toBinaryString()
