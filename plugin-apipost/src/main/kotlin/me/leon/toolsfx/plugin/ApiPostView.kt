@@ -276,6 +276,9 @@ class ApiPostView : PluginView("ApiPost") {
             }
             button("Pretty") { action { taRspContent.text = taRspContent.text.prettyJson() } }
             button("Ugly") { action { taRspContent.text = taRspContent.text.uglyJson() } }
+            button("UnicodeDecode") {
+                action { taRspContent.text = taRspContent.text.unicodeMix2String() }
+            }
             button(graphic = imageview("/img/copy.png")) { action { taRspContent.text.copy() } }
         }
         stackpane {
