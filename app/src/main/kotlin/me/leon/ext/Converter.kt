@@ -41,6 +41,7 @@ fun String.toUnicodeString() =
 fun String.toJsHexEncodeString() =
     fold(StringBuilder()) { acc, c -> acc.append("\\x").append(c.code.toString(HEX_RADIX)) }
         .toString()
+
 /** js hex 编解码 \x61 */
 fun String.jsHexDecodeString() =
     split("(?i)\\\\x".toRegex())
@@ -76,3 +77,8 @@ fun String.unicode2String() =
             .filterIndexed { index, _ -> index != 0 }
             .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toChar()) }
             .toString()
+
+fun String.unicodeMix2String() =
+    StringBuilder(this).replace("(?i:\\\\u\\+?[0-9a-zA-Z]{1,5})+".toRegex()) {
+        it.value.unicode2String()
+    }

@@ -93,7 +93,7 @@ class StringCompression {
         }
         val compressed =
             "/Td6WFoAAATm1rRGAgAhARYAAAB0L+WjAQAVZGF0YSB0byBjb21wcmVzc+aVs" +
-                    "OaNrgAAAM0b7MKuQu2PAAEuFlYJVd8ftvN9AQAAAAAEWVo="
+                "OaNrgAAAM0b7MKuQu2PAAEuFlYJVd8ftvN9AQAAAAAEWVo="
         unCompress(compressed.base64Decode()) { input, output ->
             XZCompressorInputStream(input).use { it.copyTo(output) }
         }

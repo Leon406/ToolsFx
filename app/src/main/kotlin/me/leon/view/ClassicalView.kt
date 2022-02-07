@@ -119,6 +119,7 @@ class ClassicalView : View(messages["classical"]) {
                                     ClassicalCryptoType.ROT47,
                                     ClassicalCryptoType.ATBASH,
                                     ClassicalCryptoType.AlphabetIndex,
+                                    ClassicalCryptoType.BubbleBabble,
                                 )
                         )
                         if (isEncrypt) run()

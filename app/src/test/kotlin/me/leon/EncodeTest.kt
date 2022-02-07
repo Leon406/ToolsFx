@@ -2,6 +2,8 @@ package me.leon
 
 import kotlin.test.assertEquals
 import me.leon.controller.EncodeController
+import me.leon.ctf.bubbleBabble
+import me.leon.ctf.bubbleBabbleDecode2String
 import me.leon.encode.*
 import me.leon.encode.base.*
 import me.leon.ext.*
@@ -227,5 +229,15 @@ class EncodeTest {
         raw.toByteArray(Charsets.UTF_16).toHex().also { println(it) }
         raw.toByteArray(charset).toHex().also { println(it) }
         raw.toByteArray(charset2).toHex().also { println(it) }
+    }
+
+    @Test
+    fun unicodeMix() {
+        val raw =
+            """
+            "title": "\u7b2c\u4e00\u6a21\u5757 - \u7ecf\u6d4e\u5b66\u6838\u5fc3\u539f\u7406",
+            "file_name": "\u+6a21\U5757\u5b8c\u6574\u7248",
+       """.trimIndent()
+        println(raw.unicodeMix2String())
     }
 }

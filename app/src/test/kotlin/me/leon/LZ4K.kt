@@ -1,5 +1,6 @@
 package me.leon
 
+import java.util.IllegalFormatException
 import kotlin.math.pow
 
 typealias call = () -> Unit
@@ -164,7 +165,7 @@ object LZ4K {
         var numBits = 3
         var enlargeIn = 4
         var dictSize = 4
-        var next: Int = 0
+        var next = 0
         fun doPower(initBits: Int, initPower: Int, initMaxPowerFactor: Int, mode: Int = 0) {
             bits = initBits
             maxpower = initMaxPowerFactor.power()
@@ -252,7 +253,8 @@ object LZ4K {
             1 -> "$res==="
             2 -> "$res=="
             3 -> "$res="
-            else -> throw Exception("i do not know what happened") // what !
+            else -> throw IllegalStateException("Illegal base64url string!")
+
         }
     }
 

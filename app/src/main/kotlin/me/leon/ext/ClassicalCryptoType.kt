@@ -225,4 +225,10 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.zero1248Decode()
     },
+    BubbleBabble("bubbleBabble") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.bubbleBabble()
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.bubbleBabbleDecode()
+    },
 }
