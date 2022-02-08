@@ -26,7 +26,7 @@ import org.junit.Test
 
 class StringCompression {
 
-    val data = "data to compress数据"
+    private val data = "data to compress数据"
 
     @Test
     fun bzip2() {

@@ -26,11 +26,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
     implementation("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
-    api("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.8.9")
     implementation(project(":plugin-lib"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
+    //compress dependencies
     testImplementation("org.apache.commons:commons-compress:1.21")
-//    testImplementation("com.github.veithen.cosmos.bootstrap:org.tukaani.xz:0.3")
     testImplementation("com.github.luben:zstd-jni:1.5.2-1")
     testImplementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
     testImplementation("org.tukaani:xz:1.9")

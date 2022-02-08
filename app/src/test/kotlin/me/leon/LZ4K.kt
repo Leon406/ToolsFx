@@ -1,6 +1,5 @@
 package me.leon
 
-import java.util.IllegalFormatException
 import kotlin.math.pow
 
 typealias call = () -> Unit
@@ -46,7 +45,7 @@ object LZ4K {
             }
         }
 
-        fun checkPostition() {
+        fun checkPosition() {
             if (context_data_position == bitsPerChar - 1) {
                 context_data_position = 0
                 context_data.add(getCharFromInt(context_data_val))
@@ -60,25 +59,25 @@ object LZ4K {
             context_w.charLess256({
                 repeat(context_numBits) {
                     context_data_val = context_data_val shl 1
-                    checkPostition()
+                    checkPosition()
                 }
                 value = context_w[0].toInt()
                 repeat(8) {
                     context_data_val = context_data_val shl 1 or (value and 1)
-                    checkPostition()
+                    checkPosition()
                     value = value shr 1
                 }
             }) {
                 value = 1
                 repeat(context_numBits) {
                     context_data_val = context_data_val shl 1 or value
-                    checkPostition()
+                    checkPosition()
                     value = 0
                 }
                 value = context_w[0].toInt()
                 repeat(16) {
                     context_data_val = context_data_val shl 1 or (value and 1)
-                    checkPostition()
+                    checkPosition()
                     value = value shr 1
                 }
             }
@@ -93,7 +92,7 @@ object LZ4K {
                 value = context_dictionary[context_w]!! // not be empty?
                 repeat(context_numBits) {
                     context_data_val = context_data_val shl 1 or (value and 1)
-                    checkPostition()
+                    checkPosition()
                     value = value shr 1
                 }
             }

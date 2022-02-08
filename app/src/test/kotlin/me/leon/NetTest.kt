@@ -2,10 +2,7 @@ package me.leon
 
 import java.io.File
 import me.leon.encode.base.base64
-import me.leon.ext.cast
-import me.leon.ext.readBytesFromNet
-import me.leon.ext.readHeadersFromNet
-import me.leon.ext.safeAs
+import me.leon.ext.*
 import org.junit.Test
 
 class NetTest {
