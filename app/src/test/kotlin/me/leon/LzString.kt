@@ -4,7 +4,10 @@ import kotlin.math.pow
 
 typealias call = () -> Unit
 
-object LZ4K {
+/**
+ * @link https://github.com/pieroxy/lz-string
+ */
+object LzString {
     private const val keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
     private const val keyStrUri =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$"
@@ -234,7 +237,7 @@ object LZ4K {
     }
 
     fun compress(source: String) = _compress(source, 16) { it.toChar() }
-    fun decompres(compressed: String) =
+    fun decompress(compressed: String) =
         if (compressed.isBlank()) null else _decompress(compressed.length, 32768) { compressed[it] }
 
     fun decompressFromEncodedURIComponent(input: String) =
@@ -253,7 +256,6 @@ object LZ4K {
             2 -> "$res=="
             3 -> "$res="
             else -> throw IllegalStateException("Illegal base64url string!")
-
         }
     }
 

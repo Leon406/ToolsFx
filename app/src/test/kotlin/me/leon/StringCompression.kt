@@ -149,9 +149,9 @@ class StringCompression {
 
     @Test
     fun lzString() {
-        LZ4K.compressToBase64(data).also { println(it) }
+        LzString.compressToBase64(data).also { println(it) }
         val compressed = "CYQwLiAEYPaQxjAtgBwE4FMDOXAOpoO2Mg=="
-        LZ4K.decompressFromBase64(compressed).also { println(it) }
+        LzString.decompressFromBase64(compressed).also { println(it) }
     }
 
     private fun compress(
