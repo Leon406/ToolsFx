@@ -160,10 +160,10 @@
 ### Asymmetric Crypto RSA
 
 - [x]  support pkcs1 /pkcs8 key
-- [x]  supprot 512/1024/2048/3072/4096 bit
+- [x]  support 512/1024/2048/3072/4096 bit
 - [x]  support plain text length longer than key size
-- [x]  support public key encryt and private key encrypt
-- [x]  support openssl pkcs1/pkcs8  privte key format
+- [x]  support public key encrypt and private key encrypt
+- [x]  support openssl pkcs1/pkcs8  private key format
 - [x]  support certification cer file
 - [x]  support pem and pk8 format :new:
 
@@ -191,9 +191,9 @@
 - [x] virgenene
 - [x] atbash
 - [x] morse
-- [x] qwe keyborad
+- [x] qwe keyboard
 - [x] polybius
-- [x] bacon 24/bacon26
+- [x] bacon 24/bacon 26
 - [x] one time pad
 - [x] socialist core value
 - [x] ADFGX/ADFGVX
@@ -204,6 +204,7 @@
 - [x] Braille
 - [x] alphabet index
 - [x] 01248
+- [x] BubbleBabble
 
 
 ### Others
@@ -215,10 +216,10 @@
 ### Features
 
 - [x] support drag file
-- [x] Symmetirc Crypto support base64/hex encoded key, iv
-- [x] Digest and Symmetirc  Crypto support multi files
+- [x] Symmetric Crypto support base64/hex encoded key, iv
+- [x] Digest and Symmetric  Crypto support multi files
 - [x] i18n
-- [x] CTF releated
+- [x] CTF related
 - [x] PBE
 - [x] module configable,support online url
 
