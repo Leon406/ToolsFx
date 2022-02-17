@@ -65,10 +65,13 @@ class SymmetricCryptoController : Controller() {
         }
 
     fun encryptByFile(key: ByteArray, path: String, iv: ByteArray, alg: String): String {
-        val outFileName = path.substringBefore('.') + ".enc." + path.substringAfterLast('.')
         return catch({ "encrypt error: $it" }) {
             println("encrypt  $alg")
+            val parentFile = path.toFile().parentFile.absolutePath
+            val encryptDir =
+                File(parentFile, "enc").also { if (!it.exists()) it.mkdirs() }.absolutePath
             val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
+            val outFileName = path.replace(parentFile, encryptDir)
             doStreamCrypto(outFileName, cipher, path)
             "加密文件路径(同选择文件目录): ${File(outFileName).absolutePath} \n" +
                 "alg: $alg\n" +
@@ -81,9 +84,10 @@ class SymmetricCryptoController : Controller() {
         catch({ "decrypt error: $it" }) {
             println("decrypt  $alg")
             val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)
-            val outFileName =
-                if (path.contains(".enc")) path.replace(".enc", "_dec")
-                else path.substringBeforeLast('.') + "_dec." + path.substringAfterLast('.')
+            val parentFile = path.toFile().parentFile.absolutePath
+            val decryptDir =
+                File(parentFile, "dec").also { if (!it.exists()) it.mkdirs() }.absolutePath
+            val outFileName = path.replace(parentFile, decryptDir)
             doStreamCrypto(outFileName, cipher, path)
             "解密文件路径(同选择文件目录): $outFileName"
         }

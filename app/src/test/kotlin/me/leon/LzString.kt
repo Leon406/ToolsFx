@@ -4,9 +4,7 @@ import kotlin.math.pow
 
 typealias call = () -> Unit
 
-/**
- * @link https://github.com/pieroxy/lz-string
- */
+/** @link https://github.com/pieroxy/lz-string */
 object LzString {
     private const val keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
     private const val keyStrUri =

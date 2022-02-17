@@ -48,9 +48,10 @@ class QrcodeView : View("Qrcode") {
 
     override val closeable = SimpleBooleanProperty(false)
     private val eventHandler = fileDraggedHandler {
-        ta.text = runCatching {
-            it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" }
-        }.getOrElse { it.stacktrace() }
+        ta.text =
+            runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }.getOrElse {
+                it.stacktrace()
+            }
     }
 
     override val root = vbox {

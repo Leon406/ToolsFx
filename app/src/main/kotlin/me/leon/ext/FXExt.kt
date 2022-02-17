@@ -36,7 +36,7 @@ fun Window.fileChooser(hint: String = "请选择文件"): File? =
     FileChooser().apply { title = hint }.showOpenDialog(this)
 
 fun Window.multiFileChooser(hint: String = "请选择多个文件"): List<File>? =
-FileChooser().apply { title = hint }.showOpenMultipleDialog(this)
+    FileChooser().apply { title = hint }.showOpenMultipleDialog(this)
 
 fun fileDraggedHandler(block: (List<File>) -> Unit) =
     EventHandler<DragEvent> {
