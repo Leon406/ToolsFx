@@ -1,4 +1,7 @@
-v# v1.5.0  
+<img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
+<img width=0 height=0 src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx:: Visitor's Count" />
+
+# v1.5.0  
 ## feature:  
 - feat:二维码加入快捷键
 - feat:美化非对称加密,签名,二维码样式
