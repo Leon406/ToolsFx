@@ -14,7 +14,7 @@ class OnlineWebView : View("Browser") {
     private lateinit var web: WebView
     private lateinit var tfUrl: TextField
     private val fontJS by lazy {
-        javaClass.getResourceAsStream("/js/font.js").readAllBytes().decodeToString()
+        javaClass.getResourceAsStream("/js/font.js").readBytes().decodeToString()
     }
 
     private val selectedUrl = SimpleStringProperty(ToolsApp.extUrls.first())

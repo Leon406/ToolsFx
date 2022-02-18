@@ -1,12 +1,26 @@
 package me.leon.toolsfx.plugin.net
 
+import tornadofx.*
 import java.io.DataOutputStream
 import java.io.File
 import java.net.*
 import java.util.UUID
 import javax.net.ssl.HttpsURLConnection
+import kotlin.collections.Iterable
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.MutableMap
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.filter
+import kotlin.collections.fold
+import kotlin.collections.forEach
+import kotlin.collections.isNotEmpty
+import kotlin.collections.iterator
+import kotlin.collections.joinToString
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 import kotlin.system.measureTimeMillis
-import tornadofx.JsonBuilder
 
 object HttpUrlUtil {
     private val httpsDelegate by lazy {
@@ -19,8 +33,8 @@ object HttpUrlUtil {
     private var isDebug = false
     var timeOut = 10000
     private var proxy: Proxy = Proxy.NO_PROXY
-    var downloadFolder: String =
-        File(File("").absoluteFile, "downloads").also { if (!it.exists()) it.mkdirs() }.absolutePath
+    var downloadFolder =
+        File(File("").absoluteFile, "downloads")
     private var preAction: (Request) -> Unit = DEFAULT_PRE_ACTION
     private var postAction: (ByteArray) -> String = DEFAULT_POST_ACTION
 
@@ -52,7 +66,7 @@ object HttpUrlUtil {
             "Connection" to "Keep-Alive",
             "Content-Type" to "application/json; charset=utf-8",
             "User-Agent" to
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
                     " Chrome/86.0.4240.198 Safari/537.36",
         )
 
@@ -75,6 +89,7 @@ object HttpUrlUtil {
             httpConfig(conn)
             conn.connect()
             if (isDownload) {
+                if (!downloadFolder.exists()) downloadFolder.mkdirs()
                 File(downloadFolder, NetHelper.getNetFileName(conn))
                     .also { rsp = "fileLocation: ${it.absolutePath}" }
                     .outputStream()
