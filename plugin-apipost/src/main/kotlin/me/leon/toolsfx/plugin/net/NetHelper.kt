@@ -12,7 +12,7 @@ object NetHelper {
 
     const val COMMON_UA =
         "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) " +
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36"
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36"
 
     /** 根据响应头或者url获取文件名 */
     fun getNetFileName(response: HttpURLConnection) =
@@ -20,8 +20,8 @@ object NetHelper {
             URLDecoder.decode(
                 response.getHeaderField("Content-Disposition")?.let { getFileName(it) }
                     ?: response.getHeaderField("content-disposition")?.let { getFileName(it) }
-                    ?: getUrlFileName(response.url.toString())
-                    ?: "unknownfile_${System.currentTimeMillis()}"
+                        ?: getUrlFileName(response.url.toString())
+                        ?: "unknownfile_${System.currentTimeMillis()}"
             )
         )
 
@@ -87,8 +87,7 @@ object NetHelper {
             .fold(Request(this)) { acc, s ->
                 acc.apply {
                     when {
-                        s.startsWith("curl") ->
-                            acc.url = s.removeFirstAndEndQuotes(5)
+                        s.startsWith("curl") -> acc.url = s.removeFirstAndEndQuotes(5)
                         s.startsWith("--data-raw") ->
                             acc.method = "POST".also { acc.rawBody = s.removeFirstAndEndQuotes(11) }
                         s.startsWith("-d") ->

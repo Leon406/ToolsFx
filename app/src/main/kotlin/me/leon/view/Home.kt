@@ -1,8 +1,8 @@
 package me.leon.view
 
-import me.leon.BUILD_DATE
 import java.security.Security
 import java.util.ServiceLoader
+import me.leon.BUILD_DATE
 import me.leon.ToolsApp.Companion.isEnableClassical
 import me.leon.ToolsApp.Companion.isEnableInternalWebview
 import me.leon.ToolsApp.Companion.isEnableMac

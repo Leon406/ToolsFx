@@ -4,6 +4,17 @@ detekt {
     allRules = false // activate all available (even unstable) rules.
     config = files("$rootProject.projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
     parallel = true
+    input = files(
+            "$rootDir/buildSrc",
+            "$rootDir/build.gradle.kts",
+            "$rootDir/build.gradle",
+            "$rootDir/settings.gradle.kts",
+            "$rootDir/settings.gradle",
+            "build.gradle.kts",
+            "build.gradle",
+            "src/main/kotlin",
+            "src/test/kotlin"
+    )
 }
 
 spotless {
@@ -13,6 +24,6 @@ spotless {
     }
     kotlin {
         target "src/**/*.kt"
-        ktfmt('0.28').kotlinlangStyle()
+        ktfmt('0.30').kotlinlangStyle()
     }
 }
