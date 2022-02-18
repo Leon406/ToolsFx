@@ -38,9 +38,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         get() =
             taKey.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
                 ?: taKey.text.replace(
-                    "-----(?:END|BEGIN) (?:RSA )?\\w+ KEY-----|\n|\r|\r\n".toRegex(),
+                    "---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(),
                     ""
-                )
+                ).trim()
         set(value) {
             taKey.text = value
         }

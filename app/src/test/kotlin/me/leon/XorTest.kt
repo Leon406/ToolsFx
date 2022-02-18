@@ -1,6 +1,7 @@
 package me.leon
 
 import java.io.File
+import kotlin.experimental.xor
 import me.leon.classical.*
 import me.leon.ext.*
 import org.junit.Test
@@ -31,6 +32,16 @@ class XorTest {
                 .toByteArray()
                 .decodeToString()
         )
+
+        val ints = arrayOf(71, 65, 77, 69)
+        "E:/download/360/xor (1).txt"
+            .toFile()
+            .readBytes()
+            .mapIndexed { index, byte -> byte xor (ints[index % 4]).toByte() }
+            .toByteArray()
+            .decodeToString()
+            .also { println(it) }
+        println("!-,\"<".toByteArray().xor("flag{").joinToString(" "))
     }
 
     @Test

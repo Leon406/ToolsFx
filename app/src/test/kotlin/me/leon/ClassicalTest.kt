@@ -72,7 +72,9 @@ class ClassicalTest {
     @Test
     fun morse() {
         println("ATTACKATDOWN".morseEncrypt())
+
         println(".- - - .- -.-. -.- .- - -.. --- .-- -.".morseDecrypt())
+        println("-- --- -..- .. -- --- -..- ..".morseDecrypt())
     }
 
     @Test
@@ -282,5 +284,33 @@ class ClassicalTest {
         "33 2335 13121441 4511234134 541451 311421 5144334132 3554 4414314515232112"
             .nihilistDecrypt("helloworld")
             .also { println(it) }
+    }
+
+    @Test
+    fun blind() {
+        var d =
+            "⡥⠂⡶⡃⡔⡷⡦⡛⡨⠁⠟⡚⠉⠇⡳⡜⡉⡤⡴⡑⡓⡆⡑⡔⡆⡠⡩⡹⠂⡢⡪⡵⡢⡟⡶⡹⠃⡒⠁⡥⡞⠟⡚⡞⡣⡣⡤⡀⡡⡆⠉⡼⡻⠀⠉⡧⡙⠇⡦⡇⡧⡅⡺⡑⠺⡑⡉⡑⠂⡞⡱⡳⠁" +
+                "⡊⡢⡩⡊⡚⡊⡕⡛⠀⡕⠂⡩⡱⡾⡴⠂⡶⡛⠈⡹⡇⡗⡑⠃⠁⡆⡝⡽⡺⡨⡙⠛⠅⠁⡠⡇⡩⡅⡸⡑⡧⡑⡸⠅⡆⡨⠛⡣⡨⡑⡢⡝⠁⡟⡚⡿⠺⠛⡿⡕⡴⡛⡡⠀⡔⠉" +
+                "⠂⡴⡃⠃⠀⡿⡹⠄⡺⡀⡵⡊⡝⡪⡨⡛⡦⡖⡛⡧⡡⡪⠈⡲⠟⡝⡔⡕⠅⡄⡞⠟⠂⡵⡉⠅⡩⡦⡼⡈⡴⡩⡈⠟⡞⡦⡩⡆⡛⡴⡾⡈⡁⡁⡗⠺⡹⡾⡆⡢⡹⡠⡈⡃⡛⠆" +
+                "⡁⡖⡻⡉⡡⡻⡓⠆⡁⡼⡷⠃⡛⠅⡵⠈⡝⡂⠉⡃⡄⡠⡠⡡⡒⡁⡃⡁⠅⡾⡨⠆⡘⠇⡄⡁⡲⠅⡖⠛⡓⡤⡃⡕⡺⡃⡝⡛⡳⠀⡢⡒⡙⠂⠺⡱⡉⡻⡒⡨⡄⡒⡒⡈⡱⡧⡽" +
+                "⠆⡉⡷⡹⠛⡊⠟⡥⡜⡳⡶⠆⡺⠉⠂⡂⡛⡥⡓⡝⡴⠆⡽⡟⠅⡿⡻⡸⡺⠆⡇⠂⠈⡼⡤⡕⠂⠈⡤⠅⠛⠁⡇⡟⡧⡈⡗⡲⡊⡸⠉⡻⠺⡱⡻⡥⠍="
+        println(d.blindDecode())
+        println("abdcd".blindEncode())
+    }
+
+    @Test
+    fun baudot() {
+        "adfdad12314sadf/.,,".baudot().also { println(it) }.also { println(it.baudotDecode()) }
+    }
+
+    @Test
+    fun alphaIndex() {
+        "alphabet index".alphabetIndex().also { println(it) }
+        "1 12 16,8;1 2 5 20 9 14 4 5 24".alphabetIndexDecode().also { println(it) }
+    }
+    @Test
+    fun zero1234() {
+        "alphabet index".zero1248().also { println(it) }
+        "8842101220480224404014224202480122".zero1248Decode().also { println(it) }
     }
 }

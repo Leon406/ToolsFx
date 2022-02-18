@@ -33,5 +33,5 @@ class ClassicalController : Controller() {
         encrypted: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
         params: MutableMap<String, String>,
-    ) = type.decrypt(encrypted, params)
+    ) = catch({ "解密错误: $it" }) { type.decrypt(encrypted, params) }
 }

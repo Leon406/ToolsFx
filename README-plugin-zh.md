@@ -123,7 +123,17 @@ classloader目前遇到插件resource资源无法加载的问题,临时只能将
   {{lowercase(asdfAfsdf)}}
   ```
 
-  
+- datetime2Mills
+
+  ```
+  {{datetime2Mills(2022-01-01 10:00:00)}}
+  ```
+
+- date2Mills
+
+  ```
+  {{date2Mills(2022-01-01)}}
+  ```
 
 
 

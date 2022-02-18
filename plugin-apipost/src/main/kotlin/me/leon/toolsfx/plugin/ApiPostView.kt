@@ -15,7 +15,7 @@ import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginView("ApiPost") {
-    override val version = "v1.1.2.beta"
+    override val version = "v1.2.1"
     override val date: String = times()
     override val author = "Leon406"
     override val description = "ApiPost"
@@ -276,6 +276,9 @@ class ApiPostView : PluginView("ApiPost") {
             }
             button("Pretty") { action { taRspContent.text = taRspContent.text.prettyJson() } }
             button("Ugly") { action { taRspContent.text = taRspContent.text.uglyJson() } }
+            button("UnicodeDecode") {
+                action { taRspContent.text = taRspContent.text.unicodeMix2String() }
+            }
             button(graphic = imageview("/img/copy.png")) { action { taRspContent.text.copy() } }
         }
         stackpane {

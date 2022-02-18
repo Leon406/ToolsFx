@@ -47,6 +47,12 @@ class QrcodeView : View("Qrcode") {
     private val selectedErrLv = SimpleStringProperty(errorLvs.first())
 
     override val closeable = SimpleBooleanProperty(false)
+    private val eventHandler = fileDraggedHandler {
+        ta.text =
+            runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }.getOrElse {
+                it.stacktrace()
+            }
+    }
 
     override val root = vbox {
         paddingAll = DEFAULT_SPACING_2X
@@ -74,6 +80,14 @@ class QrcodeView : View("Qrcode") {
                     }
                 }
             }
+            button(messages["multiFileReco"]) {
+                action {
+                    primaryStage.multiFileChooser(messages["chooseFile"])?.let {
+                        runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }
+                            .getOrElse { it.stacktrace() }
+                    }
+                }
+            }
         }
 
         hbox {
@@ -92,6 +106,7 @@ class QrcodeView : View("Qrcode") {
                     promptText = messages["qrHint"]
                     isWrapText = true
                     prefHeight = DEFAULT_SPACING_10X
+                    onDragEntered = eventHandler
                     textProperty().addListener { _, _, newValue ->
                         println(newValue.length)
                         textCount.text = "text count: ${newValue.length}"

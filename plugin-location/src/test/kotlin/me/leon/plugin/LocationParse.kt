@@ -1,8 +1,8 @@
-package me.leon
+package me.leon.plugin
 
-import CoordinatorTransform
 import javax.json.Json.createReader
 import me.leon.ext.*
+import me.leon.toolsfx.plugin.CoordinatorTransform
 import org.junit.Test
 
 class LocationParse {

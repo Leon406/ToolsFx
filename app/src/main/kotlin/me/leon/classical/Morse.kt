@@ -38,13 +38,35 @@ val DEFAULT_MORSE =
         '8' to "---..",
         '9' to "----.",
         '0' to "-----",
+        '.' to ".-.-.-",
+        ':' to "...---",
+        ',' to "--..--",
+        ';' to "-.-.-.",
+        '?' to "..--..",
+        '=' to "-...-",
+        '\'' to ".----.",
+        '/' to "-..-.",
+        '!' to "-.-.--",
+        '-' to "-...-",
+        '_' to "..--.-",
+        '"' to ".-..-.",
+        '(' to "-.--.",
+        ')' to "-.--.-",
+        '$' to "...-..-",
+        '&' to ".-...",
+        '@' to ".--.-.",
     )
 
 val DEFAULT_MORSE_DECODE =
     mutableMapOf<String, Char>().apply { putAll(DEFAULT_MORSE.values.zip(DEFAULT_MORSE.keys)) }
 
 fun String.morseEncrypt() =
-    uppercase().replace("\\s".toRegex(), "").toList().joinToString(" ") { DEFAULT_MORSE[it]!! }
+    uppercase().replace("\\s".toRegex(), "").toList().joinToString(" ") {
+        DEFAULT_MORSE[it] ?: it.code.toString(2).replace("1", "-").replace("0", ".")
+    }
 
 fun String.morseDecrypt() =
-    split("\\s".toRegex()).joinToString("") { DEFAULT_MORSE_DECODE[it].toString() }
+    trim().split("\\s|/".toRegex()).also { println(it) }.joinToString("") {
+        DEFAULT_MORSE_DECODE[it]?.toString()
+            ?: it.replace("-", "1").replace(".", "0").toInt(2).toChar().toString()
+    }

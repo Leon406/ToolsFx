@@ -34,6 +34,20 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             String(bytes, Charset.forName(charset)).toUnicodeString()
     },
+    JsHexEncode("jsHex") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.jsHexDecodeString().toByteArray(Charset.forName(charset))
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            String(bytes, Charset.forName(charset)).toJsHexEncodeString()
+    },
+    JsOctalEncode("jsOctal") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.jsOctalDecodeString().toByteArray(Charset.forName(charset))
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            String(bytes, Charset.forName(charset)).toJsOctalEncodeString()
+    },
     Hex("hex") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.replace("""\\x|\s|0x|\\""".toRegex(), "").hex2ByteArray()
@@ -142,6 +156,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.escape(charset)
+    },
+    EscapeAll("escapeAll") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.unescape(charset)
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.escapeAll(charset)
     },
     UuEncode("uuEncode") {
         override fun decode(encoded: String, dict: String, charset: String) = encoded.uuDecode(dict)

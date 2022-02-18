@@ -110,6 +110,18 @@ class ClassicalView : View(messages["classical"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.classicalType()
+                        decodeIgnoreSpace.set(
+                            encodeType !in
+                                arrayOf(
+                                    ClassicalCryptoType.MORSE,
+                                    ClassicalCryptoType.Ook,
+                                    ClassicalCryptoType.BauDot,
+                                    ClassicalCryptoType.ROT47,
+                                    ClassicalCryptoType.ATBASH,
+                                    ClassicalCryptoType.AlphabetIndex,
+                                    ClassicalCryptoType.BubbleBabble,
+                                )
+                        )
                         if (isEncrypt) run()
                     }
                 }
@@ -161,8 +173,23 @@ class ClassicalView : View(messages["classical"]) {
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
+                contextmenu {
+                    item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
+                    item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
+                    item("reverse") {
+                        action {
+                            taOutput.text =
+                                taOutput.text.split("\r\n|\n".toRegex()).joinToString("\r\n") {
+                                    it.reversed()
+                                }
+                        }
+                    }
+
+                    item("clear") { action { taOutput.text = "" } }
+                }
             }
     }
+
     override val root = borderpane {
         center = centerNode
         bottom = hbox { labelInfo = label(info) }

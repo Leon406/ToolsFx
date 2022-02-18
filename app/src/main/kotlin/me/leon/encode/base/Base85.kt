@@ -13,9 +13,7 @@ fun ByteArray.base85(dict: String = BASE85_DICT) =
             else it
         }
         .fold(StringBuilder()) { acc, list ->
-            acc.apply {
-                acc.append(list.toByteArray().baseNEncode(85, dict.ifEmpty { BASE85_DICT }))
-            }
+            acc.append(list.toByteArray().baseNEncode(85, dict.ifEmpty { BASE85_DICT }))
         }
         .toString()
 

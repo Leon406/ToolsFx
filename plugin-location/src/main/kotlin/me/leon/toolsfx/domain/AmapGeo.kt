@@ -15,7 +15,7 @@ data class AmapGeo(
         val province: String?,
         val citycode: String?,
         val city: String?,
-        val district: String?,
+        val district: Any?,
         val township: Any?,
         val adcode: String?,
         val street: Any?,

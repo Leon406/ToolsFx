@@ -1,9 +1,13 @@
-package me.leon.encode
+package me.leon.ctf
 
 import java.nio.charset.Charset
 import kotlin.math.ceil
 
-/** @link http://wiki.yak.net/589/Bubble_Babble_Encoding.txt */
+/**
+ * @link
+ * http://wiki.yak.net/589/Bubble_Babble_Encoding.txthttp://wiki.yak.net/589/Bubble_Babble_Encoding.txt
+ * 仅支持 ascii
+ */
 object BubbleBabble {
     private const val vowels = "aeiouy" // 元音表
     private const val consonants = "bcdfghklmnprstvzx" // 常量表
@@ -74,7 +78,7 @@ object BubbleBabble {
             .chunked(6)
             .foldIndexed(StringBuilder()) { index, acc, value ->
                 acc.apply {
-                    val tup: MutableList<String> = mutableListOf()
+                    val tup = mutableListOf<String>()
                     tup.add(vowels.indexOf(value[0]).toString())
                     tup.add(consonants.indexOf(value[1]).toString())
                     tup.add(vowels.indexOf(value[2]).toString())

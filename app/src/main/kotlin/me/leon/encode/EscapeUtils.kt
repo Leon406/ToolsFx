@@ -16,6 +16,15 @@ object EscapeUtils {
             }
             .joinToString("")
 
+    fun escapeAll(src: String) =
+        src.toCharArray().joinToString("") {
+            when {
+                it.code < 16 -> "%0${it.code.toString(16)}"
+                it.code < 256 -> "%${it.code.toString(16)}"
+                else -> "%u${it.code.toString(16)}"
+            }
+        }
+
     fun unescape(src: String): String {
 
         val tmp = StringBuilder(src.length)
@@ -52,7 +61,12 @@ object EscapeUtils {
 
 fun String.escape() = EscapeUtils.escape(this)
 
+fun String.escapeAll() = EscapeUtils.escapeAll(this)
+
 fun ByteArray.escape(charset: String = "UTF-8") = String(this, Charset.forName(charset)).escape()
+
+fun ByteArray.escapeAll(charset: String = "UTF-8") =
+    String(this, Charset.forName(charset)).escapeAll()
 
 fun String.unescape(charset: String = "UTF-8") =
     unescape2String().toByteArray(Charset.forName(charset))

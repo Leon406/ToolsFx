@@ -3,14 +3,7 @@ package me.leon.ext
 import me.leon.P1
 import me.leon.P2
 import me.leon.classical.*
-import me.leon.ctf.brainFuckDecrypt
-import me.leon.ctf.brainFuckEncrypt
-import me.leon.ctf.ookDecrypt
-import me.leon.ctf.ookEncrypt
-import me.leon.ctf.socialistCoreValues
-import me.leon.ctf.socialistCoreValuesDecrypt
-import me.leon.ctf.trollScriptDecrypt
-import me.leon.ctf.trollScriptEncrypt
+import me.leon.ctf.*
 import me.leon.railFenceWDecrypt
 import me.leon.railFenceWEncrypt
 
@@ -203,5 +196,39 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.xorBase64Decode(params[P1]!!)
-    }
+    },
+    Braille("Braille") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.blindEncode().also { println("Braille $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.blindDecode()
+    },
+    BauDot("baudot") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.baudot().also { println("baudot $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.baudotDecode()
+    },
+    AlphabetIndex("alphabetIndex") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.alphabetIndex().also { println("alphabetIndex $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.alphabetIndexDecode()
+    },
+    Zero1248("01248") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.zero1248().also { println("01248 $raw $params") }
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.zero1248Decode()
+    },
+    BubbleBabble("bubbleBabble") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.bubbleBabble()
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.bubbleBabbleDecode()
+    },
 }

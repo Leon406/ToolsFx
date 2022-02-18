@@ -139,14 +139,14 @@ complexity:
   TooManyFunctions:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
-    thresholdInFiles: 11
-    thresholdInClasses: 14
-    thresholdInInterfaces: 11
+    thresholdInFiles: 24
+    thresholdInClasses: 24
+    thresholdInInterfaces: 24
     thresholdInObjects: 22
-    thresholdInEnums: 11
-    ignoreDeprecated: false
-    ignorePrivate: false
-    ignoreOverridden: false
+    thresholdInEnums: 24
+    ignoreDeprecated: true
+    ignorePrivate: true
+    ignoreOverridden: true
 
 coroutines:
   active: true
@@ -703,7 +703,7 @@ style:
   RedundantVisibilityModifierRule:
     active: false
   ReturnCount:
-    active: true
+    active: false
     max: 2
     excludedFunctions: 'equals'
     excludeLabeled: false

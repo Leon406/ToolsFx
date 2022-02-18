@@ -17,6 +17,11 @@ class HttpTest {
     }
 
     @Test
+    fun getBodyTest() {
+        HttpUrlUtil.getBody("https://httpbin.org/anything", "hello body").also { println(it) }
+    }
+
+    @Test
     fun postTest() {
         HttpUrlUtil.addPreHandle {
             it.headers["preHead"] = "pre"

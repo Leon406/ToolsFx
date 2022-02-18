@@ -51,7 +51,7 @@ constructor(
         // It fine that all TrollScript tokens are 3 characters long :)
         // So we aren't going to loop through all characters.
         while (charPointer < str.length) {
-            var token =
+            val token =
                 if (charPointer + defaultTokenLength <= str.length)
                     str.substring(charPointer, charPointer + defaultTokenLength)
                 else str.substring(charPointer, charPointer + (str.length - charPointer))

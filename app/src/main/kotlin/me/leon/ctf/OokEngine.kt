@@ -40,10 +40,15 @@ constructor(
         // It fine that all Ook! tokens are 9 characters long :)
         // So we aren't going to loop through all characters..
         while (charPointer < str.length) {
-            var token =
+            if (str[charPointer].toString().isBlank()) {
+                charPointer++
+                continue
+            }
+            val token =
                 if (charPointer + defaultTokenLength <= str.length) // The string we found.
                  str.substring(charPointer, charPointer + defaultTokenLength)
                 else str.substring(charPointer, charPointer + (str.length - charPointer))
+            println("token :$token")
             var b = false
             for (tokenCheck in Token.values()) {
                 if (tokenCheck.value == token) {
@@ -53,7 +58,6 @@ constructor(
                     break
                 }
             }
-
             // If the token was invalid, b is false.
             if (!b)
                 if (charPointer + defaultTokenLength > str.length)
@@ -61,6 +65,13 @@ constructor(
                 else charPointer++
         }
 
+        loopAllTokens(tokens)
+        // Clear all data.
+        initiate(data!!.size)
+        return outWriter.toString()
+    }
+
+    private fun loopAllTokens(tokens: MutableList<Token>) {
         // Loop through all tokens.
         var tokenPointer = 0
         while (tokenPointer < tokens.size) {
@@ -94,8 +105,5 @@ constructor(
             }
             tokenPointer++
         }
-        // Clear all data.
-        initiate(data!!.size)
-        return outWriter.toString()
     }
 }

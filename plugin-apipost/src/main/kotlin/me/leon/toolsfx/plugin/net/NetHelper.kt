@@ -12,7 +12,7 @@ object NetHelper {
 
     const val COMMON_UA =
         "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) " +
-            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36"
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36"
 
     /** 根据响应头或者url获取文件名 */
     fun getNetFileName(response: HttpURLConnection) =
@@ -20,8 +20,8 @@ object NetHelper {
             URLDecoder.decode(
                 response.getHeaderField("Content-Disposition")?.let { getFileName(it) }
                     ?: response.getHeaderField("content-disposition")?.let { getFileName(it) }
-                        ?: getUrlFileName(response.url.toString())
-                        ?: "unknownfile_${System.currentTimeMillis()}"
+                    ?: getUrlFileName(response.url.toString())
+                    ?: "unknownfile_${System.currentTimeMillis()}"
             )
         )
 
@@ -74,28 +74,27 @@ object NetHelper {
     fun String.proxyType() =
         when (this) {
             "DIRECT" -> Proxy.Type.DIRECT
-            "SOCKET4", "SOCKET5" -> Proxy.Type.SOCKS
+            "SOCKS4", "SOCKS5" -> Proxy.Type.SOCKS
             "HTTP" -> Proxy.Type.HTTP
             else -> Proxy.Type.DIRECT
         }
 
     fun String.parseCurl() =
         trim()
-            .replace("""\^|\\""".toRegex(), "")
-            .also { println(this) }
-            .split("""\s*[\^\\]*\n""".toRegex())
-            .map { it.trim().also { println(it) } }
+            // 去掉浏览器多余的分割符
+            .split("""\s*[\^\\]*(?:\n|\r\n)""".toRegex())
+            .map { it.trim() }
             .fold(Request(this)) { acc, s ->
                 acc.apply {
                     when {
                         s.startsWith("curl") ->
-                            acc.url = s.substring(5, s.lastIndex).removeFirstAndEndQuotes()
+                            acc.url = s.removeFirstAndEndQuotes(5)
                         s.startsWith("--data-raw") ->
-                            acc.method = "POST".also { acc.rawBody = s.substring(12, s.lastIndex) }
+                            acc.method = "POST".also { acc.rawBody = s.removeFirstAndEndQuotes(11) }
                         s.startsWith("-d") ->
                             acc.method =
                                 "POST".also {
-                                    val value = s.substring(4, s.lastIndex)
+                                    val value = s.removeFirstAndEndQuotes(3)
                                     if (this@parseCurl.contains("Content-Type: application/json"))
                                         acc.rawBody = value
                                     else
@@ -103,11 +102,11 @@ object NetHelper {
                                             value.substringAfter("=")
                                 }
                         s.startsWith("--data-binary") ->
-                            acc.method = "POST".also { acc.rawBody = s.substring(15, s.lastIndex) }
+                            acc.method = "POST".also { acc.rawBody = s.removeFirstAndEndQuotes(14) }
                         s.startsWith("--data") ->
                             acc.method =
                                 "POST".also {
-                                    val value = s.substring(8, s.lastIndex)
+                                    val value = s.removeFirstAndEndQuotes(7)
                                     if (this@parseCurl.contains("Content-Type: application/json"))
                                         acc.rawBody = value
                                     else
@@ -115,7 +114,7 @@ object NetHelper {
                                             value.substringAfter("=")
                                 }
                         s.startsWith("-H") ->
-                            with(s.substring(4, s.lastIndex)) {
+                            with(s.removeFirstAndEndQuotes(3)) {
                                 acc.headers.put(substringBefore(":"), substringAfter(":").trim())
                             }
                         else -> ""
@@ -124,11 +123,14 @@ object NetHelper {
             }
             .also { println(it) }
 
-    fun String.removeFirstAndEndQuotes() =
-        replace("^[\"'](.*)[\"']?$".toRegex(), "$1").replace("'", "").trim()
+    fun String.removeFirstAndEndQuotes(from: Int = 0) =
+        substring(from).replace("^([\"'])(.*?)\\1?$".toRegex(), "$2").trim()
 
     @JvmStatic
     fun main(args: Array<String>) {
         "'Content-Type: application/json'".removeFirstAndEndQuotes().also { println(it) }
+        "\"Content-Type: application/json\"".removeFirstAndEndQuotes().also { println(it) }
+        "'Content-Type: application/json".removeFirstAndEndQuotes().also { println(it) }
+        "\"Content-Type: application/json".removeFirstAndEndQuotes().also { println(it) }
     }
 }

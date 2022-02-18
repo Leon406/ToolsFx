@@ -5,6 +5,7 @@ import java.net.URLDecoder
 import java.nio.charset.Charset
 import java.security.cert.CertificateFactory
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
@@ -118,6 +119,13 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
 
         val now = LocalDateTime.now()
         println(now)
+        LocalDateTime.parse(
+                "2020-10-11 10:00:00",
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            )
+            .toInstant(ZoneOffset.of("+8"))
+            .toEpochMilli()
+            .also { println(it) }
 
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh-mm-ss")).also {
             println(it)
