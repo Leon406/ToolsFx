@@ -1,4 +1,4 @@
-# v1.5.0  
+v# v1.5.0  
 ## feature:  
 - feat:二维码加入快捷键
 - feat:美化非对称加密,签名,二维码样式
@@ -115,3 +115,22 @@
 - fix(app): webview显示乱码
 - fix(plugin-apipost): form-data 加入默认请求头form-data url encode
 - fix(plugin-apipost): 文件上传后,文件占用
+# v1.11.0  
+## feature:  
+- feat(app): 优化RSA加解密,非标准格式解析
+- feat(app): 优化批量文件加解密,在子目录生成新文件
+- feat(app): qrcode新增多文件及拖动图片识别
+- feat(plugin-apipost): support response unicode decode
+- feat(app): add ctf BubbleBabble and  unicode mix decode
+- feat(app): add 01248 &alphabet index
+- feat(app): add baudot cipher
+- feat(app): 新增盲文
+- feat(app): 新增jshex,jsOctal
+- feat(app): 优化ook解密
+- feat(app): 扩展morse加密解密
+- feat(apipost): add datetime2Mills date2Mills function
+## bug fix:  
+- fix(app): morse H与&符号编解码错误
+- fix(app): unicode编码为十进制
+- fix(app): 编码互转支持逐行操作
+- fix(apipost): post请求日志未显示 body信息
