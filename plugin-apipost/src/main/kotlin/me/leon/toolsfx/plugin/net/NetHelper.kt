@@ -82,7 +82,8 @@ object NetHelper {
     fun String.parseCurl() =
         trim()
             // 去掉浏览器多余的分割符
-            .split("""\s*[\^\\]*(?:\n|\r\n)""".toRegex())
+            .replace("""\^|\\""".toRegex(), "")
+            .split("""\n|\r\n""".toRegex())
             .map { it.trim() }
             .fold(Request(this)) { acc, s ->
                 acc.apply {
