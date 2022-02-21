@@ -10,12 +10,11 @@ import javafx.scene.text.Text
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
-import me.leon.toolsfx.plugin.net.NetHelper.parseCurl
 import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginView("ApiPost") {
-    override val version = "v1.2.1"
+    override val version = "v1.3.0"
     override val date: String = times()
     override val author = "Leon406"
     override val description = "ApiPost"
@@ -119,7 +118,7 @@ class ApiPostView : PluginView("ApiPost") {
                                                 listOf(this.value.toFile()),
                                                 this.key,
                                                 reqTableParams as MutableMap<String, Any>,
-                                                reqHeaders,
+                                                reqHeaders
                                             )
                                         }
                                             ?: controller.post(
@@ -148,7 +147,7 @@ class ApiPostView : PluginView("ApiPost") {
                                     tfUrl.text,
                                     selectedMethod.get(),
                                     reqTableParams as MutableMap<String, Any>,
-                                    reqHeaders,
+                                    reqHeaders
                                 )
                         }
                             .onSuccess {
@@ -169,6 +168,25 @@ class ApiPostView : PluginView("ApiPost") {
 
             button(graphic = imageview("/img/settings.png")) {
                 action { openInternalWindow<SettingsView>() }
+            }
+            button(graphic = imageview("/img/copy.png")) {
+                action {
+                    Request(
+                            tfUrl.text,
+                            selectedMethod.get(),
+                            reqTableParams as MutableMap<String, Any>,
+                            reqHeaders,
+                            taReqContent.text
+                        )
+                        .apply {
+                            isJson = selectedBodyType.get() == BodyType.JSON.type
+                            requestParams
+                                .firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
+                                ?.let { fileParamName = it.key }
+                        }
+                        .toCurl()
+                        .copy()
+                }
             }
         }
 
@@ -312,7 +330,7 @@ class ApiPostView : PluginView("ApiPost") {
         clipboardText.parseCurl().run {
             selectedMethod.value = method
             tfUrl.text = url
-            taReqHeaders.text = headers.entries.joinToString("\n") { "${it.key}: ${it.value} " }
+            taReqHeaders.text = headers.entries.joinToString("\n") { "${it.key}: ${it.value}" }
             if (params.isNotEmpty()) {
                 showReqTable.value = true
                 showReqHeader.value = false

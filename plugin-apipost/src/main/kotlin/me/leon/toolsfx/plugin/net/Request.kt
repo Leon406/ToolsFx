@@ -6,4 +6,7 @@ data class Request(
     val params: MutableMap<String, Any> = mutableMapOf(),
     val headers: MutableMap<String, Any> = mutableMapOf(),
     var rawBody: String = ""
-)
+) {
+    var isJson = false
+    var fileParamName = ""
+}

@@ -1,6 +1,7 @@
 package me.leon.plugin
 
-import me.leon.toolsfx.plugin.net.NetHelper.parseCurl
+import me.leon.toolsfx.plugin.net.parseCurl
+import me.leon.toolsfx.plugin.net.removeFirstAndEndQuotes
 import org.junit.Test
 
 class CurlParse {
@@ -45,5 +46,13 @@ class CurlParse {
   --compressed
         """.trimIndent()
         println(raw2.parseCurl())
+    }
+
+    @Test
+    fun removeQuote() {
+        "'Content-Type: application/json'".removeFirstAndEndQuotes().also { println(it) }
+        "\"Content-Type: application/json\"".removeFirstAndEndQuotes().also { println(it) }
+        "'Content-Type: application/json".removeFirstAndEndQuotes().also { println(it) }
+        "\"Content-Type: application/json".removeFirstAndEndQuotes().also { println(it) }
     }
 }

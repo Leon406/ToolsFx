@@ -376,7 +376,7 @@ object HttpUrlUtil {
         println(sb.toString())
     }
 
-    private fun Map<String, Any>.toParams() = entries.joinToString("&") { it.key + "=" + it.value }
+    fun Map<String, Any>.toParams() = entries.joinToString("&") { it.key + "=" + it.value }
 
     private fun Map<String, Any>.toJson(): String =
         entries
