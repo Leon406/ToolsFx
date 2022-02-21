@@ -313,4 +313,15 @@ class ClassicalTest {
         "alphabet index".zero1248().also { println(it) }
         "8842101220480224404014224202480122".zero1248Decode().also { println(it) }
     }
+
+    @Test
+    fun zwc() {
+        println("abc".zwc("what"))
+        println("中文".zwc("what"))
+        val d = "w\u200D\uFEFF\u200C\u200B\u200D\uFEFF\u200D\u200B\u200D\uFEFF\uFEFFhat"
+        val zw =
+            "a\u200F\u200F\u200C\u200E\u200E\u200C\u200D\u200B\u200F\u200D\u200F\u200C\uFEFF\u200D\u200Fdgsdf"
+        println(d.zwcDecode())
+        println(zw.zwcDecode())
+    }
 }

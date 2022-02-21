@@ -231,4 +231,11 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.bubbleBabbleDecode()
     },
+    ZWC("zeroWidthChar") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.zwc(params[P1]?.ifEmpty { "hide" } ?: "hide")
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.zwcDecode()
+    },
 }
