@@ -31,5 +31,6 @@ class Charset {
     fun ee() {
         val dd = "璋冭В瀹℃牳绠＄悊".also { println(it.recoverEncoding()) }
         dd.toByteArray(Charsets.UTF_8).toString(Charset.forName("gbk")).also { println(it) }
+        "杩愮淮瀹夊叏".also { println(it.recoverEncoding()) }
     }
 }
