@@ -30,9 +30,9 @@ dependencies {
     implementation(project(":plugin-lib"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
     //compress dependencies
-    testImplementation("org.apache.commons:commons-compress:1.21")
-    testImplementation("com.github.luben:zstd-jni:1.5.2-1")
-    testImplementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
-    testImplementation("org.tukaani:xz:1.9")
-    testImplementation("org.brotli:dec:0.1.2")
+    implementation("org.apache.commons:commons-compress:1.21")
+    implementation("com.github.luben:zstd-jni:1.5.2-1")
+    implementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
+    implementation("org.tukaani:xz:1.9")
+    implementation("org.brotli:dec:0.1.2")
 }

@@ -36,6 +36,7 @@ class StringCompression {
         // implementation("org.brotli:dec:0.1.2")
         "https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/components/tips-e2ceadd14d.js"
             .readBytesFromNet(headers = mutableMapOf("Accept-Encoding" to "br"))
+            .also { println(it.base64()) }
             .also { Compression.BR.decompress(it).decodeToString().also { println(it) } }
     }
 

@@ -2,7 +2,6 @@ package me.leon.compress
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import me.leon.LzString
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import org.apache.commons.compress.compressors.brotli.BrotliCompressorInputStream

@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.compress
 
 import kotlin.math.pow
 
@@ -21,7 +21,7 @@ object LzString {
     }
 
     private fun Int.power() = 1 shl this
-    private fun _compress(
+    private fun compress(
         source: String,
         bitsPerChar: Int,
         getCharFromInt: (code: Int) -> Char
@@ -147,7 +147,7 @@ object LzString {
 
     private val Int.string
         get() = this.toChar().toString()
-    private fun _decompress(
+    private fun decompress(
         length: Int,
         resetValue: Int,
         getNextValue: (idx: Int) -> Char
@@ -234,20 +234,20 @@ object LzString {
         }
     }
 
-    fun compress(source: String) = _compress(source, 16) { it.toChar() }
+    fun compress(source: String) = compress(source, 16) { it.toChar() }
     fun decompress(compressed: String) =
-        if (compressed.isBlank()) null else _decompress(compressed.length, 32768) { compressed[it] }
+        if (compressed.isBlank()) null else decompress(compressed.length, 32768) { compressed[it] }
 
     fun decompressFromEncodedURIComponent(input: String) =
         when {
             input.isBlank() -> ""
-            else -> _decompress(input.length, 32) { keyStrUri.indexOf(input[it]).toChar() }
+            else -> decompress(input.length, 32) { keyStrUri.indexOf(input[it]).toChar() }
         }
 
-    fun compressToEncodedURIComponent(input: String) = _compress(input, 6) { keyStrUri[it] }
+    fun compressToEncodedURIComponent(input: String) = compress(input, 6) { keyStrUri[it] }
 
     fun compressToBase64(input: String): String {
-        val res = _compress(input, 6) { keyStr[it] }
+        val res = compress(input, 6) { keyStr[it] }
         return when (res.length % 4) { // To produce valid Base64
             0 -> res
             1 -> "$res==="
@@ -260,14 +260,14 @@ object LzString {
     fun decompressFromBase64(input: String) =
         when {
             input.isBlank() -> null
-            else -> _decompress(input.length, 32) { keyStr.indexOf(input[it]).toChar() }
+            else -> decompress(input.length, 32) { keyStr.indexOf(input[it]).toChar() }
         }
 
     fun decompressFromUTF16(input: String) =
         when {
             input.isBlank() -> null
-            else -> _decompress(input.length, 16384) { (input[it].toInt() - 32).toChar() }
+            else -> decompress(input.length, 16384) { (input[it].toInt() - 32).toChar() }
         }
 
-    fun compressToUTF16(input: String) = _compress(input, 15) { (it + 32).toChar() } + " "
+    fun compressToUTF16(input: String) = compress(input, 15) { (it + 32).toChar() } + " "
 }

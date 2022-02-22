@@ -22,6 +22,7 @@ class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
     override val root = tabpane {
         if (isEnableClassical) tab<ClassicalView>()
 
+        tab<CompressView>()
         tab<EncodeView>()
         tab<EncodeTransferView>()
         tab<StringProcessView>()
