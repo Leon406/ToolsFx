@@ -1,5 +1,6 @@
-package me.leon.compress
+package me.leon.toolsfx.plugin.compress
 
+import me.leon.compress.LzString
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import me.leon.encode.base.base64
@@ -148,3 +149,7 @@ private fun decompress(
         action(input, outputStream)
         outputStream.toByteArray()
     }
+
+val compressTypeMap = Compression.values().associateBy { it.alg }
+
+fun String.compressType() = compressTypeMap[this] ?: Compression.GZIP

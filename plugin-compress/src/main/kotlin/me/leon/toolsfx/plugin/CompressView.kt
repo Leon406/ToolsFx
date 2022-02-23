@@ -1,17 +1,20 @@
-package me.leon.view
+package me.leon.toolsfx.plugin
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
-import me.leon.compress.Compression
-import me.leon.controller.CompressController
 import me.leon.ext.*
+import me.leon.toolsfx.plugin.compress.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class CompressView : View(messages["compression"]) {
+class CompressView : PluginView(messages["compression"]) {
+    override val version = "v1.0.0"
+    override val date: String = "2022-02-23"
+    override val author = "Leon406"
+    override val description = FX.messages["compression"]
     private val controller: CompressController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
@@ -49,6 +52,7 @@ class CompressView : View(messages["compression"]) {
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
     private val isSingleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {
+        title = messages["compression"]
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {

@@ -1,4 +1,4 @@
-package me.leon.compress
+package me.leon.toolsfx.plugin.compress
 
 interface ICompress {
 

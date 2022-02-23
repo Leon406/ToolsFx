@@ -232,6 +232,7 @@
  [gitte mirror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
 
 download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
+plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
 
 
 

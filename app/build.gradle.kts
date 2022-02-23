@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.12.0.beta"
+version = "1.12.1.beta"
 
 plugins {
     application
@@ -29,10 +29,5 @@ dependencies {
     api("com.google.code.gson:gson:2.9.0")
     implementation(project(":plugin-lib"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
-    //compress dependencies
-    implementation("org.apache.commons:commons-compress:1.21")
-    implementation("com.github.luben:zstd-jni:1.5.2-1")
-    implementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
-    implementation("org.tukaani:xz:1.9")
-    implementation("org.brotli:dec:0.1.2")
+
 }

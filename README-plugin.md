@@ -55,5 +55,13 @@ see **plugin-sample**  or  *plugin-apipost*
 
 ![sym](/art/plugin/apipost-upload.gif)
 
+### Location (经纬度转换)
+
+![location](/art/plugin/location.gif)
+
+### Compression (压缩)
+
+plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
+
   
 

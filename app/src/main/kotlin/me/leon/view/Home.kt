@@ -1,7 +1,5 @@
 package me.leon.view
 
-import java.security.Security
-import java.util.ServiceLoader
 import me.leon.BUILD_DATE
 import me.leon.ToolsApp.Companion.isEnableClassical
 import me.leon.ToolsApp.Companion.isEnableInternalWebview
@@ -17,12 +15,12 @@ import me.leon.toolsfx.plugin.PluginView
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 import tornadofx.FX.Companion.messages
+import java.security.Security
+import java.util.ServiceLoader
 
 class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
     override val root = tabpane {
         if (isEnableClassical) tab<ClassicalView>()
-
-        tab<CompressView>()
         tab<EncodeView>()
         tab<EncodeTransferView>()
         tab<StringProcessView>()

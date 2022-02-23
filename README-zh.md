@@ -242,6 +242,7 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
  [码云镜像](https://gitee.com/LeonShih/ToolsFx) 
 
 下载加速 https://leon.lanzoui.com/b0d9av2kb 提取码：52pj
+插件下载 https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
 
 
 

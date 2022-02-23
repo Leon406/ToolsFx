@@ -18,7 +18,6 @@ javafx {
 }
 
 dependencies {
-//    implementation("no.tornado:tornadofx:$tornadofx_version")
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")

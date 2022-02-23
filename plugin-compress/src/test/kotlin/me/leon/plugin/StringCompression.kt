@@ -1,9 +1,10 @@
-package me.leon.compress
+package me.leon.plugin
 
 import kotlin.test.assertEquals
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.readBytesFromNet
+import me.leon.toolsfx.plugin.compress.Compression
 import org.junit.Test
 
 class StringCompression {

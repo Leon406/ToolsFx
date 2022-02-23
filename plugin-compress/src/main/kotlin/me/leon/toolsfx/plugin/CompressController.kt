@@ -1,6 +1,6 @@
-package me.leon.controller
+package me.leon.toolsfx.plugin
 
-import me.leon.compress.Compression
+import me.leon.toolsfx.plugin.compress.Compression
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
