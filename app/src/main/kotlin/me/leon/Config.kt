@@ -3,10 +3,11 @@ package me.leon
 import java.io.File
 
 const val VERSION = "1.12.1.beta"
-const val BUILD_DATE = "2022-02-18"
+const val BUILD_DATE = "2022-02-23"
 const val REPO_URL = "https://github.com/Leon406/ToolsFx"
 const val PJ52_URL = "https://www.52pojie.cn/thread-1501153-1-1.html"
 const val LAN_ZOU_DOWNLOAD_URL = "https://leon.lanzoui.com/b0d9av2kb"
+const val LAN_ZOU_PLUGIN_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9w4cof"
 const val CHECK_UPDATE_URL =
     "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/main/current"
 const val CHECK_UPDATE_URL2 = "https://gitee.com/LeonShih/ToolsFx/raw/main/current"
