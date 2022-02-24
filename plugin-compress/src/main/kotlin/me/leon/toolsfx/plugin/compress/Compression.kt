@@ -1,8 +1,8 @@
 package me.leon.toolsfx.plugin.compress
 
-import me.leon.compress.LzString
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import me.leon.compress.LzString
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import org.apache.commons.compress.compressors.brotli.BrotliCompressorInputStream

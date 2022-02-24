@@ -7,4 +7,3 @@ fun String.encodeType() = encodeTypeMap[this] ?: EncodeType.Base64
 val classicalTypeMap = ClassicalCryptoType.values().associateBy { it.type }
 
 fun String.classicalType() = classicalTypeMap[this] ?: ClassicalCryptoType.CAESAR
-

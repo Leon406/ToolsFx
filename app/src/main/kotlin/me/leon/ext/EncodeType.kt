@@ -54,6 +54,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) = bytes.toHex()
     },
+    HexReverse("hexReverse") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.replace("""\\x|\s|0x|\\""".toRegex(), "").hexReverse2ByteArray()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.toHexReverse()
+    },
     Decimal("decimal") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.decimalDecode(charset)

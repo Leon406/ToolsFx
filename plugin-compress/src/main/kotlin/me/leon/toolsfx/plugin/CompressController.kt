@@ -1,9 +1,9 @@
 package me.leon.toolsfx.plugin
 
-import me.leon.toolsfx.plugin.compress.Compression
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import me.leon.toolsfx.plugin.compress.Compression
 import tornadofx.*
 
 class CompressController : Controller() {

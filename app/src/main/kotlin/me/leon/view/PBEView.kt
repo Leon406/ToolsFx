@@ -28,6 +28,10 @@ class PBEView : View("PBE") {
         get() = taInput.text
     private val outputText: String
         get() = taOutput.text
+    private val keyLength
+        get() = tfKeyLength.text.toInt() * 8
+    private val saltLength
+        get() = tfSaltLength.text.toInt()
     private val info
         get() = "PBE Cipher: $cipher   charset: ${selectedCharset.get()}  "
     private lateinit var infoLabel: Label
@@ -36,8 +40,8 @@ class PBEView : View("PBE") {
 
     private val saltByteArray
         get() =
-            if (tfSalt.text.isEmpty())
-                controller.getSalt(tfSaltLength.text.toInt()).also { tfSalt.text = it.toHex() }
+            if (tfSalt.text.isEmpty() && isEncrypt)
+                controller.getSalt(saltLength).also { tfSalt.text = it.toHex() }
             else
                 when (saltEncode) {
                     "raw" -> tfSalt.text.toByteArray()
@@ -61,7 +65,7 @@ class PBEView : View("PBE") {
     private val selectedAlg = SimpleStringProperty(algs.first())
 
     private val cipher
-        get() = selectedAlg.get()
+        get() = "PBEWith${selectedAlg.get()}"
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private val centerNode = vbox {
@@ -94,13 +98,13 @@ class PBEView : View("PBE") {
             tfPwd = textfield { promptText = messages["keyHint"] }
 
             label("key长度:")
-            tfKeyLength = textfield("128") { prefWidth = DEFAULT_SPACING_8X }
+            tfKeyLength = textfield("16") { prefWidth = DEFAULT_SPACING_8X }
             label("salt长度:")
-            tfSaltLength = textfield("16") { prefWidth = DEFAULT_SPACING_8X }
+            tfSaltLength = textfield("8") { prefWidth = DEFAULT_SPACING_8X }
             label("iteration:")
-            tfIteration = textfield("1000") { prefWidth = DEFAULT_SPACING_8X }
+            tfIteration = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
             label("salt:")
-            tfSalt = textfield()
+            tfSalt = textfield() { promptText = "optional可选" }
             vbox {
                 togglegroup {
                     spacing = DEFAULT_SPACING
@@ -129,9 +133,7 @@ class PBEView : View("PBE") {
 
             checkbox(messages["singleLine"], isSingleLine)
             button("generate salt", imageview("/img/run.png")) {
-                action {
-                    controller.getSalt(tfSaltLength.text.toInt()).also { tfSalt.text = it.toHex() }
-                }
+                action { controller.getSalt(saltLength).also { tfSalt.text = it.toHex() } }
             }
             button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
@@ -171,19 +173,23 @@ class PBEView : View("PBE") {
                     saltByteArray,
                     cipher,
                     tfIteration.text.toInt(),
-                    tfKeyLength.text.toInt(),
+                    keyLength,
                     isSingleLine.get()
                 )
-            else
+            else {
+
+                tfSalt.text = inputText.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
+
                 controller.decrypt(
                     tfPwd.text,
                     inputText,
-                    saltByteArray,
+                    saltLength,
                     cipher,
                     tfIteration.text.toInt(),
-                    tfKeyLength.text.toInt(),
+                    keyLength,
                     isSingleLine.get()
                 )
+            }
         } ui
             {
                 isProcessing.value = false

@@ -12,11 +12,16 @@ const val OCTAL_RADIX = 8
 /** 16进制编解码 */
 fun ByteArray.toHex() = hex
 
+fun ByteArray.toHexReverse() = hex.chunked(2).joinToString(" ") { it.reversed() }
+
 fun String.toHex() = toByteArray().toHex()
 
 fun String.hex2String(charset: String = "UTF-8") = String(hex2ByteArray(), Charset.forName(charset))
 
 fun String.hex2ByteArray() = chunked(2).map { it.toInt(HEX_RADIX).toByte() }.toByteArray()
+
+fun String.hexReverse2ByteArray() =
+    chunked(2).map { it.reversed().toInt(HEX_RADIX).toByte() }.toByteArray()
 
 fun ByteArray.toBinaryString() =
     joinToString("") {

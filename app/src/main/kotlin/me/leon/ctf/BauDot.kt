@@ -98,7 +98,6 @@ fun String.baudotDecode(): String {
     return split("\\s+".toRegex())
         .asSequence()
         .map {
-            print(it)
             if (it == LETTER || it == FIGURE) {
                 isLetter = it == LETTER
                 ""

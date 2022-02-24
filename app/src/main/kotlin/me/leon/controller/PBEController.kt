@@ -37,7 +37,8 @@ class PBEController : Controller() {
                     .encoded
                     .base64()
             val cipher = makeCipher(alg, password, salt, iteration, keyLength, Cipher.ENCRYPT_MODE)
-            cipher.doFinal(data.toByteArray()).base64()
+            // openssl
+            ("Salted__".toByteArray() + salt + cipher.doFinal(data.toByteArray())).base64()
         }
 
     private fun makeCipher(
@@ -58,31 +59,37 @@ class PBEController : Controller() {
     fun decrypt(
         password: String,
         data: String,
-        salt: ByteArray,
+        saltLength: Int,
         alg: String,
         iteration: Int,
         keyLength: Int,
         isSingleLine: Boolean
     ) =
         if (isSingleLine)
-            data.lineAction2String { decrypt(password, it, salt, alg, iteration, keyLength) }
-        else decrypt(password, data, salt, alg, iteration, keyLength)
+            data.lineAction2String { decrypt(password, it, saltLength, alg, iteration, keyLength) }
+        else decrypt(password, data, saltLength, alg, iteration, keyLength)
 
     fun decrypt(
         key: String,
         data: String,
-        salt: ByteArray,
+        saltLength: Int,
         alg: String,
         iteration: Int,
         keyLength: Int
-    ) =
-        catch({ "decrypt error: $it" }) {
+    ): String {
+        val base64Decode = data.base64Decode()
+        val salt = base64Decode.sliceArray(8 until (8 + saltLength))
+        return catch({ "decrypt error: $it" }) {
             if (alg.contains("HMAC"))
                 return@catch generatePBEKey(key, salt, alg, keyLength, iteration).encoded.base64()
             println("decrypt  $alg $data")
             val cipher = makeCipher(alg, key, salt, iteration, keyLength, Cipher.DECRYPT_MODE)
-            cipher.doFinal(data.base64Decode()).decodeToString()
+
+            cipher
+                .doFinal(base64Decode.sliceArray((8 + saltLength)..base64Decode.lastIndex))
+                .decodeToString()
         }
+    }
 
     private fun generatePBEKey(
         password: String,
