@@ -120,6 +120,7 @@ class ClassicalView : View(messages["classical"]) {
                                     ClassicalCryptoType.ATBASH,
                                     ClassicalCryptoType.AlphabetIndex,
                                     ClassicalCryptoType.BubbleBabble,
+                                    ClassicalCryptoType.ElementPeriod,
                                 )
                         )
                         if (isEncrypt) run()

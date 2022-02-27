@@ -238,4 +238,11 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.zwcDecode()
     },
+    ElementPeriod("elementPeriod") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.elementPeriodEncode()
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.elementPeriodDecode()
+    },
 }

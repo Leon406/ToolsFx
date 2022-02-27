@@ -299,6 +299,13 @@ class ClassicalTest {
     }
 
     @Test
+    fun elementPeriod() {
+        var d = "No Hs Bk Lr Db Uup Lr Rg Rg Fm"
+        println(d.elementPeriodDecode())
+        println("qrstuv".elementPeriodEncode())
+    }
+
+    @Test
     fun baudot() {
         "adfdad12314sadf/.,,".baudot().also { println(it) }.also { println(it.baudotDecode()) }
     }
