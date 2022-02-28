@@ -39,7 +39,7 @@
 
 
 
-**String Process(eg. Split)**
+**String Process(e.g. Split)**
 
 ![encode_split](./art/encode_split.gif)
 
@@ -60,7 +60,7 @@
 - [x] sha3
 - [x] SM3
 - [x] RIPEMD
-- [x] whirpool
+- [x] whirlpool
 - [x] Tiger
 - [x] etc.
 
@@ -89,7 +89,7 @@
 - [x] SEED-CMAC
 - [x] Shacal-2CMAC
 - [x] SM4-CMAC
-- [x] Threefish-256CMAC  / Threefish-512CMAC / Threefish-1024CMAC  
+- [x] Three-fish-256CMAC  / Three-fish-512CMAC / Three-fish-1024CMAC  
 
 #### GMAC
 
@@ -152,7 +152,7 @@
 - [x] Salsa20
 - [x] XSalsa20
 - [x] VMPC
-- [x] Grainv1
+- [x] Grain v1
 - [x] Grain128
 - [x] Zuc128
 - [x] Zuc128
@@ -198,13 +198,15 @@
 - [x] socialist core value
 - [x] ADFGX/ADFGVX
 - [x] Auto Key
-- [x] railfence normal /railfence w-type
+- [x] rail-fence normal /rail-fence w-type
 - [x] playfair
 - [x] brainfuck/troll/ook
 - [x] Braille
 - [x] alphabet index
 - [x] 01248
 - [x] BubbleBabble
+- [x] Element Periodic Table
+
 
 
 ### Others
@@ -221,13 +223,13 @@
 - [x] i18n
 - [x] CTF related
 - [x] PBE
-- [x] module configable,support online url
+- [x] module configurable,support online url
 
-[bouncycastle document](https://www.bouncycastle.org/specifications.html) 
+[bouncy castle document](https://www.bouncycastle.org/specifications.html) 
 
 ## Downloads
 
- [github release](https://github.com/Leon406/ToolsFx/releases) 
+ [gitub release](https://github.com/Leon406/ToolsFx/releases) 
 
  [gitte mirror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
 
@@ -254,8 +256,8 @@ plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
 
 ## How to Run
 
-- Linux/Mac OS double click ToolsFx  in  root directory 
-- Windows double click ToolsFx.bat or vbs file(remove black command window)
+- Linux/macOS double-click ToolsFx  in  root directory 
+- Windows double-click ToolsFx.bat or vbs file(remove black command window)
 
 ## How to Config
 When Application is running ,it will generate ToolsFx.properties automatically , just modify the value. Below are the details.
