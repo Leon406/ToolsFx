@@ -53,8 +53,8 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private lateinit var tgOutput: ToggleGroup
     private val bitsLists = mutableListOf("512", "1024", "2048", "3072", "4096")
     private val selectedBits = SimpleStringProperty("1024")
-    private val isPriEncryptOrPubDecrypt
-        get() = privateKeyEncrypt.get() && isEncrypt || !privateKeyEncrypt.get() && !isEncrypt
+    private val isPrivateKey
+        get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
     private val eventHandler = fileDraggedHandler {
         val firstFile = it.first()
@@ -67,22 +67,19 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                         else readText()
                     else "not support file larger than 10M"
                 }
-
-        with(keyText) {
-            val probablyKeySize =
-                if (isPriEncryptOrPubDecrypt) this.length * 1.25f else this.length * 5
-            println("__ $probablyKeySize")
-            val keySize =
-                when (probablyKeySize.toInt()) {
-                    in 3300..4500 -> 4096
-                    in 2600..3300 -> 3072
-                    in 1600..2200 -> 2048
-                    in 800..1200 -> 1024
-                    else -> 512
-                }
-            selectedBits.set(keySize.toString())
-        }
+        updateKeySize()
     }
+
+    private fun updateKeySize() {
+        selectedBits.set(
+            if (isPrivateKey) {
+                controller.lengthFromPri(keyText).toString()
+            } else {
+                controller.lengthFromPub(keyText).toString()
+            }
+        )
+    }
+
     private val inputEventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
@@ -124,7 +121,12 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
         hbox {
             label(messages["key"])
-            button(graphic = imageview("/img/import.png")) { action { keyText = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action {
+                    keyText = clipboardText()
+                    updateKeySize()
+                }
+            }
         }
         taKey =
             textarea {
@@ -243,10 +245,10 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     outputEncode
                 )
         } ui
-            {
-                outputText = it
-                labelInfo.text = info
-                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-            }
+                {
+                    outputText = it
+                    labelInfo.text = info
+                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
     }
 }

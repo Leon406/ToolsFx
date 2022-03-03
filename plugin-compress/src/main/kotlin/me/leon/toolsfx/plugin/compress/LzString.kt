@@ -1,4 +1,4 @@
-package me.leon.compress
+package me.leon.toolsfx.plugin.compress
 
 import kotlin.math.pow
 
@@ -13,7 +13,7 @@ object LzString {
     private data class Data(var value: Char = '0', var position: Int = 0, var index: Int = 1)
 
     private inline fun String.charLess256(yes: call, no: call) {
-        if (this[0].toInt() < 256) {
+        if (this[0].code < 256) {
             yes.invoke()
         } else {
             no.invoke()

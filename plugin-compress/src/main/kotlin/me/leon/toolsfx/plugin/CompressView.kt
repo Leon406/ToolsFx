@@ -14,7 +14,7 @@ class CompressView : PluginView(messages["compression"]) {
     override val version = "v1.0.0"
     override val date: String = "2022-02-23"
     override val author = "Leon406"
-    override val description = FX.messages["compression"]
+    override val description: String = FX.messages["compression"]
     private val controller: CompressController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)

@@ -12,6 +12,8 @@ import me.leon.encode.base.*
 import me.leon.ext.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
 
 class AsymmetricCryptoController : Controller() {
 
@@ -31,6 +33,18 @@ class AsymmetricCryptoController : Controller() {
             }
         else pubEncrypt(key, alg, data, length, reserved, inputEncode, outputEncode)
 
+    fun lengthFromPub(key: String): Int {
+        val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
+        val publicKey = KeyFactory.getInstance("RSA").generatePublic(keySpec)
+        return (publicKey as RSAPublicKey).modulus.bitLength()
+    }
+
+    fun lengthFromPri(key: String): Int {
+        val keySpec = PKCS8EncodedKeySpec(key.base64Decode())
+        val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec)
+        return (privateKey as RSAPrivateKey).modulus.bitLength()
+    }
+
     private fun pubEncrypt(
         key: String,
         alg: String,
@@ -43,6 +57,7 @@ class AsymmetricCryptoController : Controller() {
         catch({ "encrypt error: $it}" }) {
             println("encrypt $key  $alg $data")
             val keySpec = X509EncodedKeySpec(getPropPublicKey(key))
+
             val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
             val publicKey = KeyFactory.getInstance(keyFac).generatePublic(keySpec)
             Cipher.getInstance(alg).run {
