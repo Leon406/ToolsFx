@@ -56,7 +56,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private val isPrivateKey
         get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
-    private val eventHandler = fileDraggedHandler {
+    private val keyEventHandler = fileDraggedHandler {
         val firstFile = it.first()
         keyText =
             if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
@@ -71,13 +71,17 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     }
 
     private fun updateKeySize() {
-        selectedBits.set(
-            if (isPrivateKey) {
-                controller.lengthFromPri(keyText).toString()
-            } else {
-                controller.lengthFromPub(keyText).toString()
-            }
-        )
+        runAsync {
+            runCatching {
+                if (isPrivateKey) {
+                    controller.lengthFromPri(keyText).toString()
+                } else {
+                    controller.lengthFromPub(keyText).toString()
+                }
+            }.getOrDefault("1024")
+        } ui {
+            selectedBits.set(it)
+        }
     }
 
     private val inputEventHandler = fileDraggedHandler {
@@ -132,7 +136,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
-                onDragEntered = eventHandler
+                onDragEntered = keyEventHandler
             }
 
         hbox {
