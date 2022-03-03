@@ -15,11 +15,13 @@ class ClassicalView : View(messages["classical"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(true)
+    private var encodeType = ClassicalCryptoType.CAESAR
+    private val param1Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 0)
+    private val param2Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 1)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
     private lateinit var tfParam1: TextField
     private lateinit var tfParam2: TextField
-    private lateinit var tfParam3: TextField
     private lateinit var labelInfo: Label
     private val info: String
         get() =
@@ -32,16 +34,10 @@ class ClassicalView : View(messages["classical"]) {
     private val outputText: String
         get() = taOutput.text
 
-    private var encodeType = ClassicalCryptoType.CAESAR
     private var isEncrypt = true
 
     private val cryptoParams
-        get() =
-            mutableMapOf(
-                "p1" to tfParam1.text,
-                "p2" to tfParam2.text,
-                "p3" to tfParam3.text,
-            )
+        get() = mutableMapOf("p1" to tfParam1.text, "p2" to tfParam2.text)
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -110,19 +106,12 @@ class ClassicalView : View(messages["classical"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.classicalType()
-                        decodeIgnoreSpace.set(
-                            encodeType !in
-                                arrayOf(
-                                    ClassicalCryptoType.MORSE,
-                                    ClassicalCryptoType.Ook,
-                                    ClassicalCryptoType.BauDot,
-                                    ClassicalCryptoType.ROT47,
-                                    ClassicalCryptoType.ATBASH,
-                                    ClassicalCryptoType.AlphabetIndex,
-                                    ClassicalCryptoType.BubbleBabble,
-                                    ClassicalCryptoType.ElementPeriod,
-                                )
-                        )
+                        param1Enabled.set(encodeType.paramsCount() > 0)
+                        param2Enabled.set(encodeType.paramsCount() > 1)
+                        tfParam1.promptText = encodeType.paramsHints()[0]
+                        tfParam2.promptText = encodeType.paramsHints()[1]
+                        decodeIgnoreSpace.set(encodeType.isIgnoreSpace())
+
                         if (isEncrypt) run()
                     }
                 }
@@ -131,9 +120,18 @@ class ClassicalView : View(messages["classical"]) {
         hbox {
             spacing = DEFAULT_SPACING
             alignment = Pos.BASELINE_CENTER
-            tfParam1 = textfield { promptText = "param1" }
-            tfParam2 = textfield { promptText = "param2" }
-            tfParam3 = textfield { promptText = "param3" }
+            tfParam1 =
+                textfield {
+                    prefWidth = DEFAULT_SPACING_40X
+                    promptText = encodeType.paramsHints()[0]
+                    visibleWhen(param1Enabled)
+                }
+            tfParam2 =
+                textfield {
+                    prefWidth = DEFAULT_SPACING_40X
+                    promptText = encodeType.paramsHints()[1]
+                    visibleWhen(param2Enabled)
+                }
         }
 
         hbox {

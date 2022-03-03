@@ -119,10 +119,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.encodeType()
-                        enableDict.value = encodeType.type.contains("base")
+                        enableDict.value =
+                            encodeType.type.contains("base") && encodeType.type != "base100"
                         tfCustomDict.text = encodeType.defaultDict
-
-                        println()
                         val isIgnore = encodeType !in encodeTypeWithSpace
                         decodeIgnoreSpace.set(isIgnore)
                         println("${decodeIgnoreSpace.get()} $isIgnore")
