@@ -324,4 +324,24 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun isIgnoreSpace() = false
     },
+    PawnShop("pawnShop") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.pawnshop()
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.pawnshopDecode()
+
+        override fun isIgnoreSpace() = false
+    },
+    CurveCipher("curveCipher") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.curveCipher(params[P1]!!.toInt(),params[P2]!!.toInt())
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.curveCipherDecode(params[P1]!!.toInt(),params[P2]!!.toInt())
+
+        override fun paramsCount() = 2
+
+        override fun paramsHints() = mutableListOf("row", "column")
+    },
 }
