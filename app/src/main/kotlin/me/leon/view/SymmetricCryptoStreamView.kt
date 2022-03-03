@@ -83,6 +83,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 }
     }
 
+    //todo add rabbit  https://www.sojson.com/encrypt_rabbit.html
     private val algs =
         mutableListOf(
             "RC4",

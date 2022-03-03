@@ -78,8 +78,6 @@ fun String.quotePrintableDecode2String(charset: String = "UTF-8") =
 
 fun main() {
 
-    "bfaab7a2b9a4bedfbcafbacf20".hex2String("gbk").also { println(it) }
-
     val raw = "开发工具集合 by leon406@52pojie.cn"
     val message = raw.repeat(2).quotePrintable()
     val gbkMsg = QuotePrintable.encode(raw, "gbk")
