@@ -198,7 +198,7 @@
 - [x] 仿射
 - [x] virgenene
 - [x] atbash
-- [x] 摩尔斯密码
+- [x] 摩尔斯密码(morse)
 - [x] qwe键盘加密
 - [x] polybius
 - [x] 培根24/培根26
@@ -209,11 +209,13 @@
 - [x] 栅栏密码 /栅栏密码 w
 - [x] playfair
 - [x] brainfuck/troll/ook
-- [x] 盲文
+- [x] 盲文 (braille)
 - [x] 字母位置
 - [x] 01248(云影)
 - [x] BubbleBabble
 - [x] 元素周期表
+- [x] 当铺密码(PawnShop Cipher) 
+- [x] 曲路密码(CurveCipher)
 
 
 

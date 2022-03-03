@@ -206,6 +206,8 @@
 - [x] 01248
 - [x] BubbleBabble
 - [x] Element Periodic Table
+- [x] PawnShop Cipher
+- [x] Curve Cipher
 
 
 
