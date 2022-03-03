@@ -113,7 +113,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "map 12345")
+        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "encode map 12345")
     },
     NIHILIST("nihilist") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -130,7 +130,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "map 12345")
+        override fun paramsHints() = mutableListOf("keyword", "encodeMap")
     },
     ADFGX("ADFGX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -147,7 +147,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "map 12345")
+        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
     },
     ADFGVX("ADFGVX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -164,7 +164,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "map 12345")
+        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
     },
     PLAYFAIR("playFair") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
