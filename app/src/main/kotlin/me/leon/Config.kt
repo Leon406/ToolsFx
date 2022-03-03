@@ -5,8 +5,9 @@ import java.io.File
 const val VERSION = "1.12.2.beta"
 const val BUILD_DATE = "2022-03-03"
 const val REPO_URL = "https://github.com/Leon406/ToolsFx"
+const val REPO_ISSUE = "https://github.com/Leon406/ToolsFx/issues/new"
 const val PJ52_URL = "https://www.52pojie.cn/thread-1501153-1-1.html"
-const val LAN_ZOU_DOWNLOAD_URL = "https://leon.lanzoui.com/b0d9av2kb"
+const val LAN_ZOU_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9av2kb"
 const val LAN_ZOU_PLUGIN_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9w4cof"
 const val CHECK_UPDATE_URL =
     "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/main/current"
