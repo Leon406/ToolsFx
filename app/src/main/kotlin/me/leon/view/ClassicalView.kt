@@ -142,11 +142,7 @@ class ClassicalView : View(messages["classical"]) {
                 alignment = Pos.CENTER
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
-                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
-                    selectedProperty().addListener { observable, oldValue, newValue ->
-                        println("$observable $oldValue  $newValue")
-                    }
-                }
+                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
                 checkbox(messages["singleLine"], isSingleLine)
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
