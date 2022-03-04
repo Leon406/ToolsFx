@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream
 import java.security.KeyFactory
 import java.security.Security
 import java.security.cert.CertificateFactory
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -12,8 +14,6 @@ import me.leon.encode.base.*
 import me.leon.ext.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
 
 class AsymmetricCryptoController : Controller() {
 

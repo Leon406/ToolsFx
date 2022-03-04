@@ -66,7 +66,7 @@ fun String.morseEncrypt() =
     }
 
 fun String.morseDecrypt() =
-    trim().replace("/"," ").split("\\s+".toRegex()).also { println(it) }.joinToString("") {
+    trim().replace("/", " ").split("\\s+".toRegex()).also { println(it) }.joinToString("") {
         DEFAULT_MORSE_DECODE[it]?.toString()
             ?: it.replace("-", "1").replace(".", "0").toInt(2).toChar().toString()
     }

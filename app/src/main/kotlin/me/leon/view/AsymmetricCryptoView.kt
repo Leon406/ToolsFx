@@ -73,15 +73,14 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private fun updateKeySize() {
         runAsync {
             runCatching {
-                if (isPrivateKey) {
-                    controller.lengthFromPri(keyText).toString()
-                } else {
-                    controller.lengthFromPub(keyText).toString()
+                    if (isPrivateKey) {
+                        controller.lengthFromPri(keyText).toString()
+                    } else {
+                        controller.lengthFromPub(keyText).toString()
+                    }
                 }
-            }.getOrDefault("1024")
-        } ui {
-            selectedBits.set(it)
-        }
+                .getOrDefault("1024")
+        } ui { selectedBits.set(it) }
     }
 
     private val inputEventHandler = fileDraggedHandler {
@@ -249,10 +248,10 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     outputEncode
                 )
         } ui
-                {
-                    outputText = it
-                    labelInfo.text = info
-                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-                }
+            {
+                outputText = it
+                labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
     }
 }

@@ -56,8 +56,7 @@ class ClassicalTest {
     @Test
     fun vig() {
         "ATTACKATDAWN".virgeneneEncode("LEMONLEMONLE").also { println(it) }
-        "CRYPTO IS SHORT FOR CRYPTOGRAPHY".virgeneneEncode("ABCDEF AB CDEFA BCD EFABCDEFABCD")
-            .also { println(it) }
+        "CRYPTO IS SHORT FOR CRYPTOGRAPHY".virgeneneEncode("LEON").also { println(it) }
         "LXFOPVEFRNHR".virgeneneDecode("LEMONLEMONLE").also { println(it) }
     }
 
@@ -309,7 +308,10 @@ class ClassicalTest {
 
     @Test
     fun baudot() {
-        "adfdad12314sadf/.,,".baudot().also { println(it) }.also { println(it.baudotDecode()) }
+        "baudot by leon406".baudot().also { println(it) }.also { println(it.baudotDecode()) }
+        "11001 00011 00111 01001 11000 10000 00100 11001 10101 00100 10010 00001 11000 01100 11011 01010 10110 10101"
+            .baudotDecode()
+            .also { println(it) }
     }
 
     @Test

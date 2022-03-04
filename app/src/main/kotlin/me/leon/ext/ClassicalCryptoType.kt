@@ -17,16 +17,22 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.shift10(5)
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.shift10(5)
+
+        override fun isIgnoreSpace() = false
     },
     ROT13("rot13") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.shift26(13)
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.shift26(13)
+
+        override fun isIgnoreSpace() = false
     },
     ROT18("rot18") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.rot18()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.rot18()
+
+        override fun isIgnoreSpace() = false
     },
     ROT47("rot47") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.shift94(47)
@@ -45,6 +51,8 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsCount() = 2
 
         override fun paramsHints() = listOf("factor a", "b")
+
+        override fun isIgnoreSpace() = false
     },
     RAILFENCE("railFence") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -78,6 +86,8 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsCount() = 1
 
         override fun paramsHints() = listOf("key", "")
+
+        override fun isIgnoreSpace() = false
     },
     ATBASH("atbash") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.atBash()
@@ -111,9 +121,11 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
+        override fun isIgnoreSpace() = false
         override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "encode map 12345")
+        override fun paramsHints() =
+            listOf("table, ABCDEFGHIKLMNOPQRSTUVWXYZ as default", "encode map, 12345 as default")
     },
     NIHILIST("nihilist") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -130,7 +142,9 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf("keyword", "encodeMap")
+        override fun paramsHints() = listOf("keyword", "encodeMap 12345 is as default")
+
+        override fun isIgnoreSpace() = false
     },
     ADFGX("ADFGX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -177,7 +191,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "")
+        override fun paramsHints() = listOf("key", "")
     },
     AUTOKEY("autoKey") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -191,6 +205,8 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsCount() = 1
 
         override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "")
+
+        override fun isIgnoreSpace() = false
     },
     BACON24("bacon24") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.baconEncrypt24()
@@ -286,7 +302,9 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.alphabetIndex(params[P1]?.ifEmpty { " " } ?: " ").also { println("alphabetIndex $raw $params") }
+            raw.alphabetIndex(params[P1]?.ifEmpty { " " } ?: " ").also {
+                println("alphabetIndex $raw $params")
+            }
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.alphabetIndexDecode()
@@ -333,8 +351,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun isIgnoreSpace() = false
     },
     PawnShop("pawnShop") {
-        override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.pawnshop()
+        override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.pawnshop()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.pawnshopDecode()

@@ -96,6 +96,7 @@ fun String.baudot(): String {
 fun String.baudotDecode(): String {
     var isLetter = true
     return split("\\s+".toRegex())
+        .filter { it.matches("[01]+".toRegex()) }
         .asSequence()
         .map {
             if (it == LETTER || it == FIGURE) {
