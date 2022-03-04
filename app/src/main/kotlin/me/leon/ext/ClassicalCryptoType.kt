@@ -323,7 +323,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsHints() = listOf("show plain text", "")
     },
-    ElementPeriod("elementPeriod") {
+    PeriodicTable("periodicTable") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.elementPeriodEncode()
 

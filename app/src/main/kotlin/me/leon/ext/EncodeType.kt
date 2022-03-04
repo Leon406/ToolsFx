@@ -34,7 +34,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             String(bytes, Charset.forName(charset)).toUnicodeString()
     },
-    JsHexEncode("jsHex") {
+    JsHexEncode("jsHex(shell code)") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.jsHexDecodeString().toByteArray(Charset.forName(charset))
 
