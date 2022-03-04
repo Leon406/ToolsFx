@@ -44,7 +44,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("factor a", "b")
+        override fun paramsHints() = listOf("factor a", "b")
     },
     RAILFENCE("railFence") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -55,7 +55,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("fence number", "")
+        override fun paramsHints() = listOf("fence number", "")
     },
     RAILFENCEW("railFenceW") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -66,7 +66,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("fence number", "")
+        override fun paramsHints() = listOf("fence number", "")
     },
     VIRGENENE("virgenene") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -77,7 +77,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("key", "")
+        override fun paramsHints() = listOf("key", "")
     },
     ATBASH("atbash") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.atBash()
@@ -113,7 +113,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "encode map 12345")
+        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "encode map 12345")
     },
     NIHILIST("nihilist") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -130,7 +130,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("keyword", "encodeMap")
+        override fun paramsHints() = listOf("keyword", "encodeMap")
     },
     ADFGX("ADFGX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -147,7 +147,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
+        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
     },
     ADFGVX("ADFGVX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -164,7 +164,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
+        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
     },
     PLAYFAIR("playFair") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -177,7 +177,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "")
+        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "")
     },
     AUTOKEY("autoKey") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -190,17 +190,21 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "")
+        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "")
     },
     BACON24("bacon24") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.baconEncrypt24()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.baconDecrypt24()
+
+        override fun isIgnoreSpace() = false
     },
     BACON26("bacon26") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.baconEncrypt26()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) = raw.baconDecrypt26()
+
+        override fun isIgnoreSpace() = false
     },
     OTP("oneTimePad") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -211,7 +215,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("key data as long as data size", "")
+        override fun paramsHints() = listOf("key data as long as data size", "")
     },
     SOCIALISM("socialistCoreValue") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -251,7 +255,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("xor key", "")
+        override fun paramsHints() = listOf("xor key", "")
     },
     XOR2("xorHex") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -262,7 +266,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("xor key", "")
+        override fun paramsHints() = listOf("xor key", "")
     },
     Braille("braille") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -280,12 +284,16 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun isIgnoreSpace() = false
     },
-    AlphabetIndex("alphabetIndex") {
+    AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.alphabetIndex().also { println("alphabetIndex $raw $params") }
+            raw.alphabetIndex(params[P1]?.ifEmpty { " " } ?: " ").also { println("alphabetIndex $raw $params") }
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.alphabetIndexDecode()
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("separator(space as default)", "")
 
         override fun isIgnoreSpace() = false
     },
@@ -313,7 +321,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = mutableListOf("show plain text", "")
+        override fun paramsHints() = listOf("show plain text", "")
     },
     ElementPeriod("elementPeriod") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -335,13 +343,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     CurveCipher("curveCipher") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.curveCipher(params[P1]!!.toInt(),params[P2]!!.toInt())
+            raw.curveCipher(params[P1]!!.toInt(), params[P2]!!.toInt())
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
-            raw.curveCipherDecode(params[P1]!!.toInt(),params[P2]!!.toInt())
+            raw.curveCipherDecode(params[P1]!!.toInt(), params[P2]!!.toInt())
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = mutableListOf("row", "column")
+        override fun paramsHints() = listOf("row", "column")
     },
 }

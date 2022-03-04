@@ -98,6 +98,8 @@ class ClassicalTest {
     fun bacon() {
         println("Leon 406 Hello".baconEncrypt24())
         println("ABABAAABAAABBABABBAA 406 AABBBAABAAABABAABABAABBAB".baconDecrypt24())
+        println("baaab AAaBB AABAB BAAAB AAABB AABAB AAAAA AAABB BAAAB AABAB".baconDecrypt24())
+        println("baaab AAaBB AABAB BAAAB AAABB AABAB AAAAA AAABB BAAAB AABAB".baconDecrypt26())
         println("Leon 406 Hhaha".baconEncrypt26())
         println("ABABBAABAAABBBAABBAB".baconDecrypt26())
         println("ABABBAABAAABBBAABBAB 406 AABBBAABBBAAAAAAABBBAAAAA".baconDecrypt26())

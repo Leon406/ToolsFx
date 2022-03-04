@@ -8,7 +8,7 @@ interface IClassical {
 
     fun paramsCount(): Int = 0
 
-    fun paramsHints(): MutableList<String> = mutableListOf("", "")
+    fun paramsHints(): List<String> = listOf("", "")
 
     fun isIgnoreSpace(): Boolean = true
 }
