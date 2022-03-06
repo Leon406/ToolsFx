@@ -155,9 +155,9 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
         String(iso88591).also { println(it) }
         String(uft8Bytes).also { println(it) }
         uft8Bytes.toString(Charset.forName("gb2312")).also { println(it) }
-        gbkBytes.toString( Charset.forName("gbk")).also { println(it) }
+        gbkBytes.toString(Charset.forName("gbk")).also { println(it) }
         big5Bytes.toString(Charset.forName("big5")).also { println(it) }
-        iso88591.toString( Charset.forName("utf-8")).also { println(it) }
+        iso88591.toString(Charset.forName("utf-8")).also { println(it) }
     }
 
     @Test

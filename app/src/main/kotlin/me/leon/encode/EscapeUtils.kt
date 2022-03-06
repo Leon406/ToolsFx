@@ -65,8 +65,7 @@ fun String.escapeAll() = EscapeUtils.escapeAll(this)
 
 fun ByteArray.escape(charset: String = "UTF-8") = this.toString(Charset.forName(charset)).escape()
 
-fun ByteArray.escapeAll(charset: String = "UTF-8") =
-    toString(Charset.forName(charset)).escapeAll()
+fun ByteArray.escapeAll(charset: String = "UTF-8") = toString(Charset.forName(charset)).escapeAll()
 
 fun String.unescape(charset: String = "UTF-8") =
     unescape2String().toByteArray(Charset.forName(charset))

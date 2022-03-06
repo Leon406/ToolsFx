@@ -110,7 +110,7 @@ object BubbleBabble {
 fun String.bubbleBabble() = BubbleBabble.encrypt(this)
 
 fun ByteArray.bubbleBabble(charset: String) =
-    BubbleBabble.encrypt(toString( Charset.forName(charset)))
+    BubbleBabble.encrypt(toString(Charset.forName(charset)))
 
 fun String.bubbleBabbleDecode() = BubbleBabble.decrypt(this)
 

@@ -46,7 +46,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
             encoded.jsOctalDecodeString().toByteArray(Charset.forName(charset))
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-           bytes.toString(Charset.forName(charset)).toJsOctalEncodeString()
+            bytes.toString(Charset.forName(charset)).toJsOctalEncodeString()
     },
     Hex("hex") {
         override fun decode(encoded: String, dict: String, charset: String) =
