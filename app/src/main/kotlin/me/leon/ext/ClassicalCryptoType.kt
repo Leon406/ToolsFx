@@ -369,4 +369,15 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsHints() = listOf("row", "column")
     },
+    EmojiSubstitute("emojiSubstitute") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.emojiReplace((params[P1].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 0))
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.emojiReplaceDecode((params[P1].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 0))
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("shift, default 0", "")
+    },
 }
