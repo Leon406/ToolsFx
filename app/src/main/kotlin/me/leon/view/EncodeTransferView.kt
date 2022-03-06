@@ -176,7 +176,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                             tfCustomDict.text,
                             selectedSrcCharset.get()
                         )
-                    val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
+                    val encodeString = decode.toString(Charset.forName(selectedSrcCharset.get()))
                     println("transfer $encodeString")
                     controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
                 }
@@ -188,9 +188,9 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                         tfCustomDict.text,
                         selectedSrcCharset.get()
                     )
-                val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
+                val encodeString = decode.toString(Charset.forName(selectedSrcCharset.get()))
                 println("transfer $encodeString")
-                String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
+                decode.toString(Charsets.UTF_8).takeIf { it.contains("解码错误:") }
                     ?: controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
             }
         if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }

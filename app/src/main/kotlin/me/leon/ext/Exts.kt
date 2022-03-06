@@ -6,8 +6,11 @@ inline fun <reified T> Any?.safeAs(): T? = this as? T
 
 inline fun <reified T> Any?.cast() = this as T
 
+/**
+ * note: 不兼容编码转换会导致数据丢失,需要两个编码都能表示才能正常工作
+ */
 fun ByteArray.charsetChange(from: String, to: String) =
-    String(this, Charset.forName(from)).toByteArray(Charset.forName(to))
+    toString(Charset.forName(from)).toByteArray(Charset.forName(to))
 
 fun String.lineAction2String(action: (String) -> String) =
     split("\n|\r\n".toRegex()).joinToString("\n") { action.invoke(it) }

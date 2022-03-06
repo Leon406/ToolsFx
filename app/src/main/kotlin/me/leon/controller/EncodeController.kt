@@ -30,7 +30,7 @@ class EncodeController : Controller() {
         charset: String = "UTF-8"
     ): String =
         catch({ "编码错误: $it" }) {
-            println("encode2String $type $dic $charset ${String(raw, Charset.forName(charset))}")
+            println("encode2String $type $dic $charset ${raw.toString(Charset.forName(charset))}")
             if (raw.isEmpty()) "" else type.encode2String(raw, dic, charset)
         }
 
@@ -49,7 +49,7 @@ class EncodeController : Controller() {
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
         charset: String = "UTF-8"
-    ) = String(decode(encoded, type, dic, charset), Charset.forName(charset))
+    ) = decode(encoded, type, dic, charset).toString(Charset.forName(charset))
 
     fun decode(
         encoded: String,

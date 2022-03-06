@@ -23,7 +23,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
             )
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            URLEncoder.encode(String(bytes, Charset.forName(charset)), charset.ifEmpty { "UTF-8" })
+            URLEncoder.encode(bytes.toString(Charset.forName(charset)), charset.ifEmpty { "UTF-8" })
                 ?.replace("+", "%20")
                 ?: ""
     },
@@ -32,21 +32,21 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
             encoded.unicode2String().toByteArray(Charset.forName(charset))
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            String(bytes, Charset.forName(charset)).toUnicodeString()
+            bytes.toString(Charset.forName(charset)).toUnicodeString()
     },
     JsHexEncode("jsHex(shell code)") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.jsHexDecodeString().toByteArray(Charset.forName(charset))
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            String(bytes, Charset.forName(charset)).toJsHexEncodeString()
+            bytes.toString(Charset.forName(charset)).toJsHexEncodeString()
     },
     JsOctalEncode("jsOctal") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.jsOctalDecodeString().toByteArray(Charset.forName(charset))
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            String(bytes, Charset.forName(charset)).toJsOctalEncodeString()
+           bytes.toString(Charset.forName(charset)).toJsOctalEncodeString()
     },
     Hex("hex") {
         override fun decode(encoded: String, dict: String, charset: String) =

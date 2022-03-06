@@ -16,7 +16,7 @@ fun ByteArray.toHexReverse() = hex.chunked(2).joinToString(" ") { it.reversed() 
 
 fun String.toHex() = toByteArray().toHex()
 
-fun String.hex2String(charset: String = "UTF-8") = String(hex2ByteArray(), Charset.forName(charset))
+fun String.hex2String(charset: String = "UTF-8") = hex2ByteArray().toString(Charset.forName(charset))
 
 fun String.hex2ByteArray() = chunked(2).map { it.toInt(HEX_RADIX).toByte() }.toByteArray()
 

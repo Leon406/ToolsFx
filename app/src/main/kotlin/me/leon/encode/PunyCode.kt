@@ -6,7 +6,7 @@ import java.nio.charset.Charset
 fun String.punyCode(charset: String = "UTF-8") = toByteArray().punyCode(charset)
 
 fun ByteArray.punyCode(charset: String = "UTF-8"): String =
-    IDN.toASCII(String(this, Charset.forName(charset)))
+    IDN.toASCII(toString(Charset.forName(charset)))
 
 fun String.punyCodeDecode(charset: String = "UTF-8") =
     IDN.toUnicode(this).toByteArray(Charset.forName(charset))

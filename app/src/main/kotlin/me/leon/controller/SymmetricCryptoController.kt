@@ -140,7 +140,7 @@ class SymmetricCryptoController : Controller() {
 
             val bytes = cipher.doFinal(inputBytes)
             when (outputEncode) {
-                "raw" -> String(bytes, Charset.forName(charset))
+                "raw" -> bytes.toString(Charset.forName(charset))
                 "base64" -> bytes.base64()
                 "hex" -> bytes.toHex()
                 else -> throw IllegalArgumentException("input encode error")

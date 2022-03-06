@@ -19,8 +19,9 @@ class Charset {
             println(URLDecoder.decode(it, "gbk"))
         }
         val bytes = raw.toByteArray(Charset.forName("gbk"))
+        bytes.toString()
         val encoded =
-            URLEncoder.encode(String(bytes, Charset.forName("gbk")), "gbk")
+            URLEncoder.encode(bytes.toString(Charset.forName("gbk")), "gbk")
                 ?.replace("+", "%20")
                 .also { println(it) }
 
