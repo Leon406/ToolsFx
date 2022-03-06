@@ -82,12 +82,14 @@ fun String.emojiReplaceDecode(shift: Int = 0) =
         .chunked(4)
         .map {
             EMOJI_BASE64_DICT[
-                (emojiMap
-                    .indexOf(it.toByteArray().toString(Charsets.UTF_32BE))
-                    .circleIndex(-shift, emojiMap.size))]
+                    (emojiMap
+                        .indexOf(it.toByteArray().toString(Charsets.UTF_32BE))
+                        .circleIndex(-shift, emojiMap.size))]
         }
         .joinToString("")
 
-fun Int.circleIndex(shift: Int, length: Int) =
-    if (this + shift < 0) (this + shift) % length + length
-    else if (this + shift <= length - 1) this + shift else (this + shift) % length
+fun Int.circleIndex(shift: Int, length: Int) = with(this + shift) {
+    if (this < 0) this % length + length
+    else this % length
+}
+
