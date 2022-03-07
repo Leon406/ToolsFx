@@ -20,11 +20,18 @@ fun BigInteger.encrypt(e: BigInteger, n: BigInteger) = modPow(e, n).toString()
 
 // this = c
 fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n).toByteArray().decodeToString()
+
 // this = c
 fun BigInteger.decrypt(d: String, n: String) = decrypt(BigInteger(d), BigInteger(n))
 
 // this = n
 fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
+
+fun List<BigInteger>.phi() =
+    filter { it > BigInteger.ZERO }.fold(BigInteger.ONE) { acc, it -> acc * (it - BigInteger.ONE) }
+
+fun List<BigInteger>.propN(n: BigInteger) =
+    filter { it < BigInteger.ZERO }.fold(n) { acc, bigInteger -> acc / bigInteger.abs() }
 
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 
@@ -58,5 +65,19 @@ fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
 
 private fun getPrimeFromFactorDbPath(path: String) =
     "http://www.factordb.com/$path".readFromNet().run {
-        "value=\"(\\d+)\"".toRegex().find(this)!!.groupValues[1].toBigInteger()
+
+        "value=\"(\\d+)\"".toRegex().find(this)!!.groupValues[1].toBigInteger().also { digit ->
+            "<td>(\\w+)</td>".toRegex().find(this)?.let {
+                when (it.groupValues[1]) {
+                    "P" -> return digit
+                    "FF" -> "Composite, fully factored"
+                    "C" ->
+                        return -digit.also {
+                            println("Composite, no factors known")
+                        }
+                    "CF" -> "Composite, factors known"
+                    else -> return digit.also { println("Unknown") }
+                }
+            }
+        }
     }
