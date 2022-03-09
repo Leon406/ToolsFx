@@ -10,6 +10,7 @@ const val RESPONSE_OK = 200
 fun String.readBytesFromNet(
     method: String = "GET",
     timeout: Int = DEFAULT_TIME_OUT,
+    data: String = "",
     headers: MutableMap<String, Any> = mutableMapOf()
 ) =
     runCatching {
@@ -19,7 +20,8 @@ fun String.readBytesFromNet(
             .apply {
                 connectTimeout = timeout
                 readTimeout = timeout
-                setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+                setRequestProperty("Content-Type", "zh-CN,zh;q=0.9,en;q=0.8")
+                setRequestProperty("Accept-Language", "application/json; charset=utf-8")
                 setRequestProperty(
                     "user-agent",
                     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
@@ -28,6 +30,17 @@ fun String.readBytesFromNet(
                 for ((k, v) in headers) setRequestProperty(k, v.toString())
 
                 requestMethod = method
+
+                if (method.equals("post", true)) {
+                    val dataBytes = data.toByteArray()
+                    if (dataBytes.isNotEmpty())
+                        addRequestProperty("Content-Length", dataBytes.size.toString())
+                    doOutput = true
+                    connect()
+                    outputStream.write(dataBytes)
+                    outputStream.flush()
+                    outputStream.close()
+                }
             }
             .takeIf { it.responseCode == RESPONSE_OK }
             ?.inputStream

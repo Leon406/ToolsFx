@@ -5,6 +5,7 @@ import java.math.BigInteger
 
 val TEST_DATA_DIR = File(File("").absoluteFile.parentFile, "testdata")
 val TEST_CTF_DIR = File(TEST_DATA_DIR, "ctf")
+val TEST_OCR_DIR = File(TEST_DATA_DIR, "qrcode")
 val TEST_RSA_DIR = File(TEST_CTF_DIR, "rsa")
 
 fun String.parseRsaParams(dir: File = TEST_RSA_DIR) =

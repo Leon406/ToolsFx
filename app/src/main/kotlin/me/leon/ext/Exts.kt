@@ -1,6 +1,8 @@
 package me.leon.ext
 
+import java.io.File
 import java.nio.charset.Charset
+import me.leon.encode.base.base64
 
 inline fun <reified T> Any?.safeAs(): T? = this as? T
 
@@ -41,3 +43,5 @@ fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
 
 fun String.sliceList(split: List<Int>, separator: String = " ") =
     toList().sliceList(split).joinToString(separator) { it.joinToString("") }
+
+fun File.toBase64() = readBytes().base64()

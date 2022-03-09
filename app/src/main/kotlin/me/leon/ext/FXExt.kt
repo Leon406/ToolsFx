@@ -2,6 +2,7 @@ package me.leon.ext
 
 import java.awt.Desktop
 import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.URL
 import javafx.embed.swing.SwingFXUtils
@@ -31,6 +32,9 @@ fun BufferedImage.toFxImg(): Image = SwingFXUtils.toFXImage(this, null)
 fun BufferedImage.writeFile(path: String, format: String = "png") {
     ImageIO.write(this, format, File(path))
 }
+
+fun BufferedImage.toByteArray(format: String = "png"): ByteArray =
+    ByteArrayOutputStream().also { ImageIO.write(this, format, it) }.toByteArray()
 
 fun Window.fileChooser(hint: String = "请选择文件"): File? =
     FileChooser().apply { title = hint }.showOpenDialog(this)
