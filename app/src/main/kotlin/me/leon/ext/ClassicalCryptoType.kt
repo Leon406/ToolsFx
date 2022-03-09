@@ -302,16 +302,22 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.alphabetIndex(params[P1]?.ifEmpty { " " } ?: " ").also {
-                println("alphabetIndex $raw $params")
-            }
+            raw.alphabetIndex(
+                    params[P1]?.ifEmpty { "ABCDEFGHIJKLMNOPQRSTUVWXYZ" } ?: " ",
+                    params[P2]?.ifEmpty { " " } ?: " "
+                )
+                .also { println("alphabetIndex $raw $params") }
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.alphabetIndexDecode()
 
-        override fun paramsCount() = 1
+        override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf("separator(space as default)", "")
+        override fun paramsHints() =
+            listOf(
+                "table, ABCDEFGHIJKLMNOPQRSTUVWXYZ as default",
+                "separator(space as default)",
+            )
 
         override fun isIgnoreSpace() = false
     },

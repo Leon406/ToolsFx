@@ -1,11 +1,15 @@
 package me.leon.classical
 
-fun String.alphabetIndex(separator: String = " ") =
-    uppercase().toCharArray().filter { it in 'A'..'Z' }.map { it - 'A' + 1 }.joinToString(separator)
+fun String.alphabetIndex(table: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", separator: String = " ") =
+    uppercase()
+        .toCharArray()
+        .filter { it in table }
+        .map { table.indexOf(it) + 1 }
+        .joinToString(separator)
 
-fun String.alphabetIndexDecode() =
+fun String.alphabetIndexDecode(table: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") =
     trim()
         .split("[^\\d]+".toRegex())
         .filter { it.matches("\\d+".toRegex()) }
-        .map { (it.toInt() + 'A'.code - 1).toChar() }
+        .map { table[it.toInt() - 1] }
         .joinToString("")
