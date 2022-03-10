@@ -222,11 +222,11 @@
 - [x] Bifid/Trifid/四方密码 (FourSquare Cipher)
 - [x] Gronsfeld密码
 
-![sym](./art/ctf.gif)
+![ctf](./art/ctf.gif)
 
 ### PBE
 
-![sym](./art/pbe.gif)
+![pbe](./art/pbe.gif)
 
 ### 其他功能
 

@@ -213,11 +213,11 @@
 - [x] Bifid/Trifid/FourSquare Cipher
 - [x] Gronsfeld Cipher
 
-![sym](./art/ctf.gif)
+![ctf](./art/ctf.gif)
 
 ### PBE
 
-![sym](./art/pbe.gif)
+![pbe](./art/pbe.gif)
 
 ### Others
 
