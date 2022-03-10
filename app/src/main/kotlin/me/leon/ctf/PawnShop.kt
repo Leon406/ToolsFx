@@ -13,43 +13,15 @@ private val map =
         8 to arrayOf('井', '关', '丰', '并'),
         9 to arrayOf('圭', '羊'),
     )
-private val reverseMap =
-    mapOf(
-        '目' to 0,
-        '田' to 0,
-        '口' to 0,
-        '凹' to 0,
-        '凸' to 0,
-        '由' to 1,
-        '中' to 2,
-        '人' to 3,
-        '入' to 3,
-        '古' to 3,
-        '工' to 4,
-        '互' to 4,
-        '果' to 5,
-        '克' to 5,
-        '尔' to 5,
-        '土' to 5,
-        '大' to 5,
-        '木' to 6,
-        '王' to 6,
-        '夫' to 7,
-        '主' to 7,
-        '井' to 8,
-        '关' to 8,
-        '丰' to 8,
-        '并' to 8,
-        '圭' to 9,
-        '羊' to 9,
-    )
 
+private val reverseMap by lazy {
+    map.values.zip(map.keys).flatMap { (array, key) -> array.map { it to key } }.toMap()
+}
 // ASCII
 fun String.pawnshop() =
-    toCharArray()
-        .filter { it.code in 0..127 }
-        .map { it.code.split().joinToString("") { map[it]!!.random().toString() } }
-        .joinToString(" ")
+    toCharArray().filter { it.code in 0..127 }.joinToString(" ") {
+        it.code.split().joinToString("") { map[it]!!.random().toString() }
+    }
 
 private fun Int.split() = this.toString().toCharArray().map { it - '0' }
 

@@ -1,9 +1,10 @@
 package me.leon.classical
 
 import me.leon.encode.base.padding
+import me.leon.ext.TABLE_A_Z_WO_J
 
 fun String.playFair(keyword: String): String {
-    val alphabeta = "ABCDEFGHIKLMNOPQRSTUVWXYZ".toMutableList()
+    val alphabeta = TABLE_A_Z_WO_J.toMutableList()
     val key = keyword.replace(" ", "")
 
     key.uppercase().toList().distinct().also {
@@ -39,7 +40,7 @@ fun String.playFair(keyword: String): String {
 }
 
 fun String.playFairDecrypt(keyword: String): String {
-    val alphabeta = "ABCDEFGHIKLMNOPQRSTUVWXYZ".toMutableList()
+    val alphabeta = TABLE_A_Z_WO_J.toMutableList()
     keyword.replace(" ", "").uppercase().toList().distinct().also {
         alphabeta.removeAll(it)
         alphabeta.addAll(0, it)

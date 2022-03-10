@@ -1,11 +1,12 @@
 package me.leon.classical
 
+import me.leon.ext.TABLE_A_Z_WO_J
+
 /** @link https://wtool.com.cn/polybius.html */
-const val DEFAULT_POLYBIUS_TABLE = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
 const val DEFAULT_POLYBIUS_ENCODE_MAP = "12345"
 
 fun String.polybius(
-    table: String = DEFAULT_POLYBIUS_TABLE,
+    table: String = TABLE_A_Z_WO_J,
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
     replacePair: Pair<String, String> = "J" to "I"
 ): String {
@@ -21,7 +22,7 @@ fun String.polybius(
 }
 
 fun String.polybiusDecrypt(
-    table: String = DEFAULT_POLYBIUS_TABLE,
+    table: String = TABLE_A_Z_WO_J,
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
 ): String {
     val map =

@@ -111,13 +111,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     POLYBIUS("polybius") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.polybius(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
             raw.polybiusDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
@@ -125,18 +125,18 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsCount() = 2
 
         override fun paramsHints() =
-            listOf("table, ABCDEFGHIKLMNOPQRSTUVWXYZ as default", "encode map, 12345 as default")
+            listOf("table, $TABLE_A_Z_WO_J as default", "encode map, 12345 as default")
     },
     NIHILIST("nihilist") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.nihilist(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
             raw.nihilistDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
@@ -149,45 +149,43 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     ADFGX("ADFGX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.adfgx(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
             raw.adfgxDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
+        override fun paramsHints() = listOf("table $TABLE_A_Z_WO_J", "keyword")
     },
     ADFGVX("ADFGVX") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.adfgvx(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
             raw.adfgvxDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE,
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
                 params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
             )
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "keyword")
+        override fun paramsHints() = listOf("table $TABLE_A_Z_WO_J", "keyword")
     },
     PLAYFAIR("playFair") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.playFair(params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE)
+            raw.playFair(params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J)
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
-            raw.playFairDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE
-            )
+            raw.playFairDecrypt(params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J)
 
         override fun paramsCount() = 1
 
@@ -195,16 +193,14 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     AUTOKEY("autoKey") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.autoKey(params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE)
+            raw.autoKey(params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J)
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
-            raw.autoKeyDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_TABLE
-            )
+            raw.autoKeyDecrypt(params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J)
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = listOf("table ABCDEFGHIKLMNOPQRSTUVWXYZ", "")
+        override fun paramsHints() = listOf("table $TABLE_A_Z_WO_J", "")
 
         override fun isIgnoreSpace() = false
     },
@@ -303,7 +299,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.alphabetIndex(
-                    params[P1]?.ifEmpty { "ABCDEFGHIJKLMNOPQRSTUVWXYZ" } ?: " ",
+                    params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
                     params[P2]?.ifEmpty { " " } ?: " "
                 )
                 .also { println("alphabetIndex $raw $params") }
@@ -315,7 +311,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsHints() =
             listOf(
-                "table, ABCDEFGHIJKLMNOPQRSTUVWXYZ as default",
+                "table, '$TABLE_A_Z' as default",
                 "separator(space as default)",
             )
 
@@ -377,13 +373,84 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     EmojiSubstitute("emojiSubstitute") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.emojiReplace((params[P1].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 0))
+            raw.emojiReplace(params[P1].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 0)
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
-            raw.emojiReplaceDecode((params[P1].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 0))
+            raw.emojiReplaceDecode(params[P1].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 0)
 
         override fun paramsCount() = 1
 
         override fun paramsHints() = listOf("shift, default 0", "")
+    },
+    HandyCode("handyCode") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.tableEncode(params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_HANDY_CODE)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.tableDecode(params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_HANDY_CODE)
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("default table '$TABLE_HANDY_CODE'", "")
+
+        override fun isIgnoreSpace() = false
+    },
+    Porta("porta") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.porta(params[P1].takeUnless { it.isNullOrEmpty() } ?: "porta")
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.porta(params[P1].takeUnless { it.isNullOrEmpty() } ?: "porta")
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("key,PORTA as default", "")
+
+        override fun isIgnoreSpace() = false
+    },
+    Beaufort("beaufort") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.beaufort(params[P1].takeUnless { it.isNullOrEmpty() } ?: "beaufort")
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.beaufort(params[P1].takeUnless { it.isNullOrEmpty() } ?: "beaufort")
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("key,beaufort as default", "")
+
+        override fun isIgnoreSpace() = false
+    },
+    FourSquare("fourSquare") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.fourSquare(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J
+            )
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.fourSquareDecrypt(
+                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J
+            )
+
+        override fun paramsCount() = 2
+
+        override fun paramsHints() = listOf("key1, length 25 ", "key2, length 25")
+
+        override fun isIgnoreSpace() = false
+    },
+    Gronsfeld("gronsfeld") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.gronsfeld(params[P1].takeUnless { it.isNullOrEmpty() } ?: "123456")
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.gronsfeldDecrypt(params[P1].takeUnless { it.isNullOrEmpty() } ?: "123456")
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("key, a sequence of numbers 0-9,default 123456 ", "")
+
+        override fun isIgnoreSpace() = false
     },
 }
