@@ -207,7 +207,12 @@
 - [x] BubbleBabble
 - [x] Element Periodic Table
 - [x] PawnShop Cipher
-- [x] Curve Cipher
+- [x] Handy code
+- [x] Beaufort
+- [x] Porta Cipher
+- [x] FourSquare Cipher
+- [x] Gronsfeld Cipher
+
 
 
 

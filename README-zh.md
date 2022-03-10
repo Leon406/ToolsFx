@@ -216,7 +216,11 @@
 - [x] 元素周期表
 - [x] 当铺密码(PawnShop Cipher) 
 - [x] 曲路密码(CurveCipher)
-
+- [x] Handy code
+- [x] 博福特密码(Beaufort)
+- [x] Porta 密码
+- [x] 四方密码 (FourSquare Cipher)
+- [x] Gronsfeld密码
 
 
 
