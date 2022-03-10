@@ -42,6 +42,11 @@
 - [x] js hex(\x61)/js octal(\140)
 - [x] binary/octal/decimal/hex
 - [x] base系列自定义字典
+- [x] puny code
+- [x] quote printable
+- [x] uuEncode
+- [x] xxEncode
+- [x] escape/escapeAll
 
 ![encode](./art/encode.gif)
 
