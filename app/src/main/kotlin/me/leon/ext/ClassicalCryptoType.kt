@@ -1,11 +1,8 @@
 package me.leon.ext
 
-import me.leon.P1
-import me.leon.P2
+import me.leon.*
 import me.leon.classical.*
 import me.leon.ctf.*
-import me.leon.railFenceWDecrypt
-import me.leon.railFenceWEncrypt
 
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
@@ -452,5 +449,33 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsHints() = listOf("key, a sequence of numbers 0-9,default 123456 ", "")
 
         override fun isIgnoreSpace() = false
+    },
+    Trifid("trifid") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.trifid(params[P1]!!, params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.trifidDecrypt(
+                params[P1]!!,
+                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5
+            )
+
+        override fun paramsCount() = 2
+
+        override fun paramsHints() = listOf("key,length 27 ", "period, default 5")
+    },
+    Bifid("bifid") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.bifid(params[P1]!!, params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.bifidDecrypt(
+                params[P1]!!,
+                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5
+            )
+
+        override fun paramsCount() = 2
+
+        override fun paramsHints() = listOf(" key,length 25 ", "period, default 5")
     },
 }

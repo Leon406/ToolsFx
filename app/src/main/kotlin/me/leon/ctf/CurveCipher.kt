@@ -16,7 +16,7 @@ fun String.curveCipher(row: Int, col: Int) =
 
 fun String.curveCipherDecode(row: Int, col: Int): String {
     return with(this) {
-        var reverseFlag = false
+        var reverseFlag = col % 2 == 0
         val c = CharArray(length)
         for (i in indices) {
             if (i % row == 0) {

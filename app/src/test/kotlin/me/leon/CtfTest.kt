@@ -1,7 +1,5 @@
 package me.leon
 
-import fourSquare
-import fourSquareDecrypt
 import kotlin.test.assertEquals
 import me.leon.classical.*
 import me.leon.ctf.*
@@ -10,8 +8,9 @@ import org.junit.Test
 class CtfTest {
     @Test
     fun pawnshopTest() {
-        println("flag{pawn_sh0p_ciph3r}".pawnshop().also { println(it.pawnshopDecode()) })
-        println("王夫 井工 夫口 由中人 井中 夫夫 由中大".pawnshopDecode())
+        val d = "flag{pawn_sh0p_ciph3r}"
+        d.pawnshop().also { assertEquals(d, it.pawnshopDecode()) }
+        assertEquals("CTF{RM}", "王夫 井工 夫口 由中人 井中 夫夫 由中大".pawnshopDecode())
     }
 
     /**
@@ -21,11 +20,14 @@ class CtfTest {
     @Test
     fun curveCipher() {
         val d = "HelloWorldab"
-        println(d.curveCipher(3, 4))
-        println("The quick brown fox jumps over the lazy dog".replace(" ", "").curveCipher(5, 7))
-        println("gesfcinphodtmwuqouryzejrehbxvalookT".curveCipherDecode(5, 7))
-        println("lrbaoleWdloH".curveCipherDecode(3, 4))
+        val d2 = "gesfcinphodtmwuqouryzejrehbxvalookT"
+        val d3 = "The quick brown fox jumps over the lazy dog".replace(" ", "")
+        assertEquals("lrbaoleWdloH", d.curveCipher(3, 4))
+        assertEquals(d, "lrbaoleWdloH".curveCipherDecode(3, 4))
+        assertEquals("Thequickbrownfoxjumpsoverthelazydog", d2.curveCipherDecode(5, 7))
+        assertEquals(d2, d3.curveCipher(5, 7))
     }
+
 
     @Test
     fun circleIndex() {
@@ -64,8 +66,7 @@ class CtfTest {
     fun porta() {
         val d = "where is Porta Cipher flag"
         d.porta("hello").also {
-            println(it)
-            it.porta("hello").also { println(it) }
+            assertEquals(d.replace(" ", "").uppercase(), it.porta("hello"))
         }
     }
 
@@ -73,16 +74,15 @@ class CtfTest {
     fun beaufort() {
         val d = "where is beaufort Cipher flag"
         d.beaufort("hello").also {
-            println(it)
-            it.beaufort("hello").also { println(it) }
+            assertEquals(d.replace(" ", "").uppercase(), it.beaufort("hello"))
         }
     }
+
     @Test
     fun gronsfeld() {
         val d = "where is gronsfeld Cipher flag"
         d.gronsfeld().also {
-            println(it)
-            it.gronsfeldDecrypt().also { println(it) }
+            assertEquals(d.replace(" ", "").uppercase(), it.gronsfeldDecrypt())
         }
     }
 
@@ -92,8 +92,25 @@ class CtfTest {
         val key2 = "GHIKOPQRSYZABTULMNVWXCDEF"
         val d = "Foursquare Cipher"
         d.fourSquare(key1, key2).also {
-            println(it)
-            it.fourSquareDecrypt(key1, key2).also { println(it) }
+            assertEquals(d.replace(" ", "").uppercase(), it.fourSquareDecrypt(key1, key2))
+        }
+    }
+
+    @Test
+    fun bifid() {
+        val key = "mabkynvhgsorpczxedfqwtuil"
+        val d = "defend the east wall of the castle"
+        d.bifid(key, 3).also {
+            assertEquals(d.replace(" ", "").uppercase(), it.bifidDecrypt(key, 3))
+        }
+    }
+
+    @Test
+    fun trifid() {
+        val key = "EPSDUCVWYM.ZLKXNBTFGORIJHAQ"
+        val d = "D E F E N D T H E E A S T W A L L O F T H E C A S T L E .".replace(" ", "")
+        d.trifid(key, 5).also {
+            assertEquals(d, it.trifidDecrypt(key, 5))
         }
     }
 }
