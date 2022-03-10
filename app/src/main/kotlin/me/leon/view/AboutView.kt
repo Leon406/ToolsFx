@@ -44,7 +44,7 @@ class AboutView : View(messages["about"]) {
         txtLatestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
         hyperlink("插件下载 密码ax63") { action { LAN_ZOU_PLUGIN_DOWNLOAD_URL.openInBrowser() } }
-        if (VERSION.endsWith("beta")) checkUpdateDev(!Prefs.isIgnoreUpdate)
+        if (VERSION.contains("beta")) checkUpdateDev(!Prefs.isIgnoreUpdate)
         else checkUpdate(!Prefs.isIgnoreUpdate)
     }
 
