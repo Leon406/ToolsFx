@@ -210,15 +210,18 @@
 - [x] Handy code
 - [x] Beaufort
 - [x] Porta Cipher
-- [x] FourSquare Cipher
+- [x] Bifid/Trifid/FourSquare Cipher
 - [x] Gronsfeld Cipher
 
+![sym](./art/ctf.gif)
 
+### PBE
 
+![sym](./art/pbe.gif)
 
 ### Others
 
-- [x] Qrcode
+- [x] Qrcode/OCR
 - [x] String Process
 - [ ] TBD
 

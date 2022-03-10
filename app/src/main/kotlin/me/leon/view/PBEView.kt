@@ -166,34 +166,41 @@ class PBEView : View("PBE") {
         runAsync {
             if (tfPwd.text.isEmpty() || taInput.text.isEmpty()) return@runAsync ""
             isProcessing.value = true
-            if (isEncrypt)
-                controller.encrypt(
-                    tfPwd.text,
-                    inputText,
-                    saltByteArray,
-                    cipher,
-                    tfIteration.text.toInt(),
-                    keyLength,
-                    isSingleLine.get()
-                )
-            else {
+            runCatching {
+                if (isEncrypt)
+                    controller.encrypt(
+                        tfPwd.text,
+                        inputText,
+                        saltByteArray,
+                        cipher,
+                        tfIteration.text.toInt(),
+                        keyLength,
+                        isSingleLine.get()
+                    )
+                else {
 
-                tfSalt.text = inputText.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
+                    tfSalt.text = inputText.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
 
-                controller.decrypt(
-                    tfPwd.text,
-                    inputText,
-                    saltLength,
-                    cipher,
-                    tfIteration.text.toInt(),
-                    keyLength,
-                    isSingleLine.get()
-                )
-            }
+                    controller.decrypt(
+                        tfPwd.text,
+                        inputText,
+                        saltLength,
+                        cipher,
+                        tfIteration.text.toInt(),
+                        keyLength,
+                        isSingleLine.get()
+                    )
+                }
+            }.getOrElse { it.stacktrace() }
+
         } ui
             {
                 isProcessing.value = false
-                taOutput.text = it
+                taOutput.text = it.also {
+                    if (it.startsWith("U2FsdGVk"))
+                        tfSalt.text = it.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
+
+                }
                 infoLabel.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

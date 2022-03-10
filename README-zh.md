@@ -219,14 +219,18 @@
 - [x] Handy code
 - [x] 博福特密码(Beaufort)
 - [x] Porta 密码
-- [x] 四方密码 (FourSquare Cipher)
+- [x] Bifid/Trifid/四方密码 (FourSquare Cipher)
 - [x] Gronsfeld密码
 
+![sym](./art/ctf.gif)
 
+### PBE
+
+![sym](./art/pbe.gif)
 
 ### 其他功能
 
-- [x] 二维码功能
+- [x] 二维码功能/OCR
 - [x] 字符处理
 - [ ] 待定
 
