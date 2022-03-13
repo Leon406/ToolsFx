@@ -1,0 +1,3 @@
+curl https://api.kinh.cc/Picture/ImgBB.php
+-X POST
+-d "{\"FilePicture\":\"@file\"}"
