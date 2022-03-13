@@ -345,7 +345,9 @@ class ApiPostView : PluginView("ApiPost") {
                                     HttpParams().apply {
                                         keyProperty.value = mutableEntry.key
                                         valueProperty.value = mutableEntry.value.toString()
-                                        isFileProperty.value = mutableEntry.key in fileKeys
+                                        isFileProperty.value =
+                                            mutableEntry.key in fileKeys ||
+                                                mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }

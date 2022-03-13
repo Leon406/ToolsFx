@@ -1,13 +1,16 @@
 package me.leon.toolsfx.plugin.net
 
+import me.leon.ext.fromJson
 import me.leon.ext.toJson
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.toParams
 
 fun String.paramsParse() =
     split("&").fold(mutableMapOf<String, Any>()) { acc, param ->
         acc.apply {
-            val (key, value) = param.split("=")
-            acc[key] = value
+            if (isNotEmpty()) {
+                val (key, value) = param.split("=")
+                acc[key] = value
+            }
         }
     }
 
@@ -28,8 +31,16 @@ fun String.parseCurl() =
                         acc.method =
                             ("POST".takeIf { acc.method == "GET" } ?: acc.method).also {
                                 val value = s.removeFirstAndEndQuotes(3)
-
-                                if (this@parseCurl.contains("Content-Type: application/json"))
+                                if (value.contains("@file")) {
+                                    acc.params.putAll(
+                                        value.fromJson(MutableMap::class.java) as
+                                            Map<out String, Any>
+                                    )
+                                } else if (this@parseCurl.contains(
+                                        "Content-Type: application/json",
+                                        true
+                                    )
+                                )
                                     acc.rawBody = value
                                 else acc.params.putAll(value.paramsParse())
                             }
@@ -42,7 +53,16 @@ fun String.parseCurl() =
                         acc.method =
                             ("POST".takeIf { acc.method == "GET" } ?: acc.method).also {
                                 val value = s.removeFirstAndEndQuotes(7)
-                                if (this@parseCurl.contains("Content-Type: application/json"))
+                                if (value.contains("@file")) {
+                                    acc.params.putAll(
+                                        value.fromJson(MutableMap::class.java) as
+                                            Map<out String, Any>
+                                    )
+                                } else if (this@parseCurl.contains(
+                                        "Content-Type: application/json",
+                                        true
+                                    )
+                                )
                                     acc.rawBody = value
                                 else acc.params.putAll(value.paramsParse())
                             }
@@ -73,7 +93,7 @@ fun Request.toCurl(): String =
             val data =
                 if (isJson) params.toJson() else if (method != "GET") params.toParams() else ""
             if (rawBody.isNotEmpty()) it.append("--data-raw $rawBody")
-            else if (data.isNotEmpty()) it.append("-d \"${data.replace("\"","\\\"")}\"")
+            else if (data.isNotEmpty()) it.append("-d \"${data.replace("\"", "\\\"")}\"")
         }
         .toString()
 

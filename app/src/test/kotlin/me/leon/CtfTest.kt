@@ -28,7 +28,6 @@ class CtfTest {
         assertEquals(d2, d3.curveCipher(5, 7))
     }
 
-
     @Test
     fun circleIndex() {
         assertEquals(2, 0.circleIndex(5, 3))
@@ -65,9 +64,7 @@ class CtfTest {
     @Test
     fun porta() {
         val d = "where is Porta Cipher flag"
-        d.porta("hello").also {
-            assertEquals(d.replace(" ", "").uppercase(), it.porta("hello"))
-        }
+        d.porta("hello").also { assertEquals(d.replace(" ", "").uppercase(), it.porta("hello")) }
     }
 
     @Test
@@ -81,9 +78,7 @@ class CtfTest {
     @Test
     fun gronsfeld() {
         val d = "where is gronsfeld Cipher flag"
-        d.gronsfeld().also {
-            assertEquals(d.replace(" ", "").uppercase(), it.gronsfeldDecrypt())
-        }
+        d.gronsfeld().also { assertEquals(d.replace(" ", "").uppercase(), it.gronsfeldDecrypt()) }
     }
 
     @Test
@@ -109,8 +104,6 @@ class CtfTest {
     fun trifid() {
         val key = "EPSDUCVWYM.ZLKXNBTFGORIJHAQ"
         val d = "D E F E N D T H E E A S T W A L L O F T H E C A S T L E .".replace(" ", "")
-        d.trifid(key, 5).also {
-            assertEquals(d, it.trifidDecrypt(key, 5))
-        }
+        d.trifid(key, 5).also { assertEquals(d, it.trifidDecrypt(key, 5)) }
     }
 }

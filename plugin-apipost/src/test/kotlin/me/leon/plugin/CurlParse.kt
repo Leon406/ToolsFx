@@ -46,6 +46,15 @@ class CurlParse {
   --compressed
         """.trimIndent()
         println(raw2.parseCurl())
+        val r =
+            """
+            curl https://api.kinh.cc/Picture/ImgBB.php
+            -X POST
+            -H "Content-Type: application/json"
+            -d "{\"FilePicture\":\"@file\"}" 
+        """.trimIndent()
+
+        println(r.also { println(it) }.parseCurl())
     }
 
     @Test

@@ -179,7 +179,8 @@ class PBEView : View("PBE") {
                     )
                 else {
 
-                    tfSalt.text = inputText.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
+                    tfSalt.text =
+                        inputText.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
 
                     controller.decrypt(
                         tfPwd.text,
@@ -191,16 +192,17 @@ class PBEView : View("PBE") {
                         isSingleLine.get()
                     )
                 }
-            }.getOrElse { it.stacktrace() }
-
+            }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 isProcessing.value = false
-                taOutput.text = it.also {
-                    if (it.startsWith("U2FsdGVk"))
-                        tfSalt.text = it.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
-
-                }
+                taOutput.text =
+                    it.also {
+                        if (it.startsWith("U2FsdGVk"))
+                            tfSalt.text =
+                                it.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
+                    }
                 infoLabel.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
