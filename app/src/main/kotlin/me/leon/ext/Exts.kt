@@ -12,6 +12,23 @@ inline fun <reified T> Any?.cast() = this as T
 fun ByteArray.charsetChange(from: String, to: String) =
     toString(Charset.forName(from)).toByteArray(Charset.forName(to))
 
+fun ByteArray.padStart(length: Int, byte: Byte): ByteArray {
+    if (size % length == 0) return this
+    val padCount = length - size % length
+    val bytes = ByteArray(size + padCount)
+    repeat(padCount) { bytes[it] = byte }
+    copyInto(bytes, padCount)
+    return bytes
+}
+
+fun Int.toUnicodeChar(): String =
+    takeIf { it < 65536 }?.toChar()?.toString()
+        ?: toBigInteger().toByteArray().padStart(4, 0x00).toString(Charsets.UTF_32BE)
+
+// Int 4个字节
+fun String.unicodeCharToInt() =
+    toByteArray(Charsets.UTF_32BE).fold(0) { acc, b -> acc * 256 + b.toInt().and(0xFF) }
+
 fun String.lineAction2String(action: (String) -> String) =
     split("\n|\r\n".toRegex()).joinToString("\n") { action.invoke(it) }
 

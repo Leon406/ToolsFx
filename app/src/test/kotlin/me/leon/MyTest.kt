@@ -9,6 +9,8 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 import me.leon.encode.base.*
 import me.leon.ext.*
 import org.junit.Test
@@ -70,6 +72,19 @@ r9VfvQb3rJybNjUcimJT7PWSwABwHdE=
     fun decodeUnicode() {
         val u = "&#20320;&#22909;&#20013;&#22269;&#x4e2d;&#x56fd;&#X56FD;"
         println(u.unicode2String())
+        assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
+        assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
+
+        assertContentEquals(
+            arrayOf("🗾", "🗾"),
+            arrayOf("&#128510;".unicode2String(), "128510".toInt().toUnicodeChar())
+        )
+
+        assertContentEquals(
+            arrayOf(128510, 128507),
+            arrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
+        )
+        println("🗾".unicodeCharToInt())
     }
 
     @Test

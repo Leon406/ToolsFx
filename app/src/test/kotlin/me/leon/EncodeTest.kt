@@ -240,4 +240,12 @@ class EncodeTest {
        """.trimIndent()
         println(raw.unicodeMix2String())
     }
+
+    @Test
+    fun htmlEntity() {
+        val s = "<a>ddfd</a>"
+        s.toHtmlEntity().also { assertEquals(s, it.htmlEntity2String()) }
+        s.toHtmlEntity(isAll = false).also { assertEquals(s, it.htmlEntity2String()) }
+        "&#39;Steve&#39;".htmlEntity2String().also { assertEquals("'Steve'", it) }
+    }
 }

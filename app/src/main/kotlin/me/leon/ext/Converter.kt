@@ -1,6 +1,7 @@
 package me.leon.ext
 
 import java.nio.charset.Charset
+import me.leon.encode.*
 import me.leon.encode.base.BYTE_BITS
 import me.leon.encode.base.BYTE_MASK
 import tornadofx.*
@@ -49,27 +50,27 @@ fun String.toJsHexEncodeString() =
     fold(StringBuilder()) { acc, c -> acc.append("\\x").append(c.code.toString(HEX_RADIX)) }
         .toString()
 
-/** js hex 编解码 \x61 */
+/** js hex 解码 \x61 */
 fun String.jsHexDecodeString() =
     split("(?i)\\\\x".toRegex())
         .filterIndexed { index, _ -> index != 0 }
-        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toChar()) }
+        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toUnicodeChar()) }
         .toString()
 
-/** js hex 编解码 \x61 */
+/** js octal 编解码 \141 */
 fun String.jsOctalDecodeString() =
     split("(?i)\\\\".toRegex())
         .filterIndexed { index, _ -> index != 0 }
-        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(OCTAL_RADIX).toChar()) }
+        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(OCTAL_RADIX).toUnicodeChar()) }
         .toString()
 
-/** js hex 编解码编解码 \141 */
+/** js octal 编码 \141 */
 fun String.toJsOctalEncodeString() =
     fold(StringBuilder()) { acc, c -> acc.append("\\").append(c.code.toString(OCTAL_RADIX)) }
         .toString()
 
 fun String.unicode2String() =
-    if (contains("&#", true))
+    if (contains("&#"))
         "(?i)&#x([0-9a-f]+);|&#(\\d+);"
             .toRegex()
             .findAll(this)
@@ -77,7 +78,7 @@ fun String.unicode2String() =
                 it.groupValues[1].ifEmpty { it.groupValues[2] } to
                     if (it.groupValues[0].contains("x", true)) HEX_RADIX else DECIMAL_RADIX
             }
-            .fold(StringBuilder()) { acc, (c, radix) -> acc.append(c.toInt(radix).toChar()) }
+            .fold(StringBuilder()) { acc, (c, radix) -> acc.append(c.toInt(radix).toUnicodeChar()) }
             .toString()
     else
         split("(?i)\\\\u\\+?".toRegex())
@@ -85,7 +86,27 @@ fun String.unicode2String() =
             .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toChar()) }
             .toString()
 
+fun String.htmlEntity2String() =
+    if (contains("&#")) {
+        StringBuilder(this).replace("(?i)&#(x?[0-9a-z]+)+;".toRegex()) {
+            it.value.charHtmlEntityDecode()?.toUnicodeChar()
+                ?: if (it.groupValues[1].startsWith("x")) {
+                    it.groupValues[1].substring(1).toInt(HEX_RADIX).toUnicodeChar()
+                } else {
+                    it.groupValues[1].toInt().toUnicodeChar()
+                }
+        }
+    } else this
+
+/** htmlEntity编解码 */
+fun String.toHtmlEntity(radix: Int = 10, isAll: Boolean = true) =
+    fold(StringBuilder()) { acc, c ->
+            if (isAll) acc.append(c.code.toHtmlEntityAll(radix))
+            else acc.append(c.code.toHtmlEntity() ?: c)
+        }
+        .toString()
+
 fun String.unicodeMix2String() =
-    StringBuilder(this).replace("(?i:\\\\u\\+?[0-9a-zA-Z]{1,5})+".toRegex()) {
-        it.value.unicode2String()
-    }
+    StringBuilder(this).replace(
+            "(?i:\\\\u\\+?[0-9a-zA-Z]{1,5}|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
+        ) { it.value.unicode2String() }
