@@ -10,8 +10,7 @@ class DigestController : Controller() {
 
     private fun digest(method: String, data: String) =
         catch({ "digest error: $it" }) {
-            if (data.isEmpty()) ""
-            else if (method.startsWith("CRC"))
+            if (method.startsWith("CRC"))
                 if (method.contains("32")) data.crc32() else data.crc64()
             else Digests.hash(method, data)
         }
