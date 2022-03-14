@@ -130,29 +130,35 @@
 - [x] RC2
 - [x] 其他 BouncyCastle支持的算法
 
-#### 支持mode
+<details>
+<summary>支持mode</summary>
+<ul>
+<li>ECB</li>
+<li>CBC</li>
+<li>OFB(n)</li>
+<li>CFB(n)</li>
+<li>SIC (also known as CTR)</li>
+<li>CTS (equivalent to CBC/WithCTS)</li>
+<li>CCM (AEAD)</li>
+<li>EAX (AEAD)</li>
+<li>GCM (AEAD)</li>
+<li>OCB (AEAD)</li>
+</ul>
+</details>
 
-- ECB
-- CBC
-- OFB(n)
-- CFB(n)
-- SIC (also known as CTR)
-- CTS (equivalent to CBC/WithCTS)
-- CCM (AEAD)
-- EAX (AEAD)
-- GCM (AEAD)
-- OCB (AEAD)
-
-#### 支持padding scheme
-
-- No padding
-- PKCS5/7
-- ISO10126/ISO10126-2
-- ISO7816-4/ISO9797-1
-- X9.23/X923
-- TBC
-- ZeroByte
-- withCTS (if used with ECB mode)
+<details>
+<summary>支持padding scheme</summary>
+<ul>
+<li>No padding</li>
+<li>PKCS5/7</li>
+<li>ISO10126/ISO10126-2</li>
+<li>ISO7816-4/ISO9797-1</li>
+<li>X9.23/X923</li>
+<li>TBC</li>
+<li>ZeroByte</li>
+<li>withCTS (if used with ECB mode)</li>
+</ul>
+</details>
 
 ![sym](./art/sym.gif)
 

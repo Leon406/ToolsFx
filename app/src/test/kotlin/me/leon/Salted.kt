@@ -22,13 +22,14 @@ class Salted {
     fun salt() {
         val d = "-85297962_172051801"
         val e = "U2FsdGVkX192df0Gxgia8s93zZp85f9m2nU1VIGU+RZQDtViB1LPBnE0CBWgVDBj"
-        val key = "583a01a9ba901a3adda7252ebca42c09"
+        val password = "583a01a9ba901a3adda7252ebca42c09"
 
         var salt = ByteArray(saltSize)
         SecureRandom().nextBytes(salt)
         //        salt = "ef9b329a95241506".hex2ByteArray()
+        // 随机生成
         salt = "7675fd06c6089af2".hex2ByteArray()
-        kdf(key.toByteArray(), salt).also {
+        kdf(password.toByteArray(), salt).also {
             makeCipher(
                 "AES/CBC/PKCS5Padding",
                 it.sliceArray(0 until 32),
@@ -42,7 +43,7 @@ class Salted {
                 }
         }
 
-        decryptKeyIv(e, key.toByteArray()).also {
+        decryptKeyIv(e, password.toByteArray()).also {
             makeCipher(
                 "AES/CBC/PKCS5Padding",
                 it.sliceArray(0 until 32),
