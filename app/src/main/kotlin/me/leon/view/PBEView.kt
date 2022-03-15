@@ -29,7 +29,7 @@ class PBEView : View("PBE") {
     private val outputText: String
         get() = taOutput.text
     private val keyLength
-        get() = tfKeyLength.text.toInt() * 8
+        get() = tfKeyLength.text.toInt()
     private val saltLength
         get() = tfSaltLength.text.toInt()
     private val info
@@ -97,8 +97,8 @@ class PBEView : View("PBE") {
             label("密码:")
             tfPwd = textfield { promptText = messages["keyHint"] }
 
-            label("key长度:")
-            tfKeyLength = textfield("16") { prefWidth = DEFAULT_SPACING_8X }
+            label("key长度(位):")
+            tfKeyLength = textfield("128") { prefWidth = DEFAULT_SPACING_8X }
             label("salt长度:")
             tfSaltLength = textfield("8") { prefWidth = DEFAULT_SPACING_8X }
             label("iteration:")
