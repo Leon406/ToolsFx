@@ -2,7 +2,8 @@ package me.leon.toolsfx.plugin
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
-import javafx.scene.control.*
+import javafx.scene.control.RadioButton
+import javafx.scene.control.TextArea
 import me.leon.ext.*
 import tornadofx.*
 
