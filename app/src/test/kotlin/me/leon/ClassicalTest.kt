@@ -319,6 +319,7 @@ class ClassicalTest {
         "alphabet index".alphabetIndex().also { println(it) }
         "1 12 16,8;1 2 5 20 9 14 4 5 24".alphabetIndexDecode().also { println(it) }
     }
+
     @Test
     fun zero1234() {
         "alphabet index".zero1248().also { println(it) }
@@ -334,5 +335,22 @@ class ClassicalTest {
             "a\u200F\u200F\u200C\u200E\u200E\u200C\u200D\u200B\u200F\u200D\u200F\u200C\uFEFF\u200D\u200Fdgsdf"
         println(d.zwcDecode())
         println(zw.zwcDecode())
+    }
+
+    @Test
+    fun gray() {
+        val data = "graycode加密"
+        data.grayEncode().also {
+            println(it)
+            assertEquals(data, it.grayDecode())
+        }
+        data.grayEncode(4).also {
+            println(it)
+            assertEquals(data, it.grayDecode(4))
+        }
+        data.grayEncode(5).also {
+            println(it)
+            assertEquals(data, it.grayDecode(5))
+        }
     }
 }

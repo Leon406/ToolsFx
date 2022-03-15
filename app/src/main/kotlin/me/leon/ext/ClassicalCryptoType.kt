@@ -309,7 +309,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsHints() =
             listOf(
                 "table, '$TABLE_A_Z' as default",
-                "separator(space as default)",
+                "delimiter(space as default)",
             )
 
         override fun isIgnoreSpace() = false
@@ -477,5 +477,25 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsCount() = 2
 
         override fun paramsHints() = listOf(" key,length 25 ", "period, default 5")
+    },
+    GrayCode("grayCode") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.grayEncode(
+                params[P1]?.ifEmpty { "0" }?.toInt() ?: 0,
+                params[P2]?.ifEmpty { " " } ?: " "
+            )
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.grayDecode(
+                params[P1]?.ifEmpty { "0" }?.toInt() ?: 0,
+                params[P2]?.ifEmpty { " " } ?: " "
+            )
+
+        override fun paramsCount() = 2
+
+        override fun paramsHints() =
+            listOf("length, default is binary string length", "delimiter(space as default)")
+
+        override fun isIgnoreSpace() = false
     },
 }
