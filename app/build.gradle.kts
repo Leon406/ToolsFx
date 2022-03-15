@@ -28,6 +28,6 @@ dependencies {
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
     api("com.google.code.gson:gson:2.9.0")
     implementation(project(":plugin-lib"))
+    testImplementation("org.openjdk.nashorn:nashorn-core:15.3")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
-
 }
