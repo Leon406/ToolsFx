@@ -223,6 +223,8 @@
 - [x] Porta Cipher
 - [x] Bifid/Trifid/FourSquare Cipher
 - [x] Gronsfeld Cipher
+- [x] Gray code
+- [x] Buddha Says(佛曰)
 
 ![ctf](./art/ctf.gif)
 

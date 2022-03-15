@@ -232,6 +232,8 @@
 - [x] Porta 密码
 - [x] Bifid/Trifid/四方密码 (FourSquare Cipher)
 - [x] Gronsfeld密码
+- [x] 格雷码(Gray code)
+- [x] 佛曰
 
 ![ctf](./art/ctf.gif)
 
