@@ -58,7 +58,7 @@ fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
     }
 }
 
-fun String.sliceList(split: List<Int>, separator: String = " ") =
-    toList().sliceList(split).joinToString(separator) { it.joinToString("") }
+fun String.sliceList(split: List<Int>, delimiter: String = " ") =
+    toList().sliceList(split).joinToString(delimiter) { it.joinToString("") }
 
 fun File.toBase64() = readBytes().base64()
