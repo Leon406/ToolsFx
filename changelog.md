@@ -137,3 +137,27 @@
 - fix(app): unicode编码为十进制
 - fix(app): 编码互转支持逐行操作
 - fix(apipost): post请求日志未显示 body信息
+# v1.12.2.beta02  
+## feature:
+- feat(app): 新增Html Entity/gray code/佛曰
+- feat(plugin-apipost): 优化导出curl,文件识别
+- feat(app): CTF算法新增 Bifid/Trifid/Beaufort, FourSquare, Gronsfeld, Porta,Handycode
+- feat(app): 加入截屏ocr识别
+- feat(app): 扩展a1z26,支持自定义字典
+- feat(app): emoji substitute from emoji-aes
+- feat(app): 优化文件识别& ctf体验
+- feat(app): 优化morse解密
+- feat(app): 关于加入github issue反馈入口
+- feat(app): 新增曲路和当铺密码
+- feat(app): ctf加入参数提示,编码算法排序
+- feat(app): 新增元素周期表加解密
+- feat(app): PBE优化
+- feat(app): 新增插件下载链接
+- feat(app): 新增压缩模块
+- feat(app): 新增零宽字符
+- feat(plugin-apipost): 支持请求导出为curl请求
+## bug fix:  
+- fix(app): hash不支持空字符串
+- fix(app): RSA拖入密钥事件重复响应
+- fix(app): 乱码还原失败
+- fix(plugin-apipost): 浏览器curl解析未删除转义字符
