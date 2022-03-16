@@ -12,33 +12,67 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /* loaded from: BurpSuiteCnV2.0.jar:lianzhang/Translator.class */
+
+/**
+ * javac -encoding UTF-8
+ */
 public class Translator {
-    boolean debug;
+    static boolean debug;
     Map<String, String> literal = new HashMap(2048);
     Map<Pattern, String> regexp = new HashMap(256);
     private static Map<String, Translator> map = new HashMap(2);
     static final Pattern pattern = Pattern.compile(".*\\$[0-9].*");
     static final Pattern patternChinese = Pattern.compile("[\u4e00-\u9fa5]+");
+    // 无字母字符串, Windows文件路径, 类Linux文件路径,Http请求,Http请求响应字符串
     static final Pattern patternBypass =
-            Pattern.compile("^[\\d\\.\\-_/]+$|^[A-Z]:|^/|[A-Z]{3,} /.*? HTTP/|HTTP/[\\d\\.]+ \\d+");
+            Pattern.compile("^[^a-zA-Z]+$|^[A-Z]:|^/|[A-Z]{3,} /.*? HTTP/|HTTP/[\\d\\.]+ \\d+");
+
+    private static String keyText = "JTextComponent";
+    static final Pattern patternBypassInput =
+            Pattern.compile("Selection|processInputMethodEvent|componentResized");
+
+    static  {
+        debug = Translator.class.getResource("/debug") != null;
+        System.out.println("^^^^^^^  debug = " + debug);
+    }
 
     public static String translate(String lang, String str) throws Exception {
+        if (str == null || str.length() < 2) {
+            return str;
+        }
+
+        if (lang.contains("cn") && patternChinese.matcher(str).find()) {
+            if (debug) System.err.println("\t\tpatternChinese " + str);
+            return str;
+        }
+        if (patternBypass.matcher(str).find()) {
+            if (debug) System.err.println("\t\tpatternBypass " + str);
+            return str;
+        }
         Translator translator = map.get(lang);
         if (translator == null) {
             translator = new Translator(lang);
             map.put(lang, translator);
         }
-        if (str == null || str.length() < 2 || str.equals("\r\n") || str.trim().isEmpty()) {
-            return str;
-        }
 
-        if (lang.contains("cn") && patternChinese.matcher(str).find()) {
-            if (translator.debug) System.err.println("patternChinese " + str);
-            return str;
-        }
-        if (patternBypass.matcher(str).find()) {
-            if (translator.debug) System.err.println("patternFilePath " + str);
-            return str;
+        //test code
+//        if (str.contains("Proxy") || str.contains("Welcome") || str.contains("injection")) {
+//            System.out.println(Thread.currentThread().getName() + "___________________ \t " + str);
+//            Arrays.stream(Thread.currentThread().getStackTrace()).forEach(System.out::println);
+//            System.out.println("___________________");
+//        }
+        boolean isjTextComponent = false;
+        if (Thread.currentThread().getName().contains("AWT-EventQueue")) {
+            for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
+                String s = stackTraceElement.toString();
+                if (s.contains(keyText)) {
+                    isjTextComponent = true;
+                    continue;
+                }
+                if (isjTextComponent && patternBypassInput.matcher(s).find()) {
+                    return str;
+                }
+            }
         }
 
         StringBuilder sb = new StringBuilder();
@@ -49,8 +83,11 @@ public class Translator {
             sb.append(translator.translate(str3));
         }
         String tr = sb.toString();
-        if (translator.debug) {
-            System.err.println(str + "~~~" + tr);
+        if (debug) {
+            if (!tr.contains("个请求(") ) {
+                System.out.println("========================");
+                System.err.println(str + "~~~" + tr);
+            }
         } else if (str.contains(tr)) {
             System.out.println("========================");
             System.err.println(str + "~~~" + tr);
@@ -59,12 +96,9 @@ public class Translator {
     }
 
     public Translator(String str) throws Exception {
-        if (str.equals("debug")) {
-            this.debug = true;
-        }
         String str2 = str + ".txt";
         InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(str2);
-        System.out.println("\u001b[32;4mBy:LianZhang github:https://github.com/hackxx/BurpSuiteCn");
+        System.out.println("\u001b[32;4mBy:LianZhang github:https://github.com/hackxx/BurpSuiteCn\u001b[0m");
         if (resourceAsStream == null) {
             try {
                 resourceAsStream = new FileInputStream(str2);
@@ -75,12 +109,11 @@ public class Translator {
         }
 
         try (BufferedReader bufferedReader =
-                new BufferedReader(new InputStreamReader(resourceAsStream, "UTF-8"))) {
+                     new BufferedReader(new InputStreamReader(resourceAsStream, "UTF-8"))) {
             bufferedReader
                     .lines()
                     .forEach(
                             s -> {
-                                //                System.err.println("___ " +s);
                                 if (s.isBlank() || s.startsWith("###")) {
                                     return;
                                 }
