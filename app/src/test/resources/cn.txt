@@ -256,9 +256,9 @@ Adjust how widgets are displayed within the Inspector. You can also change the o
 Advisory	警告
 After recovering session:	会话恢复后：
 After running the macro, invoke a Burp extension action handler:	执行宏后，执行Burp扩展操作处理程序：
-Ajax request header manipulation \(DOM-based\)(\s+\[\d+\])?	Ajax请求头操作（DOM基础）$1
-Ajax request header manipulation \(reflected DOM-based\)(\s+\[\d+\])?	Ajax请求头操作（反射DOM基础）$1
-Ajax request header manipulation \(stored DOM-based\)(\s+\[\d+\])?	Ajax请求头操作（累积类型DOM基础）$1
+Ajax request header manipulation \(DOM-based\)(\s+\[\d+\])?	Ajax请求头操作（基于DOM）$1
+Ajax request header manipulation \(reflected DOM-based\)(\s+\[\d+\])?	Ajax请求头操作（基于DOM的反射型）$1
+Ajax request header manipulation \(stored DOM-based\)(\s+\[\d+\])?	Ajax请求头操作（基于DOM的存储型）$1
 Alerts	警告
 Alias	別名
 All	所有
@@ -436,7 +436,7 @@ At a significance level of 1%, the amount of effective entropy is estimated to b
 At least one URL to scan must be specified.	请指定至少一个要扫描的URL.
 At least one item to scan must be specified.	请指定至少一个要扫描的项目.
 At least one kind of analysis must be selected	必须至少选择一种类型的分析.
-Atc on:	All Tools	所有模块
+
 Attack	攻击
 Attack Insertion Points	攻击插入点
 Attack Results	攻击结果
@@ -486,7 +486,9 @@ Automatic backup failed	自动备份失败
 Automatic payload positions	自动载入payload位置
 Automatic project backup	项目自动备份
 Automatic project backup saves a copy of the Burp project file periodically in the background.	项目自动备份会定期保存Burp项目文件的副本
-Automatically add entries on client SSL negotiation failure	在客户端SSL协商失败时自动添加条目(Automatically add entries on client SSL negotiation failureAutomatically add entries on client TLS negotiation failure	在客户端TLS协商失败时自动添加条目(Automatically add entries on client TLS negotiation failureUse HTTP/1.0 in requests to server	使用HTTP / 1.0来请求服务器(Use HTTP/1.0 in requests to server)
+Automatically add entries on client SSL negotiation failure	在客户端SSL协商失败时自动添加条目
+Automatically add entries on client TLS negotiation failure	在客户端TLS协商失败时自动添加条目
+Use HTTP/1.0 in requests to server	使用HTTP/1.0来请求服务器
 Automatically add entries on client TLS negotiation failure	客户端 TLS 协商失败时自动添加条目
 Automatically back up the project every	自动项目备份间隔
 Automatically fix missing or superfluous new lines at end of request	在请求结束时自动修复丢失或多余的换行符
@@ -571,8 +573,8 @@ Burp Proxy options	Burp代理选项
 Burp Proxy uses listeners to receive incoming HTTP requests from your browser. You will need to configure your browser to use one of the listeners as its proxy server.	Burp Proxy使用监听器接收来自浏览器的HTTP请求。您需要在浏览器中将BURP的其中一个监听配置为代理服务器。
 Burp Repeater documentation	Burp Repeater模块文档
 Burp Repeater help	Burp 重放器帮助
-Burp Scanner reporting wizard	Burp扫描仪报告向导
-Burp Spider - Submit Form	Burp Spider  - 提交表格
+Burp Scanner reporting wizard	Burp扫描报告向导
+Burp Spider - Submit Form	Burp Spider  - 提交表单
 Burp Spider needs your guidance to submit a login form. Please choose the value of each form field which should be used when submitting the form, and whether Burp should iterate submission of multi-value fields. You can control how Burp handles forms in the Spider options tab.	Burp Spider需要您的输入才能发送登录表单。请选择要用于传输的每个表单字段的值以及是否重复具有多个值的字段。您可以在“爬虫”选项卡上控制表单的处理方式。
 Burp Spider needs your guidance to submit a login form. Please choose the value of each form field which should be used when submitting the form. You can control how Burp handles forms in the Spider options tab.	Burp Spider需要您的输入才能发送登录表单。请选择要用于发送的每个表单域的值。您可以在“爬虫选项”选项卡上控制表单的处理方式。
 Burp Suite (.*) (.*) - licensed to (.*)	Burp Suite $1 $2 - licensed to $3
@@ -620,7 +622,7 @@ Capture by search term	按搜索术语捕获
 Capture by status code	按状态码捕获
 Capture by tool	按工具捕获
 Capture filter:	捕获过滤：
-Capture filter: Please wait ...	捕获过滤：请稍后...	
+Capture filter: Please wait ...	捕获过滤：请稍后...
 Capture limit	捕获限制
 Capture only in-scope items (Suite scope)	仅捕获范围内的条目（套件范围）
 Capture only parameterized requests	仅捕获参数化请求
@@ -821,7 +823,7 @@ Cookie manipulation \(reflected DOM-based\)(\s+\[\d+\])?	Cookie操作(基于DOM�
 Cookie manipulation \(stored DOM-based\)(\s+\[\d+\])?	Cookie操作(基于DOM存储型)$1
 Cookie name	Cookie键
 Cookie parameter values	Cookie参数值
-Cookie scoped to parent domain	父域范围Cookie	
+Cookie scoped to parent domain	父域范围Cookie
 Cookie value	Cookie值
 Cookie without HttpOnly flag set	Cookie未设置HttpOnly标志
 Cookies received	已接收Cookie
@@ -874,7 +876,7 @@ Create new task	新建任务
 Create new tasks paused	新建暂停任务
 Create new tasks running	新建正在运行任务
 Created	已创建
-Credit card numbers disclosed	信用卡号码泄漏	
+Credit card numbers disclosed	信用卡号码泄漏
 Critical	严重
 Cross-domain POST	跨域POST
 Cross-domain Referer leakage	跨域Referer泄漏
@@ -947,7 +949,7 @@ Define behavior dependent on session validity:	依赖于会话有效性的行为
 Define custom token location	令牌位置的自定义定义
 Define extract grep from response	从响应中定义提取的grep(Define extract grep from response)
 Define extract grep item	提取的grep项的定义
-Define start and end	定义开始和结束(Define start and end)
+Define start and end	定义开始和结束
 Define the URLs to scan. Burp will begin crawling from these URLs, and by default will include everything beneath the specified URLs' folders.	请定义要扫描的URL。 Burp将开始从这些URL进行爬虫爬取，默认情况下它包含指定URL目录下的所有内容。
 Define the in-scope targets for your current work. This configuration affects the behavior of tools throughout the suite. The easiest way to configure scope is to browse to your target and use the context menus in the site map to include or exclude URL paths.	定义当前工作的范围内目标, 此配置影响所有字段中工具的行为. 用正则表达式或者是简单的字符串, 最简单的配置范围的方法浏览到目标, 并使用站点地图的上下文菜单包含或排除URL路径.
 Define the location of the item to be extracted. Selecting the item in the response panel will create a suitable configuration automatically. You can also modify the configuration manually to ensure it works effectively.	定义要提取的项目的位置。在响应面板中选择项目时，将自动创建相应的设置。您也可以手动更改设置以有效工作。
@@ -1061,7 +1063,7 @@ Doing bit correlation test: bit (\d+)	做位相关测试: bit $1
 Doing character set tests	正在进行字符集测试
 Doing character set tests: position (\d+)	正在进行字符集测试：$1个字符
 Doing spectral tests	正在进行频谱测试
-Doing spectral tests: bit (\d+)	正在进行的频谱测试：bit $1														  
+Doing spectral tests: bit (\d+)	正在进行的频谱测试：bit $1
 Domain hostname(:)?	域名主机名$1
 Domain name	域名
 Domain name resolution:	域名解析：
@@ -1075,11 +1077,14 @@ Don't restore	不进行恢复
 Don't scan	不执行扫描
 Don't send items to Proxy history or live tasks	不要将项目发送到代理记录或实时任务
 Don't send items to Proxy history or live tasks, if out of scope	如果超出范围，请不要将项目发送到代理记录或实时任务
-Don't submit forms	不要提交表格
+Don't submit forms	不要提交表单
 Don't submit login forms	不要发送登录表单
 Don't use Burp Collaborator	不要使用Burp Collaborator
 Done	完成
 Down	向下
+Submit forms	提交表单
+Use embedded browser for Crawl and Audit	使用内置浏览器进行爬虫和审计
+Unmatched links	不匹配链接
 Download	下载
 Download (JRuby|Jython)	$1下载
 Download JRuby	下载JRuby
@@ -1177,8 +1182,8 @@ Encoded as ASCII hex	编码成ASCII十六进制
 Encoding request body	编码请求体
 Encrypted data to shuffle:	要加密的加密数据(Encrypted data to shuffle)：
 End	结束
-End at delimiter:	以此分隔符结束：
-End at fixed length:	以固定长度结束：
+End at delimiter:	结束分隔符：
+End at fixed length:	固定长度：
 End time	结束时间
 Enforce protocol choice on cross-domain redirections	对跨域重定向执行协议选择
 Engagement tools	相关工具(Engagement tools)
@@ -1255,7 +1260,7 @@ Extension generated issue(\s+\[\d+\])?	使用扩展创建的问题$1
 Extension loaded	已加载扩展
 Extension payload generator:	扩展payload生成器
 Extension type:	扩展类型：
-Extension-generated	通过扩展生成d
+Extension-generated	通过扩展生成
 Extensions	扩展
 Extensions - long	扩展 - 长
 Extensions - short	扩展 - 短
@@ -1287,7 +1292,7 @@ Failed to load certificate: (.*)	无法加载证书：$1
 Failed to load certificate: keystore password was incorrect	加载证书失败：密钥库密码不正确
 Failed to open file	打开文件失败
 Failed to open folder	打开文件夹失败
-Failed to retrieve response	无法得到回应包
+Failed to retrieve response	无法获取响应包
 Failed to save file. Please try another location.	保存文件失败。请尝试其他位置。
 Failed to save project.	保存项目失败。
 Failed to update BApp list	更新BApp列表失败
@@ -1365,15 +1370,15 @@ For this file extension	此文件扩展名
 Force use of SSL	强制使用SSL
 Force use of TLS	强制使用TLS
 Foreground Color	前景色
-Form Submission	表格提交
-Form action hijacking \(reflected\)(\s+\[\d+\])?	表格动作劫持（反射型）$1
-Form action hijacking \(stored\)(\s+\[\d+\])?	表格行动劫持（存储型）$1
+Form Submission	表单提交
+Form action hijacking \(reflected\)(\s+\[\d+\])?	表单动作劫持（反射型）$1
+Form action hijacking \(stored\)(\s+\[\d+\])?	表单动作劫持（存储型）$1
 Form field names	表单字段名称
 Form field names - long	表单字段名 - 长
 Form field names - short	表单字段名 - 短
 Form field values	表单字段值
 Form field:	表单字段：
-Form submissions	表格提交
+Form submissions	动作提交
 Format of original data:	原值格式：
 Format strings	格式化字符串
 Format:	格式:
@@ -1925,7 +1930,7 @@ Max fraction digits:	小数最大位数：
 Max integer digits:	整数最大位数：
 Max length:	最大长度:
 Max state changing sequences:	最大状态变化顺序：
-Max submissions per form:	每张表格的最大传输次数：
+Max submissions per form:	每个表单的最大传输次数：
 Max unmatched link tolerance:	最大链接允许数量：
 Maximize permutations in multi-byte encodings	多字节编码的最大组合
 Maximum Entropy Bits	最大熵位
@@ -1935,7 +1940,7 @@ Maximum concurrent requests:	最大并发请求数：
 Maximum crawl time:	最大爬取时间：
 Maximum dynamic analysis time per item (in seconds):	每个项目的最大动态分析时间（秒）：
 Maximum insertion points per base request:	每个基本请求的最大插入点数：
-Maximum length:	最大长度(Maximum length):
+Maximum length:	最大长度:
 Maximum link depth:	最大链接深度：
 Maximum parameterized requests per URL:	每个URL的最大参数化请求数：
 Maximum payloads per item:	每个条目的最大payloads数量：
@@ -1989,8 +1994,8 @@ Move the selected rule down	向下移动所选规则
 Move the selected rule up	移动所选规则
 Move to the next match	转到下一个匹配
 Move to the previous match	转到上一个匹配
-Move up	向上移动
-Multipart form	多部分表格
+Move up	上移
+Multipart form	多部分表单(Multipart form)
 Multiple content types specified	指定多个内容类型(Content-Type)
 MySQL specific	指定MySQL
 MySQL-specific checks	指定MySQL检查
@@ -2370,7 +2375,7 @@ Reference information about the different options you have for customizing Burp 
 References	参照(References)
 References to (https?://.*)	$1 的参考
 Referer-dependent response(\s+\[\d+\])?	引用依赖的响应$1
-Refetch response	重新获取响应包(Refetch response)
+Refetch response	重新获取响应
 Reflected DOM issues	反射型DOM问题
 Reflected XSS	反射型XSS
 Refresh	刷新
@@ -2389,6 +2394,7 @@ Reinstall	重新安装
 Relationship	关系
 Release notes(.*)	发行说明$1
 Reliability	可信性
+Read timeout for site resources:	站点资源读取超时:
 Remediation background	修复方法(Remediation background)
 Remediation detail [where applicable]	修复方法详情[适用时]
 Remove	删除
@@ -2460,7 +2466,7 @@ Replace with encodings of:	要编码和替换的字符：
 Replace with:	替换:
 Replace:	替换:
 Replay	重放
-Report bug	报告错误																			  
+Report bug	报告错误
 Report completed	报告已完成
 Report issues for selected branches	选中选分支的问题报告
 Report issues for this branch	该分支的问题报告
@@ -2829,7 +2835,6 @@ Sensitive	敏感
 Separator for position (\d+)	定位$1分隔符
 September	9月
 Sequencer	定序器(Sequencer)
-Sequential	连续的
 Serialized object in HTTP message(\s+\[\d+\])?	HTTP消息中的序列化对象$1
 Server SSL Certificates	服务器SSL证书
 Server TLS Certificates	服务器TLS证书
@@ -2867,7 +2872,7 @@ Set the details by pasting a URL	粘贴URL并设置详细信息
 Set unmatched fields to:	为非匹配字段设置的值：
 Settings	设置
 Severity	风险
-Short words	简短的话
+Short words	短文本
 Shortest:	最短:
 Show	显示
 Show all	显示全部
@@ -2977,10 +2982,9 @@ Start learning	开始学习
 Start live capture	开始实时捕捉
 Start time	开始时间
 Starting project, please wait ...	正在进入项目，请稍等...
-Static	静止
 Static Code Analysis	静态代码分析
 Static URLs	静态URL
-Static analysis	静态解析
+Static analysis	静态分析
 Static code analysis	静态代码分析
 Status	状态
 Status 100 Responses	状态100的响应
@@ -3026,7 +3030,7 @@ Support invisible proxying (enable only if needed)	支持隐形代理(仅在需�
 Suppress Burp error messages in browser	忽略浏览器的Burp错误消息
 Suspicious input transformation	可能的输入值转换
 Suspicious input transformation \(reflected\)(\s+\[\d+\])?	可能的输入值转换（反射类型）$1
-Suspicious input transformation \(stored\)(\s+\[\d+\])?	输入值的可能转换（累积类型)$1
+Suspicious input transformation \(stored\)(\s+\[\d+\])?	输入值的可能转换（存储类型)$1
 Sync selection	同步选择
 Sync views	同步显示
 TLS Negotiation	TLS协商
@@ -3104,6 +3108,7 @@ The following items will be removed:	删除以下项目：
 The following rules determine whether Burp sends each outgoing request to a proxy server, or directly to the destination web server. The first rule that matches each destination host will be used. To send all traffic to a single proxy server, create a rule with * as the destination host.	每个传出请求是发送到代理服务器还是直接发送到目标Wweb服务器由以下规则确定。使用目标主机首次匹配的规则。要将所有流量发送到单个代理服务器，请使用目标主机*创建规则。
 The free edition of Burp contains a demo version of Burp Intruder. Some functionality is disabled, and attacks are time throttled.	Burp的免费版本包含Burp 攻击器的演示版本。某些功能已被禁用，攻击会定时。
 The item itself	条目本身
+No group defined	未定义组
 The macro contains no items. Are you sure you want to proceed?	宏中没有条目。你确定要继续吗？
 The name is already used	该名称已被使用
 The options below control the types of analysis that is performed at the bit level.	一下选项控制在字符级别执行的分析类型。
@@ -3114,7 +3119,7 @@ The overall quality of randomness within the sample is estimated to be: (.*)	推
 The private key was successfully exported.	成功导出了私钥。
 The project file contains no importable data.	没有可以在项目文件中导入的数据。
 The project file was successfully repaired. You can now open the repaired project.	项目文件已成功修复。打开已恢复的项目。
-The request has not yet been issued - click "Fetch response" to issue it	请求尚未发出-单击“获取响应”(Fetch response)以发出它
+The request has not yet been issued - click "Fetch response" to issue it	请求尚未发出-单击“获取响应”发送
 The response from the current request, issued prior to the macro	宏之前发出的当前请求的响应
 The rule contains no actions.	此规则中没有任何操作。
 The rule is not in-scope for any URLs.	此规则超出了所有URL的范围。
@@ -3334,7 +3339,7 @@ Tool	工具
 Tools	工具
 Tools Scope	工具范围
 Top/bottom split	上下分割
-Total cost:	总金额：
+Total cost:	总耗时：
 Total encodings	总编码数
 Total number of parameters:	参数总数：
 Transitions	转换
@@ -3350,7 +3355,6 @@ Type string to insert	请输入要插入的字符串
 Type:	类型:
 Types of item to add:	要添加的项目类型：
 Typical severity	漏洞等级
-URL	URL
 URL Scope	URL范围
 URL file path (required)	URL文件路径（必填）
 URL of redirection target	要重定向的URL
@@ -3477,7 +3481,7 @@ Username(.*)	用户名$1
 Usernames	用户名
 Using Burp Proxy	使用Burp代理
 Using Burp Suite	使用Burp Suite
-Using a large amount of memory may impact performance	使用过大的内存，可能影响性能
+Using a large amount of memory may impact performance	使用过大的内存，可能会影响性能
 Valid session	验证会话
 Validate session only every	合法线程
 Value \[(.*)\]	值[$1]
@@ -3510,17 +3514,17 @@ Was not annotated	没有评论
 Was not intercepted	没有被截获
 Was not modified	没有改变
 Watch the tour	观看引导
-Web cache posoning(\s+\[\d+\])?	Web缓存污染$1
-WebSocket hijacking \(DOM-based\)(\s+\[\d+\])?	WebSocket劫持（DOM基础）$1
-WebSocket hijacking \(reflected DOM-based\)(\s+\[\d+\])?	WebSocket劫持（反射DOM基础）$1
-WebSocket hijacking \(stored DOM-based\)(\s+\[\d+\])?	WebSocket劫持（累积型DOM基础）$1
+Web cache posoning	Web缓存污染
+WebSocket hijacking \(DOM-based\)(\s+\[\d+\])?	WebSocket劫持（基于DOM）$1
+WebSocket hijacking \(reflected DOM-based\)(\s+\[\d+\])?	WebSocket劫持（基于DOM反射型）$1
+WebSocket hijacking \(stored DOM-based\)(\s+\[\d+\])?	WebSocket劫持（基于DOM存储型）$1
 WebSockets history	WebSocket历史记录
 WebSockets history is empty	WebSockets历史记录为空
 Weeks	周
 Welcome ...	欢迎...
-Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。暖风熏得游人醉，直把杭州作汴州。
-Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。暖风熏得游人醉，直把杭州作汴州。
-Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目.优化翻译版V3.0 by leon406
+Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。重译版V3.0 by leon406
+Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。重译版V3.0 by leon406
+Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目.重译版V3.0 by leon406
 When following redirections, understand the following types:	跟随重定向时，识别以下类型：
 When items are added to Target scope:	将项目添加到目标范围时：
 When the same insertion point is observed in a large number of requests with no variation in results, perform a more efficient quick scan, for the following insertion point types:	如果在许多请求中存在相同的插入点且结果没有变化，我们将更有效，更快地扫描下一个插入点类型：
@@ -3533,7 +3537,7 @@ With payload positions	包括payload位置
 With random variations	随机变化
 With this content type	包括此内容类型
 With this response code	此响应代码
-Without payload positions	不包括payload位置
+Without payload positions	不含payload位置
 Word compare	单词比较
 Word compare of #(\d+) and #(\d+)  \((\d+) differences\)	#$1的#$2单词比较  ($3位置差异)
 Word compare of responses from (.*)	$1 响应词比较
@@ -3553,8 +3557,8 @@ You can attempt to recover project data from the file if you believe it is actua
 You can choose to continue to load this project but should consider creating a backup copy of your project file before doing so.	您可以继续加载此项目，但请在执行此操作之前考虑创建项目文件的备份副本。
 You can configure a more detailed scope configuration using either URL prefixes or advanced matching rules. Note that the URLs to scan must fall within the defined scope, and will still be used as the starting point for the crawl.	您可以使用URL前缀或高级匹配规则配置更详细的作用域配置. 注意, 要扫描的url必须在定义的范围内, 并且仍将用作爬虫的起点.
 You can configure whether to automatically start new tasks as they are created.	您可以设置是否在创建任务时自动启动。
-You can define one or more payload sets. The number of payload sets depends on the attack type defined in the Positions tab. Various payload types are available for each payload set, and each payload type can be customized in different ways.	您可以定义一个或多个有payload集。payload集的数量取决于“位置”选项卡中定义的攻击类型。每个有效负载集(payload sets)可以使用各种有效负载类型(payload type)，并且可以以各种方式定制每种有效负载类型(payload type)。
-You can define rules to perform various processing tasks on each payload before it is used.	您可以定义在使用有效负载之前对每个有效负载(payload)执行各种处理任务(tasks)的规则。
+You can define one or more payload sets. The number of payload sets depends on the attack type defined in the Positions tab. Various payload types are available for each payload set, and each payload type can be customized in different ways.	您可以定义一个或多个有payload集。payload集的数量取决于“位置”选项卡中定义的攻击类型。每个payload集可以使用各种payload 类型，并且可以以各种方式定制每种payload类型。
+You can define rules to perform various processing tasks on each payload before it is used.	您可以定义在使用有效负载之前对每个payload执行各种处理任务的规则。
 You can define session handling rules to make Burp perform specific actions when making HTTP requests. Each rule has a defined scope (for particular tools, URLs or parameters), and can perform actions such as adding session cookies, logging in to the application, or checking session validity. Before each request is issued, Burp applies in sequence each of the rules that are in-scope for the request.	定义会话处理规则，该规则会在生成HTTP请求时执行指定的操作。对于每个规则，定义范围（特定工具，URL，参数），执行操作，例如添加会话cookie，登录到应用程序，检查会话的有效性等。在发出每个请求之前，依次将每个规则应用于范围中的请求。
 You can export your certificate and key for use in other tools, or in another installation of Burp. You can import a certificate and key to use in this installation of Burp. Note that you can also export the current certificate by visiting http://burp/cert in your browser.	您可以为其他工具和其他Burp实例导出此证书。您可以导入用于此Burp的证书和私钥。请注意，您还可以通过在浏览器中访问http://burp/cert来导出当前证书。
 You can export your certificate and key for use in other tools, or in another installation of Burp. You can import a certificate and key to use in this installation of Burp. Note that you can also export the current certificate by visiting http://burpsuite/cert in your browser.	您可以导出证书和密钥以用于其他工具或 Burp 的其他安装。 您可以导入证书和密钥以在此 Burp 安装中使用。 请注意，您还可以通过在浏览器中访问 http://burpsuite/cert 来导出当前证书。
@@ -3646,4 +3650,12 @@ Request site map	请求站点地图
 Request robots.txt	请求robots.txt
 If my hardware appears to support it	如果硬件支持
 Session handling tracer documentation	会话处理跟踪器文档
-These settings let you customize some details of the crawl.	自定义爬网的一些详细信息
+These settings let you customize some details of the crawl.	自定义爬虫的详细信息
+HTML encoding	HTML编码
+URL encoding	URL编码
+Decoded from:	解码:
+User agents - short	用户代理-短
+User agents - long	用户代理-长
+Are you sure you want to restore default error handling options?	您确认要将错误处理重置为默认值吗?
+Are you sure you want to restore default widget options?	您确认要将widget重置为默认值吗?
+Are you sure you want to restore default position & display options?	您确认要将位置&显示重置为默认值吗?

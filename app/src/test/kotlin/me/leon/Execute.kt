@@ -1,36 +1,28 @@
 package me.leon
 
-import javax.script.Invocable
-import javax.script.ScriptEngineManager
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class Execute {
     @Test
     fun batch() {
 
-        ScriptEngineManager().getEngineByName("nashorn").also {
-            it.eval(javaClass.getResourceAsStream("/aaencode.js").reader())
-            with(it as Invocable) {
-                invokeFunction("aaencode", "aadfsdf").also {
-                    println(it)
-                    println(invokeFunction("aadecode", it))
-                }
+        Nashorn.loadResource("/aaencode.js")
+            .loadResource("/jjencode.js")
+            .loadResource("/rc4.js")
+            .invoke("aaencode", "aadfsdf")
+            ?.also {
+                println(it)
+                assertEquals("aadfsdf", Nashorn.invoke("aadecode", it))
             }
-            it.eval("print(\"Hello, JavaScript\")")
-            it.eval(javaClass.getResourceAsStream("/jjencode.js").reader())
-            with(it as Invocable) {
-                invokeFunction("encode_jj", "encode", "$$$", true).also {
-                    println(it)
-                    println(invokeFunction("jjdecode", it))
-                }
-            }
-            it.eval(javaClass.getResourceAsStream("/rc4.js").reader())
-            with(it as Invocable) {
-                invokeFunction("rabbitEncrypt", "123", "123").also {
-                    println(it)
-                    println(invokeFunction("rabbitDecrypt", it, "123"))
-                }
-            }
+
+        Nashorn.invoke("rabbitEncrypt", "123", "123")?.also {
+            println(it)
+            assertEquals("123", Nashorn.invoke("rabbitDecrypt", it, "123"))
+        }
+        Nashorn.invoke("encode_jj", "encode", "$$$", true)?.also {
+            println(Nashorn.invoke("jjdecode", it))
+            assertEquals("encode", Nashorn.invoke("jjdecode", it))
         }
 
         //        thread {

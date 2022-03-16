@@ -14,7 +14,7 @@ import java.util.regex.PatternSyntaxException;
 /* loaded from: BurpSuiteCnV2.0.jar:lianzhang/Translator.class */
 
 /**
- * javac -encoding UTF-8
+ * javac -encoding UTF-8 Translator.java -Xlint:unchecked
  */
 public class Translator {
     static boolean debug;
@@ -114,6 +114,9 @@ public class Translator {
                     .lines()
                     .forEach(
                             s -> {
+                                if (debug) {
+                                    System.out.println("_______ "+s);
+                                }
                                 if (s.isBlank() || s.startsWith("###")) {
                                     return;
                                 }
