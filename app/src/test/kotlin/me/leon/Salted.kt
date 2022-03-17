@@ -46,8 +46,8 @@ class Salted {
         decryptKeyIv(e, password.toByteArray()).also {
             makeCipher(
                 "AES/CBC/PKCS5Padding",
-                it.sliceArray(0 until 32),
-                it.sliceArray(32..it.lastIndex),
+                it.sliceArray(0 until 32).also { println(it.contentToString()) },
+                it.sliceArray(32..it.lastIndex).also { println(it.contentToString()) },
                 Cipher.DECRYPT_MODE
             )
                 .also {
