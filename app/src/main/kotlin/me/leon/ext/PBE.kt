@@ -54,6 +54,7 @@ object PBE {
         val sr = SecureRandom.getInstance("SHA1PRNG")
         val salt = ByteArray(len)
         sr.nextBytes(salt)
+        println(salt.contentToString())
         return salt
     }
 }

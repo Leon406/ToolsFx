@@ -6,9 +6,12 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.PBEController
+import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
+import java.util.IllegalFormatException
+import java.util.UnknownFormatFlagsException
 
 class PBEView : View("PBE") {
     private val controller: PBEController by inject()
@@ -22,6 +25,7 @@ class PBEView : View("PBE") {
     private lateinit var tfKeyLength: TextField
     private lateinit var tfSalt: TextField
     private lateinit var tfSaltLength: TextField
+    private lateinit var tgGroup: ToggleGroup
     private var isEncrypt = true
     private lateinit var taOutput: TextArea
     private val inputText: String
@@ -36,21 +40,33 @@ class PBEView : View("PBE") {
         get() = "PBE Cipher: $cipher   charset: ${selectedCharset.get()}  "
     private lateinit var infoLabel: Label
 
-    private var saltEncode = "raw"
+    private var saltEncode = "hex"
 
-    private val saltByteArray
+    private var saltByteArray
         get() =
             if (tfSalt.text.isEmpty() && isEncrypt)
-                controller.getSalt(saltLength).also { tfSalt.text = it.toHex() }
+                controller.getSalt(saltLength).also {
+                    tfSalt.text = it.toHex()
+                    tgGroup.selectToggle(tgGroup.toggles.first { it.cast<RadioButton>().text == "hex" })
+                }
             else
                 when (saltEncode) {
                     "raw" -> tfSalt.text.toByteArray()
                     "hex" -> tfSalt.text.hex2ByteArray()
                     "base64" -> tfSalt.text.base64Decode()
-                    else -> byteArrayOf()
+                    else -> kotlin.error("Unknown encode: $saltEncode")
                 }
+        set(value) {
+            when (saltEncode) {
+                "raw" -> tfSalt.text = value.decodeToString()
+                "hex" -> tfSalt.text = value.toHex()
+                "base64" -> tfSalt.text = value.base64()
+                else -> kotlin.error("Unknown encode: $saltEncode")
+            }
+        }
 
     private val eventHandler = fileDraggedHandler {
+
         taInput.text =
             with(it.first()) {
                 if (length() <= 10 * 1024 * 1024)
@@ -95,7 +111,7 @@ class PBEView : View("PBE") {
         hbox {
             alignment = Pos.CENTER_LEFT
             label("密码:")
-            tfPwd = textfield { promptText = messages["keyHint"] }
+            tfPwd = textfield { promptText = messages["pwdHintNull"] }
 
             label("key长度(位):")
             tfKeyLength = textfield("128") { prefWidth = DEFAULT_SPACING_8X }
@@ -104,9 +120,9 @@ class PBEView : View("PBE") {
             label("iteration:")
             tfIteration = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
             label("salt:")
-            tfSalt = textfield() { promptText = "optional可选" }
+            tfSalt = textfield() { promptText = "optional,可空" }
             vbox {
-                togglegroup {
+                tgGroup = togglegroup {
                     spacing = DEFAULT_SPACING
                     paddingAll = DEFAULT_SPACING
                     radiobutton("hex") { isSelected = true }
@@ -133,7 +149,7 @@ class PBEView : View("PBE") {
 
             checkbox(messages["singleLine"], isSingleLine)
             button("generate salt", imageview("/img/run.png")) {
-                action { controller.getSalt(saltLength).also { tfSalt.text = it.toHex() } }
+                action { controller.getSalt(saltLength).also { saltByteArray = it } }
             }
             button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
@@ -164,7 +180,7 @@ class PBEView : View("PBE") {
 
     private fun doCrypto() {
         runAsync {
-            if (tfPwd.text.isEmpty() || taInput.text.isEmpty()) return@runAsync ""
+            if (taInput.text.isEmpty()) return@runAsync ""
             isProcessing.value = true
             runCatching {
                 if (isEncrypt)
@@ -179,9 +195,7 @@ class PBEView : View("PBE") {
                     )
                 else {
 
-                    tfSalt.text =
-                        inputText.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
-
+                    saltByteArray = inputText.base64Decode().sliceArray(8 until (8 + saltLength))
                     controller.decrypt(
                         tfPwd.text,
                         inputText,
@@ -195,16 +209,16 @@ class PBEView : View("PBE") {
             }
                 .getOrElse { it.stacktrace() }
         } ui
-            {
-                isProcessing.value = false
-                taOutput.text =
-                    it.also {
-                        if (it.startsWith("U2FsdGVk"))
-                            tfSalt.text =
-                                it.base64Decode().sliceArray(8 until (8 + saltLength)).toHex()
-                    }
-                infoLabel.text = info
-                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-            }
+                {
+                    isProcessing.value = false
+                    taOutput.text =
+                        it.also {
+                            if (it.startsWith("U2FsdGVk"))
+                                saltByteArray =
+                                    it.base64Decode().sliceArray(8 until (8 + saltLength))
+                        }
+                    infoLabel.text = info
+                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
     }
 }
