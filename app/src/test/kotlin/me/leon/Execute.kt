@@ -9,7 +9,7 @@ class Execute {
 
         Nashorn.loadResource("/aaencode.js")
             .loadResource("/jjencode.js")
-            .loadResource("/rc4.js")
+            .loadResource("/rabbit.js")
             .invoke("aaencode", "aadfsdf")
             ?.also {
                 println(it)
