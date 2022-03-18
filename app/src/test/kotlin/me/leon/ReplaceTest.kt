@@ -100,10 +100,6 @@ Referer: https://www.baidu.com/
 Accept-Encoding: gzip, deflate
 Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
             )
-        dataToTranslated.forEach {
-            Translator.translate("cn", it).run {
-                println("$it--->$this ")
-            }
-        }
+        dataToTranslated.forEach { Translator.translate("cn", it).run { println("$it--->$this ") } }
     }
 }

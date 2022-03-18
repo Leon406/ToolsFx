@@ -10,8 +10,6 @@ import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
-import java.util.IllegalFormatException
-import java.util.UnknownFormatFlagsException
 
 class PBEView : View("PBE") {
     private val controller: PBEController by inject()
@@ -47,7 +45,9 @@ class PBEView : View("PBE") {
             if (tfSalt.text.isEmpty() && isEncrypt)
                 controller.getSalt(saltLength).also {
                     tfSalt.text = it.toHex()
-                    tgGroup.selectToggle(tgGroup.toggles.first { it.cast<RadioButton>().text == "hex" })
+                    tgGroup.selectToggle(
+                        tgGroup.toggles.first { it.cast<RadioButton>().text == "hex" }
+                    )
                 }
             else
                 when (saltEncode) {
@@ -66,7 +66,6 @@ class PBEView : View("PBE") {
         }
 
     private val eventHandler = fileDraggedHandler {
-
         taInput.text =
             with(it.first()) {
                 if (length() <= 10 * 1024 * 1024)
@@ -122,16 +121,17 @@ class PBEView : View("PBE") {
             label("salt:")
             tfSalt = textfield() { promptText = "optional,可空" }
             vbox {
-                tgGroup = togglegroup {
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
-                    radiobutton("hex") { isSelected = true }
-                    radiobutton("base64")
-                    radiobutton("raw")
-                    selectedToggleProperty().addListener { _, _, new ->
-                        saltEncode = new.cast<RadioButton>().text
+                tgGroup =
+                    togglegroup {
+                        spacing = DEFAULT_SPACING
+                        paddingAll = DEFAULT_SPACING
+                        radiobutton("hex") { isSelected = true }
+                        radiobutton("base64")
+                        radiobutton("raw")
+                        selectedToggleProperty().addListener { _, _, new ->
+                            saltEncode = new.cast<RadioButton>().text
+                        }
                     }
-                }
             }
         }
         hbox {
@@ -209,16 +209,15 @@ class PBEView : View("PBE") {
             }
                 .getOrElse { it.stacktrace() }
         } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text =
-                        it.also {
-                            if (it.startsWith("U2FsdGVk"))
-                                saltByteArray =
-                                    it.base64Decode().sliceArray(8 until (8 + saltLength))
-                        }
-                    infoLabel.text = info
-                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-                }
+            {
+                isProcessing.value = false
+                taOutput.text =
+                    it.also {
+                        if (it.startsWith("U2FsdGVk"))
+                            saltByteArray = it.base64Decode().sliceArray(8 until (8 + saltLength))
+                    }
+                infoLabel.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
     }
 }
