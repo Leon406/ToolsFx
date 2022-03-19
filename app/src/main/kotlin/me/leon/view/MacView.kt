@@ -28,7 +28,7 @@ class MacView : View("MAC") {
             taOutput.text = value
         }
     private var method = "HmacMD5"
-    private var outputEncode = "hex"
+
     private val regAlgReplace =
         "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
     private val eventHandler = fileDraggedHandler {
@@ -118,6 +118,10 @@ class MacView : View("MAC") {
         get() = "MAC: $method"
     private var keyEncode = "raw"
     private var ivEncode = "raw"
+    private var inputEncode = "raw"
+    private var outputEncode = "hex"
+    private lateinit var tgInput: ToggleGroup
+    private lateinit var tgOutput: ToggleGroup
     private val keyByteArray
         get() =
             when (keyEncode) {
@@ -140,6 +144,18 @@ class MacView : View("MAC") {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
+            spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
+            tgInput =
+                togglegroup {
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("base64")
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        inputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
+
             button(graphic = imageview("/img/import.png")) {
                 action { taInput.text = clipboardText() }
             }
@@ -222,17 +238,10 @@ class MacView : View("MAC") {
                 }
             }
         }
+
         tilepane {
             alignment = Pos.TOP_LEFT
             hgap = DEFAULT_SPACING
-            label(messages["outputEncoding"])
-            togglegroup {
-                radiobutton("hex") { isSelected = true }
-                radiobutton("base64")
-                selectedToggleProperty().addListener { _, _, new ->
-                    outputEncode = new.cast<RadioButton>().text
-                }
-            }
             checkbox(messages["singleLine"], isSingleLine)
             button(messages["run"], imageview("/img/run.png")) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
@@ -244,8 +253,19 @@ class MacView : View("MAC") {
                 }
             }
         }
+
         hbox {
             label(messages["output"])
+            spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
+            tgOutput =
+                togglegroup {
+                    radiobutton("hex") { isSelected = true }
+                    radiobutton("base64")
+                    selectedToggleProperty().addListener { _, _, new ->
+                        outputEncode = new.cast<RadioButton>().text
+                    }
+                }
             button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
         }
         taOutput =
@@ -268,10 +288,11 @@ class MacView : View("MAC") {
                     keyByteArray,
                     ivByteArray,
                     method,
+                    inputEncode,
                     outputEncode,
                     isSingleLine.get()
                 )
-            else controller.mac(inputText, keyByteArray, method, outputEncode, isSingleLine.get())
+            else controller.mac(inputText, keyByteArray, method,  inputEncode, outputEncode, isSingleLine.get())
         } ui
             {
                 outputText = it
