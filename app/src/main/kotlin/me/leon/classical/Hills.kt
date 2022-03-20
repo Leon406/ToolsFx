@@ -1,14 +1,10 @@
-package lianzhang
+package me.leon.classical
 
 import kotlin.math.sqrt
-import me.leon.classical.alphabetIndexDecodeNum
-import me.leon.classical.alphabetIndexNum
-import me.leon.ext.TABLE_A_Z
+import me.leon.ext.*
 
+/** ported from https://github.com/akourk/HillCipher/blob/master/Main.java */
 fun String.hillSplit(n: Int) = padEnd(n, 'x').chunked(n)
-
-fun String.hillIndexArray(fromZero: Boolean = true) =
-    alphabetIndexNum(fromZero = fromZero).toTypedArray()
 
 fun String.hillIndexSplitArray(n: Int, fromZero: Boolean = true) =
     alphabetIndexNum(fromZero = fromZero).chunked(n).map { it.toIntArray() }.toTypedArray()
@@ -16,22 +12,22 @@ fun String.hillIndexSplitArray(n: Int, fromZero: Boolean = true) =
 fun Array<IntArray>.toCharacter(fromZero: Boolean = true) =
     joinToString("") { it.alphabetIndexDecodeNum(fromZero = fromZero) }.lowercase()
 
-fun String.hillEncrypt(key: String, table: String = TABLE_A_Z): String {
+fun String.hillEncrypt(key: String, table: String = TABLE_A_Z, fromZero: Boolean = true): String {
     val keyMatrix = parseKey(key)
     return padEnd(keyMatrix.size, 'x').chunked(keyMatrix.size).joinToString("") {
         keyMatrix
-            .multMod(it.alphabetIndexNum().toIntArray(), table.length)
-            .alphabetIndexDecodeNum(table)
+            .multMod(it.alphabetIndexNum(fromZero = fromZero).toIntArray(), table.length)
+            .alphabetIndexDecodeNum(table, fromZero = fromZero)
             .lowercase()
     }
 }
 
-fun String.hillDecrypt(key: String, table: String = TABLE_A_Z): String {
-    val keyMatrix = parseKey(key).invertModMatrix(table.length)
-    return padEnd(keyMatrix.size, 'x').chunked(keyMatrix.size).joinToString("") {
-        keyMatrix
-            .multMod(it.alphabetIndexNum().toIntArray(), 26)
-            .alphabetIndexDecodeNum(table)
+fun String.hillDecrypt(key: String, table: String = TABLE_A_Z, fromZero: Boolean = true): String {
+    val invKey = parseKey(key).invertModMatrix(table.length)
+    return padEnd(invKey.size, 'x').chunked(invKey.size).joinToString("") {
+        invKey
+            .multMod(it.alphabetIndexNum(fromZero = fromZero).toIntArray(), 26)
+            .alphabetIndexDecodeNum(table, fromZero = fromZero)
             .lowercase()
     }
 }
@@ -47,6 +43,7 @@ private fun parseKey(key: String): Array<IntArray> {
         }
     val determinant = keyMatrix.determinant(keyMatrix.size)
     if (determinant % 26 in arrayOf(0, 13) || determinant % 26 % 2 == 0) {
+        keyMatrix.showMatrix()
         throw IllegalArgumentException("wrong key matrix")
     }
     return keyMatrix

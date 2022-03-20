@@ -1,8 +1,6 @@
 package me.leon
 
 import kotlin.test.assertEquals
-import lianzhang.hillDecrypt
-import lianzhang.hillEncrypt
 import me.leon.classical.*
 import me.leon.ctf.*
 import org.junit.Test
@@ -375,5 +373,14 @@ class ClassicalTest {
 
         assertEquals(encrypted, data.hillEncrypt(key))
         assertEquals(data, encrypted.hillDecrypt(key))
+
+        key = "1 2 0 1"
+        data = "flagishillissoeapy"
+        encrypted = "dloguszijluswogany"
+        println(data.hillEncrypt(key, fromZero = false))
+        println(encrypted.hillDecrypt(key, fromZero = false))
+
+        assertEquals(encrypted, data.hillEncrypt(key, fromZero = false))
+        assertEquals(data, encrypted.hillDecrypt(key, fromZero = false))
     }
 }

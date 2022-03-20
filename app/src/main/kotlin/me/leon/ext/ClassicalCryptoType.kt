@@ -504,4 +504,16 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.buddhaExplain()
     },
+    HILL("hill") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.hillEncrypt(params[P1] ?: "", fromZero = params[P2]?.isNullOrEmpty() ?: true)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            raw.hillDecrypt(params[P1] ?: "", fromZero = params[P2]?.isNullOrEmpty() ?: true)
+
+        override fun paramsCount() = 2
+
+        override fun paramsHints() =
+            listOf("key matrix,like 1 2 0 1 or bcab", "A = 0 as default,if has value A =1")
+    },
 }

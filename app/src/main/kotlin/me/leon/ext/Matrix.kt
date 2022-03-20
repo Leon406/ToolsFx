@@ -1,4 +1,4 @@
-package lianzhang
+package me.leon.ext
 
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -35,28 +35,17 @@ fun List<Int>.reshape(dimension: Int) =
 
 /** 乘法模逆元 3*9 == 1 mod 26 3 9的互为关于26的模逆元 */
 fun Int.modInverse(modular: Int = 26): Int {
-    var q: Int
-    var r1: Int
-    var r2: Int
-    var r: Int
-    var t1: Int
-    var t2: Int
-    var t: Int
-    r1 = modular
-    r2 = this
-    t1 = 0
-    t2 = 1
-    while (r1 != 1 && r2 != 0) {
-        q = r1 / r2
-        r = r1 % r2
-        t = t1 - t2 * q
-        r1 = r2
-        r2 = r
-        t1 = t2
-        t2 = t
+    val tmp = this % modular
+    for (i in 1 until modular) {
+        if ((tmp * i) % modular == 1) {
+            return i
+        }
     }
-    return (t1 + t2).takeIf { it >= 0 } ?: (t1 + t2 + 26)
+    return -1
 }
+
+fun Int.mod(modular: Int = 26) =
+    (this % modular).takeIf { (this % modular >= 0) } ?: ((this % modular) + modular)
 
 /** 乘法取余 矩阵乘以 矢量 */
 fun Array<IntArray>.multMod(col: IntArray, modular: Int): IntArray {
@@ -83,7 +72,18 @@ fun IntArray.showColum() {
     println(">>>>>\tcolum ${this.size}\n" + joinToString("\t\n") + "\n<<<<<<")
 }
 
+fun Array<IntArray>.invert2(modular: Int = 26): Array<IntArray> {
+    val a = determinant(size).modInverse(modular)
+    return arrayOf(
+        intArrayOf((this[1][1] * a), (-this[0][1] * a)),
+        intArrayOf((-this[1][0] * a), (this[0][0] * a)),
+    )
+}
+
 fun Array<IntArray>.invertModMatrix(modular: Int = 26): Array<IntArray> {
+    if (size == 2) {
+        return invert2(modular)
+    }
 
     val b: Array<IntArray> = Array(size) { IntArray(size) }
     val fac: Array<IntArray> = Array(size) { IntArray(size) }
