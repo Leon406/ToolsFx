@@ -10,7 +10,8 @@ import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
-import me.leon.encode.base.*
+import me.leon.encode.base.BYTE_BITS
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
@@ -212,20 +213,4 @@ class AsymmetricCryptoController : Controller() {
             Security.addProvider(BouncyCastleProvider())
         }
     }
-
-    fun String.decodeToByteArray(encode: String) =
-        when (encode) {
-            "raw" -> toByteArray()
-            "base64" -> base64Decode()
-            "hex" -> hex2ByteArray()
-            else -> throw IllegalArgumentException("input encode error")
-        }
-
-    fun ByteArray.encodeTo(encode: String) =
-        when (encode) {
-            "raw" -> decodeToString()
-            "base64" -> base64()
-            "hex" -> toHex()
-            else -> throw IllegalArgumentException("input encode error")
-        }
 }

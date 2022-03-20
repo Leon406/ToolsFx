@@ -6,7 +6,6 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.PBEController
-import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
@@ -49,20 +48,9 @@ class PBEView : View("PBE") {
                         tgGroup.toggles.first { it.cast<RadioButton>().text == "hex" }
                     )
                 }
-            else
-                when (saltEncode) {
-                    "raw" -> tfSalt.text.toByteArray()
-                    "hex" -> tfSalt.text.hex2ByteArray()
-                    "base64" -> tfSalt.text.base64Decode()
-                    else -> kotlin.error("Unknown encode: $saltEncode")
-                }
+            else tfSalt.text.decodeToByteArray(saltEncode)
         set(value) {
-            when (saltEncode) {
-                "raw" -> tfSalt.text = value.decodeToString()
-                "hex" -> tfSalt.text = value.toHex()
-                "base64" -> tfSalt.text = value.base64()
-                else -> kotlin.error("Unknown encode: $saltEncode")
-            }
+            tfSalt.text = value.encodeTo(saltEncode)
         }
 
     private val eventHandler = fileDraggedHandler {

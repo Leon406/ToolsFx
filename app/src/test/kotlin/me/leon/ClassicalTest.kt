@@ -1,6 +1,8 @@
 package me.leon
 
 import kotlin.test.assertEquals
+import lianzhang.hillDecrypt
+import lianzhang.hillEncrypt
 import me.leon.classical.*
 import me.leon.ctf.*
 import org.junit.Test
@@ -352,5 +354,26 @@ class ClassicalTest {
             println(it)
             assertEquals(data, it.grayDecode(5))
         }
+    }
+
+    @Test
+    fun hill() {
+        var key = "cefjcbdrh"
+        var data = "att"
+        var encrypted = "pfo"
+
+        assertEquals(encrypted, data.hillEncrypt(key))
+        assertEquals(data, encrypted.hillDecrypt(key))
+
+        key = "2  4  5\n" + "9  2  1\n" + "3  17  7"
+
+        assertEquals(encrypted, data.hillEncrypt(key))
+        assertEquals(data, encrypted.hillDecrypt(key))
+
+        data = "attackatdown"
+        encrypted = "pfogoanpgzbn"
+
+        assertEquals(encrypted, data.hillEncrypt(key))
+        assertEquals(data, encrypted.hillDecrypt(key))
     }
 }

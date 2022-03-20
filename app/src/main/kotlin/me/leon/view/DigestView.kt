@@ -7,23 +7,8 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.DigestController
 import me.leon.ext.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.asObservable
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.checkbox
-import tornadofx.combobox
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.paddingLeft
-import tornadofx.textarea
-import tornadofx.vbox
 
 class DigestView : View(messages["hash"]) {
     private val controller: DigestController by inject()
@@ -102,11 +87,26 @@ class DigestView : View(messages["hash"]) {
     private val info
         get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${isFileMode.get()}"
 
+    private var inputEncode = "raw"
+    private lateinit var tgInput: ToggleGroup
+
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
+            spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
             label(messages["input"])
+            tgInput =
+                togglegroup {
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("base64")
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        inputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
+
             button(graphic = imageview("/img/import.png")) {
                 action { inputText = clipboardText() }
             }
@@ -183,7 +183,7 @@ class DigestView : View(messages["hash"]) {
         runAsync {
             isProcessing.value = true
             if (isFileMode.get()) inputText.lineAction2String { controller.digestFile(method, it) }
-            else controller.digest(method, inputText, isSingleLine.get())
+            else controller.digest(method, inputText, inputEncode, isSingleLine.get())
         } ui
             {
                 isProcessing.value = false

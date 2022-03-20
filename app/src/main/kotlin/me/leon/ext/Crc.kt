@@ -7,6 +7,8 @@ import me.leon.CRC64
 
 fun String.crc32() = CRC32().apply { update(this@crc32.toByteArray()) }.value.toULong().toString(16)
 
+fun ByteArray.crc32() = CRC32().apply { update(this@crc32) }.value.toULong().toString(16)
+
 fun String.crc32File() =
     File(this).inputStream().use {
         val crc = CRC32()
@@ -19,6 +21,8 @@ fun String.crc32File() =
     }
 
 fun String.crc64() = CRC64().apply { update(this@crc64.toByteArray()) }.value.toULong().toString(16)
+
+fun ByteArray.crc64() = CRC64().apply { update(this@crc64) }.value.toULong().toString(16)
 
 fun String.crc64File() =
     File(this).inputStream().use {

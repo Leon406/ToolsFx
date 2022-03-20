@@ -132,7 +132,8 @@ class SignatureView : View(messages["signVerify"]) {
     private lateinit var cbSigs: ComboBox<String>
     private val info
         get() = "Signature: $keyPairAlg hash: ${selectedSigAlg.get()} "
-
+    private var inputEncode = "raw"
+    private lateinit var tgInput: ToggleGroup
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
@@ -150,6 +151,19 @@ class SignatureView : View(messages["signVerify"]) {
             }
         hbox {
             label(messages["plain"])
+            paddingAll = DEFAULT_SPACING
+            spacing = DEFAULT_SPACING
+            alignment = Pos.CENTER_LEFT
+            tgInput =
+                togglegroup {
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("base64")
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        inputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
+
             button(graphic = imageview("/img/import.png")) {
                 action { taRaw.text = clipboardText() }
             }
@@ -227,6 +241,7 @@ class SignatureView : View(messages["signVerify"]) {
                 selectedSigAlg.get(),
                 key,
                 msg,
+                inputEncode,
                 isSingleLine.get()
             )
         } ui
@@ -243,6 +258,7 @@ class SignatureView : View(messages["signVerify"]) {
                 selectedSigAlg.get(),
                 key,
                 msg,
+                inputEncode,
                 signText,
                 isSingleLine.get()
             )

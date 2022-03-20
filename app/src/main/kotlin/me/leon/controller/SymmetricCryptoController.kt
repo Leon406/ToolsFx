@@ -1,13 +1,11 @@
 package me.leon.controller
 
 import java.io.File
-import java.nio.charset.Charset
 import java.util.*
 import javax.crypto.*
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import me.leon.encode.base.base64
-import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import tornadofx.*
 
@@ -37,17 +35,9 @@ class SymmetricCryptoController : Controller() {
     ): String =
         catch({ "encrypt error: $it" }) {
             println("encrypt  $alg")
-
-            val inputBytes =
-                when (inputEncode) {
-                    "raw" -> data.toByteArray(Charset.forName(charset))
-                    "base64" -> data.base64Decode()
-                    "hex" -> data.hex2ByteArray()
-                    else -> throw IllegalArgumentException("input encode error")
-                }
             val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
 
-            val bytes = cipher.doFinal(inputBytes)
+            val bytes = cipher.doFinal(data.decodeToByteArray(inputEncode, charset))
             if (outputEncode == "base64") {
                 Base64.getEncoder().encodeToString(bytes)
             } else if (outputEncode == "hex") {
@@ -129,21 +119,8 @@ class SymmetricCryptoController : Controller() {
     ) =
         catch({ "decrypt error: $it" }) {
             println("decrypt  $alg")
-            val inputBytes =
-                when (inputEncode) {
-                    "raw" -> data.toByteArray(Charset.forName(charset))
-                    "base64" -> data.base64Decode()
-                    "hex" -> data.hex2ByteArray()
-                    else -> throw IllegalArgumentException("input encode error")
-                }
             val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)
-
-            val bytes = cipher.doFinal(inputBytes)
-            when (outputEncode) {
-                "raw" -> bytes.toString(Charset.forName(charset))
-                "base64" -> bytes.base64()
-                "hex" -> bytes.toHex()
-                else -> throw IllegalArgumentException("input encode error")
-            }
+            val bytes = cipher.doFinal(data.decodeToByteArray(inputEncode, charset))
+            bytes.encodeTo(outputEncode, charset)
         }
 }

@@ -6,8 +6,11 @@ import java.security.MessageDigest
 import me.leon.ext.toHex
 
 object Digests {
-    fun hash(method: String, data: String) =
-        MessageDigest.getInstance(method).apply { update(data.toByteArray()) }.digest().toHex()
+
+    fun hash(method: String, data: String) = hashHexString(method, data.toByteArray())
+
+    fun hashHexString(method: String, data: ByteArray) =
+        MessageDigest.getInstance(method).apply { update(data) }.digest().toHex()
 
     fun hash(method: String, data: ByteArray): ByteArray =
         MessageDigest.getInstance(method).apply { update(data) }.digest()

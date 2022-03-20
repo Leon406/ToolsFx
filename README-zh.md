@@ -274,20 +274,21 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
 ## 版本选择
 
-- 有jre环境
+- 有jre环境(文件大)
   - jdk8      选择jdk8的版本
   - jdk11+  选择jdk11的版本 + 同时需要配置javafx环境
 
-- 无jre环境
+- 无jre环境(文件小)
   - 64位 windows系统     x64 (jre11)
   - 32/64位 windows系统  x86 (jre8,不知道就选这个)  
+  
 - beta版 (jar文件)
 
-  需要复制到lib目录,同时删除ToolsFx.jar
+  需要复制到lib目录,同时删除ToolsFx-xxx.jar和 app-xxx.jar
 
 ## 如何运行
 
-- Linux/Mac OX系统双击运行 根目录下 ToolsFx 
+- Linux/Mac OSX系统双击运行 根目录下 ToolsFx 
 - Windows 系统双击运行ToolsFx.bat或者 vbs文件(去除黑窗)
 
 ## 如何配置

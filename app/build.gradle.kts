@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.12.2.beta02"
+version = "1.12.2.beta03"
 
 plugins {
     application
@@ -30,9 +30,4 @@ dependencies {
     implementation(project(":plugin-lib"))
     testImplementation("org.openjdk.nashorn:nashorn-core:15.3")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
-
-    testImplementation("org.jblas:jblas:1.2.5")
-    testImplementation("org.ejml:ejml-all:0.41")
-    testImplementation("org.ejml:ejml-kotlin:0.41")
-
 }

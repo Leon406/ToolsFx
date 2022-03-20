@@ -292,7 +292,15 @@ class MacView : View("MAC") {
                     outputEncode,
                     isSingleLine.get()
                 )
-            else controller.mac(inputText, keyByteArray, method,  inputEncode, outputEncode, isSingleLine.get())
+            else
+                controller.mac(
+                    inputText,
+                    keyByteArray,
+                    method,
+                    inputEncode,
+                    outputEncode,
+                    isSingleLine.get()
+                )
         } ui
             {
                 outputText = it

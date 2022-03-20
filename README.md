@@ -274,7 +274,7 @@ plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
   - 64bit Windows      x64 (jre11)
   - 32/64bit Windows x86 (jre8,have no idea, choose this)  
 - beta (jar file)
-  copy jar file to lib directory and delete ToolsFx-xxx.jar
+  copy jar file to lib directory and delete ToolsFx-xxx.jar or app-xx.jar
   
 
 ## How to Run

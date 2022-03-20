@@ -12,16 +12,23 @@ fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
 
 class SignatureController : Controller() {
 
-    fun sign(kpAlg: String, sigAlg: String, pri: String, msg: String, isSingleLine: Boolean) =
-        if (isSingleLine) msg.lineAction2String { sign(kpAlg, sigAlg, pri, it) }
-        else sign(kpAlg, sigAlg, pri, msg)
+    fun sign(
+        kpAlg: String,
+        sigAlg: String,
+        pri: String,
+        msg: String,
+        inputEncode: String,
+        isSingleLine: Boolean
+    ) =
+        if (isSingleLine) msg.lineAction2String { sign(kpAlg, sigAlg, pri, it, inputEncode) }
+        else sign(kpAlg, sigAlg, pri, msg, inputEncode)
 
-    fun sign(kpAlg: String, sigAlg: String, pri: String, msg: String) =
+    fun sign(kpAlg: String, sigAlg: String, pri: String, msg: String, inputEncode: String) =
         catch({ it }) {
             Signature.getInstance(sigAlg.properKeyPairAlg())
                 .apply {
                     initSign(getPrivateKey(pri, kpAlg))
-                    update(msg.toByteArray())
+                    update(msg.decodeToByteArray(inputEncode))
                 }
                 .sign()
                 .base64()
@@ -32,21 +39,30 @@ class SignatureController : Controller() {
         sigAlg: String,
         pub: String,
         msg: String,
+        inputEncode: String,
         signed: String,
         isSingleLine: Boolean
     ) =
         if (isSingleLine)
             msg.lineActionIndex { s, i ->
-                verify(kpAlg, sigAlg, pub, s, signed.lineSplit()[i].base64Decode()).toString()
+                verify(kpAlg, sigAlg, pub, s, inputEncode, signed.lineSplit()[i].base64Decode())
+                    .toString()
             }
-        else verify(kpAlg, sigAlg, pub, msg, signed.base64Decode())
+        else verify(kpAlg, sigAlg, pub, msg, inputEncode, signed.base64Decode())
 
-    fun verify(kpAlg: String, sigAlg: String, pub: String, msg: String, signed: ByteArray) =
+    fun verify(
+        kpAlg: String,
+        sigAlg: String,
+        pub: String,
+        msg: String,
+        inputEncode: String,
+        signed: ByteArray
+    ) =
         catch({ false }) {
             Signature.getInstance(sigAlg.properKeyPairAlg())
                 .apply {
                     initVerify(getPublicKey(pub, kpAlg))
-                    update(msg.toByteArray())
+                    update(msg.decodeToByteArray(inputEncode))
                 }
                 .verify(signed)
         }

@@ -5,13 +5,16 @@ import me.leon.ext.*
 import tornadofx.*
 
 class DigestController : Controller() {
-    fun digest(method: String, data: String, isSingleLine: Boolean = false) =
-        if (isSingleLine) data.lineAction2String { digest(method, it) } else digest(method, data)
+    fun digest(method: String, data: String, inputEncode: String, isSingleLine: Boolean = false) =
+        if (isSingleLine) data.lineAction2String { digest(method, it, inputEncode) }
+        else digest(method, data, inputEncode)
 
-    private fun digest(method: String, data: String) =
+    private fun digest(method: String, data: String, inputEncode: String) =
         catch({ "digest error: $it" }) {
-            if (method.startsWith("CRC")) if (method.contains("32")) data.crc32() else data.crc64()
-            else Digests.hash(method, data)
+            if (method.startsWith("CRC"))
+                if (method.contains("32")) data.decodeToByteArray(inputEncode).crc32()
+                else data.decodeToByteArray(inputEncode).crc64()
+            else Digests.hashHexString(method, data.decodeToByteArray(inputEncode))
         }
 
     fun digestFile(method: String, path: String) =
