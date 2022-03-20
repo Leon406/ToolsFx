@@ -234,6 +234,7 @@
 - [x] Gronsfeld密码
 - [x] 格雷码(Gray code)
 - [x] 佛曰
+- [x] 希尔密码
 
 ![ctf](./art/ctf.gif)
 

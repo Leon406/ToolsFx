@@ -225,6 +225,7 @@
 - [x] Gronsfeld Cipher
 - [x] Gray code
 - [x] Buddha Says(佛曰)
+- [x] Hill Cipher
 
 ![ctf](./art/ctf.gif)
 
