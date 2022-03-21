@@ -254,4 +254,14 @@ class EncodeTest {
         s.toHtmlEntity(isAll = false).also { assertEquals(s, it.htmlEntity2String()) }
         "&#39;Steve&#39;".htmlEntity2String().also { assertEquals("'Steve'", it) }
     }
+
+    @Test
+    fun quotePrint() {
+        val raw = "开发工具集合 by leon406@52pojie.cn"
+        val encrypted = "=bf=aa=b7=a2=b9=a4=be=df=bc=af=ba=cf=20by=20leon406@52pojie.cn"
+        val gbkMsg = QuotePrintable.encode(raw, "gbk")
+
+        assertEquals(encrypted, gbkMsg)
+        assertEquals(raw, QuotePrintable.decode(gbkMsg, "gbk"))
+    }
 }
