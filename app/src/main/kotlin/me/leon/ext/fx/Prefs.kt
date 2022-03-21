@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.fx
 
 import java.util.prefs.Preferences
 

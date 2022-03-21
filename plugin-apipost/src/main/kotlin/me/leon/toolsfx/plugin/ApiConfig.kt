@@ -1,6 +1,6 @@
 package me.leon.toolsfx.plugin
 
-import me.leon.ext.Prefs
+import me.leon.ext.fx.Prefs
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import me.leon.toolsfx.plugin.net.NetHelper.parseHeaderString
 import me.leon.toolsfx.plugin.net.NetHelper.proxyType

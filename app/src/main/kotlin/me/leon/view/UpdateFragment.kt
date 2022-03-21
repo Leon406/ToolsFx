@@ -3,6 +3,8 @@ package me.leon.view
 import javafx.geometry.Pos
 import me.leon.REPO_URL
 import me.leon.ext.*
+import me.leon.ext.fx.Prefs
+import me.leon.ext.fx.openInBrowser
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 

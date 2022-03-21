@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.fx
 
 import javafx.animation.*
 import javafx.scene.Scene

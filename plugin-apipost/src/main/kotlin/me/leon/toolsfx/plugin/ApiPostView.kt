@@ -8,6 +8,7 @@ import javafx.scene.control.*
 import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.text.Text
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
 import me.leon.toolsfx.plugin.table.EditingCell

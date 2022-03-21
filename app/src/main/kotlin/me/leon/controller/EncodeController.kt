@@ -2,6 +2,7 @@ package me.leon.controller
 
 import java.nio.charset.Charset
 import me.leon.ext.*
+import me.leon.ext.crypto.EncodeType
 import tornadofx.*
 
 class EncodeController : Controller() {

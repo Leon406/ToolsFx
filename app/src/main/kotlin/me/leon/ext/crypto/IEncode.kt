@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.crypto
 
 interface IEncode {
 

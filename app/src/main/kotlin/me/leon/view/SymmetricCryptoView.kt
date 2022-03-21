@@ -7,8 +7,8 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
-import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -33,13 +33,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} "
     private lateinit var labelInfo: Label
     private val keyByteArray
-        get() =
-            when (keyEncode) {
-                "raw" -> tfKey.text.toByteArray()
-                "hex" -> tfKey.text.hex2ByteArray()
-                "base64" -> tfKey.text.base64Decode()
-                else -> byteArrayOf()
-            }
+        get() = tfKey.text.decodeToByteArray(keyEncode)
 
     private var keyEncode = "raw"
     private var ivEncode = "raw"
@@ -47,13 +41,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private var outputEncode = "base64"
 
     private val ivByteArray
-        get() =
-            when (ivEncode) {
-                "raw" -> tfIv.text.toByteArray()
-                "hex" -> tfIv.text.hex2ByteArray()
-                "base64" -> tfIv.text.base64Decode()
-                else -> byteArrayOf()
-            }
+        get() = tfIv.text.decodeToByteArray(ivEncode)
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =

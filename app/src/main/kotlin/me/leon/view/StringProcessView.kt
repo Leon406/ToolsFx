@@ -16,6 +16,8 @@ import kotlin.collections.toList
 import me.leon.SimpleMsgEvent
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.crypto.EncodeType
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 

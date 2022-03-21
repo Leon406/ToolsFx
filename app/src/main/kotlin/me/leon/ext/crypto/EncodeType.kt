@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.crypto
 
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -7,6 +7,7 @@ import me.leon.encode.*
 import me.leon.encode.base.*
 import me.leon.encode.base.base100
 import me.leon.encode.base.base100Decode
+import me.leon.ext.*
 
 enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode {
     Base64("base64", BASE64_DICT) {

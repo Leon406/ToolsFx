@@ -6,6 +6,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.compress.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages

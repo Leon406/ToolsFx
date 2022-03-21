@@ -24,11 +24,9 @@ fun String.base64Decode(dict: String = BASE64_DICT) =
     toCharArray()
         .filter { it != '=' }
         .joinToString("") {
-            println(it)
             dict
                 .ifEmpty { BASE64_DICT }
                 .indexOf(it)
-                .also { println(it) }
                 .toString(2)
                 .padding("0", BASE64_BLOCK_SIZE, false)
         }

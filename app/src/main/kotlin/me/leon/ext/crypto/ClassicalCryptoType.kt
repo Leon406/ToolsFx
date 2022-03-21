@@ -1,8 +1,9 @@
-package me.leon.ext
+package me.leon.ext.crypto
 
 import me.leon.*
 import me.leon.classical.*
 import me.leon.ctf.*
+import me.leon.ext.*
 
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {

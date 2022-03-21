@@ -7,6 +7,7 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.PBEParameterSpec
 import me.leon.encode.base.*
 import me.leon.ext.*
+import me.leon.ext.crypto.PBE
 import tornadofx.Controller
 
 class PBEController : Controller() {

@@ -8,6 +8,8 @@ import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.EncodeController
 import me.leon.ext.*
+import me.leon.ext.crypto.EncodeType
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 

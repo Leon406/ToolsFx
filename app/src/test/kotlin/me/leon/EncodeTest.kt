@@ -7,6 +7,7 @@ import me.leon.ctf.bubbleBabbleDecode2String
 import me.leon.encode.*
 import me.leon.encode.base.*
 import me.leon.ext.*
+import me.leon.ext.crypto.EncodeType
 import org.junit.Before
 import org.junit.Test
 

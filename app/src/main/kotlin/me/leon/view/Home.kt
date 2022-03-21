@@ -12,7 +12,7 @@ import me.leon.ToolsApp.Companion.isEnableSignature
 import me.leon.ToolsApp.Companion.isEnableSymmetricStream
 import me.leon.ToolsApp.Companion.plugins
 import me.leon.VERSION
-import me.leon.ext.Prefs
+import me.leon.ext.fx.Prefs
 import me.leon.toolsfx.plugin.PluginView
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*

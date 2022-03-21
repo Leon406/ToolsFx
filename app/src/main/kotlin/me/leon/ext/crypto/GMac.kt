@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.crypto
 
 import org.bouncycastle.crypto.*
 import org.bouncycastle.crypto.engines.*

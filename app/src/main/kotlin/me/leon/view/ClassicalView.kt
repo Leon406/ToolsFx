@@ -7,6 +7,8 @@ import me.leon.SimpleMsgEvent
 import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.crypto.ClassicalCryptoType
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 

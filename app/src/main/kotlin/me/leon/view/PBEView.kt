@@ -8,6 +8,8 @@ import me.leon.CHARSETS
 import me.leon.controller.PBEController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import me.leon.ext.crypto.PBE
+import me.leon.ext.fx.*
 import tornadofx.*
 
 class PBEView : View("PBE") {

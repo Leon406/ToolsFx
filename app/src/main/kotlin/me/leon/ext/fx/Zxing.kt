@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.fx
 
 import com.google.zxing.*
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource

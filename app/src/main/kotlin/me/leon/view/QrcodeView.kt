@@ -20,6 +20,7 @@ import javafx.stage.StageStyle
 import kotlin.math.abs
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
 import tornadofx.*
 

@@ -7,6 +7,7 @@ import javafx.scene.control.*
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import tornadofx.*
 
 class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
@@ -212,7 +213,6 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                         keyText,
                         alg,
                         inputText,
-                        selectedBits.get().toInt(),
                         isSingleLine.get(),
                         inputEncode = inputEncode,
                         outputEncode = outputEncode
@@ -222,7 +222,6 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                         keyText,
                         alg,
                         inputText,
-                        selectedBits.get().toInt(),
                         isSingleLine.get(),
                         inputEncode = inputEncode,
                         outputEncode = outputEncode
@@ -232,7 +231,6 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     keyText,
                     alg,
                     inputText,
-                    selectedBits.get().toInt(),
                     isSingleLine.get(),
                     inputEncode,
                     outputEncode
@@ -242,7 +240,6 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     keyText,
                     alg,
                     inputText,
-                    selectedBits.get().toInt(),
                     isSingleLine.get(),
                     inputEncode,
                     outputEncode

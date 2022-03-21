@@ -6,6 +6,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.SignatureController
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 

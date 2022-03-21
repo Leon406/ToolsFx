@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.crypto
 
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
