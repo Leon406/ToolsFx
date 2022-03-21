@@ -3,6 +3,7 @@ package me.leon
 import kotlin.test.assertEquals
 import me.leon.classical.*
 import me.leon.ctf.*
+import me.leon.ext.*
 import org.junit.Test
 
 class CtfTest {
@@ -30,16 +31,13 @@ class CtfTest {
 
     @Test
     fun circleIndex() {
-        assertEquals(2, 0.circleIndex(5, 3))
-        assertEquals(0, 1.circleIndex(5, 3))
-        assertEquals(1, 2.circleIndex(5, 3))
+        assertEquals(2, 0.circleIndex(3, 5))
+        assertEquals(0, 1.circleIndex(3, 5))
+        assertEquals(1, 2.circleIndex(3, 5))
     }
 
     @Test
     fun asciiShift() {
-        val d = "FDCB[8LDQ?ZLOO?FHUWDLQOB?VXFFHHG?LQ?ILJKWLQJ?WKH?HSLGHPLF]"
-        d.map { (it.code + 29).toChar() }.also { println(it.joinToString("")) }
-
         val emoji =
             "🙃💵🌿🎤🚪🌏🐎🥋🚫😆😍🐍✅🐎👑😡😁😁😍🕹🦓😂🕹🚪🎤💵📂✉🥋🚪😂🚪👑🐘🍎🍎🐍👑🙃😁✅😀🥋🗒"
         val emojiShift1 =
@@ -49,14 +47,14 @@ class CtfTest {
         assertEquals(base64, emoji.emojiReplaceDecode())
         assertEquals(base64, emojiShift1.emojiReplaceDecode(1))
         assertEquals(emoji, base64.emojiReplace().also { println(it) })
-        assertEquals(emojiShift1, base64.emojiReplace(1).also { println(it) })
+        assertEquals(emojiShift1, base64.emojiReplace(1))
     }
 
     @Test
     fun tableSub() {
         val table =
             "2 22 222 3 33 333 4 44 444 5 55 555 6 66 666 7 77 777 7777 8 88 888 9 99 999 9999"
-        val d = "abcdefghijklmnopqrstuvwxyz"
+        val d = TABLE_A_Z_LOWER
         println(d.tableEncode(table, " "))
         println("333 555 2 4 444 7777 44 2 66 3 999 222 666 3 33".tableDecode(table))
     }
@@ -64,21 +62,21 @@ class CtfTest {
     @Test
     fun porta() {
         val d = "where is Porta Cipher flag"
-        d.porta("hello").also { assertEquals(d.replace(" ", "").uppercase(), it.porta("hello")) }
+        d.porta("hello").also { assertEquals(d.stripAllSpace().uppercase(), it.porta("hello")) }
     }
 
     @Test
     fun beaufort() {
         val d = "where is beaufort Cipher flag"
         d.beaufort("hello").also {
-            assertEquals(d.replace(" ", "").uppercase(), it.beaufort("hello"))
+            assertEquals(d.stripAllSpace().uppercase(), it.beaufort("hello"))
         }
     }
 
     @Test
     fun gronsfeld() {
         val d = "where is gronsfeld Cipher flag"
-        d.gronsfeld().also { assertEquals(d.replace(" ", "").uppercase(), it.gronsfeldDecrypt()) }
+        d.gronsfeld().also { assertEquals(d.stripAllSpace().uppercase(), it.gronsfeldDecrypt()) }
     }
 
     @Test
@@ -87,7 +85,7 @@ class CtfTest {
         val key2 = "GHIKOPQRSYZABTULMNVWXCDEF"
         val d = "Foursquare Cipher"
         d.fourSquare(key1, key2).also {
-            assertEquals(d.replace(" ", "").uppercase(), it.fourSquareDecrypt(key1, key2))
+            assertEquals(d.stripAllSpace().uppercase(), it.fourSquareDecrypt(key1, key2))
         }
     }
 
@@ -96,14 +94,14 @@ class CtfTest {
         val key = "mabkynvhgsorpczxedfqwtuil"
         val d = "defend the east wall of the castle"
         d.bifid(key, 3).also {
-            assertEquals(d.replace(" ", "").uppercase(), it.bifidDecrypt(key, 3))
+            assertEquals(d.stripAllSpace().uppercase(), it.bifidDecrypt(key, 3))
         }
     }
 
     @Test
     fun trifid() {
         val key = "EPSDUCVWYM.ZLKXNBTFGORIJHAQ"
-        val d = "D E F E N D T H E E A S T W A L L O F T H E C A S T L E .".replace(" ", "")
+        val d = "D E F E N D T H E E A S T W A L L O F T H E C A S T L E .".stripAllSpace()
         d.trifid(key, 5).also { assertEquals(d, it.trifidDecrypt(key, 5)) }
     }
 }

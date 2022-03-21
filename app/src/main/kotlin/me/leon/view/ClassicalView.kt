@@ -28,9 +28,7 @@ class ClassicalView : View(messages["classical"]) {
             "${if (isEncrypt) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
     private val inputText: String
-        get() =
-            taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                ?: taInput.text.replace("\\s".toRegex(), "")
+        get() = taInput.text.takeUnless { decodeIgnoreSpace.get() } ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
 

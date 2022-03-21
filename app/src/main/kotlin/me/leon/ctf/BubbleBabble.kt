@@ -60,7 +60,6 @@ object BubbleBabble {
         out.append(consonants[P[1]])
         out.append(vowels[P[2]])
         out.append('x')
-        println(out)
         return out.toString()
     }
 

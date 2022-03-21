@@ -4,14 +4,6 @@ import kotlin.math.sqrt
 import me.leon.ext.*
 
 /** ported from https://github.com/akourk/HillCipher/blob/master/Main.java */
-fun String.hillSplit(n: Int) = padEnd(n, 'x').chunked(n)
-
-fun String.hillIndexSplitArray(n: Int, fromZero: Boolean = true) =
-    alphabetIndexNum(fromZero = fromZero).chunked(n).map { it.toIntArray() }.toTypedArray()
-
-fun Array<IntArray>.toCharacter(fromZero: Boolean = true) =
-    joinToString("") { it.alphabetIndexDecodeNum(fromZero = fromZero) }.lowercase()
-
 fun String.hillEncrypt(key: String, table: String = TABLE_A_Z, fromZero: Boolean = true): String {
     val keyMatrix = parseKey(key)
     return padEnd(keyMatrix.size, 'x').chunked(keyMatrix.size).joinToString("") {

@@ -34,3 +34,5 @@ fun String.recoverEncoding() =
         }
         .fold(StringBuilder()) { acc, (src, dst) -> acc.append("$src: $dst \n") }
         .toString()
+
+fun String.toCharset(): Charset = Charset.forName(this)

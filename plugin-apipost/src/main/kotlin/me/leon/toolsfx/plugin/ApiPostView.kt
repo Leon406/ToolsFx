@@ -102,7 +102,7 @@ class ApiPostView : PluginView("ApiPost") {
                 enableWhen(!isRunning)
                 action {
                     if (tfUrl.text.isEmpty() ||
-                        !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
+                            !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
                     ) {
                         primaryStage.showToast("plz input legal url")
                         return@action
@@ -127,7 +127,7 @@ class ApiPostView : PluginView("ApiPost") {
                                                 reqTableParams as MutableMap<String, Any>,
                                                 reqHeaders.apply {
                                                     if (selectedBodyType.get() ==
-                                                        BodyType.FORM_DATA.type
+                                                            BodyType.FORM_DATA.type
                                                     )
                                                         put(
                                                             "Content-Type",
@@ -155,7 +155,8 @@ class ApiPostView : PluginView("ApiPost") {
                                 textRspStatus.text = it.statusInfo
                                 taRspHeaders.text = it.headerInfo
                                 taRspContent.text =
-                                    if (isPretty.get()) it.data.unicodeMix2String().prettyJson() else it.data
+                                    if (isPretty.get()) it.data.unicodeMix2String().prettyJson()
+                                    else it.data
                                 this@ApiPostView.isRunning.value = false
                             }
                             .onFailure {
@@ -174,12 +175,12 @@ class ApiPostView : PluginView("ApiPost") {
             button(graphic = imageview("/img/copy.png")) {
                 action {
                     Request(
-                        tfUrl.text,
-                        selectedMethod.get(),
-                        reqTableParams as MutableMap<String, Any>,
-                        reqHeaders,
-                        taReqContent.text
-                    )
+                            tfUrl.text,
+                            selectedMethod.get(),
+                            reqTableParams as MutableMap<String, Any>,
+                            reqHeaders,
+                            taReqContent.text
+                        )
                         .apply {
                             isJson = selectedBodyType.get() == BodyType.JSON.type
                             requestParams
@@ -351,7 +352,7 @@ class ApiPostView : PluginView("ApiPost") {
                                         valueProperty.value = mutableEntry.value.toString()
                                         isFileProperty.value =
                                             mutableEntry.key in fileKeys ||
-                                                    mutableEntry.value.toString() == "@file"
+                                                mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }

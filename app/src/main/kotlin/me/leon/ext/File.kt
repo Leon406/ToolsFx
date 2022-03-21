@@ -1,6 +1,7 @@
 package me.leon.ext
 
 import java.io.File
+import me.leon.encode.base.base64
 
 /** @link https://en.wikipedia.org/wiki/List_of_file_signatures */
 val magics =
@@ -89,5 +90,7 @@ fun File.realExtension() =
                 }
             }
     else "not file"
+
+fun File.toBase64() = readBytes().base64()
 
 fun String.toFile() = File(this)

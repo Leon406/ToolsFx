@@ -3,15 +3,14 @@ package me.leon
 import kotlin.test.assertEquals
 import me.leon.classical.*
 import me.leon.ctf.*
+import me.leon.encode.base.base100
+import me.leon.encode.base.base100Decode2String
+import me.leon.ext.stripAllSpace
 import org.junit.Test
 
 class ClassicalTest {
     @Test
     fun caesar() {
-        "ATTACKATDAWN".virgeneneEncode("LEMONLEMONLE").also { println(it) }
-        "CRYPTO IS SHORT FOR CRYPTOGRAPHY".virgeneneEncode("ABCDEF AB CDEFA BCD EFABCDEFABCD")
-            .also { println(it) }
-        "LXFOPVEFRNHR".virgeneneDecode("LEMONLEMONLE").also { println(it) }
 
         val plain = "hello! yoshiko"
         println(plain.shift26(26))
@@ -19,6 +18,15 @@ class ClassicalTest {
         for (i in 1..25) {
             println(encrypt.shift26(i))
         }
+    }
+
+    @Test
+    fun virgenene() {
+        val plain = "ATTACKATDAWN"
+        val encrypt = "LXFOPVEFRNHR"
+        val key = "LEMONLEMONLE"
+        assertEquals(encrypt, plain.virgeneneEncode(key))
+        assertEquals(plain, encrypt.virgeneneDecode(key))
     }
 
     @Test
@@ -48,8 +56,8 @@ class ClassicalTest {
     @Test
     fun affine() {
         "AFFINECIPHER".affineEncrypt(5, 8).also {
-            println(it)
-            println(it.affineDecrypt(5, 8))
+            assertEquals("IHHWVCSWFRCP", it)
+            assertEquals("AFFINECIPHER", it.affineDecrypt(5, 8))
         }
     }
 
@@ -63,8 +71,8 @@ class ClassicalTest {
     @Test
     fun atbash() {
         "Hello".atBash().also {
-            println(it)
-            println(it.atBash())
+            assertEquals("SVOOL", it)
+            assertEquals("Hello".uppercase(), it.atBash())
         }
     }
 
@@ -109,42 +117,22 @@ class ClassicalTest {
         val key = "MASKL NSFLD FKJPQ"
         val data = "This is an example"
         val encrypted = "FHACTFSSPAFWYAU"
-        // check length
-        val k2 = key.filter { it.isLetter() }.uppercase()
-        val d2 = data.filter { it.isLetter() }.uppercase()
-        val isSameSize = k2.length == d2.length
-        println(isSameSize)
-        // do add
-        d2
-            .mapIndexed { index, c -> 'A' + (c.code + k2[index].code - 130) % 26 }
-            .joinToString("")
-            .also { println(it) }
-
-        encrypted
-            .mapIndexed { index, c -> 'A' + (c.code - k2[index].code + 26) % 26 }
-            .joinToString("")
-            .also { println(it) }
-
-        println()
-        println(data.oneTimePad(key))
-        println(encrypted.oneTimePadDecrypt(key))
+        assertEquals(encrypted, data.oneTimePad(key))
+        assertEquals(data.stripAllSpace().uppercase(), encrypted.oneTimePadDecrypt(key))
     }
 
     @Test
     fun qwe() {
-        println("Hello Leon".qweEncrypt())
-        println("ITSSGSTGF".qweDecrypt())
-        println("QWERTYUIOP".qweDecrypt())
-        println("ASDFGHJKL".qweDecrypt())
-        println("ZXCVBNM ".qweDecrypt())
+        assertEquals("Hello Leon".stripAllSpace().uppercase(), "ITSSGSTGF".qweDecrypt())
+        assertEquals("ITSSGSTGF", "Hello Leon".qweEncrypt())
     }
 
     @Test
     fun b100() {
         val s = "hello开发工具箱".toByteArray()
         val encoded = s.base100()
-        println(encoded)
-        println(encoded.base100Decode2String())
+        assertEquals("👟👜👣👣👦🏜🎳🍷🏜🎆🎈🏜🎮🎜🏜🍼🎮🏞🎥🎨", s.base100())
+        assertEquals("hello开发工具箱", encoded.base100Decode2String())
     }
 
     @Test
@@ -153,29 +141,25 @@ class ClassicalTest {
         ("公正爱国公正平等公正诚信文明公正诚信文明公正诚信平等友善爱国平等诚信民主诚信文明爱国富强友善爱国平等爱国诚信平等敬业民主诚信自由平等" +
                 "友善平等法治诚信富强平等友善爱国平等爱国平等诚信民主法治诚信自由法治友善自由友善爱国友善平等民主")
             .socialistCoreValuesDecrypt()
-            .also { println(it) }
+            .also { assertEquals("hello开发工具箱", it) }
     }
 
     @Test
     fun railFence() {
         val msg = "ATTACKATDAWN"
-        val count = 5
-        println(msg.railFenceEncrypt(count))
-
         val encrypt = "AKWTANTT@AD@CA@"
-        println(encrypt.railFenceDecrypt(5))
+        val count = 5
+        assertEquals(encrypt, msg.railFenceEncrypt(count))
         assertEquals(msg, encrypt.railFenceDecrypt(5))
     }
 
     @Test
     fun railFenceW() {
         val msg = "ATTACKATDAWN"
-        repeat(11) {
-            println("${it + 2}")
-            val message = msg.railFenceWEncrypt(it + 2)
-            println(message)
-            println(message.railFenceWDecrypt(it + 2))
-        }
+        val encrypt = "ACDTAKTANTAW"
+        println(msg.railFenceWEncrypt(3))
+        assertEquals(encrypt, msg.railFenceWEncrypt(3))
+        assertEquals(msg, encrypt.railFenceWDecrypt(3))
     }
 
     @Test
@@ -242,38 +226,45 @@ class ClassicalTest {
 
     @Test
     fun adfgx() {
-        val msg = "implementedByleonJill".replace("\\s".toRegex(), "")
-        var table = "phqgmeaynofdxkrcvszwbutil"
-        val key = "chinacc".toList().distinct().joinToString("")
-        val encrypted = msg.adfgx(table, key)
-        println(encrypted)
-        println(encrypted.adfgxDecrypt(table, key))
+        val msg = "implementedByleonJill"
+        val table = "phqgmeaynofdxkrcvszwbutil"
+        val key = "chinacc"
+        val expectedEncrypt = "AADADAXXXAAGFFDGXGXXXDXXXXAXDFXXDGXDADADGX"
+        val expectedDecrypt = "IMPLEMENTEDBYLEONIILL"
+
+        assertEquals(expectedEncrypt, msg.adfgx(table, key))
+        assertEquals(expectedDecrypt, expectedEncrypt.adfgxDecrypt(table, key))
     }
 
     @Test
     fun adfgvx() {
-        val msg = "implementedByleonJillds123".replace("\\s".toRegex(), "")
-        var table = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        val key = "chinacc".toList().distinct().joinToString("")
-        val encrypted = msg.adfgvx(table, key)
-        println(encrypted)
-        println(encrypted.adfgvxDecrypt(table, key))
+        val msg = "implementedByleonJillds123"
+        val table = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        val key = "chinacc"
+        val expectedEncrypt = "FVFVVVDXGVDGFDAAFGDAVFDAGGDFDXVXFXADAXFFAGAAVADADDGV"
+        val expectedDecrypt = "IMPLEMENTEDBYLEONJILLDS123"
+
+        assertEquals(expectedEncrypt, msg.adfgvx(table, key))
+        assertEquals(expectedDecrypt, expectedEncrypt.adfgvxDecrypt(table, key))
     }
 
     @Test
     fun autoKey() {
         val msg = "ATTACK AT DAWN"
         val key = "QUEENLY"
+        val encrypt = "QNXEPV YT WTWP"
         // 它的密钥开头是一个关键词，之后则是明文的重复
         println(msg.autoKey(key))
-        println("QNXEPVYTWTWP".autoKeyDecrypt(key))
-        println("QNXEPV YT WTWP".autoKeyDecrypt(key))
+        assertEquals(encrypt, msg.autoKey(key))
+        assertEquals(msg, encrypt.autoKeyDecrypt(key))
+        assertEquals(encrypt.stripAllSpace(), msg.autoKey(key).stripAllSpace())
+        assertEquals(msg.stripAllSpace(), encrypt.stripAllSpace().autoKeyDecrypt(key))
     }
 
     @Test
     fun playFair() {
         val key = "playfair example".replace(" ", "")
-        var msg = "Hide the gold in the tree stump"
+        val msg = "Hide the gold in the tree stump"
         println(msg.playFair(key))
         println("BMODZBXDNABEKUDMUIMXMOVUIFYE".playFairDecrypt(key))
         println("BM OD ZB XD NA BE KU DM UI MX MO VU IF YE".playFairDecrypt(key))
@@ -289,52 +280,63 @@ class ClassicalTest {
 
     @Test
     fun blind() {
-        var d =
+        val d =
             "⡥⠂⡶⡃⡔⡷⡦⡛⡨⠁⠟⡚⠉⠇⡳⡜⡉⡤⡴⡑⡓⡆⡑⡔⡆⡠⡩⡹⠂⡢⡪⡵⡢⡟⡶⡹⠃⡒⠁⡥⡞⠟⡚⡞⡣⡣⡤⡀⡡⡆⠉⡼⡻⠀⠉⡧⡙⠇⡦⡇⡧⡅⡺⡑⠺⡑⡉⡑⠂⡞⡱⡳⠁" +
                 "⡊⡢⡩⡊⡚⡊⡕⡛⠀⡕⠂⡩⡱⡾⡴⠂⡶⡛⠈⡹⡇⡗⡑⠃⠁⡆⡝⡽⡺⡨⡙⠛⠅⠁⡠⡇⡩⡅⡸⡑⡧⡑⡸⠅⡆⡨⠛⡣⡨⡑⡢⡝⠁⡟⡚⡿⠺⠛⡿⡕⡴⡛⡡⠀⡔⠉" +
                 "⠂⡴⡃⠃⠀⡿⡹⠄⡺⡀⡵⡊⡝⡪⡨⡛⡦⡖⡛⡧⡡⡪⠈⡲⠟⡝⡔⡕⠅⡄⡞⠟⠂⡵⡉⠅⡩⡦⡼⡈⡴⡩⡈⠟⡞⡦⡩⡆⡛⡴⡾⡈⡁⡁⡗⠺⡹⡾⡆⡢⡹⡠⡈⡃⡛⠆" +
                 "⡁⡖⡻⡉⡡⡻⡓⠆⡁⡼⡷⠃⡛⠅⡵⠈⡝⡂⠉⡃⡄⡠⡠⡡⡒⡁⡃⡁⠅⡾⡨⠆⡘⠇⡄⡁⡲⠅⡖⠛⡓⡤⡃⡕⡺⡃⡝⡛⡳⠀⡢⡒⡙⠂⠺⡱⡉⡻⡒⡨⡄⡒⡒⡈⡱⡧⡽" +
                 "⠆⡉⡷⡹⠛⡊⠟⡥⡜⡳⡶⠆⡺⠉⠂⡂⡛⡥⡓⡝⡴⠆⡽⡟⠅⡿⡻⡸⡺⠆⡇⠂⠈⡼⡤⡕⠂⠈⡤⠅⠛⠁⡇⡟⡧⡈⡗⡲⡊⡸⠉⡻⠺⡱⡻⡥⠍="
-        println(d.blindDecode())
-        println("abdcd".blindEncode())
+
+        val plain =
+            "U2FsdGVkX1/j97ClyTDacvadvPYI2RZERoFI3b1Un/jnSSTpQv9LK09Wi7VwWuJa\r\n" +
+                "aya2nAC1zRYzjzek0e2YAND2Fk8Iwga31vmMJXi+51PwYuHaWaH5vX+SXaRm1ojO\r\n" +
+                "+OeDkQ0d92Ds30OI4JpEzmZXkVfkWQZ8B/mde5tn/2Ey5YVLxDYx/nVYvkDNxqqg\r\n" +
+                "INvRIPxsk6qfKyQKc6qLG3k5E8mr9stPPQbqsq5NX6h7tqB5f+cTseJsmkC0Rbi2\r\n" +
+                "AyKbXtbbxAWM6yGI+z/UlCF6J92rkUcmD6Mo5OKHJ6w28LTe28T5+1woWxgBzH9K\r\n" +
+                "AKU="
+
+        assertEquals(plain, d.blindDecode())
+        assertEquals("⡑⡒⡔⡓⡔=", "abdcd".blindEncode())
     }
 
     @Test
     fun elementPeriod() {
-        var d = "No Hs Bk Lr Db Uup Lr Rg Rg Fm"
-        println(d.elementPeriodDecode())
-        println("qrstuv".elementPeriodEncode())
+        val d = "No Hs Bk Lr Db Uup Lr Rg Rg Fm"
+        assertEquals("flagisgood", d.elementPeriodDecode())
+        val plain = "periodic element table"
+        val encrypted = "Cn Md Fl Db Rg Fm Db Es Ge Md Hs Md Mt Md Ds Lv Ge Lv Bk Cf Hs Md"
+        assertEquals(encrypted, plain.elementPeriodEncode())
+        assertEquals(plain, encrypted.elementPeriodDecode())
     }
 
     @Test
     fun baudot() {
-        "baudot by leon406".baudot().also { println(it) }.also { println(it.baudotDecode()) }
-        "11001 00011 00111 01001 11000 10000 00100 11001 10101 00100 10010 00001 11000 01100 11011 01010 10110 10101"
-            .baudotDecode()
-            .also { println(it) }
+        val encrypted =
+            "11001 00011 00111 01001 11000 10000 00100 11001 10101 00100 10010 00001 11000 01100" +
+                " 11011 01010 10110 10101"
+        val plain = "baudot by leon406"
+        assertEquals(encrypted, plain.baudot())
+        assertEquals(plain, encrypted.baudotDecode())
     }
 
     @Test
     fun alphaIndex() {
-        "alphabet index".alphabetIndex().also { println(it) }
-        "1 12 16,8;1 2 5 20 9 14 4 5 24".alphabetIndexDecode().also { println(it) }
+        val text = "alphabet index"
+        assertEquals("1 12 16 8 1 2 5 20 9 14 4 5 24", text.alphabetIndex())
+        assertEquals("ALPHABETINDEX", "1 12 16,8;1 2 5 20 9 14 4 5 24".alphabetIndexDecode())
     }
 
     @Test
     fun zero1234() {
-        "alphabet index".zero1248().also { println(it) }
-        "8842101220480224404014224202480122".zero1248Decode().also { println(it) }
+        assertEquals("108408808010204108840810842040410888", "alphabet index".zero1248())
+        assertEquals("WELLDONE", "8842101220480224404014224202480122".zero1248Decode())
     }
 
     @Test
     fun zwc() {
-        println("abc".zwc("what"))
-        println("中文".zwc("what"))
         val d = "w\u200D\uFEFF\u200C\u200B\u200D\uFEFF\u200D\u200B\u200D\uFEFF\uFEFFhat"
-        val zw =
-            "a\u200F\u200F\u200C\u200E\u200E\u200C\u200D\u200B\u200F\u200D\u200F\u200C\uFEFF\u200D\u200Fdgsdf"
-        println(d.zwcDecode())
-        println(zw.zwcDecode())
+        assertEquals(d, "abc".zwc("what"))
+        assertEquals("abc", d.zwcDecode())
     }
 
     @Test
@@ -377,8 +379,6 @@ class ClassicalTest {
         key = "1 2 0 1"
         data = "flagishillissoeapy"
         encrypted = "dloguszijluswogany"
-        println(data.hillEncrypt(key, fromZero = false))
-        println(encrypted.hillDecrypt(key, fromZero = false))
 
         assertEquals(encrypted, data.hillEncrypt(key, fromZero = false))
         assertEquals(data, encrypted.hillDecrypt(key, fromZero = false))

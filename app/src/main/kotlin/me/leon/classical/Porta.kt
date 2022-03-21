@@ -1,12 +1,13 @@
 package me.leon.classical
 
 import me.leon.ext.TABLE_A_Z
+import me.leon.ext.letters
 
 /** ported from https://github.com/jameslyons/pycipher/blob/master/pycipher/porta.py */
 fun String.porta(key: String = "FORTIFICATION"): String {
-    val properKey = key.uppercase().filter { it.isUpperCase() }
-    return uppercase()
-        .filter { it.isUpperCase() }
+    val properKey = key.letters().uppercase()
+    return letters()
+        .uppercase()
         .foldIndexed(StringBuilder()) { index, acc, char ->
             acc.append(
                 when (properKey[index % properKey.length]) {

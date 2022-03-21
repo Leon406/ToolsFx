@@ -6,7 +6,6 @@ import me.leon.ext.toBinaryString
 fun String.grayEncode(length: Int = 0, delimiter: String = " "): String {
     val binary = toBinaryString()
     val len = length.takeIf { it > 0 } ?: binary.length
-
     return binary.chunked(len).joinToString(delimiter) {
         it
             .foldIndexed(StringBuilder()) { index, acc, c ->
@@ -25,7 +24,6 @@ fun String.grayEncode(length: Int = 0, delimiter: String = " "): String {
 fun String.grayDecode(length: Int = 0, delimiter: String = " "): String {
     val binary = replace(delimiter, "").replace("[^01]".toRegex(), "")
     val len = length.takeIf { it > 0 } ?: binary.length
-
     return binary
         .chunked(len)
         .joinToString("") {

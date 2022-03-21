@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.ocr
 
 import com.google.gson.annotations.SerializedName
 

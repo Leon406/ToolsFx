@@ -1,5 +1,7 @@
 package me.leon.ctf
 
+import me.leon.ext.circleIndex
+
 /** emoji-aes */
 val emojiMap =
     listOf(
@@ -73,7 +75,7 @@ const val EMOJI_BASE64_DICT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW
 
 fun String.emojiReplace(shift: Int = 0) =
     toCharArray().joinToString("") {
-        emojiMap[EMOJI_BASE64_DICT.indexOf(it).circleIndex(shift, emojiMap.size)]
+        emojiMap[EMOJI_BASE64_DICT.indexOf(it).circleIndex(emojiMap.size, shift)]
     }
 
 fun String.emojiReplaceDecode(shift: Int = 0) =
@@ -84,9 +86,6 @@ fun String.emojiReplaceDecode(shift: Int = 0) =
             EMOJI_BASE64_DICT[
                 (emojiMap
                     .indexOf(it.toByteArray().toString(Charsets.UTF_32BE))
-                    .circleIndex(-shift, emojiMap.size))]
+                    .circleIndex(emojiMap.size, -shift))]
         }
         .joinToString("")
-
-fun Int.circleIndex(shift: Int, length: Int) =
-    with(this + shift) { if (this < 0) this % length + length else this % length }

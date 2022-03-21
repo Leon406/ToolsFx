@@ -44,12 +44,9 @@ fun Int.modInverse(modular: Int = 26): Int {
     return -1
 }
 
-fun Int.mod(modular: Int = 26) =
-    (this % modular).takeIf { (this % modular >= 0) } ?: ((this % modular) + modular)
-
 /** 乘法取余 矩阵乘以 矢量 */
 fun Array<IntArray>.multMod(col: IntArray, modular: Int): IntArray {
-    return if (this[0]?.size == col.size) {
+    return if (this[0].size == col.size) {
         this.foldIndexed(IntArray(col.size)) { i, acc, ints ->
             acc.apply {
                 acc[i] = ints.foldIndexed(0) { j, acc2, int -> acc2 + int * col[j] } % modular
@@ -128,7 +125,7 @@ fun Array<IntArray>.trans(key: Array<IntArray>, r: Int, modular: Int = 26): Arra
     val b: Array<IntArray> = Array(r) { IntArray(r) }
     val inv: Array<IntArray> = Array(r) { IntArray(r) }
     val d = key.determinant(r)
-    var mi = d.modInverse(modular)
+    val mi = d.modInverse(modular)
     var i = 0
     while (i < r) {
         j = 0

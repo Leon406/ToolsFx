@@ -1,7 +1,9 @@
 package me.leon.classical
 
+import me.leon.ext.TABLE_A_Z
+
 fun String.alphabetIndex(
-    table: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    table: String = TABLE_A_Z,
     delimiter: String = " ",
     fromZero: Boolean = false
 ) =
@@ -11,25 +13,17 @@ fun String.alphabetIndex(
         .map { table.indexOf(it) + (1.takeUnless { fromZero } ?: 0) }
         .joinToString(delimiter)
 
-fun String.alphabetIndexNum(
-    table: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    fromZero: Boolean = true
-) =
+fun String.alphabetIndexNum(table: String = TABLE_A_Z, fromZero: Boolean = true) =
     uppercase().toCharArray().filter { it in table }.map {
         table.indexOf(it) + (1.takeUnless { fromZero } ?: 0)
     }
 
-fun String.alphabetIndexDecode(
-    table: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    fromZero: Boolean = false
-) =
+fun String.alphabetIndexDecode(table: String = TABLE_A_Z, fromZero: Boolean = false) =
     trim()
         .split("[^\\d]+".toRegex())
         .filter { it.matches("\\d+".toRegex()) }
         .map { table[it.toInt() - (1.takeUnless { fromZero } ?: 0)] }
         .joinToString("")
 
-fun IntArray.alphabetIndexDecodeNum(
-    table: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    fromZero: Boolean = true
-) = map { table[(26 + it - (1.takeUnless { fromZero } ?: 0)) % 26] }.joinToString("")
+fun IntArray.alphabetIndexDecodeNum(table: String = TABLE_A_Z, fromZero: Boolean = true) =
+    map { table[(26 + it - (1.takeUnless { fromZero } ?: 0)) % 26] }.joinToString("")

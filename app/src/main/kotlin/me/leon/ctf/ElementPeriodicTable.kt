@@ -1,5 +1,7 @@
 package me.leon.ctf
 
+import me.leon.ext.splitBySpace
+
 val PERIOD_LIST =
     listOf(
         "H",
@@ -134,7 +136,7 @@ private val umap =
     )
 
 fun String.elementPeriodDecode() =
-    split("\\s+".toRegex())
+    splitBySpace()
         .map { (PERIOD_LIST.indexOf(it.takeIf { it.length <= 2 } ?: umap[it]) + 1).toChar() }
         .joinToString("")
 

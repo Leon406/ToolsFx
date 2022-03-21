@@ -1,7 +1,7 @@
 package me.leon
 
 import java.io.File
-import me.leon.ext.BaiduOcr
+import me.leon.ext.ocr.BaiduOcr
 import me.leon.ext.toBase64
 import org.junit.Before
 import org.junit.Test

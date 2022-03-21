@@ -3,11 +3,13 @@ package me.leon
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import me.leon.ext.circleIndex
 import me.leon.ext.recoverEncoding
 import org.junit.Test
 
 class Charset {
     private val raw = "开发工具集合 by leon406@52pojie.cn"
+
     @Test
     fun urlEncode() {
         URLEncoder.encode(raw, "utf-8").also {
@@ -33,5 +35,9 @@ class Charset {
         val dd = "璋冭В瀹℃牳绠＄悊".also { println(it.recoverEncoding()) }
         dd.toByteArray(Charsets.UTF_8).toString(Charset.forName("gbk")).also { println(it) }
         "杩愮淮瀹夊叏".also { println(it.recoverEncoding()) }
+
+        for (i in 1..25) {
+            println(i.circleIndex() == i.mod(26))
+        }
     }
 }

@@ -29,7 +29,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             taInput.text.takeIf {
                 isEncode || srcEncodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
-                ?: taInput.text.replace("\\s".toRegex(), "")
+                ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
 

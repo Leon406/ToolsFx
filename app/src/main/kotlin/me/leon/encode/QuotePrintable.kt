@@ -30,7 +30,7 @@ object QuotePrintable {
 
     fun decode(src: String, charset: String = "UTF-8"): String {
 
-        var preHandle = src.lowercase().split("=(?:\r\n|\n)".toRegex()).joinToString("")
+        val preHandle = src.lowercase().split("=(?:\r\n|\n)".toRegex()).joinToString("")
         preHandle.also { println(it) }
         val sb = StringBuilder()
         val hex = StringBuilder()

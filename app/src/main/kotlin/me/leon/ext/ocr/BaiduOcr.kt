@@ -1,5 +1,6 @@
-package me.leon.ext
+package me.leon.ext.ocr
 
+import me.leon.ext.*
 import tornadofx.*
 
 object BaiduOcr {

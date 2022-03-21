@@ -74,7 +74,7 @@ class StringProcessView : View(messages["stringProcess"]) {
             taInput.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
-                ?: taInput.text.replace("\\s".toRegex(), "")
+                ?: taInput.text.stripAllSpace()
         set(value) {
             taInput.text = value
         }

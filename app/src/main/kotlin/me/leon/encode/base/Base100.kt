@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.encode.base
 
 const val BASE100_BYTE1 = 0xf0.toByte()
 const val BASE100_BYTE2 = 0x9f.toByte()

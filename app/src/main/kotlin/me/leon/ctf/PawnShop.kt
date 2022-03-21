@@ -1,5 +1,7 @@
 package me.leon.ctf
 
+import me.leon.ext.splitBySpace
+
 private val map =
     mapOf(
         0 to arrayOf('目', '口', '凹', '凸', '田'),
@@ -26,6 +28,6 @@ fun String.pawnshop() =
 private fun Int.split() = this.toString().toCharArray().map { it - '0' }
 
 fun String.pawnshopDecode() =
-    split("\\s+".toRegex())
+    splitBySpace()
         .map { it.toCharArray().map { reverseMap[it] }.joinToString("").toInt().toChar() }
         .joinToString("")

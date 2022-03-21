@@ -34,7 +34,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                    ?: taInput.text.replace("\\s".toRegex(), "")
+                    ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
 

@@ -2,6 +2,7 @@ package me.leon.classical
 
 import me.leon.encode.base.padding
 import me.leon.ext.TABLE_A_Z_WO_J
+import me.leon.ext.stripAllSpace
 
 fun String.playFair(keyword: String): String {
     val alphabeta = TABLE_A_Z_WO_J.toMutableList()
@@ -45,7 +46,7 @@ fun String.playFairDecrypt(keyword: String): String {
         alphabeta.removeAll(it)
         alphabeta.addAll(0, it)
     }
-    return replace("\\s".toRegex(), "")
+    return stripAllSpace()
         .chunked(2)
         .joinToString("") {
             val i1 = alphabeta.indexOf(it.first())

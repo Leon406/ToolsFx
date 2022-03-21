@@ -268,10 +268,10 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     XOR2("xorHex") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.xorBase64(params[P1]!!).also { println("xor $raw $params") }
+            raw.xorHex(params[P1]!!).also { println("xor $raw $params") }
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
-            raw.xorBase64Decode(params[P1]!!)
+            raw.xorHexDecode(params[P1]!!)
 
         override fun paramsCount() = 1
 

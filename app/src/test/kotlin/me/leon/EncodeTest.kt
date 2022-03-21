@@ -179,22 +179,28 @@ class EncodeTest {
 
     @Test
     fun bubbleBabble() {
-        println("".bubbleBabble())
-        println("1234567890".bubbleBabble().bubbleBabbleDecode2String())
-        println("Pineap ple3ddfdsf dsf".bubbleBabble().bubbleBabbleDecode2String())
-        println("xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String())
-        println("xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String())
-        "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String()
+        assertEquals("xexax", "".bubbleBabble())
+        assertEquals("xesef-disof-gytuf-katof-movif-baxux", "1234567890".bubbleBabble())
+        assertEquals(
+            "1234567890",
+            "xesef-disof-gytuf-katof-movif-baxux".bubbleBabbleDecode2String()
+        )
+        assertEquals(
+            "Pineapple1",
+            "xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String()
+        )
+        assertEquals(
+            "Pineap ple3",
+            "xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String()
+        )
+        assertEquals(
+            "Pineapplea",
+            "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String()
+        )
     }
 
     @Test
     fun hexx() {
-        // -107 10010101
-        //        "95".hex2ByteArray().also { println(it.contentToString()) }.toBinaryString().also
-        // {
-        //            println(it)
-        //        }
-
         println(Long.MAX_VALUE)
         println(0x7FFFFFFFFFFFFFFFL)
         println("123".crc64())

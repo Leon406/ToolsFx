@@ -1,11 +1,11 @@
 package me.leon.classical
 
-import me.leon.ext.sliceList
+import me.leon.ext.*
 
 fun String.autoKey(keyword: String): String {
     val key = keyword.uppercase()
-    val stripText = this.replace("\\s".toRegex(), "")
-    val splits = split("\\s+".toRegex()).map { it.length }.also { println(it) }
+    val stripText = this.stripAllSpace()
+    val splits = splitBySpace().map { it.length }.also { println(it) }
     return stripText
         .virgeneneEncode(key + stripText.also { println(it) })
         .also { println(it) }
@@ -14,8 +14,8 @@ fun String.autoKey(keyword: String): String {
 
 fun String.autoKeyDecrypt(keyword: String): String {
     val key = keyword.uppercase()
-    val splits = split("\\s".toRegex()).map { it.length }.also { println(it) }
-    val stripText = this.replace("\\s".toRegex(), "")
+    val splits = splitBySpace().map { it.length }.also { println(it) }
+    val stripText = this.stripAllSpace()
     val keyBuilder = StringBuilder(stripText.length + key.length)
     keyBuilder.append(key)
     while (keyBuilder.length < stripText.length + key.length) {
