@@ -214,7 +214,7 @@ class StringProcessView : View(messages["stringProcess"]) {
             spacing = DEFAULT_SPACING
             label(messages["split"])
             tfSplitLength = textfield { promptText = messages["splitLength"] }
-            tfSeprator = textfield { promptText = messages["seprator"] }
+            tfSeprator = textfield { promptText = messages["delimiter"] }
             checkbox(messages["regexp"], isSplitRegexp) { isVisible = false }
             button(messages["run"], imageview("/img/run.png")) { action { doSplit() } }
         }

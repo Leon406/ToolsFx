@@ -1,14 +1,11 @@
 package me.leon.controller
 
-import java.security.*
-import java.security.spec.PKCS8EncodedKeySpec
-import java.security.spec.X509EncodedKeySpec
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import me.leon.ext.crypto.sign
+import me.leon.ext.crypto.verify
 import tornadofx.*
-
-fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
 
 class SignatureController : Controller() {
 
@@ -20,18 +17,12 @@ class SignatureController : Controller() {
         inputEncode: String,
         isSingleLine: Boolean
     ) =
-        if (isSingleLine) msg.lineAction2String { sign(kpAlg, sigAlg, pri, it, inputEncode) }
-        else sign(kpAlg, sigAlg, pri, msg, inputEncode)
-
-    fun sign(kpAlg: String, sigAlg: String, pri: String, msg: String, inputEncode: String) =
-        catch({ it }) {
-            Signature.getInstance(sigAlg.properKeyPairAlg())
-                .apply {
-                    initSign(getPrivateKey(pri, kpAlg))
-                    update(msg.decodeToByteArray(inputEncode))
+        catch({ "$it" }) {
+            if (isSingleLine)
+                msg.lineAction2String {
+                    it.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).base64()
                 }
-                .sign()
-                .base64()
+            else msg.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).base64()
         }
 
     fun verify(
@@ -43,42 +34,16 @@ class SignatureController : Controller() {
         signed: String,
         isSingleLine: Boolean
     ) =
-        if (isSingleLine)
-            msg.lineActionIndex { s, i ->
-                verify(kpAlg, sigAlg, pub, s, inputEncode, signed.lineSplit()[i].base64Decode())
-                    .toString()
-            }
-        else verify(kpAlg, sigAlg, pub, msg, inputEncode, signed.base64Decode())
-
-    fun verify(
-        kpAlg: String,
-        sigAlg: String,
-        pub: String,
-        msg: String,
-        inputEncode: String,
-        signed: ByteArray
-    ) =
-        catch({ false }) {
-            Signature.getInstance(sigAlg.properKeyPairAlg())
-                .apply {
-                    initVerify(getPublicKey(pub, kpAlg))
-                    update(msg.decodeToByteArray(inputEncode))
+        catch({ "$it" }) {
+            if (isSingleLine)
+                msg.lineActionIndex { s, i ->
+                    s.decodeToByteArray(inputEncode)
+                        .verify(kpAlg, sigAlg, pub, signed.lineSplit()[i].base64Decode())
+                        .toString()
                 }
-                .verify(signed)
+            else
+                msg.decodeToByteArray(inputEncode)
+                    .verify(kpAlg, sigAlg, pub, signed.toByteArray())
+                    .toString()
         }
-
-    private fun getPrivateKey(privateKey: String, keyPairAlg: String): PrivateKey {
-        val keyFactory = KeyFactory.getInstance(keyPairAlg.properKeyPairAlg())
-        val decodedKey: ByteArray = privateKey.base64Decode()
-        val keySpec = PKCS8EncodedKeySpec(decodedKey)
-        return keyFactory.generatePrivate(keySpec)
-    }
-
-    /** 获取公钥 */
-    private fun getPublicKey(publicKey: String, keyPairAlg: String): PublicKey {
-        val keyFactory = KeyFactory.getInstance(keyPairAlg.properKeyPairAlg())
-        val decodedKey: ByteArray = publicKey.base64Decode()
-        val keySpec = X509EncodedKeySpec(decodedKey)
-        return keyFactory.generatePublic(keySpec)
-    }
 }

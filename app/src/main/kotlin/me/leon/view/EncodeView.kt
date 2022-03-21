@@ -181,12 +181,6 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             spacing = DEFAULT_SPACING
             label(messages["output"])
             button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
-            button(graphic = imageview("/img/up.png")) {
-                action {
-                    taInput.text = outputText
-                    taOutput.text = ""
-                }
-            }
             button(graphic = imageview("/img/jump.png")) {
                 action {
                     fire(SimpleMsgEvent(taOutput.text, 1))
@@ -194,6 +188,12 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     tabPane?.selectionModel?.select(
                         tabPane.tabs.first { it.text == messages["stringProcess"] }
                     )
+                }
+            }
+            button(graphic = imageview("/img/up.png")) {
+                action {
+                    taInput.text = outputText
+                    taOutput.text = ""
                 }
             }
         }

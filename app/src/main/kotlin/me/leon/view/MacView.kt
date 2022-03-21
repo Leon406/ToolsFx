@@ -147,7 +147,6 @@ class MacView : View("MAC") {
                 method =
                     if (selectedAlgItem.get() == "GMAC") "${newValue}-GMAC"
                     else {
-
                         "${selectedAlgItem.get()}${
                             newValue.takeIf {
                                 algorithm[selectedAlgItem.get()]!!.size > 1
