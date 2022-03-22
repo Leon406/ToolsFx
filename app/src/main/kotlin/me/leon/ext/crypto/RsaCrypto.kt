@@ -1,7 +1,6 @@
-package me.leon.ext.fx
+package me.leon.ext.crypto
 
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
+import java.io.*
 import java.security.*
 import java.security.cert.CertificateFactory
 import java.security.interfaces.RSAPrivateKey
@@ -9,8 +8,8 @@ import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
-import me.leon.encode.base.BYTE_BITS
-import me.leon.encode.base.base64Decode
+import me.leon.encode.base.*
+import me.leon.ext.toFile
 
 private fun getPropPublicKey(key: String): ByteArray =
     if (key.contains("-----BEGIN CERTIFICATE-----")) {
@@ -22,6 +21,16 @@ private fun getPropPublicKey(key: String): ByteArray =
     } else {
         key.base64Decode()
     }
+
+fun parsePublicKeyFromCerFile(file: String): String {
+    return file.toFile().parsePublicKeyFromCerFile()
+}
+
+fun File.parsePublicKeyFromCerFile(): String {
+    return inputStream().use {
+        CertificateFactory.getInstance("X.509").generateCertificate(it).publicKey.encoded.base64()
+    }
+}
 
 fun String.toPublicKey(alg: String): PublicKey? {
     val keySpec = X509EncodedKeySpec(getPropPublicKey(this))

@@ -15,21 +15,22 @@ class EncodeController : Controller() {
         charset: String = "UTF-8",
         isSingleLine: Boolean = false
     ) =
-        catch({ "编码错误: $it" }) {
-            println("encode2String $type $dic $charset $raw")
-            if (isSingleLine)
-                raw.lineAction2String {
-                    encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
-                }
-            else encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
-        }
+        if (isSingleLine)
+            raw.lineAction2String {
+                encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
+            }
+        else encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
 
     fun encode2String(
         raw: ByteArray,
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
         charset: String = "UTF-8"
-    ): String = if (raw.isEmpty()) "" else type.encode2String(raw, dic, charset)
+    ): String =
+        catch({ "编码错误: $it" }) {
+            println("encode2String $type $dic $charset $raw")
+            if (raw.isEmpty()) "" else type.encode2String(raw, dic, charset)
+        }
 
     fun decode2String(
         encoded: String,
@@ -38,19 +39,20 @@ class EncodeController : Controller() {
         charset: String = "UTF-8",
         isSingleLine: Boolean = false
     ) =
-        catch({ "解码错误: $it" }) {
-            println("decode $type $dic $charset $encoded")
-            if (isSingleLine)
-                encoded.lineAction2String {
-                    decode(it, type, dic, charset).toString(Charset.forName(charset))
-                }
-            else decode(encoded, type, dic, charset).toString(Charset.forName(charset))
-        }
+        if (isSingleLine)
+            encoded.lineAction2String {
+                decode(it, type, dic, charset).toString(Charset.forName(charset))
+            }
+        else decode(encoded, type, dic, charset).toString(Charset.forName(charset))
 
     fun decode(
         encoded: String,
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
         charset: String = "UTF-8"
-    ): ByteArray = if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
+    ): ByteArray =
+        catch({ "解码错误: $it".toByteArray() }) {
+            println("decode $type $dic $charset $encoded")
+            if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
+        }
 }

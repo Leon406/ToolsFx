@@ -5,7 +5,9 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.SignatureController
+import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.crypto.parsePublicKeyFromCerFile
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -29,14 +31,16 @@ class SignatureView : View(messages["signVerify"]) {
     private val eventHandler = fileDraggedHandler {
         taKey.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (extension in listOf("pk8", "key", "der")) readBytes().base64()
+                else if (extension in listOf("cer", "crt")) parsePublicKeyFromCerFile()
+                else if (length() <= 10 * 1024 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
                 else "not support file larger than 10M"
             }
     }
     private val inputEventHandler = fileDraggedHandler {
-        taKey.text =
+        taRaw.text =
             with(it.first()) {
                 if (length() <= 10 * 1024 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
@@ -139,20 +143,7 @@ class SignatureView : View(messages["signVerify"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            label(messages["key"])
-            button(graphic = imageview("/img/import.png")) {
-                action { taKey.text = clipboardText() }
-            }
-        }
-        taKey =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-            }
-        hbox {
             label(messages["plain"])
-            paddingAll = DEFAULT_SPACING
             spacing = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
             tgInput =
@@ -176,6 +167,19 @@ class SignatureView : View(messages["signVerify"]) {
                 onDragEntered = inputEventHandler
                 prefHeight = DEFAULT_SPACING_16X
             }
+        hbox {
+            label(messages["key"])
+            button(graphic = imageview("/img/import.png")) {
+                action { taKey.text = clipboardText() }
+            }
+        }
+        taKey =
+            textarea {
+                promptText = messages["inputHintAsy"]
+                isWrapText = true
+                onDragEntered = eventHandler
+            }
+
         hbox {
             alignment = Pos.CENTER_LEFT
             label(messages["publicAlg"])

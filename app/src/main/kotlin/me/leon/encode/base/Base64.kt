@@ -1,6 +1,7 @@
 package me.leon.encode.base
 
 import java.nio.charset.Charset
+import me.leon.ext.stripAllSpace
 import me.leon.ext.toBinaryString
 
 const val BASE64_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -21,7 +22,8 @@ fun ByteArray.base64(dict: String = BASE64_DICT) =
         .padding("=", BASE64_PADDING_SIZE) // lcm (6, 8) /6 = 4
 
 fun String.base64Decode(dict: String = BASE64_DICT) =
-    toCharArray()
+    stripAllSpace()
+        .toCharArray()
         .filter { it != '=' }
         .joinToString("") {
             dict

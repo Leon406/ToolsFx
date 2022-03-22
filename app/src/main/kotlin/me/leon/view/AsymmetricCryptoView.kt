@@ -7,6 +7,7 @@ import javafx.scene.control.*
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.crypto.parsePublicKeyFromCerFile
 import me.leon.ext.fx.*
 import tornadofx.*
 
@@ -60,7 +61,9 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private val keyEventHandler = fileDraggedHandler {
         val firstFile = it.first()
         keyText =
-            if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
+            if (firstFile.extension in listOf("pk8", "key", "der")) firstFile.readBytes().base64()
+            else if (firstFile.extension in listOf("cer", "crt"))
+                firstFile.parsePublicKeyFromCerFile()
             else
                 with(firstFile) {
                     if (length() <= 10 * 1024 * 1024)
@@ -134,7 +137,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         }
         taKey =
             textarea {
-                promptText = messages["inputHint"]
+                promptText = messages["inputHintAsy"]
                 isWrapText = true
                 onDragEntered = keyEventHandler
             }

@@ -1,7 +1,7 @@
 package me.leon.controller
 
 import me.leon.ext.*
-import me.leon.ext.fx.*
+import me.leon.ext.crypto.*
 import tornadofx.*
 
 class AsymmetricCryptoController : Controller() {
