@@ -17,7 +17,10 @@ fun ByteArray.sign(kpAlg: String, sigAlg: String, pri: String): ByteArray =
         .sign()
 
 fun ByteArray.verify(kpAlg: String, sigAlg: String, pub: String, signed: ByteArray) =
-    catch({ false }) {
+    catch({
+        println("verify err  $it")
+        false
+    }) {
         Signature.getInstance(sigAlg.properKeyPairAlg())
             .apply {
                 initVerify(getPublicKey(pub, kpAlg))
@@ -28,7 +31,7 @@ fun ByteArray.verify(kpAlg: String, sigAlg: String, pub: String, signed: ByteArr
 
 private fun getPrivateKey(privateKey: String, keyPairAlg: String): PrivateKey {
     val keyFactory = KeyFactory.getInstance(keyPairAlg.properKeyPairAlg())
-    val decodedKey: ByteArray = privateKey.base64Decode()
+    val decodedKey: ByteArray = privateKey.removePemInfo().base64Decode()
     val keySpec = PKCS8EncodedKeySpec(decodedKey)
     return keyFactory.generatePrivate(keySpec)
 }
@@ -36,7 +39,6 @@ private fun getPrivateKey(privateKey: String, keyPairAlg: String): PrivateKey {
 /** 获取公钥 */
 private fun getPublicKey(publicKey: String, keyPairAlg: String): PublicKey {
     val keyFactory = KeyFactory.getInstance(keyPairAlg.properKeyPairAlg())
-    val decodedKey: ByteArray = publicKey.base64Decode()
-    val keySpec = X509EncodedKeySpec(decodedKey)
+    val keySpec = X509EncodedKeySpec(getPropPublicKey(publicKey))
     return keyFactory.generatePublic(keySpec)
 }

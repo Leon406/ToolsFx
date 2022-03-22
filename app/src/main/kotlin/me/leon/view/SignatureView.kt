@@ -26,7 +26,6 @@ class SignatureView : View(messages["signVerify"]) {
         get() = taRaw.text
     private val signText: String
         get() = taSigned.text
-    private var keyPairAlg = "RSA"
 
     private val eventHandler = fileDraggedHandler {
         taKey.text =
@@ -136,7 +135,7 @@ class SignatureView : View(messages["signVerify"]) {
     private val selectedSigAlg = SimpleStringProperty(keyPairAlgs.values.first().first())
     private lateinit var cbSigs: ComboBox<String>
     private val info
-        get() = "Signature: $keyPairAlg hash: ${selectedSigAlg.get()} "
+        get() = "Signature: ${selectedKeyPairAlg.get()} hash: ${selectedSigAlg.get()} "
     private var inputEncode = "raw"
     private lateinit var tgInput: ToggleGroup
     private val centerNode = vbox {
@@ -196,17 +195,14 @@ class SignatureView : View(messages["signVerify"]) {
                 cbSigs.items = keyPairAlgs[newValue]!!.asObservable()
                 selectedSigAlg.set(keyPairAlgs[newValue]!!.first())
                 cbSigs.isDisable = keyPairAlgs[newValue]!!.size == 1
+                labelInfo.text = info
             }
         }
 
         selectedSigAlg.addListener { _, _, newValue ->
             println("selectedSigAlg __ $newValue")
-            newValue?.run {
-                println("算法 ${selectedKeyPairAlg.get()}")
-                if (key.isNotEmpty() && msg.isNotEmpty()) {
-                    sign()
-                }
-            }
+            labelInfo.text = info
+            newValue?.run { println("算法 ${selectedKeyPairAlg.get()}") }
         }
         tilepane {
             alignment = Pos.CENTER
@@ -252,7 +248,6 @@ class SignatureView : View(messages["signVerify"]) {
         } ui
             {
                 taSigned.text = it
-                labelInfo.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }
 
@@ -267,9 +262,5 @@ class SignatureView : View(messages["signVerify"]) {
                 signText,
                 isSingleLine.get()
             )
-        } ui
-            { state ->
-                primaryStage.showToast("验签结果: \n$state")
-                labelInfo.text = info
-            }
+        } ui { state -> primaryStage.showToast("result: \n$state") }
 }

@@ -43,7 +43,7 @@ class SignatureController : Controller() {
                 }
             else
                 msg.decodeToByteArray(inputEncode)
-                    .verify(kpAlg, sigAlg, pub, signed.toByteArray())
+                    .verify(kpAlg, sigAlg, pub, signed.base64Decode())
                     .toString()
         }
 }
