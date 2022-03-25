@@ -50,6 +50,7 @@ class ToolsApp : App(Home::class, Styles::class) {
     }
 
     companion object {
+        var releaseInfo: ReleaseInfo? = null
         val plugins = mutableListOf<Class<out PluginView>>()
         val properties: Properties = Properties()
         val isEnableClassical: Boolean

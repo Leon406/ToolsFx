@@ -178,4 +178,11 @@ class MyTest {
             println(it)
         }
     }
+
+    @Test
+    fun parse() {
+        File("E:\\gitrepo\\ToolsFx\\current").readText().fromJson(Map::class.java).also {
+            println(it["info"])
+        }
+    }
 }
