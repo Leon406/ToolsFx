@@ -11,4 +11,4 @@ fun ByteArray.decimal(charset: String = "UTF-8") =
 fun String.decimalDecode(charset: String = "UTF-8") =
     decimalDecode2String().toByteArray(Charset.forName(charset))
 
-fun String.decimalDecode2String() = split(" +".toRegex()).map { Char(it.toInt()) }.joinToString("")
+fun String.decimalDecode2String() = split("[^\\d+]".toRegex()).map { Char(it.toInt()) }.joinToString("")
