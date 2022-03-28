@@ -51,7 +51,6 @@
 ![encode](./art/encode.gif)
 
 
-
 **字符处理(以分割为例)**
 
 ![encode_split](./art/encode_split.gif)
@@ -172,7 +171,6 @@
 - [x] Grainv1
 - [x] Grain128
 - [x] Zuc128
-- [x] Zuc128
 
 ### 非对称加密 RSA
 
@@ -257,11 +255,11 @@
 - [x] PBE
 - [x] 可配置模块,支持第三方网址
 
-bouncycastle文档 https://www.bouncycastle.org/specifications.html
+bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 ## 下载地址
 
- [github地址](https://github.com/Leon406/ToolsFx/releases) 
+ [GitHub](https://github.com/Leon406/ToolsFx/releases) 
 
  [码云镜像](https://gitee.com/LeonShih/ToolsFx) 
 

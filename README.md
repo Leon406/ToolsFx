@@ -43,11 +43,9 @@
 ![encode](./art/encode.gif)
 
 
-
 **String Process(e.g. Split)**
 
 ![encode_split](./art/encode_split.gif)
-
 
 
 ### Encoding Transfer (not raw data)
@@ -166,7 +164,6 @@
 - [x] Grain v1
 - [x] Grain128
 - [x] Zuc128
-- [x] Zuc128
 
 ### Asymmetric Crypto RSA
 
@@ -252,7 +249,7 @@
 
 ## Downloads
 
- [gitub release](https://github.com/Leon406/ToolsFx/releases) 
+ [GitHub release](https://github.com/Leon406/ToolsFx/releases) 
 
  [gitte mirror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
 
