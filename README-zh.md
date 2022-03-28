@@ -188,10 +188,6 @@
 
 ![sym](./art/asy.gif)
 
-公钥解密16进制数据
-
-![sym](./art/rsa_pub_decrypt_hexdata.gif)
-
 ### 数字签名校验 
 
 - [x] RSA系列

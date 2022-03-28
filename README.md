@@ -180,10 +180,6 @@
 
 ![sym](./art/asy.gif)
 
- **public key decrypt hex encoded data**
-
-![sym](./art/rsa_pub_decrypt_hexdata.gif)
-
 ### Digital Signature 
 
 - [x] RSA serial
