@@ -12,8 +12,8 @@ import tornadofx.*
 import tornadofx.FX.Companion.messages
 
 class CompressView : PluginView(messages["compression"]) {
-    override val version = "v1.0.0"
-    override val date: String = "2022-02-23"
+    override val version = "v1.0.1"
+    override val date: String = "2022-03-28"
     override val author = "Leon406"
     override val description: String = FX.messages["compression"]
     private val controller: CompressController by inject()
