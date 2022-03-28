@@ -161,3 +161,15 @@
 - fix(app): RSA拖入密钥事件重复响应
 - fix(app): 乱码还原失败
 - fix(plugin-apipost): 浏览器curl解析未删除转义字符
+# v1.12.2.beta05  
+## feature:  
+- feat(app): 新增在线密码新佛曰/兽曰/熊曰,js密码rabbit/aaencode/jjencode
+- feat(app): 新增更新内容提示
+- feat(app): 优化pem解析
+- feat(app): 新增公钥密码密钥文件解析格式cer,der
+- feat(plugin-apipost): 加入自动美化,解码开关
+- feat(app): 新增hill密码,支持2,3阶
+- feat(app): 哈希/签名模块支持输入 hex/base64
+- feat(app): MAC模块支持输入 hex/base64
+## bug fix:  
+- fix(app): PBE模块salted切换编码识别错误
