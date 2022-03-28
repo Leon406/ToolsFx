@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.ctf
 
 import me.leon.ext.readBytesFromNet
 

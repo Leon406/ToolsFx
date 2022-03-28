@@ -11,19 +11,19 @@ class CompressController : Controller() {
         inputEncode: String = "raw",
         outputEncode: String = "base64",
         isSingleLine: Boolean = false,
-    ): String = catch({ "encrypt error: $it" }) {
-        println("encrypt  $alg")
-        if (isSingleLine) raw.lineAction2String { compress(it, alg, inputEncode, outputEncode) }
-        else compress(raw, alg, inputEncode, outputEncode)
-    }
+    ): String =
+        catch({ "encrypt error: $it" }) {
+            println("encrypt  $alg")
+            if (isSingleLine) raw.lineAction2String { compress(it, alg, inputEncode, outputEncode) }
+            else compress(raw, alg, inputEncode, outputEncode)
+        }
 
     private fun compress(
         raw: String,
         alg: Compression = Compression.GZIP,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
-    ): String =
-        alg.compress(raw.decodeToByteArray(inputEncode)).encodeTo(outputEncode)
+    ): String = alg.compress(raw.decodeToByteArray(inputEncode)).encodeTo(outputEncode)
 
     fun decompress(
         raw: String,
@@ -31,11 +31,13 @@ class CompressController : Controller() {
         inputEncode: String = "raw",
         outputEncode: String = "base64",
         isSingleLine: Boolean = false,
-    ): String = catch({ "decrypt error: $it" }) {
-        println("decrypt  $alg")
-        if (isSingleLine) raw.lineAction2String { decompress(it, alg, inputEncode, outputEncode) }
-        else decompress(raw, alg, inputEncode, outputEncode)
-    }
+    ): String =
+        catch({ "decrypt error: $it" }) {
+            println("decrypt  $alg")
+            if (isSingleLine)
+                raw.lineAction2String { decompress(it, alg, inputEncode, outputEncode) }
+            else decompress(raw, alg, inputEncode, outputEncode)
+        }
 
     private fun decompress(
         raw: String,

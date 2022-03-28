@@ -231,6 +231,9 @@
 - [x] 格雷码(Gray code)
 - [x] 佛曰
 - [x] 希尔密码
+- [x] 新佛曰/兽曰/熊曰(需联网)
+- [x] rabbit
+- [x] aaencode/jjencode
 
 ![ctf](./art/ctf.gif)
 

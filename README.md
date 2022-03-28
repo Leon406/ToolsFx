@@ -222,6 +222,9 @@
 - [x] Gray code
 - [x] Buddha Says(佛曰)
 - [x] Hill Cipher
+- [x] 新佛曰/兽曰/熊曰(online)
+- [x] rabbit
+- [x] aaencode/jjencode
 
 ![ctf](./art/ctf.gif)
 

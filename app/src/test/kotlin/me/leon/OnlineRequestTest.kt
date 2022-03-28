@@ -1,5 +1,6 @@
 package me.leon
 
+import me.leon.ctf.PcMoeOnlineCipher
 import org.junit.Test
 
 class OnlineRequestTest {

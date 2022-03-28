@@ -505,6 +505,27 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             raw.buddhaExplain()
     },
+    BuddhaSay2("新佛曰(online)") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Buddha, raw)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Buddha, raw)
+    },
+    Roar("兽曰(online)") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Roar, raw)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Roar, raw)
+    },
+    Bear("熊曰(online)") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Bear, raw)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Bear, raw)
+    },
     HILL("hill") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.hillEncrypt(params[P1] ?: "", fromZero = params[P2]?.isNullOrEmpty() ?: true)
@@ -516,5 +537,39 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsHints() =
             listOf("key matrix,like 1 2 0 1 or bcab", "A = 0 as default,if has value A =1")
+    },
+    Rabbit("rabbit") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            JavascriptCipher.rabbitEncrypt(raw, params[P1] ?: "")
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            JavascriptCipher.rabbitDecrypt(raw, params[P1] ?: "")
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("password,default is empty string", "")
+    },
+    AAEncode("aaencode") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            JavascriptCipher.aaEncode(raw)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            JavascriptCipher.aaDecode(raw)
+
+        override fun isIgnoreSpace() = false
+    },
+    JJEncode("jjencode") {
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            JavascriptCipher.jjEncode(raw, params[P1] ?: "$", params[P2]?.isNullOrEmpty() ?: true)
+
+        override fun decrypt(raw: String, params: MutableMap<String, String>): String =
+            JavascriptCipher.jjDecode(raw)
+
+        override fun paramsCount() = 2
+
+        override fun paramsHints() =
+            listOf(
+                "global variable name, default is '$'",
+                "palindromic,false as default,if has value is true"
+            )
     },
 }

@@ -96,7 +96,7 @@ class ClassicalView : View(messages["classical"]) {
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns = 6
+                prefColumns = 7
                 togglegroup {
                     classicalTypeMap.forEach {
                         radiobutton(it.key) {

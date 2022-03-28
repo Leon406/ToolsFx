@@ -1,28 +1,25 @@
 package me.leon
 
 import kotlin.test.assertEquals
+import me.leon.ext.JavascriptCipher
+import me.leon.ext.Nashorn
 import org.junit.Test
 
 class Execute {
     @Test
     fun batch() {
 
-        Nashorn.loadResource("/aaencode.js")
-            .loadResource("/jjencode.js")
-            .loadResource("/rabbit.js")
-            .invoke("aaencode", "aadfsdf")
-            ?.also {
-                println(it)
-                assertEquals("aadfsdf", Nashorn.invoke("aadecode", it))
-            }
-
-        Nashorn.invoke("rabbitEncrypt", "123", "123")?.also {
+        JavascriptCipher.aaEncode("aadfsdf").also {
+            println(it)
+            assertEquals("aadfsdf", JavascriptCipher.aaDecode(it))
+        }
+        JavascriptCipher.rabbitEncrypt("123", "123")?.also {
             println(it)
             assertEquals("123", Nashorn.invoke("rabbitDecrypt", it, "123"))
         }
-        Nashorn.invoke("encode_jj", "encode", "$$$", true)?.also {
-            println(Nashorn.invoke("jjdecode", it))
-            assertEquals("encode", Nashorn.invoke("jjdecode", it))
+        JavascriptCipher.jjEncode("123", "$$$", true)?.also {
+            println(it)
+            assertEquals("123", JavascriptCipher.jjDecode(it))
         }
 
         //        thread {
@@ -34,5 +31,13 @@ class Execute {
             .exec("cmd /c chcp 65001 && ping www.baidu.com")
             //            .exec("python E:/gitrepo/pyutil/Args.py a b c")
             .apply { inputStream.bufferedReader().use { it.lines().forEach { println(it) } } }
+    }
+
+    @Test
+    fun nashorn() {
+        JavascriptCipher.aaEncode("aadfsdf").also {
+            println(it)
+            JavascriptCipher.aaDecode(it).also { println(it) }
+        }
     }
 }
