@@ -82,9 +82,9 @@ Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
                 "View filter: Please wait ...",
                 "Capture filter: ",
                 "OK",
-                "File upload functionality",
+                "Automatic Project Backup [disk projects only]",
                 "C:\\Users\\Leon",
-                "/etc/pwd",
+                "Updates [installer version only]",
                 "Automatic Project Backup [disk projects only]",
                 """
 GET /5aV1bjqh_Q23odCf/static/superui/js/ubase_5a7b0933.js HTTP/2

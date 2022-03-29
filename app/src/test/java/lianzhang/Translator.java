@@ -123,6 +123,9 @@ public class Translator {
                                     return;
                                 }
                                 String[] split = s.split("\t", 2);
+                                if (split.length != 2) {
+                                    System.err.println("Invalid line: " + s);
+                                }
                                 if (pattern.matcher(split[1]).matches()
                                         || split[0].contains("(?i)")) {
                                     try {

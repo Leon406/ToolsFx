@@ -6,19 +6,19 @@
 (.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general binary content(.*)	$1$2$3$4$5一般二进制内容$6
 (.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text and flash content(.*)	$1$2$3$4$5一般文本和flash内容$6
 (.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text and image content(.*)	$1$2$3$4$5一般文本和图像内容$6
-(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text content(.*)	$1$2$3$4$5一般文本内容$6
-(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text(, flash)? and general binary content(.*)	$1$2$3$4$5隐藏一般文本$6, 一般二进制文件$7
-(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text, image and flash content(.*)	$1$2$3$4$5隐藏所有文字，图片，flash$6
-(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text, image(, flash)? and general binary content(.*)	$1$2$3$4$5隐藏一般文本，图像$6, 一般二进制文件$7
+(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text content	隐藏$1$2$3$4$5一般文本内容
+(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text(, flash)? and general binary content	隐藏$1$2$3$4$5一般文本$6, 一般二进制文件
+(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text, image and flash content(.*)	隐藏$1$2$3$4$5所有文字，图片，flash$6
+(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?general text, image(, flash)? and general binary content(.*)	隐藏$1$2$3$4$5一般文本，图像$6, 一般二进制文件$7
 (.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?image and flash content(.*)	$1$2$3$4$5图片，flash$6
-(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?image content(.*)	$1$2$3$4$5隐藏图片$6
-(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?image(, flash)? and general binary content(.*)	$1$2$3$4$5隐藏图片$6, 隐藏一般二进制文件$7
-(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and (script|XML|CSS|flash) content(.*)	$1$2$3$4$5, $6隐藏$7
-(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and general binary content(.*)	$1$2$3$4$5, 隐藏一般二进制文件$6
-(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and general text content(.*)	$1$2$3$4$5, 隐藏一般文本$6
-(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and image content(.*)	$1$2$3$4$5, 隐藏图片$6
+(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?image content(.*)	隐藏$1$2$3$4$5图片$6
+(.*)[Hh]iding (HTML, )?(script, )?(XML, )?(CSS, )?image(, flash)? and general binary content(.*)	隐藏$1$2$3$4$5图片$6,一般二进制文件$7
+(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and (script|XML|CSS|flash) content(.*)	隐藏$1$2$3$4$5, $6 $7
+(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and general binary content(.*)	 隐藏$1$2$3$4$5,一般二进制文件$6
+(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and general text content(.*)	隐藏$1$2$3$4$5, 一般文本$6
+(.*)[Hh]iding (HTML|script|XML|CSS)(, script)?(, XML)?(, CSS)? and image content(.*)	隐藏$1$2$3$4$5, 图片$6
 (.*)[Hh]iding ([2-5]xx) responses(.*)	隐藏$1$2响应$3
-(.*)[Hh]iding ([2-5]xx, )?([2-5]xx, )?((, )?[2-5]xx) and ([2-5]xx) responses(.*)	$1$2$3$4$5, $6隐藏响应$7
+(.*)[Hh]iding ([2-5]xx, )?([2-5]xx, )?((, )?[2-5]xx) and ([2-5]xx) responses(.*)	隐藏$1$2$3$4$5, $6响应$7
 (.*)[Hh]iding empty folders(.*)	$1隐藏空文件夹$2
 (.*)[Hh]iding incoming items(.*)	$1隐藏入站项目$2
 (.*)[Hh]iding non-parameterized and not found items(.*)	$1没有参数，不存在的项目$2
@@ -70,6 +70,7 @@
 (?i)Copy URLs?	复制网址
 (?i)Details?	详细信息
 (?i)Embedded Browser Health Check	内置浏览器健康检查
+(?i)Health Check for burp's Browser	内置浏览器健康检查
 (?i)Examples?(:)?	示例$1
 (?i)Follow redirections?(:)?	跟随重定向$1
 (?i)Hotkeys?	热键
@@ -98,7 +99,7 @@
 (\d+) letter words	$1字母词
 (\d+) locations crawled	$1个已爬取的地址
 (\d+) payload positions	配置 $1 个payload位置
-(\d+) payload positions?	$1payload 位置？
+(\d+) payload positions?	$1 个payload 位置？
 (\d+) requests \((\d+) errors\)	$1个请求($2个错误)
 (\d+) responses processed	$1个响应已处理
 (\d+) responses queued	$1个响应排队中
@@ -276,7 +277,9 @@ Allow access without API key (using this option is not secure)	允许在没有AP
 Allow renderer to make HTTP requests (for images, etc.)	允许渲染器发起HTTP请求（图像等）
 Allow requests to web interface using fully-qualified DNS hostnames	在Web接口中允许完全限定的DNS主机名
 Allow the embedded browser to run without a sandbox.	允许内嵌浏览器在无沙箱情况下运行
+Allow Burp's browser to run without a sandbox.	允许内嵌浏览器在无沙箱情况下运行
 Allow the proxy embedded browser to store settings and history	允许代理内嵌浏览器存储设置和历史记录
+Allow Burp's browser to store settings and history	允许Burp浏览器存储设置和历史记录
 Allow unsafe renegotiation (required for some client certificates)	允许不安全的加密套件协商（某些客户端证书需要）
 Always	总是
 Always collapsed	始终折叠
@@ -479,12 +482,11 @@ Auto-modified response	自动更改响应
 Auto-scroll to match when text changes	在文本更改时自动滚动到匹配的位置
 Auto-select based on request features	从请求功能中自动选择
 Automatic BApp updates	自动更新BApp
-Automatic Project Backup	自动备份项目
 Automatic Project Backup [disk projects only]	项目自动备份[仅限磁盘项目]
+(?i)Automatic Project Backup	自动备份项目
 Automatic backup (\d+)% complete	自动备份$1%完成
 Automatic backup failed	自动备份失败
 Automatic payload positions	自动载入payload位置
-Automatic project backup	项目自动备份
 Automatic project backup saves a copy of the Burp project file periodically in the background.	项目自动备份会定期保存Burp项目文件的副本
 Automatically add entries on client SSL negotiation failure	在客户端SSL协商失败时自动添加条目
 Automatically add entries on client TLS negotiation failure	在客户端TLS协商失败时自动添加条目
@@ -581,6 +583,7 @@ Burp Suite (.*) (.*) - licensed to (.*)	Burp Suite $1 $2 - licensed to $3
 Burp Suite - a guided video tour	Burp Suite - 视频引导
 Burp Suite Community Edition	Burp Suite社区版
 Burp Suite Documentation	Burp Suite文档
+Burp Suite Professional	Burp Suite专业版
 Burp Suite Professional([^-]+) - ([^-]+)	Burp Suite专业版 $1 -$2
 Burp Suite Professional([^-]+) - Temporary Project +-([^-]+)	Burp Suite专业版 $1 - 临时项目 -$2
 Burp Suite Support Center	Burp Suite支持中心
@@ -711,7 +714,7 @@ Clear queues	清除队列
 Clear the contents of the viewer	清除查看器内容
 Clear §	清除payload位置 §
 Cleartext submission of password(\s+\[\d+\])?	发送密码$1
-Click "Copy to clipboard" to generate Burp Collaborator payloads that you can use in your own testing. Any interactions that result from using the payloads will appear below.	单击“复制到剪贴板”以生成可以在自己的测试中使用的Burp协作器有效负载。使用payload产生的任何交互都将显示在下面。
+Click "Copy to clipboard" to generate Burp Collaborator payloads that you can use in your own testing. Any interactions that result from using the payloads will appear below.	单击“复制到剪贴板”以生成可以在自己的测试中使用的Burp协作器payload。使用payload产生的任何交互都将显示在下面。
 Click the stars to rate the '(.*)' BApp	$1 请点击星星来评价BApp
 Click to modify	点击修改
 Client SSL Certificates	客户端SSL证书
@@ -757,9 +760,11 @@ Comparer	对比工具
 Comparing site maps: (\d+)% complete	比较站点地图： $1% 完成
 Complete	完成
 Compression	压缩
+Continue attack in background	后台继续运行
+Remember my choice when closing attacks in future	记住选择
 Computing differences	计算差异
 Concatenate to single file	连接到单个文件
-Concurrent request limit:	同时请求限制：
+Concurrent request limit:	并发请求限制：
 Condition	条件
 Confidence	可靠性
 Config	配置
@@ -785,7 +790,7 @@ Configure the details of the target for the attack.	请设置攻击目标的详�
 Configure the location of the items that Burp Intruder should use for its predefined payload lists.	请设置Burp 攻击器使用的预定义payload列表的位置
 Configure the options below to determine how Burp handles certain features of responses when performing comparisons.	执行比较时，请设置以下选项，以了解Burp如何处理响应的每个功能。
 Configure the positions where payloads will be inserted into the base request. The attack type determines the way in which payloads are assigned to payload positions - see help for full details.	配置将payloads插入基本请求的位置。攻击类型决定了payloads分配到哪个位置的方式-如果需要有关的详细信息，请参阅帮助。(Configure the positions where payloads will be inserted into the base request. The attack type determines the way in which payloads are assigned to payload positions - see help for full details.)
-Configure the positions where payloads will be inserted, they can be added into the target as well as the base request.	配置将插入payload的位置，它们可以添加到目标以及基本请求中。
+Configure the positions where payloads will be inserted, they can be added into the target as well as the base request.	配置payload插入位置，它们可以添加到目标以及基本请求中。
 Configure the selected item	设置所选项目
 Configure the settings for the custom token location	令牌位置的自定义设置
 Configure the sources Burp should use for generating filenames to test.	设置文件名测试生成的源。
@@ -1339,7 +1344,7 @@ Filter by listener	按监听器过滤
 Filter by request type	按请求类型过滤
 Filter by search term	按搜索字词过滤
 Filter by search term [Pro only]	按搜索词过滤[仅限专业版]
-Filter by status code	按状态代码过滤
+Filter by status code	按状态码过滤
 Filter by tool	按工具过滤
 Filter:	过滤：
 Filter: Please wait ...	过滤: 请稍等...
@@ -1904,7 +1909,7 @@ Manually select library:	选择库：
 Map (\d)	地图$1
 March	3月
 Master interception is turned off	主拦截关闭
-Master interception is turned off     	主动代理拦截已关闭
+Master interception is turned off	 	主动代理拦截已关闭
 Master password:	主密码：
 Match	匹配
 Match / replace in list items	搜索和替换列表项
@@ -1952,7 +1957,7 @@ Medium	中
 Medium active	主动扫描（中）
 Medium severity	优先度中
 Memory: (.*)	内存: $1
-Message	信息
+Message	消息
 Message Editor	消息编辑器
 Message actions	消息操作
 Message editor documentation	消息编辑器文档
@@ -2312,7 +2317,7 @@ Pro extension	Pro扩展
 Process cookies in redirections	在重定向期间处理cookie
 Project	项目
 Project file (.*) already exists, do you want to overwrite it\?	项目文件 $1 已存在，您要覆盖它吗？
-Project file:	项目文件:
+(?i)Project file(:*) ?	项目文件$1
 Project options	项目配置
 Project saved successfully.	该项目已成功保存。
 Prominently highlight unhidden fields	高亮未隐藏的字段
@@ -2441,8 +2446,8 @@ Remove the selected custom parameter location	删除自定义参数位置
 Remove the selected header	删除所选报头
 Remove the selected item	删除所选项目
 Remove the selected items	删除所选项目
-Remove the selected listener	删除选定的侦听器
-Remove the selected macro	删除选定的宏
+Remove the selected listener	删除选定侦听器
+Remove the selected macro	删除选定宏
 Remove the selected parameter	删除所选参数
 Remove the selected rule	删除所选规则
 Remove the selected task	删除所选任务
@@ -2520,7 +2525,7 @@ Response completed	响应完成
 Response diffing	响应差异
 Response from ([a-z].*)	$1 响应来自
 Response from Collaborator	来自Collaborator的响应包
-Response received	接收到的响应
+Response received	接收到响应
 Response to this request	响应此请求
 Responses	响应
 Responses processed:	处理响应：
@@ -2768,7 +2773,7 @@ Select generator ...	选择生成器...
 Select how HTTP request messages should appear in the report.	请选择如何在报告上放置HTTP请求消息。
 Select how HTTP response messages should appear in the report.	请选择如何在报告上放置HTTP响应消息。
 Select individual issues:	选择个人问题：
-Select item (\d+):	选定的条目$1:
+Select item (\d+):	选定条目$1:
 Select license file	选择许可证文件
 Select license key file ...	选择许可证密钥文件...
 Select macro:	选择宏：
@@ -2885,8 +2890,8 @@ Show issue definition	显示问题定义
 Show new history window	显示新的历史窗口
 Show new site map window	在新窗口中显示site map
 Show non-printable chars	显示不可打印字符
-Show only commented items	仅显示已注释的条目
-Show only highlighted items	仅显示彩色的条目
+Show only commented items	仅显示已注释条目
+Show only highlighted items	仅显示高亮条目
 Show only in-scope items	仅显示在范围内显示条目
 Show only in-scope items	仅显示范围内的条目
 Show only in-scope items (Suite scope)	仅显示范围内的条目（套件范围）
@@ -2900,9 +2905,8 @@ Show the Learn tab	显示学习标签
 Show this dialog during backups	备份时显示此进度条
 Showing all items	显示所有项目
 Showing selected items	显示所选项目
-Showing selected items 	显示所选项目
-Shut down Burp and launch downloaded file	关闭Burp并启动下载的文件
-Shut down Burp and run new version	关闭Burp并开始新版本
+Shut down Burp and launch downloaded file	关闭Burp并启动已下载文件
+Shut down Burp and run new version	关闭Burp并启动新版本
 Significance Levels	重要性级别
 Silverlight cross-domain policy(\s+\[\d+\])?	Silverlight跨域策略$1
 Simple list	简单列表
@@ -2995,6 +2999,8 @@ Stop at maximum:	最大停止数量：
 Stop if duplicate payload found	检测到重复payload时停止
 Stop sending out-of-scope items to Proxy history and other Burp tools	停止将超出范围的项发送到代理历史记录和其他Burp工具
 Stop the embedded browser using the GPU.	停止内嵌浏览器使用GPU
+Stop Burp's browser using the GPU.	停止内嵌浏览器使用GPU
+Burp's Browser	Burp内嵌浏览器
 Store full payloads	保存所有payloads
 Store requests	保存请求
 Store responses	保存响应
@@ -3105,7 +3111,7 @@ The file you have selected is a Burp state file, not a project file.	所选文�
 The final response from the macro	宏的最后响应
 The following configurations could not be exported due to an error:	由于错误，我们无法导出以下设置：
 The following items will be removed:	删除以下项目：
-The following rules determine whether Burp sends each outgoing request to a proxy server, or directly to the destination web server. The first rule that matches each destination host will be used. To send all traffic to a single proxy server, create a rule with * as the destination host.	每个传出请求是发送到代理服务器还是直接发送到目标Wweb服务器由以下规则确定。使用目标主机首次匹配的规则。要将所有流量发送到单个代理服务器，请使用目标主机*创建规则。
+The following rules determine whether Burp sends each outgoing request to a proxy server, or directly to the destination web server. The first rule that matches each destination host will be used. To send all traffic to a single proxy server, create a rule with * as the destination host.	每个传出请求是发送到代理服务器还是直接发送到目标web服务器由以下规则确定。使用目标主机首次匹配的规则。要将所有流量发送到单个代理服务器，请使用目标主机*创建规则。
 The free edition of Burp contains a demo version of Burp Intruder. Some functionality is disabled, and attacks are time throttled.	Burp的免费版本包含Burp 攻击器的演示版本。某些功能已被禁用，攻击会定时。
 The item itself	条目本身
 No group defined	未定义组
@@ -3147,6 +3153,7 @@ These settings can be used to extract useful information from responses into the
 These settings can be used to flag result items containing reflections of the submitted payload.	这些设置可用于标记(flag)包含已提交payload的结果项。
 These settings can be used to flag result items containing specified expressions.	这些设置可用于flag包含指定表达式的结果项。
 These settings control behaviour of the embedded browser.	这些设置用于控制内嵌浏览器的行为
+These settings control behaviour of Burp's browser.	这些设置用于控制Burp浏览器的行为
 These settings control how Burp binds the REST API.	这些设置控制Burp如何绑定REST API
 These settings control how Burp binds the proxy listener.	控制绑定代理监听器的方式。
 These settings control how Burp handles application errors (connection failures and transmission timeouts) that arise during the audit phase of the scan.	控制如何处理扫描审计阶段发生的应用程序错误（如连接错误和传输超时）。
@@ -3249,7 +3256,7 @@ This payload type lets you configure a list of strings and apply various case mo
 This payload type lets you configure a list of strings and apply various character substitutions to each item.	此payload类型允许您配置字符串列表并对每个项应用各种不同的字符替换。
 This payload type lets you configure a simple list of strings that are used as payloads.	此处payload类型允许您配置用作payload的简单清单。
 This payload type lets you configure multiple lists of items, and generate payloads using all permutations of items in the lists.	此payload类型允许您配置多个项目列表，并使用列表中所有项目的排列生成payloads。
-This payload type lets you extract each payload from the response to the previous request in the attack. It is useful in some situations where you need to work recursively to extract useful data or deliver an exploit. Extract grep items can be defined in the Options tab.	此payload类型允许您从对攻击中的前一个请求的响应中提取每个有效负载。在某些需要递归工作以提取有用数据或提供利用漏洞的情况下，它非常有用。提取grep项可以在选项选项卡中定义。
+This payload type lets you extract each payload from the response to the previous request in the attack. It is useful in some situations where you need to work recursively to extract useful data or deliver an exploit. Extract grep items can be defined in the Options tab.	此payload类型允许您从对攻击中的前一个请求的响应中提取每个payload。在某些需要递归工作以提取有用数据或提供利用漏洞的情况下，它非常有用。提取grep项可以在选项选项卡中定义。
 This payload type operates on a string input and modifies the value of each character position in turn. It is useful to quickly test which parts of a long string have an effect on the application's processing.	此payload类型对字符串输入进行操作，并依次修改每个字符位置的值。快速测试长字符串的哪些部分对应用程序的处理有影响是有用的。。
 This payload type operates on an input and modifies the value of each bit position in turn. It can sometimes be used to meaningfully modify the decrypted values of CBC-encrypted data, and potentially interfere with application logic.	该Payload类型相对于输入值顺序地改变每个比特位置的值。在某些情况下，您可以对CBC加密数据进行有意义的更改，或者可能会干扰应用程序逻辑。
 This project file has been accessed by a more recent version of Burp. Some data may not be not be displayed or may be incomplete.	此项目文件正在访问更新版本的Burp。某些数据可能无法显示或不完整。
@@ -3291,7 +3298,8 @@ Throttle (milliseconds):	延迟(ms)(Throttle):
 Throttle between requests (milliseconds):	请求限制(ms)：
 Time	时间
 Time delays	延时
-Time of day	时刻
+Time of day	时间
+These settings control how the crawler will interact with any login functionality, aside from any application logins that are explicitly configured for the crawl. Note that these settings will be ignored if you are using recorded login sequences.	这些设置控制爬网程序将如何与任何登录功能交互，除了为爬网明确配置的任何应用程序登录。请注意，如果使用记录的登录序列，这些设置将被忽略。
 Time requested	请求时间
 Time running:	启动时间:
 Time to level up? Catch more bugs with Burp Suite Pro	是时候升级了？ 使用 Burp Suite Pro 捕获更多错误
@@ -3300,11 +3308,21 @@ Time-delay checks	延迟检查
 Timeout	超时
 Timeouts	超时
 Title	标题
+Fetch previously undiscovered resources and data from out-of-scope hosts	从范围外的主机获取以前未发现的资源和数据
 See more	查看更多
 See less	查看更少
 Select decoder	选择解码器
 Remove decoder	移除解码器
 Add another decoder	添加一个解码器
+Response views	响应视图
+Adjust which views are available from the toolbar above each response and in which order they appear.	调整每个响应上方工具栏中可用的视图及其显示顺序。
+Request views	请求视图
+These settings let you customize the default layout of the message editor.	这些设置允许您自定义消息编辑器的默认布局
+Inspector and Message Editor	Inspector & 消息编辑器
+Message editor settings	消息编辑器设置
+Open Inspector and Message Editor settings	打开Inspector & 消息编辑器设置
+These settings let you customize the Message editor, what widgets are displayed on the Inspector panel, and customise what information is shown.	通过这些设置，可以自定义消息编辑器、Inspector面板上显示的小部件以及显示的信息。
+Adjust which views are available from the toolbar above each request and in which order they appear.	调整每个请求上方工具栏中可用的视图及其显示顺序。
 To ProperName	To Propername
 To Propername	To ProperName
 To change an action's hotkey, select it in the table and type the hotkey for that action. To clear an existing hotkey, press delete or escape. All hotkeys must use the Control key, and may also use Shift or other available modifiers. Note that on some Windows installations the Control+Alt combination is treated by the OS as equivalent to AltGr, and so may result in typed characters appearing when pressed in text fields.	要更改操作的热键，请从表中选择它并输入操作的热键。 要清除现有热键，请按Delete键或Esc键。 所有热键必须使用控制键，并且可以使用shift和其他修改键。 请注意，在某些Windows安装中，Ctrl + Alt的组合被视为等效于AltGr，因此可能会出现在文本字段中键入的字符。
@@ -3384,10 +3402,9 @@ Uncheck all	全部解锁
 Understand 100 Continue responses	了解100继续响应
 Undock	分离
 Unencrypted communications(\s+\[\d+\])?	未加密的通信$1
-Unhide hidden form fields	强制显示隐藏表单字段
+Unhide hidden form fields	显示隐藏表单字段
 Unidentified code injection(\s+\[\d+\])?	未知的代码注入$1
 Union query-based (U)	联合注入(Union query-based)
-Unique locations:	Unique locations
 Unlimited	无限制
 Unpack gzip / deflate	gzip/deflate解压
 Unpack gzip / deflate in requests	解压请求中的gzip/deflate
@@ -3448,12 +3465,12 @@ Use default system temp directory	使用系统默认临时目录
 Use denial-of-service mode (no results)	使用拒绝服务模式(无结果)
 Use dynamic analysis techniques	使用动态分析方法
 Use existing resource pool	使用现有资源池
-Use font smoothing	字体平滑
+Use font smoothing	使用字体平滑
 Use intelligent attack selection	使用智能攻击选择
 Use login credentials (username & password)	使用登录凭证（用户名&密码）
 Use lower case alpha characters	使用小写字母
 Use nested insertion points	使用嵌套插入点
-Use only selected branches	仅使用选定的分支
+Use only selected branches	仅使用选定分支
 Use options saved with project	使用项目中保存的选项
 Use proxy server to connect	使用代理服务器进行连接
 Use recorded login sequences (record using Burp's Chrome extension)	使用记录的登录序列（使用Burp Chrome扩展进行记录）
@@ -3507,14 +3524,14 @@ Warning: The CSRF form uses a different encoding type than the original request,
 Warning: The XmlHttpRequest technique only works on modern browsers, and the browser will not display the response to the CSRF request. The request contains some non-standard headers which, if included in a cross-domain XHR, may cause the request to be pre-flighted, and so the attack may fail. These headers have been omitted in the PoC attack, to avoid pre-flighting. If the omitted headers are essential for the efficacy of the CSRF attack, you can manually add these to the PoC HTML.	警告：XmlHttpRequest方法仅适用于最新的浏览器，浏览器不显示CSRF请求的响应。如果跨域XHR在请求中包含非标准报头，则可能会发生预检请求，并且攻击可能会失败。省略这些报头以避免预检。如果报头缩写为有效的CSRF攻击是必不可少的，则可以手动将其添加到PoC HTML。
 Warning: The XmlHttpRequest technique only works on modern browsers, and the browser will not display the response to the CSRF request. The request contains some non-standard headers which, if included in a cross-domain XHR, may cause the request to be pre-flighted, and so the attack may fail. These headers have been omitted in the PoC attack, to avoid pre-flighting. If the omitted headers are essential for the efficacy of the CSRF attack, you can manually add these to the PoC HTML. The request includes a Content-Type header with a non-standard value, which may cause the request to be pre-flighted, and so the attack may fail. If the non-standard header is not essential for the efficacy of the CSRF attack, you can try using a standard value in the Content-Type header instead.	警告：XmlHttpRequest方法仅适用于最新的浏览器，浏览器不显示CSRF请求的响应。如果跨域XHR在请求中包含非标准报头，则可能会发生预检请求，并且攻击可能会失败。省略这些报头以避免预检。如果报头缩写为有效的CSRF攻击是必不可少的，则可以手动将其添加到PoC HTML。由于请求中存在非标准值Content-Type报头，因此可能会生成预检请求，并且攻击可能会失败。如果非标准报头对CSRF攻击不是必不可少的，请尝试使用标准的Content-Type报头。
 Warning: This tracer imposes a processing and storage overhead, and should only be used when troubleshooting issues with session handling rules.	警告：由于此跟踪器会在处理和存储上加载负载，因此它应仅用于对会话处理规则进行故障排除。
-Was annotated	注释
-Was intercepted	已被截获
-Was modified	已被更改
-Was not annotated	没有评论
-Was not intercepted	没有被截获
-Was not modified	没有改变
+Was annotated	已标注
+Was intercepted	已拦截
+Was modified	已修改
+Was not annotated	未评论
+Was not intercepted	未拦截
+Was not modified	未修改
 Watch the tour	观看引导
-Web cache posoning	Web缓存污染
+Web cache poisoning	Web缓存污染
 WebSocket hijacking \(DOM-based\)(\s+\[\d+\])?	WebSocket劫持（基于DOM）$1
 WebSocket hijacking \(reflected DOM-based\)(\s+\[\d+\])?	WebSocket劫持（基于DOM反射型）$1
 WebSocket hijacking \(stored DOM-based\)(\s+\[\d+\])?	WebSocket劫持（基于DOM存储型）$1
@@ -3536,7 +3553,7 @@ Windows installer \((32|64)-bit\)	Windows Installer ($1)
 With payload positions	包括payload位置
 With random variations	随机变化
 With this content type	包括此内容类型
-With this response code	此响应代码
+With this response code	此响应码
 Without payload positions	不含payload位置
 Word compare	单词比较
 Word compare of #(\d+) and #(\d+)  \((\d+) differences\)	#$1的#$2单词比较  ($3位置差异)
@@ -3558,7 +3575,7 @@ You can choose to continue to load this project but should consider creating a b
 You can configure a more detailed scope configuration using either URL prefixes or advanced matching rules. Note that the URLs to scan must fall within the defined scope, and will still be used as the starting point for the crawl.	您可以使用URL前缀或高级匹配规则配置更详细的作用域配置. 注意, 要扫描的url必须在定义的范围内, 并且仍将用作爬虫的起点.
 You can configure whether to automatically start new tasks as they are created.	您可以设置是否在创建任务时自动启动。
 You can define one or more payload sets. The number of payload sets depends on the attack type defined in the Positions tab. Various payload types are available for each payload set, and each payload type can be customized in different ways.	您可以定义一个或多个有payload集。payload集的数量取决于“位置”选项卡中定义的攻击类型。每个payload集可以使用各种payload 类型，并且可以以各种方式定制每种payload类型。
-You can define rules to perform various processing tasks on each payload before it is used.	您可以定义在使用有效负载之前对每个payload执行各种处理任务的规则。
+You can define rules to perform various processing tasks on each payload before it is used.	您可以定义在使用payload之前对每个payload执行各种处理任务的规则。
 You can define session handling rules to make Burp perform specific actions when making HTTP requests. Each rule has a defined scope (for particular tools, URLs or parameters), and can perform actions such as adding session cookies, logging in to the application, or checking session validity. Before each request is issued, Burp applies in sequence each of the rules that are in-scope for the request.	定义会话处理规则，该规则会在生成HTTP请求时执行指定的操作。对于每个规则，定义范围（特定工具，URL，参数），执行操作，例如添加会话cookie，登录到应用程序，检查会话的有效性等。在发出每个请求之前，依次将每个规则应用于范围中的请求。
 You can export your certificate and key for use in other tools, or in another installation of Burp. You can import a certificate and key to use in this installation of Burp. Note that you can also export the current certificate by visiting http://burp/cert in your browser.	您可以为其他工具和其他Burp实例导出此证书。您可以导入用于此Burp的证书和私钥。请注意，您还可以通过在浏览器中访问http://burp/cert来导出当前证书。
 You can export your certificate and key for use in other tools, or in another installation of Burp. You can import a certificate and key to use in this installation of Burp. Note that you can also export the current certificate by visiting http://burpsuite/cert in your browser.	您可以导出证书和密钥以用于其他工具或 Burp 的其他安装。 您可以导入证书和密钥以在此 Burp 安装中使用。 请注意，您还可以通过在浏览器中访问 http://burpsuite/cert 来导出当前证书。
