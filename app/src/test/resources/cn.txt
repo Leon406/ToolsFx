@@ -2581,15 +2581,15 @@ SOCKS Proxy	SOCKS代理
 SOCKS proxy host:	SOCKS代理主机：
 SOCKS proxy port:	SOCKS代理端口：
 SQL Server specific	SQL Server固有
-SQL injection \(second order\)(\s+\[\d+\])?	SQL注入（二阶）$1
+SQL injection \(second order\)(\s+\[\d+\])?	SQL注入（存储型/二阶）$1
 SQL injection(\s+\[\d+\])?	SQL注入$1
 SQL statement in request parameter(\s+\[\d+\])?	请求参数中的SQL语句$1
 SQLMap Command	SQLMap命令
 SQLMapper	SQLmap联动
 SSI injection	SSI注入
 SSL Ciphers	SSL Ciphers加密
-SSL Negotiation	SSL协议(SSL Negotiation)
-SSL Negotiation Workarounds	SSL协议的解决方法(SSL Negotiation Workarounds)
+SSL Negotiation	SSL协商
+SSL Negotiation Workarounds	SSL协商解决方法(SSL Negotiation Workarounds)
 SSL Pass Through	SSL 穿透
 SSL Protocol	SSL协议
 SSL Protocols	SSL协议
