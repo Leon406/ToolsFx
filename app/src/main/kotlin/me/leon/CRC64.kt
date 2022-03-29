@@ -52,12 +52,12 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
          * of CRC)
          */
         private fun gf2MatrixTimes(mat: LongArray, vec: Long): Long {
-            var vec = vec
+            var vecTmp = vec
             var sum: Long = 0
             var idx = 0
-            while (vec != 0L) {
-                if (vec and 1 == 1L) sum = sum xor mat[idx]
-                vec = vec ushr 1
+            while (vecTmp != 0L) {
+                if (vecTmp and 1 == 1L) sum = sum xor mat[idx]
+                vecTmp = vecTmp ushr 1
                 idx++
             }
             return sum
@@ -134,32 +134,33 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
          */
         fun combine(crc1: Long, crc2: Long, len2: Long): Long {
             // degenerate case.
-            var crc1 = crc1
-            var len2 = len2
-            if (len2 == 0L) return crc1
+            var lenTmp = len2
+            if (lenTmp == 0L) return crc1
+            var crc1Tmp = crc1
+
             val (even, odd) = makeOddEvenArray()
             // apply len2 zeros to crc1 (first square will put the operator for one
             // zero byte, eight zero bits, in even)
             do {
                 // apply zeros operator for this bit of len2
                 gf2MatrixSquare(even, odd)
-                if (len2 and 1 == 1L) crc1 = gf2MatrixTimes(even, crc1)
-                len2 = len2 ushr 1
+                if (lenTmp and 1 == 1L) crc1Tmp = gf2MatrixTimes(even, crc1Tmp)
+                lenTmp = lenTmp ushr 1
 
                 // if no more bits set, then done
-                if (len2 == 0L) break
+                if (lenTmp == 0L) break
 
                 // another iteration of the loop with odd and even swapped
                 gf2MatrixSquare(odd, even)
-                if (len2 and 1 == 1L) crc1 = gf2MatrixTimes(odd, crc1)
-                len2 = len2 ushr 1
+                if (lenTmp and 1 == 1L) crc1Tmp = gf2MatrixTimes(odd, crc1Tmp)
+                lenTmp = lenTmp ushr 1
 
                 // if no more bits set, then done
-            } while (len2 != 0L)
+            } while (lenTmp != 0L)
 
             // return combined crc.
-            crc1 = crc1 xor crc2
-            return crc1
+            crc1Tmp = crc1Tmp xor crc2
+            return crc1Tmp
         }
 
         init {
@@ -187,13 +188,13 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
 
     /** Update CRC64 with new byte block. */
     fun update(b: ByteArray, len: Int) {
-        var len = len
+        var lenTmp = len
         var idx = 0
         value = value.inv()
-        while (len > 0) {
+        while (lenTmp > 0) {
             value = table[(value xor b[idx].toLong()).toInt() and 0xff] xor (value ushr 8)
             idx++
-            len--
+            lenTmp--
         }
         value = value.inv()
     }
