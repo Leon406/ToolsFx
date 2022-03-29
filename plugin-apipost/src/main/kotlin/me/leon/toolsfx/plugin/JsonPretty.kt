@@ -1,7 +1,7 @@
 package me.leon.toolsfx.plugin
 
 fun String.prettyJson(): String {
-    if (contains("\n") || !startsWith("{") || !startsWith("[")) return this
+    if (contains("\n") || !startsWith("{") && !startsWith("[")) return this
     var indentNumber = 0
     // two space
     val s = "  "
