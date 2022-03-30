@@ -13,11 +13,11 @@ class Execute {
             println(it)
             assertEquals("aadfsdf", JavascriptCipher.aaDecode(it))
         }
-        JavascriptCipher.rabbitEncrypt("123", "123")?.also {
+        JavascriptCipher.rabbitEncrypt("123", "123").also {
             println(it)
             assertEquals("123", Nashorn.invoke("rabbitDecrypt", it, "123"))
         }
-        JavascriptCipher.jjEncode("123", "$$$", true)?.also {
+        JavascriptCipher.jjEncode("123", "$$$", true).also {
             println(it)
             assertEquals("123", JavascriptCipher.jjDecode(it))
         }

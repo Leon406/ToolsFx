@@ -315,7 +315,6 @@ Application	应用
 Apply	应用
 Applying changes	应用变更
 Apply changes	应用变更
-April	4月
 Are you sure you want to add this item to the site map?	您确定要将此项目添加到Sitemap吗？
 Are you sure you want to cancel the download?	您确定要取消下载吗？
 Are you sure you want to cancel the import?	您确定要取消导入吗？
@@ -430,6 +429,14 @@ Are you sure you want to restore defaults for Spider?	您确定要将Spider的�
 Are you sure you want to restore defaults for Target?	您确定要将目标选项重置为默认值吗？
 Are you sure you want to restore defaults for all project options?	您确定要将所有项目选项重置为默认值吗？
 Are you sure you want to restore defaults for user options?	您确定要将用户选项重置为默认值吗？
+Are you sure you want to restore default Tasks options?	您确定要将任务选项重置为默认值吗？
+Are you sure you want to restore default HTTP message search options?	您确定要将HTTP消息搜索选项重置为默认值吗？
+Are you sure you want to restore default Learn tab options?	您确定要将学习标签选项重置为默认值吗？
+Are you sure you want to restore default Burp's browser options?	您确定要将Burp浏览器选项重置为默认值吗？
+Are you sure you want to restore default client TLS certificates options?	您确定要将客户端TLS证书选项重置为默认值吗？
+Are you sure you want to restore default TLS negotiation workarounds options?	您确定要将TLS协商选项重置为默认值吗？
+Are you sure you want to restore default message editor request views options?	您确定要将消息编辑器请求视图选项重置为默认值吗？
+Are you sure you want to restore default message editor response views options?	您确定要将消息编辑器响应视图选项重置为默认值吗？
 Are you sure you want to retest the macro?	你确定要重新测试宏吗？
 Are you sure you want to shut down Burp and launch the downloaded file?	关闭Burp并启动下载的文件？
 Are you sure you want to shut down Burp and run the new version?	你确定要关闭Burp并开始新版本吗？
@@ -439,7 +446,7 @@ At a significance level of 1%, the amount of effective entropy is estimated to b
 At least one URL to scan must be specified.	请指定至少一个要扫描的URL.
 At least one item to scan must be specified.	请指定至少一个要扫描的项目.
 At least one kind of analysis must be selected	必须至少选择一种类型的分析.
-
+No Channel Selected	未选择渠道
 Attack	攻击
 Attack Insertion Points	攻击插入点
 Attack Results	攻击结果
@@ -465,7 +472,6 @@ Auditing\. (\d+)h remaining	审计中, 剩余$1时间
 Auditing\. (\d+)m (\d+)s remaining	审计中, 剩余$1分$2秒
 Auditing\. (\d+)m remaining	审计中, 剩余$1分
 Auditing\. (\d+)s remaining	审计中, 剩余$1秒
-August	8月
 Auth type	认证类型
 Authenticated crawl (random). Estimating time remaining...	身份验证(随机).预计剩余时间....
 Authenticated crawl \((.*)\). Estimating time remaining...	身份验证($1). 预计剩余时间....
@@ -691,15 +697,15 @@ Choose this option if you plan to pass the project file on to someone else, but 
 Choose this option if you plan to pass the state file on to someone else, but you do not want them to be able to receive details of any ongoing Burp Collaborator interactions that are associated with your testing. Any new scanning that is performed by the other user will use a different unique identifier, to avoid any interference with other instances of Burp.	如果您计划将状态文件传递给其他人但不想继续接收与测试相关联的Collaborator的通信详细信息，请选择此选项。要执行的新扫描使用不同的唯一标识符以避免干扰其他Burp实例。
 Choose this option if you plan to use the project file later and continue testing, or pass it on to someone else who will take over your testing. You should be aware that if any testing is continued using multiple instances of Burp, then some Collaborator-based issues may be missed or incorrectly reported.	如果您想稍后加载此项目文件并继续测试或将其传递给其他人接管测试，请选择此选项。如果继续使用多个Burp实例进行测试，可能会错过或报告基于Collaborator的问题。
 Choose whether to configure login credentials or recorded login sequences. You can configure multiple logins to scan in different user contexts.	选择是否配置登录凭据还是记录登录序列。 您可以配置多个登录以在不同的用户上下文中进行扫描。
-Choose which tools you want to restore the configuration of.	请选择一种工具来恢复设置。
+Choose which tools you want to restore the configuration of.	请选择恢复设置的工具。
 Choose which tools you want to restore the state of.	请选择恢复状态的工具。
-Choose which tools you want to save the configuration of.	请选择一种工具来保存设置。
+Choose which tools you want to save the configuration of.	请选择保存设置的工具。
 Choose which tools you want to save the state of. Note that it is not necessary to save the Spider state. The Spider request queues will be automatically rebuilt based on a restored target site map and scope configuration.	请选择要保存在该状态的工具。请注意，您无需保存Spider的状态。 Spider的请求队列将从还原的目标站点地图和范围设置中自动重建。
 Choosing this option means that your instance of Burp will not receive details of any ongoing Burp Collaborator interactions that were associated with the project. Any new scanning that you perform will use a different unique identifier, to avoid any interference with other instances of Burp.	如果选择此选项，则此Burp实例将不会收到与正在进行的与项目关联的Burp Collaborator进行通信的详细信息。要执行的新扫描使用不同的唯一标识符以避免干扰其他Burp实例。
 Choosing this option means that your instance of Burp will receive details of any ongoing Burp Collaborator interactions that are associated with the project. If any other instance of Burp is also receiving interaction details for the same project, then some Collaborator-based issues may be missed or incorrectly reported.	如果选择此选项，此Burp实例将接收与正在进行的与项目关联的Burp Collaborator的通信的详细信息。如果其他Burp实例也接收到同一项目的通信详细信息，则可能会错过或报告基于协作者的问题。
 Chunked coding converter	分块编码转换
-Chunked coding converter config	分块编码转换器配置(Chunked coding converter config)
-Clean Burp from computer	从计算机中删除Burp
+Chunked coding converter config	分块编码转换配置
+Clean Burp from computer	删除计算机中Burp
 Clear	清空
 Clear Logs	清空日志
 Clear all	清除所有
@@ -936,7 +942,6 @@ Dates	日期
 Days	天
 Debug	调试
 Debug ID:	调试ID：
-December	12月
 Decimal	十进制
 Decode	解码
 Decode as ...	解码...
@@ -1047,12 +1052,12 @@ Do not include requests	不包括请求
 Do not include responses	不包含响应
 Do not save	不保存
 Do not take full ownership of the project	不获得项目的完整所有权
-Do nothing	什么都不做
+Do nothing	不操作
 Do passive scan	被动扫描
 Do platform authentication	执行平台认证
 Do you wish to continue?	你想继续吗？
-Dock on the left	停靠在左侧
-Dock on the right	停靠在右侧
+Dock on the left	停靠左侧
+Dock on the right	停靠右侧
 Document domain manipulation \(DOM-based\)(\s+\[\d+\])?	文档域操作（基于DOM）$1
 Document domain manipulation \(reflected DOM-based\)(\s+\[\d+\])?	文档域操作（基于DOM反射型）$1
 Document domain manipulation \(stored DOM-based\)(\s+\[\d+\])?	文档域操作（基于DOM存储型）$1
@@ -1064,7 +1069,7 @@ Doing FIPS poker test	正在进行FIPS扑克验证
 Doing FIPS runs test	正在进行FIPS连续测试
 Doing bit compression test	正在进行bit压缩测试
 Doing bit correlation test	正在进行bit相关测试
-Doing bit correlation test: bit (\d+)	做位相关测试: bit $1
+Doing bit correlation test: bit (\d+)	做bit相关测试: bit $1
 Doing character set tests	正在进行字符集测试
 Doing character set tests: position (\d+)	正在进行字符集测试：$1个字符
 Doing spectral tests	正在进行频谱测试
@@ -1078,13 +1083,13 @@ Don't compare non-text content	不比较非文本内容
 Don't intercept requests	不拦截请求
 Don't intercept responses	不拦截响应
 Don't perform static code analysis	不执行静态代码分析
-Don't restore	不进行恢复
-Don't scan	不执行扫描
+Don't restore	不恢复
+Don't scan	不扫描
 Don't send items to Proxy history or live tasks	不要将项目发送到代理记录或实时任务
 Don't send items to Proxy history or live tasks, if out of scope	如果超出范围，请不要将项目发送到代理记录或实时任务
-Don't submit forms	不要提交表单
-Don't submit login forms	不要发送登录表单
-Don't use Burp Collaborator	不要使用Burp Collaborator
+Don't submit forms	不提交表单
+Don't submit login forms	不发送登录表单
+Don't use Burp Collaborator	不使用Burp Collaborator
 Done	完成
 Down	向下
 Submit forms	提交表单
@@ -1288,24 +1293,22 @@ Failed to access file	访问文件失败
 Failed to check for updates. Please log in to your account at https://portswigger.net to check for updates.	检查更新失败。通过https://portswigger.net登录您的帐户并检查更新。
 Failed to connect to (.*:\d+)	$1无法连接
 Failed to create Burp project:(.*)	无法创建Burp项目：$1
-Failed to decrypt stored passwords. Enter the master password that was used to encrypt stored passwords.	解密保存的密码失败。请输入用于加密密码存储区的主密码。
+Failed to decrypt stored passwords. Enter the master password that was used to encrypt stored passwords.	解密保存的密码失败。请输入用于加密保存密码的主密码。
 Failed to delete Burp executable.	删除Burp可执行程序失败。
-Failed to delete directory: (.*)	目录无法删除：$1
+Failed to delete directory: (.*)	目录删除失败：$1
 Failed to download BApp file	下载BApp文件失败
 Failed to import certificate: (.*)	无法导入证书： $1
 Failed to load certificate: (.*)	无法加载证书：$1
 Failed to load certificate: keystore password was incorrect	加载证书失败：密钥库密码不正确
 Failed to open file	打开文件失败
 Failed to open folder	打开文件夹失败
-Failed to retrieve response	无法获取响应包
+Failed to retrieve response	获取响应包失败
 Failed to save file. Please try another location.	保存文件失败。请尝试其他位置。
 Failed to save project.	保存项目失败。
 Failed to update BApp list	更新BApp列表失败
-Failed to verify BApp file	BApp文件验证失败
-Failed to verify integrity of download.	确认下载内容一致性失败。
-False positive	错误检测
+Failed to verify BApp file	BApp文件校验失败
+Failed to verify integrity of download.	下载文件一致性校验失败。
 Fast	快速
-February	2月
 Feedback only contains technical information about Burp's internal functioning, and does not identify you in any way. If you do report a bug via email, you can help us diagnose any problems that your instance of Burp has encountered by including your debug ID.	反馈只包含有关Burp内部功能的技术信息，不以任何方式识别您。如果您确实通过电子邮件报告了一个bug，那么您可以通过包含调试ID来帮助我们诊断您的Burp实例遇到的任何问题。
 Fetch response	获取响应
 Field name cannot be blank	字段名称不能为空
@@ -1692,7 +1695,6 @@ Items on the same domain	同一域中的项目
 Items to Scan	要扫描的项目
 Items( \(\d+\))?	项目$1
 Iterate all values of submit fields - max submissions per form:	枚举发送字段的所有值 - 每个表单的最大传输数：
-January	1月
 Java Environment	Java环境
 Java SSL Options	Java SSL选项
 Java TLS Options	Java TLS选项
@@ -1706,8 +1708,6 @@ JavaScript-driven	JavaScript驱动
 Javascript dynamic analysis	Javascript动态解析
 Javascript static analysis	Javascript静态解析
 Join Burp Suite's huge community, and stay in the know.	加入Burp Suite 社区，了解最新情况。
-July	7月
-June	6月
 LDAP injection(\s+\[\d+\])?	LDAP注入$1
 Label(:)?	标签$1
 Last updated	最近更新
@@ -1907,7 +1907,6 @@ Manual load	手动加载
 Manual testing simulator	手动测试模拟器
 Manually select library:	选择库：
 Map (\d)	地图$1
-March	3月
 Master interception is turned off	主拦截关闭
 Master interception is turned off	 	主动代理拦截已关闭
 Master password:	主密码：
@@ -1952,7 +1951,6 @@ Maximum payloads per item:	每个条目的最大payloads数量：
 Maximum request count:	最大请求数：
 Maximum static analysis time per item (in seconds):	每个项目的最大静态分析时间（秒）：
 Maximum unique locations discovered:	发现的最大唯一位置数：
-May	5月
 Medium	中
 Medium active	主动扫描（中）
 Medium severity	优先度中
@@ -2081,7 +2079,6 @@ Note: You have selected to remove items with media responses. Some of the above 
 Note: these settings can be overridden for individual projects within project options.	注意：这些设置可以被各个项目的项目选项覆盖。
 Note: you should not delete these files if another instance of Burp is currently running.	注意：如果当前正在运行其他Burp实例, 则请不要删除这些文件.
 Note: you should not disclose the private key for your CA certificate to any untrusted party.	注意：您不应向不受信任方披露CA证书私钥。
-November	11月
 Null payloads	Null payloads
 Number format	数值格式
 Number of Colums:	字段长度(联合注入用)(Number of Colums)
@@ -2099,7 +2096,6 @@ Numbers	数值
 OK	确认
 OS command injection	系统命令注入
 OS command injection(\s+\[\d+\])?	系统命令注入$1
-October	10月
 Of request does not match	与请求不匹配
 Of request matches	匹配请求
 Of response does not match	与响应不匹配
@@ -2838,7 +2834,6 @@ Send to Comparer (response)	发送到Comparer（响应）
 Send to Comparer (responses)	发送到Comparer（响应）
 Sensitive	敏感
 Separator for position (\d+)	定位$1分隔符
-September	9月
 Sequencer	定序器(Sequencer)
 Serialized object in HTTP message(\s+\[\d+\])?	HTTP消息中的序列化对象$1
 Server SSL Certificates	服务器SSL证书

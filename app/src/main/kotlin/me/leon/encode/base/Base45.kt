@@ -2,27 +2,28 @@ package me.leon.encode.base
 
 import me.leon.ext.toCharset
 
-//@link https://datatracker.ietf.org/doc/draft-faltstrom-base45/
-//不像Base36 Base64需要padding =
+// @link https://datatracker.ietf.org/doc/draft-faltstrom-base45/
+// 不像Base36 Base64需要padding =
 const val BASE45_DICT = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"
 
 fun String.base45(dict: String = BASE45_DICT, charset: String = "UTF-8") =
     toByteArray(charset.toCharset()).base45(dict)
 
 fun ByteArray.base45(dict: String = BASE45_DICT) =
-    toList()
-        .chunked(2).joinToString("") {
-            with(it.toByteArray().baseNEncode(45, dict).reversed()) {
-                if (length == 1) "${this[0]}0" else this
-            }
+    toList().chunked(2).joinToString("") {
+        with(it.toByteArray().baseNEncode(45, dict).reversed()) {
+            if (length == 1) "${this[0]}0" else this
         }
+    }
 
 fun String.base45Decode(dict: String = BASE45_DICT) =
     chunked(3)
         .map {
             val prop = if (it.length == 2 && it[1] == '0') it[0].toString() else it
             prop.reversed().baseNDecode(45, dict)
-        }.flatMap { it.toList() }.toByteArray()
+        }
+        .flatMap { it.toList() }
+        .toByteArray()
 
 fun String.base45Decode2String(dict: String = BASE45_DICT, charset: String = "UTF-8") =
     base45Decode(dict).toString(charset.toCharset())

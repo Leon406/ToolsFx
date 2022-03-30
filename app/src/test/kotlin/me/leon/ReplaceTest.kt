@@ -22,7 +22,7 @@ class ReplaceTest {
                 "十" to "10"
             )
 
-        var d2 = "一二三四五六七八九十"
+        val d2 = "一二三四五六七八九十"
         val sb = StringBuilder(d2)
         measureTimeMillis {
             sb.replace(replaceMap.keys.joinToString("|").toRegex()) { replaceMap[it.value] ?: "" }
@@ -55,8 +55,8 @@ class ReplaceTest {
 
         val req =
             """
-GET /5aV1bjqh_Q23odCf/static/superui/js/ubase_5a7b0933.js HTTP/2
-Host: dss0.bdstatic.com
+GET /aaa/static/bbb/js/cc.js HTTP/2
+Host: dss0.bd.com
 Sec-Ch-Ua: "(Not(A:Brand";v="8", "Chromium";v="98"
 Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
 
@@ -66,18 +66,16 @@ Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
             Access-Control-Allow-Credentials: true
             Access-Control-Allow-Methods: GET, POST, OPTIONS
             Access-Control-Allow-Origin: *
-            Server: nginx/1.8.0
-            Tracecode: 18990982310800107786031319
             Connection: close
         """.trimIndent()
 
         Pattern.compile("[A-Z]{3,} /.*? HTTP/").matcher(req).find().also { println(it) }
-        Pattern.compile("HTTP/[\\d\\.]+ \\d+").matcher(rsp).find().also { println(it) }
+        Pattern.compile("HTTP/[\\d.]+ \\d+").matcher(rsp).find().also { println(it) }
 
         val dataToTranslated =
             arrayOf(
                 "Log exceptions to a local directory:",
-                "Burp Suite Professional v2022.2.2 - licensed to surferxyz",
+                "Burp Suite Professional v2022.2.2 - licensed to leon",
                 "Project file: ",
                 "View filter: Please wait ...",
                 "Capture filter: ",
@@ -87,8 +85,8 @@ Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
                 "Updates [installer version only]",
                 "Automatic Project Backup [disk projects only]",
                 """
-GET /5aV1bjqh_Q23odCf/static/superui/js/ubase_5a7b0933.js HTTP/2
-Host: dss0.bdstatic.com
+GET /aa/static/bb/js/cc.js HTTP/2
+Host: dss0.bd.com
 Sec-Ch-Ua: "(Not(A:Brand";v="8", "Chromium";v="98"
 Sec-Ch-Ua-Mobile: ?0
 Sec-Ch-Ua-Platform: "Windows"
