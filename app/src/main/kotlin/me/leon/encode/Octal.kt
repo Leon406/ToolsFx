@@ -9,4 +9,5 @@ fun ByteArray.octal(charset: String = "UTF-8") =
 
 fun String.octalDecode() = octalDecode2String().toByteArray()
 
-fun String.octalDecode2String() = split(" +".toRegex()).map { Char(it.toInt(8)) }.joinToString("")
+fun String.octalDecode2String() =
+    split("[^\\d+]".toRegex()).filter { it.isNotEmpty() }.map { Char(it.toInt(8)) }.joinToString("")
