@@ -27,7 +27,7 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32/36/58/62/85/91/92/100
+- [x] base16/32/36/45/58/62/85/91/92/100
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
