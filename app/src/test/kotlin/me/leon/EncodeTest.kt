@@ -109,23 +109,19 @@ class EncodeTest {
     }
 
     @Test
+    fun b45(){
+        assertEquals("BB8","AB".base45())
+        assertEquals("%69 VD92EX0","Hello!!".base45())
+        assertEquals("C-SEFK*.KRT9-3E+Q691","你好Leon406".base45())
+
+        assertEquals("你好Leon406", "C-SEFK*.KRT9-3E+Q691".base45Decode2String())
+        assertEquals("Hello!!", "%69 VD92EX0".base45Decode2String())
+        assertEquals("ietf!", "QED8WEX0".base45Decode2String())
+    }
+
+
+    @Test
     fun b92() {
-        //        println('#'.base92Int())
-        //        println('!'.base92Int())
-        //        println('_'.base92Int())
-        //        println('0'.base92Int())
-        //        println('}'.base92Int())
-        //        println('D'.base92Int())
-        //        println('8'.base92Int())
-        //        println('*'.base92Int())
-        //
-        //        println(0.base92Char())
-        //        println(1.base92Char())
-        //        println(34.base92Char())
-        //        println(10.base92Char())
-        //        println(61.base92Char())
-        //        println(62.base92Char())
-        //        println(90.base92Char())
 
         println(String(Base91.encode(raw.toByteArray())))
         println("a".base92Encode2String())
@@ -133,10 +129,6 @@ class EncodeTest {
         println("D,".base92Decode2String())
         println("sjT_Vni^B1<]D9f:XapY99'b/v8l*vMG4B\$E!<Ws\$JmoAFJMHa".base92Decode2String())
         println("a[:hQLeff={07_Q]1SQUCG}LfVG!U^;m1t*EplJB2TX6},?iTB".base91Decode2String())
-        //        println(String("".base92Encode()))
-        //        println("D81RPya.)hgNA(%s".base92Decode())
-        //        println("~".base92Decode())
-        //        println(String("aaaaaaaaaaaaa".base92Encode()))
     }
 
     @Test

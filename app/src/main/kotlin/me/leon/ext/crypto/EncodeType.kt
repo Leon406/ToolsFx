@@ -109,6 +109,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base36(dict)
     },
+    Base45("base45", BASE45_DICT) {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base45Decode(dict)
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base45(dict)
+    },
     Base58("base58", BASE58_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base58Decode(dict)

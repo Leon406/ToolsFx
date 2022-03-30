@@ -28,7 +28,7 @@ class EncodeController : Controller() {
         charset: String = "UTF-8"
     ): String =
         catch({ "编码错误: $it" }) {
-            println("encode2String $type $dic $charset $raw")
+            println("encode2String $type $dic $charset")
             if (raw.isEmpty()) "" else type.encode2String(raw, dic, charset)
         }
 
