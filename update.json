@@ -1,5 +1,5 @@
 {"version":"1.12.2.beta06","info":"v1.12.2.beta06
 
 🔥  新增base45
-🐞  jsHex/jsOctal编码解码非unicode错误
+🐞  修复jsHex/jsOctal编码解码非unicode错误
 "}
