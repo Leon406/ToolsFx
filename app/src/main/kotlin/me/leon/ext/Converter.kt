@@ -48,26 +48,34 @@ fun String.toUnicodeString() =
 
 /** js hex 编解码 \x61 */
 fun String.toJsHexEncodeString() =
-    fold(StringBuilder()) { acc, c -> acc.append("\\x").append(c.code.toString(HEX_RADIX)) }
+    toByteArray()
+        .map { it.toUByte() }
+        .fold(StringBuilder()) { acc, c -> acc.append("\\x").append(c.toInt().toString(HEX_RADIX)) }
         .toString()
 
 /** js hex 解码 \x61 */
 fun String.jsHexDecodeString() =
     split("(?i)\\\\x".toRegex())
-        .filterIndexed { index, _ -> index != 0 }
-        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toUnicodeChar()) }
-        .toString()
+        .filterNot { it.isEmpty() }
+        .map { it.toInt(HEX_RADIX).toByte() }
+        .toByteArray()
+        .toString(Charsets.UTF_8)
 
 /** js octal 编解码 \141 */
 fun String.jsOctalDecodeString() =
     split("(?i)\\\\".toRegex())
-        .filterIndexed { index, _ -> index != 0 }
-        .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(OCTAL_RADIX).toUnicodeChar()) }
-        .toString()
+        .filterNot { it.isEmpty() }
+        .map { it.toInt(OCTAL_RADIX).toByte() }
+        .toByteArray()
+        .toString(Charsets.UTF_8)
 
 /** js octal 编码 \141 */
 fun String.toJsOctalEncodeString() =
-    fold(StringBuilder()) { acc, c -> acc.append("\\").append(c.code.toString(OCTAL_RADIX)) }
+    toByteArray()
+        .map { it.toUByte() }
+        .fold(StringBuilder()) { acc, c ->
+            acc.append("\\").append(c.toInt().toString(OCTAL_RADIX))
+        }
         .toString()
 
 fun String.unicode2String() =
