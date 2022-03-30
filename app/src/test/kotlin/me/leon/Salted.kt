@@ -1,16 +1,14 @@
 package me.leon
 
-import java.security.SecureRandom
-import java.security.Security
-import javax.crypto.Cipher
-import javax.crypto.SecretKey
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
+import me.leon.ext.crypto.makeCipher
 import me.leon.ext.hex2ByteArray
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
+import java.security.SecureRandom
+import java.security.Security
+import javax.crypto.Cipher
 
 /** for PBE process comprehend */
 class Salted {
@@ -59,13 +57,6 @@ class Salted {
                 }
         }
     }
-
-    private fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int) =
-        Cipher.getInstance(alg).apply {
-            val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-            if (alg.contains("ECB|RC4".toRegex())) init(cipherMode, keySpec)
-            else init(cipherMode, keySpec, IvParameterSpec(iv))
-        }
 
     private fun kdf(pass: ByteArray, salt: ByteArray, outputSize: Int = 48): ByteArray {
         val tmpKey = pass + salt

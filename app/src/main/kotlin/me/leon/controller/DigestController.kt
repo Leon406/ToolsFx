@@ -2,6 +2,7 @@ package me.leon.controller
 
 import me.leon.Digests
 import me.leon.ext.*
+import me.leon.ext.crypto.*
 import tornadofx.*
 
 class DigestController : Controller() {

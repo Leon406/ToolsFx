@@ -36,7 +36,7 @@ val DEFAULT_QWE_DECODE =
     mutableMapOf<Char, Char>().apply { putAll(DEFAULT_QWE.values.zip(DEFAULT_QWE.keys)) }
 
 fun String.qweEncrypt() =
-    uppercase().stripAllSpace().toList().map { DEFAULT_QWE[it] }.joinToString("")
+    stripAllSpace().uppercase().toList().map { DEFAULT_QWE[it] }.joinToString("")
 
 fun String.qweDecrypt() =
     stripAllSpace().uppercase().toList().map { DEFAULT_QWE_DECODE[it] }.joinToString("")

@@ -1,7 +1,7 @@
 package me.leon
 
 import kotlin.test.assertEquals
-import me.leon.ext.JavascriptCipher
+import me.leon.ext.crypto.JavascriptCipher
 import me.leon.ext.Nashorn
 import org.junit.Test
 

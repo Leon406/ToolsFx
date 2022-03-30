@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.classical
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -25,7 +25,7 @@ fun String.railFenceWEncrypt(count: Int): String {
 /** count必须为长度的公约数 */
 fun String.railFenceWDecrypt(count: Int): String {
     val factor = 2 * (count - 1)
-    var list = mutableListOf<Pair<MutableList<Char>, Int>>()
+    val list = mutableListOf<Pair<MutableList<Char>, Int>>()
     (0 until count).map {
         val len =
             when (it) {

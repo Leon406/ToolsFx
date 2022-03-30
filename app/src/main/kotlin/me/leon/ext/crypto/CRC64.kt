@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package me.leon
+package me.leon.ext.crypto
 
 import java.util.zip.Checksum
 

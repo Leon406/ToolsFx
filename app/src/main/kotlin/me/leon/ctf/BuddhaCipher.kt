@@ -1,9 +1,7 @@
 package me.leon.ctf
 
+import me.leon.ext.crypto.makeCipher
 import javax.crypto.Cipher
-import javax.crypto.SecretKey
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 
 private const val CIPHER = "AES/CBC/PKCS5Padding"
 private const val KEY = "XDXDtudou@KeyFansClub^_^Encode!!"
@@ -49,10 +47,3 @@ fun String.buddhaExplain(): String {
         .doFinal(encryptedBytes)
         .toString(Charsets.UTF_16LE)
 }
-
-private fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int) =
-    Cipher.getInstance(alg).apply {
-        val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
-        if (alg.contains("ECB|RC4".toRegex())) init(cipherMode, keySpec)
-        else init(cipherMode, keySpec, IvParameterSpec(iv))
-    }

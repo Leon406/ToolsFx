@@ -5,12 +5,12 @@ import me.leon.ext.TABLE_A_Z_WO_J
 import me.leon.ext.stripAllSpace
 
 fun String.playFair(keyword: String): String {
-    val alphabeta = TABLE_A_Z_WO_J.toMutableList()
+    val alphabet = TABLE_A_Z_WO_J.toMutableList()
     val key = keyword.replace(" ", "")
 
     key.uppercase().toList().distinct().also {
-        alphabeta.removeAll(it)
-        alphabeta.addAll(0, it)
+        alphabet.removeAll(it)
+        alphabet.addAll(0, it)
     }
     return replace(" ", "")
         .uppercase()
@@ -19,52 +19,52 @@ fun String.playFair(keyword: String): String {
         .padding("X", 2)
         .chunked(2)
         .joinToString(" ") {
-            val i1 = alphabeta.indexOf(it.first())
-            val i2 = alphabeta.indexOf(it.last())
+            val i1 = alphabet.indexOf(it.first())
+            val i2 = alphabet.indexOf(it.last())
             val tmpChars = mutableListOf<Char>()
 
             val p1 = i1.point()
             val p2 = i2.point()
             // same row
             if (p1.first == p2.first) {
-                tmpChars.add(alphabeta[5 * p1.first + (p2.second + 1) % 5])
-                tmpChars.add(alphabeta[5 * p2.first + (p1.second + 1) % 5])
+                tmpChars.add(alphabet[5 * p1.first + (p2.second + 1) % 5])
+                tmpChars.add(alphabet[5 * p2.first + (p1.second + 1) % 5])
             } else if (p1.second == p2.second) { // same column
-                tmpChars.add(alphabeta[5 * ((p1.first + 1) % 5) + p2.second])
-                tmpChars.add(alphabeta[5 * ((p2.first + 1) % 5) + p1.second])
+                tmpChars.add(alphabet[5 * ((p1.first + 1) % 5) + p2.second])
+                tmpChars.add(alphabet[5 * ((p2.first + 1) % 5) + p1.second])
             } else {
-                tmpChars.add(alphabeta[5 * p1.first + p2.second])
-                tmpChars.add(alphabeta[5 * p2.first + p1.second])
+                tmpChars.add(alphabet[5 * p1.first + p2.second])
+                tmpChars.add(alphabet[5 * p2.first + p1.second])
             }
             tmpChars.joinToString("")
         }
 }
 
 fun String.playFairDecrypt(keyword: String): String {
-    val alphabeta = TABLE_A_Z_WO_J.toMutableList()
+    val alphabet = TABLE_A_Z_WO_J.toMutableList()
     keyword.replace(" ", "").uppercase().toList().distinct().also {
-        alphabeta.removeAll(it)
-        alphabeta.addAll(0, it)
+        alphabet.removeAll(it)
+        alphabet.addAll(0, it)
     }
     return stripAllSpace()
         .chunked(2)
         .joinToString("") {
-            val i1 = alphabeta.indexOf(it.first())
-            val i2 = alphabeta.indexOf(it.last())
+            val i1 = alphabet.indexOf(it.first())
+            val i2 = alphabet.indexOf(it.last())
             val tmpChars = mutableListOf<Char>()
 
             val p1 = i1.point()
             val p2 = i2.point()
             // same row
             if (p1.first == p2.first) {
-                tmpChars.add(alphabeta[5 * p1.first + (p2.second + 4) % 5])
-                tmpChars.add(alphabeta[5 * p2.first + (p1.second + 4) % 5])
+                tmpChars.add(alphabet[5 * p1.first + (p2.second + 4) % 5])
+                tmpChars.add(alphabet[5 * p2.first + (p1.second + 4) % 5])
             } else if (p1.second == p2.second) { // same column
-                tmpChars.add(alphabeta[5 * ((p1.first + 4) % 5) + p2.second])
-                tmpChars.add(alphabeta[5 * ((p2.first + 4) % 5) + p1.second])
+                tmpChars.add(alphabet[5 * ((p1.first + 4) % 5) + p2.second])
+                tmpChars.add(alphabet[5 * ((p2.first + 4) % 5) + p1.second])
             } else {
-                tmpChars.add(alphabeta[5 * p1.first + p2.second])
-                tmpChars.add(alphabeta[5 * p2.first + p1.second])
+                tmpChars.add(alphabet[5 * p1.first + p2.second])
+                tmpChars.add(alphabet[5 * p2.first + p1.second])
             }
             tmpChars.joinToString("")
         }

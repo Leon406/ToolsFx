@@ -53,7 +53,6 @@ object QuotePrintable {
                 lastPos = curPos
             }
         }
-
         return sb.toString()
     }
 }

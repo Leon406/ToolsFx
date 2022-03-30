@@ -9,6 +9,6 @@ fun ByteArray.punyCode(charset: String = "UTF-8"): String =
     IDN.toASCII(toString(Charset.forName(charset)))
 
 fun String.punyCodeDecode(charset: String = "UTF-8") =
-    IDN.toUnicode(this).toByteArray(Charset.forName(charset))
+    punyCodeDecode2String().toByteArray(Charset.forName(charset))
 
 fun String.punyCodeDecode2String(): String = IDN.toUnicode(this)

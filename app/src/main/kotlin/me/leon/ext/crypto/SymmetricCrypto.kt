@@ -11,7 +11,7 @@ fun ByteArray.encrypt(key: ByteArray, iv: ByteArray, alg: String): ByteArray =
 fun ByteArray.decrypt(key: ByteArray, iv: ByteArray, alg: String): ByteArray =
     makeCipher(alg, key, iv, Cipher.DECRYPT_MODE).doFinal(this)
 
-private fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int): Cipher =
+fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int): Cipher =
     Cipher.getInstance(alg).apply {
         val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
         if (alg.contains("ECB|RC4".toRegex())) init(cipherMode, keySpec)

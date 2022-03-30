@@ -1,16 +1,16 @@
 package me.leon.classical
 
 import me.leon.ext.TABLE_A_Z_WO_J
+import me.leon.ext.letters
 
 /** ported from https://github.com/jameslyons/pycipher/blob/master/pycipher/foursquare.py */
 fun String.fourSquare(key1: String, key2: String): String {
-    val properKey1 = key1.uppercase().filter { it.isUpperCase() }
-    val properKey2 = key2.uppercase().filter { it.isUpperCase() }
+    val properKey1 = key1.letters().uppercase()
+    val properKey2 = key2.letters().uppercase()
     if (properKey1.length != 25 || properKey2.length != 25) {
         return "Key must be 25 characters long"
     }
-    return uppercase()
-        .filter { it.isUpperCase() }
+    return letters().uppercase()
         .padEnd(2, 'X')
         .chunked(2)
         .fold(StringBuilder()) { acc, char ->
@@ -23,13 +23,12 @@ fun String.fourSquare(key1: String, key2: String): String {
 }
 
 fun String.fourSquareDecrypt(key1: String, key2: String): String {
-    val properKey1 = key1.uppercase().filter { it.isUpperCase() }
-    val properKey2 = key2.uppercase().filter { it.isUpperCase() }
+    val properKey1 = key1.letters().uppercase()
+    val properKey2 = key2.letters().uppercase()
     if (properKey1.length != 25 || properKey2.length != 25) {
         return "Key must be 25 characters long"
     }
-    return uppercase()
-        .filter { it.isUpperCase() }
+    return letters().uppercase()
         .padEnd(2, 'X')
         .chunked(2)
         .fold(StringBuilder()) { acc, char ->
