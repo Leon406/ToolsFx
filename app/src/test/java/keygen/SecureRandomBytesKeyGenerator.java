@@ -1,0 +1,59 @@
+/*
+ * Copyright 2011-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package keygen;
+
+import java.security.SecureRandom;
+
+/**
+ * A KeyGenerator that uses {@link SecureRandom} to generate byte array-based keys.
+ *
+ * <p>No specific provider is used for the {@code SecureRandom}, so the platform default will be
+ * used.
+ *
+ * @author Keith Donald
+ */
+final class SecureRandomBytesKeyGenerator implements BytesKeyGenerator {
+
+    private static final int DEFAULT_KEY_LENGTH = 8;
+
+    private final SecureRandom random;
+
+    private final int keyLength;
+
+    /** Creates a secure random key generator using the defaults. */
+    SecureRandomBytesKeyGenerator() {
+        this(DEFAULT_KEY_LENGTH);
+    }
+
+    /** Creates a secure random key generator with a custom key length. */
+    SecureRandomBytesKeyGenerator(int keyLength) {
+        this.random = new SecureRandom();
+        this.keyLength = keyLength;
+    }
+
+    @Override
+    public int getKeyLength() {
+        return this.keyLength;
+    }
+
+    @Override
+    public byte[] generateKey() {
+        byte[] bytes = new byte[this.keyLength];
+        this.random.nextBytes(bytes);
+        return bytes;
+    }
+}

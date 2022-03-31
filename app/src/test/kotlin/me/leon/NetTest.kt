@@ -45,16 +45,6 @@ class NetTest {
 
     @Test
     fun fileType() {
-        var fileDir = "C:/Users/Leon/Desktop"
-        fileDir = "E:\\gitrepo\\Android-app"
-        fileDir = "E:\\software\\Lily5\\soft\\dev\\cmder"
-        //        fileDir = "D:\\BaiduNetdiskDownload\\雷电\\LDPlayer"
-
-        //        File(fileDir).walk().filter { it.isFile }.forEach {
-        //            println("$it  ${it.realExtension()}" )
-        //        }
-        File("C:\\Users\\Leon\\Desktop\\buldChm").listFiles()?.forEach {
-            println(it.realExtension())
-        }
+        TEST_PRJ_DIR.listFiles()?.forEach { println(it.realExtension()) }
     }
 }

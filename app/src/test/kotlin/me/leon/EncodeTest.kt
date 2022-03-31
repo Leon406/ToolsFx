@@ -1,5 +1,6 @@
 package me.leon
 
+import java.io.File
 import kotlin.test.assertEquals
 import me.leon.controller.EncodeController
 import me.leon.ctf.bubbleBabble
@@ -94,18 +95,10 @@ class EncodeTest {
     @Test
     fun baseNTest() {
         val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        println("${0.toChar()}leon".baseNEncode(36, base36Map))
-        println("0U2QMPA".baseNDecode2String(36, base36Map))
+        val encoded = "MAHJV1X5YMIHRRDJ0HQLTZ0WNFLYDP0W01ME2E8MTAT3QNDXRXGNH7HJYAYY5Q"
 
-        Base91.encode(raw.toByteArray()).also { println(String(it)) }
-        println("example string".base91())
-        println(
-            String(
-                Base91.decode(
-                    "5)GfG?ue\$y+/ZQ;mMB".also { println(it.base91Decode2String()) }.toByteArray()
-                )
-            )
-        )
+        assertEquals(encoded, raw.baseNEncode(36, base36Map))
+        assertEquals(raw, encoded.baseNDecode2String(36, base36Map))
     }
 
     @Test
@@ -121,13 +114,14 @@ class EncodeTest {
 
     @Test
     fun b92() {
+        val encoded = "a[:hQLeff={07_Q]1SQUCG}LfVG!U^;m1t*EplJB2TX6},?iTB"
+        val encoded92 = "sjT_Vni^B1<]D9f:XapY99'b/v8l*vMG4B\$E!<Ws\$JmoAFJMHa"
 
-        println(String(Base91.encode(raw.toByteArray())))
-        println("a".base92Encode2String())
-        //        println("a".())
-        println("D,".base92Decode2String())
-        println("sjT_Vni^B1<]D9f:XapY99'b/v8l*vMG4B\$E!<Ws\$JmoAFJMHa".base92Decode2String())
-        println("a[:hQLeff={07_Q]1SQUCG}LfVG!U^;m1t*EplJB2TX6},?iTB".base91Decode2String())
+        assertEquals(encoded, raw.base91())
+        assertEquals(encoded92, raw.base92Encode2String())
+
+        assertEquals(raw, encoded.base91Decode2String())
+        assertEquals(raw, encoded92.base92Decode2String())
     }
 
     @Test
@@ -137,36 +131,35 @@ class EncodeTest {
     }
 
     @Test
-    fun baseT() {
-        println("ab".base92Encode2String())
-        println("ab".baseNEncode(91, BASE92_DICT))
-    }
-
-    @Test
     fun escape() {
-        val d = "%u5F00%u53D1%u5DE5%u5177%u96C6%u5408%20by%20leon406@52pojie.cn"
-        println(EscapeUtils.escape(5.toChar() + raw))
-        println(raw.escape())
-        println(EscapeUtils.unescape(d))
-        println(d.unescape2String())
-        println(raw.octal().also { println(it.octalDecode2String()) })
-        println(raw.decimal().also { println(it.decimalDecode2String()) })
+        val d = "%u5f00%u53d1%u5de5%u5177%u96c6%u5408%20by%20leon406%4052pojie%2ecn"
+        assertEquals(d, raw.escape())
+        assertEquals(raw, d.unescape2String())
+
+        println(
+            raw.octal().also {
+                println(it.octalDecode2String())
+                assertEquals(raw, it.octalDecode2String())
+            }
+        )
+        println(
+            raw.decimal().also {
+                println(it.decimalDecode2String())
+                assertEquals(raw, it.decimalDecode2String())
+            }
+        )
     }
 
     @Test
-    fun xxEncodeTest() {
+    fun xxUUEncodeTest() {
+        val xxEncoded = "ctPm+tMyFtPSZtMKruNi4tN06647t64lZPqsoA1N+BH7kPqddNGtXPU++"
+        val uuEncoded = "HY;R`Y8^1Y;>EY86WZ9N&Y9\"((&)Y(&QE;VXT,#9`-3)P;VII92YC;@``"
 
-        for (i in 0..5) {
-            raw.repeat(i).uuEncode().also {
-                println(it)
-                println(it.uuDecode2String())
-            }
+        assertEquals(xxEncoded, raw.xxEncode())
+        assertEquals(uuEncoded, raw.uuEncode())
 
-            raw.repeat(i).xxEncode().also {
-                println(it)
-                println(it.xxDecode2String())
-            }
-        }
+        assertEquals(raw, xxEncoded.xxDecode2String())
+        assertEquals(raw, uuEncoded.uuDecode2String())
     }
 
     @Test
@@ -192,41 +185,17 @@ class EncodeTest {
     }
 
     @Test
-    fun hexx() {
-        println(Long.MAX_VALUE)
-        println(0x7FFFFFFFFFFFFFFFL)
-        println("123".crc64())
-    }
-
-    @Test
     fun crc() {
-        println((-0x3693a86a2878f0be).toULong().toLong().toString(16))
-        println((0xD80000000000000).toULong().toLong())
-        val toLong = 0xD80000000000000
-        println(toLong.toULong())
-        val path = "D:\\360极速浏览器下载\\0013_FLASHDRIVER_Addr_04.txt"
-        val readBytes = path.toFile().readBytes()
+        val readBytes = File(TEST_PRJ_DIR, "LICENSE").readBytes()
         readBytes.run {
             CRC64()
                 .apply {
                     update(this@run)
-                    println(this.crcHex())
+                    assertEquals("ea9848a519ac78d9", this.crcHex())
                 }
                 .crcDecimal()
-                .also { println(it) }
+                .also { assertEquals("16904341075272693977", it) }
         }
-    }
-
-    @Test
-    fun charsets() {
-        val raw = "你好"
-        val charset = Charsets.UTF_16BE
-        val charset2 = Charsets.UTF_16LE
-        charset.encode(raw).also { println(charset.decode(it)) }
-        raw.toHex().also { println(it) }
-        raw.toByteArray(Charsets.UTF_16).toHex().also { println(it) }
-        raw.toByteArray(charset).toHex().also { println(it) }
-        raw.toByteArray(charset2).toHex().also { println(it) }
     }
 
     @Test
@@ -236,7 +205,13 @@ class EncodeTest {
             "title": "\u7b2c\u4e00\u6a21\u5757 - \u7ecf\u6d4e\u5b66\u6838\u5fc3\u539f\u7406",
             "file_name": "\u+6a21\U5757\u5b8c\u6574\u7248",
        """.trimIndent()
-        println(raw.unicodeMix2String())
+
+        val decoded =
+            """
+            "title": "第一模块 - 经济学核心原理",
+            "file_name": "模块完整版",
+        """.trimIndent()
+        assertEquals(decoded, raw.unicodeMix2String())
     }
 
     @Test
@@ -261,25 +236,16 @@ class EncodeTest {
     fun unicode() {
         val da =
             "\\xf0\\x9f\\x99\\x83\\xf0\\x9f\\x92\\xb5\\xf0\\x9f\\x8c\\xbf\\xf0\\x9f\\x8e\\xa4\\xf0\\x9f" +
-                "\\x9a\\xaa\\xf0\\x9f\\x8c\\x8f\\xf0\\x9f\\x90\\x8e\\xf0\\x9f\\xa5\\x8b\\xf0\\x9f\\x9a\\xab" +
-                "\\xf0\\x9f\\x98\\x86\\xe2\\x9c\\x85\\xf0\\x9f\\x8d\\x8e\\xe2\\x8f\\xa9\\xf0\\x9f\\xa6\\x93" +
-                "\\xe2\\x84\\xb9\\xf0\\x9f\\xa5\\x8b\\xf0\\x9f\\x93\\xae\\xe2\\x98\\xba\\xf0\\x9f\\x93\\x82" +
-                "\\xf0\\x9f\\x91\\x91\\xf0\\x9f\\x98\\x80\\xf0\\x9f\\x90\\x98\\xf0\\x9f\\x8c\\x89\\xf0\\x9f" +
-                "\\x8d\\x8e\\xf0\\x9f\\x98\\x87\\xf0\\x9f\\x98\\x8a\\xe2\\x98\\xba\\xf0\\x9f\\x8c\\x8f\\xe2" +
-                "\\x9c\\x89\\xe2\\x9c\\x85\\xf0\\x9f\\x9a\\xaa\\xf0\\x9f\\x8e\\x88\\xf0\\x9f\\xa4\\xa3\\xe2" +
-                "\\x9c\\x85\\xf0\\x9f\\x98\\x8e\\xf0\\x9f\\x91\\x8c\\xf0\\x9f\\x94\\x84\\xf0\\x9f\\x93\\xae" +
-                "\\xf0\\x9f\\xa4\\xa3\\xf0\\x9f\\x9b\\xa9\\xf0\\x9f\\x95\\xb9\\xf0\\x9f\\x92\\xb5\\xf0\\x9f" +
-                "\\x8c\\xbf\\xe2\\x8f\\xa9\\xf0\\x9f\\x8c\\x8a\\xf0\\x9f\\x8d\\xb4\\xe2\\x9c\\x89\\xf0\\x9f" +
-                "\\x91\\x89\\xf0\\x9f\\x98\\x8e\\xf0\\x9f\\x98\\x82\\xf0\\x9f\\x9a\\xb9\\xf0\\x9f\\x94\\xac" +
-                "\\xf0\\x9f\\x91\\x91\\xf0\\x9f\\x98\\x8a\\xf0\\x9f\\x9a\\xaa\\xf0\\x9f\\x8c\\x8f\\xf0\\x9f" +
-                "\\x8e\\x85\\xf0\\x9f\\x8d\\xb4\\xe2\\x98\\x82\\xf0\\x9f\\x8d\\x8d\\xf0\\x9f\\x8d\\x8d\\xf0" +
-                "\\x9f\\x98\\x8d\\xf0\\x9f\\xa4\\xa3\\xe2\\x9c\\x89\\xf0\\x9f\\x91\\x89\\xf0\\x9f\\x8e\\xa4" +
-                "\\xf0\\x9f\\x98\\x80\\xf0\\x9f\\x91\\x8c\\xf0\\x9f\\x99\\x83\\xf0\\x9f\\x8d\\x8e\\xf0\\x9f" +
-                "\\x93\\xae\\xf0\\x9f\\x8c\\xaa\\xf0\\x9f\\x91\\x8c\\xf0\\x9f\\x8d\\x8c\\xf0\\x9f\\x8c\\xaa" +
-                "\\xf0\\x9f\\x8c\\xbf\\xf0\\x9f\\xa5\\x8b\\xe2\\x98\\x82\\xf0\\x9f\\x98\\x82\\xf0\\x9f\\x8f" +
-                "\\x8e\\xf0\\x9f\\x9a\\xb0\\xf0\\x9f\\x92\\xb5\\xe2\\x8c\\xa8\\xe2\\x8c\\xa8\\xf0\\x9f\\xa4" +
-                "\\xa3\\xf0\\x9f\\x98\\x80\\xf0\\x9f\\x97\\x92\\xf0\\x9f\\x97\\x92"
+                "\\x9a\\xaa\\xf0\\x9f\\x8c\\x8f\\xf0\\x9f\\x90\\x8e\\xf0\\x9f\\xa5\\x8b\\xf0\\x9f\\x9a\\xab"
 
-        da.jsHexDecodeString().also { println(it) }
+        assertEquals("🙃💵🌿🎤🚪🌏🐎🥋🚫", da.jsHexDecodeString())
+    }
+
+    @Test
+    fun radix64() {
+        assertEquals("KRGx", "123".radix64())
+        assertEquals("KRGxL.", "1234".radix64())
+        assertEquals("KRGxLBS", "12345".radix64())
+        assertEquals("KRGxLBS0", "123456".radix64())
     }
 }

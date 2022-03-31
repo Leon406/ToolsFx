@@ -29,5 +29,6 @@ dependencies {
     api("com.google.code.gson:gson:2.9.0")
     implementation(project(":plugin-lib"))
     implementation("org.openjdk.nashorn:nashorn-core:15.3")
+//    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
 }
