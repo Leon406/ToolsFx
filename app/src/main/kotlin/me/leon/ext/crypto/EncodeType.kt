@@ -17,6 +17,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base64(dict)
     },
+    Radix64("radix64") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.radix64Decode()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.radix64()
+    },
     UrlEncode("urlencode") {
         override fun decode(encoded: String, dict: String, charset: String) =
             (URLDecoder.decode(encoded, charset.ifEmpty { "UTF-8" }) ?: "").toByteArray(
