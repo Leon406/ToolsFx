@@ -2,8 +2,7 @@ package me.leon.ext.crypto
 
 import java.io.File
 import javax.crypto.*
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
+import javax.crypto.spec.*
 
 fun ByteArray.encrypt(key: ByteArray, iv: ByteArray, alg: String): ByteArray =
     makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE).doFinal(this)
@@ -15,6 +14,8 @@ fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int): Cip
     Cipher.getInstance(alg).apply {
         val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
         if (alg.contains("ECB|RC4".toRegex())) init(cipherMode, keySpec)
+        //require jdk 11
+        else if (alg.equals("ChaCha20", true)) init(cipherMode, keySpec, ChaCha20ParameterSpec(iv, 7))
         else init(cipherMode, keySpec, IvParameterSpec(iv))
     }
 

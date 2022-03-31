@@ -164,7 +164,7 @@
 ### 流式对称加密 (stream cipher)
 - [x] RC4
 - [x] HC128/HC256
-- [x] ChaCha
+- [x] ChaCha/ChaCha20/ChaCha20-Poly1305
 - [x] Salsa20
 - [x] XSalsa20
 - [x] VMPC

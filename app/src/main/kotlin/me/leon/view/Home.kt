@@ -65,7 +65,7 @@ class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
                 }
             }
             menu("Language") {
-                item("English(need restart)${"  √".takeIf { Prefs.language != "zh" } ?: ""}") {
+                item("English(require restart)${"  √".takeIf { Prefs.language != "zh" } ?: ""}") {
                     action { Prefs.language = "en" }
                 }
                 item("中文(需重启)${"  √".takeIf { Prefs.language == "zh" } ?: ""}") {
