@@ -1,6 +1,6 @@
 package me.leon.ctf
 
-import me.leon.ext.circleIndex
+import me.leon.ext.math.circleIndex
 
 /** emoji-aes */
 val emojiMap =

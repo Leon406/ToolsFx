@@ -1,5 +1,9 @@
 package me.leon
 
+import me.leon.encode.base.*
+import me.leon.ext.*
+import me.leon.ext.crypto.parsePublicKeyFromCerFile
+import org.junit.Test
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.Charset
@@ -10,22 +14,14 @@ import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
-import me.leon.encode.base.*
-import me.leon.ext.*
-import me.leon.ext.crypto.parsePublicKeyFromCerFile
-import org.junit.Test
 
 class MyTest {
 
     @Test
     fun crc32Test() {
-        CRC32().apply { update("hello".toByteArray()) }.value.also { println(it.toString(16)) }
-    }
-
-    @Test
-    fun split() {
-        val raw = "**a*a**a"
-        raw.split("(?<!\\*)\\*a".toRegex()).also { println(it) }
+        CRC32().apply { update("hello".toByteArray()) }.value.also {
+            assertEquals("3610a686", it.toString(16))
+        }
     }
 
     @Test
@@ -64,26 +60,28 @@ class MyTest {
 
     @Test
     fun hex2Base64() {
-        val data = "e4bda0e5a5bd4c656f6e21"
-        data.hex2ByteArray().base64().also { println(it) }
+        "e4bda0e5a5bd4c656f6e21".hex2ByteArray().base64().also {
+            assertEquals("5L2g5aW9TGVvbiE=", it)
+        }
     }
 
     @Test
     fun baseNEncode() {
 
-        println("ABDdd东方丽景的猜测1#".base58())
-        println("fvw2PFXr4yWZgdRoBp5UptcJeAW1c46YobuRaA".base58Decode2String())
+        val msg = "开发工具集合 by leon406@52pojie.cn"
+        val base58 = "CR58UvatBfMNr917q5LwvMbAtrpuA5s3iCQe5eDivFqEz8LN1Ytu6aH"
+        assertEquals(base58, msg.base58())
 
         measureNanoTime {
-            "ABDdd东方丽景的猜测1#".toByteArray().baseCheck().also {
-                println("dddd " + String(it.baseCheckDecode()))
+            msg.toByteArray().baseCheck().also {
+                assertEquals(msg, String(it.baseCheckDecode()))
             }
         }
             .also { println("total $it") }
 
         measureNanoTime {
-            "ABDdd东方丽景的猜测1#".base58Check().also {
-                println("dddd2 " + it.base58CheckDecode2String())
+            msg.base58Check().also {
+                assertEquals(msg, it.base58CheckDecode2String())
             }
         }
             .also { println("total2 $it") }
@@ -93,13 +91,13 @@ class MyTest {
     fun urlDecodeTest() {
         val raw =
             "https://subcon.dlj.tf/sub?target=clash&new_name=true&url=" +
-                "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
-                "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
-                "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
-                "Tk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1MjBiNTRlQGd6bS5taXNha2EucmVzdDoxM" +
-                "TQ1Mg==#%E6%97%A5%E6%9C%AC%EF%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule&inse" +
-                "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
-                "er/Clash/config/ACL4SSR_Online.ini"
+                    "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
+                    "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
+                    "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
+                    "Tk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1MjBiNTRlQGd6bS5taXNha2EucmVzdDoxM" +
+                    "TQ1Mg==#%E6%97%A5%E6%9C%AC%EF%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule&inse" +
+                    "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
+                    "er/Clash/config/ACL4SSR_Online.ini"
 
         URLDecoder.decode(raw).also { println(it) }
     }
@@ -110,9 +108,9 @@ class MyTest {
         val now = LocalDateTime.now()
         println(now)
         LocalDateTime.parse(
-                "2020-10-11 10:00:00",
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            )
+            "2020-10-11 10:00:00",
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        )
             .toInstant(ZoneOffset.of("+8"))
             .toEpochMilli()
             .also { println(it) }
@@ -122,10 +120,6 @@ class MyTest {
         }
     }
 
-    @Test
-    fun sig() {
-        SignatureDemo.sigTest()
-    }
 
     @Test
     fun charset() {
@@ -180,9 +174,11 @@ class MyTest {
     }
 
     @Test
-    fun parse() {
-        File("E:\\gitrepo\\ToolsFx\\current").readText().fromJson(Map::class.java).also {
-            println(it["info"])
-        }
+    fun updateJsonParse() {
+        File("${TEST_PRJ_DIR.absolutePath}/update.json").readText()
+            .fromJson(Map::class.java)
+            .also {
+                println(it["info"])
+            }
     }
 }

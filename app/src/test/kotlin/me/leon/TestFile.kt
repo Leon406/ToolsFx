@@ -3,6 +3,7 @@ package me.leon
 import java.io.File
 import java.math.BigInteger
 
+val TEST_PRJ_DIR = File("").absoluteFile.parentFile
 val TEST_DATA_DIR = File(File("").absoluteFile.parentFile, "testdata")
 val TEST_CTF_DIR = File(TEST_DATA_DIR, "ctf")
 val TEST_OCR_DIR = File(TEST_DATA_DIR, "qrcode")

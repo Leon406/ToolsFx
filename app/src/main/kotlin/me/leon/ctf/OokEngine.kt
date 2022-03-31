@@ -48,7 +48,6 @@ constructor(
                 if (charPointer + defaultTokenLength <= str.length) // The string we found.
                  str.substring(charPointer, charPointer + defaultTokenLength)
                 else str.substring(charPointer, charPointer + (str.length - charPointer))
-            println("token :$token")
             var b = false
             for (tokenCheck in Token.values()) {
                 if (tokenCheck.value == token) {

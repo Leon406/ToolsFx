@@ -160,7 +160,7 @@ class RsaTest {
         var e2 = params["e2"]!!
         var c1 = params["c1"]!!
         var c2 = params["c2"]!!
-        val (_, s1, s2) = e1.gcdext(e2)
+        val (_, s1, s2) = e1.gcdExt(e2)
         println((c1.modPow(s1, n1) * c2.modPow(s2, n2) % n1).n2s())
     }
 

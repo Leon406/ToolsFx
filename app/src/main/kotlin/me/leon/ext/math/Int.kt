@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.math
 
 /** support shift */
 fun Int.circleIndex(len: Int = 26, shift: Int = 0) =

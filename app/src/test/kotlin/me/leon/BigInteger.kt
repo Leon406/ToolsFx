@@ -11,12 +11,12 @@ fun BigInteger.phi(q: BigInteger) = (this - BigInteger.ONE) * (q - BigInteger.ON
 fun BigInteger.phi(q: String) = phi(BigInteger(q))
 
 // this 关于 other的逆元
-fun BigInteger.invert(other: String) = modInverse(other.toBigInteger())
+fun BigInteger.invert(other: String): BigInteger = modInverse(other.toBigInteger())
 
 // this = e
-fun BigInteger.invert(phi: BigInteger) = modInverse(phi)
+fun BigInteger.invert(phi: BigInteger): BigInteger = modInverse(phi)
 
-fun BigInteger.gcdext(other: BigInteger) = Kgcd.gcdext(this, other)
+fun BigInteger.gcdExt(other: BigInteger) = Kgcd.gcdext(this, other)
 
 // this = c
 fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n).toByteArray().decodeToString()
@@ -31,7 +31,7 @@ fun BigInteger.decrypt(d: String, n: String) = decrypt(BigInteger(d), BigInteger
 // this = n
 fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
 
-fun List<BigInteger>.phi() =
+fun List<BigInteger>.phi(): BigInteger =
     filter { it > BigInteger.ZERO }.fold(BigInteger.ONE) { acc, it -> acc * (it - BigInteger.ONE) }
 
 fun List<BigInteger>.propN(n: BigInteger) =

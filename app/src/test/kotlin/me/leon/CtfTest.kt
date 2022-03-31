@@ -4,6 +4,7 @@ import kotlin.test.assertEquals
 import me.leon.classical.*
 import me.leon.ctf.*
 import me.leon.ext.*
+import me.leon.ext.math.circleIndex
 import org.junit.Test
 
 class CtfTest {
