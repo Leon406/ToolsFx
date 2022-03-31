@@ -1,7 +1,7 @@
 package me.leon.ctf
 
-import me.leon.ext.crypto.makeCipher
 import javax.crypto.Cipher
+import me.leon.ext.crypto.makeCipher
 
 private const val CIPHER = "AES/CBC/PKCS5Padding"
 private const val KEY = "XDXDtudou@KeyFansClub^_^Encode!!"

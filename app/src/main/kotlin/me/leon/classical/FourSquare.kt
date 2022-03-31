@@ -10,7 +10,8 @@ fun String.fourSquare(key1: String, key2: String): String {
     if (properKey1.length != 25 || properKey2.length != 25) {
         return "Key must be 25 characters long"
     }
-    return letters().uppercase()
+    return letters()
+        .uppercase()
         .padEnd(2, 'X')
         .chunked(2)
         .fold(StringBuilder()) { acc, char ->
@@ -28,7 +29,8 @@ fun String.fourSquareDecrypt(key1: String, key2: String): String {
     if (properKey1.length != 25 || properKey2.length != 25) {
         return "Key must be 25 characters long"
     }
-    return letters().uppercase()
+    return letters()
+        .uppercase()
         .padEnd(2, 'X')
         .chunked(2)
         .fold(StringBuilder()) { acc, char ->

@@ -1,14 +1,14 @@
 package me.leon
 
+import java.security.SecureRandom
+import java.security.Security
+import javax.crypto.Cipher
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.crypto.makeCipher
 import me.leon.ext.hex2ByteArray
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
-import java.security.SecureRandom
-import java.security.Security
-import javax.crypto.Cipher
 
 /** for PBE process comprehend */
 class Salted {

@@ -1,9 +1,5 @@
 package me.leon
 
-import me.leon.encode.base.*
-import me.leon.ext.*
-import me.leon.ext.crypto.parsePublicKeyFromCerFile
-import org.junit.Test
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.Charset
@@ -14,6 +10,10 @@ import java.util.zip.CRC32
 import kotlin.system.measureNanoTime
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
+import me.leon.encode.base.*
+import me.leon.ext.*
+import me.leon.ext.crypto.parsePublicKeyFromCerFile
+import org.junit.Test
 
 class MyTest {
 
@@ -73,16 +73,12 @@ class MyTest {
         assertEquals(base58, msg.base58())
 
         measureNanoTime {
-            msg.toByteArray().baseCheck().also {
-                assertEquals(msg, String(it.baseCheckDecode()))
-            }
+            msg.toByteArray().baseCheck().also { assertEquals(msg, String(it.baseCheckDecode())) }
         }
             .also { println("total $it") }
 
         measureNanoTime {
-            msg.base58Check().also {
-                assertEquals(msg, it.base58CheckDecode2String())
-            }
+            msg.base58Check().also { assertEquals(msg, it.base58CheckDecode2String()) }
         }
             .also { println("total2 $it") }
     }
@@ -91,13 +87,13 @@ class MyTest {
     fun urlDecodeTest() {
         val raw =
             "https://subcon.dlj.tf/sub?target=clash&new_name=true&url=" +
-                    "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
-                    "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
-                    "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
-                    "Tk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1MjBiNTRlQGd6bS5taXNha2EucmVzdDoxM" +
-                    "TQ1Mg==#%E6%97%A5%E6%9C%AC%EF%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule&inse" +
-                    "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
-                    "er/Clash/config/ACL4SSR_Online.ini"
+                "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
+                "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
+                "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
+                "Tk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1MjBiNTRlQGd6bS5taXNha2EucmVzdDoxM" +
+                "TQ1Mg==#%E6%97%A5%E6%9C%AC%EF%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule&inse" +
+                "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
+                "er/Clash/config/ACL4SSR_Online.ini"
 
         URLDecoder.decode(raw).also { println(it) }
     }
@@ -108,9 +104,9 @@ class MyTest {
         val now = LocalDateTime.now()
         println(now)
         LocalDateTime.parse(
-            "2020-10-11 10:00:00",
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        )
+                "2020-10-11 10:00:00",
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            )
             .toInstant(ZoneOffset.of("+8"))
             .toEpochMilli()
             .also { println(it) }
@@ -119,7 +115,6 @@ class MyTest {
             println(it)
         }
     }
-
 
     @Test
     fun charset() {
@@ -175,10 +170,8 @@ class MyTest {
 
     @Test
     fun updateJsonParse() {
-        File("${TEST_PRJ_DIR.absolutePath}/update.json").readText()
-            .fromJson(Map::class.java)
-            .also {
-                println(it["info"])
-            }
+        File("${TEST_PRJ_DIR.absolutePath}/update.json").readText().fromJson(Map::class.java).also {
+            println(it["info"])
+        }
     }
 }

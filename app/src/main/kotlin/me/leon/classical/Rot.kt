@@ -24,4 +24,5 @@ fun String.shift26(bias: Int) =
         .joinToString("")
 
 fun String.shift94(bias: Int) =
-    this.map { it.takeUnless { it in '!'..'~' } ?: ('!' + (it + bias - '!').circleIndex(94)) }.joinToString("")
+    this.map { it.takeUnless { it in '!'..'~' } ?: ('!' + (it + bias - '!').circleIndex(94)) }
+        .joinToString("")

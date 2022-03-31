@@ -95,7 +95,7 @@ fun File.realExtension() =
                         ?: extension.also { println("unknown magic number $hex $name") }
                 }
             }
-    else "not file"
+    else "dir"
 
 fun File.toBase64() = readBytes().base64()
 
