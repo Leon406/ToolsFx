@@ -2,8 +2,8 @@ package me.leon.ext.crypto
 
 import org.bouncycastle.crypto.*
 import org.bouncycastle.crypto.engines.*
+import org.bouncycastle.crypto.macs.*
 import org.bouncycastle.crypto.macs.GMac
-import org.bouncycastle.crypto.macs.KGMac
 import org.bouncycastle.crypto.modes.GCMBlockCipher
 import org.bouncycastle.crypto.modes.KGCMBlockCipher
 import org.bouncycastle.crypto.params.KeyParameter
@@ -11,7 +11,6 @@ import org.bouncycastle.crypto.params.ParametersWithIV
 
 object GMac {
     fun getInstance(alg: String): Mac {
-
         val blockCipher: BlockCipher =
             when (alg.uppercase()) {
                 in arrayOf("SERPENT-GMAC", "TNEPRES-GMAC") -> TnepresEngine()
@@ -35,12 +34,11 @@ object GMac {
     }
 }
 
-fun GMac.init(key: ByteArray, iv: ByteArray) {
-    val kpwiv: CipherParameters = ParametersWithIV(KeyParameter(key), iv)
-    init(kpwiv)
-}
-
-fun KGMac.init(key: ByteArray, iv: ByteArray) {
-    val kpwiv: CipherParameters = ParametersWithIV(KeyParameter(key), iv)
-    init(kpwiv)
+fun Mac.macWithIv(key: ByteArray, iv: ByteArray, data: ByteArray): ByteArray {
+    val params: CipherParameters = ParametersWithIV(KeyParameter(key), iv)
+    this.init(params)
+    update(data, 0, data.size)
+    val sig = ByteArray(macSize)
+    doFinal(sig, 0)
+    return sig
 }

@@ -1,8 +1,6 @@
-package me.leon
+package me.leon.ctf
 
 import kotlin.test.assertEquals
-import me.leon.ctf.buddhaExplain
-import me.leon.ctf.buddhaSays
 import org.junit.Test
 
 /** for PBE process comprehend */

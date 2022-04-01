@@ -1,8 +1,8 @@
 package me.leon.encode.base
 
-import me.leon.Digests
+import me.leon.hash
 
-val base58HashFunc = { bytes: ByteArray -> Digests.hash("SHA-256", Digests.hash("SHA-256", bytes)) }
+val base58HashFunc = { bytes: ByteArray -> bytes.hash("SHA-256").hash("SHA-256") }
 
 fun ByteArray.baseCheck(
     radix: Int = 58,

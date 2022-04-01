@@ -1,11 +1,11 @@
-package me.leon
+package me.leon.encode
 
-import java.io.File
+import kotlin.system.measureNanoTime
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import me.leon.controller.EncodeController
 import me.leon.ctf.bubbleBabble
 import me.leon.ctf.bubbleBabbleDecode2String
-import me.leon.encode.*
 import me.leon.encode.base.*
 import me.leon.ext.*
 import me.leon.ext.crypto.*
@@ -185,17 +185,46 @@ class EncodeTest {
     }
 
     @Test
-    fun crc() {
-        val readBytes = File(TEST_PRJ_DIR, "LICENSE").readBytes()
-        readBytes.run {
-            CRC64()
-                .apply {
-                    update(this@run)
-                    assertEquals("ea9848a519ac78d9", this.crcHex())
-                }
-                .crcDecimal()
-                .also { assertEquals("16904341075272693977", it) }
+    fun decodeUnicode() {
+        val u = "&#20320;&#22909;&#20013;&#22269;&#x4e2d;&#x56fd;&#X56FD;"
+        println(u.unicode2String())
+        assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
+        assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
+
+        assertContentEquals(
+            arrayOf("🗾", "🗾"),
+            arrayOf("&#128510;".unicode2String(), "128510".toInt().toUnicodeChar())
+        )
+
+        assertContentEquals(
+            arrayOf(128510, 128507),
+            arrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
+        )
+        println("🗾".unicodeCharToInt())
+    }
+
+    @Test
+    fun hex2Base64() {
+        "e4bda0e5a5bd4c656f6e21".hex2ByteArray().base64().also {
+            assertEquals("5L2g5aW9TGVvbiE=", it)
         }
+    }
+
+    @Test
+    fun baseNEncode() {
+
+        val base58 = "CR58UvatBfMNr917q5LwvMbAtrpuA5s3iCQe5eDivFqEz8LN1Ytu6aH"
+        assertEquals(base58, raw.base58())
+
+        measureNanoTime {
+            raw.toByteArray().baseCheck().also { assertEquals(raw, String(it.baseCheckDecode())) }
+        }
+            .also { println("total $it") }
+
+        measureNanoTime {
+            raw.base58Check().also { assertEquals(raw, it.base58CheckDecode2String()) }
+        }
+            .also { println("total2 $it") }
     }
 
     @Test

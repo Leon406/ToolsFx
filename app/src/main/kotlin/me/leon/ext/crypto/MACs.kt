@@ -76,7 +76,7 @@ object MACs {
             "Threefish" to listOf("256CMAC", "512CMAC", "1024CMAC"),
         )
 
-    fun mac(data: ByteArray, keyByteArray: ByteArray, alg: String) =
+    fun mac(data: ByteArray, keyByteArray: ByteArray, alg: String): ByteArray =
         Mac.getInstance(alg)
             .apply {
                 init(SecretKeySpec(keyByteArray, alg))
@@ -84,31 +84,26 @@ object MACs {
             }
             .doFinal()
 
-    fun macWithIv(data: ByteArray, keyByteArray: ByteArray, ivByteArray: ByteArray, alg: String) =
+    fun macWithIv(
+        data: ByteArray,
+        keyByteArray: ByteArray,
+        ivByteArray: ByteArray,
+        alg: String
+    ): ByteArray =
         if (alg.contains("POLY1305")) {
-            Poly1305Serial.getInstance(alg).run {
-                init(keyByteArray, ivByteArray)
-                update(data, 0, data.size)
-                val sig = ByteArray(macSize)
-                doFinal(sig, 0)
-                sig
-            }
+            Poly1305Serial.getInstance(alg).macWithIv(keyByteArray, ivByteArray, data)
         } else if (alg.contains("GMAC")) {
             GMac.getInstance(alg).run {
-                if (this is org.bouncycastle.crypto.macs.GMac) {
-                    init(keyByteArray, ivByteArray)
-                    update(data, 0, data.size)
-                    val sig = ByteArray(macSize)
-                    doFinal(sig, 0)
-                    sig
-                } else if (this is KGMac) {
-                    init(keyByteArray, ivByteArray)
-                    update(data, 0, data.size)
-                    val sig = ByteArray(macSize)
-                    doFinal(sig, 0)
-                    sig
-                } else {
-                    byteArrayOf()
+                when (this) {
+                    is org.bouncycastle.crypto.macs.GMac -> {
+                        macWithIv(keyByteArray, ivByteArray, data)
+                    }
+                    is KGMac -> {
+                        macWithIv(keyByteArray, ivByteArray, data)
+                    }
+                    else -> {
+                        byteArrayOf()
+                    }
                 }
             }
         } else {
@@ -116,7 +111,8 @@ object MACs {
         }
 }
 
-fun ByteArray.mac(keyByteArray: ByteArray, alg: String) = MACs.mac(this, keyByteArray, alg)
+fun ByteArray.mac(keyByteArray: ByteArray, alg: String): ByteArray =
+    MACs.mac(this, keyByteArray, alg)
 
 fun ByteArray.macWithIv(keyByteArray: ByteArray, ivByteArray: ByteArray, alg: String) =
     MACs.macWithIv(this, keyByteArray, ivByteArray, alg)

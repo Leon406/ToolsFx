@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.pbe
 
 import java.security.SecureRandom
 import java.security.Security
@@ -7,6 +7,7 @@ import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.crypto.makeCipher
 import me.leon.ext.hex2ByteArray
+import me.leon.hash
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
 
@@ -60,11 +61,11 @@ class Salted {
 
     private fun kdf(pass: ByteArray, salt: ByteArray, outputSize: Int = 48): ByteArray {
         val tmpKey = pass + salt
-        var key = Digests.hash("MD5", tmpKey)
+        var key = tmpKey.hash()
 
         var resultKey = key
         while (resultKey.size < outputSize) {
-            key = Digests.hash("MD5", key + tmpKey)
+            key = (key + tmpKey).hash()
             resultKey += key
         }
         println(resultKey.size)

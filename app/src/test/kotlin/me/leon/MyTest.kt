@@ -1,28 +1,16 @@
 package me.leon
 
 import java.io.File
-import java.net.URLDecoder
 import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.util.zip.CRC32
-import kotlin.system.measureNanoTime
-import kotlin.test.assertContentEquals
-import kotlin.test.assertEquals
 import me.leon.encode.base.*
 import me.leon.ext.*
 import me.leon.ext.crypto.parsePublicKeyFromCerFile
 import org.junit.Test
 
 class MyTest {
-
-    @Test
-    fun crc32Test() {
-        CRC32().apply { update("hello".toByteArray()) }.value.also {
-            assertEquals("3610a686", it.toString(16))
-        }
-    }
 
     @Test
     fun cerParse() {
@@ -37,65 +25,6 @@ class MyTest {
     @Test
     fun exceptionTest() {
         println(NullPointerException().stacktrace())
-    }
-
-    @Test
-    fun decodeUnicode() {
-        val u = "&#20320;&#22909;&#20013;&#22269;&#x4e2d;&#x56fd;&#X56FD;"
-        println(u.unicode2String())
-        assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
-        assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
-
-        assertContentEquals(
-            arrayOf("🗾", "🗾"),
-            arrayOf("&#128510;".unicode2String(), "128510".toInt().toUnicodeChar())
-        )
-
-        assertContentEquals(
-            arrayOf(128510, 128507),
-            arrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
-        )
-        println("🗾".unicodeCharToInt())
-    }
-
-    @Test
-    fun hex2Base64() {
-        "e4bda0e5a5bd4c656f6e21".hex2ByteArray().base64().also {
-            assertEquals("5L2g5aW9TGVvbiE=", it)
-        }
-    }
-
-    @Test
-    fun baseNEncode() {
-
-        val msg = "开发工具集合 by leon406@52pojie.cn"
-        val base58 = "CR58UvatBfMNr917q5LwvMbAtrpuA5s3iCQe5eDivFqEz8LN1Ytu6aH"
-        assertEquals(base58, msg.base58())
-
-        measureNanoTime {
-            msg.toByteArray().baseCheck().also { assertEquals(msg, String(it.baseCheckDecode())) }
-        }
-            .also { println("total $it") }
-
-        measureNanoTime {
-            msg.base58Check().also { assertEquals(msg, it.base58CheckDecode2String()) }
-        }
-            .also { println("total2 $it") }
-    }
-
-    @Test
-    fun urlDecodeTest() {
-        val raw =
-            "https://subcon.dlj.tf/sub?target=clash&new_name=true&url=" +
-                "ss://YWVzLTI1Ni1nY206NTRhYTk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1" +
-                "MjBiNTRlQGd6bS5taXNha2EucmVzdDoxMTQ1MQ==#%E9%A6%99%E6%B8%AF%E" +
-                "F%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule|ss://YWVzLTI1Ni1nY206NTRhY" +
-                "Tk4NDYtN2YzMS00MzdmLTgxNjItOGNiMzc1MjBiNTRlQGd6bS5taXNha2EucmVzdDoxM" +
-                "TQ1Mg==#%E6%97%A5%E6%9C%AC%EF%BC%9ATG%E5%AE%98%E7%BD%91%40freeyule&inse" +
-                "rt=false&config=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/mas" +
-                "er/Clash/config/ACL4SSR_Online.ini"
-
-        URLDecoder.decode(raw).also { println(it) }
     }
 
     @Test

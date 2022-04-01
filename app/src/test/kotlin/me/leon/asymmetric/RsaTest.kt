@@ -1,9 +1,10 @@
-package me.leon
+package me.leon.asymmetric
 
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import me.leon.plugin.RsaSolver.solveNEC
-import me.leon.plugin.RsaSolver.solvePQEC
+import me.leon.*
+import me.leon.asymmetric.RsaSolver.solveNEC
+import me.leon.asymmetric.RsaSolver.solvePQEC
 import org.junit.Test
 
 /**

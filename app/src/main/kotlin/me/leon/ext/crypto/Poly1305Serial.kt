@@ -1,11 +1,8 @@
 package me.leon.ext.crypto
 
 import org.bouncycastle.crypto.BlockCipher
-import org.bouncycastle.crypto.CipherParameters
 import org.bouncycastle.crypto.engines.*
 import org.bouncycastle.crypto.macs.Poly1305
-import org.bouncycastle.crypto.params.KeyParameter
-import org.bouncycastle.crypto.params.ParametersWithIV
 
 object Poly1305Serial {
     fun getInstance(alg: String): Poly1305 {
@@ -27,9 +24,4 @@ object Poly1305Serial {
 
         return Poly1305(blockCipher)
     }
-}
-
-fun Poly1305.init(key: ByteArray, iv: ByteArray) {
-    val params: CipherParameters = ParametersWithIV(KeyParameter(key), iv)
-    this.init(params)
 }

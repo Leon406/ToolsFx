@@ -2,7 +2,7 @@ package me.leon
 
 import argon2.Argon2PasswordEncoder
 import bcrypt.BCryptPasswordEncoder
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.junit.Test
 import password.*
 import scrypt.SCryptPasswordEncoder
@@ -25,7 +25,7 @@ class Tmp {
 
         for ((k, v) in encoders) {
             println(k + " " + v.encode("123"))
-            assertEquals(true, v.matches("123", v.encode("123")))
+            assertTrue { v.matches("123", v.encode("123")) }
         }
     }
 }

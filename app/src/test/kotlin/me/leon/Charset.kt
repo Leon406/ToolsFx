@@ -4,6 +4,7 @@ import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.Charset
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import me.leon.ext.math.circleIndex
 import me.leon.ext.recoverEncoding
 import org.junit.Test
@@ -37,7 +38,7 @@ class Charset {
         "杩愮淮瀹夊叏".also { println(it.recoverEncoding()) }
 
         for (i in 1..25) {
-            assertEquals(true, i.circleIndex() == i.mod(26))
+            assertTrue { i.circleIndex() == i.mod(26) }
         }
     }
 }

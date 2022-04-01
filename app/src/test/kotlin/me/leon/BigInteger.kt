@@ -2,6 +2,7 @@ package me.leon
 
 import java.math.BigDecimal
 import java.math.BigInteger
+import me.leon.asymmetric.Kgcd
 import me.leon.ext.readFromNet
 
 // this = p

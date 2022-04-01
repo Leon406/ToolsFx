@@ -1,6 +1,5 @@
 package me.leon
 
-import java.io.File
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import org.junit.Test
@@ -37,10 +36,10 @@ class NetTest {
 
     @Test
     fun fileRead() {
-        val dir = "C:\\Users\\Leon\\Downloads\\Compressed\\m_zygsctf02\\m_zygsctf02"
-        File(dir).listFiles().filter { it.readText().contains("key|flag|ctf".toRegex()) }.also {
-            println(it)
-        }
+        TEST_PRJ_DIR
+            .listFiles()
+            .filter { it.isFile && it.readText().contains("key|flag|ctf".toRegex()) }
+            .also { println(it) }
     }
 
     @Test

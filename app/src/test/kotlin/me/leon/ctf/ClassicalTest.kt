@@ -1,8 +1,7 @@
-package me.leon
+package me.leon.ctf
 
 import kotlin.test.assertEquals
 import me.leon.classical.*
-import me.leon.ctf.*
 import me.leon.encode.base.base100
 import me.leon.encode.base.base100Decode2String
 import me.leon.ext.stripAllSpace

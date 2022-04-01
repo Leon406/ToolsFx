@@ -1,8 +1,9 @@
-package me.leon
+package me.leon.ctf
 
 import kotlin.test.assertEquals
+import me.leon.bifid
+import me.leon.bifidDecrypt
 import me.leon.classical.*
-import me.leon.ctf.*
 import me.leon.ext.*
 import me.leon.ext.math.circleIndex
 import org.junit.Test

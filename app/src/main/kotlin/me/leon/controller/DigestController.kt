@@ -1,6 +1,6 @@
 package me.leon.controller
 
-import me.leon.Digests
+import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.crypto.*
 import tornadofx.*
@@ -15,7 +15,7 @@ class DigestController : Controller() {
             if (method.startsWith("CRC"))
                 if (method.contains("32")) data.decodeToByteArray(inputEncode).crc32()
                 else data.decodeToByteArray(inputEncode).crc64()
-            else Digests.hashHexString(method, data.decodeToByteArray(inputEncode))
+            else data.decodeToByteArray(inputEncode).hash2String(method)
         }
 
     fun digestFile(method: String, path: String) =
@@ -23,6 +23,6 @@ class DigestController : Controller() {
             if (path.isEmpty()) ""
             else if (method.startsWith("CRC"))
                 if (method.contains("32")) path.crc32File() else path.crc64File()
-            else Digests.hashByFile(method, path)
+            else path.fileHash(method)
         }
 }
