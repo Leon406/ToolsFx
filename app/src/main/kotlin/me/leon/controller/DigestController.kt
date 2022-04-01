@@ -6,7 +6,12 @@ import me.leon.ext.crypto.*
 import tornadofx.*
 
 class DigestController : Controller() {
-    fun digest(method: String, data: String, inputEncode: String, isSingleLine: Boolean = false) =
+    fun digest(
+        method: String,
+        data: String,
+        inputEncode: String = "raw",
+        isSingleLine: Boolean = false
+    ) =
         if (isSingleLine) data.lineAction2String { digest(method, it, inputEncode) }
         else digest(method, data, inputEncode)
 
