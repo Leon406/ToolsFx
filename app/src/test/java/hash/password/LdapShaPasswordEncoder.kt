@@ -13,70 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.password
 
-package password;
-
-import codec.Utf8;
-import java.security.MessageDigest;
-import java.util.Base64;
-import keygen.BytesKeyGenerator;
-import keygen.KeyGenerators;
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.Base64
+import java.util.Locale
+import hash.keygen.BytesKeyGenerator
+import hash.keygen.KeyGenerators.secureRandom
+import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 
 /**
- * This {@link PasswordEncoder} is provided for legacy purposes only and is not considered secure.
+ * This [PasswordEncoder] is provided for legacy purposes only and is not considered secure.
  *
- * <p>A version of {@link PasswordEncoder} which supports Ldap SHA and SSHA (salted-SHA) encodings.
- * The values are base-64 encoded and have the label "{SHA}" (or "{SSHA}") prepended to the encoded
+ * A version of [PasswordEncoder] which supports Ldap SHA and SSHA (salted-SHA) encodings. The
+ * values are base-64 encoded and have the label "{SHA}" (or "{SSHA}") prepended to the encoded
  * hash. These can be made lower-case in the encoded password, if required, by setting the
  * <tt>forceLowerCasePrefix</tt> property to true.
  *
- * <p>Also supports plain text passwords, so can safely be used in cases when both encoded and
+ * Also supports plain text passwords, so can safely be used in cases when both encoded and
  * non-encoded passwords are in use or when a null implementation is required.
  *
  * @author Luke Taylor
- * @deprecated Digest based password encoding is not considered secure. Instead use an adaptive one
- *     way function like BCryptPasswordEncoder, Pbkdf2PasswordEncoder, or SCryptPasswordEncoder.
- *     Even better use {@link DelegatingPasswordEncoder} which supports password upgrades. There are
- *     no plans to remove this support. It is deprecated to indicate that this is a legacy
- *     implementation and using it is considered insecure.
  */
-@Deprecated
-public class LdapShaPasswordEncoder implements PasswordEncoder {
 
-    /** The number of bytes in a SHA hash */
-    private static final int SHA_LENGTH = 20;
+class LdapShaPasswordEncoder
+@JvmOverloads
+constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : PasswordEncoder {
 
-    private static final String SSHA_PREFIX = "{SSHA}";
+    private var forceLowerCasePrefix = false
 
-    private static final String SSHA_PREFIX_LC = SSHA_PREFIX.toLowerCase();
-
-    private static final String SHA_PREFIX = "{SHA}";
-
-    private static final String SHA_PREFIX_LC = SHA_PREFIX.toLowerCase();
-
-    private BytesKeyGenerator saltGenerator;
-
-    private boolean forceLowerCasePrefix;
-
-    public LdapShaPasswordEncoder() {
-        this(KeyGenerators.secureRandom());
-    }
-
-    public LdapShaPasswordEncoder(BytesKeyGenerator saltGenerator) {
-        if (saltGenerator == null) {
-            throw new IllegalArgumentException("saltGenerator cannot be null");
-        }
-        this.saltGenerator = saltGenerator;
-    }
-
-    private byte[] combineHashAndSalt(byte[] hash, byte[] salt) {
+    private fun combineHashAndSalt(hash: ByteArray, salt: ByteArray?): ByteArray {
         if (salt == null) {
-            return hash;
+            return hash
         }
-        byte[] hashAndSalt = new byte[hash.length + salt.length];
-        System.arraycopy(hash, 0, hashAndSalt, 0, hash.length);
-        System.arraycopy(salt, 0, hashAndSalt, hash.length, salt.length);
-        return hashAndSalt;
+        return hash + salt
     }
 
     /**
@@ -86,46 +58,44 @@ public class LdapShaPasswordEncoder implements PasswordEncoder {
      * @param rawPass the password to be encoded.
      * @return the encoded password in the specified format
      */
-    @Override
-    public String encode(CharSequence rawPass) {
-        byte[] salt = this.saltGenerator.generateKey();
-        return encode(rawPass, salt);
+    override fun encode(rawPass: CharSequence): String {
+        return encode(rawPass, saltGenerator.generateKey())
     }
 
-    private String encode(CharSequence rawPassword, byte[] salt) {
-        MessageDigest sha = getSha(rawPassword);
+    fun encode(rawPassword: CharSequence, salt: ByteArray?): String {
+        val sha = getSha(rawPassword)
         if (salt != null) {
-            sha.update(salt);
+            sha.update(salt)
         }
-        byte[] hash = combineHashAndSalt(sha.digest(), salt);
-        String prefix = getPrefix(salt);
-        return prefix + Utf8.decode(Base64.getEncoder().encode(hash));
+        val hash = combineHashAndSalt(sha.digest(), salt)
+        val prefix = getPrefix(salt)
+        return prefix + hash.base64()
     }
 
-    private MessageDigest getSha(CharSequence rawPassword) {
-        try {
-            MessageDigest sha = MessageDigest.getInstance("SHA");
-            sha.update(Utf8.encode(rawPassword));
-            return sha;
-        } catch (java.security.NoSuchAlgorithmException ex) {
-            throw new IllegalStateException("No SHA implementation available!");
+    private fun getSha(rawPassword: CharSequence): MessageDigest {
+        return try {
+            MessageDigest.getInstance("SHA").apply {
+                update(rawPassword.toString().toByteArray())
+            }
+        } catch (ex: NoSuchAlgorithmException) {
+            throw IllegalStateException("No SHA implementation available!")
         }
     }
 
-    private String getPrefix(byte[] salt) {
-        if (salt == null || salt.length == 0) {
-            return this.forceLowerCasePrefix ? SHA_PREFIX_LC : SHA_PREFIX;
+    private fun getPrefix(salt: ByteArray?): String {
+        if (salt == null || salt.isEmpty()) {
+            return if (forceLowerCasePrefix) SHA_PREFIX_LC else SHA_PREFIX
         }
-        return this.forceLowerCasePrefix ? SSHA_PREFIX_LC : SSHA_PREFIX;
+        return if (forceLowerCasePrefix) SSHA_PREFIX_LC else SSHA_PREFIX
     }
 
-    private byte[] extractSalt(String encPass) {
-        String encPassNoLabel = encPass.substring(6);
-        byte[] hashAndSalt = Base64.getDecoder().decode(encPassNoLabel.getBytes());
-        int saltLength = hashAndSalt.length - SHA_LENGTH;
-        byte[] salt = new byte[saltLength];
-        System.arraycopy(hashAndSalt, SHA_LENGTH, salt, 0, saltLength);
-        return salt;
+    private fun extractSalt(encPass: String): ByteArray {
+        val encPassNoLabel = encPass.substring(6)
+        val hashAndSalt = encPassNoLabel.base64Decode()
+        val saltLength = hashAndSalt.size - SHA_LENGTH
+        val salt = ByteArray(saltLength)
+        System.arraycopy(hashAndSalt, SHA_LENGTH, salt, 0, saltLength)
+        return salt
     }
 
     /**
@@ -136,46 +106,51 @@ public class LdapShaPasswordEncoder implements PasswordEncoder {
      * @param encodedPassword the actual SSHA or SHA encoded password
      * @return true if they match (independent of the case of the prefix).
      */
-    @Override
-    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return matches((rawPassword != null) ? rawPassword.toString() : null, encodedPassword);
+    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+        return matches(rawPassword.toString(), encodedPassword)
     }
 
-    private boolean matches(String rawPassword, String encodedPassword) {
-        String prefix = extractPrefix(encodedPassword);
-        if (prefix == null) {
-            return PasswordEncoderUtils.equals(encodedPassword, rawPassword);
-        }
-        byte[] salt = getSalt(encodedPassword, prefix);
-        int startOfHash = prefix.length();
-        String encodedRawPass = encode(rawPassword, salt).substring(startOfHash);
-        return PasswordEncoderUtils.equals(encodedRawPass, encodedPassword.substring(startOfHash));
+    private fun matches(rawPassword: String, encodedPassword: String): Boolean {
+        val prefix =
+            extractPrefix(encodedPassword)
+                ?: return PasswordEncoderUtils.equals(encodedPassword, rawPassword)
+        val salt = getSalt(encodedPassword, prefix)
+        val startOfHash = prefix.length
+        val encodedRawPass = encode(rawPassword, salt).substring(startOfHash)
+        return PasswordEncoderUtils.equals(encodedRawPass, encodedPassword.substring(startOfHash))
     }
 
-    private byte[] getSalt(String encodedPassword, String prefix) {
-        if (prefix.equals(SSHA_PREFIX) || prefix.equals(SSHA_PREFIX_LC)) {
-            return extractSalt(encodedPassword);
+    private fun getSalt(encodedPassword: String, prefix: String): ByteArray? {
+        if (prefix == SSHA_PREFIX || prefix == SSHA_PREFIX_LC) {
+            return extractSalt(encodedPassword)
         }
-        if (!prefix.equals(SHA_PREFIX) && !prefix.equals(SHA_PREFIX_LC)) {
-            throw new IllegalArgumentException("Unsupported password prefix '" + prefix + "'");
+        require(!(prefix != SHA_PREFIX && prefix != SHA_PREFIX_LC)) {
+            "Unsupported password prefix '$prefix'"
         }
         // Standard SHA
-        return null;
+        return null
     }
 
     /** Returns the hash prefix or null if there isn't one. */
-    private String extractPrefix(String encPass) {
+    private fun extractPrefix(encPass: String): String? {
         if (!encPass.startsWith("{")) {
-            return null;
+            return null
         }
-        int secondBrace = encPass.lastIndexOf('}');
-        if (secondBrace < 0) {
-            throw new IllegalArgumentException("Couldn't find closing brace for SHA prefix");
-        }
-        return encPass.substring(0, secondBrace + 1);
+        val secondBrace = encPass.lastIndexOf('}')
+        require(secondBrace >= 0) { "Couldn't find closing brace for SHA prefix" }
+        return encPass.substring(0, secondBrace + 1)
     }
 
-    public void setForceLowerCasePrefix(boolean forceLowerCasePrefix) {
-        this.forceLowerCasePrefix = forceLowerCasePrefix;
+    fun setForceLowerCasePrefix(forceLowerCasePrefix: Boolean) {
+        this.forceLowerCasePrefix = forceLowerCasePrefix
+    }
+
+    companion object {
+        /** The number of bytes in a SHA hash */
+        private const val SHA_LENGTH = 20
+        private const val SSHA_PREFIX = "{SSHA}"
+        private val SSHA_PREFIX_LC = SSHA_PREFIX.lowercase(Locale.getDefault())
+        private const val SHA_PREFIX = "{SHA}"
+        private val SHA_PREFIX_LC = SHA_PREFIX.lowercase(Locale.getDefault())
     }
 }

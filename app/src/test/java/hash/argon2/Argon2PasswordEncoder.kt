@@ -13,126 +13,105 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.argon2
 
-package argon2;
-
-import keygen.BytesKeyGenerator;
-import keygen.KeyGenerators;
-import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
-import org.bouncycastle.crypto.params.Argon2Parameters;
-import password.PasswordEncoder;
+import hash.argon2.Argon2EncodingUtils.Argon2Hash
+import hash.keygen.BytesKeyGenerator
+import hash.keygen.KeyGenerators.secureRandom
+import hash.password.PasswordEncoder
+import org.bouncycastle.crypto.generators.Argon2BytesGenerator
+import org.bouncycastle.crypto.params.Argon2Parameters
 
 /**
  * Implementation of PasswordEncoder that uses the Argon2 hashing function. Clients can optionally
  * supply the length of the salt to use, the length of the generated hash, a cpu cost parameter, a
  * memory cost parameter and a parallelization parameter.
  *
- * <p>Note:
+ * Note:
  *
- * <p>The currently implementation uses Bouncy castle which does not exploit
- * parallelism/optimizations that password crackers will, so there is an unnecessary asymmetry
- * between attacker and defender.
+ * The current implementation uses Bouncy castle which does not exploit parallelism/optimizations
+ * that password crackers will, so there is an unnecessary asymmetry between attacker and defender.
  *
  * @author Simeon Macke
  * @since 5.3
  */
-public class Argon2PasswordEncoder implements PasswordEncoder {
+class Argon2PasswordEncoder
+@JvmOverloads
+constructor(
+    saltLength: Int = DEFAULT_SALT_LENGTH,
+    var hashLength: Int = DEFAULT_HASH_LENGTH,
+    var parallelism: Int = DEFAULT_PARALLELISM,
+    var memory: Int = DEFAULT_MEMORY,
+    var iterations: Int = DEFAULT_ITERATIONS
+) : PasswordEncoder {
+    private val saltGenerator: BytesKeyGenerator
 
-    private static final int DEFAULT_SALT_LENGTH = 16;
-
-    private static final int DEFAULT_HASH_LENGTH = 32;
-
-    private static final int DEFAULT_PARALLELISM = 1;
-
-    private static final int DEFAULT_MEMORY = 1 << 12;
-
-    private static final int DEFAULT_ITERATIONS = 3;
-
-    private final int hashLength;
-
-    private final int parallelism;
-
-    private final int memory;
-
-    private final int iterations;
-
-    private final BytesKeyGenerator saltGenerator;
-
-    public Argon2PasswordEncoder() {
-        this(
-                DEFAULT_SALT_LENGTH,
-                DEFAULT_HASH_LENGTH,
-                DEFAULT_PARALLELISM,
-                DEFAULT_MEMORY,
-                DEFAULT_ITERATIONS);
+    init {
+        saltGenerator = secureRandom(saltLength)
     }
 
-    public Argon2PasswordEncoder(
-            int saltLength, int hashLength, int parallelism, int memory, int iterations) {
-        this.hashLength = hashLength;
-        this.parallelism = parallelism;
-        this.memory = memory;
-        this.iterations = iterations;
-        this.saltGenerator = KeyGenerators.secureRandom(saltLength);
+    var type = Argon2Parameters.ARGON2_id
+    var version = Argon2Parameters.ARGON2_VERSION_13
+
+    override fun encode(rawPassword: CharSequence): String {
+        return encode(rawPassword, saltGenerator.generateKey())
     }
 
-    @Override
-    public String encode(CharSequence rawPassword) {
-        byte[] salt = this.saltGenerator.generateKey();
-        byte[] hash = new byte[this.hashLength];
-        // @formatter:off
-        Argon2Parameters params =
-                new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
-                        .withSalt(salt)
-                        .withParallelism(this.parallelism)
-                        .withMemoryAsKB(this.memory)
-                        .withIterations(this.iterations)
-                        .build();
-        // @formatter:on
-        Argon2BytesGenerator generator = new Argon2BytesGenerator();
-        generator.init(params);
-        generator.generateBytes(rawPassword.toString().toCharArray(), hash);
-        return Argon2EncodingUtils.encode(hash, params);
+    fun encode(rawPassword: CharSequence, salt: ByteArray): String {
+        val hash = ByteArray(hashLength)
+        val params =
+            Argon2Parameters.Builder(type)
+                .withVersion(version)
+                .withSalt(salt)
+                .withParallelism(parallelism)
+                .withMemoryAsKB(memory)
+                .withIterations(iterations)
+                .build()
+        val generator = Argon2BytesGenerator()
+        generator.init(params)
+        generator.generateBytes(rawPassword.toString().toCharArray(), hash)
+        return Argon2EncodingUtils.encode(hash, params)
     }
 
-    @Override
-    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        if (encodedPassword == null) {
-            System.out.println("password hash is null");
-            return false;
-        }
-        Argon2EncodingUtils.Argon2Hash decoded;
-        try {
-            decoded = Argon2EncodingUtils.decode(encodedPassword);
-        } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        byte[] hashBytes = new byte[decoded.getHash().length];
-        Argon2BytesGenerator generator = new Argon2BytesGenerator();
-        generator.init(decoded.getParameters());
-        generator.generateBytes(rawPassword.toString().toCharArray(), hashBytes);
-        return constantTimeArrayEquals(decoded.getHash(), hashBytes);
+    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+        val decoded: Argon2Hash =
+            try {
+                Argon2EncodingUtils.decode(encodedPassword)
+            } catch (ex: IllegalArgumentException) {
+                ex.printStackTrace()
+                return false
+            }
+        val hashBytes = ByteArray(decoded.getHash().size)
+        val generator = Argon2BytesGenerator()
+        generator.init(decoded.parameters)
+        generator.generateBytes(rawPassword.toString().toCharArray(), hashBytes)
+        return constantTimeArrayEquals(decoded.getHash(), hashBytes)
     }
 
-    @Override
-    public boolean upgradeEncoding(String encodedPassword) {
-        if (encodedPassword == null || encodedPassword.length() == 0) {
-            System.out.println("password hash is null");
-            return false;
+    override fun upgradeEncoding(encodedPassword: String): Boolean {
+        if (encodedPassword.isEmpty()) {
+            println("password hash is null")
+            return false
         }
-        Argon2Parameters parameters = Argon2EncodingUtils.decode(encodedPassword).getParameters();
-        return parameters.getMemory() < this.memory || parameters.getIterations() < this.iterations;
+        val parameters = Argon2EncodingUtils.decode(encodedPassword).parameters
+        return parameters.memory < memory || parameters.iterations < iterations
     }
 
-    private static boolean constantTimeArrayEquals(byte[] expected, byte[] actual) {
-        if (expected.length != actual.length) {
-            return false;
+    companion object {
+        private const val DEFAULT_SALT_LENGTH = 16
+        private const val DEFAULT_HASH_LENGTH = 32
+        private const val DEFAULT_PARALLELISM = 1
+        private const val DEFAULT_MEMORY = 1 shl 12
+        private const val DEFAULT_ITERATIONS = 3
+        private fun constantTimeArrayEquals(expected: ByteArray, actual: ByteArray): Boolean {
+            if (expected.size != actual.size) {
+                return false
+            }
+            var result = 0
+            for (i in expected.indices) {
+                result = result or (expected[i].toInt() xor actual[i].toInt())
+            }
+            return result == 0
         }
-        int result = 0;
-        for (int i = 0; i < expected.length; i++) {
-            result |= expected[i] ^ actual[i];
-        }
-        return result == 0;
     }
 }

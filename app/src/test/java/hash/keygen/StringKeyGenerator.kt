@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package keygen;
+package hash.keygen
 
 /**
  * A generator for unique string keys.
  *
  * @author Keith Donald
  */
-public interface StringKeyGenerator {
-
-    String generateKey();
+interface StringKeyGenerator {
+    fun generateKey(): String
 }

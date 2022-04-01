@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package keygen;
+package hash.keygen
 
 /**
  * Key generator that simply returns the same key every time.
@@ -23,21 +22,11 @@ package keygen;
  * @author Annabelle Donald
  * @author Corgan Donald
  */
-final class SharedKeyGenerator implements BytesKeyGenerator {
+internal class SharedKeyGenerator(private val sharedKey: ByteArray) : BytesKeyGenerator {
 
-    private byte[] sharedKey;
+    override val keyLength: Int = sharedKey.size
 
-    SharedKeyGenerator(byte[] sharedKey) {
-        this.sharedKey = sharedKey;
-    }
-
-    @Override
-    public int getKeyLength() {
-        return this.sharedKey.length;
-    }
-
-    @Override
-    public byte[] generateKey() {
-        return this.sharedKey;
+    override fun generateKey(): ByteArray {
+        return sharedKey
     }
 }

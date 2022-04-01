@@ -13,27 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.keygen
 
-package keygen;
-
-import codec.Hex;
+import me.leon.ext.toHex
 
 /**
- * A StringKeyGenerator that generates hex-encoded String keys. Delegates to a {@link
- * BytesKeyGenerator} for the actual key generation.
+ * A StringKeyGenerator that generates hex-encoded String keys. Delegates to a [ ] for the actual
+ * key generation.
  *
  * @author Keith Donald
  */
-final class HexEncodingStringKeyGenerator implements StringKeyGenerator {
-
-    private final BytesKeyGenerator keyGenerator;
-
-    HexEncodingStringKeyGenerator(BytesKeyGenerator keyGenerator) {
-        this.keyGenerator = keyGenerator;
-    }
-
-    @Override
-    public String generateKey() {
-        return new String(Hex.encode(this.keyGenerator.generateKey()));
+internal class HexEncodingStringKeyGenerator(private val keyGenerator: BytesKeyGenerator) :
+    StringKeyGenerator {
+    override fun generateKey(): String {
+        return keyGenerator.generateKey().toHex()
     }
 }

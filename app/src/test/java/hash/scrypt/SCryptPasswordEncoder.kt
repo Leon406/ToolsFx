@@ -13,185 +13,142 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.scrypt
 
-package scrypt;
-
-import codec.Utf8;
-import java.security.MessageDigest;
-import java.util.Base64;
-import keygen.BytesKeyGenerator;
-import keygen.KeyGenerators;
-import org.bouncycastle.crypto.generators.SCrypt;
-import password.PasswordEncoder;
+import java.security.MessageDigest
+import hash.keygen.BytesKeyGenerator
+import hash.keygen.KeyGenerators.secureRandom
+import kotlin.math.ln
+import kotlin.math.pow
+import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
+import org.bouncycastle.crypto.generators.SCrypt
+import hash.password.PasswordEncoder
 
 /**
  * Implementation of PasswordEncoder that uses the SCrypt hashing function. Clients can optionally
  * supply a cpu cost parameter, a memory cost parameter and a parallelization parameter.
  *
- * <p>A few <a href=
- * "http://bouncy-castle.1462172.n4.nabble.com/Java-Bouncy-Castle-scrypt-implementation-td4656832.html">
- * warnings</a>:
+ * A few
+ * [
+ * warnings](http://bouncy-castle.1462172.n4.nabble.com/Java-Bouncy-Castle-scrypt-implementation-td4656832.html)
+ * :
  *
- * <ul>
- *   <li>The currently implementation uses Bouncy castle which does not exploit
- *       parallelism/optimizations that password crackers will, so there is an unnecessary asymmetry
- *       between attacker and defender.
- *   <li>Scrypt is based on Salsa20 which performs poorly in Java (on par with AES) but performs
- *       awesome (~4-5x faster) on SIMD capable platforms
- *   <li>While there are some that would disagree, consider reading - <a
- *       href="https://blog.ircmaxell.com/2014/03/why-i-dont-recommend-scrypt.html">Why I Don't
- *       Recommend Scrypt</a> (for password storage)
- * </ul>
+ * * The currently implementation uses Bouncy castle which does not exploit
+ * parallelism/optimizations that password crackers will, so there is an unnecessary asymmetry
+ * between attacker and defender.
+ * * Scrypt is based on Salsa20 which performs poorly in Java (on par with AES) but performs awesome
+ * (~4-5x faster) on SIMD capable platforms
+ * * While there are some that would disagree, consider reading -
+ * [Why I Don't
+ * Recommend Scrypt](https://blog.ircmaxell.com/2014/03/why-i-dont-recommend-scrypt.html)
+ * (for password storage)
  *
  * @author Shazin Sadakath
  * @author Rob Winch
  */
-public class SCryptPasswordEncoder implements PasswordEncoder {
+class SCryptPasswordEncoder
+@JvmOverloads
+constructor(
+    var cpuCost: Int = 16384,
+    var memoryCost: Int = 8,
+    var parallelization: Int = 1,
+    var keyLength: Int = 32,
+    var saltLength: Int = 64
+) : PasswordEncoder {
+    private val saltGenerator: BytesKeyGenerator
 
-    private final int cpuCost;
-
-    private final int memoryCost;
-
-    private final int parallelization;
-
-    private final int keyLength;
-
-    private final BytesKeyGenerator saltGenerator;
-
-    public SCryptPasswordEncoder() {
-        this(16384, 8, 1, 32, 64);
+    init {
+        require(cpuCost > 1) { "Cpu cost parameter must be > 1." }
+        require(!(memoryCost == 1 && cpuCost > 65536)) {
+            "Cpu cost parameter must be > 1 and < 65536."
+        }
+        require(memoryCost >= 1) { "Memory cost must be >= 1." }
+        val maxParallel = Int.MAX_VALUE / (128 * memoryCost * 8)
+        require(!(parallelization < 1 || parallelization > maxParallel)) {
+            ("Parallelization parameter p must be >= 1 and <= $maxParallel" +
+                    " (based on block size r of $memoryCost)")
+        }
+        require(keyLength >= 1) { "Key length must be >= " }
+        require(saltLength >= 1) { "Salt length must be >= 1  " }
+        saltGenerator = secureRandom(saltLength)
     }
 
-    /**
-     * Creates a new instance
-     *
-     * @param cpuCost cpu cost of the algorithm (as defined in scrypt this is N). must be power of 2
-     *     greater than 1. Default is currently 16,384 or 2^14)
-     * @param memoryCost memory cost of the algorithm (as defined in scrypt this is r) Default is
-     *     currently 8.
-     * @param parallelization the parallelization of the algorithm (as defined in scrypt this is p)
-     *     Default is currently 1. Note that the implementation does not currently take advantage of
-     *     parallelization.
-     * @param keyLength key length for the algorithm (as defined in scrypt this is dkLen). The
-     *     default is currently 32.
-     * @param saltLength salt length (as defined in scrypt this is the length of S). The default is
-     *     currently 64.
-     */
-    public SCryptPasswordEncoder(
-            int cpuCost, int memoryCost, int parallelization, int keyLength, int saltLength) {
-        if (cpuCost <= 1) {
-            throw new IllegalArgumentException("Cpu cost parameter must be > 1.");
-        }
-        if (memoryCost == 1 && cpuCost > 65536) {
-            throw new IllegalArgumentException("Cpu cost parameter must be > 1 and < 65536.");
-        }
-        if (memoryCost < 1) {
-            throw new IllegalArgumentException("Memory cost must be >= 1.");
-        }
-        int maxParallel = Integer.MAX_VALUE / (128 * memoryCost * 8);
-        if (parallelization < 1 || parallelization > maxParallel) {
-            throw new IllegalArgumentException(
-                    "Parallelization parameter p must be >= 1 and <= "
-                            + maxParallel
-                            + " (based on block size r of "
-                            + memoryCost
-                            + ")");
-        }
-        if (keyLength < 1) {
-            throw new IllegalArgumentException("Key length must be >= ");
-        }
-        if (saltLength < 1) {
-            throw new IllegalArgumentException("Salt length must be >= 1  ");
-        }
-        this.cpuCost = cpuCost;
-        this.memoryCost = memoryCost;
-        this.parallelization = parallelization;
-        this.keyLength = keyLength;
-        this.saltGenerator = KeyGenerators.secureRandom(saltLength);
+    override fun encode(rawPassword: CharSequence): String {
+        return digest(rawPassword, saltGenerator.generateKey())
     }
 
-    @Override
-    public String encode(CharSequence rawPassword) {
-        return digest(rawPassword, this.saltGenerator.generateKey());
-    }
-
-    @Override
-    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        if (encodedPassword == null || encodedPassword.length() < this.keyLength) {
-            System.out.println("Empty encoded password");
-            return false;
+    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+        if (encodedPassword.length < keyLength) {
+            println("Empty encoded password")
+            return false
         }
-        return decodeAndCheckMatches(rawPassword, encodedPassword);
+        return decodeAndCheckMatches(rawPassword, encodedPassword)
     }
 
-    @Override
-    public boolean upgradeEncoding(String encodedPassword) {
-        if (encodedPassword == null || encodedPassword.isEmpty()) {
-            return false;
+    override fun upgradeEncoding(encodedPassword: String): Boolean {
+        if (encodedPassword.isEmpty()) {
+            return false
         }
-        String[] parts = encodedPassword.split("\\$");
-        if (parts.length != 4) {
-            throw new IllegalArgumentException(
-                    "Encoded password does not look like SCrypt: " + encodedPassword);
+        val parts = encodedPassword.split("\$").toTypedArray()
+        require(parts.size == 4) { "Encoded password does not look like SCrypt: $encodedPassword" }
+        val params = parts[1].toLong(16)
+        val cpuCost = 2.0.pow((params shr 16 and 0xffff).toDouble()).toInt()
+        val memoryCost = params.toInt() shr 8 and 0xff
+        val parallelization = params.toInt() and 0xff
+        return cpuCost < this.cpuCost ||
+                memoryCost < this.memoryCost ||
+                parallelization < this.parallelization
+    }
+
+    private fun decodeAndCheckMatches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+        val parts = encodedPassword.split("\$").toTypedArray()
+        if (parts.size != 4) {
+            return false
         }
-        long params = Long.parseLong(parts[1], 16);
-        int cpuCost = (int) Math.pow(2, params >> 16 & 0xffff);
-        int memoryCost = (int) params >> 8 & 0xff;
-        int parallelization = (int) params & 0xff;
-        return cpuCost < this.cpuCost
-                || memoryCost < this.memoryCost
-                || parallelization < this.parallelization;
+        val params = parts[1].toLong(16)
+        val salt = parts[2].base64Decode()
+        val derived = parts[3].base64Decode()
+        val cpuCost = 2.0.pow((params shr 16 and 0xffff).toDouble()).toInt()
+        val memoryCost = params.toInt() shr 8 and 0xff
+        val parallelization = params.toInt() and 0xff
+        val generated =
+            SCrypt.generate(
+                rawPassword.toString().toByteArray(),
+                salt,
+                cpuCost,
+                memoryCost,
+                parallelization,
+                keyLength
+            )
+        return MessageDigest.isEqual(derived, generated)
     }
 
-    private boolean decodeAndCheckMatches(CharSequence rawPassword, String encodedPassword) {
-        String[] parts = encodedPassword.split("\\$");
-        if (parts.length != 4) {
-            return false;
-        }
-        long params = Long.parseLong(parts[1], 16);
-        byte[] salt = decodePart(parts[2]);
-        byte[] derived = decodePart(parts[3]);
-        int cpuCost = (int) Math.pow(2, params >> 16 & 0xffff);
-        int memoryCost = (int) params >> 8 & 0xff;
-        int parallelization = (int) params & 0xff;
-        byte[] generated =
-                SCrypt.generate(
-                        Utf8.encode(rawPassword),
-                        salt,
-                        cpuCost,
-                        memoryCost,
-                        parallelization,
-                        this.keyLength);
-        return MessageDigest.isEqual(derived, generated);
-    }
-
-    private String digest(CharSequence rawPassword, byte[] salt) {
-        byte[] derived =
-                SCrypt.generate(
-                        Utf8.encode(rawPassword),
-                        salt,
-                        this.cpuCost,
-                        this.memoryCost,
-                        this.parallelization,
-                        this.keyLength);
-        String params =
-                Long.toString(
-                        ((int) (Math.log(this.cpuCost) / Math.log(2)) << 16L)
-                                | this.memoryCost << 8
-                                | this.parallelization,
-                        16);
-        StringBuilder sb = new StringBuilder((salt.length + derived.length) * 2);
-        sb.append("$").append(params).append('$');
-        sb.append(encodePart(salt)).append('$');
-        sb.append(encodePart(derived));
-        return sb.toString();
-    }
-
-    private byte[] decodePart(String part) {
-        return Base64.getDecoder().decode(Utf8.encode(part));
-    }
-
-    private String encodePart(byte[] part) {
-        return Utf8.decode(Base64.getEncoder().encode(part));
+     fun digest(rawPassword: CharSequence, salt: ByteArray): String {
+        val derived =
+            SCrypt.generate(
+                rawPassword.toString().toByteArray(),
+                salt,
+                cpuCost,
+                memoryCost,
+                parallelization,
+                keyLength
+            )
+        val params =
+            ((ln(cpuCost.toDouble()) / ln(2.0)).toInt() shl
+                    16 or
+                    (memoryCost shl 8) or
+                    parallelization)
+                .toLong()
+                .toString(16)
+        val sb =
+            StringBuilder((salt.size + derived.size) * 2)
+                .append("$")
+                .append(params)
+                .append('$')
+                .append(salt.base64())
+                .append('$')
+                .append(derived.base64())
+        return sb.toString()
     }
 }

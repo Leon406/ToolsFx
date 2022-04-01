@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package password;
+package hash.password
 
 /**
  * Service interface for encoding passwords.
  *
- * <p>The preferred implementation is {@code BCryptPasswordEncoder}.
+ * The preferred implementation is `BCryptPasswordEncoder`.
  *
  * @author Keith Donald
  */
-public interface PasswordEncoder {
-
+interface PasswordEncoder {
     /**
      * Encode the raw password. Generally, a good encoding algorithm applies a SHA-1 or greater hash
      * combined with an 8-byte or greater randomly generated salt.
      */
-    String encode(CharSequence rawPassword);
+    fun encode(rawPassword: CharSequence): String
 
     /**
      * Verify the encoded password obtained from storage matches the submitted raw password after it
@@ -40,7 +38,7 @@ public interface PasswordEncoder {
      * @param encodedPassword the encoded password from storage to compare with
      * @return true if the raw password, after encoding, matches the encoded password from storage
      */
-    boolean matches(CharSequence rawPassword, String encodedPassword);
+    fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean
 
     /**
      * Returns true if the encoded password should be encoded again for better security, else false.
@@ -49,7 +47,7 @@ public interface PasswordEncoder {
      * @param encodedPassword the encoded password to check
      * @return true if the encoded password should be encoded again for better security, else false.
      */
-    default boolean upgradeEncoding(String encodedPassword) {
-        return false;
+    fun upgradeEncoding(encodedPassword: String): Boolean {
+        return false
     }
 }

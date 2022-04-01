@@ -13,78 +13,66 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.argon2
 
-package argon2;
-
-import java.util.Base64;
-import org.bouncycastle.crypto.params.Argon2Parameters;
-import org.bouncycastle.util.Arrays;
+import java.util.Base64
+import org.bouncycastle.crypto.params.Argon2Parameters
+import org.bouncycastle.util.Arrays
 
 /**
  * Utility for encoding and decoding Argon2 hashes.
  *
- * <p>Used by {@link Argon2PasswordEncoder}.
+ * Used by [Argon2PasswordEncoder].
  *
  * @author Simeon Macke
  * @since 5.3
  */
-final class Argon2EncodingUtils {
-
-    private static final Base64.Encoder b64encoder = Base64.getEncoder().withoutPadding();
-
-    private static final Base64.Decoder b64decoder = Base64.getDecoder();
-
-    private Argon2EncodingUtils() {}
+internal object Argon2EncodingUtils {
+    private val b64encoder = Base64.getEncoder().withoutPadding()
+    private val b64decoder = Base64.getDecoder()
 
     /**
      * Encodes a raw Argon2-hash and its parameters into the standard Argon2-hash-string as
      * specified in the reference implementation
      * (https://github.com/P-H-C/phc-winner-argon2/blob/master/src/encoding.c#L244):
      *
-     * <p>{@code $argon2<T>[$v=<num>]$m=<num>,t=<num>,p=<num>$<bin>$<bin>}
+     * `$argon2<T>[$v=<num>]$m=<num>,t=<num>,p=<num>$<bin>$<bin>`
      *
-     * <p>where {@code <T>} is either 'd', 'id', or 'i', {@code <num>} is a decimal integer
-     * (positive, fits in an 'unsigned long'), and {@code <bin>} is Base64-encoded data (no '='
-     * padding characters, no newline or whitespace).
+     * where `<T>` is either 'd', 'id', or 'i', `<num>` is a decimal integer (positive, fits in an
+     * 'unsigned long'), and `<bin>` is Base64-encoded data (no '=' padding characters, no newline
+     * or whitespace).
      *
-     * <p>The last two binary chunks (encoded in Base64) are, in that order, the salt and the
-     * output. If no salt has been used, the salt will be omitted.
+     * The last two binary chunks (encoded in Base64) are, in that order, the salt and the output.
+     * If no salt has been used, the salt will be omitted.
      *
      * @param hash the raw Argon2 hash in binary format
      * @param parameters the Argon2 parameters that were used to create the hash
      * @return the encoded Argon2-hash-string as described above
      * @throws IllegalArgumentException if the Argon2Parameters are invalid
      */
-    static String encode(byte[] hash, Argon2Parameters parameters) throws IllegalArgumentException {
-        StringBuilder stringBuilder = new StringBuilder();
-        switch (parameters.getType()) {
-            case Argon2Parameters.ARGON2_d:
-                stringBuilder.append("$argon2d");
-                break;
-            case Argon2Parameters.ARGON2_i:
-                stringBuilder.append("$argon2i");
-                break;
-            case Argon2Parameters.ARGON2_id:
-                stringBuilder.append("$argon2id");
-                break;
-            default:
-                throw new IllegalArgumentException(
-                        "Invalid algorithm type: " + parameters.getType());
+    @Throws(IllegalArgumentException::class)
+    fun encode(hash: ByteArray?, parameters: Argon2Parameters): String {
+        val stringBuilder = StringBuilder()
+        when (parameters.type) {
+            Argon2Parameters.ARGON2_d -> stringBuilder.append("\$argon2d")
+            Argon2Parameters.ARGON2_i -> stringBuilder.append("\$argon2i")
+            Argon2Parameters.ARGON2_id -> stringBuilder.append("\$argon2id")
+            else -> throw IllegalArgumentException("Invalid algorithm type: " + parameters.type)
         }
         stringBuilder
-                .append("$v=")
-                .append(parameters.getVersion())
-                .append("$m=")
-                .append(parameters.getMemory())
-                .append(",t=")
-                .append(parameters.getIterations())
-                .append(",p=")
-                .append(parameters.getLanes());
-        if (parameters.getSalt() != null) {
-            stringBuilder.append("$").append(b64encoder.encodeToString(parameters.getSalt()));
+            .append("\$v=")
+            .append(parameters.version)
+            .append("\$m=")
+            .append(parameters.memory)
+            .append(",t=")
+            .append(parameters.iterations)
+            .append(",p=")
+            .append(parameters.lanes)
+        if (parameters.salt != null) {
+            stringBuilder.append("$").append(b64encoder.encodeToString(parameters.salt))
         }
-        stringBuilder.append("$").append(b64encoder.encodeToString(hash));
-        return stringBuilder.toString();
+        stringBuilder.append("$").append(b64encoder.encodeToString(hash))
+        return stringBuilder.toString()
     }
 
     /**
@@ -92,91 +80,66 @@ final class Argon2EncodingUtils {
      * (https://github.com/P-H-C/phc-winner-argon2/blob/master/src/encoding.c#L244) into the raw
      * hash and the used parameters.
      *
-     * <p>The hash has to be formatted as follows: {@code
-     * $argon2<T>[$v=<num>]$m=<num>,t=<num>,p=<num>$<bin>$<bin>}
+     * The hash has to be formatted as follows:
+     * `$argon2<T>[$v=<num>]$m=<num>,t=<num>,p=<num>$<bin>$<bin>`
      *
-     * <p>where {@code <T>} is either 'd', 'id', or 'i', {@code <num>} is a decimal integer
-     * (positive, fits in an 'unsigned long'), and {@code <bin>} is Base64-encoded data (no '='
-     * padding characters, no newline or whitespace).
+     * where `<T>` is either 'd', 'id', or 'i', `<num>` is a decimal integer (positive, fits in an
+     * 'unsigned long'), and `<bin>` is Base64-encoded data (no '=' padding characters, no newline
+     * or whitespace).
      *
-     * <p>The last two binary chunks (encoded in Base64) are, in that order, the salt and the
-     * output. Both are required. The binary salt length and the output length must be in the
-     * allowed ranges defined in argon2.h.
+     * The last two binary chunks (encoded in Base64) are, in that order, the salt and the output.
+     * Both are required. The binary salt length and the output length must be in the allowed ranges
+     * defined in argon2.h.
      *
      * @param encodedHash the Argon2 hash string as described above
-     * @return an {@link Argon2Hash} object containing the raw hash and the {@link
-     *     Argon2Parameters}.
+     * @return an [Argon2Hash] object containing the raw hash and the [ ].
      * @throws IllegalArgumentException if the encoded hash is malformed
      */
-    static Argon2Hash decode(String encodedHash) throws IllegalArgumentException {
-        Argon2Parameters.Builder paramsBuilder;
-        String[] parts = encodedHash.split("\\$");
-        if (parts.length < 4) {
-            throw new IllegalArgumentException("Invalid encoded Argon2-hash");
-        }
-        int currentPart = 1;
-        switch (parts[currentPart++]) {
-            case "argon2d":
-                paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_d);
-                break;
-            case "argon2i":
-                paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_i);
-                break;
-            case "argon2id":
-                paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid algorithm type: " + parts[0]);
-        }
+    @Throws(IllegalArgumentException::class)
+    fun decode(encodedHash: String): Argon2Hash {
+        val paramsBuilder: Argon2Parameters.Builder
+        val parts = encodedHash.split("\$").toTypedArray()
+
+        require(parts.size >= 4) { "Invalid encoded Argon2-hash" }
+        var currentPart = 1
+        paramsBuilder =
+            when (parts[currentPart++]) {
+                "argon2d" -> Argon2Parameters.Builder(Argon2Parameters.ARGON2_d)
+                "argon2i" -> Argon2Parameters.Builder(Argon2Parameters.ARGON2_i)
+                "argon2id" -> Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
+                else -> throw IllegalArgumentException("Invalid algorithm type: " + parts[0])
+            }
         if (parts[currentPart].startsWith("v=")) {
-            paramsBuilder.withVersion(Integer.parseInt(parts[currentPart].substring(2)));
-            currentPart++;
+            paramsBuilder.withVersion(parts[currentPart].substring(2).toInt())
+            currentPart++
         }
-        String[] performanceParams = parts[currentPart++].split(",");
-        if (performanceParams.length != 3) {
-            throw new IllegalArgumentException("Amount of performance parameters invalid");
-        }
-        if (!performanceParams[0].startsWith("m=")) {
-            throw new IllegalArgumentException("Invalid memory parameter");
-        }
-        paramsBuilder.withMemoryAsKB(Integer.parseInt(performanceParams[0].substring(2)));
-        if (!performanceParams[1].startsWith("t=")) {
-            throw new IllegalArgumentException("Invalid iterations parameter");
-        }
-        paramsBuilder.withIterations(Integer.parseInt(performanceParams[1].substring(2)));
-        if (!performanceParams[2].startsWith("p=")) {
-            throw new IllegalArgumentException("Invalid parallelity parameter");
-        }
-        paramsBuilder.withParallelism(Integer.parseInt(performanceParams[2].substring(2)));
-        paramsBuilder.withSalt(b64decoder.decode(parts[currentPart++]));
-        return new Argon2Hash(b64decoder.decode(parts[currentPart]), paramsBuilder.build());
+        val performanceParams = parts[currentPart++].split(",").toTypedArray()
+        require(performanceParams.size == 3) { "Amount of performance parameters invalid" }
+        require(performanceParams[0].startsWith("m=")) { "Invalid memory parameter" }
+        paramsBuilder.withMemoryAsKB(performanceParams[0].substring(2).toInt())
+        require(performanceParams[1].startsWith("t=")) { "Invalid iterations parameter" }
+        paramsBuilder.withIterations(performanceParams[1].substring(2).toInt())
+        require(performanceParams[2].startsWith("p=")) { "Invalid parallelity parameter" }
+        paramsBuilder.withParallelism(performanceParams[2].substring(2).toInt())
+        paramsBuilder.withSalt(b64decoder.decode(parts[currentPart++]))
+        return Argon2Hash(b64decoder.decode(parts[currentPart]), paramsBuilder.build())
     }
 
-    public static class Argon2Hash {
+    class Argon2Hash internal constructor(hash: ByteArray?, parameters: Argon2Parameters) {
+        private var hash: ByteArray
+        var parameters: Argon2Parameters
 
-        private byte[] hash;
-
-        private Argon2Parameters parameters;
-
-        Argon2Hash(byte[] hash, Argon2Parameters parameters) {
-            this.hash = Arrays.clone(hash);
-            this.parameters = parameters;
+        init {
+            this.hash = Arrays.clone(hash)
+            this.parameters = parameters
         }
 
-        public byte[] getHash() {
-            return Arrays.clone(this.hash);
+        fun getHash(): ByteArray {
+            return Arrays.clone(hash)
         }
 
-        public void setHash(byte[] hash) {
-            this.hash = Arrays.clone(hash);
-        }
-
-        public Argon2Parameters getParameters() {
-            return this.parameters;
-        }
-
-        public void setParameters(Argon2Parameters parameters) {
-            this.parameters = parameters;
+        fun setHash(hash: ByteArray?) {
+            this.hash = Arrays.clone(hash)
         }
     }
 }

@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.password
 
-package password;
-
-import codec.Utf8;
-import java.security.MessageDigest;
+import java.security.MessageDigest
 
 /**
  * Utility for constant time comparison to prevent against timing attacks.
  *
  * @author Rob Winch
  */
-final class PasswordEncoderUtils {
-
-    private PasswordEncoderUtils() {}
-
+internal object PasswordEncoderUtils {
     /**
      * Constant time comparison to prevent against timing attacks.
      *
@@ -35,15 +30,7 @@ final class PasswordEncoderUtils {
      * @param actual
      * @return
      */
-    static boolean equals(String expected, String actual) {
-        byte[] expectedBytes = bytesUtf8(expected);
-        byte[] actualBytes = bytesUtf8(actual);
-        return MessageDigest.isEqual(expectedBytes, actualBytes);
-    }
-
-    private static byte[] bytesUtf8(String s) {
-        // need to check if Utf8.encode() runs in constant time (probably not).
-        // This may leak length of string.
-        return (s != null) ? Utf8.encode(s) : null;
+    fun equals(expected: String?, actual: String?): Boolean {
+        return MessageDigest.isEqual(expected?.toByteArray(), actual?.toByteArray())
     }
 }

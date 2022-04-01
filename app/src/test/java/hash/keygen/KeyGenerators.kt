@@ -13,54 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package keygen;
-
-import java.security.SecureRandom;
+package hash.keygen
 
 /**
- * Factory for commonly used key generators. Public API for constructing a {@link BytesKeyGenerator}
- * or {@link StringKeyGenerator}.
+ * Factory for commonly used key generators. Public API for constructing a [BytesKeyGenerator] or
+ * [StringKeyGenerator].
  *
  * @author Keith Donald
  */
-public final class KeyGenerators {
+object KeyGenerators {
 
-    private KeyGenerators() {}
-
-    /**
-     * Create a {@link BytesKeyGenerator} that uses a {@link SecureRandom} to generate keys of 8
-     * bytes in length.
-     */
-    public static BytesKeyGenerator secureRandom() {
-        return new SecureRandomBytesKeyGenerator();
+    @JvmStatic
+    fun secureRandom(): BytesKeyGenerator {
+        return SecureRandomBytesKeyGenerator()
     }
 
-    /**
-     * Create a {@link BytesKeyGenerator} that uses a {@link SecureRandom} to generate keys of a
-     * custom length.
-     *
-     * @param keyLength the key length in bytes, e.g. 16, for a 16 byte key.
-     */
-    public static BytesKeyGenerator secureRandom(int keyLength) {
-        return new SecureRandomBytesKeyGenerator(keyLength);
+    @JvmStatic
+    fun secureRandom(keyLength: Int): BytesKeyGenerator {
+        return SecureRandomBytesKeyGenerator(keyLength)
     }
 
-    /**
-     * Create a {@link BytesKeyGenerator} that returns a single, shared {@link SecureRandom} key of
-     * a custom length.
-     *
-     * @param keyLength the key length in bytes, e.g. 16, for a 16 byte key.
-     */
-    public static BytesKeyGenerator shared(int keyLength) {
-        return new SharedKeyGenerator(secureRandom(keyLength).generateKey());
+    fun shared(keyLength: Int): BytesKeyGenerator {
+        return SharedKeyGenerator(secureRandom(keyLength).generateKey())
     }
 
-    /**
-     * Creates a {@link StringKeyGenerator} that hex-encodes {@link SecureRandom} keys of 8 bytes in
-     * length. The hex-encoded string is keyLength * 2 characters in length.
-     */
-    public static StringKeyGenerator string() {
-        return new HexEncodingStringKeyGenerator(secureRandom());
+    fun string(): StringKeyGenerator {
+        return HexEncodingStringKeyGenerator(secureRandom())
     }
 }

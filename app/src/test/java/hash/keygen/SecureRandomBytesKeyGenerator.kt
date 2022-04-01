@@ -13,47 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.keygen
 
-package keygen;
-
-import java.security.SecureRandom;
+import java.security.SecureRandom
+import kotlin.jvm.JvmOverloads
 
 /**
- * A KeyGenerator that uses {@link SecureRandom} to generate byte array-based keys.
+ * A KeyGenerator that uses [SecureRandom] to generate byte array-based keys.
  *
- * <p>No specific provider is used for the {@code SecureRandom}, so the platform default will be
- * used.
+ * No specific provider is used for the `SecureRandom`, so the platform default will be used.
  *
  * @author Keith Donald
  */
-final class SecureRandomBytesKeyGenerator implements BytesKeyGenerator {
+internal class SecureRandomBytesKeyGenerator
+@JvmOverloads
+constructor(override val keyLength: Int = DEFAULT_KEY_LENGTH) : BytesKeyGenerator {
+    private val random: SecureRandom = SecureRandom()
 
-    private static final int DEFAULT_KEY_LENGTH = 8;
-
-    private final SecureRandom random;
-
-    private final int keyLength;
-
-    /** Creates a secure random key generator using the defaults. */
-    SecureRandomBytesKeyGenerator() {
-        this(DEFAULT_KEY_LENGTH);
+    override fun generateKey(): ByteArray {
+        val bytes = ByteArray(keyLength)
+        random.nextBytes(bytes)
+        return bytes
     }
 
-    /** Creates a secure random key generator with a custom key length. */
-    SecureRandomBytesKeyGenerator(int keyLength) {
-        this.random = new SecureRandom();
-        this.keyLength = keyLength;
-    }
-
-    @Override
-    public int getKeyLength() {
-        return this.keyLength;
-    }
-
-    @Override
-    public byte[] generateKey() {
-        byte[] bytes = new byte[this.keyLength];
-        this.random.nextBytes(bytes);
-        return bytes;
+    companion object {
+        private const val DEFAULT_KEY_LENGTH = 8
     }
 }

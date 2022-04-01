@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package keygen;
+package hash.keygen
 
 /**
  * A generator for unique byte array-based keys.
  *
  * @author Keith Donald
  */
-public interface BytesKeyGenerator {
-
+interface BytesKeyGenerator {
     /**
      * Get the length, in bytes, of keys created by this generator. Most unique keys are at least 8
      * bytes in length.
      */
-    int getKeyLength();
+    val keyLength: Int
 
     /** Generate a new key. */
-    byte[] generateKey();
+    fun generateKey(): ByteArray
 }

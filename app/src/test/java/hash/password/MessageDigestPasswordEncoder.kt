@@ -13,97 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package hash.password
 
-package password;
-
-import codec.Hex;
-import codec.Utf8;
-import java.security.MessageDigest;
-import java.util.Base64;
-import keygen.Base64StringKeyGenerator;
-import keygen.StringKeyGenerator;
+import hash.keygen.Base64StringKeyGenerator
+import hash.keygen.StringKeyGenerator
+import me.leon.encode.base.base64
+import me.leon.ext.toHex
 
 /**
- * This {@link PasswordEncoder} is provided for legacy purposes only and is not considered secure.
+ * This [PasswordEncoder] is provided for legacy purposes only and is not considered secure.
  *
- * <p>Encodes passwords using the passed in {@link MessageDigest}.
+ * Encodes passwords using the passed in [MessageDigest].
  *
- * <p>The general format of the password is:
+ * The general format of the password is:
  *
- * <pre>
- * s = salt == null ? "" : "{" + salt + "}"
- * s + digest(password + s)
- * </pre>
+ * <pre> s = salt == null ? "" : "{" + salt + "}" s + digest(password + s) </pre> *
  *
  * Such that "salt" is the salt, digest is the digest method, and password is the actual password.
  * For example when using MD5, a password of "password", and a salt of "thisissalt":
  *
- * <pre>
- * String s = salt == null ? "" : "{" + salt + "}";
- * s + md5(password + s)
- * "{thisissalt}" + md5(password + "{thisissalt}")
- * "{thisissalt}2a4e7104c2780098f50ed5a84bb2323d"
- * </pre>
+ * <pre> String s = salt == null ? "" : "{" + salt + "}"; s + md5(password + s) "{thisissalt}" +
+ * md5(password + "{thisissalt}") "{thisissalt}2a4e7104c2780098f50ed5a84bb2323d" </pre> *
  *
  * If the salt does not exist, then omit "{salt}" like this:
  *
- * <pre>
- * digest(password)
- * </pre>
+ * <pre> digest(password) </pre> *
  *
  * If the salt is an empty String, then only use "{}" like this:
  *
- * <pre>
- * "{}" + digest(password + "{}")
- * </pre>
+ * <pre> "{}" + digest(password + "{}") </pre> *
  *
  * The format is intended to work with the DigestPasswordEncoder that was found in the Spring
  * Security core module. However, the passwords will need to be migrated to include any salt with
  * the password since this API provides Salt internally vs making it the responsibility of the user.
  * To migrate passwords from the SaltSource use the following:
  *
- * <pre>
- * String salt = saltSource.getSalt(user);
- * String s = salt == null ? null : "{" + salt + "}";
- * String migratedPassword = s + user.getPassword();
- * </pre>
+ * <pre> String salt = saltSource.getSalt(user); String s = salt == null ? null : "{" + salt + "}";
+ * String migratedPassword = s + user.getPassword(); </pre> *
  *
  * @author Ray Krueger
  * @author Luke Taylor
  * @author Rob Winch
  * @since 5.0
- * @deprecated Digest based password encoding is not considered secure. Instead use an adaptive one
- *     way function like BCryptPasswordEncoder, Pbkdf2PasswordEncoder, or SCryptPasswordEncoder.
- *     Even better use {@link DelegatingPasswordEncoder} which supports password upgrades. There are
- *     no plans to remove this support. It is deprecated to indicate that this is a legacy
- *     implementation and using it is considered insecure.
  */
-@Deprecated
-public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
-    private static final String PREFIX = "{";
+class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
+    private val saltGenerator: StringKeyGenerator = Base64StringKeyGenerator()
+    var encodeHashAsBase64 = false
 
-    private static final String SUFFIX = "}";
+    private val digester: Digester
 
-    private StringKeyGenerator saltGenerator = new Base64StringKeyGenerator();
-
-    private boolean encodeHashAsBase64;
-
-    private Digester digester;
-
-    /**
-     * The digest algorithm to use Supports the named <a
-     * href="https://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppA">Message
-     * Digest Algorithms</a> in the Java environment.
-     *
-     * @param algorithm
-     */
-    public MessageDigestPasswordEncoder(String algorithm) {
-        this.digester = new Digester(algorithm, 1);
-    }
-
-    public void setEncodeHashAsBase64(boolean encodeHashAsBase64) {
-        this.encodeHashAsBase64 = encodeHashAsBase64;
+    init {
+        digester = Digester(algorithm, 1)
     }
 
     /**
@@ -112,26 +73,28 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
      *
      * @param rawPassword The plain text password
      * @return Hex string of password digest (or base64 encoded string if encodeHashAsBase64 is
-     *     enabled.
+     * enabled.
      */
-    @Override
-    public String encode(CharSequence rawPassword) {
-        String salt = PREFIX + this.saltGenerator.generateKey() + SUFFIX;
-        return digest(salt, rawPassword);
+    override fun encode(rawPassword: CharSequence): String {
+        val salt = PREFIX + saltGenerator.generateKey() + SUFFIX
+        return digest(salt, rawPassword)
     }
 
-    private String digest(String salt, CharSequence rawPassword) {
-        String saltedPassword = rawPassword + salt;
-        byte[] digest = this.digester.digest(Utf8.encode(saltedPassword));
-        String encoded = encode(digest);
-        return salt + encoded;
+    fun digest(salt: String, rawPassword: CharSequence): String {
+        val saltedPassword = rawPassword.toString() + salt
+        val digest = digester.digest(saltedPassword.toByteArray())
+        val encoded = encode(digest)
+        return salt + encoded
     }
 
-    private String encode(byte[] digest) {
-        if (this.encodeHashAsBase64) {
-            return Utf8.decode(Base64.getEncoder().encode(digest));
-        }
-        return new String(Hex.encode(digest));
+    fun digest(salt: ByteArray, rawPassword: ByteArray): ByteArray {
+        return salt + digester.digest(salt + rawPassword)
+    }
+
+    private fun encode(digest: ByteArray): String {
+        return if (encodeHashAsBase64) {
+            digest.base64()
+        } else digest.toHex()
     }
 
     /**
@@ -142,11 +105,10 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
      * @param encodedPassword previously encoded password
      * @return true or false
      */
-    @Override
-    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        String salt = extractSalt(encodedPassword);
-        String rawPasswordEncoded = digest(salt, rawPassword);
-        return PasswordEncoderUtils.equals(encodedPassword.toString(), rawPasswordEncoded);
+    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+        val salt = extractSalt(encodedPassword)
+        val rawPasswordEncoded = digest(salt, rawPassword)
+        return PasswordEncoderUtils.equals(encodedPassword, rawPasswordEncoded)
     }
 
     /**
@@ -155,21 +117,25 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
      * called repeatedly on the result for the additional number of iterations.
      *
      * @param iterations the number of iterations which will be executed on the hashed password/salt
-     *     value. Defaults to 1.
+     * value. Defaults to 1.
      */
-    public void setIterations(int iterations) {
-        this.digester.setIterations(iterations);
+    fun setIterations(iterations: Int) {
+        digester.setIterations(iterations)
     }
 
-    private String extractSalt(String prefixEncodedPassword) {
-        int start = prefixEncodedPassword.indexOf(PREFIX);
+    private fun extractSalt(prefixEncodedPassword: String): String {
+        val start = prefixEncodedPassword.indexOf(PREFIX)
         if (start != 0) {
-            return "";
+            return ""
         }
-        int end = prefixEncodedPassword.indexOf(SUFFIX, start);
-        if (end < 0) {
-            return "";
-        }
-        return prefixEncodedPassword.substring(start, end + 1);
+        val end = prefixEncodedPassword.indexOf(SUFFIX, start)
+        return if (end < 0) {
+            ""
+        } else prefixEncodedPassword.substring(start, end + 1)
+    }
+
+    companion object {
+        private const val PREFIX = "{"
+        private const val SUFFIX = "}"
     }
 }

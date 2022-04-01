@@ -1,31 +1,125 @@
 package me.leon
 
-import argon2.Argon2PasswordEncoder
-import bcrypt.BCryptPasswordEncoder
-import kotlin.test.assertTrue
+import hash.argon2.Argon2PasswordEncoder
+import hash.bcrypt.BCryptPasswordEncoder
+import hash.password.*
+import hash.scrypt.SCryptPasswordEncoder
+import org.bouncycastle.crypto.params.Argon2Parameters
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
-import password.*
-import scrypt.SCryptPasswordEncoder
+import java.security.Security
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class Tmp {
 
+    init {
+        Security.addProvider(BouncyCastleProvider())
+    }
+
     @Test
-    fun scrypt() {
+    fun simple() {
         val encoders: MutableMap<String, PasswordEncoder> = HashMap()
+        encoders["argon2"] = Argon2PasswordEncoder()
         encoders["bcrypt"] = BCryptPasswordEncoder()
-        encoders["ldap"] = LdapShaPasswordEncoder()
-        encoders["MD4"] = Md4PasswordEncoder()
-        encoders["MD5"] = MessageDigestPasswordEncoder("MD5")
-        encoders["noop"] = NoOpPasswordEncoder.getInstance()
-        encoders["pbkdf2"] = Pbkdf2PasswordEncoder()
         encoders["scrypt"] = SCryptPasswordEncoder()
+        encoders["ldap"] = LdapShaPasswordEncoder()
+        encoders["pbkdf2"] = Pbkdf2PasswordEncoder()
+        encoders["MD4"] = MessageDigestPasswordEncoder("MD4")
+        encoders["MD5"] = MessageDigestPasswordEncoder("MD5")
         encoders["SHA-1"] = MessageDigestPasswordEncoder("SHA-1")
         encoders["SHA-256"] = MessageDigestPasswordEncoder("SHA-256")
-        encoders["argon2"] = Argon2PasswordEncoder()
 
         for ((k, v) in encoders) {
             println(k + " " + v.encode("123"))
             assertTrue { v.matches("123", v.encode("123")) }
+        }
+    }
+
+    @Test
+    fun digest() {
+        for (algorithm in Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values()) {
+            Pbkdf2PasswordEncoder().apply {
+                setAlgorithm(algorithm)
+                println(algorithm.name + " " + encode("123"))
+                assertTrue { matches("123", encode("123")) }
+            }
+        }
+    }
+
+    @Test
+    fun ldap() {
+        val salt = "123456".toByteArray()
+        LdapShaPasswordEncoder().apply {
+            println(encode("123"))
+            println(encode("123", null))
+            println(encode("123", salt))
+            assertTrue { matches("123", encode("123")) }
+            assertTrue { matches("123", encode("123", null)) }
+            assertEquals("{SSHA}/EMdfGQsjza+boN3JWsBkZIF+cwxMjM0NTY=", encode("123", salt))
+            assertTrue { matches("123", encode("123", salt)) }
+        }
+    }
+
+    @Test
+    fun scrypt() {
+        val salt = "123456".toByteArray()
+        SCryptPasswordEncoder().apply {
+            println(encode("123"))
+            println(digest("123", salt))
+            assertEquals(
+                "\$e0801\$MTIzNDU2\$yToN3hhqWNrcFErZVOmOjF5mcVbrV9hj/SQl2x0ykQU=",
+                digest("123", salt)
+            )
+            assertTrue { matches("123", encode("123")) }
+            assertTrue { matches("123", digest("123", salt)) }
+        }
+    }
+
+    @Test
+    fun bcrypt() {
+        val salt = "123456123456123456123456".toByteArray()
+        BCryptPasswordEncoder().apply {
+            println(encode("123"))
+//            println(encode("123", salt))
+
+            assertTrue { matches("123", encode("123")) }
+
+            println(encode("123", salt))
+            assertEquals("\$2a\$10\$KRGxLBS0KRGxLBS0KRGxL.UgZ0Pz.x0KwrgWDPUNirAXO0CnTUpI2", encode("123", salt))
+
+            strength = 12
+            println(encode("123"))
+            assertTrue { matches("123", encode("123")) }
+            version = BCryptPasswordEncoder.BCryptVersion.`$2Y`
+
+            println(encode("123"))
+            assertTrue { matches("123", encode("123")) }
+        }
+    }
+
+
+    @Test
+    fun argon2() {
+        val salt = "1234".toByteArray()
+        Argon2PasswordEncoder().apply {
+            println(encode("123"))
+            assertTrue { matches("123", encode("123")) }
+            println(encode("123", salt))
+            assertTrue { matches("123", encode("123", salt)) }
+
+            memory = 1 shl 14
+            parallelism = 8
+
+            iterations = 10
+            println(encode("123", salt))
+            assertTrue { matches("123", encode("123", salt)) }
+
+            type = Argon2Parameters.ARGON2_i
+            version = Argon2Parameters.ARGON2_VERSION_10
+
+            println(encode("123", salt))
+            assertTrue { matches("123", encode("123", salt)) }
         }
     }
 }
