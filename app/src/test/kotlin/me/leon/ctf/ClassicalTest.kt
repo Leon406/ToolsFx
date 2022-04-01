@@ -2,15 +2,12 @@ package me.leon.ctf
 
 import kotlin.test.assertEquals
 import me.leon.classical.*
-import me.leon.encode.base.base100
-import me.leon.encode.base.base100Decode2String
 import me.leon.ext.stripAllSpace
 import org.junit.Test
 
 class ClassicalTest {
     @Test
     fun caesar() {
-
         val plain = "hello! yoshiko"
         println(plain.shift26(3))
         assertEquals("KHOOR! BRVKLNR", plain.shift26(3))
@@ -34,25 +31,22 @@ class ClassicalTest {
     @Test
     fun rotTest() {
         val rot13 =
-            "How can you tell an extrovert from an\n" +
-                "introvert at NSA? Va gur ryringbef,\n" +
-                "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
-
-        println(rot13)
-
-        println(rot13.shift26(13).also { println(it) }.shift26(13))
+            "introvert at NSA? Va gur ryringbef," + "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
+        assertEquals(
+            "VAGEBIREG NG AFN? IN THE ELEVATORS,THE EXTROVERT LOOKS AT THE OTHER GUY'S SHOES. ",
+            rot13.shift26(13)
+        )
+        assertEquals(rot13.uppercase(), rot13.shift26(13).shift26(13))
 
         val rot47 = "The Quick Brown Fox Jumps Over The Lazy Dog."
-        println(rot47.shift94(47).shift94(47))
+        assertEquals("%96 \"F:4< qC@H? u@I yF>AD ~G6C %96 {2KJ s@8]", rot47.shift94(47))
+        assertEquals(rot47, rot47.shift94(47).shift94(47))
 
-        val dd = "ROT5/13/18/47 is the easiest and yet powerful cipher!"
-        println(dd.shift10(5))
-        println(dd.rot18())
-        println(dd.shift26(13))
-        println(dd.shift94(47))
+        assertEquals("678sb", "123sb".shift10(5))
+        assertEquals("123sb", "123sb".shift10(5).shift10(5))
 
-        "123sb".shift10(5).also { println(it) }
-        "123sb".rot18().also { println(it) }
+        assertEquals("678fo", "123sb".rot18())
+        assertEquals("123sb", "123sb".rot18().rot18())
     }
 
     @Test
@@ -131,23 +125,6 @@ class ClassicalTest {
     }
 
     @Test
-    fun b100() {
-        val s = "hello开发工具箱".toByteArray()
-        val encoded = s.base100()
-        assertEquals("👟👜👣👣👦🏜🎳🍷🏜🎆🎈🏜🎮🎜🏜🍼🎮🏞🎥🎨", s.base100())
-        assertEquals("hello开发工具箱", encoded.base100Decode2String())
-    }
-
-    @Test
-    fun coreValues() {
-        println("hello开发工具箱".socialistCoreValues())
-        ("公正爱国公正平等公正诚信文明公正诚信文明公正诚信平等友善爱国平等诚信民主诚信文明爱国富强友善爱国平等爱国诚信平等敬业民主诚信自由平等" +
-                "友善平等法治诚信富强平等友善爱国平等爱国平等诚信民主法治诚信自由法治友善自由友善爱国友善平等民主")
-            .socialistCoreValuesDecrypt()
-            .also { assertEquals("hello开发工具箱", it) }
-    }
-
-    @Test
     fun railFence() {
         val msg = "ATTACKATDAWN"
         val encrypt = "AKWTANTT@AD@CA@"
@@ -162,66 +139,6 @@ class ClassicalTest {
         val encrypt = "ACDTAKTANTAW"
         assertEquals(encrypt, msg.railFenceWEncrypt(3))
         assertEquals(msg, encrypt.railFenceWDecrypt(3))
-    }
-
-    @Test
-    fun brainFuck() {
-        val data =
-            "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! " +
-                "Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. " +
-                "Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook! Ook! Ook! " +
-                "Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! " +
-                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. " +
-                "Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
-                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
-                "Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook! Ook. " +
-                "Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! " +
-                "Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! " +
-                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? " +
-                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? " +
-                "Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
-                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. " +
-                "Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! " +
-                "Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. " +
-                "Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook."
-        val ookEngine = OokEngine(8)
-        assertEquals("flag{ok-ctf-1234-admin}", ookEngine.interpret(data))
-
-        val bf = "++++++++++[>+++++++++>++++++++>+++++++<<<-]>---.>+.---.-.-.>+.-----."
-        assertEquals("WQNMLGB", BrainfuckEngine(1024).interpret(bf))
-
-        val troll =
-            "Trooloolooloolooloolooloolooloolollooooolooloolooloolooloolooooolooloolooloolooloolo" +
-                "oloolooloooooloolooloooooloooloolooloololllllooooloololoooooololooolooloolooloolooloololool" +
-                "ooolooloololooooooloololooooloololooloolooloolooloolooloolooloolooloolooloololoooooloooloolool" +
-                "olooollollollollollolllooollollollollollollollollloooooololooooolooll"
-        assertEquals("Hello World!\n", TrollScriptEngine(1024).interpret(troll))
     }
 
     @Test
@@ -279,37 +196,6 @@ class ClassicalTest {
     }
 
     @Test
-    fun blind() {
-        val d =
-            "⡥⠂⡶⡃⡔⡷⡦⡛⡨⠁⠟⡚⠉⠇⡳⡜⡉⡤⡴⡑⡓⡆⡑⡔⡆⡠⡩⡹⠂⡢⡪⡵⡢⡟⡶⡹⠃⡒⠁⡥⡞⠟⡚⡞⡣⡣⡤⡀⡡⡆⠉⡼⡻⠀⠉⡧⡙⠇⡦⡇⡧⡅⡺⡑⠺⡑⡉⡑⠂⡞⡱⡳⠁" +
-                "⡊⡢⡩⡊⡚⡊⡕⡛⠀⡕⠂⡩⡱⡾⡴⠂⡶⡛⠈⡹⡇⡗⡑⠃⠁⡆⡝⡽⡺⡨⡙⠛⠅⠁⡠⡇⡩⡅⡸⡑⡧⡑⡸⠅⡆⡨⠛⡣⡨⡑⡢⡝⠁⡟⡚⡿⠺⠛⡿⡕⡴⡛⡡⠀⡔⠉" +
-                "⠂⡴⡃⠃⠀⡿⡹⠄⡺⡀⡵⡊⡝⡪⡨⡛⡦⡖⡛⡧⡡⡪⠈⡲⠟⡝⡔⡕⠅⡄⡞⠟⠂⡵⡉⠅⡩⡦⡼⡈⡴⡩⡈⠟⡞⡦⡩⡆⡛⡴⡾⡈⡁⡁⡗⠺⡹⡾⡆⡢⡹⡠⡈⡃⡛⠆" +
-                "⡁⡖⡻⡉⡡⡻⡓⠆⡁⡼⡷⠃⡛⠅⡵⠈⡝⡂⠉⡃⡄⡠⡠⡡⡒⡁⡃⡁⠅⡾⡨⠆⡘⠇⡄⡁⡲⠅⡖⠛⡓⡤⡃⡕⡺⡃⡝⡛⡳⠀⡢⡒⡙⠂⠺⡱⡉⡻⡒⡨⡄⡒⡒⡈⡱⡧⡽" +
-                "⠆⡉⡷⡹⠛⡊⠟⡥⡜⡳⡶⠆⡺⠉⠂⡂⡛⡥⡓⡝⡴⠆⡽⡟⠅⡿⡻⡸⡺⠆⡇⠂⠈⡼⡤⡕⠂⠈⡤⠅⠛⠁⡇⡟⡧⡈⡗⡲⡊⡸⠉⡻⠺⡱⡻⡥⠍="
-
-        val plain =
-            "U2FsdGVkX1/j97ClyTDacvadvPYI2RZERoFI3b1Un/jnSSTpQv9LK09Wi7VwWuJa\r\n" +
-                "aya2nAC1zRYzjzek0e2YAND2Fk8Iwga31vmMJXi+51PwYuHaWaH5vX+SXaRm1ojO\r\n" +
-                "+OeDkQ0d92Ds30OI4JpEzmZXkVfkWQZ8B/mde5tn/2Ey5YVLxDYx/nVYvkDNxqqg\r\n" +
-                "INvRIPxsk6qfKyQKc6qLG3k5E8mr9stPPQbqsq5NX6h7tqB5f+cTseJsmkC0Rbi2\r\n" +
-                "AyKbXtbbxAWM6yGI+z/UlCF6J92rkUcmD6Mo5OKHJ6w28LTe28T5+1woWxgBzH9K\r\n" +
-                "AKU="
-
-        assertEquals(plain, d.blindDecode())
-        assertEquals("⡑⡒⡔⡓⡔=", "abdcd".blindEncode())
-    }
-
-    @Test
-    fun elementPeriod() {
-        val d = "No Hs Bk Lr Db Uup Lr Rg Rg Fm"
-        assertEquals("flagisgood", d.elementPeriodDecode())
-        val plain = "periodic element table"
-        val encrypted = "Cn Md Fl Db Rg Fm Db Es Ge Md Hs Md Mt Md Ds Lv Ge Lv Bk Cf Hs Md"
-        assertEquals(encrypted, plain.elementPeriodEncode())
-        assertEquals(plain, encrypted.elementPeriodDecode())
-    }
-
-    @Test
     fun baudot() {
         val encrypted =
             "11001 00011 00111 01001 11000 10000 00100 11001 10101 00100 10010 00001 11000 01100" +
@@ -324,19 +210,6 @@ class ClassicalTest {
         val text = "alphabet index"
         assertEquals("1 12 16 8 1 2 5 20 9 14 4 5 24", text.alphabetIndex())
         assertEquals("ALPHABETINDEX", "1 12 16,8;1 2 5 20 9 14 4 5 24".alphabetIndexDecode())
-    }
-
-    @Test
-    fun zero1234() {
-        assertEquals("108408808010204108840810842040410888", "alphabet index".zero1248())
-        assertEquals("WELLDONE", "8842101220480224404014224202480122".zero1248Decode())
-    }
-
-    @Test
-    fun zwc() {
-        val d = "w\u200D\uFEFF\u200C\u200B\u200D\uFEFF\u200D\u200B\u200D\uFEFF\uFEFFhat"
-        assertEquals(d, "abc".zwc("what"))
-        assertEquals("abc", d.zwcDecode())
     }
 
     @Test

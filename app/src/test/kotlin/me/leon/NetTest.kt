@@ -38,7 +38,7 @@ class NetTest {
     fun fileRead() {
         TEST_PRJ_DIR
             .listFiles()
-            .filter { it.isFile && it.readText().contains("key|flag|ctf".toRegex()) }
+            ?.filter { it.isFile && it.readText().contains("key|flag|ctf".toRegex()) }
             .also { println(it) }
     }
 
