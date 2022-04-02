@@ -2,6 +2,7 @@ package me.leon.view
 
 import java.security.Security
 import java.util.ServiceLoader
+import kotlin.reflect.KClass
 import me.leon.BUILD_DATE
 import me.leon.ToolsApp.Companion.isEnableClassical
 import me.leon.ToolsApp.Companion.isEnableInternalWebview
@@ -10,42 +11,40 @@ import me.leon.ToolsApp.Companion.isEnablePBE
 import me.leon.ToolsApp.Companion.isEnableQrcode
 import me.leon.ToolsApp.Companion.isEnableSignature
 import me.leon.ToolsApp.Companion.isEnableSymmetricStream
-import me.leon.ToolsApp.Companion.plugins
 import me.leon.VERSION
 import me.leon.ext.fx.Prefs
+import me.leon.toolsfx.plugin.PluginFragment
 import me.leon.toolsfx.plugin.PluginView
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
 class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
-    override val root = tabpane {
-        if (isEnableClassical) tab<ClassicalView>()
-        tab<EncodeView>()
-        tab<EncodeTransferView>()
-        tab<StringProcessView>()
-        tab<DigestView>()
-        if (isEnableMac) tab<MacView>()
-        tab<SymmetricCryptoView>()
-        if (isEnableSymmetricStream) tab<SymmetricCryptoStreamView>()
-        tab<AsymmetricCryptoView>()
-        if (isEnableSignature) tab<SignatureView>()
-        if (isEnableQrcode) tab<QrcodeView>()
-        if (isEnablePBE) tab<PBEView>()
+    private var views: MutableList<KClass<out Fragment>> = mutableListOf()
+
+    init {
+        if (isEnableClassical) views.add(ClassicalView::class)
+        views.addAll(mutableListOf(EncodeView::class, EncodeTransferView::class))
+        views.add(StringProcessView::class)
+        views.add(DigestView::class)
+        if (isEnableMac) views.add(MacView::class)
+        views.add(SymmetricCryptoView::class)
+        if (isEnableSymmetricStream) views.add(SymmetricCryptoStreamView::class)
+        views.add(AsymmetricCryptoView::class)
+        if (isEnableSignature) views.add(SignatureView::class)
+        if (isEnableQrcode) views.add(QrcodeView::class)
+        if (isEnablePBE) views.add(PBEView::class)
         if (isEnableInternalWebview)
             runCatching { Class.forName("javafx.scene.web.WebView") }.onSuccess {
-                tab<OnlineWebView>()
+                views.add(OnlineWebView::class)
             }
 
-        plugins.forEach {
-            with(it.newInstance() as PluginView) {
-                tab(this) {
-                    this.text = this@with.description
-                    println(this.text)
-                }
-            }
-        }
+        val sl: ServiceLoader<PluginFragment> = ServiceLoader.load(PluginFragment::class.java)
+        views.addAll(sl.map { it.javaClass.kotlin })
+    }
 
+    override val root = tabpane {
+        views.forEach { tab(find(it)) }
         // support library
         val sl: ServiceLoader<PluginView> = ServiceLoader.load(PluginView::class.java)
         sl.forEach {
@@ -77,6 +76,14 @@ class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
                 action {
                     Prefs.autoCopy = !Prefs.autoCopy
                     text = "${messages["autoCopy"]}${"  √".takeIf { Prefs.autoCopy } ?: ""}"
+                }
+            }
+
+            item("open in new window") {
+                action {
+                    with(this@tabpane.selectionModel.selectedIndex) {
+                        if (this < views.size) find(views[this]).openWindow()
+                    }
                 }
             }
         }

@@ -11,7 +11,7 @@ import me.leon.ext.fx.openInBrowser
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class AboutView : View(messages["about"]) {
+class AboutView : Fragment(messages["about"]) {
 
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var txtLatestVersion: Text

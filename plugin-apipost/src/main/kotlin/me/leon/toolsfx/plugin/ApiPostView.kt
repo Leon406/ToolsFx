@@ -14,7 +14,7 @@ import me.leon.toolsfx.plugin.net.*
 import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
-class ApiPostView : PluginView("ApiPost") {
+class ApiPostView : PluginFragment("ApiPost") {
     override val version = "v1.4.1"
     override val date: String = times()
     override val author = "Leon406"

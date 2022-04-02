@@ -13,7 +13,7 @@ import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class ClassicalView : View(messages["classical"]) {
+class ClassicalView : Fragment(messages["classical"]) {
     private val controller: ClassicalController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
@@ -54,7 +54,11 @@ class ClassicalView : View(messages["classical"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
+            spacing = DEFAULT_SPACING
             label(messages["input"])
+            button(graphic = imageview("/img/openwindow.png")) {
+                action { find<ClassicalView>().openWindow() }
+            }
             button(graphic = imageview("/img/import.png")) {
                 action { taInput.text = clipboardText() }
             }

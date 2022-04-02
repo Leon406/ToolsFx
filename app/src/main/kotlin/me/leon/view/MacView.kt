@@ -10,7 +10,7 @@ import me.leon.ext.crypto.MACs.algorithm
 import me.leon.ext.fx.*
 import tornadofx.*
 
-class MacView : View("MAC") {
+class MacView : Fragment("MAC") {
     private val controller: MacController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)

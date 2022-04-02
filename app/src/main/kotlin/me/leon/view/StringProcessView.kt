@@ -22,7 +22,7 @@ import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class StringProcessView : View(messages["stringProcess"]) {
+class StringProcessView : Fragment(messages["stringProcess"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isRegexp = SimpleBooleanProperty(false)
     private val isSplitRegexp = SimpleBooleanProperty(false)

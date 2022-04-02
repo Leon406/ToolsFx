@@ -12,7 +12,7 @@ import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class SignatureView : View(messages["signVerify"]) {
+class SignatureView : Fragment(messages["signVerify"]) {
     private val controller: SignatureController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)

@@ -9,26 +9,10 @@ import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.*
 import me.leon.ext.fx.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.checkbox
-import tornadofx.combobox
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.togglegroup
-import tornadofx.vbox
 
-class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
+class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)

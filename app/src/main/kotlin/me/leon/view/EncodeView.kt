@@ -14,7 +14,7 @@ import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class EncodeView : View(messages["encodeAndDecode"]) {
+class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
@@ -75,6 +75,10 @@ class EncodeView : View(messages["encodeAndDecode"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
+            spacing = DEFAULT_SPACING
+            button(graphic = imageview("/img/openwindow.png")) {
+                action { find<EncodeView>().openWindow() }
+            }
             button(graphic = imageview("/img/import.png")) {
                 action { taInput.text = clipboardText() }
             }

@@ -24,7 +24,7 @@ import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
 import tornadofx.*
 
-class QrcodeView : View("Qrcode") {
+class QrcodeView : Fragment("Qrcode") {
     // 切图区域的起始位置x
     private var startX = 0.0
 

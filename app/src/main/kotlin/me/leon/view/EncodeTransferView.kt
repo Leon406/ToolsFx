@@ -13,7 +13,7 @@ import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class EncodeTransferView : View(messages["encodeTransfer"]) {
+class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
@@ -61,6 +61,10 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             vbox {
                 label(messages["input"])
                 combobox(selectedSrcCharset, CHARSETS) { cellFormat { text = it } }
+                spacing = DEFAULT_SPACING
+                button(graphic = imageview("/img/openwindow.png")) {
+                    action { find<EncodeTransferView>().openWindow() }
+                }
             }
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING

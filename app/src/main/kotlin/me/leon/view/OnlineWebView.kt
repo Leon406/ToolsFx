@@ -10,7 +10,7 @@ import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_40X
 import tornadofx.*
 
-class OnlineWebView : View("Browser") {
+class OnlineWebView : Fragment("Browser") {
     private lateinit var web: WebView
     private lateinit var tfUrl: TextField
     private val fontJS by lazy {
@@ -56,6 +56,9 @@ class OnlineWebView : View("Browser") {
                 }
                 button(graphic = imageview("/img/run.png")) {
                     action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
+                }
+                button(graphic = imageview("/img/openwindow.png")) {
+                    action { find<OnlineWebView>().openWindow() }
                 }
             }
         center =

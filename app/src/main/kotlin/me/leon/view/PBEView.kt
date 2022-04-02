@@ -12,7 +12,7 @@ import me.leon.ext.crypto.PBE
 import me.leon.ext.fx.*
 import tornadofx.*
 
-class PBEView : View("PBE") {
+class PBEView : Fragment("PBE") {
     private val controller: PBEController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)

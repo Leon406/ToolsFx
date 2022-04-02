@@ -12,7 +12,7 @@ import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class DigestView : View(messages["hash"]) {
+class DigestView : Fragment(messages["hash"]) {
     private val controller: DigestController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFileMode = SimpleBooleanProperty(false)

@@ -12,7 +12,7 @@ import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class SymmetricCryptoView : View(messages["symmetricBlock"]) {
+class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)

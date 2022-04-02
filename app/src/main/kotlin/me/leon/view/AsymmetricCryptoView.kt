@@ -11,7 +11,7 @@ import me.leon.ext.crypto.parsePublicKeyFromCerFile
 import me.leon.ext.fx.*
 import tornadofx.*
 
-class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
+class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val controller: AsymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
