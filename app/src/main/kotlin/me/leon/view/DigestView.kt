@@ -88,6 +88,7 @@ class DigestView : Fragment(messages["hash"]) {
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
             "CRC" to listOf("32", "64"),
+            "Adler32" to listOf("32"),
             "PasswordHashing" to passwordHashingTypes,
         )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())

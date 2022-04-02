@@ -61,6 +61,10 @@ class HashTest {
         }
         "hello".toByteArray().crc32().also { assertEquals("3610a686", it) }
     }
+    @Test
+    fun adler32() {
+        "hello".toByteArray().adler32().also { assertEquals("062c0215", it) }
+    }
 
     @Test
     fun crc64() {

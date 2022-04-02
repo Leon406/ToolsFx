@@ -60,10 +60,10 @@ class PBEView : Fragment("PBE") {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 128 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                else "not support file larger than 128KB"
             }
     }
 

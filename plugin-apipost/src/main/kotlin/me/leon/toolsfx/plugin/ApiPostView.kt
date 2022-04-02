@@ -76,10 +76,10 @@ class ApiPostView : PluginFragment("ApiPost") {
     private val curlFileHandler = fileDraggedHandler {
         with(it.first()) {
             println(absolutePath)
-            if (length() <= 10 * 1024 * 1024)
+            if (length() <= 128 * 1024)
                 if (realExtension() in unsupportedExts) "unsupported file extension"
                 else resetUi(readText())
-            else "not support file larger than 10M"
+            else "not support file larger than 128KB"
         }
     }
     override val root = vbox {

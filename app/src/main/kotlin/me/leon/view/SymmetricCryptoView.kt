@@ -18,6 +18,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val isFile = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private val isEnableIv = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var tfKey: TextField
     private lateinit var tfIv: TextField
@@ -52,10 +53,10 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else
                 with(it.first()) {
-                    if (length() <= 10 * 1024 * 1024)
+                    if (length() <= 128 * 1024)
                         if (realExtension() in unsupportedExts) "unsupported file extension"
                         else readText()
-                    else "not support file larger than 10M"
+                    else "not support file larger than 128K,plz use file mode!!!"
                 }
     }
     private val algs =
@@ -83,6 +84,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             "SEED",
             "TEA",
             "XTEA",
+            // coco2d encryp
+            "XXTEA",
         )
     private val paddingsAlg =
         mutableListOf(
@@ -145,9 +148,15 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
             label("mode:")
-            combobox(selectedMod, modes) { cellFormat { text = it } }
+            combobox(selectedMod, modes) {
+                enableWhen(isEnableIv)
+                cellFormat { text = it }
+            }
             label("padding:")
-            combobox(selectedPadding, paddingsAlg) { cellFormat { text = it } }
+            combobox(selectedPadding, paddingsAlg) {
+                enableWhen(isEnableIv)
+                cellFormat { text = it }
+            }
             label("charset:")
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
@@ -169,9 +178,14 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 }
             }
             label("iv:")
-            tfIv = textfield { promptText = messages["ivHint"] }
+            tfIv =
+                textfield {
+                    promptText = messages["ivHint"]
+                    enableWhen(isEnableIv)
+                }
             vbox {
                 togglegroup {
+                    enableWhen(isEnableIv)
                     spacing = DEFAULT_SPACING
                     paddingAll = DEFAULT_SPACING
                     radiobutton("raw") { isSelected = true }
@@ -183,7 +197,12 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 }
             }
         }
-        selectedAlg.addListener { _, _, newValue -> newValue?.run { println("alg $newValue") } }
+        selectedAlg.addListener { _, _, newValue ->
+            newValue?.run {
+                isEnableIv.value = newValue !in arrayOf("XXTEA")
+                println("alg $newValue")
+            }
+        }
 
         hbox {
             alignment = Pos.CENTER_LEFT
@@ -196,7 +215,6 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     tgOutput.selectToggle(tgOutput.toggles[if (isEncrypt) 1 else 0])
                     if (isEncrypt) tgInput.selectToggle(tgInput.toggles[0])
-                    doCrypto()
                 }
             }
             checkbox(messages["fileMode"], isFile)

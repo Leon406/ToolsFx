@@ -21,7 +21,9 @@ class DigestController : Controller() {
         if (method.startsWith("CRC"))
             if (method.contains("32")) data.decodeToByteArray(inputEncode).crc32()
             else data.decodeToByteArray(inputEncode).crc64()
-        else if (method.passwordHashingType() != null) {
+        else if (method == "Adler32") {
+            data.decodeToByteArray(inputEncode).adler32()
+        } else if (method.passwordHashingType() != null) {
             method.passwordHashingType()!!.hash(data.decodeToByteArray(inputEncode))
         } else data.decodeToByteArray(inputEncode).hash2String(method)
 
@@ -30,8 +32,8 @@ class DigestController : Controller() {
             if (path.isEmpty()) ""
             else if (method.startsWith("CRC"))
                 if (method.contains("32")) path.crc32File() else path.crc64File()
-            if (method.passwordHashingType() != null) {
-                kotlin.error("not support")
-            } else path.fileHash(method)
+            else if (method == "Adler32") path.adler32File()
+            else if (method.passwordHashingType() != null) kotlin.error("not support")
+            else path.fileHash(method)
         }
 }
