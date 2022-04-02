@@ -128,4 +128,20 @@ class Tmp {
             assertTrue { matches("123", encode("123", salt)) }
         }
     }
+
+    @Test
+    fun ciphers() {
+        Security.getProviders()
+            .map { provider ->
+                provider.services.filter { it.type == "Mac" }.groupBy { it.type }.map {
+                    "\n" +
+                        provider.name +
+                        " " +
+                        it.key +
+                        "\n\t" +
+                        it.value.joinToString("\n\t") { it.algorithm }
+                }
+            }
+            .also { println(it) }
+    }
 }

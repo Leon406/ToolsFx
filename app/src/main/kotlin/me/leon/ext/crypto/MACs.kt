@@ -3,6 +3,8 @@ package me.leon.ext.crypto
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import org.bouncycastle.crypto.macs.KGMac
+import org.bouncycastle.crypto.macs.Zuc128Mac
+import org.bouncycastle.crypto.macs.Zuc256Mac
 
 object MACs {
     // https://www.bouncycastle.org/specifications.html
@@ -67,12 +69,16 @@ object MACs {
                     "Twofish"
                 ),
             "AESCMAC" to listOf("256"),
+            "IDEAMAC" to listOf("-"),
+            "DESCMAC" to listOf("-"),
             "BLOWFISHCMAC" to listOf("256"),
             "DESCMAC" to listOf("256"),
             "DESEDECMAC" to listOf("256"),
             "SEED-CMAC" to listOf("256"),
             "Shacal-2CMAC" to listOf("256"),
             "SM4-CMAC" to listOf("256"),
+            "ZUC-128" to listOf("32"),
+            "ZUC-256" to listOf("32", "64", "128"),
             "Threefish" to listOf("256CMAC", "512CMAC", "1024CMAC"),
         )
 
@@ -107,7 +113,15 @@ object MACs {
                 }
             }
         } else {
-            byteArrayOf()
+            val mac =
+                when (alg.uppercase()) {
+                    "ZUC-128" -> Zuc128Mac()
+                    "ZUC-256-32" -> Zuc256Mac(32)
+                    "ZUC-256-64" -> Zuc256Mac(64)
+                    "ZUC-256", "ZUC-256-128" -> Zuc256Mac(128)
+                    else -> error("Unsupported algorithm")
+                }
+            mac.macWithIv(keyByteArray, ivByteArray, data)
         }
 }
 

@@ -140,7 +140,7 @@ class MacView : View("MAC") {
                 cbBits.items = algorithm[newValue]!!.asObservable()
                 selectedBits.set(algorithm[newValue]!!.first())
                 enableBits.value = algorithm[newValue]!!.size > 1
-                enableIv.value = method.contains("POLY1305|-GMAC".toRegex())
+                enableIv.value = method.contains("POLY1305|-GMAC|ZUC".toRegex())
             }
         }
         selectedBits.addListener { _, _, newValue ->
@@ -148,6 +148,8 @@ class MacView : View("MAC") {
             newValue?.run {
                 method =
                     if (selectedAlgItem.get() == "GMAC") "${newValue}-GMAC"
+                    else if (selectedAlgItem.get().contains("ZUC-256"))
+                        "${selectedAlgItem.get()}-${newValue}"
                     else {
                         "${selectedAlgItem.get()}${
                             newValue.takeIf {
@@ -158,7 +160,7 @@ class MacView : View("MAC") {
                             .replace(regAlgReplace, "$1-")
                     }
                 println("算法 $method")
-                if (inputText.isNotEmpty()) {
+                if (inputText.isNotEmpty() && method.startsWith("Hmac")) {
                     doMac()
                 }
             }
@@ -208,7 +210,7 @@ class MacView : View("MAC") {
     private fun doMac() =
         runAsync {
             startTime = System.currentTimeMillis()
-            if (method.contains("POLY1305|-GMAC".toRegex()))
+            if (method.contains("POLY1305|-GMAC|ZUC".toRegex()))
                 controller.macWithIv(
                     inputText,
                     keyByteArray,

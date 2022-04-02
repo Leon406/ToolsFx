@@ -37,7 +37,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "count: $times cost: $timeConsumption ms"
+                "count: $times cost: $timeConsumption ms"
     private val inputText: String
         get() =
             taInput.text.takeIf {

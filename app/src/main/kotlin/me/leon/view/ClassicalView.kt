@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import kotlin.system.measureTimeMillis
 import me.leon.SimpleMsgEvent
 import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
@@ -11,7 +12,6 @@ import me.leon.ext.crypto.*
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
-import kotlin.system.measureTimeMillis
 
 class ClassicalView : View(messages["classical"]) {
     private val controller: ClassicalController by inject()
@@ -207,12 +207,13 @@ class ClassicalView : View(messages["classical"]) {
                         isSingleLine.get(),
                     )
                 else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
-            if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+            if (Prefs.autoCopy)
+                outputText.copy().also { primaryStage.showToast(messages["copied"]) }
             fire(SimpleMsgEvent(taOutput.text, 1))
-        }.also {
-            timeConsumption = it
-            labelInfo.text = info
         }
-
+            .also {
+                timeConsumption = it
+                labelInfo.text = info
+            }
     }
 }

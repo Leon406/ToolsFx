@@ -88,6 +88,13 @@ class SignatureView : View(messages["signVerify"]) {
                     "RIPEMD160withRSA/X9.31",
                     "WHIRLPOOLwithRSA/X9.31"
                 ),
+            "RSASSA-PSS" to
+                listOf(
+                    "RAWRSASSA-PSS",
+                    "SHA256withRSA/PSS",
+                    "SHAKE128WITHRSAPSS",
+                    "SHAKE256WITHRSAPSS"
+                ),
             "DSA" to
                 listOf(
                     "NONEwithDSA",

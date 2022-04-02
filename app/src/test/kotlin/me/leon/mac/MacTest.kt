@@ -90,9 +90,10 @@ class MacTest {
     @Test
     fun testCMac() {
         val data = "12341234".toByteArray()
-        val key = "1234123412341234".toByteArray()
+        var key = "1234123412341234".toByteArray()
         val expectedMap =
             mapOf(
+                "IDEAMAC" to "7d78bba0",
                 "AESCMAC" to "580368b0e4e5510056ce164c58e3be1b",
                 "SM4-CMAC" to "b4046eab133a887c94249740e4463a9c",
                 "DESEDECMAC" to "ee0b9cd33cb6d298",
@@ -103,5 +104,14 @@ class MacTest {
             )
 
         for ((name, expected) in expectedMap) assertEquals(expected, data.mac(key, name).toHex())
+
+        key = "12341234".toByteArray()
+        assertEquals("ee0b9cd33cb6d298", data.mac(key, "DESCMAC").toHex())
+        key = "1234123412341234".toByteArray()
+        var iv = "1234123412341234".toByteArray()
+        data.macWithIv(key, iv, "ZUC-128").toHex().also { println(it) }
+        key = "12341234123412341234123412341234".toByteArray()
+        iv = "1234123412341234123412341".toByteArray()
+        data.macWithIv(key, iv, "ZUC-256-32").toHex().also { println(it) }
     }
 }
