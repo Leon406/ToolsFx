@@ -15,12 +15,11 @@
  */
 package hash.password
 
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
-import java.util.Base64
-import java.util.Locale
 import hash.keygen.BytesKeyGenerator
 import hash.keygen.KeyGenerators.secureRandom
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.Locale
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 
@@ -37,7 +36,6 @@ import me.leon.encode.base.base64Decode
  *
  * @author Luke Taylor
  */
-
 class LdapShaPasswordEncoder
 @JvmOverloads
 constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : PasswordEncoder {
@@ -74,9 +72,7 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
 
     private fun getSha(rawPassword: CharSequence): MessageDigest {
         return try {
-            MessageDigest.getInstance("SHA").apply {
-                update(rawPassword.toString().toByteArray())
-            }
+            MessageDigest.getInstance("SHA").apply { update(rawPassword.toString().toByteArray()) }
         } catch (ex: NoSuchAlgorithmException) {
             throw IllegalStateException("No SHA implementation available!")
         }

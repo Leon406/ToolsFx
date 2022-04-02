@@ -35,8 +35,10 @@ class PBEView : View("PBE") {
         get() = tfKeyLength.text.toInt()
     private val saltLength
         get() = tfSaltLength.text.toInt()
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
-        get() = "PBE Cipher: $cipher   charset: ${selectedCharset.get()}  "
+        get() = "PBE Cipher: $cipher   charset: ${selectedCharset.get()} cost: $timeConsumption ms"
     private lateinit var infoLabel: Label
 
     private var saltEncode = "hex"
@@ -170,6 +172,7 @@ class PBEView : View("PBE") {
 
     private fun doCrypto() {
         runAsync {
+            startTime = System.currentTimeMillis()
             if (taInput.text.isEmpty()) return@runAsync ""
             isProcessing.value = true
             runCatching {
@@ -206,6 +209,7 @@ class PBEView : View("PBE") {
                         if (it.startsWith("U2FsdGVk"))
                             saltByteArray = it.base64Decode().sliceArray(8 until (8 + saltLength))
                     }
+                timeConsumption = System.currentTimeMillis() - startTime
                 infoLabel.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

@@ -9,7 +9,7 @@ import me.leon.SimpleMsgEvent
 import me.leon.controller.EncodeController
 import me.leon.encode.base.base64
 import me.leon.ext.*
-import me.leon.ext.crypto.EncodeType
+import me.leon.ext.crypto.*
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -26,10 +26,18 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private lateinit var tfCustomDict: TextField
     private lateinit var tfCount: TextField
     private var enableDict = SimpleBooleanProperty(true)
+    private var timeConsumption = 0L
+    private var startTime = 0L
+    private val times
+        get() =
+            tfCount.text.toIntOrNull()?.takeIf { it <= 40 }
+                ?: 1.also { tfCount.text = it.toString() }
+
     private val info: String
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
-                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                    "count: $times cost: $timeConsumption ms"
     private val inputText: String
         get() =
             taInput.text.takeIf {
@@ -214,9 +222,8 @@ class EncodeView : View(messages["encodeAndDecode"]) {
         var result = inputText
         runAsync {
             isProcessing.value = true
-            repeat(
-                tfCount.text.toInt().takeIf { it <= 40 } ?: 40.also { tfCount.text = it.toString() }
-            ) {
+            startTime = System.currentTimeMillis()
+            repeat(times) {
                 result =
                     if (isEncode)
                         controller.encode2String(
@@ -241,6 +248,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 taOutput.text = result
                 if (Prefs.autoCopy)
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
             }
     }

@@ -15,15 +15,15 @@
  */
 package hash.scrypt
 
-import java.security.MessageDigest
 import hash.keygen.BytesKeyGenerator
 import hash.keygen.KeyGenerators.secureRandom
+import hash.password.PasswordEncoder
+import java.security.MessageDigest
 import kotlin.math.ln
 import kotlin.math.pow
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import org.bouncycastle.crypto.generators.SCrypt
-import hash.password.PasswordEncoder
 
 /**
  * Implementation of PasswordEncoder that uses the SCrypt hashing function. Clients can optionally
@@ -67,7 +67,7 @@ constructor(
         val maxParallel = Int.MAX_VALUE / (128 * memoryCost * 8)
         require(!(parallelization < 1 || parallelization > maxParallel)) {
             ("Parallelization parameter p must be >= 1 and <= $maxParallel" +
-                    " (based on block size r of $memoryCost)")
+                " (based on block size r of $memoryCost)")
         }
         require(keyLength >= 1) { "Key length must be >= " }
         require(saltLength >= 1) { "Salt length must be >= 1  " }
@@ -97,8 +97,8 @@ constructor(
         val memoryCost = params.toInt() shr 8 and 0xff
         val parallelization = params.toInt() and 0xff
         return cpuCost < this.cpuCost ||
-                memoryCost < this.memoryCost ||
-                parallelization < this.parallelization
+            memoryCost < this.memoryCost ||
+            parallelization < this.parallelization
     }
 
     private fun decodeAndCheckMatches(rawPassword: CharSequence, encodedPassword: String): Boolean {
@@ -124,7 +124,7 @@ constructor(
         return MessageDigest.isEqual(derived, generated)
     }
 
-     fun digest(rawPassword: CharSequence, salt: ByteArray): String {
+    fun digest(rawPassword: CharSequence, salt: ByteArray): String {
         val derived =
             SCrypt.generate(
                 rawPassword.toString().toByteArray(),

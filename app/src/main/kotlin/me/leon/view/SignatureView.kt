@@ -134,8 +134,11 @@ class SignatureView : View(messages["signVerify"]) {
     private val selectedKeyPairAlg = SimpleStringProperty(keyPairAlgs.keys.first())
     private val selectedSigAlg = SimpleStringProperty(keyPairAlgs.values.first().first())
     private lateinit var cbSigs: ComboBox<String>
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
-        get() = "Signature: ${selectedKeyPairAlg.get()} hash: ${selectedSigAlg.get()} "
+        get() =
+            "Signature: ${selectedKeyPairAlg.get()} hash: ${selectedSigAlg.get()} cost: ${timeConsumption}ms"
     private var inputEncode = "raw"
     private lateinit var tgInput: ToggleGroup
     private val centerNode = vbox {
@@ -195,12 +198,14 @@ class SignatureView : View(messages["signVerify"]) {
                 cbSigs.items = keyPairAlgs[newValue]!!.asObservable()
                 selectedSigAlg.set(keyPairAlgs[newValue]!!.first())
                 cbSigs.isDisable = keyPairAlgs[newValue]!!.size == 1
+                timeConsumption = 0
                 labelInfo.text = info
             }
         }
 
         selectedSigAlg.addListener { _, _, newValue ->
             println("selectedSigAlg __ $newValue")
+            timeConsumption = 0
             labelInfo.text = info
             newValue?.run { println("算法 ${selectedKeyPairAlg.get()}") }
         }
@@ -237,6 +242,7 @@ class SignatureView : View(messages["signVerify"]) {
 
     private fun sign() =
         runAsync {
+            startTime = System.currentTimeMillis()
             controller.sign(
                 selectedKeyPairAlg.get(),
                 selectedSigAlg.get(),
@@ -249,10 +255,13 @@ class SignatureView : View(messages["signVerify"]) {
             {
                 taSigned.text = it
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
             }
 
     private fun verify() =
         runAsync {
+            startTime = System.currentTimeMillis()
             controller.verify(
                 selectedKeyPairAlg.get(),
                 selectedSigAlg.get(),
@@ -262,5 +271,10 @@ class SignatureView : View(messages["signVerify"]) {
                 signText,
                 isSingleLine.get()
             )
-        } ui { state -> primaryStage.showToast("result: \n$state") }
+        } ui
+            { state ->
+                primaryStage.showToast("result: \n$state")
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+            }
 }

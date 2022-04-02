@@ -32,12 +32,13 @@ object Digests {
     }
 }
 
-fun String.hash(method: String = "MD5") = Digests.hash(method, this)
+fun String.hash(method: String = "MD5"): String = Digests.hash(method, this)
 
-fun ByteArray.hash(method: String = "MD5") = Digests.hash(method, this)
+fun ByteArray.hash(method: String = "MD5"): ByteArray = Digests.hash(method, this)
 
-fun ByteArray.hash2String(method: String = "MD5") = Digests.hash(method, this).toHex()
+fun ByteArray.hash2String(method: String = "MD5"): String = Digests.hash(method, this).toHex()
 
-fun File.hash(method: String = "MD5") = Digests.hashByFile(method, this.absolutePath)
+fun File.hash(method: String = "MD5"): String = Digests.hashByFile(method, this.absolutePath)
 
-fun String.fileHash(method: String = "MD5") = Digests.hashByFile(method, this.toFile().absolutePath)
+fun String.fileHash(method: String = "MD5"): String =
+    Digests.hashByFile(method, this.toFile().absolutePath)

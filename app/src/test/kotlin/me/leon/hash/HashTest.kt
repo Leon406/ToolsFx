@@ -6,8 +6,7 @@ import java.util.zip.CRC32
 import kotlin.test.assertEquals
 import me.leon.TEST_PRJ_DIR
 import me.leon.controller.DigestController
-import me.leon.ext.crypto.CRC64
-import me.leon.ext.crypto.crc32
+import me.leon.ext.crypto.*
 import me.leon.ext.toHex
 import me.leon.hash
 import org.junit.Test
@@ -88,6 +87,7 @@ class HashTest {
             assertEquals("219b0e44bbfc8ffd26c6cd91bb3c5138", it)
         }
     }
+
     private val expectedMap =
         mapOf(
             "MD5" to "25d55ad283aa400af464c76d713c07ad",
@@ -185,6 +185,7 @@ class HashTest {
             "CRC32" to "9ae0daaf",
             "CRC64" to "5c8b80482bac7809",
         )
+
     @Test
     fun allHash() {
         val digestController = DigestController()
@@ -207,5 +208,64 @@ class HashTest {
                     }
             }
         }
+    }
+
+    @Test
+    fun hashCount() {
+        val data = "123456".toByteArray()
+        val data2 = "123456"
+        var count = 3
+        // hash byte
+        var tmp = data
+        repeat(count) { tmp = tmp.hash() }
+        println(tmp.toHex())
+        //        assertEquals("4280d89a5a03f812751f504cc10ee8a5",tmp.toHex())
+
+        // md5(md5($pass)  md5加密后，结果转换成小写,再进行md5
+        assertEquals(
+            "14e1b600b1fd579f47433b88e8d85291",
+            PasswordHashingType.`md5(md5($pass)`.hash(data2.toByteArray())
+        )
+
+        // MD5(MD5($pass)) 解密  md5加密后，结果转换成大写,再进行md5
+        assertEquals(
+            "f59bd65f7edafb087a81d4dca06c4910",
+            PasswordHashingType.`MD5(MD5($pass))`.hash(data2.toByteArray())
+        )
+
+        // md5(md5(md5($pass))  md5加密后，结果转换成小写,再进行md5
+        assertEquals(
+            "c56d0e9a7ccec67b4ea131655038d604",
+            PasswordHashingType.`md5(md5(md5($pass))`.hash(data2.toByteArray())
+        )
+
+        // MD5(MD5(MD5($pass))) 解密	 md5加密后，结果转换成大写,再进行md5
+        assertEquals(
+            "cf814721358d09942b255746542ad2a4",
+            PasswordHashingType.`MD5(MD5(MD5($pass)))`.hash(data2.toByteArray())
+        )
+
+        // md5(SHA1)
+        assertEquals(
+            "fe85e814fd656a2d490b842c6d33019d",
+            PasswordHashingType.`md5(SHA1)`.hash(data2.toByteArray())
+        )
+
+        // md5(SHA256)
+        assertEquals(
+            "05b371cbb333cb82d98b11d4f5960b9a",
+            PasswordHashingType.`md5(SHA256)`.hash(data2.toByteArray())
+        )
+
+        // md5(SHA384)
+        assertEquals(
+            "1de321163aa049944ad52f333b9c7c46",
+            PasswordHashingType.`md5(SHA384)`.hash(data2.toByteArray())
+        )
+        // md5(SHA512)
+        assertEquals(
+            "bb16e8d698bb2a61668c1eee494a777e",
+            PasswordHashingType.`md5(SHA512)`.hash(data2.toByteArray())
+        )
     }
 }

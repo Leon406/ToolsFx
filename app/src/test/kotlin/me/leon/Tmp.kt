@@ -4,12 +4,12 @@ import hash.argon2.Argon2PasswordEncoder
 import hash.bcrypt.BCryptPasswordEncoder
 import hash.password.*
 import hash.scrypt.SCryptPasswordEncoder
-import org.bouncycastle.crypto.params.Argon2Parameters
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.junit.Test
 import java.security.Security
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import org.bouncycastle.crypto.params.Argon2Parameters
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.junit.Test
 
 class Tmp {
 
@@ -38,11 +38,15 @@ class Tmp {
 
     @Test
     fun digest() {
+        val salt = "12345678".toByteArray()
         for (algorithm in Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values()) {
             Pbkdf2PasswordEncoder().apply {
                 setAlgorithm(algorithm)
-                println(algorithm.name + " " + encode("123"))
-                assertTrue { matches("123", encode("123")) }
+                val r = encode("123")
+                println(algorithm.name + " " + r)
+                assertTrue { matches("123", r) }
+                assertTrue { matches("123", encodeWithSalt("123", salt)) }
+                assertTrue { matchesWithSalt("123", encodeWithSalt("123", salt), salt) }
             }
         }
     }
@@ -81,12 +85,15 @@ class Tmp {
         val salt = "123456123456123456123456".toByteArray()
         BCryptPasswordEncoder().apply {
             println(encode("123"))
-//            println(encode("123", salt))
+            //            println(encode("123", salt))
 
             assertTrue { matches("123", encode("123")) }
 
             println(encode("123", salt))
-            assertEquals("\$2a\$10\$KRGxLBS0KRGxLBS0KRGxL.UgZ0Pz.x0KwrgWDPUNirAXO0CnTUpI2", encode("123", salt))
+            assertEquals(
+                "\$2a\$10\$KRGxLBS0KRGxLBS0KRGxL.UgZ0Pz.x0KwrgWDPUNirAXO0CnTUpI2",
+                encode("123", salt)
+            )
 
             strength = 12
             println(encode("123"))
@@ -97,7 +104,6 @@ class Tmp {
             assertTrue { matches("123", encode("123")) }
         }
     }
-
 
     @Test
     fun argon2() {

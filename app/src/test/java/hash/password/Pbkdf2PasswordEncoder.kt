@@ -15,16 +15,16 @@
  */
 package hash.password
 
+import hash.keygen.BytesKeyGenerator
+import hash.keygen.KeyGenerators
+import hash.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm
 import java.security.*
 import java.util.Base64
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
-import hash.keygen.BytesKeyGenerator
-import hash.keygen.KeyGenerators
+import me.leon.encode.base.base64
 import me.leon.ext.hex2ByteArray
 import me.leon.ext.toHex
-import hash.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm
-import me.leon.encode.base.base64
 
 /**
  * A [PasswordEncoder] implementation that uses PBKDF2 with :
@@ -73,6 +73,11 @@ constructor(
         return encode(encoded)
     }
 
+    fun encodeWithSalt(rawPassword: CharSequence, salt: ByteArray): String {
+        val encoded = encode(rawPassword, salt)
+        return encode(encoded)
+    }
+
     private fun encode(bytes: ByteArray): String {
         return if (encodeHashAsBase64) {
             bytes.base64()
@@ -84,6 +89,14 @@ constructor(
         val salt = digested.sliceArray(0 until saltGenerator.keyLength)
         return MessageDigest.isEqual(digested, encode(rawPassword, salt))
     }
+    fun matchesWithSalt(
+        rawPassword: CharSequence,
+        encodedPassword: String,
+        salt: ByteArray
+    ): Boolean {
+        val digested = decode(encodedPassword)
+        return MessageDigest.isEqual(digested, encode(rawPassword, salt))
+    }
 
     private fun decode(encodedBytes: String): ByteArray {
         return if (encodeHashAsBase64) {
@@ -91,15 +104,9 @@ constructor(
         } else encodedBytes.hex2ByteArray()
     }
 
-    private fun encode(rawPassword: CharSequence, salt: ByteArray): ByteArray {
+    fun encode(rawPassword: CharSequence, salt: ByteArray): ByteArray {
         return try {
-            val spec =
-                PBEKeySpec(
-                    rawPassword.toString().toCharArray(),
-                    salt,
-                    iterations,
-                    hashWidth
-                )
+            val spec = PBEKeySpec(rawPassword.toString().toCharArray(), salt, iterations, hashWidth)
             salt + SecretKeyFactory.getInstance(algorithm).generateSecret(spec).encoded
         } catch (ex: GeneralSecurityException) {
             throw IllegalStateException("Could not create hash", ex)
@@ -125,7 +132,6 @@ constructor(
         PBEWithHMACGOST3411,
         `PBKDF2WithHMACSHA3-256`,
         `PBKDF2WithHMACSHA3-224`,
-
     }
 
     companion object {

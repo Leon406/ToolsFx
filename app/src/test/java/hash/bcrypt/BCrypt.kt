@@ -1696,7 +1696,6 @@ class BCrypt {
             return hashpw(password.toByteArray(), salt)
         }
 
-
         /**
          * Hash a password using the OpenBSD bcrypt scheme
          *
@@ -1722,7 +1721,7 @@ class BCrypt {
                 minor = salt[2]
                 require(
                     !(minor != 'a' && minor != 'x' && minor != 'y' && minor != 'b' ||
-                            salt[3] != '$')
+                        salt[3] != '$')
                 ) { "Invalid salt revision" }
                 off = 4
             }
@@ -1738,13 +1737,7 @@ class BCrypt {
             }
             val B = BCrypt()
             hashed =
-                B.crypt_raw(
-                    tmpPass,
-                    saltB,
-                    rounds,
-                    minor == 'x',
-                    if (minor == 'a') 0x10000 else 0
-                )
+                B.crypt_raw(tmpPass, saltB, rounds, minor == 'x', if (minor == 'a') 0x10000 else 0)
             rs.append("$2")
             if (minor >= 'a') {
                 rs.append(minor)
@@ -1784,7 +1777,7 @@ class BCrypt {
             val rs = StringBuilder()
             require(
                 !(!prefix.startsWith("$2") ||
-                        prefix[2] != 'a' && prefix[2] != 'y' && prefix[2] != 'b')
+                    prefix[2] != 'a' && prefix[2] != 'y' && prefix[2] != 'b')
             ) { "Invalid prefix" }
             require(!(log_rounds < 4 || log_rounds > 31)) { "Invalid log_rounds" }
             rs.append("$2")
@@ -1798,7 +1791,6 @@ class BCrypt {
             encode_base64(salt, salt.size, rs)
             return rs.toString()
         }
-
 
         /**
          * Check that a plaintext password matches a previously hashed one
@@ -1826,10 +1818,7 @@ class BCrypt {
         }
 
         private fun equalsNoEarlyReturn(a: String, b: String): Boolean {
-            return MessageDigest.isEqual(
-                a.toByteArray(),
-                b.toByteArray()
-            )
+            return MessageDigest.isEqual(a.toByteArray(), b.toByteArray())
         }
     }
 }

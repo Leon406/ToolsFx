@@ -44,8 +44,11 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         get() = taInput.text
     private val outputText: String
         get() = taOutput.text
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
-        get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} "
+        get() =
+            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} cost: $timeConsumption ms"
     private lateinit var infoLabel: Label
     private val keyByteArray
         get() = taKey.text.decodeToByteArray(keyEncode)
@@ -220,6 +223,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private fun doCrypto() {
         runAsync {
             isProcessing.value = true
+            startTime = System.currentTimeMillis()
             if (isEncrypt)
                 if (isFile.get())
                     inputText.lineAction2String {
@@ -255,6 +259,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             {
                 isProcessing.value = false
                 taOutput.text = it
+                timeConsumption = System.currentTimeMillis() - startTime
                 infoLabel.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

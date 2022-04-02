@@ -21,6 +21,8 @@ class MacView : View("MAC") {
     private lateinit var tfIv: TextField
     private lateinit var labelInfo: Label
     private lateinit var taOutput: TextArea
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val inputText: String
         get() = taInput.text
     private var outputText: String
@@ -46,7 +48,7 @@ class MacView : View("MAC") {
     private val selectedBits = SimpleStringProperty(algorithm.values.first().first())
     private lateinit var cbBits: ComboBox<String>
     private val info
-        get() = "MAC: $method"
+        get() = "MAC: $method cost: $timeConsumption ms"
     private var keyEncode = "raw"
     private var ivEncode = "raw"
     private var inputEncode = "raw"
@@ -205,6 +207,7 @@ class MacView : View("MAC") {
 
     private fun doMac() =
         runAsync {
+            startTime = System.currentTimeMillis()
             if (method.contains("POLY1305|-GMAC".toRegex()))
                 controller.macWithIv(
                     inputText,
@@ -227,6 +230,7 @@ class MacView : View("MAC") {
         } ui
             {
                 outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
                 if (Prefs.autoCopy)
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }

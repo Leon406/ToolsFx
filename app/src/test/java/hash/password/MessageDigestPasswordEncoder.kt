@@ -56,7 +56,6 @@ import me.leon.ext.toHex
  * @author Rob Winch
  * @since 5.0
  */
-
 class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
     private val saltGenerator: StringKeyGenerator = Base64StringKeyGenerator()
     var encodeHashAsBase64 = false

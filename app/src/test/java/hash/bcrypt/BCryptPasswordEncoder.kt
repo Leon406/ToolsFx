@@ -18,8 +18,8 @@ package hash.bcrypt
 import hash.bcrypt.BCrypt.Companion.checkPw
 import hash.bcrypt.BCrypt.Companion.genSalt
 import hash.bcrypt.BCrypt.Companion.hashpw
-import java.security.SecureRandom
 import hash.password.PasswordEncoder
+import java.security.SecureRandom
 
 /**
  * Implementation of PasswordEncoder that uses the BCrypt strong hashing function. Clients can
@@ -43,7 +43,7 @@ constructor(
     init {
         require(
             !(strength != -1 &&
-                    (strength < BCrypt.MIN_LOG_ROUNDS || strength > BCrypt.MAX_LOG_ROUNDS))
+                (strength < BCrypt.MIN_LOG_ROUNDS || strength > BCrypt.MAX_LOG_ROUNDS))
         ) { "Bad strength" }
         this.strength = if (strength == -1) 10 else strength
     }
@@ -53,12 +53,11 @@ constructor(
     }
 
     fun encode(rawPassword: CharSequence, salt: ByteArray): String {
-        return hashpw(rawPassword.toString(), genSalt(salt,version.version, strength))
+        return hashpw(rawPassword.toString(), genSalt(salt, version.version, strength))
     }
 
     private val salt: String
-        get() =
-            genSalt(version.version, strength, random ?: SecureRandom())
+        get() = genSalt(version.version, strength, random ?: SecureRandom())
 
     override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
         if (encodedPassword.isEmpty()) {
@@ -79,9 +78,7 @@ constructor(
             return false
         }
         val matcher = REG_BCRYPT.find(encodedPassword)
-        requireNotNull(matcher) {
-            "Encoded password does not look like BCrypt: $encodedPassword"
-        }
+        requireNotNull(matcher) { "Encoded password does not look like BCrypt: $encodedPassword" }
         val strength = matcher.groupValues[2].toInt()
         return strength < this.strength
     }

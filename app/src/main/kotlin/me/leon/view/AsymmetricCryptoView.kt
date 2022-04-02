@@ -29,12 +29,14 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         set(value) {
             taOutput.text = value
         }
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
         get() =
             "RSA  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) "private key encrypt"
                 else "public key encrypt"
-            } "
+            } cost: ${timeConsumption} ms"
     private lateinit var labelInfo: Label
     private var keyText: String
         get() =
@@ -210,6 +212,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         }
 
         runAsync {
+            startTime = System.currentTimeMillis()
             if (isEncrypt)
                 if (privateKeyEncrypt.get())
                     controller.priEncrypt(
@@ -250,6 +253,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         } ui
             {
                 outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

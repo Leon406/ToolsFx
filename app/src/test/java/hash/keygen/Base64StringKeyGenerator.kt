@@ -15,8 +15,8 @@
  */
 package hash.keygen
 
-import java.util.Base64
 import hash.keygen.KeyGenerators.secureRandom
+import java.util.Base64
 
 /**
  * A StringKeyGenerator that generates base64-encoded String keys. Delegates to a [ ] for the actual
@@ -28,7 +28,10 @@ import hash.keygen.KeyGenerators.secureRandom
  */
 class Base64StringKeyGenerator
 @JvmOverloads
-constructor(private val encoder: Base64.Encoder =Base64.getEncoder(), keyLength: Int = DEFAULT_KEY_LENGTH) : StringKeyGenerator {
+constructor(
+    private val encoder: Base64.Encoder = Base64.getEncoder(),
+    keyLength: Int = DEFAULT_KEY_LENGTH
+) : StringKeyGenerator {
     private val keyGenerator: BytesKeyGenerator
 
     init {

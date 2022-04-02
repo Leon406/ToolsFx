@@ -8,7 +8,7 @@ import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.EncodeController
 import me.leon.ext.*
-import me.leon.ext.crypto.EncodeType
+import me.leon.ext.crypto.*
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -22,10 +22,12 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private lateinit var tfCustomDict: TextField
     private var enableDict = SimpleBooleanProperty(true)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info: String
         get() =
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
-                "  ${messages["outputLength"]}: ${outputText.length}"
+                "  ${messages["outputLength"]}: ${outputText.length} cost: $timeConsumption ms"
     private val inputText: String
         get() =
             taInput.text.takeIf {
@@ -168,7 +170,8 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     }
 
     private fun run() {
-        taOutput.text =
+        runAsync {
+            startTime = System.currentTimeMillis()
             if (isSingleLine.get())
                 inputText.lineAction2String {
                     val decode =
@@ -195,7 +198,13 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                 decode.toString(Charsets.UTF_8).takeIf { it.contains("解码错误:") }
                     ?: controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
             }
-        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-        labelInfo.text = info
+        } ui
+            {
+                taOutput.text = it
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+            }
     }
 }

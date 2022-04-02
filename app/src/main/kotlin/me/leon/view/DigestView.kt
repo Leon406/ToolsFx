@@ -7,6 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.DigestController
 import me.leon.ext.*
+import me.leon.ext.crypto.passwordHashingTypes
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -17,9 +18,11 @@ class DigestView : View(messages["hash"]) {
     private val isFileMode = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private val isEnableFileMode = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var labelInfo: Label
     lateinit var taOutput: TextArea
+    private lateinit var tfCount: TextField
     private var inputText: String
         get() = taInput.text
         set(value) {
@@ -30,6 +33,10 @@ class DigestView : View(messages["hash"]) {
         set(value) {
             taOutput.text = value
         }
+
+    private val times
+        get() = tfCount.text.toIntOrNull() ?: 1.also { tfCount.text = "1" }
+
     var method = "MD5"
 
     private val eventHandler = fileDraggedHandler {
@@ -81,12 +88,18 @@ class DigestView : View(messages["hash"]) {
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
             "CRC" to listOf("32", "64"),
+            "PasswordHashing" to passwordHashingTypes,
         )
     private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
     private val selectedBits = SimpleStringProperty(algs.values.first().first())
     lateinit var cbBits: ComboBox<String>
     private val info
-        get() = "Hash: $method bits: ${selectedBits.get()}  file mode: ${isFileMode.get()}"
+        get() =
+            "Hash: $method bits: ${selectedBits.get()} count: $times cost: $timeConsumption ms" +
+                "  file mode: ${isFileMode.get()}"
+
+    private var timeConsumption = 0L
+    private var startTime = 0L
 
     private var inputEncode = "raw"
     private lateinit var tgInput: ToggleGroup
@@ -142,12 +155,18 @@ class DigestView : View(messages["hash"]) {
             println("selectedBits __ $newValue")
             newValue?.run {
                 method =
-                    "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
-                        .replace("SHA2", "SHA-")
-                        .replace(
-                            "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
-                            "$1-"
-                        )
+                    if (selectedAlgItem.get() == "PasswordHashing") {
+                        isEnableFileMode.value = false
+                        newValue
+                    } else {
+                        isEnableFileMode.value = true
+                        "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
+                            .replace("SHA2", "SHA-")
+                            .replace(
+                                "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
+                                "$1-"
+                            )
+                    }
                 println("算法 $method")
                 if (inputText.isNotEmpty() && !isFileMode.get()) {
                     doHash()
@@ -158,8 +177,15 @@ class DigestView : View(messages["hash"]) {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
-            checkbox(messages["fileMode"], isFileMode)
+            checkbox(messages["fileMode"], isFileMode) { enableWhen(isEnableFileMode) }
             checkbox(messages["singleLine"], isSingleLine)
+
+            label("times:")
+            tfCount =
+                textfield("1") {
+                    prefWidth = DEFAULT_SPACING_8X
+                    enableWhen(!isFileMode)
+                }
             button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
                 action { doHash() }
@@ -183,12 +209,20 @@ class DigestView : View(messages["hash"]) {
     private fun doHash() =
         runAsync {
             isProcessing.value = true
+            startTime = System.currentTimeMillis()
             if (isFileMode.get()) inputText.lineAction2String { controller.digestFile(method, it) }
-            else controller.digest(method, inputText, inputEncode, isSingleLine.get())
+            else {
+                var result: String = inputText
+                repeat(times) {
+                    result = controller.digest(method, result, inputEncode, isSingleLine.get())
+                }
+                result
+            }
         } ui
             {
                 isProcessing.value = false
                 outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
                 if (Prefs.autoCopy)
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }

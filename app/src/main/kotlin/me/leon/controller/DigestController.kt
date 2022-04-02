@@ -12,22 +12,26 @@ class DigestController : Controller() {
         inputEncode: String = "raw",
         isSingleLine: Boolean = false
     ) =
-        if (isSingleLine) data.lineAction2String { digest(method, it, inputEncode) }
-        else digest(method, data, inputEncode)
-
-    private fun digest(method: String, data: String, inputEncode: String) =
         catch({ "digest error: $it" }) {
-            if (method.startsWith("CRC"))
-                if (method.contains("32")) data.decodeToByteArray(inputEncode).crc32()
-                else data.decodeToByteArray(inputEncode).crc64()
-            else data.decodeToByteArray(inputEncode).hash2String(method)
+            if (isSingleLine) data.lineAction2String { digest(method, it, inputEncode) }
+            else digest(method, data, inputEncode)
         }
 
-    fun digestFile(method: String, path: String) =
+    private fun digest(method: String, data: String, inputEncode: String) =
+        if (method.startsWith("CRC"))
+            if (method.contains("32")) data.decodeToByteArray(inputEncode).crc32()
+            else data.decodeToByteArray(inputEncode).crc64()
+        else if (method.passwordHashingType() != null) {
+            method.passwordHashingType()!!.hash(data.decodeToByteArray(inputEncode))
+        } else data.decodeToByteArray(inputEncode).hash2String(method)
+
+    fun digestFile(method: String, path: String): String =
         catch({ "digest file error: $it" }) {
             if (path.isEmpty()) ""
             else if (method.startsWith("CRC"))
                 if (method.contains("32")) path.crc32File() else path.crc64File()
-            else path.fileHash(method)
+            if (method.passwordHashingType() != null) {
+                kotlin.error("not support")
+            } else path.fileHash(method)
         }
 }

@@ -7,10 +7,11 @@ import me.leon.SimpleMsgEvent
 import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
 import me.leon.ext.*
-import me.leon.ext.crypto.ClassicalCryptoType
+import me.leon.ext.crypto.*
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
+import kotlin.system.measureTimeMillis
 
 class ClassicalView : View(messages["classical"]) {
     private val controller: ClassicalController by inject()
@@ -25,10 +26,11 @@ class ClassicalView : View(messages["classical"]) {
     private lateinit var tfParam1: TextField
     private lateinit var tfParam2: TextField
     private lateinit var labelInfo: Label
+    private var timeConsumption = 0L
     private val info: String
         get() =
             "${if (isEncrypt) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
-                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} cost: $timeConsumption ms"
     private val inputText: String
         get() = taInput.text.takeUnless { decodeIgnoreSpace.get() } ?: taInput.text.stripAllSpace()
     private val outputText: String
@@ -113,6 +115,10 @@ class ClassicalView : View(messages["classical"]) {
                         decodeIgnoreSpace.set(encodeType.isIgnoreSpace())
 
                         if (isEncrypt) run()
+                        else {
+                            timeConsumption = 0
+                            labelInfo.text = info
+                        }
                     }
                 }
             }
@@ -191,18 +197,22 @@ class ClassicalView : View(messages["classical"]) {
     }
 
     private fun run() {
-        taOutput.text =
-            if (isEncrypt)
-                controller.encrypt(
-                    inputText,
-                    encodeType,
-                    cryptoParams,
-                    isSingleLine.get(),
-                )
-            else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
-        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-        labelInfo.text = info
+        measureTimeMillis {
+            taOutput.text =
+                if (isEncrypt)
+                    controller.encrypt(
+                        inputText,
+                        encodeType,
+                        cryptoParams,
+                        isSingleLine.get(),
+                    )
+                else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
+            if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+            fire(SimpleMsgEvent(taOutput.text, 1))
+        }.also {
+            timeConsumption = it
+            labelInfo.text = info
+        }
 
-        fire(SimpleMsgEvent(taOutput.text, 1))
     }
 }
