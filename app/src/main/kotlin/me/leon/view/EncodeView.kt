@@ -71,8 +71,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         )
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
             spacing = DEFAULT_SPACING
@@ -115,10 +114,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            spacing = DEFAULT_SPACING
             label("${messages["encode"]}:")
             tilepane {
                 vgap = 8.0
@@ -157,10 +155,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
         hbox {
             spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER
+            addClass("center")
             togglegroup {
                 spacing = DEFAULT_SPACING
-                alignment = Pos.CENTER
                 label("charset:")
                 combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
 

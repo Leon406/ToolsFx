@@ -1,7 +1,6 @@
 package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.geometry.Pos
 import javafx.scene.control.*
 import kotlin.collections.chunked
 import kotlin.collections.contains
@@ -225,10 +224,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            spacing = DEFAULT_SPACING
             label(messages["replace"])
             tfReplaceFrom = textfield { promptText = messages["text2Replaced"] }
             tfReplaceTo = textfield { promptText = messages["replaced"] }
@@ -236,10 +234,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             button(messages["run"], imageview("/img/run.png")) { action { doReplace() } }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            spacing = DEFAULT_SPACING
             label(messages["split"])
             tfSplitLength = textfield { promptText = messages["splitLength"] }
             tfSeprator = textfield { promptText = messages["delimiter"] }
@@ -248,10 +245,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         }
 
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            spacing = DEFAULT_SPACING
             label(messages["extract"])
             tfExtract =
                 textfield {

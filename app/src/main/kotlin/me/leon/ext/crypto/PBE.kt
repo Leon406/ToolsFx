@@ -71,7 +71,7 @@ object PBE {
         iterations: Int = 1
     ): SecretKey {
         val chars = password.toCharArray()
-        val saltBytes = salt.takeUnless { it.isEmpty() } ?: PBE.getSalt(saltLen)
+        val saltBytes = salt.takeUnless { it.isEmpty() } ?: getSalt(saltLen)
         val spec = PBEKeySpec(chars, saltBytes, iterations, keyLen)
         val skf = SecretKeyFactory.getInstance(alg)
         return skf.generateSecret(spec)

@@ -109,12 +109,10 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
         get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -143,8 +141,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 }
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
             label("mode:")
@@ -162,7 +159,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
         }
 
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label("key:")
             tfKey = textfield { promptText = messages["keyHint"] }
             vbox {
@@ -205,7 +202,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
         }
 
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("center")
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
@@ -225,8 +222,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             }
         }
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["output"])
 
             tgOutput =

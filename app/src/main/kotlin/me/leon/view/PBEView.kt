@@ -91,8 +91,7 @@ class PBEView : Fragment("PBE") {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
@@ -100,7 +99,7 @@ class PBEView : Fragment("PBE") {
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label("密码:")
             tfPwd = textfield { promptText = messages["pwdHintNull"] }
 
@@ -127,7 +126,7 @@ class PBEView : Fragment("PBE") {
             }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER

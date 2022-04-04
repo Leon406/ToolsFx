@@ -66,8 +66,7 @@ class MacView : Fragment("MAC") {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -89,7 +88,7 @@ class MacView : Fragment("MAC") {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlgItem, algorithm.keys.toMutableList())
             label(messages["bits"]) { paddingAll = DEFAULT_SPACING }
@@ -100,7 +99,7 @@ class MacView : Fragment("MAC") {
                 }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label("key:")
             tfKey = textfield { promptText = messages["keyHint"] }
             vbox {
@@ -183,8 +182,7 @@ class MacView : Fragment("MAC") {
 
         hbox {
             label(messages["output"])
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             tgOutput =
                 togglegroup {
                     radiobutton("hex") { isSelected = true }

@@ -153,8 +153,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["plain"])
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -190,7 +189,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
             }
 
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["publicAlg"])
             combobox(selectedKeyPairAlg, keyPairAlgs.keys.toMutableList()) {
                 cellFormat { text = it }

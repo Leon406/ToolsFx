@@ -24,17 +24,19 @@ fun BufferedImage.qrReader(): String {
     // 定义二维码参数
     val hints = Hashtable<DecodeHintType, Any>()
     hints[DecodeHintType.CHARACTER_SET] = "utf-8"
-    val results = GenericMultipleBarcodeReader(formatReader).decodeMultiple(binaryBitmap)
-        .sortedBy { it.resultPoints.first().x }
-        .fold(StringBuilder()){
-            acc, result ->
-            println(result.resultPoints.map { "${it.x} ${it.y}" })
-            println("解析结果：$result")
-            println("二维码格式类型：" + result.barcodeFormat)
-            println("二维码文本内容：" + result.text)
-            if (acc.isNotEmpty()) acc.appendLine()
-            acc.append(result.text)
-        }.toString()
+    val results =
+        GenericMultipleBarcodeReader(formatReader)
+            .decodeMultiple(binaryBitmap)
+            .sortedBy { it.resultPoints.first().x }
+            .fold(StringBuilder()) { acc, result ->
+                println(result.resultPoints.map { "${it.x} ${it.y}" })
+                println("解析结果：$result")
+                println("二维码格式类型：" + result.barcodeFormat)
+                println("二维码文本内容：" + result.text)
+                if (acc.isNotEmpty()) acc.appendLine()
+                acc.append(result.text)
+            }
+            .toString()
 
     this.flush()
     return results

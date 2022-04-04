@@ -85,8 +85,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
         spacing = DEFAULT_SPACING
         hbox {
             label(messages["input"])
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -108,8 +107,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
@@ -117,7 +115,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label("key:")
             taKey = textfield { promptText = messages["keyHint"] }
             vbox {
@@ -148,7 +146,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("center")
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
@@ -169,8 +167,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             }
         }
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["output"])
             tgOutput =
                 togglegroup {

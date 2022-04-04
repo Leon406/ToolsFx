@@ -68,8 +68,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             }
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
 
             tilepane {
                 vgap = 8.0
@@ -139,8 +138,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
 
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT

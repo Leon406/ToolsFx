@@ -15,3 +15,7 @@ val passwordHashingTypeMap =
 val passwordHashingTypes = PasswordHashingType.values().map { it.name }.sortedBy { it.lowercase() }
 
 fun String.passwordHashingType() = passwordHashingTypeMap[this]
+
+val calculatorType = Calculator.values().associateBy { it.algo }
+
+fun String.calculatorType() = calculatorType[this]

@@ -2,7 +2,6 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
@@ -104,8 +103,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         spacing = DEFAULT_SPACING
 
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
             tgInput =
                 togglegroup {
@@ -145,8 +143,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             }
 
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["bits"])
             combobox(selectedBits, bitsLists) { cellFormat { text = it } }
             togglegroup {
@@ -170,8 +167,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             }
         }
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["output"])
             tgOutput =
                 togglegroup {

@@ -94,10 +94,9 @@ class ClassicalView : Fragment(messages["classical"]) {
                 }
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            spacing = DEFAULT_SPACING
             label("${messages["encrypt"]}:")
             tilepane {
                 vgap = 8.0

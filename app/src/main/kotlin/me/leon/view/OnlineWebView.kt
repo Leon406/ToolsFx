@@ -21,9 +21,7 @@ class OnlineWebView : Fragment("Browser") {
     override val root = borderpane {
         top =
             hbox {
-                spacing = DEFAULT_SPACING
-                paddingAll = DEFAULT_SPACING
-                alignment = Pos.CENTER_LEFT
+                addClass("group", "left")
                 button(graphic = imageview("img/back.png")) {
                     action {
                         web.engine.history.run {

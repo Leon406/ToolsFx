@@ -3,7 +3,6 @@ package me.leon.view
 import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.DigestController
 import me.leon.ext.*
@@ -109,8 +108,7 @@ class DigestView : Fragment(messages["hash"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["input"])
             tgInput =
                 togglegroup {
@@ -133,7 +131,7 @@ class DigestView : Fragment(messages["hash"]) {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
             label(messages["bits"])
@@ -175,8 +173,7 @@ class DigestView : Fragment(messages["hash"]) {
             }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             paddingLeft = DEFAULT_SPACING
             checkbox(messages["fileMode"], isFileMode) { enableWhen(isEnableFileMode) }
             checkbox(messages["singleLine"], isSingleLine)

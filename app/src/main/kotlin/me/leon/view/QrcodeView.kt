@@ -132,8 +132,7 @@ class QrcodeView : Fragment("Qrcode") {
 
         hbox {
             spacing = DEFAULT_SPACING_2X
-
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
 
             combobox(selectedErrLv, errorLvs)
             button(messages["genQrcode"]) {
