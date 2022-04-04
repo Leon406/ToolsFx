@@ -4,6 +4,7 @@ import java.security.Security
 import java.util.ServiceLoader
 import kotlin.reflect.KClass
 import me.leon.BUILD_DATE
+import me.leon.ToolsApp.Companion.isEnableBigInt
 import me.leon.ToolsApp.Companion.isEnableClassical
 import me.leon.ToolsApp.Companion.isEnableInternalWebview
 import me.leon.ToolsApp.Companion.isEnableMac
@@ -25,6 +26,7 @@ class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
     init {
         if (isEnableClassical) views.add(ClassicalView::class)
         views.addAll(mutableListOf(EncodeView::class, EncodeTransferView::class))
+        if (isEnableBigInt) views.add(BigIntFragment::class)
         views.add(StringProcessView::class)
         views.add(DigestView::class)
         if (isEnableMac) views.add(MacView::class)

@@ -2,7 +2,6 @@ package me.leon
 
 import java.math.BigDecimal
 import java.math.BigInteger
-import me.leon.asymmetric.Kgcd
 import me.leon.ext.readFromNet
 
 // this = p
@@ -10,6 +9,8 @@ fun BigInteger.phi(q: BigInteger) = (this - BigInteger.ONE) * (q - BigInteger.ON
 
 // this = p
 fun BigInteger.phi(q: String) = phi(BigInteger(q))
+
+fun BigInteger.lcm(other: BigInteger) = this * other / this.gcd(other)
 
 // this 关于 other的逆元
 fun BigInteger.invert(other: String): BigInteger = modInverse(other.toBigInteger())
@@ -25,6 +26,8 @@ fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n).toByteArray(
 fun BigInteger.n2s() = toByteArray().decodeToString()
 
 fun String.s2n() = BigInteger(toByteArray())
+
+fun ByteArray.toBigInteger() = BigInteger(this)
 
 // this = c
 fun BigInteger.decrypt(d: String, n: String) = decrypt(BigInteger(d), BigInteger(n))
@@ -88,14 +91,14 @@ fun BigInteger.root(n: Int = 2, precision: Int = 2): BigDecimal {
     var x0 = BigDecimal.ZERO
     var e = BigDecimal("0.1")
     for (i in 1 until precision) e = e.divide(BigDecimal.TEN, i + 1, BigDecimal.ROUND_HALF_EVEN)
-    val K = BigDecimal(this)
+    val k = BigDecimal(this)
     val m = BigDecimal(n)
     var i: Long = 0
     while (x.subtract(x0).abs() > e) {
         x0 = x
         x =
             x.add(
-                K.subtract(x.pow(n))
+                k.subtract(x.pow(n))
                     .divide(m.multiply(x.pow(n - 1)), precision, BigDecimal.ROUND_HALF_EVEN)
             )
         ++i

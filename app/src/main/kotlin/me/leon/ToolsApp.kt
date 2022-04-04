@@ -36,6 +36,8 @@ class ToolsApp : App(Home::class, Styles::class) {
             get() = properties["isEnablePBE"].toString().toBoolean()
         val isEnableInternalWebview: Boolean
             get() = properties["isEnableInternalWebview"].toString().toBoolean()
+        val isEnableBigInt: Boolean
+            get() = properties["isEnableBigInt"].toString().toBoolean()
         val extUrls: List<String>
             get() = properties["extUrls"].toString().split(",")
         val isEnableSignature: Boolean
