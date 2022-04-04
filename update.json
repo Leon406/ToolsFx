@@ -1,5 +1,13 @@
-{"version":"1.12.2.beta06","info":"v1.12.2.beta06
+{"version":"1.12.2.beta07","info":"v1.12.2.beta07
 
-🔥  新增base45
+🔥  新增大数运算模块
+🔥  qrcode支持一图多码识别
+🔥  新增adler32,XXTEA算法
+🔥  新增新窗口打开
+🔥  hash模块支持常用密码hash,支持多次hash
+🔥  签名新增RSASA-PSS相关算法
+🔥  MAC新增ZUC算法,IDEAMAC,DESCMAC
+🔥  新增执行时间显示
+🔥  新增base45/radix64
 🐞  修复jsHex/jsOctal编码解码非unicode错误
 "}

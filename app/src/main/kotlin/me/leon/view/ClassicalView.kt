@@ -51,8 +51,7 @@ class ClassicalView : Fragment(messages["classical"]) {
             }
     }
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["input"])
@@ -95,8 +94,6 @@ class ClassicalView : Fragment(messages["classical"]) {
             }
         hbox {
             addClass("left")
-            paddingTop = DEFAULT_SPACING
-            paddingBottom = DEFAULT_SPACING
             label("${messages["encrypt"]}:")
             tilepane {
                 vgap = 8.0
