@@ -133,19 +133,19 @@ class BigIntFragment : Fragment("BigInt") {
                     item("numberToString") {
                         action {
                             outputText =
-                                outputText.lineAction2String { it.toBigInteger().n2s() }
+                                outputText.lineAction2String { it.toBigInteger(selectedRadix.get().toInt()).n2s() }
                         }
                     }
                     item("stringToNumber") {
                         action {
-                            outputText = outputText.lineAction2String { it.s2n().toString() }
+                            outputText = outputText.lineAction2String { it.s2n().toString(selectedRadix.get().toInt()) }
                         }
                     }
                     item("numberToBase64") {
                         action {
                             outputText =
                                 outputText.lineAction2String {
-                                    it.toBigInteger().toByteArray().base64()
+                                    it.toBigInteger(selectedRadix.get().toInt()).toByteArray().base64()
                                 }
                         }
                     }
@@ -153,7 +153,7 @@ class BigIntFragment : Fragment("BigInt") {
                         action {
                             outputText =
                                 outputText.lineAction2String {
-                                    it.base64Decode().toBigInteger().toString()
+                                    it.base64Decode().toBigInteger().toString(selectedRadix.get().toInt())
                                 }
                         }
                     }
@@ -239,7 +239,14 @@ class BigIntFragment : Fragment("BigInt") {
         } ui
                 {
                     isProcessing.value = false
-                    outputText = it
+                    outputText = runCatching {
+                        it.lineSplit()
+                            .joinToString("\n") {
+                                println("$it ${selectedRadix.get().toInt()}")
+
+                                it.toBigInteger().toString(selectedRadix.get().toInt()).also { println(it) }
+                            }
+                    }.getOrDefault(it)
                     timeConsumption = System.currentTimeMillis() - startTime
                     bottomView.text = bottomInfo
                 }

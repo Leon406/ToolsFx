@@ -12,6 +12,8 @@ fun BigInteger.phi(q: String) = phi(BigInteger(q))
 
 fun BigInteger.lcm(other: BigInteger) = this * other / this.gcd(other)
 
+fun BigInteger.mutualPrime(other: BigInteger) = this.gcd(other) == BigInteger.ZERO
+
 // this 关于 other的逆元
 fun BigInteger.invert(other: String): BigInteger = modInverse(other.toBigInteger())
 

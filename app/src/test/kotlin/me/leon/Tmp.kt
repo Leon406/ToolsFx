@@ -144,4 +144,9 @@ class Tmp {
             }
             .also { println(it) }
     }
+
+    @Test
+    fun big(){
+        "12".toBigInteger().toString(16).also { println(it) }
+    }
 }
