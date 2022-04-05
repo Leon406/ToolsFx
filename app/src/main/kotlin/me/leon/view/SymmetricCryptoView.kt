@@ -183,8 +183,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             vbox {
                 togglegroup {
                     enableWhen(isEnableIv)
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
+                    addClass("group")
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")

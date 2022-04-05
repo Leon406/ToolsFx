@@ -149,8 +149,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private var inputEncode = "raw"
     private lateinit var tgInput: ToggleGroup
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["plain"])
             addClass("left")

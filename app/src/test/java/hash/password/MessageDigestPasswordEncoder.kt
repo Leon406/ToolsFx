@@ -23,7 +23,7 @@ import me.leon.ext.toHex
 /**
  * This [PasswordEncoder] is provided for legacy purposes only and is not considered secure.
  *
- * Encodes passwords using the passed in [MessageDigest].
+ * Encodes passwords using the passed in MessageDigest.
  *
  * The general format of the password is:
  *
@@ -71,7 +71,7 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
      * password before encoding.
      *
      * @param rawPassword The plain text password
-     * @return Hex string of password digest (or base64 encoded string if encodeHashAsBase64 is
+     * @return Hex string of password digest or base64 encoded string if encodeHashAsBase64 is
      * enabled.
      */
     override fun encode(rawPassword: CharSequence): String {

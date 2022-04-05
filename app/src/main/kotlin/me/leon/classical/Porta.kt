@@ -1,6 +1,6 @@
 package me.leon.classical
 
-import me.leon.ext.TABLE_A_Z
+import me.leon.ext.crypto.TABLE_A_Z
 import me.leon.ext.letters
 
 /** ported from https://github.com/jameslyons/pycipher/blob/master/pycipher/porta.py */

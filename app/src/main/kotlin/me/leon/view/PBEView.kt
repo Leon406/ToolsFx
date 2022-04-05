@@ -76,8 +76,7 @@ class PBEView : Fragment("PBE") {
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
             button(graphic = imageview("/img/import.png")) {
@@ -110,7 +109,7 @@ class PBEView : Fragment("PBE") {
             label("iteration:")
             tfIteration = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
             label("salt:")
-            tfSalt = textfield() { promptText = "optional,可空" }
+            tfSalt = textfield { promptText = "optional,可空" }
             vbox {
                 tgGroup =
                     togglegroup {

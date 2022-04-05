@@ -8,10 +8,10 @@ class CurlParse {
 
     @Test
     fun parse2() {
-        println("http://www.baidu.com".parseCurl())
+        println("https://www.baidu.com".parseCurl())
         val raw =
             """
-  curl "http://47.98.112.234:9101/sys/login" ^
+  curl "http://xx.xx.xx.xx:9101/sys/login" ^
   -H "Connection: keep-alive" ^
   -H "Accept: application/json, text/javascript, */*; q=0.01" ^
   -H "DNT: 1" ^

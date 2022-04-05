@@ -1,6 +1,6 @@
 package me.leon.classical
 
-import me.leon.ext.TABLE_A_Z_WO_J
+import me.leon.ext.crypto.TABLE_A_Z_WO_J
 
 /** @link https://wtool.com.cn/polybius.html */
 const val DEFAULT_POLYBIUS_ENCODE_MAP = "12345"

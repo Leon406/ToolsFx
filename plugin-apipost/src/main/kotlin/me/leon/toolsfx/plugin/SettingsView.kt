@@ -40,13 +40,13 @@ class SettingsView : View("Setting") {
             alignment = Pos.CENTER_LEFT
             checkbox("p12", isP12)
             tfCerPath =
-                textfield() {
+                textfield {
                     promptText = "file path(drag file here)"
                     onDragEntered = eventHandler
                 }
 
             tfCerPass =
-                textfield() {
+                textfield {
                     enableWhen(isP12)
                     promptText = "pkcs12 password"
                 }

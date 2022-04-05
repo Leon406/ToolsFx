@@ -86,7 +86,7 @@ class CompressView : PluginView(messages["compression"]) {
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             spacing = DEFAULT_SPACING
-            label("${messages["alg"]}")
+            label(messages["alg"])
             tilepane {
                 vgap = 8.0
                 hgap = 8.0

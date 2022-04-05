@@ -1,6 +1,6 @@
 package me.leon.classical
 
-import me.leon.ext.TABLE_A_Z
+import me.leon.ext.crypto.TABLE_A_Z
 
 /** ported from https://github.com/jameslyons/pycipher/blob/master/pycipher/gronsfeld.py */
 fun String.gronsfeld(key: String = "123456"): String {

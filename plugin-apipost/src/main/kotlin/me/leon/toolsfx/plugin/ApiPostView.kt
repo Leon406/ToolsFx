@@ -239,7 +239,7 @@ class ApiPostView : PluginFragment("ApiPost") {
             spacing = 8.0
             prefHeight = 200.0
             taReqContent =
-                textarea() {
+                textarea {
                     promptText = "request body"
                     isWrapText = true
                     visibleWhen(!showReqHeader)

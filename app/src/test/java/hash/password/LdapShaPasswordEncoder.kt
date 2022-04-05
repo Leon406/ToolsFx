@@ -142,7 +142,7 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
     }
 
     companion object {
-        /** The number of bytes in a SHA hash */
+        /** The number of bytes in SHA hash */
         private const val SHA_LENGTH = 20
         private const val SSHA_PREFIX = "{SSHA}"
         private val SSHA_PREFIX_LC = SSHA_PREFIX.lowercase(Locale.getDefault())

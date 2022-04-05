@@ -68,20 +68,20 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
         }
 
         /*
-         * Return the CRC-64 of two sequential blocks, where summ1 is the CRC-64 of
-         * the first block, summ2 is the CRC-64 of the second block, and len2 is the
+         * Return the CRC-64 of two sequential blocks, where sum1 is the CRC-64 of
+         * the first block, sum2 is the CRC-64 of the second block, and len2 is the
          * length of the second block.
          */
-        fun combine(summ1: CRC64, summ2: CRC64, len2: Long): CRC64 {
+        fun combine(sum1: CRC64, sum2: CRC64, len2: Long): CRC64 {
             // degenerate case.
             var tmpLen = len2
-            if (tmpLen == 0L) return CRC64(summ1.getValue())
+            if (tmpLen == 0L) return CRC64(sum1.getValue())
             val (even, odd) = makeOddEvenArray()
 
             // apply len2 zeros to crc1 (first square will put the operator for one
             // zero byte, eight zero bits, in even)
-            var crc1 = summ1.getValue()
-            val crc2 = summ2.getValue()
+            var crc1 = sum1.getValue()
+            val crc2 = sum2.getValue()
             do {
                 // apply zeros operator for this bit of len2
                 gf2MatrixSquare(even, odd)
@@ -128,8 +128,8 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
         }
 
         /*
-         * Return the CRC-64 of two sequential blocks, where summ1 is the CRC-64 of
-         * the first block, summ2 is the CRC-64 of the second block, and len2 is the
+         * Return the CRC-64 of two sequential blocks, where sum1 is the CRC-64 of
+         * the first block, sum2 is the CRC-64 of the second block, and len2 is the
          * length of the second block.
          */
         fun combine(crc1: Long, crc2: Long, len2: Long): Long {

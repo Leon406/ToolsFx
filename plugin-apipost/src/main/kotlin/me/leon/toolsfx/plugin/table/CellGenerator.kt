@@ -94,7 +94,7 @@ internal object CellGenerator {
 
     @JvmStatic
     fun <T> createTextField(cell: Cell<T>, converter: StringConverter<T>?): TextField {
-        val textField = TextField(getItemText<T>(cell, converter))
+        val textField = TextField(getItemText(cell, converter))
         val cellEdit = cell as EditingCell<*, *>
         textField.onMouseExited =
             EventHandler {

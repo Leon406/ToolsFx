@@ -19,6 +19,7 @@ interface CLibrary : Library {
     }
 }
 
+@Suppress("TestFunctionName")
 interface Kernel32 :
     StdCallLibrary { // Method declarations, constant and structure definitions go here
     fun GetSystemTime(result: SystemTime?)

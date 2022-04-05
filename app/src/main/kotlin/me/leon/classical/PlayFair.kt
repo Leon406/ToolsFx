@@ -1,7 +1,7 @@
 package me.leon.classical
 
 import me.leon.encode.base.padding
-import me.leon.ext.TABLE_A_Z_WO_J
+import me.leon.ext.crypto.TABLE_A_Z_WO_J
 import me.leon.ext.stripAllSpace
 
 fun String.playFair(keyword: String): String {
@@ -43,7 +43,7 @@ fun String.playFair(keyword: String): String {
 fun String.playFairDecrypt(keyword: String): String {
     val alphabet = TABLE_A_Z_WO_J.toMutableList()
     keyword.replace(" ", "").uppercase().toList().distinct().also {
-        alphabet.removeAll(it)
+        alphabet.removeAll(it.toSet())
         alphabet.addAll(0, it)
     }
     return stripAllSpace()

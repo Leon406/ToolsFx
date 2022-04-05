@@ -106,8 +106,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
             spacing = DEFAULT_SPACING

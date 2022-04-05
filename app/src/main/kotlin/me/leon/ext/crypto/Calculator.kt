@@ -40,16 +40,15 @@ enum class Calculator(val algo: String) : ICalculator {
             return ints[0].divideAndRemainder((ints[1])).joinToString("\n")
         }
     },
-
     DIVIDE_MOD("(X/Y) mod Z") {
         override fun calculate(ints: List<BigInteger>): String {
             val isMutualPrime = ints[1].mutualPrime(ints[2])
             val gcd = if (isMutualPrime) BigInteger.ONE else ints[0].gcd(ints[1])
-            return (ints[0].divide(gcd).mod(ints[2]) * (ints[1].divide(gcd).modInverse(ints[2]))).mod(ints[2])
+            return (ints[0].divide(gcd).mod(ints[2]) * (ints[1].divide(gcd).modInverse(ints[2])))
+                .mod(ints[2])
                 .toString()
         }
     },
-
     EXPONENT("X^Y") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].pow(ints[1].toInt()).toString()
@@ -132,14 +131,12 @@ enum class Calculator(val algo: String) : ICalculator {
     },
     ROOT("X^(1/A)") {
         override fun calculate(ints: List<BigInteger>): String {
-            val root =
-                ints[0].toDouble().pow(1.0 / ints[3].toInt()).toBigDecimal().toBigInteger()
+            val root = ints[0].toDouble().pow(1.0 / ints[3].toInt()).toBigDecimal().toBigInteger()
             val remainder =
                 if (root == BigInteger.ONE) ints[0] else ints[0].mod(root.pow(ints[3].toInt()))
             return "$root\n$remainder"
         }
     },
-
     COMPLEX0("A*X+B*Y") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0] * ints[3] + ints[1] * ints[4]).toString()

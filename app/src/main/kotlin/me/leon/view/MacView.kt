@@ -62,8 +62,7 @@ class MacView : Fragment("MAC") {
         get() = tfIv.text.decodeToByteArray(keyEncode)
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
             addClass("left")
@@ -82,7 +81,7 @@ class MacView : Fragment("MAC") {
             }
         }
         taInput =
-            textarea() {
+            textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
@@ -104,8 +103,7 @@ class MacView : Fragment("MAC") {
             tfKey = textfield { promptText = messages["keyHint"] }
             vbox {
                 togglegroup {
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
+                    addClass("group")
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
@@ -123,8 +121,7 @@ class MacView : Fragment("MAC") {
             vbox {
                 visibleWhen(enableIv)
                 togglegroup {
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
+                    addClass("group")
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")

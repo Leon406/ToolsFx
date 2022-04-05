@@ -1,6 +1,6 @@
 package me.leon.classical
 
-import me.leon.ext.TABLE_A_Z_WO_J
+import me.leon.ext.crypto.TABLE_A_Z_WO_J
 import me.leon.ext.letters
 
 /** ported from https://github.com/jameslyons/pycipher/blob/master/pycipher/foursquare.py */

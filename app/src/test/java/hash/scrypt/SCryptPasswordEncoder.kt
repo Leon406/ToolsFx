@@ -34,9 +34,8 @@ import org.bouncycastle.crypto.generators.SCrypt
  * warnings](http://bouncy-castle.1462172.n4.nabble.com/Java-Bouncy-Castle-scrypt-implementation-td4656832.html)
  * :
  *
- * * The currently implementation uses Bouncy castle which does not exploit
- * parallelism/optimizations that password crackers will, so there is an unnecessary asymmetry
- * between attacker and defender.
+ * * The current implementation uses Bouncy castle which does not exploit parallelism/optimizations
+ * that password crackers will, so there is an unnecessary asymmetry between attacker and defender.
  * * Scrypt is based on Salsa20 which performs poorly in Java (on par with AES) but performs awesome
  * (~4-5x faster) on SIMD capable platforms
  * * While there are some that would disagree, consider reading -

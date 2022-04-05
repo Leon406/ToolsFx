@@ -24,16 +24,16 @@ class BigIntFragment : Fragment("BigInt") {
     private val bottomInfo
         get() =
             "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: X=${ta1.bits()}  " +
-                    "Y=${ta2.bits()}  " +
-                    "Z=${ta3.bits()}  " +
-                    "A=${ta4.bits()}  " +
-                    "B=${ta5.bits()}  " +
-                    "Output=${
+                "Y=${ta2.bits()}  " +
+                "Z=${ta3.bits()}  " +
+                "A=${ta4.bits()}  " +
+                "B=${ta5.bits()}  " +
+                "Output=${
                         runCatching {
                             outputText.lineSplit().first().toBigInteger().bitLength().toString()
                         }.getOrDefault("0")
                     }  " +
-                    "cost: $timeConsumption ms "
+                "cost: $timeConsumption ms "
     private var outputText: String
         get() = taOutput.text
         set(value) {
@@ -125,7 +125,8 @@ class BigIntFragment : Fragment("BigInt") {
                 }
             }
             button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
-        }.also { vBox.add(it) }
+        }
+            .also { vBox.add(it) }
         taOutput =
             textarea {
                 promptText = messages["outputHint"]
@@ -134,19 +135,26 @@ class BigIntFragment : Fragment("BigInt") {
                     item("numberToString") {
                         action {
                             outputText =
-                                outputText.lineAction2String { it.toBigInteger(selectedRadix.get().toInt()).n2s() }
+                                outputText.lineAction2String {
+                                    it.toBigInteger(selectedRadix.get().toInt()).n2s()
+                                }
                         }
                     }
                     item("stringToNumber") {
                         action {
-                            outputText = outputText.lineAction2String { it.s2n().toString(selectedRadix.get().toInt()) }
+                            outputText =
+                                outputText.lineAction2String {
+                                    it.s2n().toString(selectedRadix.get().toInt())
+                                }
                         }
                     }
                     item("numberToBase64") {
                         action {
                             outputText =
                                 outputText.lineAction2String {
-                                    it.toBigInteger(selectedRadix.get().toInt()).toByteArray().base64()
+                                    it.toBigInteger(selectedRadix.get().toInt())
+                                        .toByteArray()
+                                        .base64()
                                 }
                         }
                     }
@@ -154,12 +162,15 @@ class BigIntFragment : Fragment("BigInt") {
                         action {
                             outputText =
                                 outputText.lineAction2String {
-                                    it.base64Decode().toBigInteger().toString(selectedRadix.get().toInt())
+                                    it.base64Decode()
+                                        .toBigInteger()
+                                        .toString(selectedRadix.get().toInt())
                                 }
                         }
                     }
                 }
-            }.also { vBox.add(it) }
+            }
+                .also { vBox.add(it) }
     }
 
     private fun inputLayout(vBox: VBox) {
@@ -238,18 +249,21 @@ class BigIntFragment : Fragment("BigInt") {
                 )
             )
         } ui
-                {
-                    isProcessing.value = false
-                    outputText = runCatching {
-                        it.lineSplit()
-                            .joinToString("\n") {
+            {
+                isProcessing.value = false
+                outputText =
+                    runCatching {
+                            it.lineSplit().joinToString("\n") {
                                 println("$it ${selectedRadix.get().toInt()}")
 
-                                it.toBigInteger().toString(selectedRadix.get().toInt()).also { println(it) }
+                                it.toBigInteger().toString(selectedRadix.get().toInt()).also {
+                                    println(it)
+                                }
                             }
-                    }.getOrDefault(it)
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    bottomView.text = bottomInfo
-                }
+                        }
+                        .getOrDefault(it)
+                timeConsumption = System.currentTimeMillis() - startTime
+                bottomView.text = bottomInfo
+            }
     }
 }

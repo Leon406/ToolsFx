@@ -81,8 +81,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
     private val isSingleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
             addClass("left")

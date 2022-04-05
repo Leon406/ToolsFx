@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.ext.math
 
 import kotlin.math.pow
 import kotlin.math.sqrt

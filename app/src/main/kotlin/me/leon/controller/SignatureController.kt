@@ -17,7 +17,7 @@ class SignatureController : Controller() {
         inputEncode: String,
         isSingleLine: Boolean
     ) =
-        catch({ "$it" }) {
+        catch({ it }) {
             if (isSingleLine)
                 msg.lineAction2String {
                     it.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).base64()
@@ -34,7 +34,7 @@ class SignatureController : Controller() {
         signed: String,
         isSingleLine: Boolean
     ) =
-        catch({ "$it" }) {
+        catch({ it }) {
             if (isSingleLine)
                 msg.lineActionIndex { s, i ->
                     s.decodeToByteArray(inputEncode)

@@ -13,11 +13,11 @@ object GsonUtil {
 
     fun toJson(s: Any): String = gson.toJson(s)
 
-    fun <T> fromJson(json: String, clazz: Class<T>): T = gson.fromJson<T>(json, clazz)
+    fun <T> fromJson(json: String, clazz: Class<T>): T = gson.fromJson(json, clazz)
 
-    fun <D> jsonToArrayList(json: String?, clazz: Class<D>?): ArrayList<D>? {
+    fun <D> jsonToArrayList(json: String?, clazz: Class<D>?): ArrayList<D> {
         val type = object : TypeToken<ArrayList<JsonObject?>?>() {}.type
-        val jsonObjects: ArrayList<JsonObject> = gson.fromJson<ArrayList<JsonObject>>(json, type)
+        val jsonObjects: ArrayList<JsonObject> = gson.fromJson(json, type)
         val arrayList = ArrayList<D>()
         for (jsonObject in jsonObjects) {
             arrayList.add(gson.fromJson(jsonObject, clazz))

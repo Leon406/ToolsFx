@@ -22,8 +22,8 @@ package hash.keygen
  */
 interface BytesKeyGenerator {
     /**
-     * Get the length, in bytes, of keys created by this generator. Most unique keys are at least 8
-     * bytes in length.
+     * Get the length, in bytes, of keys created by this generator. Unique keys are at least 8 bytes
+     * in length.
      */
     val keyLength: Int
 

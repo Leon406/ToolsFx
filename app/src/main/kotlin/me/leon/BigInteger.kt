@@ -62,9 +62,7 @@ fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
 
         "index\\.php\\?id=\\d+".toRegex().findAll(it).toList().map { it.value }.also {
             if (it.size >= 3) {
-                val map = it.filterIndexed { i, _ -> i != 0 }.map { getPrimeFromFactorDbPath(it) }
-                //                println("$digit = \n\t ${map.joinToString("\n\t*")}")
-                return map
+                return it.filterIndexed { i, _ -> i != 0 }.map { getPrimeFromFactorDbPath(it) }
             } else {
                 println("无法分解")
                 return listOf(digit.toBigInteger())

@@ -3,7 +3,6 @@ package me.leon.ext.crypto
 import me.leon.*
 import me.leon.classical.*
 import me.leon.ctf.*
-import me.leon.ext.*
 
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
@@ -528,10 +527,10 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     HILL("hill") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.hillEncrypt(params[P1] ?: "", fromZero = params[P2]?.isNullOrEmpty() ?: true)
+            raw.hillEncrypt(params[P1] ?: "", fromZero = params[P2]?.isEmpty() ?: true)
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
-            raw.hillDecrypt(params[P1] ?: "", fromZero = params[P2]?.isNullOrEmpty() ?: true)
+            raw.hillDecrypt(params[P1] ?: "", fromZero = params[P2]?.isEmpty() ?: true)
 
         override fun paramsCount() = 2
 

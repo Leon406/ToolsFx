@@ -1735,9 +1735,9 @@ class BCrypt {
             if (minor >= 'a') {
                 tmpPass = tmpPass.copyOf(tmpPass.size + 1)
             }
-            val B = BCrypt()
+            val b = BCrypt()
             hashed =
-                B.crypt_raw(tmpPass, saltB, rounds, minor == 'x', if (minor == 'a') 0x10000 else 0)
+                b.crypt_raw(tmpPass, saltB, rounds, minor == 'x', if (minor == 'a') 0x10000 else 0)
             rs.append("$2")
             if (minor >= 'a') {
                 rs.append(minor)

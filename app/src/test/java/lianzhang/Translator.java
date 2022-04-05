@@ -23,7 +23,7 @@ public class Translator {
     static final Pattern patternChinese = Pattern.compile("[\u4e00-\u9fa5]+");
     // 无字母字符串, Windows文件路径, 类Linux文件路径,Http请求,Http请求响应字符串
     static final Pattern patternBypass =
-            Pattern.compile("^[^a-zA-Z]+$|^[A-Z]:|^/|[A-Z]{3,} /.*? HTTP/|HTTP/[\\d\\.]+ \\d+");
+            Pattern.compile("^[^a-zA-Z]+$|^[A-Z]:|^/|[A-Z]{3,} /.*? HTTP/|HTTP/[\\d.]+ \\d+");
 
     private static String keyText = "JTextComponent";
     static final Pattern patternBypassInput =

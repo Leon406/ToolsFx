@@ -1,7 +1,8 @@
 package me.leon.classical
 
 import kotlin.math.sqrt
-import me.leon.ext.*
+import me.leon.ext.crypto.TABLE_A_Z
+import me.leon.ext.math.*
 
 /** ported from https://github.com/akourk/HillCipher/blob/master/Main.java */
 fun String.hillEncrypt(key: String, table: String = TABLE_A_Z, fromZero: Boolean = true): String {

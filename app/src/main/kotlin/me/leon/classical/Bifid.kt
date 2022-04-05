@@ -1,7 +1,4 @@
-package me.leon
-
-import me.leon.classical.polybius
-import me.leon.classical.polybiusDecrypt
+package me.leon.classical
 
 /** refer http://www.practicalcryptography.com/ciphers/classical-era/bifid/ */
 fun String.bifid(key: String, period: Int = 1) =

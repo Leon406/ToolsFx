@@ -1,6 +1,6 @@
 package me.leon.classical
 
-import me.leon.ext.TABLE_A_Z_WO_J
+import me.leon.ext.crypto.TABLE_A_Z_WO_J
 import me.leon.ext.stripAllSpace
 
 /** like polybius @link https://ctf-wiki.org/crypto/classical/polyalphabetic/#nihilist */
@@ -11,7 +11,7 @@ fun String.nihilist(
 ): String {
     val maps = TABLE_A_Z_WO_J.toMutableList()
     keyword.stripAllSpace().uppercase().toList().distinct().also {
-        maps.removeAll(it)
+        maps.removeAll(it.toSet())
         maps.addAll(0, it)
     }
     return polybius(maps.joinToString(""), encodeMap, replacePair)
@@ -23,7 +23,7 @@ fun String.nihilistDecrypt(
 ): String {
     val maps = TABLE_A_Z_WO_J.toMutableList()
     keyword.stripAllSpace().uppercase().toList().distinct().also {
-        maps.removeAll(it)
+        maps.removeAll(it.toSet())
         maps.addAll(0, it)
     }
     return polybiusDecrypt(maps.joinToString(""), encodeMap)
