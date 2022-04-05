@@ -82,6 +82,7 @@ class BigIntFragment : Fragment("BigInt") {
                                 selectedAlgo = it.algo
                                 println(it)
                                 timeConsumption = 0
+                                bottomView.text = bottomInfo
                                 calculate()
                             }
                         }
