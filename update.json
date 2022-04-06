@@ -1,5 +1,6 @@
-{"version":"1.12.2.beta07","info":"v1.12.2.beta07
+{"version":"1.12.3","info":"v1.12.3
 
+🔥  新增RSA生成公私钥,私钥还原公钥
 🔥  新增大数运算模块
 🔥  qrcode支持一图多码识别
 🔥  新增adler32,XXTEA算法

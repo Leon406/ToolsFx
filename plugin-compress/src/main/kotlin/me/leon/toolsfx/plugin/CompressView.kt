@@ -11,11 +11,16 @@ import me.leon.toolsfx.plugin.compress.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class CompressView : PluginView(messages["compression"]) {
-    override val version = "v1.0.1"
-    override val date: String = "2022-03-28"
+class CompressView : PluginFragment(messages["compression"]) {
+    override val version = "v1.2.0"
+    override val date: String = "2022-04-06"
     override val author = "Leon406"
     override val description: String = FX.messages["compression"]
+
+    init {
+        println("Plugin Info:$description $version $date $author  ")
+    }
+
     private val controller: CompressController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
@@ -35,6 +40,7 @@ class CompressView : PluginView(messages["compression"]) {
     private var inputEncode = "raw"
     private var outputEncode = "base64"
 
+
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
@@ -46,7 +52,7 @@ class CompressView : PluginView(messages["compression"]) {
     }
 
     private val algs = compressTypeMap.values.map { it.alg }
-    private val selectedAlg = SimpleStringProperty(algs.first())
+    private val selectedAlg = SimpleStringProperty(algs[2])
 
     private val cipher
         get() = selectedAlg.get()
@@ -96,7 +102,7 @@ class CompressView : PluginView(messages["compression"]) {
                     compressTypeMap.forEach {
                         radiobutton(it.key) {
                             setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == Compression.GZIP) isSelected = true
+                            if (it.value == selectedAlg.get().compressType()) isSelected = true
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
@@ -181,11 +187,11 @@ class CompressView : PluginView(messages["compression"]) {
                     isSingleLine.get(),
                 )
         } ui
-            {
-                isProcessing.value = false
-                taOutput.text = it
-                infoLabel.text = info
-                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-            }
+                {
+                    isProcessing.value = false
+                    taOutput.text = it
+                    infoLabel.text = info
+                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
     }
 }

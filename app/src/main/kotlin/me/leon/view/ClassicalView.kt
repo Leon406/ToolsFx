@@ -209,7 +209,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
             if (Prefs.autoCopy)
                 outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-            fire(SimpleMsgEvent(taOutput.text, 1))
+//            fire(SimpleMsgEvent(taOutput.text, 1))
         }
             .also {
                 timeConsumption = it

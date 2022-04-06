@@ -34,7 +34,7 @@ enum class Compression(val alg: String) : ICompress {
                 BZip2CompressorInputStream(input).use { it.copyTo(output) }
             }
     },
-    DEFLATE("deflate") {
+    DEFLATE("deflate(zip)") {
         override fun compress(bytes: ByteArray) =
             compress(bytes) { input, output ->
                 DeflateCompressorOutputStream(output).use { input.copyTo(it) }

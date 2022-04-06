@@ -40,16 +40,19 @@ class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
             runCatching { Class.forName("javafx.scene.web.WebView") }.onSuccess {
                 views.add(OnlineWebView::class)
             }
-
-        val sl: ServiceLoader<PluginFragment> = ServiceLoader.load(PluginFragment::class.java)
-        views.addAll(sl.map { it.javaClass.kotlin })
     }
 
     override val root = tabpane {
         views.forEach { tab(find(it)) }
         // support library
-        val sl: ServiceLoader<PluginView> = ServiceLoader.load(PluginView::class.java)
-        sl.forEach {
+        ServiceLoader.load(PluginFragment::class.java)?.forEach {
+            views.add(it.javaClass.kotlin)
+            tab(it) {
+                this.text = it.description
+                println(this.text)
+            }
+        }
+        ServiceLoader.load(PluginView::class.java)?.forEach {
             tab(it) {
                 this.text = it.description
                 println(this.text)

@@ -16,7 +16,7 @@ import tornadofx.*
 
 class ApiPostView : PluginFragment("ApiPost") {
     override val version = "v1.4.1"
-    override val date: String = times()
+    override val date: String = "2022-04-06"
     override val author = "Leon406"
     override val description = "ApiPost"
 
