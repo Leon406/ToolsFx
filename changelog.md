@@ -137,16 +137,40 @@
 - fix(app): unicode编码为十进制
 - fix(app): 编码互转支持逐行操作
 - fix(apipost): post请求日志未显示 body信息
-# v1.12.2.beta02  
-## feature:
-- feat(app): 新增Html Entity/gray code/佛曰
+# v1.12.3  
+## feature:  
+- feat(app): 大数运算新增阶乘,质数阶乘,下一个质数功能
+- feat(app): 新增RSA生成公私钥,私钥还原公钥
+- feat(app): 新增多个java BigInteger支持的运算
+- feat(app):add bigInt calculation module
+- feat(app): qrcode支持一图多码识别
+- feat(app): 新增adler32,XXTEA算法
+- feat(app): 新增新窗口打开
+- feat(app): MAC新增ZUC算法,IDEAMAC,DESCMAC,签名新增RSASA-PSS相关算法
+- feat(app): hash模块支持常用密码hash,支持多次hash,新增执行时间显示
+- feat(app): encode add radix64
+- feat(app): add stream cipher ChaCha20,ChaCha20-Poly1305
+- feat(app): 新增base45
+- feat(app): 新增在线密码新佛曰/兽曰/熊曰,js密码rabbit/aaencode/jjencode
+- feat(app): 新增更新内容提示
+- feat(app): 优化pem解析
+- feat(app): 新增公钥密码密钥文件解析格式cer,der
+- feat(plugin-apipost): 加入自动美化,解码开关
+- feat(app): hill密码支持2阶
+- feat(app): 哈希/签名模块支持输入 hex/base64
+- feat(app): MAC模块支持输入 hex/base64
+- feat(app): 新增佛曰
+- feat(app): 新增gray code
+- feat(app): 编码新增 Html Entity
 - feat(plugin-apipost): 优化导出curl,文件识别
-- feat(app): CTF算法新增 Bifid/Trifid/Beaufort, FourSquare, Gronsfeld, Porta,Handycode
+- feat(app): CTF新增Bifid/Trifid
+- feat(app): CTF算法新增 Beaufort, FourSquare, Gronsfeld, Porta,Handycode
 - feat(app): 加入截屏ocr识别
 - feat(app): 扩展a1z26,支持自定义字典
 - feat(app): emoji substitute from emoji-aes
 - feat(app): 优化文件识别& ctf体验
 - feat(app): 优化morse解密
+- feat(app): ctf 字母索引a1z26优化
 - feat(app): 关于加入github issue反馈入口
 - feat(app): 新增曲路和当铺密码
 - feat(app): ctf加入参数提示,编码算法排序
@@ -157,19 +181,10 @@
 - feat(app): 新增零宽字符
 - feat(plugin-apipost): 支持请求导出为curl请求
 ## bug fix:  
+- fix(app): jsHex/jsOctal编码解码非unicode错误
+- fix(apipost): json formatting doesn't work
+- fix(app): PBE模块salted切换编码识别错误
 - fix(app): hash不支持空字符串
 - fix(app): RSA拖入密钥事件重复响应
 - fix(app): 乱码还原失败
 - fix(plugin-apipost): 浏览器curl解析未删除转义字符
-# v1.12.2.beta05  
-## feature:  
-- feat(app): 新增在线密码新佛曰/兽曰/熊曰,js密码rabbit/aaencode/jjencode
-- feat(app): 新增更新内容提示
-- feat(app): 优化pem解析
-- feat(app): 新增公钥密码密钥文件解析格式cer,der
-- feat(plugin-apipost): 加入自动美化,解码开关
-- feat(app): 新增hill密码,支持2,3阶
-- feat(app): 哈希/签名模块支持输入 hex/base64
-- feat(app): MAC模块支持输入 hex/base64
-## bug fix:  
-- fix(app): PBE模块salted切换编码识别错误
