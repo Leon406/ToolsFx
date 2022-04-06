@@ -8,15 +8,15 @@ import javafx.scene.control.*
 import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.text.Text
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
 import me.leon.toolsfx.plugin.net.*
-import me.leon.toolsfx.plugin.net.NetHelper.parseCurl
 import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
-class ApiPostView : PluginView("ApiPost") {
-    override val version = "v1.2.1"
-    override val date: String = times()
+class ApiPostView : PluginFragment("ApiPost") {
+    override val version = "v1.4.1"
+    override val date: String = "2022-04-06"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -32,6 +32,7 @@ class ApiPostView : PluginView("ApiPost") {
     private lateinit var taRspHeaders: TextArea
     private lateinit var taRspContent: TextArea
     private lateinit var table: TableView<HttpParams>
+    private val isPretty = SimpleBooleanProperty(true)
     private val methods =
         mutableListOf(
             "POST",
@@ -75,10 +76,10 @@ class ApiPostView : PluginView("ApiPost") {
     private val curlFileHandler = fileDraggedHandler {
         with(it.first()) {
             println(absolutePath)
-            if (length() <= 10 * 1024 * 1024)
+            if (length() <= 128 * 1024)
                 if (realExtension() in unsupportedExts) "unsupported file extension"
                 else resetUi(readText())
-            else "not support file larger than 10M"
+            else "not support file larger than 128KB"
         }
     }
     override val root = vbox {
@@ -119,7 +120,7 @@ class ApiPostView : PluginView("ApiPost") {
                                                 listOf(this.value.toFile()),
                                                 this.key,
                                                 reqTableParams as MutableMap<String, Any>,
-                                                reqHeaders,
+                                                reqHeaders
                                             )
                                         }
                                             ?: controller.post(
@@ -148,13 +149,15 @@ class ApiPostView : PluginView("ApiPost") {
                                     tfUrl.text,
                                     selectedMethod.get(),
                                     reqTableParams as MutableMap<String, Any>,
-                                    reqHeaders,
+                                    reqHeaders
                                 )
                         }
                             .onSuccess {
                                 textRspStatus.text = it.statusInfo
                                 taRspHeaders.text = it.headerInfo
-                                taRspContent.text = it.data
+                                taRspContent.text =
+                                    if (isPretty.get()) it.data.unicodeMix2String().prettyJson()
+                                    else it.data
                                 this@ApiPostView.isRunning.value = false
                             }
                             .onFailure {
@@ -169,6 +172,25 @@ class ApiPostView : PluginView("ApiPost") {
 
             button(graphic = imageview("/img/settings.png")) {
                 action { openInternalWindow<SettingsView>() }
+            }
+            button(graphic = imageview("/img/copy.png")) {
+                action {
+                    Request(
+                            tfUrl.text,
+                            selectedMethod.get(),
+                            reqTableParams as MutableMap<String, Any>,
+                            reqHeaders,
+                            taReqContent.text
+                        )
+                        .apply {
+                            isJson = selectedBodyType.get() == BodyType.JSON.type
+                            requestParams
+                                .firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
+                                ?.let { fileParamName = it.key }
+                        }
+                        .toCurl()
+                        .copy()
+                }
             }
         }
 
@@ -217,7 +239,7 @@ class ApiPostView : PluginView("ApiPost") {
             spacing = 8.0
             prefHeight = 200.0
             taReqContent =
-                textarea() {
+                textarea {
                     promptText = "request body"
                     isWrapText = true
                     visibleWhen(!showReqHeader)
@@ -274,12 +296,16 @@ class ApiPostView : PluginView("ApiPost") {
                     }
                 }
             }
-            button("Pretty") { action { taRspContent.text = taRspContent.text.prettyJson() } }
-            button("Ugly") { action { taRspContent.text = taRspContent.text.uglyJson() } }
-            button("UnicodeDecode") {
-                action { taRspContent.text = taRspContent.text.unicodeMix2String() }
-            }
+            //            button("Pretty") { action { taRspContent.text =
+            // taRspContent.text.prettyJson() } }
+            //            button("Ugly") { action { taRspContent.text = taRspContent.text.uglyJson()
+            // } }
+            //            button("UnicodeDecode") {
+            //                action { taRspContent.text = taRspContent.text.unicodeMix2String() }
+            //            }
             button(graphic = imageview("/img/copy.png")) { action { taRspContent.text.copy() } }
+
+            checkbox("prettify", isPretty)
         }
         stackpane {
             alignment = Pos.CENTER_RIGHT
@@ -312,7 +338,7 @@ class ApiPostView : PluginView("ApiPost") {
         clipboardText.parseCurl().run {
             selectedMethod.value = method
             tfUrl.text = url
-            taReqHeaders.text = headers.entries.joinToString("\n") { "${it.key}: ${it.value} " }
+            taReqHeaders.text = headers.entries.joinToString("\n") { "${it.key}: ${it.value}" }
             if (params.isNotEmpty()) {
                 showReqTable.value = true
                 showReqHeader.value = false
@@ -327,7 +353,9 @@ class ApiPostView : PluginView("ApiPost") {
                                     HttpParams().apply {
                                         keyProperty.value = mutableEntry.key
                                         valueProperty.value = mutableEntry.value.toString()
-                                        isFileProperty.value = mutableEntry.key in fileKeys
+                                        isFileProperty.value =
+                                            mutableEntry.key in fileKeys ||
+                                                mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }

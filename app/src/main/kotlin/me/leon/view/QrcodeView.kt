@@ -18,10 +18,13 @@ import javafx.scene.text.Text
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import kotlin.math.abs
+import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.fx.*
+import me.leon.ext.ocr.BaiduOcr
 import tornadofx.*
 
-class QrcodeView : View("Qrcode") {
+class QrcodeView : Fragment("Qrcode") {
     // 切图区域的起始位置x
     private var startX = 0.0
 
@@ -42,6 +45,7 @@ class QrcodeView : View("Qrcode") {
 
     // 切成的图片展示区域
     private lateinit var iv: ImageView
+    private var isOcr = false
 
     private val errorLvs = listOf("L ~7%", "M ~15%", "Q ~25%", "H ~30%")
     private val selectedErrLv = SimpleStringProperty(errorLvs.first())
@@ -62,10 +66,20 @@ class QrcodeView : View("Qrcode") {
             label(messages["recognize"])
             button =
                 button(messages["shotReco"]) {
-                    action { this@QrcodeView.show() }
+                    action {
+                        isOcr = false
+                        this@QrcodeView.show()
+                    }
                     shortcut(KeyCombination.valueOf("Ctrl+Q"))
                     tooltip("快捷键Ctrl+Q")
                 }
+            button("OCR") {
+                action {
+                    isOcr = true
+                    this@QrcodeView.show()
+                }
+                shortcut(KeyCombination.valueOf("Ctrl+Q"))
+            }
 
             button(messages["clipboardReco"]) {
                 action { clipboardImage()?.toBufferImage()?.qrReader()?.let { ta.text = it } }
@@ -118,8 +132,7 @@ class QrcodeView : View("Qrcode") {
 
         hbox {
             spacing = DEFAULT_SPACING_2X
-
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
 
             combobox(selectedErrLv, errorLvs)
             button(messages["genQrcode"]) {
@@ -270,7 +283,13 @@ class QrcodeView : View("Qrcode") {
         val screenCapture = robot.createScreenCapture(re)
         val bufferedImage = screenCapture.toFxImg()
         iv.image = bufferedImage
-        ta.text = screenCapture.qrReader()
+        runAsync {
+            runCatching {
+                if (isOcr) BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
+                else screenCapture.qrReader()
+            }
+                .getOrElse { it.stacktrace() }
+        } ui { ta.text = it }
     }
 
     private fun createQR(

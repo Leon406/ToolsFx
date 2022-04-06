@@ -86,7 +86,7 @@ fun String.baconDecrypt24(): String {
     val sb = StringBuilder()
     val tmp = StringBuilder()
 
-    for (c in this) {
+    for (c in this.uppercase()) {
         when {
             c.isLetter() ->
                 if (tmp.length == 4) {
@@ -105,7 +105,7 @@ fun String.baconDecrypt26(): String {
     val sb = StringBuilder()
     val tmp = StringBuilder()
 
-    for (c in this) {
+    for (c in this.uppercase()) {
         when {
             c.isLetter() ->
                 if (tmp.length == 4) {

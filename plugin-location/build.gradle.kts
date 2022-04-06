@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.0.2"
+version = "1.2.0"
 
 plugins {
     `java-library`
@@ -18,7 +18,6 @@ javafx {
 }
 
 dependencies {
-//    implementation("no.tornado:tornadofx:$tornadofx_version")
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")

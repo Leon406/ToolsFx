@@ -7,28 +7,12 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
-import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import me.leon.ext.fx.*
+import tornadofx.*
 import tornadofx.FX.Companion.messages
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.checkbox
-import tornadofx.combobox
-import tornadofx.enableWhen
-import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
-import tornadofx.label
-import tornadofx.paddingAll
-import tornadofx.radiobutton
-import tornadofx.textarea
-import tornadofx.textfield
-import tornadofx.togglegroup
-import tornadofx.vbox
 
-class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
+class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
@@ -44,17 +28,14 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         get() = taInput.text
     private val outputText: String
         get() = taOutput.text
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
-        get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} "
+        get() =
+            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} cost: $timeConsumption ms"
     private lateinit var infoLabel: Label
     private val keyByteArray
-        get() =
-            when (keyEncode) {
-                "raw" -> taKey.text.toByteArray()
-                "hex" -> taKey.text.hex2ByteArray()
-                "base64" -> taKey.text.base64Decode()
-                else -> byteArrayOf()
-            }
+        get() = taKey.text.decodeToByteArray(keyEncode)
 
     private var keyEncode = "raw"
     private var ivEncode = "raw"
@@ -62,13 +43,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private var outputEncode = "base64"
 
     private val ivByteArray
-        get() =
-            when (ivEncode) {
-                "raw" -> taIv.text.toByteArray()
-                "hex" -> taIv.text.hex2ByteArray()
-                "base64" -> taIv.text.base64Decode()
-                else -> byteArrayOf()
-            }
+        get() = taIv.text.decodeToByteArray(ivEncode)
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -76,10 +51,10 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else
                 with(it.first()) {
-                    if (length() <= 10 * 1024 * 1024)
+                    if (length() <= 128 * 1024)
                         if (realExtension() in unsupportedExts) "unsupported file extension"
                         else readText()
-                    else "not support file larger than 10M"
+                    else "not support file larger than 128KB, plz use file mode!!!"
                 }
     }
 
@@ -87,6 +62,8 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
         mutableListOf(
             "RC4",
             "ChaCha",
+            "ChaCha20",
+            "ChaCha20-Poly1305",
             "VMPC",
             "HC128",
             "HC256",
@@ -104,12 +81,10 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
     private val isSingleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -131,8 +106,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
@@ -140,7 +114,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label("key:")
             taKey = textfield { promptText = messages["keyHint"] }
             vbox {
@@ -171,7 +145,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("center")
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
@@ -192,8 +166,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             }
         }
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["output"])
             tgOutput =
                 togglegroup {
@@ -230,6 +203,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
     private fun doCrypto() {
         runAsync {
             isProcessing.value = true
+            startTime = System.currentTimeMillis()
             if (isEncrypt)
                 if (isFile.get())
                     inputText.lineAction2String {
@@ -265,6 +239,7 @@ class SymmetricCryptoStreamView : View(messages["symmetricStream"]) {
             {
                 isProcessing.value = false
                 taOutput.text = it
+                timeConsumption = System.currentTimeMillis() - startTime
                 infoLabel.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

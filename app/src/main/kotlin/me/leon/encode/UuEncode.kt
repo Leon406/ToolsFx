@@ -25,7 +25,6 @@ fun String.uuDecode(dict: String = UU_DICT) =
         .chunked(61)
         .joinToString("") {
             it.substring(1)
-                .also { println(it) }
                 .map {
                     dict
                         .ifEmpty { UU_DICT }

@@ -7,17 +7,18 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.SymmetricCryptoController
-import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class SymmetricCryptoView : View(messages["symmetricBlock"]) {
+class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private val isEnableIv = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var tfKey: TextField
     private lateinit var tfIv: TextField
@@ -29,17 +30,14 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         get() = taInput.text
     private val outputText: String
         get() = taOutput.text
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
-        get() = "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} "
+        get() =
+            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} cost: $timeConsumption ms"
     private lateinit var labelInfo: Label
     private val keyByteArray
-        get() =
-            when (keyEncode) {
-                "raw" -> tfKey.text.toByteArray()
-                "hex" -> tfKey.text.hex2ByteArray()
-                "base64" -> tfKey.text.base64Decode()
-                else -> byteArrayOf()
-            }
+        get() = tfKey.text.decodeToByteArray(keyEncode)
 
     private var keyEncode = "raw"
     private var ivEncode = "raw"
@@ -47,13 +45,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
     private var outputEncode = "base64"
 
     private val ivByteArray
-        get() =
-            when (ivEncode) {
-                "raw" -> tfIv.text.toByteArray()
-                "hex" -> tfIv.text.hex2ByteArray()
-                "base64" -> tfIv.text.base64Decode()
-                else -> byteArrayOf()
-            }
+        get() = tfIv.text.decodeToByteArray(ivEncode)
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -61,10 +53,10 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             else
                 with(it.first()) {
-                    if (length() <= 10 * 1024 * 1024)
+                    if (length() <= 128 * 1024)
                         if (realExtension() in unsupportedExts) "unsupported file extension"
                         else readText()
-                    else "not support file larger than 10M"
+                    else "not support file larger than 128K,plz use file mode!!!"
                 }
     }
     private val algs =
@@ -92,6 +84,8 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             "SEED",
             "TEA",
             "XTEA",
+            // coco2d encryp
+            "XXTEA",
         )
     private val paddingsAlg =
         mutableListOf(
@@ -115,12 +109,10 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
         get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -149,20 +141,25 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 }
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
             label("mode:")
-            combobox(selectedMod, modes) { cellFormat { text = it } }
+            combobox(selectedMod, modes) {
+                enableWhen(isEnableIv)
+                cellFormat { text = it }
+            }
             label("padding:")
-            combobox(selectedPadding, paddingsAlg) { cellFormat { text = it } }
+            combobox(selectedPadding, paddingsAlg) {
+                enableWhen(isEnableIv)
+                cellFormat { text = it }
+            }
             label("charset:")
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
 
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label("key:")
             tfKey = textfield { promptText = messages["keyHint"] }
             vbox {
@@ -178,11 +175,15 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 }
             }
             label("iv:")
-            tfIv = textfield { promptText = messages["ivHint"] }
+            tfIv =
+                textfield {
+                    promptText = messages["ivHint"]
+                    enableWhen(isEnableIv)
+                }
             vbox {
                 togglegroup {
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
+                    enableWhen(isEnableIv)
+                    addClass("group")
                     radiobutton("raw") { isSelected = true }
                     radiobutton("hex")
                     radiobutton("base64")
@@ -192,10 +193,15 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                 }
             }
         }
-        selectedAlg.addListener { _, _, newValue -> newValue?.run { println("alg $newValue") } }
+        selectedAlg.addListener { _, _, newValue ->
+            newValue?.run {
+                isEnableIv.value = newValue !in arrayOf("XXTEA")
+                println("alg $newValue")
+            }
+        }
 
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("center")
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
@@ -205,7 +211,6 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     tgOutput.selectToggle(tgOutput.toggles[if (isEncrypt) 1 else 0])
                     if (isEncrypt) tgInput.selectToggle(tgInput.toggles[0])
-                    doCrypto()
                 }
             }
             checkbox(messages["fileMode"], isFile)
@@ -216,8 +221,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             }
         }
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["output"])
 
             tgOutput =
@@ -256,6 +260,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
 
     private fun doCrypto() {
         runAsync {
+            startTime = System.currentTimeMillis()
             isProcessing.value = true
             if (isEncrypt)
                 if (isFile.get())
@@ -293,6 +298,7 @@ class SymmetricCryptoView : View(messages["symmetricBlock"]) {
             {
                 isProcessing.value = false
                 taOutput.text = it
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

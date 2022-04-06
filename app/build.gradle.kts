@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.11.0"
+version = "1.12.3"
 
 plugins {
     application
@@ -26,13 +26,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
     implementation("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
-    api("com.google.code.gson:gson:2.8.9")
+    api("com.google.code.gson:gson:2.9.0")
     implementation(project(":plugin-lib"))
+    implementation("org.openjdk.nashorn:nashorn-core:15.3")
+//    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
-    //compress dependencies
-    testImplementation("org.apache.commons:commons-compress:1.21")
-    testImplementation("com.github.luben:zstd-jni:1.5.2-1")
-    testImplementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
-    testImplementation("org.tukaani:xz:1.9")
-    testImplementation("org.brotli:dec:0.1.2")
 }

@@ -1,6 +1,7 @@
 package me.leon.encode.base
 
 import java.nio.charset.Charset
+import me.leon.ext.stripAllSpace
 import me.leon.ext.toBinaryString
 
 const val BASE64_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -12,16 +13,20 @@ const val BYTE_MASK = 0xFF
 fun String.base64(dict: String = BASE64_DICT, charset: Charset = Charsets.UTF_8) =
     toByteArray(charset).base64(dict)
 
-fun ByteArray.base64(dict: String = BASE64_DICT) =
+fun ByteArray.base64(dict: String = BASE64_DICT, needPadding: Boolean = true) =
     toBinaryString()
         .chunked(BASE64_BLOCK_SIZE)
         .joinToString("") {
             dict.ifEmpty { BASE64_DICT }[it.padding("0", BASE64_BLOCK_SIZE).toInt(2)].toString()
         }
-        .padding("=", BASE64_PADDING_SIZE) // lcm (6, 8) /6 = 4
+        .run {
+            if (needPadding) padding("=", BASE64_PADDING_SIZE) // lcm (6, 8) /6 = 4
+            else this
+        }
 
 fun String.base64Decode(dict: String = BASE64_DICT) =
-    toCharArray()
+    stripAllSpace()
+        .toCharArray()
         .filter { it != '=' }
         .joinToString("") {
             dict

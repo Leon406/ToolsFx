@@ -2,15 +2,20 @@ package me.leon.toolsfx.plugin
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
-import javafx.scene.control.*
+import javafx.scene.control.RadioButton
+import javafx.scene.control.TextArea
 import me.leon.ext.*
+import me.leon.ext.fx.*
 import tornadofx.*
 
-class LocationView : PluginView("LocationView") {
-    override val version = "v1.0.3"
-    override val date: String = "2021-09-21"
+class LocationView : PluginFragment("LocationView") {
+    override val version = "v1.2.0"
+    override val date: String = "2022-04-06"
     override val author = "Leon406"
     override val description = "经纬度相关"
+    init {
+        println("Plugin Info:$description $version $date $author  ")
+    }
     lateinit var taInput: TextArea
     lateinit var taOutput: TextArea
     private val controller: LocationController by inject()

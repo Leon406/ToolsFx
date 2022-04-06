@@ -6,10 +6,12 @@ import javafx.scene.text.Font
 import javafx.scene.text.Text
 import me.leon.*
 import me.leon.ext.*
+import me.leon.ext.fx.Prefs
+import me.leon.ext.fx.openInBrowser
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class AboutView : View(messages["about"]) {
+class AboutView : Fragment(messages["about"]) {
 
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var txtLatestVersion: Text
@@ -27,6 +29,7 @@ class AboutView : View(messages["about"]) {
             font = Font.font(18.0)
             action { REPO_URL.openInBrowser() }
         }
+        hyperlink("feedback") { action { REPO_ISSUE.openInBrowser() } }
         hyperlink(messages["license"]) { action { LICENSE.openInBrowser() } }
         button(messages["checkUpdate"]) {
             action {
@@ -42,7 +45,8 @@ class AboutView : View(messages["about"]) {
         }
         txtLatestVersion = text()
         hyperlink("蓝奏云下载 密码52pj") { action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() } }
-        if (VERSION.endsWith("beta")) checkUpdateDev(!Prefs.isIgnoreUpdate)
+        hyperlink("插件下载 密码ax63") { action { LAN_ZOU_PLUGIN_DOWNLOAD_URL.openInBrowser() } }
+        if (VERSION.contains("beta")) checkUpdateDev(!Prefs.isIgnoreUpdate)
         else checkUpdate(!Prefs.isIgnoreUpdate)
     }
 
@@ -50,10 +54,13 @@ class AboutView : View(messages["about"]) {
         if (!isAuto) return
         runAsync { DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2) } ui
             {
+                ToolsApp.releaseInfo = it.fromJson(ReleaseInfo::class.java)
                 txtLatestVersion.text =
                     if (it.isEmpty()) messages["unknown"]
-                    else if (VERSION != it)
-                        "${messages["latestVer"]} v$it".also { find<UpdateFragment>().openModal() }
+                    else if (VERSION != ToolsApp.releaseInfo?.version)
+                        "${messages["latestVer"]} v${ToolsApp.releaseInfo?.version}".also {
+                            find<UpdateFragment>().openModal()
+                        }
                     else messages["alreadyLatest"]
             }
     }

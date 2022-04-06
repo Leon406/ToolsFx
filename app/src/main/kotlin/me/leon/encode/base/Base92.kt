@@ -26,7 +26,7 @@ fun String.base92Encode2String(dict: String = BASE92_DICT, charset: String = "UT
 }
 
 fun ByteArray.base92Encode(dict: String = BASE92_DICT, charset: String = "UTF-8") =
-    String(this, Charset.forName(charset)).base92Encode2String(dict)
+    toString(Charset.forName(charset)).base92Encode2String(dict)
 
 fun String.base92Decode(dict: String = BASE92_DICT, charset: String = "UTF-8"): ByteArray {
     if (this == "~") return "".toByteArray()
@@ -48,4 +48,4 @@ fun String.base92Decode(dict: String = BASE92_DICT, charset: String = "UTF-8"): 
 }
 
 fun String.base92Decode2String(dict: String = BASE92_DICT, charset: String = "UTF-8") =
-    String(base92Decode(dict, charset), Charset.forName(charset))
+    base92Decode(dict, charset).toString(Charset.forName(charset))

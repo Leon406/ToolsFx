@@ -29,17 +29,13 @@ object QuotePrintable {
             .joinToString("=\r\n")
 
     fun decode(src: String, charset: String = "UTF-8"): String {
-
-        var preHandle = src.lowercase().split("=(?:\r\n|\n)".toRegex()).joinToString("")
-        preHandle.also { println(it) }
+        val preHandle = src.lowercase().split("=(?:\r\n|\n)".toRegex()).joinToString("")
         val sb = StringBuilder()
         val hex = StringBuilder()
         var curPos: Int
         var lastPos = 0
-        println(preHandle.length)
         while (lastPos < preHandle.length) {
             curPos = preHandle.indexOf("=", lastPos)
-            //            println("curPos $curPos $lastPos")
             if (curPos == -1) {
                 sb.append(preHandle.subSequence(lastPos, preHandle.length))
                 break
@@ -47,20 +43,16 @@ object QuotePrintable {
                 hex.append(preHandle.subSequence(lastPos + 1, lastPos + 3))
                 lastPos += 3
                 while (preHandle[lastPos] == '=') {
-                    hex.append(preHandle.subSequence(lastPos + 1, lastPos + 3).also { println(it) })
+                    hex.append(preHandle.subSequence(lastPos + 1, lastPos + 3))
                     lastPos += 3
                 }
-                println("split $lastPos:$hex ")
-                sb.append(
-                    hex.toString().hex2String(charset) // .also { println("**$it**") }
-                )
+                sb.append(hex.toString().hex2String(charset))
                 hex.clear()
             } else {
                 sb.append(preHandle.subSequence(lastPos, curPos))
                 lastPos = curPos
             }
         }
-
         return sb.toString()
     }
 }
@@ -75,15 +67,3 @@ fun String.quotePrintableDecode(charset: String = "UTF-8") =
 
 fun String.quotePrintableDecode2String(charset: String = "UTF-8") =
     QuotePrintable.decode(this, charset)
-
-fun main() {
-
-    "bfaab7a2b9a4bedfbcafbacf20".hex2String("gbk").also { println(it) }
-
-    val raw = "开发工具集合 by leon406@52pojie.cn"
-    val message = raw.repeat(2).quotePrintable()
-    val gbkMsg = QuotePrintable.encode(raw, "gbk")
-    println(gbkMsg)
-    println(QuotePrintable.decode(gbkMsg, "gbk"))
-    println(message.quotePrintableDecode2String())
-}

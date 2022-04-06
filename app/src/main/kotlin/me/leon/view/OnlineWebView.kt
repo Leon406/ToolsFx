@@ -10,20 +10,18 @@ import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_40X
 import tornadofx.*
 
-class OnlineWebView : View("Browser") {
+class OnlineWebView : Fragment("Browser") {
     private lateinit var web: WebView
     private lateinit var tfUrl: TextField
     private val fontJS by lazy {
-        javaClass.getResourceAsStream("/js/font.js").readBytes().decodeToString()
+        javaClass.getResourceAsStream("/js/font.js")?.readBytes()?.decodeToString()
     }
 
     private val selectedUrl = SimpleStringProperty(ToolsApp.extUrls.first())
     override val root = borderpane {
         top =
             hbox {
-                spacing = DEFAULT_SPACING
-                paddingAll = DEFAULT_SPACING
-                alignment = Pos.CENTER_LEFT
+                addClass("group", "left")
                 button(graphic = imageview("img/back.png")) {
                     action {
                         web.engine.history.run {
@@ -56,6 +54,9 @@ class OnlineWebView : View("Browser") {
                 }
                 button(graphic = imageview("/img/run.png")) {
                     action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
+                }
+                button(graphic = imageview("/img/openwindow.png")) {
+                    action { find<OnlineWebView>().openWindow() }
                 }
             }
         center =

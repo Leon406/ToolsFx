@@ -60,7 +60,6 @@ object BubbleBabble {
         out.append(consonants[P[1]])
         out.append(vowels[P[2]])
         out.append('x')
-        println(out)
         return out.toString()
     }
 
@@ -110,7 +109,7 @@ object BubbleBabble {
 fun String.bubbleBabble() = BubbleBabble.encrypt(this)
 
 fun ByteArray.bubbleBabble(charset: String) =
-    BubbleBabble.encrypt(String(this, Charset.forName(charset)))
+    BubbleBabble.encrypt(toString(Charset.forName(charset)))
 
 fun String.bubbleBabbleDecode() = BubbleBabble.decrypt(this)
 

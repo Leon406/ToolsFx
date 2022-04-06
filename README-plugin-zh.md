@@ -4,6 +4,7 @@
 </p>
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx:: Visitor's Count" />
+
 ------
 
 目前同时支持两种机制
@@ -140,3 +141,7 @@ classloader目前遇到插件resource资源无法加载的问题,临时只能将
 ### Location (经纬度转换)
 
 ![location](/art/plugin/location.gif)
+
+### Compression (压缩)
+
+插件下载 https://leon.lanzoub.com/b0d9w4cof 提取码：ax63

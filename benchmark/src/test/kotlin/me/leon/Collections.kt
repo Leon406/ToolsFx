@@ -1,0 +1,97 @@
+package me.leon
+
+import androidx.collection.*
+import kotlin.test.Test
+import org.openjdk.jol.info.GraphLayout
+
+class Collections {
+
+    @Test
+    fun coll() {
+        //
+        arrayMapOf<String, String>()
+        arrayMapOf("1" to 1, "2" to 2, "3" to 3).also {
+            println(it)
+            println(GraphLayout.parseInstance(it).toFootprint())
+        }
+        arraySetOf<Int>()
+        arraySetOf(4, 1, 2, 3, 3, 41, 4, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0).also { println(it) }
+        var cache = lruCache<String, String>(3).also { println(it) }
+        // sizeOf每个元素的大小 create 元素不存在时是否创建,默认不创建
+        cache =
+            lruCache(
+                6,
+                { _: String, _: String -> 2 },
+                { k: String -> "$k+111" },
+                { b, k, old, new -> if (!b) println("$k change : $old --> $new") }
+            )
+                .also { println(it) }
+        cache.put("1", "1")
+        cache.put("2", "2")
+        cache.put("3", "3")
+        cache.put("2", "22")
+        println(cache.toString() + " " + cache.snapshot())
+        //        cache.put("2", "22")
+        println(cache.get("1"))
+        println(cache.toString() + " " + cache.snapshot())
+        println(cache.get("2"))
+        println(cache.toString() + " " + cache.snapshot())
+        cache.put("4", "1")
+        println(cache.toString() + " " + cache.snapshot())
+        println(cache.get("5"))
+        println(cache.toString() + " " + cache.snapshot())
+
+        SparseArrayCompat<String>().put(1, "1")
+        LongSparseArray<String>().put(1L, "1")
+    }
+
+    @Test
+    fun memoryCompare() {
+        arrayMapOf("1" to 1, "2" to 2, "3" to 3).also {
+            println("arrayMapOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+        mapOf("1" to 1, "2" to 2, "3" to 3).also {
+            println("mapOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+
+        mutableMapOf("1" to 1, "2" to 2, "3" to 3).also {
+            println("mutableMapOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+        arraySetOf(4, 1, 2, 3, 3, 41, 4, 12).also {
+            println("arraySetOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+        hashSetOf(4, 1, 2, 3, 3, 41, 4, 12).also {
+            println("hashSetOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+        mutableSetOf(4, 1, 2, 3, 3, 41, 4, 12).also {
+            println("mutableSetOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+        linkedSetOf(4, 1, 2, 3, 3, 41, 4, 12).also {
+            println("linkedSetOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+    }
+    @Test
+    fun listMemory() {
+        arrayMapOf(1 to POJO(), 2 to POJO(), 3 to POJO(), 4 to POJO()).also {
+            println("arrayMapOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+
+        SparseArrayCompat<POJO>()
+            .apply {
+                put(1, POJO())
+                put(2, POJO())
+                put(3, POJO())
+                put(4, POJO())
+            }
+            .also {
+                println("SparseArrayCompat :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+            }
+
+        listOf(POJO(), POJO(), POJO(), POJO()).also {
+            println("listOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+        mutableListOf(POJO(), POJO(), POJO(), POJO()).also {
+            println("mutableListOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
+    }
+}

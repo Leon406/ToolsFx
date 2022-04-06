@@ -9,10 +9,12 @@ import me.leon.SimpleMsgEvent
 import me.leon.controller.EncodeController
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.crypto.*
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class EncodeView : View(messages["encodeAndDecode"]) {
+class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
@@ -24,17 +26,25 @@ class EncodeView : View(messages["encodeAndDecode"]) {
     private lateinit var tfCustomDict: TextField
     private lateinit var tfCount: TextField
     private var enableDict = SimpleBooleanProperty(true)
+    private var timeConsumption = 0L
+    private var startTime = 0L
+    private val times
+        get() =
+            tfCount.text.toIntOrNull()?.takeIf { it <= 40 }
+                ?: 1.also { tfCount.text = it.toString() }
+
     private val info: String
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
-                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length}"
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "count: $times cost: $timeConsumption ms"
     private val inputText: String
         get() =
             taInput.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                    ?: taInput.text.replace("\\s".toRegex(), "")
+                    ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
 
@@ -61,10 +71,13 @@ class EncodeView : View(messages["encodeAndDecode"]) {
         )
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
+            spacing = DEFAULT_SPACING
+            button(graphic = imageview("/img/openwindow.png")) {
+                action { find<EncodeView>().openWindow() }
+            }
             button(graphic = imageview("/img/import.png")) {
                 action { taInput.text = clipboardText() }
             }
@@ -101,10 +114,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            spacing = DEFAULT_SPACING
             label("${messages["encode"]}:")
             tilepane {
                 vgap = 8.0
@@ -119,10 +131,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.encodeType()
-                        enableDict.value = encodeType.type.contains("base")
+                        enableDict.value =
+                            encodeType.type.contains("base") && encodeType.type != "base100"
                         tfCustomDict.text = encodeType.defaultDict
-
-                        println()
                         val isIgnore = encodeType !in encodeTypeWithSpace
                         decodeIgnoreSpace.set(isIgnore)
                         println("${decodeIgnoreSpace.get()} $isIgnore")
@@ -144,10 +155,9 @@ class EncodeView : View(messages["encodeAndDecode"]) {
 
         hbox {
             spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER
+            addClass("center")
             togglegroup {
                 spacing = DEFAULT_SPACING
-                alignment = Pos.CENTER
                 label("charset:")
                 combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
 
@@ -180,12 +190,6 @@ class EncodeView : View(messages["encodeAndDecode"]) {
             spacing = DEFAULT_SPACING
             label(messages["output"])
             button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
-            button(graphic = imageview("/img/up.png")) {
-                action {
-                    taInput.text = outputText
-                    taOutput.text = ""
-                }
-            }
             button(graphic = imageview("/img/jump.png")) {
                 action {
                     fire(SimpleMsgEvent(taOutput.text, 1))
@@ -193,6 +197,12 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                     tabPane?.selectionModel?.select(
                         tabPane.tabs.first { it.text == messages["stringProcess"] }
                     )
+                }
+            }
+            button(graphic = imageview("/img/up.png")) {
+                action {
+                    taInput.text = outputText
+                    taOutput.text = ""
                 }
             }
         }
@@ -213,9 +223,8 @@ class EncodeView : View(messages["encodeAndDecode"]) {
         var result = inputText
         runAsync {
             isProcessing.value = true
-            repeat(
-                tfCount.text.toInt().takeIf { it <= 40 } ?: 40.also { tfCount.text = it.toString() }
-            ) {
+            startTime = System.currentTimeMillis()
+            repeat(times) {
                 result =
                     if (isEncode)
                         controller.encode2String(
@@ -240,6 +249,7 @@ class EncodeView : View(messages["encodeAndDecode"]) {
                 taOutput.text = result
                 if (Prefs.autoCopy)
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
             }
     }

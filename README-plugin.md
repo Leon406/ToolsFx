@@ -16,11 +16,11 @@ Support two principles meanwhile
 
 Bases on java classloader, load implement of plugin jar, and also uses *convention over configuration* conception.
 
-Jar File name muse be full quality  class name. When application starts, it will scan jar files under plugin directory,and instantces by reflection.
+Jar File name muse be full quality  class name. When application starts, it will scan jar files under plugin directory,and instanced by reflection.
 
 ## Principle 2 [spi(Service Provider Interface)](https://en.wikipedia.org/wiki/Service_provider_interface)
 
-Host application will instantces all interface implementations by  ServiceLoader#load, and pluign module resources directory must hava META-INF/services/{plugin interface full quality class name} file whose content is plugin interface implementation class full quality name
+Host application will instance all interface implementations by  ServiceLoader#load, and plugin module resources directory must hava META-INF/services/{plugin interface full quality class name} file whose content is plugin interface implementation class full quality name
 
 ## Compare
 
@@ -54,6 +54,14 @@ see **plugin-sample**  or  *plugin-apipost*
   **file upload**
 
 ![sym](/art/plugin/apipost-upload.gif)
+
+### Location (经纬度转换)
+
+![location](/art/plugin/location.gif)
+
+### Compression (压缩)
+
+plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
 
   
 

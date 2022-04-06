@@ -1,5 +1,6 @@
 package me.leon
 
+import javafx.geometry.Pos
 import javafx.scene.text.FontWeight
 import tornadofx.*
 
@@ -7,6 +8,9 @@ class Styles : Stylesheet() {
     companion object {
         // Define our styles
         val myButton by cssclass()
+        val group by cssclass()
+        val center by cssclass()
+        val left by cssclass()
 
         // Define our colors
         val hoverColor = c("#a1a3a6")
@@ -26,6 +30,20 @@ class Styles : Stylesheet() {
             fontSize = px20
             fontWeight = FontWeight.BOLD
         }
+        group {
+            padding = box(8.px)
+            spacing = 8.px
+            fontSize = 12.px
+        }
+        center {
+            spacing = 8.px
+            alignment = Pos.CENTER
+        }
+        left {
+            spacing = 8.px
+            alignment = Pos.CENTER_LEFT
+        }
+
         button {
             fontSize = px14
             fontWeight = FontWeight.BOLD

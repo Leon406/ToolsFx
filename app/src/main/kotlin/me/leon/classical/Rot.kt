@@ -1,5 +1,7 @@
 package me.leon.classical
 
+import me.leon.ext.math.circleIndex
+
 fun String.shift10(bias: Int) =
     this.map { it.takeUnless { it in '0'..'9' } ?: ('0' + (it + bias - '0') % 10) }.joinToString("")
 
@@ -18,8 +20,9 @@ fun String.rot18() =
 
 fun String.shift26(bias: Int) =
     this.uppercase()
-        .map { it.takeUnless { it in 'A'..'Z' } ?: ('A' + (it + bias - 'A') % 26) }
+        .map { it.takeUnless { it in 'A'..'Z' } ?: ('A' + (it + bias - 'A').circleIndex()) }
         .joinToString("")
 
 fun String.shift94(bias: Int) =
-    this.map { it.takeUnless { it in '!'..'~' } ?: ('!' + (it + bias - '!') % 94) }.joinToString("")
+    this.map { it.takeUnless { it in '!'..'~' } ?: ('!' + (it + bias - '!').circleIndex(94)) }
+        .joinToString("")

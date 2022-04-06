@@ -1,19 +1,20 @@
 package me.leon.view
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleStringProperty
-import javafx.geometry.Pos
+import javafx.beans.property.*
 import javafx.scene.control.*
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.crypto.*
+import me.leon.ext.fx.*
 import tornadofx.*
 
-class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
+class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val controller: AsymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
+    private val isProcessing = SimpleBooleanProperty(false)
     lateinit var taInput: TextArea
     lateinit var taKey: TextArea
     lateinit var taOutput: TextArea
@@ -27,20 +28,22 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         set(value) {
             taOutput.text = value
         }
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
         get() =
             "RSA  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) "private key encrypt"
                 else "public key encrypt"
-            } "
+            } cost: ${timeConsumption} ms"
     private lateinit var labelInfo: Label
     private var keyText: String
         get() =
             taKey.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
-                ?: taKey.text.replace(
-                    "---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(),
-                    ""
-                ).trim()
+                ?: taKey
+                    .text
+                    .replace("---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
+                    .trim()
         set(value) {
             taKey.text = value
         }
@@ -51,45 +54,47 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
     private var outputEncode = "base64"
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
-    private val bitsLists = mutableListOf("512", "1024", "2048", "3072", "4096")
-    private val selectedBits = SimpleStringProperty("1024")
-    private val isPriEncryptOrPubDecrypt
-        get() = privateKeyEncrypt.get() && isEncrypt || !privateKeyEncrypt.get() && !isEncrypt
+    private val bitsLists = mutableListOf(512, 1024, 2048, 3072, 4096)
+    private val selectedBits = SimpleIntegerProperty(1024)
+    private val isPrivateKey
+        get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
-    private val eventHandler = fileDraggedHandler {
+    private val keyEventHandler = fileDraggedHandler {
         val firstFile = it.first()
         keyText =
-            if (firstFile.name.endsWith("pk8")) firstFile.readBytes().base64()
+            if (firstFile.extension in listOf("pk8", "key", "der")) firstFile.readBytes().base64()
+            else if (firstFile.extension in listOf("cer", "crt"))
+                firstFile.parsePublicKeyFromCerFile()
             else
                 with(firstFile) {
-                    if (length() <= 10 * 1024 * 1024)
+                    if (length() <= 128 * 1024)
                         if (realExtension() in unsupportedExts) "unsupported file extension"
                         else readText()
-                    else "not support file larger than 10M"
+                    else "not support file larger than 128KB"
                 }
-
-        with(keyText) {
-            val probablyKeySize =
-                if (isPriEncryptOrPubDecrypt) this.length * 1.25f else this.length * 5
-            println("__ $probablyKeySize")
-            val keySize =
-                when (probablyKeySize.toInt()) {
-                    in 3300..4500 -> 4096
-                    in 2600..3300 -> 3072
-                    in 1600..2200 -> 2048
-                    in 800..1200 -> 1024
-                    else -> 512
-                }
-            selectedBits.set(keySize.toString())
-        }
+        updateKeySize()
     }
+
+    private fun updateKeySize() {
+        runAsync {
+            runCatching {
+                    if (isPrivateKey) {
+                        controller.lengthFromPri(keyText)
+                    } else {
+                        controller.lengthFromPub(keyText)
+                    }
+                }
+                .getOrDefault(1024)
+        } ui { selectedBits.set(it) }
+    }
+
     private val inputEventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 128 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                else "not support file larger than 128KB"
             }
     }
 
@@ -98,8 +103,7 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         spacing = DEFAULT_SPACING
 
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
             tgInput =
                 togglegroup {
@@ -124,20 +128,24 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
         hbox {
             label(messages["key"])
-            button(graphic = imageview("/img/import.png")) { action { keyText = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                action {
+                    keyText = clipboardText()
+                    updateKeySize()
+                }
+            }
         }
         taKey =
             textarea {
-                promptText = messages["inputHint"]
+                promptText = messages["inputHintAsy"]
                 isWrapText = true
-                onDragEntered = eventHandler
+                onDragEntered = keyEventHandler
             }
 
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["bits"])
-            combobox(selectedBits, bitsLists) { cellFormat { text = it } }
+            combobox(selectedBits, bitsLists) { cellFormat { text = it.toString() } }
             togglegroup {
                 spacing = DEFAULT_SPACING
                 radiobutton(messages["encrypt"]) { isSelected = true }
@@ -155,12 +163,36 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
 
             button(messages["run"], imageview("/img/run.png")) { action { doCrypto() } }
             button(messages["genKeypair"]) {
-                action { "https://miniu.alipay.com/keytool/create".openInBrowser() }
+                enableWhen(!isProcessing)
+                action {
+                    isProcessing.value = true
+                    runAsync { genKeys(alg, selectedBits.value.toInt()) } ui
+                        {
+                            isProcessing.value = false
+                            if (isPrivateKey) {
+                                taInput.text = it[0]
+                                taKey.text = it[1]
+                            } else {
+                                taInput.text = it[1]
+                                taKey.text = it[0]
+                            }
+                        }
+                }
+            }
+            button(messages["deriveKey"]) {
+                enableWhen(!isProcessing)
+                action {
+                    isProcessing.value = true
+                    runAsync { catch({ it }) { taKey.text.privateKeyDerivedPublicKey(alg) } } ui
+                        {
+                            isProcessing.value = false
+                            taOutput.text = it
+                        }
+                }
             }
         }
         hbox {
-            spacing = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label(messages["output"])
             tgOutput =
                 togglegroup {
@@ -201,13 +233,14 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
         }
 
         runAsync {
+            isProcessing.value = true
+            startTime = System.currentTimeMillis()
             if (isEncrypt)
                 if (privateKeyEncrypt.get())
                     controller.priEncrypt(
                         keyText,
                         alg,
                         inputText,
-                        selectedBits.get().toInt(),
                         isSingleLine.get(),
                         inputEncode = inputEncode,
                         outputEncode = outputEncode
@@ -217,7 +250,6 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                         keyText,
                         alg,
                         inputText,
-                        selectedBits.get().toInt(),
                         isSingleLine.get(),
                         inputEncode = inputEncode,
                         outputEncode = outputEncode
@@ -227,7 +259,6 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     keyText,
                     alg,
                     inputText,
-                    selectedBits.get().toInt(),
                     isSingleLine.get(),
                     inputEncode,
                     outputEncode
@@ -237,14 +268,15 @@ class AsymmetricCryptoView : View(FX.messages["asymmetric"]) {
                     keyText,
                     alg,
                     inputText,
-                    selectedBits.get().toInt(),
                     isSingleLine.get(),
                     inputEncode,
                     outputEncode
                 )
         } ui
             {
+                isProcessing.value = false
                 outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

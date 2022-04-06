@@ -2,7 +2,7 @@ package me.leon.classical
 
 fun String.caesar(bias: Int) =
     this.uppercase()
-        .map { it.takeUnless { it in 'A'..'Z' } ?: ('A' + (it + bias - 'A') % 26) }
+        .map { it.takeUnless { it in 'A'..'Z' } ?: ('A' + (it + bias - 'A' + 26) % 26) }
         .joinToString("")
 
 fun String.caesar25() =

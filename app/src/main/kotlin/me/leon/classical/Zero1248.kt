@@ -1,11 +1,9 @@
 package me.leon.classical
 
 fun String.zero1248() =
-    uppercase()
-        .toCharArray()
-        .filter { it in 'A'..'Z' }
-        .map { (it - 'A' + 1).zero1248() }
-        .joinToString("0")
+    uppercase().toCharArray().filter { it in 'A'..'Z' }.joinToString("0") {
+        (it - 'A' + 1).zero1248()
+    }
 
 private fun Int.zero1248() =
     with(StringBuilder()) {
@@ -17,7 +15,4 @@ private fun Int.zero1248() =
     }
 
 fun String.zero1248Decode() =
-    trim()
-        .split("0".toRegex())
-        .map { (it.map { it.code - '0'.code }.sum() + 'A'.code - 1).toChar() }
-        .joinToString("")
+    trim().split("0").map { (it.map { it - '0' }.sum() + 'A'.code - 1).toChar() }.joinToString("")

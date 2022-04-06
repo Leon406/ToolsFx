@@ -2,9 +2,9 @@ package me.leon.toolsfx.plugin
 
 import java.time.*
 import java.time.format.DateTimeFormatter
-import me.leon.Digests
 import me.leon.encode.base.base64
 import me.leon.ext.toBinaryString
+import me.leon.hash
 
 const val TIMESTAMP = "{{timestamp}}"
 const val TIMESTAMP2 = "{{timestamp2}}"
@@ -45,9 +45,8 @@ fun String.methodCall(args: String): String {
 
     println("methodCall $this $args")
     return when (this) {
-        "md5" -> Digests.hash(this, args)
-        "digest" ->
-            Digests.hash(args.substringBefore(",").also { println(this) }, args.substringAfter(","))
+        "md5" -> args.hash(this)
+        "digest" -> args.substringAfter(",").hash(args.substringBefore(","))
         "base64" -> args.base64()
         "binary" -> args.toBinaryString()
         "uppercase" -> args.uppercase()

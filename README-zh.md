@@ -35,16 +35,20 @@
 
 - [x] base64
 - [x] urlBase64
-- [x] base16/32/36/58/62/85/91/92/100
+- [x] base16/32/36/45/58/62/85/91/92/100
 - [x] base58check
 - [x] UrlEncode
 - [x] Unicode
 - [x] js hex(\x61)/js octal(\140)
 - [x] binary/octal/decimal/hex
 - [x] base系列自定义字典
+- [x] puny code
+- [x] quote printable
+- [x] uuEncode
+- [x] xxEncode
+- [x] escape/escapeAll
 
 ![encode](./art/encode.gif)
-
 
 
 **字符处理(以分割为例)**
@@ -125,42 +129,47 @@
 - [x] RC2
 - [x] 其他 BouncyCastle支持的算法
 
-#### 支持mode
+<details>
+<summary>支持mode</summary>
+<ul>
+<li>ECB</li>
+<li>CBC</li>
+<li>OFB(n)</li>
+<li>CFB(n)</li>
+<li>SIC (also known as CTR)</li>
+<li>CTS (equivalent to CBC/WithCTS)</li>
+<li>CCM (AEAD)</li>
+<li>EAX (AEAD)</li>
+<li>GCM (AEAD)</li>
+<li>OCB (AEAD)</li>
+</ul>
+</details>
 
-- ECB
-- CBC
-- OFB(n)
-- CFB(n)
-- SIC (also known as CTR)
-- CTS (equivalent to CBC/WithCTS)
-- CCM (AEAD)
-- EAX (AEAD)
-- GCM (AEAD)
-- OCB (AEAD)
-
-#### 支持padding scheme
-
-- No padding
-- PKCS5/7
-- ISO10126/ISO10126-2
-- ISO7816-4/ISO9797-1
-- X9.23/X923
-- TBC
-- ZeroByte
-- withCTS (if used with ECB mode)
+<details>
+<summary>支持padding scheme</summary>
+<ul>
+<li>No padding</li>
+<li>PKCS5/7</li>
+<li>ISO10126/ISO10126-2</li>
+<li>ISO7816-4/ISO9797-1</li>
+<li>X9.23/X923</li>
+<li>TBC</li>
+<li>ZeroByte</li>
+<li>withCTS (if used with ECB mode)</li>
+</ul>
+</details>
 
 ![sym](./art/sym.gif)
 
 ### 流式对称加密 (stream cipher)
 - [x] RC4
 - [x] HC128/HC256
-- [x] ChaCha
+- [x] ChaCha/ChaCha20/ChaCha20-Poly1305
 - [x] Salsa20
 - [x] XSalsa20
 - [x] VMPC
 - [x] Grainv1
 - [x] Grain128
-- [x] Zuc128
 - [x] Zuc128
 
 ### 非对称加密 RSA
@@ -176,10 +185,6 @@
 **note:** openssl用公私钥对加解密,生成私钥为pkcs8编码
 
 ![sym](./art/asy.gif)
-
-公钥解密16进制数据
-
-![sym](./art/rsa_pub_decrypt_hexdata.gif)
 
 ### 数字签名校验 
 
@@ -198,7 +203,7 @@
 - [x] 仿射
 - [x] virgenene
 - [x] atbash
-- [x] 摩尔斯密码
+- [x] 摩尔斯密码(morse)
 - [x] qwe键盘加密
 - [x] polybius
 - [x] 培根24/培根26
@@ -209,18 +214,36 @@
 - [x] 栅栏密码 /栅栏密码 w
 - [x] playfair
 - [x] brainfuck/troll/ook
-- [x] 盲文
+- [x] 盲文 (braille)
 - [x] 字母位置
 - [x] 01248(云影)
 - [x] BubbleBabble
+- [x] 元素周期表
+- [x] 当铺密码(PawnShop Cipher) 
+- [x] 曲路密码(CurveCipher)
+- [x] Handy code
+- [x] 博福特密码(Beaufort)
+- [x] Porta 密码
+- [x] Bifid/Trifid/四方密码 (FourSquare Cipher)
+- [x] Gronsfeld密码
+- [x] 格雷码(Gray code)
+- [x] 佛曰
+- [x] 希尔密码
+- [x] 新佛曰/兽曰/熊曰(需联网)
+- [x] rabbit
+- [x] aaencode/jjencode
 
+![ctf](./art/ctf.gif)
 
+### PBE
 
+![pbe](./art/pbe.gif)
 
 ### 其他功能
 
-- [x] 二维码功能
+- [x] 二维码功能/OCR
 - [x] 字符处理
+- [x] 大数运算
 - [ ] 待定
 
 ### 特性
@@ -233,15 +256,16 @@
 - [x] PBE
 - [x] 可配置模块,支持第三方网址
 
-bouncycastle文档 https://www.bouncycastle.org/specifications.html
+bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 ## 下载地址
 
- [github地址](https://github.com/Leon406/ToolsFx/releases) 
+ [GitHub](https://github.com/Leon406/ToolsFx/releases) 
 
  [码云镜像](https://gitee.com/LeonShih/ToolsFx) 
 
 下载加速 https://leon.lanzoui.com/b0d9av2kb 提取码：52pj
+插件下载 https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
 
 
 
@@ -249,20 +273,21 @@ bouncycastle文档 https://www.bouncycastle.org/specifications.html
 
 ## 版本选择
 
-- 有jre环境
+- 有jre环境(文件大)
   - jdk8      选择jdk8的版本
   - jdk11+  选择jdk11的版本 + 同时需要配置javafx环境
 
-- 无jre环境
+- 无jre环境(文件小)
   - 64位 windows系统     x64 (jre11)
   - 32/64位 windows系统  x86 (jre8,不知道就选这个)  
+  
 - beta版 (jar文件)
 
-  需要复制到lib目录,同时删除ToolsFx.jar
+  需要复制到lib目录,同时删除ToolsFx-xxx.jar和 app-xxx.jar
 
 ## 如何运行
 
-- Linux/Mac OX系统双击运行 根目录下 ToolsFx 
+- Linux/Mac OSX系统双击运行 根目录下 ToolsFx 
 - Windows 系统双击运行ToolsFx.bat或者 vbs文件(去除黑窗)
 
 ## 如何配置

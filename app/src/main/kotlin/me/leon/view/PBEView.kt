@@ -8,9 +8,11 @@ import me.leon.CHARSETS
 import me.leon.controller.PBEController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
+import me.leon.ext.crypto.PBE
+import me.leon.ext.fx.*
 import tornadofx.*
 
-class PBEView : View("PBE") {
+class PBEView : Fragment("PBE") {
     private val controller: PBEController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
@@ -22,37 +24,46 @@ class PBEView : View("PBE") {
     private lateinit var tfKeyLength: TextField
     private lateinit var tfSalt: TextField
     private lateinit var tfSaltLength: TextField
+    private lateinit var tgGroup: ToggleGroup
     private var isEncrypt = true
     private lateinit var taOutput: TextArea
     private val inputText: String
         get() = taInput.text
     private val outputText: String
         get() = taOutput.text
+    private val keyLength
+        get() = tfKeyLength.text.toInt()
+    private val saltLength
+        get() = tfSaltLength.text.toInt()
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
-        get() = "PBE Cipher: $cipher   charset: ${selectedCharset.get()}  "
+        get() = "PBE Cipher: $cipher   charset: ${selectedCharset.get()} cost: $timeConsumption ms"
     private lateinit var infoLabel: Label
 
-    private var saltEncode = "raw"
+    private var saltEncode = "hex"
 
-    private val saltByteArray
+    private var saltByteArray
         get() =
-            if (tfSalt.text.isEmpty())
-                controller.getSalt(tfSaltLength.text.toInt()).also { tfSalt.text = it.toHex() }
-            else
-                when (saltEncode) {
-                    "raw" -> tfSalt.text.toByteArray()
-                    "hex" -> tfSalt.text.hex2ByteArray()
-                    "base64" -> tfSalt.text.base64Decode()
-                    else -> byteArrayOf()
+            if (tfSalt.text.isEmpty() && isEncrypt)
+                controller.getSalt(saltLength).also {
+                    tfSalt.text = it.toHex()
+                    tgGroup.selectToggle(
+                        tgGroup.toggles.first { it.cast<RadioButton>().text == "hex" }
+                    )
                 }
+            else tfSalt.text.decodeToByteArray(saltEncode)
+        set(value) {
+            tfSalt.text = value.encodeTo(saltEncode)
+        }
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 128 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                else "not support file larger than 128KB"
             }
     }
 
@@ -61,12 +72,11 @@ class PBEView : View("PBE") {
     private val selectedAlg = SimpleStringProperty(algs.first())
 
     private val cipher
-        get() = selectedAlg.get()
+        get() = "PBEWith${selectedAlg.get()}"
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
+        addClass("group")
         hbox {
             label(messages["input"])
             button(graphic = imageview("/img/import.png")) {
@@ -80,8 +90,7 @@ class PBEView : View("PBE") {
                 onDragEntered = eventHandler
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
@@ -89,33 +98,34 @@ class PBEView : View("PBE") {
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             label("密码:")
-            tfPwd = textfield { promptText = messages["keyHint"] }
+            tfPwd = textfield { promptText = messages["pwdHintNull"] }
 
-            label("key长度:")
+            label("key长度(位):")
             tfKeyLength = textfield("128") { prefWidth = DEFAULT_SPACING_8X }
             label("salt长度:")
-            tfSaltLength = textfield("16") { prefWidth = DEFAULT_SPACING_8X }
+            tfSaltLength = textfield("8") { prefWidth = DEFAULT_SPACING_8X }
             label("iteration:")
-            tfIteration = textfield("1000") { prefWidth = DEFAULT_SPACING_8X }
+            tfIteration = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
             label("salt:")
-            tfSalt = textfield()
+            tfSalt = textfield { promptText = "optional,可空" }
             vbox {
-                togglegroup {
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
-                    radiobutton("hex") { isSelected = true }
-                    radiobutton("base64")
-                    radiobutton("raw")
-                    selectedToggleProperty().addListener { _, _, new ->
-                        saltEncode = new.cast<RadioButton>().text
+                tgGroup =
+                    togglegroup {
+                        spacing = DEFAULT_SPACING
+                        paddingAll = DEFAULT_SPACING
+                        radiobutton("hex") { isSelected = true }
+                        radiobutton("base64")
+                        radiobutton("raw")
+                        selectedToggleProperty().addListener { _, _, new ->
+                            saltEncode = new.cast<RadioButton>().text
+                        }
                     }
-                }
             }
         }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            addClass("left")
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
@@ -129,9 +139,7 @@ class PBEView : View("PBE") {
 
             checkbox(messages["singleLine"], isSingleLine)
             button("generate salt", imageview("/img/run.png")) {
-                action {
-                    controller.getSalt(tfSaltLength.text.toInt()).also { tfSalt.text = it.toHex() }
-                }
+                action { controller.getSalt(saltLength).also { saltByteArray = it } }
             }
             button(messages["run"], imageview("/img/run.png")) {
                 enableWhen(!isProcessing)
@@ -162,32 +170,44 @@ class PBEView : View("PBE") {
 
     private fun doCrypto() {
         runAsync {
-            if (tfPwd.text.isEmpty() || taInput.text.isEmpty()) return@runAsync ""
+            startTime = System.currentTimeMillis()
+            if (taInput.text.isEmpty()) return@runAsync ""
             isProcessing.value = true
-            if (isEncrypt)
-                controller.encrypt(
-                    tfPwd.text,
-                    inputText,
-                    saltByteArray,
-                    cipher,
-                    tfIteration.text.toInt(),
-                    tfKeyLength.text.toInt(),
-                    isSingleLine.get()
-                )
-            else
-                controller.decrypt(
-                    tfPwd.text,
-                    inputText,
-                    saltByteArray,
-                    cipher,
-                    tfIteration.text.toInt(),
-                    tfKeyLength.text.toInt(),
-                    isSingleLine.get()
-                )
+            runCatching {
+                if (isEncrypt)
+                    controller.encrypt(
+                        tfPwd.text,
+                        inputText,
+                        saltByteArray,
+                        cipher,
+                        tfIteration.text.toInt(),
+                        keyLength,
+                        isSingleLine.get()
+                    )
+                else {
+
+                    saltByteArray = inputText.base64Decode().sliceArray(8 until (8 + saltLength))
+                    controller.decrypt(
+                        tfPwd.text,
+                        inputText,
+                        saltLength,
+                        cipher,
+                        tfIteration.text.toInt(),
+                        keyLength,
+                        isSingleLine.get()
+                    )
+                }
+            }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 isProcessing.value = false
-                taOutput.text = it
+                taOutput.text =
+                    it.also {
+                        if (it.startsWith("U2FsdGVk"))
+                            saltByteArray = it.base64Decode().sliceArray(8 until (8 + saltLength))
+                    }
+                timeConsumption = System.currentTimeMillis() - startTime
                 infoLabel.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
             }

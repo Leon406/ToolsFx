@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import me.leon.ext.fileDraggedHandler
+import me.leon.ext.fx.fileDraggedHandler
 import me.leon.toolsfx.plugin.ApiConfig.saveConfig
 import me.leon.toolsfx.plugin.net.TrustManager
 import tornadofx.*
@@ -40,13 +40,13 @@ class SettingsView : View("Setting") {
             alignment = Pos.CENTER_LEFT
             checkbox("p12", isP12)
             tfCerPath =
-                textfield() {
+                textfield {
                     promptText = "file path(drag file here)"
                     onDragEntered = eventHandler
                 }
 
             tfCerPass =
-                textfield() {
+                textfield {
                     enableWhen(isP12)
                     promptText = "pkcs12 password"
                 }

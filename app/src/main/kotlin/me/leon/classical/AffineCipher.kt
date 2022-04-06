@@ -9,9 +9,9 @@ fun String.affineDecrypt(factor: Int, bias: Int) =
     uppercase()
         .map {
             it.takeUnless { it in 'A'..'Z' }
-                ?: 'A' +
+                ?: ('A' +
                     with(((26 - factor) * (it - 'A' - bias)) % 26) {
                         if (this >= 0) this else (26 + this)
-                    }
+                    })
         }
         .joinToString("")

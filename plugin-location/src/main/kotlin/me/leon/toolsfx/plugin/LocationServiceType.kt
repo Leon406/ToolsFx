@@ -1,8 +1,8 @@
 package me.leon.toolsfx.plugin
 
-import me.leon.Digests
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
+import me.leon.hash
 import me.leon.toolsfx.domain.AmapGeo
 import me.leon.toolsfx.domain.BaiduGeo
 import tornadofx.*
@@ -79,7 +79,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
             val queries = "address=${raw}&key=282f521c5c372f233da702769e43bfba&output=json"
             return ("https://restapi.amap.com/v3/geocode/geo?" +
                     "$address&key=282f521c5c372f233da702769e43bfba&output=json" +
-                    "&sig=${Digests.hash("md5",queries+"57b0452167c85d33217472e4e53028ec")}")
+                    "&sig=${(queries + "57b0452167c85d33217472e4e53028ec").hash("md5")}")
                 .also { println(it) }
                 .readFromNet()
                 .also { println(it) }

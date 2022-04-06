@@ -8,10 +8,12 @@ import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.controller.EncodeController
 import me.leon.ext.*
+import me.leon.ext.crypto.*
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class EncodeTransferView : View(messages["encodeTransfer"]) {
+class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
     private val controller: EncodeController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
@@ -20,16 +22,18 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private lateinit var tfCustomDict: TextField
     private var enableDict = SimpleBooleanProperty(true)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info: String
         get() =
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
-                "  ${messages["outputLength"]}: ${outputText.length}"
+                "  ${messages["outputLength"]}: ${outputText.length} cost: $timeConsumption ms"
     private val inputText: String
         get() =
             taInput.text.takeIf {
                 isEncode || srcEncodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
-                ?: taInput.text.replace("\\s".toRegex(), "")
+                ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
 
@@ -42,10 +46,10 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 128 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                else "not support file larger than 128KB"
             }
     }
 
@@ -57,11 +61,14 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
             vbox {
                 label(messages["input"])
                 combobox(selectedSrcCharset, CHARSETS) { cellFormat { text = it } }
+                spacing = DEFAULT_SPACING
+                button(graphic = imageview("/img/openwindow.png")) {
+                    action { find<EncodeTransferView>().openWindow() }
+                }
             }
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
 
             tilepane {
                 vgap = 8.0
@@ -78,7 +85,8 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                     selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
                         srcEncodeType = new.cast<RadioButton>().text.encodeType()
-                        enableDict.value = srcEncodeType.type.contains("base")
+                        enableDict.value =
+                            srcEncodeType.type.contains("base") && srcEncodeType.type != "base100"
                         tfCustomDict.text = srcEncodeType.defaultDict
                     }
                 }
@@ -130,8 +138,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
 
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            alignment = Pos.CENTER_LEFT
-            spacing = DEFAULT_SPACING
+            addClass("left")
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
@@ -165,7 +172,8 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
     }
 
     private fun run() {
-        taOutput.text =
+        runAsync {
+            startTime = System.currentTimeMillis()
             if (isSingleLine.get())
                 inputText.lineAction2String {
                     val decode =
@@ -175,7 +183,7 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                             tfCustomDict.text,
                             selectedSrcCharset.get()
                         )
-                    val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
+                    val encodeString = decode.toString(Charset.forName(selectedSrcCharset.get()))
                     println("transfer $encodeString")
                     controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
                 }
@@ -187,12 +195,18 @@ class EncodeTransferView : View(messages["encodeTransfer"]) {
                         tfCustomDict.text,
                         selectedSrcCharset.get()
                     )
-                val encodeString = String(decode, Charset.forName(selectedSrcCharset.get()))
+                val encodeString = decode.toString(Charset.forName(selectedSrcCharset.get()))
                 println("transfer $encodeString")
-                String(decode, Charsets.UTF_8).takeIf { it.contains("解码错误:") }
+                decode.toString(Charsets.UTF_8).takeIf { it.contains("解码错误:") }
                     ?: controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
             }
-        if (Prefs.autoCopy) outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-        labelInfo.text = info
+        } ui
+            {
+                taOutput.text = it
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+            }
     }
 }

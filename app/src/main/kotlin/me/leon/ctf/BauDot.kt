@@ -1,5 +1,7 @@
 package me.leon.ctf
 
+import me.leon.ext.splitBySpace
+
 val letterDecodeDict =
     mapOf(
         "00000" to "\u0001",
@@ -79,26 +81,24 @@ val figureEncodeMap = figureDecodeDict.entries.associate { it.value to it.key }
 
 fun String.baudot(): String {
     var isLetter = true
-    return toCharArray()
-        .map {
-            if (isLetter)
-                letterEncodeMap[it.toString().uppercase()]
-                    ?: (FIGURE + " " + figureEncodeMap[it.toString()]).also { isLetter = false }
-            else
-                figureEncodeMap[it.toString()]
-                    ?: (LETTER + " " + letterEncodeMap[it.toString().uppercase()]).also {
-                        isLetter = true
-                    }
-        }
-        .joinToString(" ")
+    return toCharArray().joinToString(" ") {
+        if (isLetter)
+            letterEncodeMap[it.toString().uppercase()]
+                ?: (FIGURE + " " + figureEncodeMap[it.toString()]).also { isLetter = false }
+        else
+            figureEncodeMap[it.toString()]
+                ?: (LETTER + " " + letterEncodeMap[it.toString().uppercase()]).also {
+                    isLetter = true
+                }
+    }
 }
 
 fun String.baudotDecode(): String {
     var isLetter = true
-    return split("\\s+".toRegex())
+    return splitBySpace()
+        .filter { it.matches("[01]+".toRegex()) }
         .asSequence()
         .map {
-            print(it)
             if (it == LETTER || it == FIGURE) {
                 isLetter = it == LETTER
                 ""

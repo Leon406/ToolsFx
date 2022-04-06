@@ -5,11 +5,14 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.controller.SignatureController
+import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.ext.crypto.parsePublicKeyFromCerFile
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class SignatureView : View(messages["signVerify"]) {
+class SignatureView : Fragment(messages["signVerify"]) {
     private val controller: SignatureController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
@@ -23,24 +26,25 @@ class SignatureView : View(messages["signVerify"]) {
         get() = taRaw.text
     private val signText: String
         get() = taSigned.text
-    private var keyPairAlg = "RSA"
 
     private val eventHandler = fileDraggedHandler {
         taKey.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (extension in listOf("pk8", "key", "der")) readBytes().base64()
+                else if (extension in listOf("cer", "crt")) parsePublicKeyFromCerFile()
+                else if (length() <= 10 * 1024 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
                 else "not support file larger than 10M"
             }
     }
     private val inputEventHandler = fileDraggedHandler {
-        taKey.text =
+        taRaw.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 128 * 1024)
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                else "not support file larger than 128KB"
             }
     }
 
@@ -83,6 +87,13 @@ class SignatureView : View(messages["signVerify"]) {
                     "RIPEMD128withRSA/X9.31",
                     "RIPEMD160withRSA/X9.31",
                     "WHIRLPOOLwithRSA/X9.31"
+                ),
+            "RSASSA-PSS" to
+                listOf(
+                    "RAWRSASSA-PSS",
+                    "SHA256withRSA/PSS",
+                    "SHAKE128WITHRSAPSS",
+                    "SHAKE256WITHRSAPSS"
                 ),
             "DSA" to
                 listOf(
@@ -130,26 +141,28 @@ class SignatureView : View(messages["signVerify"]) {
     private val selectedKeyPairAlg = SimpleStringProperty(keyPairAlgs.keys.first())
     private val selectedSigAlg = SimpleStringProperty(keyPairAlgs.values.first().first())
     private lateinit var cbSigs: ComboBox<String>
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val info
-        get() = "Signature: $keyPairAlg hash: ${selectedSigAlg.get()} "
-
+        get() =
+            "Signature: ${selectedKeyPairAlg.get()} hash: ${selectedSigAlg.get()} cost: ${timeConsumption}ms"
+    private var inputEncode = "raw"
+    private lateinit var tgInput: ToggleGroup
     private val centerNode = vbox {
-        paddingAll = DEFAULT_SPACING
-        spacing = DEFAULT_SPACING
-        hbox {
-            label(messages["key"])
-            button(graphic = imageview("/img/import.png")) {
-                action { taKey.text = clipboardText() }
-            }
-        }
-        taKey =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-            }
+        addClass("group")
         hbox {
             label(messages["plain"])
+            addClass("left")
+            tgInput =
+                togglegroup {
+                    radiobutton("raw") { isSelected = true }
+                    radiobutton("base64")
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        inputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
+
             button(graphic = imageview("/img/import.png")) {
                 action { taRaw.text = clipboardText() }
             }
@@ -162,7 +175,20 @@ class SignatureView : View(messages["signVerify"]) {
                 prefHeight = DEFAULT_SPACING_16X
             }
         hbox {
-            alignment = Pos.CENTER_LEFT
+            label(messages["key"])
+            button(graphic = imageview("/img/import.png")) {
+                action { taKey.text = clipboardText() }
+            }
+        }
+        taKey =
+            textarea {
+                promptText = messages["inputHintAsy"]
+                isWrapText = true
+                onDragEntered = eventHandler
+            }
+
+        hbox {
+            addClass("left")
             label(messages["publicAlg"])
             combobox(selectedKeyPairAlg, keyPairAlgs.keys.toMutableList()) {
                 cellFormat { text = it }
@@ -177,17 +203,16 @@ class SignatureView : View(messages["signVerify"]) {
                 cbSigs.items = keyPairAlgs[newValue]!!.asObservable()
                 selectedSigAlg.set(keyPairAlgs[newValue]!!.first())
                 cbSigs.isDisable = keyPairAlgs[newValue]!!.size == 1
+                timeConsumption = 0
+                labelInfo.text = info
             }
         }
 
         selectedSigAlg.addListener { _, _, newValue ->
             println("selectedSigAlg __ $newValue")
-            newValue?.run {
-                println("算法 ${selectedKeyPairAlg.get()}")
-                if (key.isNotEmpty() && msg.isNotEmpty()) {
-                    sign()
-                }
-            }
+            timeConsumption = 0
+            labelInfo.text = info
+            newValue?.run { println("算法 ${selectedKeyPairAlg.get()}") }
         }
         tilepane {
             alignment = Pos.CENTER
@@ -222,33 +247,39 @@ class SignatureView : View(messages["signVerify"]) {
 
     private fun sign() =
         runAsync {
+            startTime = System.currentTimeMillis()
             controller.sign(
                 selectedKeyPairAlg.get(),
                 selectedSigAlg.get(),
                 key,
                 msg,
+                inputEncode,
                 isSingleLine.get()
             )
         } ui
             {
                 taSigned.text = it
-                labelInfo.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
             }
 
     private fun verify() =
         runAsync {
+            startTime = System.currentTimeMillis()
             controller.verify(
                 selectedKeyPairAlg.get(),
                 selectedSigAlg.get(),
                 key,
                 msg,
+                inputEncode,
                 signText,
                 isSingleLine.get()
             )
         } ui
             { state ->
-                primaryStage.showToast("验签结果: \n$state")
+                primaryStage.showToast("result: \n$state")
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
             }
 }
