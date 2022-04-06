@@ -20,7 +20,6 @@
 
 ------
 
-
 ## Function
 
 ### Encoding
@@ -42,20 +41,19 @@
 
 ![encode](./art/encode.gif)
 
-
 **String Process(e.g. Split)**
 
 ![encode_split](./art/encode_split.gif)
-
 
 ### Encoding Transfer (not raw data)
 
 - [x] Transfer
 
 ![encode](./art/encode_transfer.gif)
+
 ### Digest(Hash)
 
- support file, big file which is larger than 8Gi
+support file, big file which is larger than 8Gi
 
 - [x] md serial
 - [x] sha1
@@ -92,11 +90,11 @@
 - [x] SEED-CMAC
 - [x] Shacal-2CMAC
 - [x] SM4-CMAC
-- [x] Three-fish-256CMAC  / Three-fish-512CMAC / Three-fish-1024CMAC  
+- [x] Three-fish-256CMAC / Three-fish-512CMAC / Three-fish-1024CMAC
 
 #### GMAC
 
-#### POLY1305 
+#### POLY1305
 
 - [x] POLY1305
 - [x] POLY1305-AES
@@ -155,6 +153,7 @@
 ![sym](./art/sym.gif)
 
 ### Symmetric Crypto (stream cipher)
+
 - [x] RC4
 - [x] HC128/HC256
 - [x] ChaCha/ChaCha20/ChaCha20-Poly1305
@@ -171,13 +170,13 @@
 - [x]  support 512/1024/2048/3072/4096 bit
 - [x]  support plain text length longer than key size
 - [x]  support public key encrypt and private key encrypt
-- [x]  support openssl pkcs1/pkcs8  private key format
+- [x]  support openssl pkcs1/pkcs8 private key format
 - [x]  support certification cer file
 - [x]  support pem and pk8 format :new:
 
 ![sym](./art/asy.gif)
 
-### Digital Signature 
+### Digital Signature
 
 - [x] RSA serial
 - [x] DSA
@@ -233,54 +232,51 @@
 
 - [x] Qrcode/OCR
 - [x] String Process
+- [x] Big Integer Calculator
 - [ ] TBD
 
 ### Features
 
 - [x] support drag file
 - [x] Symmetric Crypto support base64/hex encoded key, iv
-- [x] Digest and Symmetric  Crypto support multi files
+- [x] Digest and Symmetric Crypto support multi files
 - [x] i18n
 - [x] CTF related
 - [x] PBE
 - [x] module configurable,support online url
 
-[bouncy castle document](https://www.bouncycastle.org/specifications.html) 
+[bouncy castle document](https://www.bouncycastle.org/specifications.html)
 
 ## Downloads
 
- [GitHub release](https://github.com/Leon406/ToolsFx/releases) 
+[GitHub release](https://github.com/Leon406/ToolsFx/releases)
 
- [gitte mirror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx) 
+[gitte mirror(for Chinese user)](https://gitee.com/LeonShih/ToolsFx)
 
-download boost https://leon.lanzoui.com/b0d9av2kb code：52pj
-plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
-
-
+download boost https://leon.lanzoui.com/b0d9av2kb code：52pj plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
 
 ### Issues, PRs are welcome!!!
-
-
 
 ## Version Choose
 
 - with jre environment
-  - jdk8      choose suffix with jdk8
-  - jdk11+   choose suffix with jdk11 & also need to config javafx environment
+    - jdk8 choose suffix with jdk8
+    - jdk11+ choose suffix with jdk11 & also need to config javafx environment
 - w/o jre environment(Windows user only)
-  - 64bit Windows      x64 (jre11)
-  - 32/64bit Windows x86 (jre8,have no idea, choose this)  
+    - 64bit Windows x64 (jre11)
+    - 32/64bit Windows x86 (jre8,have no idea, choose this)
 - beta (jar file)
   copy jar file to lib directory and delete ToolsFx-xxx.jar or app-xx.jar
-  
 
 ## How to Run
 
-- Linux/macOS double-click ToolsFx  in  root directory 
+- Linux/macOS double-click ToolsFx in root directory
 - Windows double-click ToolsFx.bat or vbs file(remove black command window)
 
 ## How to Config
-When Application is running ,it will generate ToolsFx.properties automatically , just modify the value. Below are the details.
+
+When Application is running ,it will generate ToolsFx.properties automatically , just modify the value. Below are the
+details.
 
 | key                     | value                                             |
 | ----------------------- | ------------------------------------------------- |
@@ -293,11 +289,9 @@ When Application is running ,it will generate ToolsFx.properties automatically ,
 | isEnableInternalWebview | Internal Browser switch,default is false          |
 | extUrls                 | Internal Browser favourite urls, spit with comma  |
 
-
-
 ## [PLUGIN](README-plugin.md)
 
-- ApiPost   Network Debug Tools
+- ApiPost Network Debug Tools
 
 ## CHANGE LOG
 
@@ -305,7 +299,7 @@ see [changelog.md](changelog.md)
 
 ## CREDIT
 
-[bouncy castle](https://github.com/bcgit/bc-java) 
+[bouncy castle](https://github.com/bcgit/bc-java)
 
 [tornadofx](https://github.com/edvin/tornadofx)
 

@@ -169,4 +169,29 @@ enum class Calculator(val algo: String) : ICalculator {
             return (ints[0].phi(ints[1])).toString()
         }
     },
+    PRIME_NEXT("next prime?") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].nextProbablePrime().toString()
+        }
+    },
+    FACTORIAL("X!") {
+        override fun calculate(ints: List<BigInteger>): String {
+            val intNum = ints[0].toInt()
+            if (intNum <= 1 || intNum > 120000) error("range: 1<=X<=120000")
+            return (1..intNum)
+                .fold(BigInteger.ONE) { acc, i -> acc.multiply(i.toBigInteger()) }
+                .toString()
+        }
+    },
+    FACTORIAL_PRIME("X#") {
+        override fun calculate(ints: List<BigInteger>): String {
+            val intNum = ints[0].toInt()
+            if (intNum <= 1 || intNum > 120000) error("range: 1<=X<=120000")
+            return (1..intNum)
+                .map { it.toBigInteger() }
+                .filter { it.isProbablePrime(100) }
+                .fold(BigInteger.ONE) { acc, i -> acc.multiply(i) }
+                .toString()
+        }
+    },
 }

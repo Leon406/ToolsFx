@@ -7,12 +7,12 @@ import tornadofx.*
 
 class CalculatorController : Controller() {
     fun calculate(
-        alog: String,
+        algo: String,
         radix: Int,
         params: List<String>,
     ): String =
         catch({ "error $it" }) {
-            alog.calculatorType()!!.calculate(
+            algo.calculatorType()!!.calculate(
                 params.map { if (it.isNotEmpty()) it.toBigInteger(radix) else BigInteger.ZERO }
             )
         }

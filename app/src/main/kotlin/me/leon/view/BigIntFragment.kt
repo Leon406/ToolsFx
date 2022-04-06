@@ -255,10 +255,7 @@ class BigIntFragment : Fragment("BigInt") {
                     runCatching {
                             it.lineSplit().joinToString("\n") {
                                 println("$it ${selectedRadix.get().toInt()}")
-
-                                it.toBigInteger().toString(selectedRadix.get().toInt()).also {
-                                    println(it)
-                                }
+                                it.toBigInteger().toString(selectedRadix.get().toInt())
                             }
                         }
                         .getOrDefault(it)
