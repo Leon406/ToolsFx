@@ -3,13 +3,15 @@ package me.leon.ext.crypto
 import java.io.*
 import java.security.*
 import java.security.cert.CertificateFactory
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.security.spec.PKCS8EncodedKeySpec
-import java.security.spec.X509EncodedKeySpec
+import java.security.interfaces.*
+import java.security.spec.*
 import javax.crypto.Cipher
 import me.leon.encode.base.*
 import me.leon.ext.toFile
+import org.bouncycastle.asn1.ASN1Primitive
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier
 
 fun String.removePemInfo() =
     replace("---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
@@ -129,3 +131,49 @@ fun ByteArray.privateEncrypt(key: String, alg: String, reserved: Int = 11): Byte
 fun PublicKey.bitLength() = (this as? RSAPublicKey)?.modulus?.bitLength() ?: 1024
 
 fun PrivateKey.bitLength() = (this as? RSAPrivateKey)?.modulus?.bitLength() ?: 1024
+
+/** 生成密钥对 private key pkcs8 */
+fun genKeys(alg: String, keySize: Int) =
+    KeyPairGenerator.getInstance(alg).run {
+        initialize(keySize)
+        val keyPair = generateKeyPair()
+        val publicKey = keyPair.public
+        val privateKey = keyPair.private
+        arrayOf(publicKey.encoded.base64(), privateKey.encoded.base64())
+    }
+
+fun checkKeyPair(pub: String, pri: String, alg: String = "RSA"): Boolean {
+    val testData = byteArrayOf(67)
+    return testData.rsaEncrypt(pub.toPublicKey(alg), alg).run {
+        rsaDecrypt(pri.toPrivateKey(alg), alg).contentEquals(testData)
+    }
+}
+
+fun pkcs8ToPkcs1(pkcs8: String) =
+    PrivateKeyInfo.getInstance(pkcs8.base64Decode())
+        .parsePrivateKey()
+        .toASN1Primitive()
+        .encoded
+        .base64()
+
+fun pkcs1ToPkcs8(pkcs1: String) =
+    PrivateKeyInfo(
+            AlgorithmIdentifier(PKCSObjectIdentifiers.rsaEncryption),
+            ASN1Primitive.fromByteArray(pkcs1.base64Decode())
+        )
+        .encoded
+        .run {
+            PKCS8EncodedKeySpec(this).run {
+                KeyFactory.getInstance("RSA").generatePrivate(this).encoded.base64()
+            }
+        }
+
+fun String.privateKeyDerivedPublicKey(alg: String = "RSA"): String =
+    PKCS8EncodedKeySpec(removePemInfo().base64Decode()).run {
+        with(KeyFactory.getInstance(alg).generatePrivate(this) as RSAPrivateCrtKey) {
+            KeyFactory.getInstance(alg)
+                .generatePublic(RSAPublicKeySpec(modulus, publicExponent))
+                .encoded
+                .base64()
+        }
+    }

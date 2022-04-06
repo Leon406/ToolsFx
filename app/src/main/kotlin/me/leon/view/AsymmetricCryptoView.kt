@@ -1,12 +1,11 @@
 package me.leon.view
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.*
 import javafx.scene.control.*
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.*
-import me.leon.ext.crypto.parsePublicKeyFromCerFile
+import me.leon.ext.crypto.*
 import me.leon.ext.fx.*
 import tornadofx.*
 
@@ -15,6 +14,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
+    private val isProcessing = SimpleBooleanProperty(false)
     lateinit var taInput: TextArea
     lateinit var taKey: TextArea
     lateinit var taOutput: TextArea
@@ -54,8 +54,8 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private var outputEncode = "base64"
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
-    private val bitsLists = mutableListOf("512", "1024", "2048", "3072", "4096")
-    private val selectedBits = SimpleStringProperty("1024")
+    private val bitsLists = mutableListOf(512, 1024, 2048, 3072, 4096)
+    private val selectedBits = SimpleIntegerProperty(1024)
     private val isPrivateKey
         get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
@@ -79,12 +79,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         runAsync {
             runCatching {
                     if (isPrivateKey) {
-                        controller.lengthFromPri(keyText).toString()
+                        controller.lengthFromPri(keyText)
                     } else {
-                        controller.lengthFromPub(keyText).toString()
+                        controller.lengthFromPub(keyText)
                     }
                 }
-                .getOrDefault("1024")
+                .getOrDefault(1024)
         } ui { selectedBits.set(it) }
     }
 
@@ -145,7 +145,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         hbox {
             addClass("left")
             label(messages["bits"])
-            combobox(selectedBits, bitsLists) { cellFormat { text = it } }
+            combobox(selectedBits, bitsLists) { cellFormat { text = it.toString() } }
             togglegroup {
                 spacing = DEFAULT_SPACING
                 radiobutton(messages["encrypt"]) { isSelected = true }
@@ -163,7 +163,32 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
 
             button(messages["run"], imageview("/img/run.png")) { action { doCrypto() } }
             button(messages["genKeypair"]) {
-                action { "https://miniu.alipay.com/keytool/create".openInBrowser() }
+                enableWhen(!isProcessing)
+                action {
+                    isProcessing.value = true
+                    runAsync { genKeys(alg, selectedBits.value.toInt()) } ui
+                        {
+                            isProcessing.value = false
+                            if (isPrivateKey) {
+                                taInput.text = it[0]
+                                taKey.text = it[1]
+                            } else {
+                                taInput.text = it[1]
+                                taKey.text = it[0]
+                            }
+                        }
+                }
+            }
+            button(messages["deriveKey"]) {
+                enableWhen(!isProcessing)
+                action {
+                    isProcessing.value = true
+                    runAsync { catch({ it }) { taKey.text.privateKeyDerivedPublicKey(alg) } } ui
+                        {
+                            isProcessing.value = false
+                            taOutput.text = it
+                        }
+                }
             }
         }
         hbox {
@@ -208,6 +233,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         }
 
         runAsync {
+            isProcessing.value = true
             startTime = System.currentTimeMillis()
             if (isEncrypt)
                 if (privateKeyEncrypt.get())
@@ -248,6 +274,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 )
         } ui
             {
+                isProcessing.value = false
                 outputText = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
