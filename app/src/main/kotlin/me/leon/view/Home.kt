@@ -20,7 +20,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class Home : View("${messages["appName"]} v.$VERSION build $BUILD_DATE") {
+class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
     private var views: MutableList<KClass<out Fragment>> = mutableListOf()
 
     init {

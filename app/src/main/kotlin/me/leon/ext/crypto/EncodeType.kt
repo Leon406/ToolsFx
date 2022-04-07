@@ -88,12 +88,12 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.toBinaryString()
     },
-    Base64Safe("urlBase64", BASE64_URL_DICT) {
+    Base64Url("base64Url", BASE64_URL_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.safeBase64Decode(dict)
+            encoded.base64UrlDecode(dict)
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            bytes.safeBase64(dict)
+            bytes.base64Url(dict)
     },
     Base16("base16", BASE16_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =

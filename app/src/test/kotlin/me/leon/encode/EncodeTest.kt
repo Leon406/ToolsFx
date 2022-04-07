@@ -64,9 +64,9 @@ class EncodeTest {
         assertEquals(urlEncode, controller.encode2String(raw, EncodeType.UrlEncode))
         assertEquals(raw, controller.decode2String(urlEncode, EncodeType.UrlEncode))
 
-        val urlBase64 = "5byA5Y-R5bel5YW36ZuG5ZCIIGJ5IGxlb240MDZANTJwb2ppZS5jbg=="
-        assertEquals(urlBase64, controller.encode2String(raw, EncodeType.Base64Safe))
-        assertEquals(raw, controller.decode2String(urlBase64, EncodeType.Base64Safe))
+        val urlBase64 = "5byA5Y-R5bel5YW36ZuG5ZCIIGJ5IGxlb240MDZANTJwb2ppZS5jbg"
+        assertEquals(urlBase64, controller.encode2String(raw, EncodeType.Base64Url))
+        assertEquals(raw, controller.decode2String(urlBase64, EncodeType.Base64Url))
 
         val base58 = "CR58UvatBfMNr917q5LwvMbAtrpuA5s3iCQe5eDivFqEz8LN1Ytu6aH"
         assertEquals(base58, controller.encode2String(raw, EncodeType.Base58))
