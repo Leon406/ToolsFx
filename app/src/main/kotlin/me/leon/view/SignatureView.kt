@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import me.leon.Styles
 import me.leon.controller.SignatureController
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -149,10 +150,10 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private var inputEncode = "raw"
     private lateinit var tgInput: ToggleGroup
     private val centerNode = vbox {
-        addClass("group")
+        addClass(Styles.group)
         hbox {
             label(messages["plain"])
-            addClass("left")
+            addClass(Styles.left)
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -188,7 +189,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
             }
 
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["publicAlg"])
             combobox(selectedKeyPairAlg, keyPairAlgs.keys.toMutableList()) {
                 cellFormat { text = it }

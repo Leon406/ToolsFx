@@ -10,11 +10,12 @@ import tornadofx.*
 import tornadofx.FX.Companion.messages
 
 class UpdateFragment : Fragment(messages["latestVer"]) {
+    private val releaseInfo: ReleaseInfo by params
     override val root = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING_2X
         alignment = Pos.CENTER
-        text(ToolsApp.releaseInfo?.info) { font = Font.font(14.0) }
+        text(releaseInfo.info) { font = Font.font(14.0) }
         hbox {
             prefWidth = DEFAULT_SPACING_40X
             prefHeight = DEFAULT_SPACING_20X

@@ -14,6 +14,7 @@ import kotlin.collections.sortedDescending
 import kotlin.collections.toList
 import kotlin.system.measureTimeMillis
 import me.leon.SimpleMsgEvent
+import me.leon.Styles
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
@@ -106,7 +107,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private val centerNode = vbox {
-        addClass("group")
+        addClass(Styles.group)
         hbox {
             label(messages["input"])
             spacing = DEFAULT_SPACING
@@ -223,7 +224,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             label(messages["replace"])
@@ -233,7 +234,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             button(messages["run"], imageview("/img/run.png")) { action { doReplace() } }
         }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             label(messages["split"])
@@ -244,7 +245,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         }
 
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             label(messages["extract"])

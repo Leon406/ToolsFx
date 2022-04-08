@@ -40,7 +40,6 @@ class CompressView : PluginFragment(messages["compression"]) {
     private var inputEncode = "raw"
     private var outputEncode = "base64"
 
-
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
@@ -187,11 +186,11 @@ class CompressView : PluginFragment(messages["compression"]) {
                     isSingleLine.get(),
                 )
         } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text = it
-                    infoLabel.text = info
-                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-                }
+            {
+                isProcessing.value = false
+                taOutput.text = it
+                infoLabel.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
     }
 }

@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
+import me.leon.Styles
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import me.leon.ext.crypto.*
@@ -68,7 +69,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             }
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            addClass("left")
+            addClass(Styles.left)
 
             tilepane {
                 vgap = 8.0
@@ -138,7 +139,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
 
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
-            addClass("left")
+            addClass(Styles.left)
             tilepane {
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT

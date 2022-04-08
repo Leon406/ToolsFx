@@ -2,12 +2,12 @@ package me.leon.classical
 
 import me.leon.ext.*
 
-const val ADFGX_ENCODEMAP = "ADFGX"
+const val ADFGX_ENCODE_MAP = "ADFGX"
 
 fun String.adfgx(
     table: String,
     keyword: String,
-    encodeMap: String = ADFGX_ENCODEMAP,
+    encodeMap: String = ADFGX_ENCODE_MAP,
     replacePair: Pair<String, String> = "J" to "I"
 ): String {
     val key = keyword.distinct()
@@ -29,7 +29,7 @@ fun String.adfgx(
 fun String.adfgxDecrypt(
     table: String,
     keyword: String,
-    encodeMap: String = ADFGX_ENCODEMAP
+    encodeMap: String = ADFGX_ENCODE_MAP
 ): String {
     val key = keyword.distinct()
     val sortedKey = key.sorted()

@@ -6,6 +6,8 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
+import me.leon.Styles
+import me.leon.component.KeyIvInputView
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.*
 import me.leon.ext.fx.*
@@ -16,10 +18,9 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private val controller: SymmetricCryptoController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isFile = SimpleBooleanProperty(false)
+    private val isEnableIv = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
-    private lateinit var taKey: TextField
-    private lateinit var taIv: TextField
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
     private var isEncrypt = true
@@ -34,16 +35,9 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
         get() =
             "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} cost: $timeConsumption ms"
     private lateinit var infoLabel: Label
-    private val keyByteArray
-        get() = taKey.text.decodeToByteArray(keyEncode)
-
-    private var keyEncode = "raw"
-    private var ivEncode = "raw"
+    private val keyIvInputView = KeyIvInputView(isEnableIv)
     private var inputEncode = "raw"
     private var outputEncode = "base64"
-
-    private val ivByteArray
-        get() = taIv.text.decodeToByteArray(ivEncode)
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -81,10 +75,10 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
     private val isSingleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {
-        addClass("group")
+        addClass(Styles.group)
         hbox {
             label(messages["input"])
-            addClass("left")
+            addClass(Styles.left)
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -106,46 +100,17 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                 onDragEntered = eventHandler
             }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
+            selectedAlg.addListener { _, _, newValue -> isEnableIv.value = newValue != "RC4" }
 
             label("charset:")
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
+        add(keyIvInputView)
         hbox {
-            addClass("left")
-            label("key:")
-            taKey = textfield { promptText = messages["keyHint"] }
-            vbox {
-                togglegroup {
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("hex")
-                    radiobutton("base64")
-                    selectedToggleProperty().addListener { _, _, new ->
-                        keyEncode = new.cast<RadioButton>().text
-                    }
-                }
-            }
-            label("iv:")
-            taIv = textfield { promptText = messages["ivHint"] }
-            vbox {
-                togglegroup {
-                    spacing = DEFAULT_SPACING
-                    paddingAll = DEFAULT_SPACING
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("hex")
-                    radiobutton("base64")
-                    selectedToggleProperty().addListener { _, _, new ->
-                        ivEncode = new.cast<RadioButton>().text
-                    }
-                }
-            }
-        }
-        hbox {
-            addClass("center")
+            addClass(Styles.center)
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER
@@ -166,7 +131,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             }
         }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["output"])
             tgOutput =
                 togglegroup {
@@ -207,13 +172,18 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             if (isEncrypt)
                 if (isFile.get())
                     inputText.lineAction2String {
-                        controller.encryptByFile(keyByteArray, it, ivByteArray, cipher)
+                        controller.encryptByFile(
+                            keyIvInputView.keyByteArray,
+                            it,
+                            keyIvInputView.ivByteArray,
+                            cipher
+                        )
                     }
                 else
                     controller.encrypt(
-                        keyByteArray,
+                        keyIvInputView.keyByteArray,
                         inputText,
-                        ivByteArray,
+                        keyIvInputView.ivByteArray,
                         cipher,
                         selectedCharset.get(),
                         isSingleLine.get(),
@@ -222,13 +192,18 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                     )
             else if (isFile.get())
                 inputText.lineAction2String {
-                    controller.decryptByFile(keyByteArray, it, ivByteArray, cipher)
+                    controller.decryptByFile(
+                        keyIvInputView.keyByteArray,
+                        it,
+                        keyIvInputView.ivByteArray,
+                        cipher
+                    )
                 }
             else
                 controller.decrypt(
-                    keyByteArray,
+                    keyIvInputView.keyByteArray,
                     inputText,
-                    ivByteArray,
+                    keyIvInputView.ivByteArray,
                     cipher,
                     selectedCharset.get(),
                     isSingleLine.get(),

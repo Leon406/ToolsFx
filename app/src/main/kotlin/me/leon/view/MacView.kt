@@ -4,6 +4,8 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import me.leon.*
+import me.leon.component.KeyIvInputView
 import me.leon.controller.MacController
 import me.leon.ext.*
 import me.leon.ext.crypto.MACs.algorithm
@@ -17,8 +19,6 @@ class MacView : Fragment("MAC") {
     private val enableBits = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
-    private lateinit var tfKey: TextField
-    private lateinit var tfIv: TextField
     private lateinit var labelInfo: Label
     private lateinit var taOutput: TextArea
     private var timeConsumption = 0L
@@ -30,6 +30,8 @@ class MacView : Fragment("MAC") {
         set(value) {
             taOutput.text = value
         }
+    private val keyIvInputView = KeyIvInputView(enableIv)
+
     private var method = "HmacMD5"
 
     private val regAlgReplace =
@@ -49,23 +51,16 @@ class MacView : Fragment("MAC") {
     private lateinit var cbBits: ComboBox<String>
     private val info
         get() = "MAC: $method cost: $timeConsumption ms"
-    private var keyEncode = "raw"
-    private var ivEncode = "raw"
     private var inputEncode = "raw"
     private var outputEncode = "hex"
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
-    private val keyByteArray
-        get() = tfKey.text.decodeToByteArray(keyEncode)
-
-    private val ivByteArray
-        get() = tfIv.text.decodeToByteArray(keyEncode)
 
     private val centerNode = vbox {
-        addClass("group")
+        addClass(Styles.group)
         hbox {
             label(messages["input"])
-            addClass("left")
+            addClass(Styles.left)
             tgInput =
                 togglegroup {
                     radiobutton("raw") { isSelected = true }
@@ -87,7 +82,7 @@ class MacView : Fragment("MAC") {
                 onDragEntered = eventHandler
             }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["alg"])
             combobox(selectedAlgItem, algorithm.keys.toMutableList())
             label(messages["bits"]) { paddingAll = DEFAULT_SPACING }
@@ -97,40 +92,7 @@ class MacView : Fragment("MAC") {
                     enableWhen(enableBits)
                 }
         }
-        hbox {
-            addClass("left")
-            label("key:")
-            tfKey = textfield { promptText = messages["keyHint"] }
-            vbox {
-                togglegroup {
-                    addClass("group")
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("hex")
-                    radiobutton("base64")
-                    selectedToggleProperty().addListener { _, _, new ->
-                        keyEncode = new.cast<RadioButton>().text
-                    }
-                }
-            }
-            label("iv:") { visibleWhen(enableIv) }
-            tfIv =
-                textfield {
-                    promptText = messages["ivHint"]
-                    visibleWhen(enableIv)
-                }
-            vbox {
-                visibleWhen(enableIv)
-                togglegroup {
-                    addClass("group")
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("hex")
-                    radiobutton("base64")
-                    selectedToggleProperty().addListener { _, _, new ->
-                        ivEncode = new.cast<RadioButton>().text
-                    }
-                }
-            }
-        }
+        add(keyIvInputView)
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
                 cbBits.items = algorithm[newValue]!!.asObservable()
@@ -179,7 +141,7 @@ class MacView : Fragment("MAC") {
 
         hbox {
             label(messages["output"])
-            addClass("left")
+            addClass(Styles.left)
             tgOutput =
                 togglegroup {
                     radiobutton("hex") { isSelected = true }
@@ -208,8 +170,8 @@ class MacView : Fragment("MAC") {
             if (method.contains("POLY1305|-GMAC|ZUC".toRegex()))
                 controller.macWithIv(
                     inputText,
-                    keyByteArray,
-                    ivByteArray,
+                    keyIvInputView.keyByteArray,
+                    keyIvInputView.ivByteArray,
                     method,
                     inputEncode,
                     outputEncode,
@@ -218,7 +180,7 @@ class MacView : Fragment("MAC") {
             else
                 controller.mac(
                     inputText,
-                    keyByteArray,
+                    keyIvInputView.keyByteArray,
                     method,
                     inputEncode,
                     outputEncode,

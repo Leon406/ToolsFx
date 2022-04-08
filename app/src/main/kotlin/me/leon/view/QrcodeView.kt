@@ -18,6 +18,7 @@ import javafx.scene.text.Text
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import kotlin.math.abs
+import me.leon.Styles
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
@@ -132,7 +133,7 @@ class QrcodeView : Fragment("Qrcode") {
 
         hbox {
             spacing = DEFAULT_SPACING_2X
-            addClass("left")
+            addClass(Styles.left)
 
             combobox(selectedErrLv, errorLvs)
             button(messages["genQrcode"]) {

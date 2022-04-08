@@ -61,11 +61,11 @@ class BigIntFragment : Fragment("BigInt") {
 
     private fun centerLayout(): VBox {
         return vbox {
-            addClass("group")
+            addClass(Styles.group)
             inputLayout(this)
             label("Function:")
             hbox {
-                addClass("group")
+                addClass(Styles.group)
                 tilepane {
                     vgap = 8.0
                     alignment = Pos.TOP_LEFT
@@ -90,7 +90,7 @@ class BigIntFragment : Fragment("BigInt") {
                 }
             }
             hbox {
-                addClass("group", "center")
+                addClass(Styles.group, Styles.center)
                 label("radix:")
                 combobox(selectedRadix, radix) { cellFormat { text = it } }
                 button(messages["run"], imageview("/img/run.png")) {
@@ -104,7 +104,7 @@ class BigIntFragment : Fragment("BigInt") {
 
     private fun outputLayout(vBox: VBox) {
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["output"])
             button("X", graphic = imageview("/img/up.png")) {
                 action {

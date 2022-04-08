@@ -4,6 +4,7 @@ import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.control.*
+import me.leon.Styles
 import me.leon.controller.DigestController
 import me.leon.ext.*
 import me.leon.ext.crypto.passwordHashingTypes
@@ -108,7 +109,7 @@ class DigestView : Fragment(messages["hash"]) {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["input"])
             tgInput =
                 togglegroup {
@@ -131,7 +132,7 @@ class DigestView : Fragment(messages["hash"]) {
                 onDragEntered = eventHandler
             }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["alg"])
             combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
             label(messages["bits"])
@@ -173,7 +174,7 @@ class DigestView : Fragment(messages["hash"]) {
             }
         }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             paddingLeft = DEFAULT_SPACING
             checkbox(messages["fileMode"], isFileMode) { enableWhen(isEnableFileMode) }
             checkbox(messages["singleLine"], isSingleLine)

@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.CHARSETS
+import me.leon.Styles
 import me.leon.controller.PBEController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
@@ -76,7 +77,7 @@ class PBEView : Fragment("PBE") {
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private val centerNode = vbox {
-        addClass("group")
+        addClass(Styles.group)
         hbox {
             label(messages["input"])
             button(graphic = imageview("/img/import.png")) {
@@ -90,7 +91,7 @@ class PBEView : Fragment("PBE") {
                 onDragEntered = eventHandler
             }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
 
@@ -98,7 +99,7 @@ class PBEView : Fragment("PBE") {
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
         }
         hbox {
-            addClass("left")
+            addClass(Styles.left)
             label("密码:")
             tfPwd = textfield { promptText = messages["pwdHintNull"] }
 
@@ -111,10 +112,9 @@ class PBEView : Fragment("PBE") {
             label("salt:")
             tfSalt = textfield { promptText = "optional,可空" }
             vbox {
+                addClass(Styles.group)
                 tgGroup =
                     togglegroup {
-                        spacing = DEFAULT_SPACING
-                        paddingAll = DEFAULT_SPACING
                         radiobutton("hex") { isSelected = true }
                         radiobutton("base64")
                         radiobutton("raw")
@@ -125,7 +125,7 @@ class PBEView : Fragment("PBE") {
             }
         }
         hbox {
-            addClass("left")
+            addClass(Styles.center)
             togglegroup {
                 spacing = DEFAULT_SPACING
                 alignment = Pos.BASELINE_CENTER

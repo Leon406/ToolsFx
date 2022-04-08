@@ -2,26 +2,25 @@ package me.leon.view
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.concurrent.Worker
-import javafx.geometry.Pos
 import javafx.scene.control.TextField
 import javafx.scene.web.WebView
+import me.leon.Styles
 import me.leon.ToolsApp
-import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_40X
 import tornadofx.*
 
 class OnlineWebView : Fragment("Browser") {
-    private lateinit var web: WebView
-    private lateinit var tfUrl: TextField
+    private var web: WebView by singleAssign()
+    private var tfUrl: TextField by singleAssign()
+    private val selectedUrl = SimpleStringProperty(ToolsApp.extUrls.first())
     private val fontJS by lazy {
         javaClass.getResourceAsStream("/js/font.js")?.readBytes()?.decodeToString()
     }
 
-    private val selectedUrl = SimpleStringProperty(ToolsApp.extUrls.first())
     override val root = borderpane {
         top =
             hbox {
-                addClass("group", "left")
+                addClass(Styles.group, Styles.left)
                 button(graphic = imageview("img/back.png")) {
                     action {
                         web.engine.history.run {
@@ -80,10 +79,7 @@ class OnlineWebView : Fragment("Browser") {
 
         bottom =
             hbox {
-                paddingAll = DEFAULT_SPACING
-                spacing = DEFAULT_SPACING
-                alignment = Pos.CENTER_LEFT
-
+                addClass(Styles.group, Styles.left)
                 val tf =
                     textfield("document.body.style.fontFamily=\"SimSun\"") {
                         prefWidth = DEFAULT_SPACING_40X

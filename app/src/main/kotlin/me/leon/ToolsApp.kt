@@ -28,7 +28,6 @@ class ToolsApp : App(Home::class, Styles::class) {
     }
 
     companion object {
-        var releaseInfo: ReleaseInfo? = null
         val properties: Properties = Properties()
         val isEnableClassical: Boolean
             get() = properties["isEnableClassical"].toString().toBoolean()

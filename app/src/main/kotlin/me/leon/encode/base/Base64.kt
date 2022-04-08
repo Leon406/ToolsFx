@@ -45,7 +45,8 @@ fun String.base64Decode2String(dict: String = BASE64_DICT) = String(base64Decode
 /** 标准的Base64并不适合直接放在URL里传输，因为URL编码器会把标准Base64中的“/”和“+”字符变为形如“%XX”的形式， */
 fun String.base64Url(dict: String = BASE64_URL_DICT) = toByteArray().base64Url(dict)
 
-fun ByteArray.base64Url(dict: String = BASE64_URL_DICT) = base64(dict.ifEmpty { BASE64_URL_DICT },false)
+fun ByteArray.base64Url(dict: String = BASE64_URL_DICT) =
+    base64(dict.ifEmpty { BASE64_URL_DICT }, false)
 
 fun String.base64UrlDecode(dict: String = BASE64_URL_DICT) =
     base64Decode(dict.ifEmpty { BASE64_URL_DICT })
