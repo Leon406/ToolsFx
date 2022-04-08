@@ -82,8 +82,6 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                             if (it.value == EncodeType.Base64) isSelected = true
                         }
                     }
-
-                    selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
                         srcEncodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value =

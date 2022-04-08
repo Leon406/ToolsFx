@@ -100,12 +100,12 @@ class PBEView : Fragment("PBE") {
         }
         hbox {
             addClass(Styles.left)
-            label("密码:")
+            label(messages["pwd"])
             tfPwd = textfield { promptText = messages["pwdHintNull"] }
 
-            label("key长度(位):")
+            label(messages["keyLen"])
             tfKeyLength = textfield("128") { prefWidth = DEFAULT_SPACING_8X }
-            label("salt长度:")
+            label(messages["saltLen"])
             tfSaltLength = textfield("8") { prefWidth = DEFAULT_SPACING_8X }
             label("iteration:")
             tfIteration = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
