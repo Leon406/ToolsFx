@@ -19,7 +19,7 @@ fun String.removePemInfo() =
 fun getPropPublicKey(key: String): ByteArray =
     if (key.contains("-----BEGIN CERTIFICATE-----")) {
         val byteArrayInputStream = ByteArrayInputStream(key.toByteArray())
-        CertificateFactory.getInstance("X.509")
+        CertificateFactory.getInstance("X.509", "BC")
             .generateCertificate(byteArrayInputStream)
             .publicKey
             .encoded
@@ -33,7 +33,11 @@ fun parsePublicKeyFromCerFile(file: String): String {
 
 fun File.parsePublicKeyFromCerFile(): String {
     return inputStream().use {
-        CertificateFactory.getInstance("X.509").generateCertificate(it).publicKey.encoded.base64()
+        CertificateFactory.getInstance("X.509", "BC")
+            .generateCertificate(it)
+            .publicKey
+            .encoded
+            .base64()
     }
 }
 

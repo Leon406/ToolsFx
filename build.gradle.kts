@@ -32,7 +32,7 @@ val hook = File("${rootProject.projectDir}/.git/hooks/pre-commit")
 hook.writeBytes(
     """#!/bin/bash
 echo "run code format"
-./gradlew spotlessJCh spotlessKCh
+./gradlew spotlessCheck
 echo "run code smell check"
 ./gradlew detekt
 """.toByteArray()

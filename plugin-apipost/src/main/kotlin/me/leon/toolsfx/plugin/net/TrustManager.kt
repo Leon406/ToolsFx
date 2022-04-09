@@ -9,7 +9,8 @@ import me.leon.ext.toFile
 object TrustManager {
     fun parseFromCertification(path: String) {
         val certificate =
-            CertificateFactory.getInstance("X.509").generateCertificate(path.toFile().inputStream())
+            CertificateFactory.getInstance("X.509", "BC")
+                .generateCertificate(path.toFile().inputStream())
         println(certificate)
         val ks =
             KeyStore.getInstance(KeyStore.getDefaultType()).apply {
