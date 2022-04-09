@@ -1,46 +1,48 @@
 package me.leon.ext.crypto
 
 import java.math.BigInteger
+import java.security.SecureRandom
 import kotlin.math.pow
 import me.leon.*
 
 enum class Calculator(val algo: String) : ICalculator {
-    PLUS("X+Y") {
+    PLUS("P+Q") {
         override fun calculate(ints: List<BigInteger>): String {
+            println(ints)
             return ints[0].add(ints[1]).toString()
         }
     },
-    PLUS_MOD("(X+Y) mod Z") {
+    PLUS_MOD("(P+Q) mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].add(ints[1]).mod(ints[2]).toString()
         }
     },
-    MINUS("X-Y") {
+    MINUS("P-Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0] - (ints[1])).toString()
         }
     },
-    MINUS_MOD("(X-Y) mod Z") {
+    MINUS_MOD("(P-Q) mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].subtract(ints[1]).mod(ints[2]).toString()
         }
     },
-    MULTIPY("X*Y") {
+    MULTIPY("P*Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0] * (ints[1])).toString()
         }
     },
-    MULTIPY_MOD("(X*Y) mod Z") {
+    MULTIPY_MOD("(P*Q) mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].multiply(ints[1]).mod(ints[2]).toString()
         }
     },
-    DIVIDE_REMAINDER("X/Y") {
+    DIVIDE_REMAINDER("P/Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].divideAndRemainder((ints[1])).joinToString("\n")
         }
     },
-    DIVIDE_MOD("(X/Y) mod Z") {
+    DIVIDE_MOD("(P/Q) mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             val isMutualPrime = ints[1].mutualPrime(ints[2])
             val gcd = if (isMutualPrime) BigInteger.ONE else ints[0].gcd(ints[1])
@@ -49,87 +51,93 @@ enum class Calculator(val algo: String) : ICalculator {
                 .toString()
         }
     },
-    EXPONENT("X^Y") {
+    EXPONENT("P^a") {
         override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].pow(ints[1].toInt()).toString()
+            return ints[0].pow(ints[3].toInt()).toString()
         }
     },
-    MOD_POW("X^Y mod Z") {
+    MOD_POW("P^a mod N") {
         override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].modPow(ints[1], ints[2]).toString()
+            return ints[0].modPow(ints[3], ints[2]).toString()
         }
     },
-    MOD("X mod Y") {
+    MOD("P mod Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0] % (ints[1])).toString()
         }
     },
-    AND("X & Y") {
+    AND("P & Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].and(ints[1]).toString()
         }
     },
-    OR("X | Y") {
+    OR("P | Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].or(ints[1]).toString()
         }
     },
-    NOT("~X") {
+    NOT("~P") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].not().toString()
         }
     },
-    AND_NOT("X & ~Y") {
+    AND_NOT("P & ~Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].andNot(ints[1]).toString()
         }
     },
-    XOR("X xor Y") {
+    XOR("P xor Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].xor(ints[1]).toString()
         }
     },
-    SHIFT_LEFT("X << A") {
+    SHIFT_LEFT("P << a") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].shiftLeft(ints[3].toInt()).toString()
         }
     },
-    SHIFT_RIGHT("X >> A") {
+    SHIFT_RIGHT("P >> a") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].shiftRight(ints[3].toInt()).toString()
         }
     },
-    GCD("gcd(X,Y)") {
+    GCD("gcd(P,Q)") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].gcd(ints[1]).toString()
         }
     },
-    LCM("lcm(X,Y)") {
+    LCM("lcm(P,Q)") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].lcm(ints[1])).toString()
         }
     },
-    KGCD("kgcd(X,Y)") {
+    KGCD("gcdExt(P,Q)") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].gcdExt(ints[1])).joinToString("\n")
         }
     },
-    INVERSE("X^-1 mod Z") {
+    INVERSE("P^-1 mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].modInverse(ints[2])).toString()
         }
     },
-    PRIME("Prime(X)") {
+    GEN_PRIME("P bits prime?") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return BigInteger.probablePrime(ints[0].toInt(), SecureRandom.getInstance("SHA1PRNG"))
+                .toString()
+        }
+    },
+    PRIME("Prime(P)") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].isProbablePrime(100)).toString()
         }
     },
-    FACTOR("factorDb(X)") {
+    FACTOR("factorDb(P)") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].factorDb()).joinToString("\n")
         }
     },
-    ROOT("X^(1/A)") {
+    ROOT("P^(1/a)") {
         override fun calculate(ints: List<BigInteger>): String {
             val root = ints[0].toDouble().pow(1.0 / ints[3].toInt()).toBigDecimal().toBigInteger()
             val remainder =
@@ -137,12 +145,12 @@ enum class Calculator(val algo: String) : ICalculator {
             return "$root\n$remainder"
         }
     },
-    COMPLEX0("A*X+B*Y") {
+    COMPLEX0("a*P+b*Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0] * ints[3] + ints[1] * ints[4]).toString()
         }
     },
-    COMPLEX01("A^X+B^Y+Z") {
+    COMPLEX01("P^a+Q^b+N") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].pow(ints[3].toInt()) + ints[1].pow(ints[4].toInt()) + ints[2])
                 .toString()
@@ -150,21 +158,21 @@ enum class Calculator(val algo: String) : ICalculator {
     },
 
     // ints[2]
-    COMPLEX3("X*Y*Z*A*B") {
+    COMPLEX3("P*Q*N*a*b") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints
                 .fold(BigInteger.ONE) { acc, bigInteger -> acc.multiply(bigInteger) }
                 .toString()
         }
     },
-    COMPLEX4("X^A * Y^B mod Z") {
+    COMPLEX4("P^a * Q^b mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].pow(ints[3].toInt()) * ints[1].pow(ints[4].toInt()))
                 .mod(ints[2])
                 .toString()
         }
     },
-    PHI("(X-1)*(Y-1)") {
+    PHI("(P-1)*(Q-1)") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0].phi(ints[1])).toString()
         }
@@ -174,19 +182,19 @@ enum class Calculator(val algo: String) : ICalculator {
             return ints[0].nextProbablePrime().toString()
         }
     },
-    FACTORIAL("X!") {
+    FACTORIAL("P!") {
         override fun calculate(ints: List<BigInteger>): String {
             val intNum = ints[0].toInt()
-            if (intNum <= 1 || intNum > 120000) error("range: 1<=X<=120000")
+            if (intNum <= 1 || intNum > 120000) error("range: 1<=P<=120000")
             return (1..intNum)
                 .fold(BigInteger.ONE) { acc, i -> acc.multiply(i.toBigInteger()) }
                 .toString()
         }
     },
-    FACTORIAL_PRIME("X#") {
+    FACTORIAL_PRIME("P#") {
         override fun calculate(ints: List<BigInteger>): String {
             val intNum = ints[0].toInt()
-            if (intNum <= 1 || intNum > 120000) error("range: 1<=X<=120000")
+            if (intNum <= 1 || intNum > 120000) error("range: 1<=P<=120000")
             return (1..intNum)
                 .map { it.toBigInteger() }
                 .filter { it.isProbablePrime(100) }

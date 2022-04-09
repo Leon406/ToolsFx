@@ -23,11 +23,11 @@ class BigIntFragment : Fragment("BigInt") {
     private var startTime = 0L
     private val bottomInfo
         get() =
-            "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: X=${ta1.bits()}  " +
-                "Y=${ta2.bits()}  " +
-                "Z=${ta3.bits()}  " +
-                "A=${ta4.bits()}  " +
-                "B=${ta5.bits()}  " +
+            "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: P=${ta1.bits()}  " +
+                "Q=${ta2.bits()}  " +
+                "N=${ta3.bits()}  " +
+                "a=${ta4.bits()}  " +
+                "b=${ta5.bits()}  " +
                 "Output=${
                         runCatching {
                             outputText.lineSplit().first().toBigInteger().bitLength().toString()
@@ -53,7 +53,7 @@ class BigIntFragment : Fragment("BigInt") {
     lateinit var ta4: TextArea
     lateinit var ta5: TextArea
     lateinit var ta6: TextArea
-    var selectedAlgo: String = "X+Y"
+    private var selectedAlgo: String = calculatorType.keys.first()
     override val root = borderpane {
         center = centerLayout()
         bottom = hbox { bottomView = label(bottomInfo) }
@@ -106,19 +106,19 @@ class BigIntFragment : Fragment("BigInt") {
         hbox {
             addClass(Styles.left)
             label(messages["output"])
-            button("X", graphic = imageview("/img/up.png")) {
+            button("P", graphic = imageview("/img/up.png")) {
                 action {
                     ta1.text = outputText
                     taOutput.text = ""
                 }
             }
-            button("Y", graphic = imageview("/img/up.png")) {
+            button("Q", graphic = imageview("/img/up.png")) {
                 action {
                     ta2.text = outputText
                     taOutput.text = ""
                 }
             }
-            button("Z", graphic = imageview("/img/up.png")) {
+            button("N", graphic = imageview("/img/up.png")) {
                 action {
                     ta3.text = outputText
                     taOutput.text = ""
@@ -177,13 +177,13 @@ class BigIntFragment : Fragment("BigInt") {
         hbox {
             prefHeight = DEFAULT_SPACING_10X
             alignment = Pos.CENTER_LEFT
-            label("X:")
+            label("P:")
             ta1 =
                 textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
-            label("Y:")
+            label("Q:")
             ta2 =
                 textarea {
                     isWrapText = true
@@ -194,14 +194,14 @@ class BigIntFragment : Fragment("BigInt") {
         hbox {
             prefHeight = DEFAULT_SPACING_10X
             alignment = Pos.CENTER_LEFT
-            label("Z:")
+            label("N:")
             ta3 =
                 textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
 
-            label("A:")
+            label("a:")
             ta4 =
                 textarea {
                     isWrapText = true
@@ -212,7 +212,7 @@ class BigIntFragment : Fragment("BigInt") {
         hbox {
             prefHeight = DEFAULT_SPACING_10X
             alignment = Pos.CENTER_LEFT
-            label("B:")
+            label("b:")
             ta5 =
                 textarea {
                     isWrapText = true

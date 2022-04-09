@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.control.*
@@ -10,7 +11,6 @@ import me.leon.ext.crypto.passwordHashingTypes
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
-import java.io.File
 
 class DigestView : Fragment(messages["hash"]) {
     private val controller: DigestController by inject()
@@ -70,20 +70,20 @@ class DigestView : Fragment(messages["hash"]) {
             "Blake2s" to listOf("160", "224", "256"),
             "DSTU7564" to listOf("256", "384", "512"),
             "Skein" to
-                    listOf(
-                        "256-160",
-                        "256-224",
-                        "256-256",
-                        "512-128",
-                        "512-160",
-                        "512-224",
-                        "512-256",
-                        "512-384",
-                        "512-512",
-                        "1024-384",
-                        "1024-512",
-                        "1024-1024"
-                    ),
+                listOf(
+                    "256-160",
+                    "256-224",
+                    "256-256",
+                    "512-128",
+                    "512-160",
+                    "512-224",
+                    "512-256",
+                    "512-384",
+                    "512-512",
+                    "1024-384",
+                    "1024-512",
+                    "1024-1024"
+                ),
             "GOST3411" to listOf("256"),
             "GOST3411-2012" to listOf("256", "512"),
             "Haraka" to listOf("256", "512"),
@@ -97,7 +97,7 @@ class DigestView : Fragment(messages["hash"]) {
     private val info
         get() =
             "Hash: $method bits: ${selectedBits.get()} count: $times cost: $timeConsumption ms" +
-                    "  file mode: ${isFileMode.get()}"
+                "  file mode: ${isFileMode.get()}"
 
     private var timeConsumption = 0L
     private var startTime = 0L
@@ -215,12 +215,12 @@ class DigestView : Fragment(messages["hash"]) {
                 result
             }
         } ui
-                {
-                    isProcessing.value = false
-                    outputText = it
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
-                    if (Prefs.autoCopy)
-                        outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-                }
+            {
+                isProcessing.value = false
+                outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
 }

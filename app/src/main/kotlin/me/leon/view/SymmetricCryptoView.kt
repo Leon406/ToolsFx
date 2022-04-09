@@ -58,6 +58,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             "DES",
             "DESEDE",
             "AES",
+            "Rijndael",
             "SM4",
             "Blowfish",
             "Twofish",
