@@ -64,14 +64,14 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     RAILFENCEW("railFenceW") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
-            raw.railFenceWEncrypt(params[P1]!!.toInt())
+            raw.railFenceWEncrypt(params[P1]!!.toInt(), params[P2]?.toIntOrNull() ?: 0)
 
         override fun decrypt(raw: String, params: MutableMap<String, String>) =
-            raw.railFenceWDecrypt(params[P1]!!.toInt())
+            raw.railFenceWDecrypt(params[P1]!!.toInt(), params[P2]?.toIntOrNull() ?: 0)
 
-        override fun paramsCount() = 1
+        override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf("fence number", "")
+        override fun paramsHints() = listOf("fence number", "offset,default is 0")
     },
     VIRGENENE("virgenene") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
@@ -296,9 +296,9 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.alphabetIndex(
-                    params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
-                    params[P2]?.ifEmpty { " " } ?: " "
-                )
+                params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
+                params[P2]?.ifEmpty { " " } ?: " "
+            )
                 .also { println("alphabetIndex $raw $params") }
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
@@ -540,6 +540,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     Rabbit("rabbit") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             JavascriptCipher.rabbitEncrypt(raw, params[P1] ?: "")
+
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
             JavascriptCipher.rabbitDecrypt(raw, params[P1] ?: "")
 

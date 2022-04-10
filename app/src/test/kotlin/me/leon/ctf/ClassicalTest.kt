@@ -139,6 +139,9 @@ class ClassicalTest {
         val encrypt = "ACDTAKTANTAW"
         assertEquals(encrypt, msg.railFenceWEncrypt(3))
         assertEquals(msg, encrypt.railFenceWDecrypt(3))
+        println(msg.railFenceWEncrypt(3,1))
+        assertEquals("ATNATCADWTKA",msg.railFenceWEncrypt(3,1))
+        assertEquals(msg,"ATNATCADWTKA".railFenceWDecrypt(3,1))
     }
 
     @Test
