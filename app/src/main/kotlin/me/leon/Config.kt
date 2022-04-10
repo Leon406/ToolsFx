@@ -2,8 +2,8 @@ package me.leon
 
 import java.io.File
 
-const val VERSION = "1.12.4.beta01"
-const val BUILD_DATE = "2022-04-09"
+const val VERSION = "1.12.4.beta02"
+const val BUILD_DATE = "2022-04-10"
 const val REPO_URL = "https://github.com/Leon406/ToolsFx"
 const val REPO_ISSUE = "https://github.com/Leon406/ToolsFx/issues/new"
 const val PJ52_URL = "https://www.52pojie.cn/thread-1501153-1-1.html"

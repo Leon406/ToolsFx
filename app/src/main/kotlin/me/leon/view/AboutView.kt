@@ -16,6 +16,7 @@ class AboutView : Fragment(messages["about"]) {
     override val closeable = SimpleBooleanProperty(false)
     private var txtLatestVersion: Text by singleAssign()
     private lateinit var releaseInfo: ReleaseInfo
+    private val isFetching = SimpleBooleanProperty(false)
 
     override val root = vbox {
         alignment = Pos.CENTER
@@ -34,12 +35,14 @@ class AboutView : Fragment(messages["about"]) {
         hyperlink("feedback").action { REPO_ISSUE.openInBrowser() }
         hyperlink(messages["license"]).action { LICENSE.openInBrowser() }
         button(messages["checkUpdate"]) {
+            enableWhen(!isFetching)
             action {
                 Prefs.isIgnoreUpdate = false
                 checkUpdate()
             }
         }
         button(messages["checkUpdateDev"]) {
+            enableWhen(!isFetching)
             action {
                 Prefs.isIgnoreUpdate = false
                 checkUpdateDev()
@@ -54,8 +57,12 @@ class AboutView : Fragment(messages["about"]) {
 
     private fun checkUpdateDev(isAuto: Boolean = true) {
         if (!isAuto) return
-        runAsync { DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2) } ui
+        runAsync {
+            isFetching.value = true
+            DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2)
+        } ui
             {
+                isFetching.value = false
                 releaseInfo = it.fromJson(ReleaseInfo::class.java)
                 txtLatestVersion.text =
                     if (it.isEmpty()) messages["unknown"]
@@ -69,8 +76,12 @@ class AboutView : Fragment(messages["about"]) {
 
     private fun checkUpdate(isAuto: Boolean = true) {
         if (!isAuto) return
-        runAsync { CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2) } ui
+        runAsync {
+            isFetching.value = true
+            CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2)
+        } ui
             {
+                isFetching.value = false
                 releaseInfo = it.fromJson(ReleaseInfo::class.java)
                 txtLatestVersion.text =
                     if (it.isEmpty()) messages["unknown"]
