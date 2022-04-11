@@ -73,7 +73,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             " ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
                 "lines(input/output):${inputText.lineCount()} / ${outputText.lineCount()} " +
-                "cost: ${timeConsumption} ms"
+                "cost: $timeConsumption ms"
     private var inputText: String
         get() =
             taInput.text.takeIf {

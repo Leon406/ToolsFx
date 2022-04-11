@@ -146,7 +146,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private var startTime = 0L
     private val info
         get() =
-            "Signature: ${selectedKeyPairAlg.get()} hash: ${selectedSigAlg.get()} cost: ${timeConsumption}ms"
+            "Signature: ${selectedKeyPairAlg.get()} hash: ${selectedSigAlg.get()} cost: $timeConsumption ms"
     private var inputEncode = "raw"
     private lateinit var tgInput: ToggleGroup
     private val centerNode = vbox {

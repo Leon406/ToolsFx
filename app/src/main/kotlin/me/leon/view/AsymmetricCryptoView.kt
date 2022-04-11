@@ -36,7 +36,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             "RSA  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) "private key encrypt"
                 else "public key encrypt"
-            } cost: ${timeConsumption} ms"
+            } cost: $timeConsumption ms"
     private lateinit var labelInfo: Label
     private var keyText: String
         get() =
