@@ -108,17 +108,17 @@ enum class Calculator(val algo: String) : ICalculator {
     },
     LCM("lcm(P,Q)") {
         override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].lcm(ints[1])).toString()
+            return ints[0].lcm(ints[1]).toString()
         }
     },
     KGCD("gcdExt(P,Q)") {
         override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].gcdExt(ints[1])).joinToString("\n")
+            return ints[0].gcdExt(ints[1]).joinToString("\n")
         }
     },
     INVERSE("P^-1 mod N") {
         override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].modInverse(ints[2])).toString()
+            return ints[0].modInverse(ints[2]).toString()
         }
     },
     GEN_PRIME("P bits prime?") {
@@ -139,10 +139,7 @@ enum class Calculator(val algo: String) : ICalculator {
     },
     ROOT("P^(1/a)") {
         override fun calculate(ints: List<BigInteger>): String {
-            val root = ints[0].toDouble().pow(1.0 / ints[3].toInt()).toBigDecimal().toBigInteger()
-            val remainder =
-                if (root == BigInteger.ONE) ints[0] else ints[0].mod(root.pow(ints[3].toInt()))
-            return "$root\n$remainder"
+            return with(ints[0].root(ints[3].toInt())) { "${this[0]}\n${this[1]}" }
         }
     },
     COMPLEX0("a*P+b*Q") {

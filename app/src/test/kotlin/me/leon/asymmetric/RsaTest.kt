@@ -2,6 +2,8 @@ package me.leon.asymmetric
 
 import java.math.BigInteger
 import kotlin.test.assertEquals
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
 import me.leon.*
 import me.leon.asymmetric.RsaSolver.solveNEC
 import me.leon.asymmetric.RsaSolver.solvePQEC
@@ -238,5 +240,20 @@ class RsaTest {
                 "28486718265947502369103630279494597681246462305557663234176934418614365600722888121379448849" +
                 "54974348317322412816157152702695143094487806945533233359294549423"
         getPrimeFromFactorDb(bigDigit3).also { println(it) }
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun rootN() {
+        val i =
+            ("2217344750798294937344050117513831761010547351781457575945714176628679412650463329" +
+                    "4234669550268044399317656271118568881021332348369140068180238399943422830231427029931" +
+                    "826653444453257342990474092233543389488631718467806742449257243340911537016978649186" +
+                    "95050507247415283070309")
+                .toBigInteger()
+        measureTimedValue { i.root(30000) }.also {
+            println(it.value.contentToString())
+            println("${it.value.first().n2s()} ${it.duration}")
+        }
     }
 }

@@ -8,9 +8,9 @@ object RsaSolver {
     fun solveNEC(n: BigInteger, e: BigInteger, c: BigInteger): String {
         if (e < 6.toBigInteger()) {
             for (k in 1..1000) {
-                val m = (k.toBigInteger() * n + c).root(e.toInt(), 2)
-                if (m.toString().contains("\\.0+$".toRegex())) {
-                    return m.toBigInteger().n2s()
+                val m = (k.toBigInteger() * n + c).root(e.toInt())
+                if (m[1] == BigInteger.ZERO) {
+                    return m.first().n2s()
                 }
             }
             return "no solution"
@@ -47,7 +47,7 @@ object RsaSolver {
             val t = e.gcd(phi)
             val t1 = e / t
             val dt1 = t1.invert(phi)
-            c.modPow(dt1, n).root(t.toInt()).toBigInteger().n2s()
+            c.modPow(dt1, n).root(t.toInt()).first().n2s()
         }
     }
 }

@@ -1,6 +1,5 @@
 package me.leon
 
-import java.math.BigDecimal
 import java.math.BigInteger
 import me.leon.ext.readFromNet
 
@@ -77,32 +76,32 @@ private fun getPrimeFromFactorDbPath(path: String) =
             "<td>(\\w+)</td>".toRegex().find(this)?.let {
                 when (it.groupValues[1]) {
                     "P" -> return digit
-                    "FF" -> "Composite, fully factored"
+                    "FF" -> println("Composite, fully factored")
                     "C" -> return -digit.also { println("Composite, no factors known") }
-                    "CF" -> "Composite, factors known"
+                    "CF" -> println("Composite, factors known")
                     else -> return digit.also { println("Unknown") }
                 }
             }
         }
     }
 
-fun BigInteger.root(n: Int = 2, precision: Int = 2): BigDecimal {
-    var x = BigDecimal(divide(n.toBigInteger()))
-    var x0 = BigDecimal.ZERO
-    var e = BigDecimal("0.1")
-    for (i in 1 until precision) e = e.divide(BigDecimal.TEN, i + 1, BigDecimal.ROUND_HALF_EVEN)
-    val k = BigDecimal(this)
-    val m = BigDecimal(n)
-    var i: Long = 0
-    while (x.subtract(x0).abs() > e) {
-        x0 = x
-        x =
-            x.add(
-                k.subtract(x.pow(n))
-                    .divide(m.multiply(x.pow(n - 1)), precision, BigDecimal.ROUND_HALF_EVEN)
-            )
-        ++i
+// ported from
+// https://github.com/ryanInf/python2-libnum/blob/316c378ba268577320a239b2af0d766c1c9bfc6d/libnum/common.py
+fun BigInteger.root(n: Int = 2): Array<BigInteger> {
+    if (this.signum() < 0 && n % 2 == 0) error("n must be even")
+
+    val sig = this.signum()
+    val v = this.abs()
+    var high = BigInteger.ONE
+    while (high.pow(n) <= v) high = high.shiftLeft(1)
+    var low = high.shiftRight(1)
+    var mid = BigInteger.ONE
+    var midCount = 0
+    while (low < high) {
+        mid = (low + high).shiftRight(1)
+        if (low < mid && mid.pow(n) <= v) low = mid
+        else if (high > mid && mid.pow(n) >= v) high = mid else mid.also { midCount++ }
+        if (midCount > 1) break
     }
-    println("iterations $i")
-    return x
+    return with(mid * sig.toBigInteger()) { arrayOf(this, this@root - this.pow(n)) }
 }
