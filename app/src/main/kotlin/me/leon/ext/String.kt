@@ -7,6 +7,8 @@ fun String.stripAllSpace() = replace("\\s+".toRegex(), "")
 
 fun String.splitBySpace() = split("\\s+".toRegex())
 
+fun String.splitByNonDigit() = split("\\D+".toRegex()).filter { it.isNotEmpty() }
+
 fun String.sorted() = toCharArray().sorted().joinToString("")
 
 fun String.letters() = replace("[^a-zA-Z]".toRegex(), "")

@@ -2,6 +2,7 @@ package me.leon.ctf
 
 import kotlin.test.assertEquals
 import me.leon.classical.*
+import me.leon.ext.splitBySpace
 import me.leon.ext.stripAllSpace
 import org.junit.Test
 
@@ -139,9 +140,9 @@ class ClassicalTest {
         val encrypt = "ACDTAKTANTAW"
         assertEquals(encrypt, msg.railFenceWEncrypt(3))
         assertEquals(msg, encrypt.railFenceWDecrypt(3))
-        println(msg.railFenceWEncrypt(3,1))
-        assertEquals("ATNATCADWTKA",msg.railFenceWEncrypt(3,1))
-        assertEquals(msg,"ATNATCADWTKA".railFenceWDecrypt(3,1))
+        println(msg.railFenceWEncrypt(3, 1))
+        assertEquals("ATNATCADWTKA", msg.railFenceWEncrypt(3, 1))
+        assertEquals(msg, "ATNATCADWTKA".railFenceWDecrypt(3, 1))
     }
 
     @Test
@@ -202,7 +203,7 @@ class ClassicalTest {
     fun baudot() {
         val encrypted =
             "11001 00011 00111 01001 11000 10000 00100 11001 10101 00100 10010 00001 11000 01100" +
-                " 11011 01010 10110 10101"
+                    " 11011 01010 10110 10101"
         val plain = "baudot by leon406"
         assertEquals(encrypted, plain.baudot())
         assertEquals(plain, encrypted.baudotDecode())
@@ -258,5 +259,17 @@ class ClassicalTest {
 
         assertEquals(encrypted, data.hillEncrypt(key, fromZero = false))
         assertEquals(data, encrypted.hillDecrypt(key, fromZero = false))
+    }
+
+    @Test
+    fun asciiSum() {
+        val msg = "flag{8b1330652db0d937e6cdc4d4810118ed_A\$\$CII_and_\$uM}"
+        val encoded =
+            "0 102 210 307 410 533 589 687 736 787 838 886 940 993 1043 1143 1241 1289 1389 1446 1497 1552 1653" +
+                    " 1707 1806 1906 2005 2057 2157 2209 2265 2314 2362 2411 2460 2516 2617 2717 2812 2877 2913" +
+                    " 2949 3016 3089 3162 3257 3354 3464 3564 3659 3695 3812 3889 4014"
+
+        assertEquals(encoded, msg.asciiSum())
+        assertEquals(msg, encoded.asciiSumDecode())
     }
 }

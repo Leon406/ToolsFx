@@ -40,6 +40,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val keyIvInputView = KeyIvInputView(isEnableIv)
     private var inputEncode = "raw"
     private var outputEncode = "base64"
+    private val customAlg = arrayOf("XXTEA", "XOR")
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -81,6 +82,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             "XTEA",
             // coco2d encrypt
             "XXTEA",
+            "XOR",
         )
     private val paddingsAlg =
         mutableListOf(
@@ -101,7 +103,9 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val selectedMod = SimpleStringProperty(modes.first())
 
     private val cipher
-        get() = "${selectedAlg.get()}/${selectedMod.get()}/${selectedPadding.get()}"
+        get() = with(selectedAlg.get()) {
+            if (this in customAlg) selectedAlg.get() else "$this/${selectedMod.get()}/${selectedPadding.get()}"
+        }
 
     private val centerNode = vbox {
         addClass(Styles.group)
@@ -155,8 +159,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
         add(keyIvInputView)
         selectedAlg.addListener { _, _, newValue ->
             newValue?.run {
-                isEnableModAndPadding.value = newValue !in arrayOf("XXTEA")
-                if (newValue in arrayOf("XXTEA")) {
+                isEnableModAndPadding.value = newValue !in customAlg
+                if (newValue in customAlg) {
                     isEnableIv.value = false
                 }
                 println("alg $newValue")
@@ -271,12 +275,12 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 )
             }
         } ui
-            {
-                isProcessing.value = false
-                taOutput.text = it
-                timeConsumption = System.currentTimeMillis() - startTime
-                labelInfo.text = info
-                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-            }
+                {
+                    isProcessing.value = false
+                    taOutput.text = it
+                    timeConsumption = System.currentTimeMillis() - startTime
+                    labelInfo.text = info
+                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
     }
 }

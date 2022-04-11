@@ -1,10 +1,11 @@
 package me.leon.controller
 
-import java.io.File
+import me.leon.classical.xor
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.crypto.*
 import tornadofx.*
+import java.io.File
 
 class SymmetricCryptoController : Controller() {
     fun encrypt(
@@ -39,7 +40,9 @@ class SymmetricCryptoController : Controller() {
             XXTEA
                 .encrypt(data.decodeToByteArray(inputEncode, charset), key)
                 .encodeTo(outputEncode, charset)
-        else
+        else if (alg == "XOR") {
+            data.decodeToByteArray(inputEncode, charset).xor(key).encodeTo(outputEncode, charset)
+        } else
             data.decodeToByteArray(inputEncode, charset)
                 .encrypt(key, iv, alg)
                 .encodeTo(outputEncode, charset)
@@ -57,11 +60,17 @@ class SymmetricCryptoController : Controller() {
                         out.write(XXTEA.encrypt(it.readBytes(), key))
                     }
                 }
+            else if (alg.startsWith("XOR"))
+                outFileName.toFile().outputStream().use { out ->
+                    path.toFile().inputStream().use {
+                        out.write(it.readBytes().xor(key))
+                    }
+                }
             else path.encryptFile(key, iv, alg, outFileName)
             "加密文件路径(同选择文件目录): ${File(outFileName).absolutePath} \n" +
-                "alg: $alg\n" +
-                "key(base64): ${key.base64()}\n" +
-                "iv(base64): ${iv.base64()}\n"
+                    "alg: $alg\n" +
+                    "key(base64): ${key.base64()}\n" +
+                    "iv(base64): ${iv.base64()}\n"
         }
 
     fun decryptByFile(key: ByteArray, path: String, iv: ByteArray, alg: String) =
@@ -75,6 +84,12 @@ class SymmetricCryptoController : Controller() {
                 outFileName.toFile().outputStream().use { out ->
                     path.toFile().inputStream().use {
                         out.write(XXTEA.decrypt(it.readBytes(), key))
+                    }
+                }
+            else if (alg.startsWith("XOR"))
+                outFileName.toFile().outputStream().use { out ->
+                    path.toFile().inputStream().use {
+                        out.write(it.readBytes().xor(key))
                     }
                 }
             else path.decryptFile(key, iv, alg, outFileName)
@@ -113,7 +128,9 @@ class SymmetricCryptoController : Controller() {
             XXTEA
                 .decrypt(data.decodeToByteArray(inputEncode, charset), key)
                 .encodeTo(outputEncode, charset)
-        else
+        else if (alg == "XOR") {
+            data.decodeToByteArray(inputEncode, charset).xor(key).encodeTo(outputEncode, charset)
+        } else
             data.decodeToByteArray(inputEncode, charset)
                 .decrypt(key, iv, alg)
                 .encodeTo(outputEncode, charset)
