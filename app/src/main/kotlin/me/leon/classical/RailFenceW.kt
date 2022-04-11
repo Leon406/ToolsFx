@@ -1,6 +1,5 @@
 package me.leon.classical
 
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
 
 /**
@@ -14,11 +13,11 @@ fun String.railFenceWEncrypt(key: Int, offset: Int = 0): String {
     return toList()
         .foldIndexed(mutableMapOf<Int, MutableList<Char>>()) { pos, acc, c ->
             acc.apply {
-                val propIndex =
-                    key - 1 - abs(cycle / 2 - (pos + offset) % cycle)
+                val propIndex = key - 1 - abs(cycle / 2 - (pos + offset) % cycle)
                 this[propIndex]?.add(c) ?: kotlin.run { this[propIndex] = mutableListOf(c) }
             }
-        }.toSortedMap()
+        }
+        .toSortedMap()
         .values
         .joinToString("") { it.joinToString("") }
 }

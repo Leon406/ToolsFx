@@ -15,9 +15,7 @@ import java.util.regex.PatternSyntaxException;
 
 /* loaded from: BurpSuiteCnV2.0.jar:lianzhang/Translator.class */
 
-/**
- * javac -encoding UTF-8 Translator.java -Xlint:unchecked
- */
+/** javac -encoding UTF-8 Translator.java -Xlint:unchecked */
 public class Translator {
     static boolean debug;
     Map<String, String> literal = new HashMap(2048);
@@ -47,8 +45,7 @@ public class Translator {
                 System.err.println("Could not load white language file: " + whiteListFile);
             }
         }
-        try (BufferedReader br =
-                     new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
             br.lines().forEach(white::add);
         } catch (Exception e) {
             System.err.println("Could not add white string");
@@ -134,10 +131,8 @@ public class Translator {
                 throw e;
             }
         }
-        try (BufferedReader br =
-                     new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
-            br
-                    .lines()
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            br.lines()
                     .forEach(
                             s -> {
                                 if (debug) {

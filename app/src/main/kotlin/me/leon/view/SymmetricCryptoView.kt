@@ -103,9 +103,11 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val selectedMod = SimpleStringProperty(modes.first())
 
     private val cipher
-        get() = with(selectedAlg.get()) {
-            if (this in customAlg) selectedAlg.get() else "$this/${selectedMod.get()}/${selectedPadding.get()}"
-        }
+        get() =
+            with(selectedAlg.get()) {
+                if (this in customAlg) selectedAlg.get()
+                else "$this/${selectedMod.get()}/${selectedPadding.get()}"
+            }
 
     private val centerNode = vbox {
         addClass(Styles.group)
@@ -275,12 +277,12 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 )
             }
         } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text = it
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
-                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-                }
+            {
+                isProcessing.value = false
+                taOutput.text = it
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
     }
 }

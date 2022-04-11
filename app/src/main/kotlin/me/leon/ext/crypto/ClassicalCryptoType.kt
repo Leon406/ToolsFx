@@ -274,9 +274,9 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) =
             raw.alphabetIndex(
-                params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
-                params[P2]?.ifEmpty { " " } ?: " "
-            )
+                    params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
+                    params[P2]?.ifEmpty { " " } ?: " "
+                )
                 .also { println("alphabetIndex $raw $params") }
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =
@@ -335,7 +335,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun isIgnoreSpace() = false
     },
-     AsciiSum("asciiSum") {
+    AsciiSum("asciiSum") {
         override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.asciiSum()
 
         override fun decrypt(raw: String, params: MutableMap<String, String>): String =

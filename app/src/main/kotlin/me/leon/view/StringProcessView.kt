@@ -72,7 +72,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         get() =
             " ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                "lines(input/output):${inputText.lineCount()} / ${outputText.lineCount()} cost: ${timeConsumption} ms"
+                "lines(input/output):${inputText.lineCount()} / ${outputText.lineCount()} " +
+                "cost: ${timeConsumption} ms"
     private var inputText: String
         get() =
             taInput.text.takeIf {
@@ -121,8 +122,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             button(graphic = imageview("/img/uppercase.png")) {
                 action { outputText = inputText.uppercase() }
             }
+
             button(graphic = imageview("/img/lowercase.png")) {
                 action { outputText = inputText.lowercase() }
+            }
+            button(graphic = imageview("/img/trimIndent.png")) {
+                action { outputText = inputText.trimIndent() }
             }
             button(graphic = imageview("/img/ascend.png")) {
                 action {
@@ -217,6 +222,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     item(messages["recoverEncoding"]) {
                         action { runAsync { inputText.recoverEncoding() } ui { taInput.text = it } }
                     }
+                    item("reverse") { action { taInput.text = inputText.reversed() } }
                 }
                 textProperty().addListener { _, _, _ ->
                     timeConsumption = 0
