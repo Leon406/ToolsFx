@@ -2,9 +2,7 @@ package me.leon.ext
 
 import java.io.File
 import java.io.Reader
-import javax.script.Invocable
-import javax.script.ScriptEngine
-import javax.script.ScriptEngineManager
+import javax.script.*
 
 object Nashorn {
     private val jsEngine: ScriptEngine = ScriptEngineManager().getEngineByName("nashorn")

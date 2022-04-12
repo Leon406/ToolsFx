@@ -2,8 +2,8 @@ package me.leon.ext.crypto
 
 import org.bouncycastle.crypto.*
 import org.bouncycastle.crypto.engines.*
-import org.bouncycastle.crypto.macs.*
 import org.bouncycastle.crypto.macs.GMac
+import org.bouncycastle.crypto.macs.KGMac
 import org.bouncycastle.crypto.modes.GCMBlockCipher
 import org.bouncycastle.crypto.modes.KGCMBlockCipher
 import org.bouncycastle.crypto.params.KeyParameter

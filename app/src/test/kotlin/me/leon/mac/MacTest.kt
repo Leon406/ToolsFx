@@ -18,6 +18,10 @@ class MacTest {
         val key = "12341234".toByteArray()
         val expectedMap =
             mapOf(
+                "KMAC128" to "65fb81f8fa7e68e0dd311cc2722c9b827c1942c82627df6ef3b3895e4f29970b",
+                "KMAC256" to
+                    "00a67d61530754405f8e775bd1b7bbf85aec19e47ff701bb320652eea4a939a703356fdfd0a7e61" +
+                        "4c5edcfdfe0da1f6859170969e2ed922658373c84ba4649f4",
                 "HmacMD5" to "bd4f49828cc8dd9521c95aae811da7e5",
                 "HmacMD4" to "3cd7acb0a5140dbc8afad4ff0ca7b4ff",
                 "HmacSM3" to "6d79919b6c41066b7807f0d49ec7f384b62ba49653586f7b8f5ca1aafc0fab2c",

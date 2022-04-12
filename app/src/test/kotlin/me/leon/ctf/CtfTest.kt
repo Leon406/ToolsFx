@@ -2,8 +2,6 @@ package me.leon.ctf
 
 import kotlin.test.assertEquals
 import me.leon.classical.*
-import me.leon.classical.bifid
-import me.leon.classical.bifidDecrypt
 import me.leon.encode.base.base100
 import me.leon.encode.base.base100Decode2String
 import me.leon.ext.crypto.TABLE_A_Z_LOWER

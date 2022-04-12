@@ -10,7 +10,8 @@ import me.leon.controller.CalculatorController
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
-import me.leon.ext.crypto.*
+import me.leon.ext.crypto.Calculator
+import me.leon.ext.crypto.calculatorType
 import me.leon.ext.fx.copy
 import tornadofx.*
 

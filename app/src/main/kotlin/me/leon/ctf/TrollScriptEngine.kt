@@ -1,12 +1,6 @@
 package me.leon.ctf
 
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.OutputStream
-import java.lang.Exception
-import java.util.ArrayList
-import kotlin.Throws
-import kotlin.jvm.JvmOverloads
+import java.io.*
 
 /**
  * The [TrollScriptEngine] is an implementation for the brainfuck derivative TrollScript.

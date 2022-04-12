@@ -2,7 +2,6 @@ package me.leon.ext.crypto
 
 import java.math.BigInteger
 import java.security.SecureRandom
-import kotlin.math.pow
 import me.leon.*
 
 enum class Calculator(val algo: String) : ICalculator {

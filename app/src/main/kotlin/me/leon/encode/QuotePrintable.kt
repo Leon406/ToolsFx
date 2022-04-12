@@ -1,7 +1,8 @@
 package me.leon.encode
 
 import java.nio.charset.Charset
-import me.leon.ext.*
+import me.leon.ext.hex2String
+import me.leon.ext.toHex
 
 object QuotePrintable {
 

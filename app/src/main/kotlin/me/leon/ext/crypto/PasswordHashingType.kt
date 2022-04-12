@@ -3,51 +3,51 @@ package me.leon.ext.crypto
 import me.leon.hash
 
 // 可见字符
-enum class PasswordHashingType {
-    `md5(md5($pass)` {
+enum class PasswordHashingType(val alg: String) {
+    DoubleMd5("md5(md5)") {
         override fun hash(data: ByteArray): String {
             var hash = data.decodeToString()
             repeat(2) { hash = hash.lowercase().hash() }
             return hash
         }
     },
-    `MD5(MD5($pass))` {
+    DoubleMd5Uppercase("MD5(MD5)") {
         override fun hash(data: ByteArray): String {
             var hash = data.decodeToString()
             repeat(2) { hash = hash.uppercase().hash() }
             return hash
         }
     },
-    `md5(md5(md5($pass))` {
+    TripleMd5("md5(md5(md5))") {
         override fun hash(data: ByteArray): String {
             var hash = data.decodeToString()
             repeat(3) { hash = hash.lowercase().hash() }
             return hash
         }
     },
-    `MD5(MD5(MD5($pass)))` {
+    TripleMd5Uppercase("MD5(MD5(MD5))") {
         override fun hash(data: ByteArray): String {
             var hash = data.decodeToString()
             repeat(3) { hash = hash.uppercase().hash() }
             return hash
         }
     },
-    `md5(SHA1)` {
+    Md5Sha1("md5(SHA1)") {
         override fun hash(data: ByteArray): String {
             return data.decodeToString().hash("SHA1").uppercase().hash()
         }
     },
-    `md5(SHA256)` {
+    Md5Sha256("md5(SHA256)") {
         override fun hash(data: ByteArray): String {
             return data.decodeToString().hash("SHA256").uppercase().hash()
         }
     },
-    `md5(SHA384)` {
+    Md5Sha384("md5(SHA384)") {
         override fun hash(data: ByteArray): String {
             return data.decodeToString().hash("SHA384").uppercase().hash()
         }
     },
-    `md5(SHA512)` {
+    Md5Sha512("md5(SHA512)") {
         override fun hash(data: ByteArray): String {
             return data.decodeToString().hash("SHA512").uppercase().hash()
         }

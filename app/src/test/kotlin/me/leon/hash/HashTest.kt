@@ -4,11 +4,10 @@ import java.io.File
 import java.security.Security
 import java.util.zip.CRC32
 import kotlin.test.assertEquals
-import me.leon.TEST_PRJ_DIR
+import me.leon.*
 import me.leon.controller.DigestController
 import me.leon.ext.crypto.*
 import me.leon.ext.toHex
-import me.leon.hash
 import org.junit.Test
 
 class HashTest {
@@ -17,43 +16,6 @@ class HashTest {
         Security.addProvider(org.bouncycastle.jce.provider.BouncyCastleProvider())
     }
 
-    private val algs =
-        linkedMapOf(
-            "MD5" to listOf("128"),
-            "MD4" to listOf("128"),
-            "MD2" to listOf("128"),
-            "SM3" to listOf("256"),
-            "Tiger" to listOf("192"),
-            "Whirlpool" to listOf("512"),
-            "SHA1" to listOf("160"),
-            "SHA2" to listOf("224", "256", "384", "512", "512/224", "512/256"),
-            "SHA3" to listOf("224", "256", "384", "512"),
-            "RIPEMD" to listOf("128", "160", "256", "320"),
-            "Keccak" to listOf("224", "256", "288", "384", "512"),
-            "Blake2b" to listOf("160", "256", "384", "512"),
-            "Blake2s" to listOf("160", "224", "256"),
-            "DSTU7564" to listOf("256", "384", "512"),
-            "Skein" to
-                listOf(
-                    "256-160",
-                    "256-224",
-                    "256-256",
-                    "512-128",
-                    "512-160",
-                    "512-224",
-                    "512-256",
-                    "512-384",
-                    "512-512",
-                    "1024-384",
-                    "1024-512",
-                    "1024-1024"
-                ),
-            "GOST3411" to listOf("256"),
-            "GOST3411-2012" to listOf("256", "512"),
-            "Haraka" to listOf("256", "512"),
-            "CRC" to listOf("32", "64"),
-        )
-
     @Test
     fun crc32() {
         CRC32().apply { update("hello".toByteArray()) }.value.also {
@@ -61,6 +23,7 @@ class HashTest {
         }
         "hello".toByteArray().crc32().also { assertEquals("3610a686", it) }
     }
+
     @Test
     fun adler32() {
         "hello".toByteArray().adler32().also { assertEquals("062c0215", it) }
@@ -82,6 +45,11 @@ class HashTest {
 
     @Test
     fun hash() {
+        println("hello".hash("TupleHash128"))
+        println("hello".hash("TupleHash256"))
+        println("hello".hash("ParallelHash128"))
+        println("hello".hash("ParallelHash256"))
+        println("hello".hash("Blake3-256"))
         "hello".hash().also { assertEquals("5d41402abc4b2a76b9719d911017c592", it) }
         "hello".toByteArray().hash().also {
             assertEquals("5d41402abc4b2a76b9719d911017c592", it.toHex())
@@ -147,6 +115,7 @@ class HashTest {
             "Blake2s-160" to "dc6df5a41883bd6e1578b0df0ca3e1b1ac07ac2c",
             "Blake2s-224" to "4d40b91efd09f54c20328d8898e65ee6b41cfdbf66f8ce3d233bd9c8",
             "Blake2s-256" to "8e34670981beba4b69dc9f1380f2d982faa1a8a35fbd4167b47f1cfe006defe8",
+            "Blake3-256" to "8c9ac50b44000894f0b03216f7770850791676f54170a9b9505ebaf7a502e3eb",
             "DSTU7564-256" to "6c240f18372e703d4a6e987ef12ab14e2664d375bc63fe152492a62804d7aba4",
             "DSTU7564-384" to
                 "dcf8952e13043da4df2705589641f4676d9d07aa21ec1a5b11525e53ed12838a" +
@@ -187,7 +156,24 @@ class HashTest {
             "Haraka-256" to "f43b3529cab3bee02d70e6f70378ae7ffd301a3788297da3e144f2567cbaaac2",
             "Haraka-512" to "7ed63fd5e91c18422e550cca54765fe4cfb0eaf6dadd34d8cf336eae06be1acf",
             "CRC32" to "9ae0daaf",
+            "TupleHash128" to "dc808b934916e3ebf334e0364ed6d26935c927b40358a64bd2016365a050b817",
+            "TupleHash256" to
+                "b213e1c4d0ac6359c6d311bbe0132120ae8ea12cbfbe7a593a7619805a8ccd57c542edaed16806c2" +
+                    "6a1c16da745be3d7d009982512c8d26b21fff75fa6f127f1",
+            "ParallelHash128" to "9dfeca9feb71166544dc0b34c1e730822c00ac8f893679f61a61a0de2ce88eae",
+            "ParallelHash256" to
+                "52e782840ba7b554b5d37a237acb8ea1006109b566d8b00f2a7df7153fe2991ec4102eb" +
+                    "b8fa6dd00ed2c6499a59e06806bc0ec637a5250a794329cf32f335b0c",
             "CRC64" to "5c8b80482bac7809",
+            "Adler32" to "074001a5",
+            "md5(md5)" to "550e1bafe077ff0b0b67f4e32f29d751",
+            "MD5(MD5)" to "ea405b607de5e4f6797640ab81f1767d",
+            "md5(md5(md5))" to "579646aad11fae4dd295812fb4526245",
+            "MD5(MD5(MD5))" to "d201afd3e79bf74cbdcac73e88b9b969",
+            "md5(SHA1)" to "2bf1cf76a8b3b0e986943868dc79a868",
+            "md5(SHA256)" to "a4de7c17e0f46ed5adee6ed4750d6eb3",
+            "md5(SHA384)" to "ed264ab723f452972cc9acdf993712fb",
+            "md5(SHA512)" to "32d938bec236b8d25ac5af4404f3f916",
         )
 
     @Test
@@ -195,18 +181,26 @@ class HashTest {
         val digestController = DigestController()
         val testData = "12345678"
 
-        for ((k, v) in algs) {
+        for ((k, v) in ALGOS_HASH) {
             for (alg in v) {
-                "${k}${alg.takeIf { algs[k]!!.size > 1 } ?: ""}"
-                    .replace("SHA2", "SHA-")
-                    .replace(
-                        "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
-                        "$1-"
-                    )
+                (if (k == "PasswordHashing") "PasswordHashing$alg"
+                    else
+                        "${k}${alg.takeIf { ALGOS_HASH[k]!!.size > 1 } ?: ""}"
+                            .replace("SHA2", "SHA-")
+                            .replace(
+                                "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
+                                "$1-"
+                            ))
                     .also {
-                        if (it.contains("512"))
+                        println("$it")
+                        if (it.contains("PasswordHashing"))
+                            assertEquals(
+                                expectedMap[it.replace("PasswordHashing", "")],
+                                digestController.digest(it.replace("PasswordHashing", ""), testData)
+                            )
+                        else if (it.contains("512"))
                             assertEquals(expectedMap[it], testData.repeat(8).hash(it))
-                        else if (it.contains("256"))
+                        else if (it.contains("256") && !it.contains("(SHA256)"))
                             assertEquals(expectedMap[it], testData.repeat(4).hash(it))
                         else assertEquals(expectedMap[it], digestController.digest(it, testData))
                     }
@@ -228,48 +222,48 @@ class HashTest {
         // md5(md5($pass)  md5加密后，结果转换成小写,再进行md5
         assertEquals(
             "14e1b600b1fd579f47433b88e8d85291",
-            PasswordHashingType.`md5(md5($pass)`.hash(data2.toByteArray())
+            PasswordHashingType.DoubleMd5.hash(data2.toByteArray())
         )
 
         // MD5(MD5($pass)) 解密  md5加密后，结果转换成大写,再进行md5
         assertEquals(
             "f59bd65f7edafb087a81d4dca06c4910",
-            PasswordHashingType.`MD5(MD5($pass))`.hash(data2.toByteArray())
+            PasswordHashingType.DoubleMd5Uppercase.hash(data2.toByteArray())
         )
 
         // md5(md5(md5($pass))  md5加密后，结果转换成小写,再进行md5
         assertEquals(
             "c56d0e9a7ccec67b4ea131655038d604",
-            PasswordHashingType.`md5(md5(md5($pass))`.hash(data2.toByteArray())
+            PasswordHashingType.TripleMd5.hash(data2.toByteArray())
         )
 
         // MD5(MD5(MD5($pass))) 解密	 md5加密后，结果转换成大写,再进行md5
         assertEquals(
             "cf814721358d09942b255746542ad2a4",
-            PasswordHashingType.`MD5(MD5(MD5($pass)))`.hash(data2.toByteArray())
+            PasswordHashingType.TripleMd5Uppercase.hash(data2.toByteArray())
         )
 
         // md5(SHA1)
         assertEquals(
             "fe85e814fd656a2d490b842c6d33019d",
-            PasswordHashingType.`md5(SHA1)`.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha1.hash(data2.toByteArray())
         )
 
         // md5(SHA256)
         assertEquals(
             "05b371cbb333cb82d98b11d4f5960b9a",
-            PasswordHashingType.`md5(SHA256)`.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha256.hash(data2.toByteArray())
         )
 
         // md5(SHA384)
         assertEquals(
             "1de321163aa049944ad52f333b9c7c46",
-            PasswordHashingType.`md5(SHA384)`.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha384.hash(data2.toByteArray())
         )
         // md5(SHA512)
         assertEquals(
             "bb16e8d698bb2a61668c1eee494a777e",
-            PasswordHashingType.`md5(SHA512)`.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha512.hash(data2.toByteArray())
         )
     }
 }

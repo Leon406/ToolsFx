@@ -7,7 +7,8 @@ import javafx.scene.control.*
 import me.leon.CHARSETS
 import me.leon.ext.*
 import me.leon.ext.fx.*
-import me.leon.toolsfx.plugin.compress.*
+import me.leon.toolsfx.plugin.compress.compressType
+import me.leon.toolsfx.plugin.compress.compressTypeMap
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 

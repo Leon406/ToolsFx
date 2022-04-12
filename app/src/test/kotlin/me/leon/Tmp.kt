@@ -131,16 +131,17 @@ class Tmp {
 
     @Test
     fun ciphers() {
+
         Security.getProviders()
+            //            .filter { it.name.contains("BC") }
             .map { provider ->
-                provider.services.filter { it.type == "Mac" }.groupBy { it.type }.map {
-                    "\n" +
-                        provider.name +
-                        " " +
-                        it.key +
-                        "\n\t" +
-                        it.value.joinToString("\n\t") { it.algorithm }
-                }
+                provider.services
+                    //                    .filter { it.type == "Mac" }
+                    .groupBy { it.type }
+                    .map {
+                        "\n" + provider.name
+                        " " + it.key + "\n\t" + it.value.joinToString("\n\t") { it.algorithm }
+                    }
             }
             .also { println(it) }
     }

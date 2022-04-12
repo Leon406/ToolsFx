@@ -4,6 +4,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.security.DigestInputStream
 import java.security.MessageDigest
+import me.leon.ext.crypto.passwordHashingTypes
 import me.leon.ext.toFile
 import me.leon.ext.toHex
 
@@ -31,6 +32,49 @@ object Digests {
         return md.digest().toHex()
     }
 }
+
+// https://www.bouncycastle.org/specifications.html
+val ALGOS_HASH =
+    linkedMapOf(
+        "MD5" to listOf("128"),
+        "MD4" to listOf("128"),
+        "MD2" to listOf("128"),
+        "SM3" to listOf("256"),
+        "Tiger" to listOf("192"),
+        "Whirlpool" to listOf("512"),
+        "SHA1" to listOf("160"),
+        "SHA2" to listOf("224", "256", "384", "512", "512/224", "512/256"),
+        "SHA3" to listOf("224", "256", "384", "512"),
+        "RIPEMD" to listOf("128", "160", "256", "320"),
+        "Keccak" to listOf("224", "256", "288", "384", "512"),
+        "Blake2b" to listOf("160", "256", "384", "512"),
+        "Blake2s" to listOf("160", "224", "256"),
+        "DSTU7564" to listOf("256", "384", "512"),
+        "Skein" to
+            listOf(
+                "256-160",
+                "256-224",
+                "256-256",
+                "512-128",
+                "512-160",
+                "512-224",
+                "512-256",
+                "512-384",
+                "512-512",
+                "1024-384",
+                "1024-512",
+                "1024-1024"
+            ),
+        "GOST3411" to listOf("256"),
+        "GOST3411-2012" to listOf("256", "512"),
+        "Haraka" to listOf("256", "512"),
+        "Blake3-256" to listOf("256"),
+        "TupleHash" to listOf("128", "256"),
+        "ParallelHash" to listOf("128", "256"),
+        "CRC" to listOf("32", "64"),
+        "Adler32" to listOf("32"),
+        "PasswordHashing" to passwordHashingTypes,
+    )
 
 fun String.hash(method: String = "MD5"): String = Digests.hash(method, this)
 

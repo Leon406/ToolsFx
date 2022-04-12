@@ -1,8 +1,9 @@
 package me.leon.controller
 
-import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.crypto.*
+import me.leon.fileHash
+import me.leon.hash2String
 import tornadofx.*
 
 class DigestController : Controller() {

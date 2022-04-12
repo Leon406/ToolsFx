@@ -1,7 +1,8 @@
 package me.leon.controller
 
-import me.leon.ext.*
+import me.leon.ext.catch
 import me.leon.ext.crypto.ClassicalCryptoType
+import me.leon.ext.lineAction2String
 import tornadofx.*
 
 class ClassicalController : Controller() {

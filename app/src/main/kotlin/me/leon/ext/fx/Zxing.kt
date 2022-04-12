@@ -9,7 +9,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
-import java.util.*
+import java.util.Hashtable
 import javax.imageio.ImageIO
 
 /** 识别二维码 */

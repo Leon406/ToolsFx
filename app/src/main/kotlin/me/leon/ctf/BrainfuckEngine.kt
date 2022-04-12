@@ -1,10 +1,6 @@
 package me.leon.ctf
 
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.OutputStream
-import java.lang.IndexOutOfBoundsException
+import java.io.*
 
 /**
  * The [BrainfuckEngine] class is an implementation of the original brainfuck language.

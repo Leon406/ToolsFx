@@ -4,10 +4,10 @@ import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.control.*
+import me.leon.ALGOS_HASH
 import me.leon.Styles
 import me.leon.controller.DigestController
 import me.leon.ext.*
-import me.leon.ext.crypto.passwordHashingTypes
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -52,47 +52,8 @@ class DigestView : Fragment(messages["hash"]) {
                 }
     }
 
-    // https://www.bouncycastle.org/specifications.html
-    private val algs =
-        linkedMapOf(
-            "MD5" to listOf("128"),
-            "MD4" to listOf("128"),
-            "MD2" to listOf("128"),
-            "SM3" to listOf("256"),
-            "Tiger" to listOf("192"),
-            "Whirlpool" to listOf("512"),
-            "SHA1" to listOf("160"),
-            "SHA2" to listOf("224", "256", "384", "512", "512/224", "512/256"),
-            "SHA3" to listOf("224", "256", "384", "512"),
-            "RIPEMD" to listOf("128", "160", "256", "320"),
-            "Keccak" to listOf("224", "256", "288", "384", "512"),
-            "Blake2b" to listOf("160", "256", "384", "512"),
-            "Blake2s" to listOf("160", "224", "256"),
-            "DSTU7564" to listOf("256", "384", "512"),
-            "Skein" to
-                listOf(
-                    "256-160",
-                    "256-224",
-                    "256-256",
-                    "512-128",
-                    "512-160",
-                    "512-224",
-                    "512-256",
-                    "512-384",
-                    "512-512",
-                    "1024-384",
-                    "1024-512",
-                    "1024-1024"
-                ),
-            "GOST3411" to listOf("256"),
-            "GOST3411-2012" to listOf("256", "512"),
-            "Haraka" to listOf("256", "512"),
-            "CRC" to listOf("32", "64"),
-            "Adler32" to listOf("32"),
-            "PasswordHashing" to passwordHashingTypes,
-        )
-    private val selectedAlgItem = SimpleStringProperty(algs.keys.first())
-    private val selectedBits = SimpleStringProperty(algs.values.first().first())
+    private val selectedAlgItem = SimpleStringProperty(ALGOS_HASH.keys.first())
+    private val selectedBits = SimpleStringProperty(ALGOS_HASH.values.first().first())
     lateinit var cbBits: ComboBox<String>
     private val info
         get() =
@@ -131,10 +92,10 @@ class DigestView : Fragment(messages["hash"]) {
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
-            combobox(selectedAlgItem, algs.keys.toMutableList()) { cellFormat { text = it } }
+            combobox(selectedAlgItem, ALGOS_HASH.keys.toMutableList()) { cellFormat { text = it } }
             label(messages["bits"])
             cbBits =
-                combobox(selectedBits, algs.values.first()) {
+                combobox(selectedBits, ALGOS_HASH.values.first()) {
                     cellFormat { text = it }
                     isDisable = true
                 }
@@ -142,9 +103,9 @@ class DigestView : Fragment(messages["hash"]) {
 
         selectedAlgItem.addListener { _, _, newValue ->
             newValue?.run {
-                cbBits.items = algs[newValue]!!.asObservable()
-                selectedBits.set(algs[newValue]!!.first())
-                cbBits.isDisable = algs[newValue]!!.size == 1
+                cbBits.items = ALGOS_HASH[newValue]!!.asObservable()
+                selectedBits.set(ALGOS_HASH[newValue]!!.first())
+                cbBits.isDisable = ALGOS_HASH[newValue]!!.size == 1
             }
         }
 
@@ -157,7 +118,8 @@ class DigestView : Fragment(messages["hash"]) {
                         newValue
                     } else {
                         isEnableFileMode.value = true
-                        "${selectedAlgItem.get()}${newValue.takeIf { algs[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
+                        "${selectedAlgItem.get()}${newValue
+                            .takeIf { ALGOS_HASH[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
                             .replace("SHA2", "SHA-")
                             .replace(
                                 "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),

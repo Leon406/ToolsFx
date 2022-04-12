@@ -2,9 +2,7 @@ package me.leon.ext.crypto
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
-import org.bouncycastle.crypto.macs.KGMac
-import org.bouncycastle.crypto.macs.Zuc128Mac
-import org.bouncycastle.crypto.macs.Zuc256Mac
+import org.bouncycastle.crypto.macs.*
 
 object MACs {
     // https://www.bouncycastle.org/specifications.html
@@ -22,6 +20,7 @@ object MACs {
             "HmacRIPEMD" to listOf("128", "160", "256", "320"),
             "HmacKeccak" to listOf("224", "256", "288", "384", "512"),
             "HmacDSTU7564" to listOf("256", "384", "512"),
+            "KMAC" to listOf("128", "256"),
             "SIPHASH" to listOf("2-4", "4-8"),
             "SIPHASH128" to listOf("2-4", "4-8"),
             "HmacDSTU7564" to listOf("256", "384", "512"),

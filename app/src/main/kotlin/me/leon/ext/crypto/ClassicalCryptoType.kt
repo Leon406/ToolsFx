@@ -1,6 +1,7 @@
 package me.leon.ext.crypto
 
-import me.leon.*
+import me.leon.P1
+import me.leon.P2
 import me.leon.classical.*
 import me.leon.ctf.*
 

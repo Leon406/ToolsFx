@@ -2,16 +2,7 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.*
-import kotlin.collections.chunked
-import kotlin.collections.contains
-import kotlin.collections.distinct
-import kotlin.collections.first
-import kotlin.collections.joinToString
-import kotlin.collections.mutableMapOf
 import kotlin.collections.set
-import kotlin.collections.sorted
-import kotlin.collections.sortedDescending
-import kotlin.collections.toList
 import kotlin.system.measureTimeMillis
 import me.leon.SimpleMsgEvent
 import me.leon.Styles

@@ -1,6 +1,7 @@
 package me.leon.view
 
-import javafx.beans.property.*
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.*
 import me.leon.Styles
 import me.leon.controller.AsymmetricCryptoController

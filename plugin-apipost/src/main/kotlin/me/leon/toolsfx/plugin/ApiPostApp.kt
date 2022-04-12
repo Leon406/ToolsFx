@@ -1,5 +1,5 @@
 package me.leon.toolsfx.plugin
 
-import tornadofx.App
+import tornadofx.*
 
 class ApiPostApp : App(ApiPostView::class)

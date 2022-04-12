@@ -10,9 +10,9 @@ val classicalTypeMap =
 fun String.classicalType() = classicalTypeMap[this] ?: ClassicalCryptoType.CAESAR
 
 val passwordHashingTypeMap =
-    PasswordHashingType.values().sortedBy { it.name.lowercase() }.associateBy { it.name }
+    PasswordHashingType.values().sortedBy { it.alg.lowercase() }.associateBy { it.alg }
 
-val passwordHashingTypes = PasswordHashingType.values().map { it.name }.sortedBy { it.lowercase() }
+val passwordHashingTypes = PasswordHashingType.values().map { it.alg }.sortedBy { it.lowercase() }
 
 fun String.passwordHashingType() = passwordHashingTypeMap[this]
 

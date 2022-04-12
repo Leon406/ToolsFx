@@ -1,6 +1,5 @@
 package me.leon.ext
 
-import java.lang.IllegalStateException
 import java.net.HttpURLConnection
 import java.net.URL
 

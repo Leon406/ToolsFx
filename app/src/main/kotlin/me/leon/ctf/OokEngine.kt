@@ -1,8 +1,6 @@
 package me.leon.ctf
 
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 
 /**
  * The [OokEngine] is an implementation for the brainfuck derivative Ook!.

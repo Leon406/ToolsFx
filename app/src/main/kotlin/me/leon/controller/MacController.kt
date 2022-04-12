@@ -1,7 +1,8 @@
 package me.leon.controller
 
 import me.leon.ext.*
-import me.leon.ext.crypto.*
+import me.leon.ext.crypto.mac
+import me.leon.ext.crypto.macWithIv
 import tornadofx.*
 
 class MacController : Controller() {
