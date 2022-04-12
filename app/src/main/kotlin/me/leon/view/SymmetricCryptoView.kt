@@ -57,7 +57,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val algs =
         mutableListOf(
             "DES",
-            "DESEDE",
+            "DESede",
             "AES",
             "Rijndael",
             "SM4",
@@ -76,6 +76,10 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             "Skipjack",
             "Serpent",
             "DSTU7624",
+            "Shacal2",
+            "GOST28147",
+            "GOST3412-2015",
+            "Noekeon",
             "IDEA",
             "SEED",
             "TEA",
