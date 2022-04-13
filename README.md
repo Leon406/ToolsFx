@@ -57,7 +57,7 @@ support file, big file which is larger than 8Gi
 
 - [x] md serial
 - [x] sha1
-- [x] sha2serial
+- [x] sha2 
 - [x] sha3
 - [x] SM3
 - [x] RIPEMD
@@ -73,7 +73,7 @@ support file, big file which is larger than 8Gi
 
 - [x] md serial
 - [x] sha1
-- [x] sha2serial
+- [x] sha2
 - [x] sha3
 - [x] SM3
 - [x] RIPEMD
@@ -163,6 +163,7 @@ support file, big file which is larger than 8Gi
 - [x] Grain v1
 - [x] Grain128
 - [x] Zuc128
+- [x] etc.
 
 ### Asymmetric Crypto RSA
 
