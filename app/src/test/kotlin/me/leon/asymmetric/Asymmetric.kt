@@ -1,11 +1,19 @@
 package me.leon.asymmetric
 
+import java.security.Security
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import me.leon.encode.base.base64
 import me.leon.ext.crypto.*
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
 
 class Asymmetric {
+
+    init {
+        Security.addProvider(BouncyCastleProvider())
+    }
+
     val pri =
         "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAI4PFaNoiyF51e4v63d4okNnf1URlT+j8JwHR1wRka5LK9" +
             "Rx+hAT8AMvjwpYECS8SEFxz9QKqQHf91NcMklyDvX5s2wHiWAu+KCsfBw0eW5K7WhED6MuiSGkWNVP8kAUvXFHL" +
@@ -30,6 +38,49 @@ class Asymmetric {
             println(it)
             pkcs1ToPkcs8(it).also { assertEquals(pri, it) }
         }
+    }
+
+    @Test
+    fun sm2() {
+        var alg = "SM2"
+        genKeys(alg, emptyList()).also {
+            println(it.joinToString("\n"))
+            checkKeyPair(it[0], it[1], alg)
+        }
+        alg = "ElGamal"
+        genKeys(alg, listOf(1024)).also {
+            println(it.joinToString("\n"))
+            checkKeyPair(it[0], it[1], alg)
+        }
+    }
+
+    @Test
+    fun sm2e() {
+        val pub =
+            "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEZuj3DBdRs/FDfIwQuUtqAZrh8ARPfHSxinUuQiBFpGMeqWAzwRAa3" +
+                "pdBw97wR/xrNP/42/sUYvcj8Z6P9VMODQ=="
+        val pri =
+            "MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQg0e2GlRjoyVZ+i1O3ZTNHHvTUS2Y7yiOMej+egFst2CegCg" +
+                "YIKoEcz1UBgi2hRANCAARm6PcMF1Gz8UN8jBC5S2oBmuHwBE98dLGKdS5CIEWkYx6pYDPBEBrel0HD3vBH/Gs0//jb+xR" +
+                "i9yPxno/1Uw4N"
+
+        val alg = "SM2"
+
+        val testData = byteArrayOf(67)
+        testData
+            .asymmtricEncrypt(pub.toPublicKey(alg), alg)
+            .run { asymmetricDecrypt(pri.toPrivateKey(alg), alg).contentEquals(testData) }
+            .also { println(it) }
+
+        val pubKey = pub.toPublicKey(alg).also { println(it?.encoded?.base64()) }
+
+        val priKey = pri.toPrivateKey(alg).also { println(it?.encoded?.base64()) }
+        "hello".toByteArray().asymmtricEncrypt(pubKey, "SM2").also {
+            println(it.base64())
+            it.asymmetricDecrypt(priKey, "SM2").also { println(it.decodeToString()) }
+        }
+
+        //        "".toByteArray().rsaEncrypt()
     }
 
     @Test

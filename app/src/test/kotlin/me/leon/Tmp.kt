@@ -133,17 +133,14 @@ class Tmp {
     fun ciphers() {
 
         Security.getProviders()
-            //            .filter { it.name.contains("BC") }
-            .map { provider ->
-                provider.services
-                    //                    .filter { it.type == "Mac" }
-                    .groupBy { it.type }
-                    .map {
-                        "\n" + provider.name
-                        " " + it.key + "\n\t" + it.value.joinToString("\n\t") { it.algorithm }
-                    }
+            .filter { it.name == "BC" }
+            .flatMap { it.services }
+            .filterNot { it.algorithm.contains("(\\.\\d+){4,}".toRegex()) } // 过滤掉OID算法
+            //            .filter { it.type in listOf("Signature", "KeyPairGenerator") }
+            .groupBy { it.type }
+            .forEach { (k, v) ->
+                println("$k Algorithm: \n\t${v.joinToString("\n\t") { it.algorithm }}")
             }
-            .also { println(it) }
     }
 
     @Test

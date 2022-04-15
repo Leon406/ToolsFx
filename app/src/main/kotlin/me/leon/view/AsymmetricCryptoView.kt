@@ -2,6 +2,7 @@ package me.leon.view
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.scene.control.*
 import me.leon.Styles
 import me.leon.controller.AsymmetricCryptoController
@@ -50,14 +51,17 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             taKey.text = value
         }
 
-    private var alg = "RSA"
+    private val alg
+        get() = selecteAlg.get()
     private var isEncrypt = true
     private var inputEncode = "raw"
     private var outputEncode = "base64"
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
     private val bitsLists = mutableListOf(512, 1024, 2048, 3072, 4096)
+    private val algs = listOf("RSA", "ElGamal", "SM2")
     private val selectedBits = SimpleIntegerProperty(1024)
+    private val selecteAlg = SimpleStringProperty(algs.first())
     private val isPrivateKey
         get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
@@ -146,6 +150,8 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
 
         hbox {
             addClass(Styles.left)
+            label(messages["alg"])
+            combobox(selecteAlg, algs) { cellFormat { text = it.toString() } }
             label(messages["bits"])
             combobox(selectedBits, bitsLists) { cellFormat { text = it.toString() } }
             togglegroup {
@@ -168,7 +174,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 enableWhen(!isProcessing)
                 action {
                     isProcessing.value = true
-                    runAsync { genKeys(alg, selectedBits.value.toInt()) } ui
+                    runAsync { genKeys(alg, listOf(selectedBits.value.toInt())) } ui
                         {
                             isProcessing.value = false
                             if (isPrivateKey) {

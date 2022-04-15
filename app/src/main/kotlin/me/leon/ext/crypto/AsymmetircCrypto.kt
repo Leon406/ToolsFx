@@ -9,9 +9,15 @@ import javax.crypto.Cipher
 import me.leon.encode.base.*
 import me.leon.ext.toFile
 import org.bouncycastle.asn1.ASN1Primitive
+import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.pqc.crypto.lms.LMOtsParameters
+import org.bouncycastle.pqc.crypto.lms.LMSigParameters
+import org.bouncycastle.pqc.jcajce.spec.LMSKeyGenParameterSpec
+import org.bouncycastle.pqc.jcajce.spec.SPHINCSPlusParameterSpec
 
 fun String.removePemInfo() =
     replace("---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
@@ -44,13 +50,13 @@ fun File.parsePublicKeyFromCerFile(): String {
 fun String.toPublicKey(alg: String): PublicKey? {
     val keySpec = X509EncodedKeySpec(getPropPublicKey(this))
     val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
-    return KeyFactory.getInstance(keyFac).generatePublic(keySpec)
+    return KeyFactory.getInstance(keyFac.properKeyPairAlg()).generatePublic(keySpec)
 }
 
 fun String.toPrivateKey(alg: String): PrivateKey? {
     val keySpec = PKCS8EncodedKeySpec(removePemInfo().base64Decode())
     val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
-    return KeyFactory.getInstance(keyFac).generatePrivate(keySpec)
+    return KeyFactory.getInstance(keyFac.properKeyPairAlg()).generatePrivate(keySpec)
 }
 
 fun ByteArray.pubDecrypt(key: String, alg: String) = pubDecrypt(key.toPublicKey(alg), alg)
@@ -79,7 +85,7 @@ fun ByteArray.pubEncrypt(publicKey: PublicKey?, alg: String, reserved: Int = 11)
 fun ByteArray.pubEncrypt(key: String, alg: String, reserved: Int = 11) =
     pubEncrypt(key.toPublicKey(alg), alg, reserved)
 
-fun ByteArray.rsaDecrypt(
+fun ByteArray.asymmetricDecrypt(
     key: Key?,
     alg: String,
 ): ByteArray =
@@ -106,9 +112,9 @@ fun ByteArray.rsaDecrypt(
 fun ByteArray.privateDecrypt(
     key: String,
     alg: String,
-): ByteArray = rsaDecrypt(key.toPrivateKey(alg), alg)
+): ByteArray = asymmetricDecrypt(key.toPrivateKey(alg), alg)
 
-fun ByteArray.rsaEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray =
+fun ByteArray.asymmtricEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray =
     Cipher.getInstance(alg).run {
         init(Cipher.ENCRYPT_MODE, key)
         val bitLen =
@@ -130,7 +136,7 @@ fun ByteArray.rsaEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray 
     }
 
 fun ByteArray.privateEncrypt(key: String, alg: String, reserved: Int = 11): ByteArray =
-    rsaEncrypt(key.toPrivateKey(alg), alg, reserved)
+    asymmtricEncrypt(key.toPrivateKey(alg), alg, reserved)
 
 fun PublicKey.bitLength() = (this as? RSAPublicKey)?.modulus?.bitLength() ?: 1024
 
@@ -146,10 +152,67 @@ fun genKeys(alg: String, keySize: Int) =
         arrayOf(publicKey.encoded.base64(), privateKey.encoded.base64())
     }
 
+val ASYMMETRIC_ALG =
+    mapOf(
+        "RSA" to listOf(512, 1024, 2048, 3072, 4096),
+        "SM2" to listOf(256),
+        "ElGamal" to listOf(512, 1024, 2048)
+    )
+
+private fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
+
+private val ecGenParameterSpec =
+    mapOf(
+        "ECGOST3410-2012" to "Tc26-Gost-3410-12-512-paramSetA",
+        "ECGOST3410-2012-512" to "Tc26-Gost-3410-12-512-paramSetA",
+        "ECGOST3410-2012-256" to "Tc26-Gost-3410-12-256-paramSetA",
+        "SM2" to "sm2p256v1"
+    )
+
+fun genKeys(alg: String, params: List<Any> = emptyList()) =
+    KeyPairGenerator.getInstance(alg.properKeyPairAlg(), BouncyCastleProvider.PROVIDER_NAME).run {
+        when {
+            alg == "SM2" -> initialize(ECGenParameterSpec(ecGenParameterSpec[alg.uppercase()]))
+            alg.startsWith("EC") ->
+                initialize(ECGenParameterSpec(ecGenParameterSpec[alg.uppercase()]))
+            alg == "SPHINCSPLUS" ->
+                initialize(SPHINCSPlusParameterSpec.fromName(params.first().toString()))
+            alg == "LMS" ->
+                initialize(
+                    LMSKeyGenParameterSpec(
+                        params[0] as LMSigParameters,
+                        params[1] as LMOtsParameters
+                    )
+                )
+            alg == "GOST3410" ->
+                initialize(
+                    org.bouncycastle.jce.spec.GOST3410ParameterSpec(
+                        CryptoProObjectIdentifiers.gostR3410_94_CryptoPro_A.id
+                    )
+                )
+            alg.contains("ECGOST3410") ->
+                initialize(
+                    ECGenParameterSpec(
+                        ecGenParameterSpec[alg.uppercase() + "-${params[0] as Int}"]
+                    ),
+                    SecureRandom()
+                )
+            alg in arrayOf("ED448", "ED25519") -> {
+                // nop
+            }
+            else -> initialize(params[0] as Int)
+        }
+
+        val keyPair = generateKeyPair()
+        val publicKey = keyPair.public
+        val privateKey = keyPair.private
+        arrayOf(publicKey.encoded.base64(), privateKey.encoded.base64())
+    }
+
 fun checkKeyPair(pub: String, pri: String, alg: String = "RSA"): Boolean {
     val testData = byteArrayOf(67)
-    return testData.rsaEncrypt(pub.toPublicKey(alg), alg).run {
-        rsaDecrypt(pri.toPrivateKey(alg), alg).contentEquals(testData)
+    return testData.asymmtricEncrypt(pub.toPublicKey(alg), alg).run {
+        asymmetricDecrypt(pri.toPrivateKey(alg), alg).contentEquals(testData)
     }
 }
 

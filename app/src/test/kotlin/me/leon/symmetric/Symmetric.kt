@@ -1,11 +1,11 @@
 package me.leon.symmetric
 
+import java.security.Security
+import kotlin.test.assertTrue
 import me.leon.encode.base.base64
 import me.leon.ext.crypto.decrypt
 import me.leon.ext.crypto.encrypt
 import org.junit.Test
-import java.security.Security
-import kotlin.test.assertTrue
 
 class Symmetric {
     //  Shacal2  VMPCKSA3 ARC4 GOST28147 GOST3412_2015 Noekeon
@@ -21,51 +21,29 @@ class Symmetric {
         val iv = "1234567890123456".toByteArray()
         plain.encrypt(key, iv, "Shacal2").let {
             println(it.base64())
-            it.decrypt(key, iv, "Shacal2").let {
-                assertTrue {
-                    plain.contentEquals(it)
-                }
-            }
+            it.decrypt(key, iv, "Shacal2").let { assertTrue { plain.contentEquals(it) } }
         }
         plain.encrypt(key, iv, "VMPC-KSA3").let {
             println(it.base64())
-            it.decrypt(key, iv, "VMPC-KSA3").let {
-                assertTrue {
-                    plain.contentEquals(it)
-                }
-            }
+            it.decrypt(key, iv, "VMPC-KSA3").let { assertTrue { plain.contentEquals(it) } }
         }
         plain.encrypt(key, iv, "ARC4").let {
             println(it.base64())
-            it.decrypt(key, iv, "ARC4").let {
-                assertTrue {
-                    plain.contentEquals(it)
-                }
-            }
+            it.decrypt(key, iv, "ARC4").let { assertTrue { plain.contentEquals(it) } }
         }
         plain.encrypt(key + key, iv, "GOST28147").let {
             println(it.base64())
-            it.decrypt(key + key, iv, "GOST28147").let {
-                assertTrue {
-                    plain.contentEquals(it)
-                }
-            }
+            it.decrypt(key + key, iv, "GOST28147").let { assertTrue { plain.contentEquals(it) } }
         }
         plain.encrypt(key + key, iv, "GOST3412-2015").let {
             println(it.base64())
             it.decrypt(key + key, iv, "GOST3412-2015").let {
-                assertTrue {
-                    plain.contentEquals(it)
-                }
+                assertTrue { plain.contentEquals(it) }
             }
         }
-        plain.encrypt(key , iv, "Noekeon").let {
+        plain.encrypt(key, iv, "Noekeon").let {
             println(it.base64())
-            it.decrypt(key , iv, "Noekeon").let {
-                assertTrue {
-                    plain.contentEquals(it)
-                }
-            }
+            it.decrypt(key, iv, "Noekeon").let { assertTrue { plain.contentEquals(it) } }
         }
     }
 }

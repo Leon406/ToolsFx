@@ -6,7 +6,6 @@ import me.leon.TEST_DATA_DIR
 import me.leon.encode.base.base64Decode
 import me.leon.ext.crypto.parsePublicKeyFromCerFile
 import org.bouncycastle.asn1.ASN1InputStream
-import org.bouncycastle.asn1.ASN1Sequence
 import org.bouncycastle.asn1.util.ASN1Dump
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
