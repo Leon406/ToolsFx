@@ -1,8 +1,6 @@
 package me.leon.view
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleIntegerProperty
-import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.*
 import javafx.scene.control.*
 import me.leon.Styles
 import me.leon.controller.AsymmetricCryptoController
@@ -18,6 +16,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val isSingleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
+    private var cbBits :ComboBox<Number> by singleAssign()
     lateinit var taInput: TextArea
     lateinit var taKey: TextArea
     lateinit var taOutput: TextArea
@@ -35,7 +34,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private var startTime = 0L
     private val info
         get() =
-            "RSA  bits: ${selectedBits.get()}  mode: ${
+            "${selectedAlg.get()}  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) "private key encrypt"
                 else "public key encrypt"
             } cost: $timeConsumption ms"
@@ -52,16 +51,22 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         }
 
     private val alg
-        get() = selecteAlg.get()
+        get() = selectedAlg.get()
     private var isEncrypt = true
     private var inputEncode = "raw"
     private var outputEncode = "base64"
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
+    private val algoMaps = mapOf(
+        "RSA" to listOf(512, 1024, 2048, 3072, 4096),
+        "ElGamal" to listOf(512, 1024, 2048),
+        "SM2" to listOf(256),
+
+        )
     private val bitsLists = mutableListOf(512, 1024, 2048, 3072, 4096)
-    private val algs = listOf("RSA", "ElGamal", "SM2")
-    private val selectedBits = SimpleIntegerProperty(1024)
-    private val selecteAlg = SimpleStringProperty(algs.first())
+    private val algs = algoMaps.keys.toMutableList()
+    private val selectedAlg = SimpleStringProperty(algs.first())
+    private val selectedBits = SimpleIntegerProperty(algoMaps[selectedAlg.get()]!!.first())
     private val isPrivateKey
         get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
@@ -151,9 +156,16 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
-            combobox(selecteAlg, algs) { cellFormat { text = it.toString() } }
+            combobox(selectedAlg, algs) { cellFormat { text = it.toString() } }
+            selectedAlg.addListener { _, _, newValue ->
+                newValue?.run {
+                    cbBits.items = algoMaps[newValue]!!.asObservable()
+                    selectedBits.set(algoMaps[newValue]!!.first())
+                    cbBits.isDisable = algoMaps[newValue]!!.size == 1
+                }
+            }
             label(messages["bits"])
-            combobox(selectedBits, bitsLists) { cellFormat { text = it.toString() } }
+            cbBits = combobox(selectedBits, bitsLists) { cellFormat { text = it.toString() } }
             togglegroup {
                 spacing = DEFAULT_SPACING
                 radiobutton(messages["encrypt"]) { isSelected = true }
