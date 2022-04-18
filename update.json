@@ -1,10 +1,17 @@
-{"version":"1.12.4.beta02","info":"1.12.4.beta02
+{"version":"1.12.4.beta03","info":"1.12.4.beta03
 
-🔥  优化升级检测
+🔥  新增Skein-256-128
+🔥  非对称加密算法位数和padding选择
+🔥  morse支持自定义符号
+🔥  新增SM2,ElGamal
+🔥  新增KSA3/Shacal2/GOST28147/GOST3412-2015/Noekeon
+🔥  新增KMAC,Blake3,TupleHash,ParallelHash
+🔥  字符处理新增缩进功能
+🔥  对称加密模块新增异或加密,ctf模块新增 ascii sum
 🔥  CTF RailFenceW新增偏移支持
 🔥  解析bc已支持x509相关证书
 🔥  大数模块,增强参数可读性及新增指定长度随机素数
-🔥  全局样式引入
-🔥  英文翻译
+
+🐞  大数开根精度丢失
 🐞  对称加密(Stream) iv编码无效
 "}
