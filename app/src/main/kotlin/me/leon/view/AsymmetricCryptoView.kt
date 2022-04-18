@@ -16,7 +16,9 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val isSingleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
-    private var cbBits :ComboBox<Number> by singleAssign()
+    private val isEnablePadding = SimpleBooleanProperty(true)
+
+    private var cbBits: ComboBox<Number> by singleAssign()
     lateinit var taInput: TextArea
     lateinit var taKey: TextArea
     lateinit var taOutput: TextArea
@@ -38,6 +40,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 if (privateKeyEncrypt.get()) "private key encrypt"
                 else "public key encrypt"
             } cost: $timeConsumption ms"
+    private val selectedPadding = SimpleStringProperty(RSA_PADDINGS.first())
     private lateinit var labelInfo: Label
     private var keyText: String
         get() =
@@ -51,22 +54,19 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         }
 
     private val alg
-        get() = selectedAlg.get()
+        get() = with(selectedAlg.get()) {
+            if (this == "RSA") "$this/NONE/${selectedPadding.get()}"
+            else this
+        }
     private var isEncrypt = true
     private var inputEncode = "raw"
     private var outputEncode = "base64"
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
-    private val algoMaps = mapOf(
-        "RSA" to listOf(512, 1024, 2048, 3072, 4096),
-        "ElGamal" to listOf(512, 1024, 2048),
-        "SM2" to listOf(256),
 
-        )
-    private val bitsLists = mutableListOf(512, 1024, 2048, 3072, 4096)
-    private val algs = algoMaps.keys.toMutableList()
+    private val algs = ASYMMETRIC_ALGOS.keys.toMutableList()
     private val selectedAlg = SimpleStringProperty(algs.first())
-    private val selectedBits = SimpleIntegerProperty(algoMaps[selectedAlg.get()]!!.first())
+    private val selectedBits = SimpleIntegerProperty(ASYMMETRIC_ALGOS[selectedAlg.get()]!!.first())
     private val isPrivateKey
         get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
@@ -89,12 +89,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private fun updateKeySize() {
         runAsync {
             runCatching {
-                    if (isPrivateKey) {
-                        controller.lengthFromPri(keyText)
-                    } else {
-                        controller.lengthFromPub(keyText)
-                    }
+                if (isPrivateKey) {
+                    controller.lengthFromPri(keyText)
+                } else {
+                    controller.lengthFromPub(keyText)
                 }
+            }
                 .getOrDefault(1024)
         } ui { selectedBits.set(it) }
     }
@@ -159,13 +159,22 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             combobox(selectedAlg, algs) { cellFormat { text = it.toString() } }
             selectedAlg.addListener { _, _, newValue ->
                 newValue?.run {
-                    cbBits.items = algoMaps[newValue]!!.asObservable()
-                    selectedBits.set(algoMaps[newValue]!!.first())
-                    cbBits.isDisable = algoMaps[newValue]!!.size == 1
+                    cbBits.items = ASYMMETRIC_ALGOS[newValue]!!.asObservable()
+                    selectedBits.set(ASYMMETRIC_ALGOS[newValue]!!.first())
+                    cbBits.isDisable = ASYMMETRIC_ALGOS[newValue]!!.size == 1
+                    isEnablePadding.value = newValue == "RSA"
                 }
             }
             label(messages["bits"])
-            cbBits = combobox(selectedBits, bitsLists) { cellFormat { text = it.toString() } }
+            cbBits = combobox(selectedBits, ASYMMETRIC_ALGOS[selectedAlg.get()]) { cellFormat { text = it.toString() } }
+            label("padding:")
+            combobox(selectedPadding, RSA_PADDINGS) {
+                enableWhen(isEnablePadding)
+                cellFormat { text = it }
+            }
+        }
+        hbox {
+            addClass(Styles.center)
             togglegroup {
                 spacing = DEFAULT_SPACING
                 radiobutton(messages["encrypt"]) { isSelected = true }
@@ -187,16 +196,16 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 action {
                     isProcessing.value = true
                     runAsync { genKeys(alg, listOf(selectedBits.value.toInt())) } ui
-                        {
-                            isProcessing.value = false
-                            if (isPrivateKey) {
-                                taInput.text = it[0]
-                                taKey.text = it[1]
-                            } else {
-                                taInput.text = it[1]
-                                taKey.text = it[0]
+                            {
+                                isProcessing.value = false
+                                if (isPrivateKey) {
+                                    taInput.text = it[0]
+                                    taKey.text = it[1]
+                                } else {
+                                    taInput.text = it[1]
+                                    taKey.text = it[0]
+                                }
                             }
-                        }
                 }
             }
             button(messages["deriveKey"]) {
@@ -204,10 +213,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 action {
                     isProcessing.value = true
                     runAsync { catch({ it }) { taKey.text.privateKeyDerivedPublicKey(alg) } } ui
-                        {
-                            isProcessing.value = false
-                            taOutput.text = it
-                        }
+                            {
+                                isProcessing.value = false
+                                taOutput.text = it
+                            }
                 }
             }
         }
@@ -293,12 +302,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                     outputEncode
                 )
         } ui
-            {
-                isProcessing.value = false
-                outputText = it
-                timeConsumption = System.currentTimeMillis() - startTime
-                labelInfo.text = info
-                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-            }
+                {
+                    isProcessing.value = false
+                    outputText = it
+                    timeConsumption = System.currentTimeMillis() - startTime
+                    labelInfo.text = info
+                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
     }
 }

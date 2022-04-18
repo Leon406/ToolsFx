@@ -123,6 +123,7 @@ class HashTest {
             "DSTU7564-512" to
                 "e83945c9b56620e48b50eaf381c801078e05b89d85043ed5790596584d7057801" +
                     "73c9d07ac2f0c559f05893d13ea9576d660ac0db5bb8885fac30a07a24ec51a",
+            "Skein-256-128" to "dfb6780585fcb71b7f8725f3b8bc3db5",
             "Skein-256-160" to "69bc779ef32b63ed641594cac645e9cf3540aa8f",
             "Skein-256-224" to "71a135876f540e96dc9b429ac733a55f6459e7bfe53f565bca800937",
             "Skein-256-256" to "86177f9baa4bd5466585a4fd78b3ebd595d83b29b7c1be57807165c36e42ff26",

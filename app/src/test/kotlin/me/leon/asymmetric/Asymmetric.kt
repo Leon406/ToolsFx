@@ -68,14 +68,14 @@ class Asymmetric {
 
         val testData = byteArrayOf(67)
         testData
-            .asymmtricEncrypt(pub.toPublicKey(alg), alg)
+            .asymmetricEncrypt(pub.toPublicKey(alg), alg)
             .run { asymmetricDecrypt(pri.toPrivateKey(alg), alg).contentEquals(testData) }
             .also { println(it) }
 
         val pubKey = pub.toPublicKey(alg).also { println(it?.encoded?.base64()) }
 
         val priKey = pri.toPrivateKey(alg).also { println(it?.encoded?.base64()) }
-        "hello".toByteArray().asymmtricEncrypt(pubKey, "SM2").also {
+        "hello".toByteArray().asymmetricEncrypt(pubKey, "SM2").also {
             println(it.base64())
             it.asymmetricDecrypt(priKey, "SM2").also { println(it.decodeToString()) }
         }

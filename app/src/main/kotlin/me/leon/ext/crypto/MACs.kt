@@ -26,6 +26,7 @@ object MACs {
             "HmacDSTU7564" to listOf("256", "384", "512"),
             "HmacSkein" to
                 listOf(
+                    "256-128",
                     "256-160",
                     "256-224",
                     "256-256",

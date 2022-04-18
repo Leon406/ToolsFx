@@ -19,6 +19,28 @@ import org.bouncycastle.pqc.crypto.lms.LMSigParameters
 import org.bouncycastle.pqc.jcajce.spec.LMSKeyGenParameterSpec
 import org.bouncycastle.pqc.jcajce.spec.SPHINCSPlusParameterSpec
 
+val ASYMMETRIC_ALGOS = mapOf(
+    "RSA" to listOf(512, 1024, 2048, 3072, 4096),
+    "ElGamal" to listOf(512, 1024, 2048),
+    "SM2" to listOf(256),
+)
+
+val RSA_PADDINGS = listOf(
+    "PKCS1Padding",
+    "NoPadding",
+    "OAEPWithMD5AndMGF1Padding",
+    "OAEPWithSHA1AndMGF1Padding",
+    "OAEPWithSHA224AndMGF1Padding",
+    "OAEPWithSHA256AndMGF1Padding",
+    "OAEPWithSHA384AndMGF1Padding",
+    "OAEPWithSHA512AndMGF1Padding",
+    "OAEPWithSHA3-224AndMGF1Padding",
+    "OAEPWithSHA3-256AndMGF1Padding",
+    "OAEPWithSHA3-384AndMGF1Padding",
+    "OAEPWithSHA3-512AndMGF1Padding",
+    "ISO9796-1Padding",
+)
+
 fun String.removePemInfo() =
     replace("---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
 
@@ -114,7 +136,7 @@ fun ByteArray.privateDecrypt(
     alg: String,
 ): ByteArray = asymmetricDecrypt(key.toPrivateKey(alg), alg)
 
-fun ByteArray.asymmtricEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray =
+fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray =
     Cipher.getInstance(alg).run {
         init(Cipher.ENCRYPT_MODE, key)
         val bitLen =
@@ -136,7 +158,7 @@ fun ByteArray.asymmtricEncrypt(key: Key?, alg: String, reserved: Int = 11): Byte
     }
 
 fun ByteArray.privateEncrypt(key: String, alg: String, reserved: Int = 11): ByteArray =
-    asymmtricEncrypt(key.toPrivateKey(alg), alg, reserved)
+    asymmetricEncrypt(key.toPrivateKey(alg), alg, reserved)
 
 fun PublicKey.bitLength() = (this as? RSAPublicKey)?.modulus?.bitLength() ?: 1024
 
@@ -144,7 +166,7 @@ fun PrivateKey.bitLength() = (this as? RSAPrivateKey)?.modulus?.bitLength() ?: 1
 
 /** 生成密钥对 private key pkcs8 */
 fun genKeys(alg: String, keySize: Int) =
-    KeyPairGenerator.getInstance(alg).run {
+    KeyPairGenerator.getInstance(if (alg.contains("/")) alg.substringBefore('/') else alg).run {
         initialize(keySize)
         val keyPair = generateKeyPair()
         val publicKey = keyPair.public
@@ -152,14 +174,11 @@ fun genKeys(alg: String, keySize: Int) =
         arrayOf(publicKey.encoded.base64(), privateKey.encoded.base64())
     }
 
-val ASYMMETRIC_ALG =
-    mapOf(
-        "RSA" to listOf(512, 1024, 2048, 3072, 4096),
-        "SM2" to listOf(256),
-        "ElGamal" to listOf(512, 1024, 2048)
-    )
-
-private fun String.properKeyPairAlg() = takeUnless { it.equals("SM2", true) } ?: "EC"
+private fun String.properKeyPairAlg() = when {
+    this == "SM2" -> "EC"
+    this.startsWith("RSA") -> "RSA"
+    else -> this
+}
 
 private val ecGenParameterSpec =
     mapOf(
@@ -211,7 +230,7 @@ fun genKeys(alg: String, params: List<Any> = emptyList()) =
 
 fun checkKeyPair(pub: String, pri: String, alg: String = "RSA"): Boolean {
     val testData = byteArrayOf(67)
-    return testData.asymmtricEncrypt(pub.toPublicKey(alg), alg).run {
+    return testData.asymmetricEncrypt(pub.toPublicKey(alg), alg).run {
         asymmetricDecrypt(pri.toPrivateKey(alg), alg).contentEquals(testData)
     }
 }
@@ -225,9 +244,9 @@ fun pkcs8ToPkcs1(pkcs8: String) =
 
 fun pkcs1ToPkcs8(pkcs1: String) =
     PrivateKeyInfo(
-            AlgorithmIdentifier(PKCSObjectIdentifiers.rsaEncryption),
-            ASN1Primitive.fromByteArray(pkcs1.base64Decode())
-        )
+        AlgorithmIdentifier(PKCSObjectIdentifiers.rsaEncryption),
+        ASN1Primitive.fromByteArray(pkcs1.base64Decode())
+    )
         .encoded
         .run {
             PKCS8EncodedKeySpec(this).run {
