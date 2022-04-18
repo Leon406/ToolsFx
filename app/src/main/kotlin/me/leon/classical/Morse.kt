@@ -3,6 +3,7 @@ package me.leon.classical
 import me.leon.ext.splitBySpace
 import me.leon.ext.stripAllSpace
 
+// https://en.wikipedia.org/wiki/Morse_code
 val DEFAULT_MORSE =
     mapOf(
         'A' to ".-",
@@ -42,7 +43,7 @@ val DEFAULT_MORSE =
         '9' to "----.",
         '0' to "-----",
         '.' to ".-.-.-",
-        ':' to "...---",
+        ':' to "---...",
         ',' to "--..--",
         ';' to "-.-.-.",
         '?' to "..--..",
@@ -50,7 +51,8 @@ val DEFAULT_MORSE =
         '\'' to ".----.",
         '/' to "-..-.",
         '!' to "-.-.--",
-        '-' to "-...-",
+        '-' to "-....-",
+        '+' to ".-.-.",
         '_' to "..--.-",
         '"' to ".-..-.",
         '(' to "-.--.",
