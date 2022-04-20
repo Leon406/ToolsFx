@@ -5,10 +5,15 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import me.leon.encode.base.base64
 import me.leon.ext.crypto.*
+import me.leon.ext.hex2ByteArray
+import me.leon.ext.toHex
+import org.bouncycastle.asn1.*
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
 
-class Asymmetric {
+class AsymmetricTest {
 
     init {
         Security.addProvider(BouncyCastleProvider())
@@ -57,14 +62,20 @@ class Asymmetric {
     @Test
     fun sm2e() {
         val pub =
-            "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEZuj3DBdRs/FDfIwQuUtqAZrh8ARPfHSxinUuQiBFpGMeqWAzwRAa3" +
-                "pdBw97wR/xrNP/42/sUYvcj8Z6P9VMODQ=="
+            "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEZuj3DBdRs/FDfIwQuUtqAZrh8ARPfHSxinUuQiBFpGMeqWAzwRAa3pdBw9" +
+                "7wR/xrNP/42/sUYvcj8Z6P9VMODQ=="
         val pri =
-            "MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQg0e2GlRjoyVZ+i1O3ZTNHHvTUS2Y7yiOMej+egFst2CegCg" +
-                "YIKoEcz1UBgi2hRANCAARm6PcMF1Gz8UN8jBC5S2oBmuHwBE98dLGKdS5CIEWkYx6pYDPBEBrel0HD3vBH/Gs0//jb+xR" +
-                "i9yPxno/1Uw4N"
+            "MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQg0e2GlRjoyVZ+i1O3ZTNHHvTUS2Y7yiOMej+egFst2Ce" +
+                "gCgYIKoEcz1UBgi2hRANCAARm6PcMF1Gz8UN8jBC5S2oBmuHwBE98dLGKdS5CIEWkYx6pYDPBEBrel0HD" +
+                "3vBH/Gs0//jb+xRi9yPxno/1Uw4N"
 
         val alg = "SM2"
+
+        // 从ans1
+        (pub.toPublicKey(alg) as BCECPublicKey).also { println(it.q.getEncoded(false).toHex()) }
+
+        (pri.toPrivateKey(alg) as BCECPrivateKey).also { println(it.d.toString(16)) }
+        //  转ans1
 
         val testData = byteArrayOf(67)
         testData
@@ -86,5 +97,47 @@ class Asymmetric {
     @Test
     fun deriveAndMatch() {
         pri.privateKeyDerivedPublicKey().run { assertTrue { checkKeyPair(this, pri) } }
+    }
+
+    @Test
+    fun cc() {
+        val d =
+            "048a1a666e653da9aa19e7112ab01da87af8ce3772de6f8585bbb103ec370ca8d8769814ad562c3ff8574501d6fa83af93a5d7" +
+                "a584cccdb3d0bf97fe23eceb0d5a3fa354d1f6eb20c5a99a6f93f5f9edb43f5e11f87689a6c3fef25276759b751" +
+                "9b2cff6c44d9c"
+        println(d)
+        val c1c3c2 = changeC1C2C3ToC1C3C2(d.hex2ByteArray()).toHex()
+        println(c1c3c2)
+        println(changeC1C3C2ToC1C2C3(c1c3c2.hex2ByteArray()).toHex())
+    }
+
+    /**
+     * bc加解密使用旧标c1||c2||c3，此方法在加密后调用，将结果转化为c1||c3||c2
+     * @param c1c2c3
+     * @return
+     */
+    private fun changeC1C2C3ToC1C3C2(c1c2c3: ByteArray): ByteArray {
+        val c1Len = 65
+        val c3Len = 32
+        val result = ByteArray(c1c2c3.size)
+        System.arraycopy(c1c2c3, 0, result, 0, c1Len) // c1
+        System.arraycopy(c1c2c3, c1c2c3.size - c3Len, result, c1Len, c3Len) // c3
+        System.arraycopy(c1c2c3, c1Len, result, c1Len + c3Len, c1c2c3.size - c1Len - c3Len) // c2
+        return result
+    }
+
+    /**
+     * bc加解密使用旧标c1||c3||c2，此方法在解密前调用，将密文转化为c1||c2||c3再去解密
+     * @param c1c3c2
+     * @return
+     */
+    private fun changeC1C3C2ToC1C2C3(c1c3c2: ByteArray): ByteArray {
+        val c1Len = 65
+        val c3Len = 32
+        val result = ByteArray(c1c3c2.size)
+        System.arraycopy(c1c3c2, 0, result, 0, c1Len) // c1: 0->65
+        System.arraycopy(c1c3c2, c1Len + c3Len, result, c1Len, c1c3c2.size - c1Len - c3Len) // c2
+        System.arraycopy(c1c3c2, c1Len, result, c1c3c2.size - c3Len, c3Len) // c3
+        return result
     }
 }

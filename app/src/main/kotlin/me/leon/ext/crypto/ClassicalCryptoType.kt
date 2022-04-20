@@ -95,14 +95,15 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun isIgnoreSpace() = false
     },
     MORSE("morse") {
-        override fun encrypt(raw: String, params: MutableMap<String, String>) = raw.morseEncrypt()
-            .replace(".",params[P1].takeUnless { it.isNullOrEmpty() }?: ".")
-            .replace("-",params[P2].takeUnless { it.isNullOrEmpty() }?: "-")
+        override fun encrypt(raw: String, params: MutableMap<String, String>) =
+            raw.morseEncrypt()
+                .replace(".", params[P1].takeUnless { it.isNullOrEmpty() } ?: ".")
+                .replace("-", params[P2].takeUnless { it.isNullOrEmpty() } ?: "-")
 
-        override fun decrypt(raw: String, params: MutableMap<String, String>) = raw
-            .replace(params[P1].takeUnless { it.isNullOrEmpty() }?: ".",".")
-            .replace(params[P2].takeUnless { it.isNullOrEmpty() }?: "-","-")
-            .morseDecrypt()
+        override fun decrypt(raw: String, params: MutableMap<String, String>) =
+            raw.replace(params[P1].takeUnless { it.isNullOrEmpty() } ?: ".", ".")
+                .replace(params[P2].takeUnless { it.isNullOrEmpty() } ?: "-", "-")
+                .morseDecrypt()
 
         override fun paramsCount() = 2
 

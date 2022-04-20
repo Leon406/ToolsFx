@@ -54,10 +54,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         }
 
     private val alg
-        get() = with(selectedAlg.get()) {
-            if (this == "RSA") "$this/NONE/${selectedPadding.get()}"
-            else this
-        }
+        get() =
+            with(selectedAlg.get()) {
+                if (this == "RSA") "$this/NONE/${selectedPadding.get()}" else this
+            }
     private var isEncrypt = true
     private var inputEncode = "raw"
     private var outputEncode = "base64"
@@ -89,12 +89,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private fun updateKeySize() {
         runAsync {
             runCatching {
-                if (isPrivateKey) {
-                    controller.lengthFromPri(keyText)
-                } else {
-                    controller.lengthFromPub(keyText)
+                    if (isPrivateKey) {
+                        controller.lengthFromPri(keyText)
+                    } else {
+                        controller.lengthFromPub(keyText)
+                    }
                 }
-            }
                 .getOrDefault(1024)
         } ui { selectedBits.set(it) }
     }
@@ -166,7 +166,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 }
             }
             label(messages["bits"])
-            cbBits = combobox(selectedBits, ASYMMETRIC_ALGOS[selectedAlg.get()]) { cellFormat { text = it.toString() } }
+            cbBits =
+                combobox(selectedBits, ASYMMETRIC_ALGOS[selectedAlg.get()]) {
+                    cellFormat { text = it.toString() }
+                }
             label("padding:")
             combobox(selectedPadding, RSA_PADDINGS) {
                 enableWhen(isEnablePadding)
@@ -196,16 +199,16 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 action {
                     isProcessing.value = true
                     runAsync { genKeys(alg, listOf(selectedBits.value.toInt())) } ui
-                            {
-                                isProcessing.value = false
-                                if (isPrivateKey) {
-                                    taInput.text = it[0]
-                                    taKey.text = it[1]
-                                } else {
-                                    taInput.text = it[1]
-                                    taKey.text = it[0]
-                                }
+                        {
+                            isProcessing.value = false
+                            if (isPrivateKey) {
+                                taInput.text = it[0]
+                                taKey.text = it[1]
+                            } else {
+                                taInput.text = it[1]
+                                taKey.text = it[0]
                             }
+                        }
                 }
             }
             button(messages["deriveKey"]) {
@@ -213,10 +216,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 action {
                     isProcessing.value = true
                     runAsync { catch({ it }) { taKey.text.privateKeyDerivedPublicKey(alg) } } ui
-                            {
-                                isProcessing.value = false
-                                taOutput.text = it
-                            }
+                        {
+                            isProcessing.value = false
+                            taOutput.text = it
+                        }
                 }
             }
         }
@@ -302,12 +305,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                     outputEncode
                 )
         } ui
-                {
-                    isProcessing.value = false
-                    outputText = it
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
-                    if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
-                }
+            {
+                isProcessing.value = false
+                outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+                if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
     }
 }

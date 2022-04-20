@@ -54,7 +54,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
 
     private val algs =
         mutableListOf(
-            "RC4", //aka ARC4
+            "RC4", // aka ARC4
             "ChaCha",
             "ChaCha20",
             "ChaCha20-Poly1305",
