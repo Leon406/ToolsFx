@@ -34,7 +34,7 @@ class RsaTest {
         val e = params["e"]!!
         val phi = params["phi"]!!
         val c = params["c"]!!
-        c.decrypt(e.invert(phi), n).also {
+        c.decrypt(e.invert(phi).also { println(it) }, n).also {
             println(it)
             assertEquals("picoCTF{sma11_N_n0_g0od_55304594}", it)
         }

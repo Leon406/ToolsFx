@@ -17,6 +17,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
     private val isEnablePadding = SimpleBooleanProperty(true)
+    private val isShowDerivedKey = SimpleBooleanProperty(true)
 
     private var cbBits: ComboBox<Number> by singleAssign()
     lateinit var taInput: TextArea
@@ -43,12 +44,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val selectedPadding = SimpleStringProperty(RSA_PADDINGS.first())
     private lateinit var labelInfo: Label
     private var keyText: String
-        get() =
-            taKey.text.takeIf { it.contains("-----BEGIN CERTIFICATE") }
-                ?: taKey
-                    .text
-                    .replace("---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
-                    .trim()
+        get() = taKey.text.trim()
         set(value) {
             taKey.text = value
         }
@@ -64,8 +60,8 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
 
-    private val algs = ASYMMETRIC_ALGOS.keys.toMutableList()
-    private val selectedAlg = SimpleStringProperty(algs.first())
+    private val algos = ASYMMETRIC_ALGOS.keys.toMutableList()
+    private val selectedAlg = SimpleStringProperty(algos.first())
     private val selectedBits = SimpleIntegerProperty(ASYMMETRIC_ALGOS[selectedAlg.get()]!!.first())
     private val isPrivateKey
         get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
@@ -156,13 +152,14 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
-            combobox(selectedAlg, algs) { cellFormat { text = it.toString() } }
+            combobox(selectedAlg, algos) { cellFormat { text = it.toString() } }
             selectedAlg.addListener { _, _, newValue ->
                 newValue?.run {
                     cbBits.items = ASYMMETRIC_ALGOS[newValue]!!.asObservable()
                     selectedBits.set(ASYMMETRIC_ALGOS[newValue]!!.first())
                     cbBits.isDisable = ASYMMETRIC_ALGOS[newValue]!!.size == 1
                     isEnablePadding.value = newValue == "RSA"
+                    isShowDerivedKey.value = newValue == "RSA"
                 }
             }
             label(messages["bits"])
@@ -212,6 +209,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 }
             }
             button(messages["deriveKey"]) {
+                visibleWhen(isShowDerivedKey)
                 enableWhen(!isProcessing)
                 action {
                     isProcessing.value = true

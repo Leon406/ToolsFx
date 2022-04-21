@@ -1,20 +1,19 @@
 package me.leon.ext.crypto
 
 import java.io.*
+import java.math.BigInteger
 import java.security.*
 import java.security.cert.CertificateFactory
 import java.security.interfaces.*
 import java.security.spec.*
 import javax.crypto.Cipher
 import me.leon.encode.base.*
-import me.leon.ext.hex2ByteArray
-import me.leon.ext.toFile
+import me.leon.ext.*
 import org.bouncycastle.asn1.ASN1Primitive
 import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier
-import org.bouncycastle.crypto.params.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.pqc.crypto.lms.LMOtsParameters
 import org.bouncycastle.pqc.crypto.lms.LMSigParameters
@@ -56,7 +55,7 @@ fun getPropPublicKey(key: String): ByteArray =
             .publicKey
             .encoded
     } else {
-        key.removePemInfo().base64Decode()
+        key.removePemInfo().keyAutoDecode()
     }
 
 fun parsePublicKeyFromCerFile(file: String): String {
@@ -74,15 +73,39 @@ fun File.parsePublicKeyFromCerFile(): String {
 }
 
 fun String.toPublicKey(alg: String): PublicKey? {
-    val keySpec = X509EncodedKeySpec(getPropPublicKey(this))
-    val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
-    return KeyFactory.getInstance(keyFac.properKeyPairAlg()).generatePublic(keySpec)
+    try {
+        val keySpec = X509EncodedKeySpec(getPropPublicKey(this))
+        return KeyFactory.getInstance(alg.properKeyPairAlg()).generatePublic(keySpec)
+    } catch (ignore: Exception) {
+        if (alg.contains("RSA")) {
+            // rsa n e d p 参数解析
+            return with(parseRsaParams()) {
+                KeyFactory.getInstance(alg.properKeyPairAlg())
+                    .generatePublic(
+                        RSAPublicKeySpec(
+                            this["n"] ?: BigInteger(this@toPublicKey, 16),
+                            this["e"] ?: BigInteger("10001", 16)
+                        )
+                    )
+            }
+        }
+        return null
+    }
 }
 
 fun String.toPrivateKey(alg: String): PrivateKey? {
-    val keySpec = PKCS8EncodedKeySpec(removePemInfo().base64Decode())
-    val keyFac = if (alg.contains("/")) alg.substringBefore('/') else alg
-    return KeyFactory.getInstance(keyFac.properKeyPairAlg()).generatePrivate(keySpec)
+    try {
+        val keySpec = PKCS8EncodedKeySpec(removePemInfo().keyAutoDecode())
+        return KeyFactory.getInstance(alg.properKeyPairAlg()).generatePrivate(keySpec)
+    } catch (ignore: Exception) {
+        if (alg.contains("RSA")) {
+            return with(parseRsaParams()) {
+                KeyFactory.getInstance(alg.properKeyPairAlg())
+                    .generatePrivate(RSAPrivateKeySpec(this["n"], this["d"]))
+            }
+        }
+        return null
+    }
 }
 
 fun ByteArray.pubDecrypt(key: String, alg: String) = pubDecrypt(key.toPublicKey(alg), alg)
@@ -192,6 +215,7 @@ private fun String.properKeyPairAlg() =
     when {
         this == "SM2" -> "EC"
         this.startsWith("RSA") -> "RSA"
+        this.contains("/") -> substringBefore('/')
         else -> this
     }
 
@@ -270,9 +294,11 @@ fun pkcs1ToPkcs8(pkcs1: String) =
         }
 
 fun String.privateKeyDerivedPublicKey(alg: String = "RSA"): String =
-    PKCS8EncodedKeySpec(removePemInfo().base64Decode()).run {
-        with(KeyFactory.getInstance(alg).generatePrivate(this) as RSAPrivateCrtKey) {
-            KeyFactory.getInstance(alg)
+    PKCS8EncodedKeySpec(removePemInfo().keyAutoDecode()).run {
+        with(
+            KeyFactory.getInstance(alg.properKeyPairAlg()).generatePrivate(this) as RSAPrivateCrtKey
+        ) {
+            KeyFactory.getInstance(alg.properKeyPairAlg())
                 .generatePublic(RSAPublicKeySpec(modulus, publicExponent))
                 .encoded
                 .base64()
