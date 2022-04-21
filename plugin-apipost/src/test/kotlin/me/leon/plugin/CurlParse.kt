@@ -1,7 +1,6 @@
 package me.leon.plugin
 
-import me.leon.toolsfx.plugin.net.parseCurl
-import me.leon.toolsfx.plugin.net.removeFirstAndEndQuotes
+import me.leon.toolsfx.plugin.net.*
 import org.junit.Test
 
 class CurlParse {
@@ -63,5 +62,22 @@ class CurlParse {
         "\"Content-Type: application/json\"".removeFirstAndEndQuotes().also { println(it) }
         "'Content-Type: application/json".removeFirstAndEndQuotes().also { println(it) }
         "\"Content-Type: application/json".removeFirstAndEndQuotes().also { println(it) }
+    }
+
+    @Test
+    fun parseFile() {
+        "apiType=bilibili&token=5c483f653d928ef0c83d3547efb12792&image=@file".paramsParse().also {
+            println(it)
+        }
+        //        val raw ="""
+        //            curl https://www.hualigs.cn/api/upload
+        //            -X POST
+        //            -H "accept:application/json, text/javascript, */*; q=0.01"
+        //            -H "user-agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+        // like Gecko) Chrome/86.0.4240.198 Safari/537.36"
+        //            -d "apiType=bilibili&token=5c483f653d928ef0c83d3547efb12792&image=@file"
+        //        """.trimIndent()
+        //
+        //        println(raw.parseCurl())
     }
 }

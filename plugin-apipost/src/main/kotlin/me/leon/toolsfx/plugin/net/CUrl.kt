@@ -6,8 +6,9 @@ import me.leon.toolsfx.plugin.net.HttpUrlUtil.toParams
 
 fun String.paramsParse() =
     split("&").fold(mutableMapOf<String, Any>()) { acc, param ->
+        println(param)
         acc.apply {
-            if (isNotEmpty()) {
+            if (param.isNotEmpty()) {
                 val (key, value) = param.split("=")
                 acc[key] = value
             }
@@ -32,10 +33,12 @@ fun String.parseCurl() =
                             ("POST".takeIf { acc.method == "GET" } ?: acc.method).also {
                                 val value = s.removeFirstAndEndQuotes(3)
                                 if (value.contains("@file")) {
-                                    acc.params.putAll(
-                                        value.fromJson(MutableMap::class.java) as
-                                            Map<out String, Any>
-                                    )
+                                    if (value.startsWith("{") || value.startsWith("["))
+                                        acc.params.putAll(
+                                            value.fromJson(MutableMap::class.java) as
+                                                Map<out String, Any>
+                                        )
+                                    else acc.params.putAll(value.paramsParse().also { println(it) })
                                 } else if (this@parseCurl.contains(
                                         "Content-Type: application/json",
                                         true
