@@ -7,7 +7,6 @@ import me.leon.encode.base.base64
 import me.leon.ext.crypto.*
 import me.leon.ext.hex2ByteArray
 import me.leon.ext.toHex
-import org.bouncycastle.asn1.*
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -34,7 +33,7 @@ class AsymmetricTest {
     @Test
     fun rsaKey() {
 
-        genKeys("RSA", 2048).also {
+        genBase64KeyArray("RSA", 2048).also {
             println(it.joinToString("\n"))
             checkKeyPair(it[0], it[1])
         }
@@ -48,12 +47,12 @@ class AsymmetricTest {
     @Test
     fun sm2() {
         var alg = "SM2"
-        genKeys(alg, emptyList()).also {
+        genBase64KeyArray(alg, emptyList()).also {
             println(it.joinToString("\n"))
             checkKeyPair(it[0], it[1], alg)
         }
         alg = "ElGamal"
-        genKeys(alg, listOf(1024)).also {
+        genBase64KeyArray(alg, listOf(1024)).also {
             println(it.joinToString("\n"))
             checkKeyPair(it[0], it[1], alg)
         }

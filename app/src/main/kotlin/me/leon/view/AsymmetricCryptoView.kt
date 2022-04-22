@@ -195,7 +195,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 enableWhen(!isProcessing)
                 action {
                     isProcessing.value = true
-                    runAsync { genKeys(alg, listOf(selectedBits.value.toInt())) } ui
+                    runAsync { genBase64KeyArray(alg, listOf(selectedBits.value.toInt())) } ui
                         {
                             isProcessing.value = false
                             if (isPrivateKey) {

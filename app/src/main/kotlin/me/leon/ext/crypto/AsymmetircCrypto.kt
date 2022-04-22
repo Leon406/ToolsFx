@@ -197,13 +197,10 @@ fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): Byt
 fun ByteArray.privateEncrypt(key: String, alg: String, reserved: Int = 11): ByteArray =
     asymmetricEncrypt(key.toPrivateKey(alg), alg, reserved)
 
-fun PublicKey.bitLength() = (this as? RSAPublicKey)?.modulus?.bitLength() ?: 1024
-
-fun PrivateKey.bitLength() = (this as? RSAPrivateKey)?.modulus?.bitLength() ?: 1024
 
 /** 生成密钥对 private key pkcs8 */
-fun genKeys(alg: String, keySize: Int) =
-    KeyPairGenerator.getInstance(if (alg.contains("/")) alg.substringBefore('/') else alg).run {
+fun genBase64KeyArray(alg: String, keySize: Int) =
+    KeyPairGenerator.getInstance(alg.properKeyPairAlg()).run {
         initialize(keySize)
         val keyPair = generateKeyPair()
         val publicKey = keyPair.public
@@ -227,7 +224,10 @@ private val ecGenParameterSpec =
         "SM2" to "sm2p256v1"
     )
 
-fun genKeys(alg: String, params: List<Any> = emptyList()) =
+fun genBase64KeyArray(alg: String, params: List<Any> = emptyList()) =
+    with(genKeyPair(alg, params)) { arrayOf(public.encoded.base64(), private.encoded.base64()) }
+
+fun genKeyPair(alg: String, params: List<Any> = emptyList()): KeyPair =
     KeyPairGenerator.getInstance(alg.properKeyPairAlg(), BouncyCastleProvider.PROVIDER_NAME).run {
         when {
             alg == "SM2" -> initialize(ECGenParameterSpec(ecGenParameterSpec[alg.uppercase()]))
@@ -261,10 +261,7 @@ fun genKeys(alg: String, params: List<Any> = emptyList()) =
             else -> initialize(params[0] as Int)
         }
 
-        val keyPair = generateKeyPair()
-        val publicKey = keyPair.public
-        val privateKey = keyPair.private
-        arrayOf(publicKey.encoded.base64(), privateKey.encoded.base64())
+        generateKeyPair()
     }
 
 fun checkKeyPair(pub: String, pri: String, alg: String = "RSA"): Boolean {

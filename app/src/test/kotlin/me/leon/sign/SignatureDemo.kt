@@ -1,12 +1,14 @@
 package me.leon.sign
 
 import java.math.BigInteger
-import java.security.*
+import java.security.KeyPair
+import java.security.Security
 import me.leon.*
 import me.leon.encode.base.base64
-import me.leon.ext.crypto.sign
-import me.leon.ext.crypto.verify
+import me.leon.encode.base.base64UrlDecode2String
+import me.leon.ext.crypto.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.util.encoders.UrlBase64
 
 /** @link https://www.liaoxuefeng.com/wiki/1252599548343744/1304227943022626 */
 object SignatureDemo {
@@ -26,7 +28,7 @@ object SignatureDemo {
         val keyPairAlg = "SPHINCSPLUS"
         val sigAlg = "SPHINCSPLUS"
         repeat(sphincsPlusList.count()) {
-            val kp = generateKeyPair(keyPairAlg, 0, listOf(sphincsPlusList[it]))
+            val kp = genKeyPair(keyPairAlg, listOf(sphincsPlusList[it]))
             signTest(kp, sigAlg, keyPairAlg)
         }
     }
@@ -36,7 +38,7 @@ object SignatureDemo {
         val sigAlg = "LMS"
 
         for (sig in lmsSigList) for (param in lmsParamsList) {
-            val kp = generateKeyPair(keyPairAlg, 0, listOf(sig, param))
+            val kp = genKeyPair(keyPairAlg, listOf(sig, param))
             signTest(kp, sigAlg, keyPairAlg)
         }
     }
@@ -59,6 +61,7 @@ object SignatureDemo {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        println(UrlBase64.encode("1234".toByteArray()).decodeToString().base64UrlDecode2String())
         signShhincsPlusCheck()
         signLmsCheck()
         normal()
@@ -76,7 +79,7 @@ object SignatureDemo {
         //    val sigAlg = "SHA1withRSA"
         val sigAlg = "SHA1withRSA"
         // 生成公钥/私钥:
-        val kp = generateKeyPair(keyPairAlg, keySize)
+        val kp = genKeyPair(keyPairAlg, listOf(keySize))
         signTest(kp, sigAlg, keyPairAlg)
     }
 }
