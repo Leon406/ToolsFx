@@ -4,29 +4,62 @@ import java.io.File
 import javax.crypto.*
 import javax.crypto.spec.*
 
-fun ByteArray.encrypt(key: ByteArray, iv: ByteArray, alg: String): ByteArray =
-    makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE).doFinal(this)
+val AEAD_MODE_REG = "GCM|EAX|CCM|OCB".toRegex()
 
-fun ByteArray.decrypt(key: ByteArray, iv: ByteArray, alg: String): ByteArray =
-    makeCipher(alg, key, iv, Cipher.DECRYPT_MODE).doFinal(this)
+fun ByteArray.encrypt(
+    key: ByteArray,
+    iv: ByteArray,
+    alg: String,
+    associatedData: ByteArray = byteArrayOf()
+): ByteArray = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE, associatedData).doFinal(this)
 
-fun makeCipher(alg: String, key: ByteArray, iv: ByteArray, cipherMode: Int): Cipher =
+fun ByteArray.decrypt(
+    key: ByteArray,
+    iv: ByteArray,
+    alg: String,
+    associatedData: ByteArray = byteArrayOf()
+): ByteArray = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE, associatedData).doFinal(this)
+
+fun makeCipher(
+    alg: String,
+    key: ByteArray,
+    iv: ByteArray,
+    cipherMode: Int,
+    associatedData: ByteArray = byteArrayOf()
+): Cipher =
     Cipher.getInstance(alg).apply {
         val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
         if (alg.contains("ECB|RC4".toRegex())) init(cipherMode, keySpec)
         // require jdk 11
         else if (alg.equals("ChaCha20", true))
             init(cipherMode, keySpec, ChaCha20ParameterSpec(iv, 7))
-        else init(cipherMode, keySpec, IvParameterSpec(iv))
+        else
+            init(cipherMode, keySpec, IvParameterSpec(iv)).also {
+                if (alg.contains(AEAD_MODE_REG) && associatedData.isNotEmpty()) {
+                    updateAAD(associatedData)
+                }
+            }
     }
 
-fun String.encryptFile(key: ByteArray, iv: ByteArray, alg: String, outFileName: String) {
-    val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE)
+fun String.encryptFile(
+    key: ByteArray,
+    iv: ByteArray,
+    alg: String,
+    outFileName: String,
+    associatedData: ByteArray = byteArrayOf()
+) {
+    val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE, associatedData)
     doStreamCrypto(outFileName, cipher, this)
 }
 
-fun String.decryptFile(key: ByteArray, iv: ByteArray, alg: String, outFileName: String) {
-    val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE)
+fun String.decryptFile(
+    key: ByteArray,
+    iv: ByteArray,
+    alg: String,
+    outFileName: String,
+    associatedData: ByteArray = byteArrayOf()
+) {
+    val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE, associatedData)
     doStreamCrypto(outFileName, cipher, this)
 }
 

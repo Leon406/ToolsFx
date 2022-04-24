@@ -10,6 +10,7 @@ import me.leon.Styles
 import me.leon.component.KeyIvInputView
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.*
+import me.leon.ext.crypto.AEAD_MODE_REG
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -21,6 +22,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val isProcessing = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val isEnableIv = SimpleBooleanProperty(true)
+    private val isEnableAEAD = SimpleBooleanProperty(false)
     private val isEnableModAndPadding = SimpleBooleanProperty(true)
     private lateinit var taInput: TextArea
     private lateinit var tgInput: ToggleGroup
@@ -37,7 +39,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
         get() =
             "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} cost: $timeConsumption ms"
     private lateinit var labelInfo: Label
-    private val keyIvInputView = KeyIvInputView(isEnableIv)
+    private val keyIvInputView = KeyIvInputView(isEnableIv, isEnableAEAD)
     private var inputEncode = "raw"
     private var outputEncode = "base64"
     private val customAlg = arrayOf("XXTEA", "XOR")
@@ -173,7 +175,13 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             }
         }
         selectedMod.addListener { _, _, newValue ->
-            newValue?.run { isEnableIv.value = newValue != "ECB" }
+            newValue?.run {
+                isEnableIv.value = newValue != "ECB"
+                isEnableAEAD.value = newValue.contains(AEAD_MODE_REG)
+                if (isEnableAEAD.value) {
+                    selectedPadding.value = "NoPadding"
+                }
+            }
         }
 
         hbox {
@@ -245,7 +253,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                             keyIvInputView.keyByteArray,
                             it,
                             keyIvInputView.ivByteArray,
-                            cipher
+                            cipher,
+                            keyIvInputView.associatedData
                         )
                     }
                 else
@@ -257,7 +266,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                         selectedCharset.get(),
                         isSingleLine.get(),
                         inputEncode,
-                        outputEncode
+                        outputEncode,
+                        keyIvInputView.associatedData
                     )
             else if (isFile.get())
                 inputText.lineAction2String {
@@ -265,7 +275,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                         keyIvInputView.keyByteArray,
                         it,
                         keyIvInputView.ivByteArray,
-                        cipher
+                        cipher,
+                        keyIvInputView.associatedData
                     )
                 }
             else {
@@ -277,7 +288,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                     selectedCharset.get(),
                     isSingleLine.get(),
                     inputEncode,
-                    outputEncode
+                    outputEncode,
+                    keyIvInputView.associatedData
                 )
             }
         } ui

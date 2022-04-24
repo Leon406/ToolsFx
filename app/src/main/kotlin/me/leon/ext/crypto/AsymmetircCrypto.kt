@@ -197,7 +197,6 @@ fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): Byt
 fun ByteArray.privateEncrypt(key: String, alg: String, reserved: Int = 11): ByteArray =
     asymmetricEncrypt(key.toPrivateKey(alg), alg, reserved)
 
-
 /** 生成密钥对 private key pkcs8 */
 fun genBase64KeyArray(alg: String, keySize: Int) =
     KeyPairGenerator.getInstance(alg.properKeyPairAlg()).run {
