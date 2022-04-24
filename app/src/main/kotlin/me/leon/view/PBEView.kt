@@ -39,7 +39,11 @@ class PBEView : Fragment("PBE") {
     private var timeConsumption = 0L
     private var startTime = 0L
     private val info
-        get() = "PBE Cipher: $cipher   charset: ${selectedCharset.get()} cost: $timeConsumption ms"
+        get() =
+            "PBE Cipher: $cipher   charset: ${selectedCharset.get()} " +
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                "cost: $timeConsumption ms"
     private lateinit var infoLabel: Label
 
     private var saltEncode = "hex"

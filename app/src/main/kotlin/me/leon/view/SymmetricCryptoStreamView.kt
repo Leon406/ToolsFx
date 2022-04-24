@@ -33,7 +33,10 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private var startTime = 0L
     private val info
         get() =
-            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} cost: $timeConsumption ms"
+            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} " +
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                "cost: $timeConsumption ms"
     private lateinit var infoLabel: Label
     private val keyIvInputView = KeyIvInputView(isEnableIv)
     private var inputEncode = "raw"

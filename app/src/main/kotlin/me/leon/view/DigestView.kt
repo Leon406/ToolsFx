@@ -57,8 +57,11 @@ class DigestView : Fragment(messages["hash"]) {
     lateinit var cbBits: ComboBox<String>
     private val info
         get() =
-            "Hash: $method bits: ${selectedBits.get()} count: $times cost: $timeConsumption ms" +
-                "  file mode: ${isFileMode.get()}"
+            "Hash: $method bits: ${selectedBits.get()} " +
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                "count: $times cost: $timeConsumption ms  " +
+                "file mode: ${isFileMode.get()}"
 
     private var timeConsumption = 0L
     private var startTime = 0L
@@ -118,8 +121,10 @@ class DigestView : Fragment(messages["hash"]) {
                         newValue
                     } else {
                         isEnableFileMode.value = true
-                        "${selectedAlgItem.get()}${newValue
-                            .takeIf { ALGOS_HASH[selectedAlgItem.get()]!!.size > 1 } ?: ""}"
+                        "${selectedAlgItem.get()}${
+                            newValue
+                                .takeIf { ALGOS_HASH[selectedAlgItem.get()]!!.size > 1 } ?: ""
+                        }"
                             .replace("SHA2", "SHA-")
                             .replace(
                                 "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),

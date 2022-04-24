@@ -40,7 +40,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             "${selectedAlg.get()}  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) "private key encrypt"
                 else "public key encrypt"
-            } cost: $timeConsumption ms"
+            }" +
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                " cost: $timeConsumption ms"
     private val selectedPadding = SimpleStringProperty(RSA_PADDINGS.first())
     private lateinit var labelInfo: Label
     private var keyText: String

@@ -37,7 +37,10 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private var startTime = 0L
     private val info
         get() =
-            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} cost: $timeConsumption ms"
+            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode:  ${isFile.get()} " +
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                "cost: $timeConsumption ms"
     private lateinit var labelInfo: Label
     private val keyIvInputView = KeyIvInputView(isEnableIv, isEnableAEAD)
     private var inputEncode = "raw"

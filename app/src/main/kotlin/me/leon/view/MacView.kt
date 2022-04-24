@@ -50,7 +50,11 @@ class MacView : Fragment("MAC") {
     private val selectedBits = SimpleStringProperty(algorithm.values.first().first())
     private lateinit var cbBits: ComboBox<String>
     private val info
-        get() = "MAC: $method cost: $timeConsumption ms"
+        get() =
+            "MAC: $method " +
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                "cost: $timeConsumption ms"
     private var inputEncode = "raw"
     private var outputEncode = "hex"
     private lateinit var tgInput: ToggleGroup
