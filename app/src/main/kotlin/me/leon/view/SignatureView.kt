@@ -151,7 +151,9 @@ class SignatureView : Fragment(messages["signVerify"]) {
                 "${messages["outputLength"]}: ${signText.length}  " +
                 "cost: $timeConsumption ms"
     private var inputEncode = "raw"
+    private var outputEncode = "base64"
     private lateinit var tgInput: ToggleGroup
+    private lateinit var tgOutput: ToggleGroup
     private val centerNode = vbox {
         addClass(Styles.group)
         hbox {
@@ -233,7 +235,17 @@ class SignatureView : Fragment(messages["signVerify"]) {
             }
         }
         hbox {
+            addClass(Styles.left)
             label(messages["sig"])
+            tgOutput =
+                togglegroup {
+                    radiobutton("base64") { isSelected = true }
+                    radiobutton("hex")
+                    selectedToggleProperty().addListener { _, _, newValue ->
+                        outputEncode = newValue.cast<RadioButton>().text
+                    }
+                }
+
             button(graphic = imageview("/img/copy.png")) { action { signText.copy() } }
         }
 
@@ -258,6 +270,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                 key,
                 msg,
                 inputEncode,
+                outputEncode,
                 isSingleLine.get()
             )
         } ui
@@ -277,6 +290,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                 key,
                 msg,
                 inputEncode,
+                outputEncode,
                 signText,
                 isSingleLine.get()
             )
