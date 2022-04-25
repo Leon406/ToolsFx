@@ -108,11 +108,23 @@ class PBEView : Fragment("PBE") {
             tfPwd = textfield { promptText = messages["pwdHintNull"] }
 
             label(messages["keyLen"])
-            tfKeyLength = textfield("128") { prefWidth = DEFAULT_SPACING_8X }
+            tfKeyLength =
+                textfield("128") {
+                    prefWidth = DEFAULT_SPACING_8X
+                    textFormatter = intTextFormatter
+                }
             label(messages["saltLen"])
-            tfSaltLength = textfield("8") { prefWidth = DEFAULT_SPACING_8X }
+            tfSaltLength =
+                textfield("8") {
+                    prefWidth = DEFAULT_SPACING_8X
+                    textFormatter = intTextFormatter
+                }
             label("iteration:")
-            tfIteration = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
+            tfIteration =
+                textfield("1") {
+                    prefWidth = DEFAULT_SPACING_8X
+                    textFormatter = intTextFormatter
+                }
             label("salt:")
             tfSalt = textfield { promptText = "optional,可空" }
             vbox {

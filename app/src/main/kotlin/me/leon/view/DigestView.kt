@@ -146,6 +146,7 @@ class DigestView : Fragment(messages["hash"]) {
             label("times:")
             tfCount =
                 textfield("1") {
+                    textFormatter = intTextFormatter
                     prefWidth = DEFAULT_SPACING_8X
                     enableWhen(!isFileMode)
                 }

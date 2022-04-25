@@ -4,11 +4,11 @@ import cn.hutool.core.util.StrUtil
 import cn.hutool.crypto.SecureUtil
 import cn.hutool.crypto.SmUtil
 import cn.hutool.crypto.asymmetric.KeyType
+import kotlin.test.assertEquals
 import me.leon.encode.base.base64
 import me.leon.ext.crypto.allCurves
 import me.leon.ext.crypto.curveMultiply
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class Sm2Test {
 

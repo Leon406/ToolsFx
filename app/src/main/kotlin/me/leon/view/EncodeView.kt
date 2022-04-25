@@ -174,7 +174,11 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 }
 
                 label("times:")
-                tfCount = textfield("1") { prefWidth = DEFAULT_SPACING_8X }
+                tfCount =
+                    textfield("1") {
+                        textFormatter = intTextFormatter
+                        prefWidth = DEFAULT_SPACING_8X
+                    }
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncode = new.cast<RadioButton>().text == messages["encode"]
                     run()

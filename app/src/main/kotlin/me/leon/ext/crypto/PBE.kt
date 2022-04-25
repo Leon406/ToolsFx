@@ -11,21 +11,21 @@ import me.leon.encode.base.base64Decode
 object PBE {
     val PBE_HMAC =
         arrayOf(
-            "PBEWithHMACTIGER",
-            "PBEWithHMACSHA256",
-            "PBKDF2WithHMACSHA256",
-            "PBKDF2WithHMACSHA224",
-            "PBEWithHMACRIPEMD160",
-            "PBKDF2WithHMACSHA3-384",
-            "PBKDF2WithHMACGOST3411",
-            "PBKDF2WithHMACSM3",
-            "PBKDF2WithHMACSHA384",
-            "PBKDF2WithHMACSHA3-512",
-            "PBKDF2WithHMACSHA512",
-            "PBEWithHMACSHA1",
-            "PBEWithHMACGOST3411",
-            "PBKDF2WithHMACSHA3-256",
-            "PBKDF2WithHMACSHA3-224",
+            "PBKDF2WithHmacSHA1",
+            "PBKDF2WithHmacSHA224",
+            "PBKDF2WithHmacSHA256",
+            "PBKDF2WithHmacSHA384",
+            "PBKDF2WithHmacSHA512",
+            "PBKDF2WithHmacGOST3411",
+            "PBKDF2WithHmacSHA3-224",
+            "PBKDF2WithHmacSHA3-256",
+            "PBKDF2WithHmacSHA3-384",
+            "PBKDF2WithHmacSHA3-512",
+            "PBEWithHmacTIGER",
+            "PBEWithHmacSHA256",
+            "PBEWithHmacRIPEMD160",
+            "PBEWithHmacGOST3411",
+            "PBKDF2WithHmacSM3",
         )
 
     val PBE_CRYPTO =
@@ -87,7 +87,7 @@ object PBE {
     ): String {
         val base64Decode = data.base64Decode()
         val salt = base64Decode.sliceArray(8 until (8 + saltLength))
-        if (alg.contains("HMAC"))
+        if (alg.contains("HMAC", true))
             return generatePBEKey(key, salt, alg, keyLength, iteration).encoded.base64()
         val cipher = makeCipher(alg, key, salt, iteration, keyLength, Cipher.DECRYPT_MODE)
         return cipher
@@ -118,7 +118,7 @@ object PBE {
         iteration: Int,
         keyLength: Int
     ): String {
-        if (alg.contains("HMAC"))
+        if (alg.contains("HMAC", true))
             return generatePBEKey(password, salt, alg, keyLength, iteration).encoded.base64()
         val cipher = makeCipher(alg, password, salt, iteration, keyLength, Cipher.ENCRYPT_MODE)
         // openssl
