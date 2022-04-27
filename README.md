@@ -307,7 +307,7 @@ see [changelog.md](changelog.md)
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/Leon406/ToolsFx.svg)](https://starchart.cc/Leon406/ToolsFx)
+[![Stargazers over time](https://starchart.cc/Leon406/ToolsFx.svg)](https://starchart.cc/Leon406/ToolsFx) [![Join the chat at https://gitter.im/ToolsFx/community](https://badges.gitter.im/ToolsFx/community.svg)](https://gitter.im/ToolsFx/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## LICENSE
 
