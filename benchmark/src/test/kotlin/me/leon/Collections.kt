@@ -1,6 +1,7 @@
 package me.leon
 
 import androidx.collection.*
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.test.Test
 import org.openjdk.jol.info.GraphLayout
 
@@ -70,6 +71,7 @@ class Collections {
             println("linkedSetOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
         }
     }
+
     @Test
     fun listMemory() {
         arrayMapOf(1 to POJO(), 2 to POJO(), 3 to POJO(), 4 to POJO()).also {
@@ -93,5 +95,33 @@ class Collections {
         mutableListOf(POJO(), POJO(), POJO(), POJO()).also {
             println("mutableListOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
         }
+    }
+
+    @Test
+    fun mapMemory() {
+        // 1个空间节省 4 个字节
+        HashMap<String, String>(4)
+            .apply {
+                put("111", "11")
+                put("22", "22")
+                put("33", "333")
+                //            put("44", "333")
+            }
+            .also {
+                println(GraphLayout.parseInstance(it).toPrintable())
+                println(GraphLayout.parseInstance(it).totalSize())
+            }
+
+        // 1个空间节省 4个字节
+        ConcurrentHashMap<String, String>()
+            .apply {
+                put("111", "11")
+                put("22", "22")
+                put("33", "333")
+            }
+            .also {
+                println(GraphLayout.parseInstance(it).toPrintable())
+                println(GraphLayout.parseInstance(it).totalSize())
+            }
     }
 }
