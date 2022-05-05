@@ -14,13 +14,12 @@ import java.util.regex.PatternSyntaxException;
 /** javac -encoding UTF-8 Translator.java -Xlint:unchecked */
 public class Translator {
     static boolean debug;
-    Map<String, String> literal = new HashMap(2048);
+    Map<String, String> literal = new HashMap<>(2048);
     static List<String> white = new ArrayList<>(512);
-    Map<Pattern, String> regexp = new HashMap(256);
-    private static Map<String, Translator> map = new HashMap(2);
-    static final Pattern pattern = Pattern.compile(".*\\$[0-9].*");
+    Map<Pattern, String> regexp = new HashMap<>(256);
+    private static Map<String, Translator> map = new HashMap<>(2);
+    static final Pattern pattern = Pattern.compile(".*\\$\\d.*");
     static final Pattern patternChinese = Pattern.compile("[\u4e00-\u9fa5]+");
-    // 无字母字符串, Windows文件路径, 类Linux文件路径,Http请求,Http请求响应字符串
     static final Pattern patternBypass =
             Pattern.compile("^[^a-zA-Z]+$|^[A-Z]:|^/|[A-Z]{3,} /.*? HTTP/|HTTP/[\\d.]+ \\d+");
 

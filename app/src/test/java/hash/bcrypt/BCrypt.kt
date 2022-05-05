@@ -15,6 +15,7 @@ package hash.bcrypt
 
 import java.security.MessageDigest
 import java.security.SecureRandom
+import java.util.Arrays
 import kotlin.experimental.and
 
 /**
@@ -240,7 +241,7 @@ class BCrypt {
             }
             i++
         }
-        var ret = ByteArray(clen * 4)
+        val ret = ByteArray(clen * 4)
         i = 0
         j = 0
         while (i < clen) {

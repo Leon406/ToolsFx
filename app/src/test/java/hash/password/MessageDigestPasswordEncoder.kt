@@ -60,11 +60,8 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
     private val saltGenerator: StringKeyGenerator = Base64StringKeyGenerator()
     var encodeHashAsBase64 = false
 
-    private val digester: Digester
+    private val digester: Digester = Digester(algorithm, 1)
 
-    init {
-        digester = Digester(algorithm, 1)
-    }
 
     /**
      * Encodes the rawPass using a MessageDigest. If a salt is specified it will be merged with the

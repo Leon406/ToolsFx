@@ -27,7 +27,7 @@ import java.security.SecureRandom
 internal class SecureRandomBytesKeyGenerator
 @JvmOverloads
 constructor(override val keyLength: Int = DEFAULT_KEY_LENGTH) : BytesKeyGenerator {
-    private val random: SecureRandom = SecureRandom()
+    private val random = SecureRandom()
 
     override fun generateKey(): ByteArray {
         val bytes = ByteArray(keyLength)
