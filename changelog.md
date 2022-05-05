@@ -1,4 +1,4 @@
-<img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
+ <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
 <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx:: Visitor's Count" />
 
 # v1.5.0  
@@ -213,3 +213,9 @@
 - fix(app): 大数开根精度丢失
 - fix(app): 正式版升级提示
 - fix(app): base64Url编码包含=
+# v1.12.5.beta01  
+## feature:  
+- feat(app): 内嵌浏览器支持系统浏览器打开,美化UI
+- feat(app): 新增hash字典爆破,可配置多个字典
+- feat(app): 编码支持一键爆破/hash支持base64编码
+- feat(app): TextField限制数字输入
