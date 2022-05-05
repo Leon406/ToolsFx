@@ -17,7 +17,6 @@ package hash.argon2
 
 import java.util.Base64
 import org.bouncycastle.crypto.params.Argon2Parameters
-import org.bouncycastle.util.Arrays
 
 /**
  * Utility for encoding and decoding Argon2 hashes.
@@ -126,5 +125,4 @@ internal object Argon2EncodingUtils {
     }
 
     internal class Argon2Hash(var hash: ByteArray, val parameters: Argon2Parameters)
-
 }

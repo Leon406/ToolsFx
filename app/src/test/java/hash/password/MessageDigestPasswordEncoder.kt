@@ -62,7 +62,6 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
 
     private val digester: Digester = Digester(algorithm, 1)
 
-
     /**
      * Encodes the rawPass using a MessageDigest. If a salt is specified it will be merged with the
      * password before encoding.

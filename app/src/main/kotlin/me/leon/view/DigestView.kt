@@ -60,10 +60,10 @@ class DigestView : Fragment(messages["hash"]) {
     private val info
         get() =
             "Hash: $method bits: ${selectedBits.get()} " +
-                    "${messages["inputLength"]}: ${inputText.length}  " +
-                    "${messages["outputLength"]}: ${outputText.length}  " +
-                    "count: $times cost: $timeConsumption ms  " +
-                    "file mode: ${isFileMode.get()}"
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                "count: $times cost: $timeConsumption ms  " +
+                "file mode: ${isFileMode.get()}"
 
     private var timeConsumption = 0L
     private var startTime = 0L
@@ -168,7 +168,9 @@ class DigestView : Fragment(messages["hash"]) {
                 contextmenu {
                     item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
                     item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
-                    item("base64") { action { taOutput.text = taOutput.text.hex2ByteArray().base64() } }
+                    item("base64") {
+                        action { taOutput.text = taOutput.text.hex2ByteArray().base64() }
+                    }
                     item("hex") { action { taOutput.text = taOutput.text.base64Decode().toHex() } }
                 }
             }
@@ -191,12 +193,12 @@ class DigestView : Fragment(messages["hash"]) {
                 result
             }
         } ui
-                {
-                    isProcessing.value = false
-                    outputText = it
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
-                    if (Prefs.autoCopy)
-                        outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-                }
+            {
+                isProcessing.value = false
+                outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
 }

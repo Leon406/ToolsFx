@@ -35,15 +35,15 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val info: String
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
-                    " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "count: $times cost: $timeConsumption ms"
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "count: $times cost: $timeConsumption ms"
     private val inputText: String
         get() =
             taInput.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                ?: taInput.text.stripAllSpace()
+                    ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
 
@@ -99,9 +99,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
-                                    {
-                                        taInput.text = it
-                                    }
+                                {
+                                    taInput.text = it
+                                }
                         }
                     }
                     item(messages["readHeadersFromNet"]) {
@@ -251,37 +251,33 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         )
             }
         } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text = result
-                    if (Prefs.autoCopy)
-                        outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
-                }
+            {
+                isProcessing.value = false
+                taOutput.text = result
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+            }
     }
 
     private fun crack() {
         runAsync {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
-            EncodeType.values().map {
-                it.type + " :\t" +
-                        controller.decode2String(
-                            inputText,
-                            it,
-                            "",
-                            selectedCharset.get(),
-                            false
-                        )
-            }.joinToString("\n")
-
-        } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text = it
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
+            EncodeType.values()
+                .map {
+                    it.type +
+                        " :\t" +
+                        controller.decode2String(inputText, it, "", selectedCharset.get(), false)
                 }
+                .joinToString("\n")
+        } ui
+            {
+                isProcessing.value = false
+                taOutput.text = it
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+            }
     }
 }

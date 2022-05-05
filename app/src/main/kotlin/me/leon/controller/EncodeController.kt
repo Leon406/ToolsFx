@@ -1,7 +1,7 @@
 package me.leon.controller
 
-import me.leon.ext.*
 import java.nio.charset.Charset
+import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
 import tornadofx.*
 
