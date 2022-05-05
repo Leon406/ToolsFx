@@ -41,11 +41,10 @@ class DigestController : Controller() {
             else path.fileHash(method)
         }
 
+    // 首次加载1400W, 8s,  100w md5 1s  21c40fc4ddd462df2509b232fef4ec6c
+    // 1400w 14s md5  dd2978f9ae7014cd2d1884c5a1bbbca2
     fun crack(method: String, data: String) =
         catch({ "digest crack error: $it" }) {
-            dicts.find { pw ->
-                digest(method, pw, "raw", false).also { println("$pw  $it") }.equals(data, true)
-            }
-                ?: ""
+            dicts.find { pw -> digest(method, pw, "raw") == data } ?: ""
         }
 }
