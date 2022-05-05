@@ -28,7 +28,7 @@ dependencies {
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
     api("com.google.code.gson:gson:2.9.0")
     implementation(project(":plugin-lib"))
-    implementation("org.openjdk.nashorn:nashorn-core:15.3")
+    implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
     testImplementation ("cn.hutool:hutool-all:5.8.0.M3")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")

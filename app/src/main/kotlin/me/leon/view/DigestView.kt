@@ -7,6 +7,8 @@ import javafx.scene.control.*
 import me.leon.ALGOS_HASH
 import me.leon.Styles
 import me.leon.controller.DigestController
+import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import tornadofx.*
@@ -58,10 +60,10 @@ class DigestView : Fragment(messages["hash"]) {
     private val info
         get() =
             "Hash: $method bits: ${selectedBits.get()} " +
-                "${messages["inputLength"]}: ${inputText.length}  " +
-                "${messages["outputLength"]}: ${outputText.length}  " +
-                "count: $times cost: $timeConsumption ms  " +
-                "file mode: ${isFileMode.get()}"
+                    "${messages["inputLength"]}: ${inputText.length}  " +
+                    "${messages["outputLength"]}: ${outputText.length}  " +
+                    "count: $times cost: $timeConsumption ms  " +
+                    "file mode: ${isFileMode.get()}"
 
     private var timeConsumption = 0L
     private var startTime = 0L
@@ -163,6 +165,12 @@ class DigestView : Fragment(messages["hash"]) {
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
+                contextmenu {
+                    item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
+                    item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
+                    item("base64") { action { taOutput.text = taOutput.text.hex2ByteArray().base64() } }
+                    item("hex") { action { taOutput.text = taOutput.text.base64Decode().toHex() } }
+                }
             }
     }
     override val root = borderpane {
@@ -183,12 +191,12 @@ class DigestView : Fragment(messages["hash"]) {
                 result
             }
         } ui
-            {
-                isProcessing.value = false
-                outputText = it
-                timeConsumption = System.currentTimeMillis() - startTime
-                labelInfo.text = info
-                if (Prefs.autoCopy)
-                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-            }
+                {
+                    isProcessing.value = false
+                    outputText = it
+                    timeConsumption = System.currentTimeMillis() - startTime
+                    labelInfo.text = info
+                    if (Prefs.autoCopy)
+                        outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
 }

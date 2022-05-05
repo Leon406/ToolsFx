@@ -98,7 +98,7 @@ class BigIntFragment : Fragment("BigInt") {
                     enableWhen(!isProcessing)
                     action { calculate() }
                 }
-                button("ECC Calculator") { action { find<ECCurveCalculator>().openWindow() } }
+                button("ECC Calc") { action { find<ECCurveCalculator>().openWindow() } }
             }
             outputLayout(this)
         }

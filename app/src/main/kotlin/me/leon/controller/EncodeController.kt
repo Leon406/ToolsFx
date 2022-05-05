@@ -1,9 +1,8 @@
 package me.leon.controller
 
+import me.leon.ext.*
 import java.nio.charset.Charset
-import me.leon.ext.catch
 import me.leon.ext.crypto.EncodeType
-import me.leon.ext.lineAction2String
 import tornadofx.*
 
 class EncodeController : Controller() {
@@ -51,7 +50,7 @@ class EncodeController : Controller() {
         dic: String = "",
         charset: String = "UTF-8"
     ): ByteArray =
-        catch({ "解码错误: $it".toByteArray() }) {
+        catch({ "解码错误: ${it.lineSplit().first()}".toByteArray() }) {
             println("decode $type $dic $charset $encoded")
             if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
         }

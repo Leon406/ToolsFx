@@ -27,11 +27,6 @@ class AboutView : Fragment(messages["about"]) {
         text("Build: $BUILD_DATE")
         text("JRE: ${System.getProperty("java.runtime.version")}")
         text("VM: ${System.getProperty("java.vm.name")}")
-        hyperlink("吾爱破解地址").action { PJ52_URL.openInBrowser() }
-        hyperlink("github开源地址") {
-            font = Font.font(18.0)
-            action { REPO_URL.openInBrowser() }
-        }
         hyperlink("feedback").action { REPO_ISSUE.openInBrowser() }
         hyperlink(messages["license"]).action { LICENSE.openInBrowser() }
         button(messages["checkUpdate"]) {
