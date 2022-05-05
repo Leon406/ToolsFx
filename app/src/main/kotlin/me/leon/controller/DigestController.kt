@@ -1,12 +1,15 @@
 package me.leon.controller
 
+import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.crypto.*
-import me.leon.fileHash
-import me.leon.hash2String
 import tornadofx.*
 
 class DigestController : Controller() {
+    private val dicts by lazy {
+        DICT_DIR.toFile().listFiles()?.flatMap { it.readLines() }?.distinct() ?: listOf()
+    }
+
     fun digest(
         method: String,
         data: String,
@@ -36,5 +39,13 @@ class DigestController : Controller() {
             else if (method == "Adler32") path.adler32File()
             else if (method.passwordHashingType() != null) kotlin.error("not support")
             else path.fileHash(method)
+        }
+
+    fun crack(method: String, data: String) =
+        catch({ "digest crack error: $it" }) {
+            dicts.find { pw ->
+                digest(method, pw, "raw", false).also { println("$pw  $it") }.equals(data, true)
+            }
+                ?: ""
         }
 }

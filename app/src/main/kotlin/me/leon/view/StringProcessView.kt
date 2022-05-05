@@ -61,9 +61,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private var timeConsumption = 0L
     private val info: String
         get() =
-            " ${messages["inputLength"]}:" +
-                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                "lines(input/output):${inputText.lineCount()} / ${outputText.lineCount()} " +
+            " ${messages["inputLength"]}: " +
+                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
                 "cost: $timeConsumption ms"
     private var inputText: String
         get() =

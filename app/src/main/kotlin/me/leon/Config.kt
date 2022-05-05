@@ -16,3 +16,4 @@ const val DEV_UPDATE_URL2 =
     "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/dev/update.json"
 const val LICENSE = "https://cdn.staticaly.com/gh/Leon406/ToolsFx/main/LICENSE"
 val APP_ROOT: String = File("").absolutePath
+val DICT_DIR: String = "$APP_ROOT/dict"

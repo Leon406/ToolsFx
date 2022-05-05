@@ -156,6 +156,13 @@ class DigestView : Fragment(messages["hash"]) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
+            button("crack") {
+                enableWhen(!isProcessing)
+                action { crack() }
+                tooltip("default top1000 password, you can add your dict file at /dict") {
+                    isWrapText = true
+                }
+            }
         }
         hbox {
             label(messages["output"])
@@ -175,6 +182,27 @@ class DigestView : Fragment(messages["hash"]) {
                 }
             }
     }
+
+    private fun crack() {
+        runAsync {
+            isProcessing.value = true
+            startTime = System.currentTimeMillis()
+            val target =
+                inputText
+                    .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
+                    .encodeTo("hex")
+            controller.crack(method, target)
+        } ui
+            {
+                isProcessing.value = false
+                outputText = it
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+                if (Prefs.autoCopy)
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
+    }
+
     override val root = borderpane {
         center = centerNode
         bottom = hbox { labelInfo = label(info) }
