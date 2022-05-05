@@ -188,7 +188,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 enableWhen(!isProcessing)
                 action { run() }
             }
-            button("crack") {
+            button("crack", imageview("/img/crack.png")) {
                 enableWhen(!isProcessing)
                 action { crack() }
             }

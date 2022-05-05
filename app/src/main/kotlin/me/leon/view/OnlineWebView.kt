@@ -7,6 +7,7 @@ import javafx.scene.web.WebView
 import me.leon.Styles
 import me.leon.ToolsApp
 import me.leon.ext.DEFAULT_SPACING_40X
+import me.leon.ext.fx.openInBrowser
 import tornadofx.*
 
 class OnlineWebView : Fragment("Browser") {
@@ -54,8 +55,8 @@ class OnlineWebView : Fragment("Browser") {
                 button(graphic = imageview("/img/run.png")) {
                     action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
                 }
-                button(graphic = imageview("/img/openwindow.png")) {
-                    action { find<OnlineWebView>().openWindow() }
+                button(graphic = imageview("/img/browser.png")) {
+                    action { tfUrl.text.openInBrowser() }
                 }
             }
         center =

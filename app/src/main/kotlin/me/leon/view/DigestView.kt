@@ -156,12 +156,15 @@ class DigestView : Fragment(messages["hash"]) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
-            button("crack") {
+            button("crack", imageview("/img/crack.png")) {
                 enableWhen(!isProcessing)
                 action { crack() }
                 tooltip("default top1000 password, you can add your dict file at /dict") {
                     isWrapText = true
                 }
+            }
+            button("cmd5", imageview("/img/browser.png")) {
+                action { "https://www.cmd5.com/".openInBrowser() }
             }
         }
         hbox {
