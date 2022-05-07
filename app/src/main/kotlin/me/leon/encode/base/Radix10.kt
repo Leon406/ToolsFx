@@ -1,7 +1,7 @@
 package me.leon.encode.base
 
-import me.leon.toBigInteger
+private const val RADIX = 10
+private const val RADIX10_DICT = "0123456789"
+fun ByteArray.radix10(): String = radixNEncode(RADIX, RADIX10_DICT)
 
-fun ByteArray.radix10(): String = toBigInteger().toString(10)
-
-fun String.radix10Decode(): ByteArray = toBigInteger(10).toByteArray()
+fun String.radix10Decode(): ByteArray = radixNDecode(RADIX, RADIX10_DICT)

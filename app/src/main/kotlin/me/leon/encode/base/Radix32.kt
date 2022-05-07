@@ -1,7 +1,7 @@
 package me.leon.encode.base
 
-import me.leon.toBigInteger
+private const val RADIX = 32
+private const val RADIX32_DICT = "0123456789abcdefghijklmnopqrstuv"
+fun ByteArray.radix32(): String = radixNEncode(RADIX, RADIX32_DICT)
 
-fun ByteArray.radix32(): String = toBigInteger().toString(32)
-
-fun String.radix32Decode(): ByteArray = toBigInteger(32).toByteArray()
+fun String.radix32Decode(): ByteArray = radixNDecode(RADIX, RADIX32_DICT)
