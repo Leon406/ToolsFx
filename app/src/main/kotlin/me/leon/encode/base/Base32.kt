@@ -13,8 +13,6 @@ fun ByteArray.base32(dict: String = BASE32_DICT) =
         }
         .padding("=", BYTE_BITS) // lcm (5,8) /5 = 8
 
-fun String.base32(dict: String = BASE32_DICT) = toByteArray().base32(dict)
-
 fun String.base32Decode(dict: String = BASE32_DICT) =
     toCharArray()
         .filter { it != '=' }
@@ -29,5 +27,3 @@ fun String.base32Decode(dict: String = BASE32_DICT) =
         .map { it.toInt(2).toByte() }
         .filter { it.toInt() != 0 }
         .toByteArray()
-
-fun String.base32Decode2String(dict: String = BASE32_DICT) = String(base32Decode(dict))

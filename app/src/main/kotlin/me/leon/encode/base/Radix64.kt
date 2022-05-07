@@ -10,5 +10,3 @@ fun String.radix64(charset: Charset = Charsets.UTF_8) =
 fun ByteArray.radix64() = base64(RADIX64_DICT, false)
 
 fun String.radix64Decode() = base64Decode(RADIX64_DICT)
-
-fun String.radix64Decode2String() = base64Decode2String(RADIX64_DICT)

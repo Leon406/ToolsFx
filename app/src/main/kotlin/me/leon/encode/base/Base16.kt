@@ -11,8 +11,6 @@ fun ByteArray.base16(dict: String = BASE16_DICT) =
         dict.ifEmpty { BASE16_DICT }[it.padding("0", BASE16_BLOCK_SIZE).toInt(2)].toString()
     }
 
-fun String.base16(dict: String = BASE16_DICT) = toByteArray().base16(dict)
-
 fun String.base16Decode(dict: String = BASE16_DICT) =
     toCharArray()
         .joinToString("") {
@@ -26,5 +24,3 @@ fun String.base16Decode(dict: String = BASE16_DICT) =
         .map { it.toInt(2).toByte() }
         .filter { it.toInt() != 0 }
         .toByteArray()
-
-fun String.base16Decode2String(dict: String = BASE16_DICT) = String(base16Decode(dict))

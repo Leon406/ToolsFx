@@ -278,4 +278,23 @@ class EncodeTest {
         assertEquals("KRGxLBS", "12345".radix64())
         assertEquals("KRGxLBS0", "123456".radix64())
     }
+
+    @Test
+    fun radix() {
+        val raw =
+            "19WIG196SRWK1R6OGHT6EPDXM48A1RT5SSWKMVNZN1W46WGFF15F3NV9WN5CDK7WZTR0HXXJLWZ89KSPOQS1BYQRY53FIBPAL" +
+                "3NH4H9VQDYBOUWDZ1BTLGETOD1CJNESMW48BPM1WNFZZSZGEVYNNSCDLR6X754LJIGIPCKHJV8RMZOH6OQ4X5XELVH1L" +
+                "73G4B5GQ83O4N8802OPP83510DUT2H4YJORJMVIVIZ4STKI1BAZ4R5VP1MM3Z2HHNLZ108JUA5IFPJL21U8TVL5IH6" +
+                "LQTHDFH9YOIZJVKZY0IRVXDMOFI7LAXB2P50RAP6H33UHGMDR4TV0TN3H2YBXM11Z8FONNAOEGL31AN42OTX7LZX61" +
+                "F98G32KJFGPP6WD1ZFWMUKBH7FMT"
+
+        //        BigInteger(raw, 36).toString(10).also {
+        //            println(it)
+        //        }
+
+        EncodeType.Base36.decode(raw, "", "UTF-8").also {
+            println(it)
+            EncodeType.Radix10.encode2String(it, "", "UTF-8").also { println(it) }
+        }
+    }
 }

@@ -149,7 +149,6 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                             if (it.value == EncodeType.UrlEncode) isSelected = true
                         }
                     }
-                    selectedToggleProperty().get()
                     selectedToggleProperty().addListener { _, _, new ->
                         dstEncodeType = new.cast<RadioButton>().text.encodeType()
                         run()
