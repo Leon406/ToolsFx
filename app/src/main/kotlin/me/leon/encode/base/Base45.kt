@@ -11,7 +11,7 @@ fun String.base45(dict: String = BASE45_DICT, charset: String = "UTF-8") =
 
 fun ByteArray.base45(dict: String = BASE45_DICT) =
     toList().chunked(2).joinToString("") {
-        with(it.toByteArray().baseNEncode(45, dict).reversed()) {
+        with(it.toByteArray().radixNEncode(45, dict).reversed()) {
             if (length == 1) "${this[0]}0" else this
         }
     }
@@ -20,7 +20,7 @@ fun String.base45Decode(dict: String = BASE45_DICT) =
     chunked(3)
         .map {
             val prop = if (it.length == 2 && it[1] == '0') it[0].toString() else it
-            prop.reversed().baseNDecode(45, dict)
+            prop.reversed().radixNDecode(45, dict)
         }
         .flatMap { it.toList() }
         .toByteArray()

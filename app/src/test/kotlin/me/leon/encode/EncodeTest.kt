@@ -31,16 +31,16 @@ class EncodeTest {
 
         val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
         assertEquals(base32, controller.encode2String(raw, EncodeType.Base32))
-        assertEquals(base32, raw.baseNEncode(32, BASE32_DICT))
+        assertEquals(base32, raw.radixNEncode(32, BASE32_DICT))
         assertEquals(raw, controller.decode2String(base32, EncodeType.Base32))
-        assertEquals(raw, base32.baseNDecode2String(32, BASE32_DICT))
+        assertEquals(raw, base32.radixNDecode2String(32, BASE32_DICT))
 
         val base16 =
             "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
         assertEquals(base16, controller.encode2String(raw, EncodeType.Base16))
-        assertEquals(base16, raw.baseNEncode(16, BASE16_DICT))
+        assertEquals(base16, raw.radixNEncode(16, BASE16_DICT))
         assertEquals(raw, controller.decode2String(base16, EncodeType.Base16))
-        assertEquals(raw, base16.baseNDecode2String(16, BASE16_DICT))
+        assertEquals(raw, base16.radixNDecode2String(16, BASE16_DICT))
 
         val binary =
             "1110010110111100100000001110010110001111100100011110010110110111101001011110010110000" +
@@ -80,16 +80,16 @@ class EncodeTest {
         // test url https://www.better-converter.com/Encoders-Decoders/Base62-Encode
         val base62Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         val base62 = "JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju"
-        assertEquals(base62, raw.baseNEncode(62, base62Map))
+        assertEquals(base62, raw.radixNEncode(62, base62Map))
         assertEquals(base62, raw.base62())
-        assertEquals(raw, base62.baseNDecode2String(62, base62Map))
+        assertEquals(raw, base62.radixNDecode2String(62, base62Map))
         assertEquals(raw, base62.base62Decode2String())
 
         val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         val base36 = "MAHJV1X5YMIHRRDJ0HQLTZ0WNFLYDP0W01ME2E8MTAT3QNDXRXGNH7HJYAYY5Q"
-        assertEquals(base36, raw.baseNEncode(36, base36Map))
+        assertEquals(base36, raw.radixNEncode(36, base36Map))
         assertEquals(base36, raw.base36())
-        assertEquals(raw, base36.baseNDecode2String(36, base36Map))
+        assertEquals(raw, base36.radixNDecode2String(36, base36Map))
         assertEquals(raw, base36.base36Decode2String())
     }
 
@@ -98,8 +98,8 @@ class EncodeTest {
         val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         val encoded = "MAHJV1X5YMIHRRDJ0HQLTZ0WNFLYDP0W01ME2E8MTAT3QNDXRXGNH7HJYAYY5Q"
 
-        assertEquals(encoded, raw.baseNEncode(36, base36Map))
-        assertEquals(raw, encoded.baseNDecode2String(36, base36Map))
+        assertEquals(encoded, raw.radixNEncode(36, base36Map))
+        assertEquals(raw, encoded.radixNDecode2String(36, base36Map))
     }
 
     @Test
