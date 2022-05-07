@@ -95,6 +95,22 @@ class Collections {
         mutableListOf(POJO(), POJO(), POJO(), POJO()).also {
             println("mutableListOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
         }
+        // 1个空间节省 4 个字节
+        ArrayList<POJO>()
+            .apply {
+                add(POJO("a"))
+                add(POJO("b"))
+                add(POJO("c"))
+                add(POJO("d"))
+            }
+            .also {
+                println("ArrayList :\n ${GraphLayout.parseInstance(it).toPrintable()}")
+                println("ArrayList :\n ${GraphLayout.parseInstance(it).totalSize()}")
+            }
+
+        mutableListOf(POJO(), POJO(), POJO(), POJO()).also {
+            println("mutableListOf :\n ${GraphLayout.parseInstance(it).toFootprint()}")
+        }
     }
 
     @Test
