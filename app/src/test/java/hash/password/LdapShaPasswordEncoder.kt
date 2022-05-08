@@ -19,7 +19,6 @@ import hash.keygen.BytesKeyGenerator
 import hash.keygen.KeyGenerators.secureRandom
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import java.util.Locale
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 
@@ -62,7 +61,7 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
 
     fun encode(rawPassword: CharSequence, salt: ByteArray?): String {
         val sha = getSha(rawPassword)
-        if (salt != null) {
+        if (salt != null && salt.isNotEmpty()) {
             sha.update(salt)
         }
         val hash = combineHashAndSalt(sha.digest(), salt)
@@ -107,13 +106,11 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
     }
 
     private fun matches(rawPassword: String, encodedPassword: String): Boolean {
-        val prefix =
-            extractPrefix(encodedPassword)
-                ?: return PasswordEncoderUtils.equals(encodedPassword, rawPassword)
+        val prefix = extractPrefix(encodedPassword) ?: return encodedPassword == rawPassword
         val salt = getSalt(encodedPassword, prefix)
         val startOfHash = prefix.length
         val encodedRawPass = encode(rawPassword, salt).substring(startOfHash)
-        return PasswordEncoderUtils.equals(encodedRawPass, encodedPassword.substring(startOfHash))
+        return encodedRawPass == encodedPassword.substring(startOfHash)
     }
 
     private fun getSalt(encodedPassword: String, prefix: String): ByteArray? {
@@ -145,8 +142,8 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
         /** The number of bytes in SHA hash */
         private const val SHA_LENGTH = 20
         private const val SSHA_PREFIX = "{SSHA}"
-        private val SSHA_PREFIX_LC = SSHA_PREFIX.lowercase(Locale.getDefault())
+        private val SSHA_PREFIX_LC = SSHA_PREFIX.lowercase()
         private const val SHA_PREFIX = "{SHA}"
-        private val SHA_PREFIX_LC = SHA_PREFIX.lowercase(Locale.getDefault())
+        private val SHA_PREFIX_LC = SHA_PREFIX.lowercase()
     }
 }

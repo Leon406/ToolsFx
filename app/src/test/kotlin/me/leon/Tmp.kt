@@ -25,6 +25,8 @@ class Tmp {
         encoders["scrypt"] = SCryptPasswordEncoder()
         encoders["ldap"] = LdapShaPasswordEncoder()
         encoders["pbkdf2"] = Pbkdf2PasswordEncoder()
+
+        // 结果salt在前面, 编码salt在后
         encoders["MD4"] = MessageDigestPasswordEncoder("MD4")
         encoders["MD5"] = MessageDigestPasswordEncoder("MD5")
         encoders["SHA-1"] = MessageDigestPasswordEncoder("SHA-1")
@@ -39,13 +41,14 @@ class Tmp {
     @Test
     fun digest() {
         val salt = "12345678".toByteArray()
+        // salt在前面
         for (algorithm in Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values()) {
             Pbkdf2PasswordEncoder().apply {
                 setAlgorithm(algorithm)
                 val r = encode("123")
                 println(algorithm.name + " " + r)
                 assertTrue { matches("123", r) }
-                assertTrue { matches("123", encodeWithSalt("123", salt)) }
+                assertTrue { matches("123", encodeWithSalt("123", salt).also { println(it) }) }
                 assertTrue { matchesWithSalt("123", encodeWithSalt("123", salt), salt) }
             }
         }
@@ -54,6 +57,7 @@ class Tmp {
     @Test
     fun ldap() {
         val salt = "123456".toByteArray()
+        // 结果计算salt在后面
         LdapShaPasswordEncoder().apply {
             println(encode("123"))
             println(encode("123", null))
@@ -68,6 +72,7 @@ class Tmp {
     @Test
     fun scrypt() {
         val salt = "123456".toByteArray()
+        // 第二个 $为salt
         SCryptPasswordEncoder().apply {
             println(encode("123"))
             println(digest("123", salt))
@@ -108,6 +113,7 @@ class Tmp {
     @Test
     fun argon2() {
         val salt = "1234".toByteArray()
+        // 第四个$ 为salt
         Argon2PasswordEncoder().apply {
             println(encode("123"))
             assertTrue { matches("123", encode("123")) }

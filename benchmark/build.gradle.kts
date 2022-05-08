@@ -10,8 +10,8 @@ plugins {
 dependencies {
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("org.openjdk.jol:jol-core:0.16")
-    implementation("org.openjdk.jmh:jmh-core:1.34")
-    kapt("org.openjdk.jmh:jmh-generator-annprocess:1.34")
+    implementation("org.openjdk.jmh:jmh-core:1.35")
+    kapt("org.openjdk.jmh:jmh-generator-annprocess:1.35")
     implementation(project(":app"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
 }
