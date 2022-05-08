@@ -27,8 +27,7 @@ fun ByteArray.base64(dict: String = BASE64_DICT, needPadding: Boolean = true) =
 fun String.base64Decode(dict: String = BASE64_DICT) =
     stripAllSpace() // remove all space  RFC 2045定义，每行为76个字符，行末加入\r\n
         .toCharArray()
-        // bc url base64不遵守 RFC 2045,Commons Codec 遵守 RFC 2045,没有padding
-        .filter { it != '=' && it != '.' }
+        .filter { dict.contains(".") || !dict.contains(".") && it != '=' && it != '.' }
         .joinToString("") {
             dict
                 .ifEmpty { BASE64_DICT }

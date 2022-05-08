@@ -15,8 +15,6 @@ fun ByteArray.base100() =
         }
     )
 
-fun String.base100() = toByteArray().base100()
-
 fun String.base100Decode() =
     with(toByteArray()) {
         toList()
