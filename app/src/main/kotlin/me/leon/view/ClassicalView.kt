@@ -39,7 +39,7 @@ class ClassicalView : Fragment(messages["classical"]) {
     private var isEncrypt = true
 
     private val cryptoParams
-        get() = mutableMapOf("p1" to tfParam1.text, "p2" to tfParam2.text)
+        get() = mapOf("p1" to tfParam1.text, "p2" to tfParam2.text)
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =

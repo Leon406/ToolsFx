@@ -25,11 +25,11 @@ object PcMoeOnlineCipher {
                         )
                         .toParams(),
                 headers =
-                    mutableMapOf(
+                    mapOf(
                         "X-Requested-With" to "XMLHttpRequest",
-                        "X-Token" to "07B97AA644E8",
+                        "X-Token" to "203B61D35068",
                         "Content-type" to "application/x-www-form-urlencoded",
-                        "Referer" to "http://hi.pcmoe.net/buddha.html",
+                        "Referer" to "http://hi.pcmoe.net/index.html",
                     )
             )
             .decodeToString()

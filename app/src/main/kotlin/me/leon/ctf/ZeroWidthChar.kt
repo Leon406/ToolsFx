@@ -20,7 +20,7 @@ private const val LEFT_TO_RIGHT_MARK = '‎'
 private const val RIGHT_TO_LEFT_MARK = '‏'
 
 val zeroWidthDict =
-    mutableListOf(
+    listOf(
         LEFT_TO_RIGHT_MARK,
         RIGHT_TO_LEFT_MARK,
         ZERO_WIDTH_NON_JOINER,

@@ -2,9 +2,9 @@ package me.leon.ext.crypto
 
 interface IClassical {
 
-    fun encrypt(raw: String, params: MutableMap<String, String>): String
+    fun encrypt(raw: String, params: Map<String, String>): String
 
-    fun decrypt(raw: String, params: MutableMap<String, String>): String
+    fun decrypt(raw: String, params: Map<String, String>): String
 
     fun paramsCount(): Int = 0
 
