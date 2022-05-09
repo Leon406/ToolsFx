@@ -45,6 +45,7 @@ import me.leon.ext.toHex
 class Pbkdf2PasswordEncoder
 @JvmOverloads
 constructor(
+    private val secret: String = "",
     saltLength: Int = DEFAULT_SALT_LENGTH,
     private var iterations: Int = DEFAULT_ITERATIONS,
     private var hashWidth: Int = DEFAULT_HASH_WIDTH
@@ -89,6 +90,7 @@ constructor(
         val salt = digested.sliceArray(0 until saltGenerator.keyLength)
         return MessageDigest.isEqual(digested, encode(rawPassword, salt))
     }
+
     fun matchesWithSalt(
         rawPassword: CharSequence,
         encodedPassword: String,
@@ -106,7 +108,13 @@ constructor(
 
     fun encode(rawPassword: CharSequence, salt: ByteArray): ByteArray {
         return try {
-            val spec = PBEKeySpec(rawPassword.toString().toCharArray(), salt, iterations, hashWidth)
+            val spec =
+                PBEKeySpec(
+                    rawPassword.toString().toCharArray(),
+                    salt + secret.toByteArray(),
+                    iterations,
+                    hashWidth
+                )
             salt + SecretKeyFactory.getInstance(algorithm).generateSecret(spec).encoded
         } catch (ex: GeneralSecurityException) {
             throw IllegalStateException("Could not create hash", ex)
@@ -117,21 +125,19 @@ constructor(
         PBKDF2WithHmacSHA1,
         PBKDF2WithHmacSHA256,
         PBKDF2WithHmacSHA512,
-        PBEWithHMACTIGER,
-        PBEWithHMACSHA256,
-        PBKDF2WithHMACSHA256,
-        PBKDF2WithHMACSHA224,
-        PBEWithHMACRIPEMD160,
-        `PBKDF2WithHMACSHA3-384`,
-        PBKDF2WithHMACGOST3411,
-        PBKDF2WithHMACSM3,
-        PBKDF2WithHMACSHA384,
-        `PBKDF2WithHMACSHA3-512`,
-        PBKDF2WithHMACSHA512,
-        PBEWithHMACSHA1,
-        PBEWithHMACGOST3411,
-        `PBKDF2WithHMACSHA3-256`,
-        `PBKDF2WithHMACSHA3-224`,
+        PBEWithHmacTIGER,
+        PBEWithHmacSHA256,
+        PBKDF2WithHmacSHA224,
+        PBEWithHmacRIPEMD160,
+        `PBKDF2WithHmacSHA3-384`,
+        PBKDF2WithHmacGOST3411,
+        PBKDF2WithHmacSM3,
+        PBKDF2WithHmacSHA384,
+        `PBKDF2WithHmacSHA3-512`,
+        PBEWithHmacSHA1,
+        PBEWithHmacGOST3411,
+        `PBKDF2WithHmacSHA3-256`,
+        `PBKDF2WithHmacSHA3-224`,
     }
 
     companion object {

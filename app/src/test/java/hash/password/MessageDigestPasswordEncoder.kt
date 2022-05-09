@@ -102,8 +102,7 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
      */
     override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
         val salt = extractSalt(encodedPassword)
-        val rawPasswordEncoded = digest(salt, rawPassword)
-        return PasswordEncoderUtils.equals(encodedPassword, rawPasswordEncoded)
+        return encodedPassword == digest(salt, rawPassword)
     }
 
     /**

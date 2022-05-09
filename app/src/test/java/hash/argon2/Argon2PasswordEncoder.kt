@@ -63,9 +63,9 @@ constructor(
                 .withMemoryAsKB(memory)
                 .withIterations(iterations)
                 .build()
-        val generator = Argon2BytesGenerator()
-        generator.init(params)
-        generator.generateBytes(rawPassword.toString().toCharArray(), hash)
+        Argon2BytesGenerator()
+            .apply { init(params) }
+            .generateBytes(rawPassword.toString().toCharArray(), hash)
         return Argon2EncodingUtils.encode(hash, params)
     }
 

@@ -32,9 +32,7 @@ internal class Digester(private val algorithm: String, private var iterations: I
     fun digest(value: ByteArray): ByteArray {
         var tmp = value
         val messageDigest = createDigest(algorithm)
-        for (i in 0 until iterations) {
-            tmp = messageDigest.digest(tmp)
-        }
+        repeat(iterations) { tmp = messageDigest.digest(tmp) }
         return tmp
     }
 
