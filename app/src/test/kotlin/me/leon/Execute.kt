@@ -1,7 +1,7 @@
 package me.leon
 
 import kotlin.test.assertEquals
-import me.leon.ext.Nashorn
+import me.leon.ext.*
 import me.leon.ext.crypto.JavascriptCipher
 import org.junit.Test
 
@@ -35,9 +35,34 @@ class Execute {
 
     @Test
     fun nashorn() {
+        Nashorn.loadString(
+            """function getKey(a) {
+    for (var c = [], d = "", b = 48; 58 > b; b++)
+        c.push(String.fromCharCode(b));
+    for (b = 64; 91 > b; b++)
+        c.push(String.fromCharCode(b));
+    for (b = 0; b < a.length; b++)
+        d += c[a[b]];
+    return d
+}"""
+        )
+        Nashorn.invoke("getKey", arrayOf(2, 0, 3, 12, 6, 1, 14, 3, 5, 0, 6, 8)).also { println(it) }
         JavascriptCipher.aaEncode("aadfsdf").also {
             println(it)
             JavascriptCipher.aaDecode(it).also { println(it) }
+        }
+    }
+
+    @Test
+    fun parseMoe() {
+        with("http://hi.pcmoe.net/js/main.min.js".readFromNet()) {
+            println(this)
+            "function +getKey\\([^)]+\\) *\\{[^}]+}".toRegex().find(this)?.let {
+                Nashorn.loadString(it.value)
+            }
+            """getKey\(\[(\d+(?:,(?:\r\n|\n|\r)?\d+)+)\]\)""".toRegex().find(this)?.let {
+                println(Nashorn.invoke("getKey", it.groupValues[1].splitByNonDigit()))
+            }
         }
     }
 }

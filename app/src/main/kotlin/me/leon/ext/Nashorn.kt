@@ -12,6 +12,11 @@ object Nashorn {
         return this
     }
 
+    fun loadString(script: String): Nashorn {
+        jsEngine.eval(script)
+        return this
+    }
+
     fun loadResource(path: String) = loadStream(javaClass.getResourceAsStream(path).reader())
 
     fun loadFile(file: File) = loadStream(file.reader())

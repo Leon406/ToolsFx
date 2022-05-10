@@ -1,6 +1,6 @@
 package me.leon.ctf
 
-import me.leon.ext.readBytesFromNet
+import me.leon.ext.*
 
 /** http://hi.pcmoe.net/ */
 object PcMoeOnlineCipher {
@@ -8,6 +8,21 @@ object PcMoeOnlineCipher {
     const val Buddha = "Buddha"
     const val Bear = "Bear"
     const val Roar = "Roar"
+
+    var xToken: String = ""
+
+    init {
+        with("http://hi.pcmoe.net/js/main.min.js".readFromNet()) {
+            println(this)
+            "function +getKey\\([^)]+\\) *\\{[^}]+}".toRegex().find(this)?.let {
+                Nashorn.loadString(it.value)
+            }
+            """getKey\(\[(\d+(?:,(?:\r\n|\n|\r)?\d+)+)\]\)""".toRegex().find(this)?.let {
+                xToken = Nashorn.invoke("getKey", it.groupValues[1].splitByNonDigit()) as String
+                println("pcmoe xToken $xToken")
+            }
+        }
+    }
 
     fun encrypt(mode: String, text: String) = request(mode, true, text)
 
@@ -27,7 +42,7 @@ object PcMoeOnlineCipher {
                 headers =
                     mutableMapOf(
                         "X-Requested-With" to "XMLHttpRequest",
-                        "X-Token" to "07B97AA644E8",
+                        "X-Token" to xToken,
                         "Content-type" to "application/x-www-form-urlencoded",
                         "Referer" to "http://hi.pcmoe.net/buddha.html",
                     )
