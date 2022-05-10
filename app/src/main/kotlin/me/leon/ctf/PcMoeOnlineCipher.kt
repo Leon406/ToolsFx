@@ -13,7 +13,6 @@ object PcMoeOnlineCipher {
 
     init {
         with("http://hi.pcmoe.net/js/main.min.js".readFromNet()) {
-            println(this)
             "function +getKey\\([^)]+\\) *\\{[^}]+}".toRegex().find(this)?.let {
                 Nashorn.loadString(it.value)
             }
@@ -40,11 +39,11 @@ object PcMoeOnlineCipher {
                         )
                         .toParams(),
                 headers =
-                    mutableMapOf(
+                    mapOf(
                         "X-Requested-With" to "XMLHttpRequest",
                         "X-Token" to xToken,
                         "Content-type" to "application/x-www-form-urlencoded",
-                        "Referer" to "http://hi.pcmoe.net/buddha.html",
+                        "Referer" to "http://hi.pcmoe.net/index.html",
                     )
             )
             .decodeToString()

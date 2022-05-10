@@ -3,6 +3,7 @@ package me.leon
 import androidx.collection.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.test.Test
+import org.openjdk.jol.info.ClassLayout
 import org.openjdk.jol.info.GraphLayout
 
 class Collections {
@@ -139,5 +140,30 @@ class Collections {
                 println(GraphLayout.parseInstance(it).toPrintable())
                 println(GraphLayout.parseInstance(it).totalSize())
             }
+    }
+
+    @Test
+    fun typeMemory() {
+        println(GraphLayout.parseInstance(mapOf<String, Any>()).toFootprint())
+        println(GraphLayout.parseInstance(mutableMapOf<String, Any>()).toFootprint())
+        val stringList =
+            mutableListOf("330108000001", "330108000002", "330108000003", "330108000004")
+        val longList = mutableListOf(330108000001L, 330108000002L, 330108000003L, 330108000004L)
+        println(
+            GraphLayout.parseInstance(stringList).also { println(it.totalSize()) }.toPrintable()
+        )
+        println(GraphLayout.parseInstance(longList).also { println(it.totalSize()) }.toPrintable())
+        println(GraphLayout.parseInstance("330108000001".toLong()).toFootprint())
+        println(
+            GraphLayout.parseInstance("330108000001").also { println(it.totalSize()) }.toFootprint()
+        )
+        println(ClassLayout.parseInstance("330108000001").toPrintable())
+        println(
+            GraphLayout.parseInstance(byteArrayOf(1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6))
+                .also { println(it.totalSize()) }
+                .toFootprint()
+        )
+        //        println(GraphLayout.parseInstance(POJO()).also { println(it.totalSize())
+        // }.toFootprint())
     }
 }

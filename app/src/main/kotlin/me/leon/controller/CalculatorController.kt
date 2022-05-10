@@ -13,7 +13,7 @@ class CalculatorController : Controller() {
     ): String =
         catch({ "error $it" }) {
             println("alg $algo radix $radix")
-            algo.calculatorType().also { println(it) }!!.calculate(
+            algo.calculatorType()!!.calculate(
                 params.map { if (it.isNotEmpty()) it.toBigInteger(radix) else BigInteger.ZERO }
             )
         }

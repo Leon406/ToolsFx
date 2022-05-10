@@ -10,7 +10,7 @@ class ClassicalController : Controller() {
     fun encrypt(
         raw: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
-        params: MutableMap<String, String>,
+        params: Map<String, String>,
         isSingleLine: Boolean = false
     ) =
         catch({ "编码错误: $it" }) {
@@ -21,13 +21,13 @@ class ClassicalController : Controller() {
     private fun encrypt(
         raw: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
-        params: MutableMap<String, String>
+        params: Map<String, String>
     ): String = if (raw.isEmpty()) "" else type.encrypt(raw, params)
 
     fun decrypt(
         encoded: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
-        params: MutableMap<String, String>,
+        params: Map<String, String>,
         isSingleLine: Boolean = false
     ) =
         catch({ "解密错误: $it" }) {
