@@ -188,8 +188,14 @@
 - fix(app): RSA拖入密钥事件重复响应
 - fix(app): 乱码还原失败
 - fix(plugin-apipost): 浏览器curl解析未删除转义字符
-# v1.12.4.beta04  
+
+# v1.13.0  
 ## feature:  
+- feat(app): add radix8, radix10, radix32
+- feat(app): 内嵌浏览器支持系统浏览器打开,美化UI
+- feat(app): 新增hash字典爆破,可配置多个字典
+- feat(app): 编码支持一键爆破/hash支持base64编码
+- feat(app): TextField限制数字输入
 - feat(app): add ECC calculator
 - feat(app): signature support output hex signed data
 - feat(app): 提示信息新增输入输出长度显示
@@ -209,13 +215,10 @@
 - feat(app): #39 解析bc已支持x509相关证书
 - feat(app): 大数模块,增强参数可读性及新增指定长度随机素数
 ## bug fix:  
+- fix(app): pcMoe x-token过期
+- fix(app): radix64 decode issue
+- fix(app): radix多余leading zero
 - fix(plugin-apipost): query parameter parse error
 - fix(app): 大数开根精度丢失
 - fix(app): 正式版升级提示
 - fix(app): base64Url编码包含=
-# v1.12.5.beta01  
-## feature:  
-- feat(app): 内嵌浏览器支持系统浏览器打开,美化UI
-- feat(app): 新增hash字典爆破,可配置多个字典
-- feat(app): 编码支持一键爆破/hash支持base64编码
-- feat(app): TextField限制数字输入
