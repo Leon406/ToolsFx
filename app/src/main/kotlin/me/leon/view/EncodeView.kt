@@ -267,11 +267,17 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             startTime = System.currentTimeMillis()
             EncodeType.values()
                 .map {
-                    it.type +
-                        " :\t" +
-                        controller.decode2String(inputText, it, "", selectedCharset.get(), false)
+                    it.type to controller.decode2String(inputText, it, "", selectedCharset.get())
                 }
-                .joinToString("\n")
+                .filterNot {
+                    it.second.isEmpty() ||
+                        it.second.contains(inputText, true) ||
+                        it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex())
+                }
+                .joinToString("\n") {
+                    println("__" + it.second + "__")
+                    it.first + " :\t" + it.second
+                }
         } ui
             {
                 isProcessing.value = false
