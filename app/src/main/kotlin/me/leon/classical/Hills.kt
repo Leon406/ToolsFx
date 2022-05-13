@@ -28,7 +28,7 @@ fun String.hillDecrypt(key: String, table: String = TABLE_A_Z, fromZero: Boolean
 private fun parseKey(key: String): Array<IntArray> {
     val keyMatrix =
         if (key.contains("\\d+".toRegex())) {
-            val m = key.split("[^\\d]+".toRegex()).map { it.toInt() }
+            val m = key.split("\\D+".toRegex()).map { it.toInt() }
             m.reshape(sqrt(m.size.toDouble()).toInt())
         } else {
             val m = key.alphabetIndexNum()

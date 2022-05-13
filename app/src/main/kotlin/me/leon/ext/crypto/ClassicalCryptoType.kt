@@ -262,7 +262,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.trollScriptDecrypt()
     },
-    Braille("braille") {
+    Braille("braille(盲文)") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.blindEncode().also { println("Braille $raw $params") }
 

@@ -58,10 +58,6 @@ fun getPropPublicKey(key: String): ByteArray =
         key.removePemInfo().keyAutoDecode()
     }
 
-fun parsePublicKeyFromCerFile(file: String): String {
-    return file.toFile().parsePublicKeyFromCerFile()
-}
-
 fun File.parsePublicKeyFromCerFile(): String {
     return inputStream().use {
         CertificateFactory.getInstance("X.509", "BC")

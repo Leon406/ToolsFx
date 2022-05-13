@@ -20,7 +20,7 @@ fun String.alphabetIndexNum(table: String = TABLE_A_Z, fromZero: Boolean = true)
 
 fun String.alphabetIndexDecode(table: String = TABLE_A_Z, fromZero: Boolean = false) =
     trim()
-        .split("[^\\d]+".toRegex())
+        .split("\\D+".toRegex())
         .filter { it.matches("\\d+".toRegex()) }
         .map { table[it.toInt() - (1.takeUnless { fromZero } ?: 0)] }
         .joinToString("")

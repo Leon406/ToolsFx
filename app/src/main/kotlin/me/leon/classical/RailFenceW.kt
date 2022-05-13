@@ -12,7 +12,6 @@ fun String.railFenceWEncrypt(key: Int, offset: Int = 0): String {
         .foldIndexed(mutableMapOf<Int, MutableList<Char>>()) { pos, acc, c ->
             acc.apply {
                 val propIndex = key - 1 - abs(cycle / 2 - (pos + offset) % cycle)
-                println("$propIndex $c")
                 this[propIndex]?.add(c) ?: kotlin.run { this[propIndex] = mutableListOf(c) }
             }
         }
@@ -23,7 +22,7 @@ fun String.railFenceWEncrypt(key: Int, offset: Int = 0): String {
 
 fun String.railFenceWDecrypt(key: Int, offset: Int = 0): String {
     val cycle = 2 * (key - 1)
-    val l = Array<Char>(length) { '0' }
+    val l = Array(length) { '0' }
     var j = 0
     for (y in 0 until key) {
         for (x in indices) {
