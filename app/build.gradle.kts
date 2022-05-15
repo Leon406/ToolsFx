@@ -1,5 +1,5 @@
 group = "me.leon.tools"
-version = "1.13.0"
+version = "1.13.1.beta"
 
 plugins {
     application
@@ -30,7 +30,7 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
-    testImplementation ("cn.hutool:hutool-all:5.8.0.M3")
+    testImplementation("cn.hutool:hutool-all:5.8.0.M3")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
 }
