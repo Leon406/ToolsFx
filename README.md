@@ -39,6 +39,7 @@
 - [x] uuEncode
 - [x] xxEncode
 - [x] escape/escapeAll
+- [x] auto decode(crack)
 
 ![encode](./art/encode.gif)
 
@@ -58,12 +59,13 @@ support file, big file which is larger than 8Gi
 
 - [x] md serial
 - [x] sha1
-- [x] sha2 
+- [x] sha2
 - [x] sha3
 - [x] SM3
 - [x] RIPEMD
 - [x] whirlpool
 - [x] Tiger
+- [x] dictionary hash mapping(crack)
 - [x] etc.
 
 ![hash](./art/hash.gif)
@@ -205,7 +207,7 @@ support file, big file which is larger than 8Gi
 - [x] Auto Key
 - [x] rail-fence normal /rail-fence w-type
 - [x] playfair
-- [x] brainfuck/troll/ook
+- [x] brainfuck/troll/ook (decryption only)
 - [x] Braille
 - [x] alphabet index
 - [x] 01248
@@ -235,6 +237,7 @@ support file, big file which is larger than 8Gi
 - [x] Qrcode/OCR
 - [x] String Process
 - [x] Big Integer Calculator
+- [x] ECC Calculator
 - [ ] TBD
 
 ### Features
