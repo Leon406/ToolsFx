@@ -17,8 +17,8 @@ class ClassicalView : Fragment(messages["classical"]) {
     private val controller: ClassicalController by inject()
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
-    private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private var encodeType = ClassicalCryptoType.CAESAR
+    private val decodeIgnoreSpace = SimpleBooleanProperty(encodeType.isIgnoreSpace())
     private val param1Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 0)
     private val param2Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 1)
     private lateinit var taInput: TextArea

@@ -10,6 +10,8 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.caesar25()
 
         override fun decrypt(raw: String, params: Map<String, String>) = raw.caesar25()
+
+        override fun isIgnoreSpace() = false
     },
     ROT5("rot5") {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.shift10(5)

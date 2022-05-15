@@ -33,10 +33,10 @@ class ClassicalTest {
         val rot13 =
             "introvert at NSA? Va gur ryringbef," + "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
         assertEquals(
-            "VAGEBIREG NG AFN? IN THE ELEVATORS,THE EXTROVERT LOOKS AT THE OTHER GUY'S SHOES. ",
+            "vagebireg ng AFN? In the elevators,the extrovert looks at the OTHER guy's shoes. ",
             rot13.shift26(13)
         )
-        assertEquals(rot13.uppercase(), rot13.shift26(13).shift26(13))
+        assertEquals(rot13, rot13.shift26(13).shift26(13))
 
         val rot47 = "The Quick Brown Fox Jumps Over The Lazy Dog."
         assertEquals("%96 \"F:4< qC@H? u@I yF>AD ~G6C %96 {2KJ s@8]", rot47.shift94(47))
@@ -46,7 +46,9 @@ class ClassicalTest {
         assertEquals("123sb", "123sb".shift10(5).shift10(5))
 
         assertEquals("678fo", "123sb".rot18())
+        assertEquals("678fO", "123sB".rot18())
         assertEquals("123sb", "123sb".rot18().rot18())
+        println()
     }
 
     @Test
