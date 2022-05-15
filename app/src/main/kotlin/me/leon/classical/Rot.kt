@@ -7,23 +7,23 @@ fun String.shift10(bias: Int) =
 
 fun String.rot18() =
     map {
-        when (it) {
-            in '0'..'9' -> '0' + (it + 5 - '0') % 10
-            in 'A'..'Z' -> 'A' + (it + 13 - 'A') % 26
-            in 'a'..'z' -> 'a' + (it + 13 - 'a') % 26
-            else -> it
+            when (it) {
+                in '0'..'9' -> '0' + (it + 5 - '0') % 10
+                in 'A'..'Z' -> 'A' + (it + 13 - 'A') % 26
+                in 'a'..'z' -> 'a' + (it + 13 - 'a') % 26
+                else -> it
+            }
         }
-    }
         .joinToString("")
 
 fun String.shift26(bias: Int) =
     map {
-        when (it) {
-            in 'A'..'Z' -> 'A' + (it + bias - 'A').circleIndex()
-            in 'a'..'z' -> 'a' + (it + bias - 'a').circleIndex()
-            else -> it
+            when (it) {
+                in 'A'..'Z' -> 'A' + (it + bias - 'A').circleIndex()
+                in 'a'..'z' -> 'a' + (it + bias - 'a').circleIndex()
+                else -> it
+            }
         }
-    }
         .joinToString("")
 
 fun String.shift94(bias: Int) =
