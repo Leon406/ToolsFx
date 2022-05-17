@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.bcrypt
+package me.leon.hash.bcrypt
 
-import hash.bcrypt.BCrypt.Companion.checkPw
-import hash.bcrypt.BCrypt.Companion.genSalt
-import hash.bcrypt.BCrypt.Companion.hashpw
-import hash.password.PasswordEncoder
 import java.security.SecureRandom
+import me.leon.hash.bcrypt.BCrypt.Companion.checkPw
+import me.leon.hash.bcrypt.BCrypt.Companion.genSalt
+import me.leon.hash.bcrypt.BCrypt.Companion.hashpw
+import me.leon.hash.password.PasswordEncoder
 
 /**
  * Implementation of PasswordEncoder that uses the BCrypt strong hashing function. Clients can

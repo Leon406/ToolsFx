@@ -13,31 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.keygen
+package me.leon.hash.keygen
 
 /**
- * Factory for commonly used key generators. Public API for constructing a [BytesKeyGenerator] or
- * [StringKeyGenerator].
+ * A generator for unique string keys.
  *
  * @author Keith Donald
  */
-object KeyGenerators {
-
-    @JvmStatic
-    fun secureRandom(): BytesKeyGenerator {
-        return SecureRandomBytesKeyGenerator()
-    }
-
-    @JvmStatic
-    fun secureRandom(keyLength: Int): BytesKeyGenerator {
-        return SecureRandomBytesKeyGenerator(keyLength)
-    }
-
-    fun shared(keyLength: Int): BytesKeyGenerator {
-        return SharedKeyGenerator(secureRandom(keyLength).generateKey())
-    }
-
-    fun string(): StringKeyGenerator {
-        return HexEncodingStringKeyGenerator(secureRandom())
-    }
+interface StringKeyGenerator {
+    fun generateKey(): String
 }

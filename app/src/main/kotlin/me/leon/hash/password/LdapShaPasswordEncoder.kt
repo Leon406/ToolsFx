@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.password
+package me.leon.hash.password
 
-import hash.keygen.BytesKeyGenerator
-import hash.keygen.KeyGenerators.secureRandom
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
+import me.leon.hash.keygen.BytesKeyGenerator
+import me.leon.hash.keygen.KeyGenerators.secureRandom
 
 /**
  * This [PasswordEncoder] is provided for legacy purposes only and is not considered secure.
@@ -72,7 +72,7 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
     private fun getSha(rawPassword: CharSequence): MessageDigest {
         return try {
             MessageDigest.getInstance("SHA").apply { update(rawPassword.toString().toByteArray()) }
-        } catch (ex: NoSuchAlgorithmException) {
+        } catch (ignored: NoSuchAlgorithmException) {
             throw IllegalStateException("No SHA implementation available!")
         }
     }

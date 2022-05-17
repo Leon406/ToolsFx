@@ -1,12 +1,12 @@
 package me.leon
 
-import hash.argon2.Argon2PasswordEncoder
-import hash.bcrypt.BCryptPasswordEncoder
-import hash.password.*
-import hash.scrypt.SCryptPasswordEncoder
 import java.security.Security
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import me.leon.hash.argon2.Argon2PasswordEncoder
+import me.leon.hash.bcrypt.BCryptPasswordEncoder
+import me.leon.hash.password.*
+import me.leon.hash.scrypt.SCryptPasswordEncoder
 import org.bouncycastle.crypto.params.Argon2Parameters
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
@@ -89,7 +89,7 @@ class Tmp {
     fun bcrypt() {
         val salt = "123456123456123456123456".toByteArray()
         BCryptPasswordEncoder().apply {
-            println(encode("123"))
+            println(encode("Aa123456"))
             //            println(encode("123", salt))
 
             assertTrue { matches("123", encode("123")) }

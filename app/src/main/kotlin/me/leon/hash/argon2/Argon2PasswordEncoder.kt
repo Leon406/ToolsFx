@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.argon2
+package me.leon.hash.argon2
 
-import hash.argon2.Argon2EncodingUtils.Argon2Hash
-import hash.keygen.BytesKeyGenerator
-import hash.keygen.KeyGenerators.secureRandom
-import hash.password.PasswordEncoder
+import me.leon.hash.argon2.Argon2EncodingUtils.Argon2Hash
+import me.leon.hash.keygen.BytesKeyGenerator
+import me.leon.hash.keygen.KeyGenerators.secureRandom
+import me.leon.hash.password.PasswordEncoder
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator
 import org.bouncycastle.crypto.params.Argon2Parameters
 
@@ -73,8 +73,7 @@ constructor(
         val decoded: Argon2Hash =
             try {
                 Argon2EncodingUtils.decode(encodedPassword)
-            } catch (ex: IllegalArgumentException) {
-                ex.printStackTrace()
+            } catch (ignore: IllegalArgumentException) {
                 return false
             }
         val hashBytes = ByteArray(decoded.hash.size)

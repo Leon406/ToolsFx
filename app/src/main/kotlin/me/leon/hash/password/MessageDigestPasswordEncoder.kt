@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.password
+package me.leon.hash.password
 
-import hash.keygen.Base64StringKeyGenerator
-import hash.keygen.StringKeyGenerator
 import me.leon.encode.base.base64
 import me.leon.ext.toHex
+import me.leon.hash.keygen.Base64StringKeyGenerator
+import me.leon.hash.keygen.StringKeyGenerator
 
 /**
  * This [PasswordEncoder] is provided for legacy purposes only and is not considered secure.

@@ -190,11 +190,15 @@ class DigestView : Fragment(messages["hash"]) {
         runAsync {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
-            val target =
-                inputText
-                    .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
-                    .encodeTo("hex")
-            controller.crack(method, target)
+            if (method.startsWith("SpringSecurity"))
+                controller.passwordHashingCrack(method, inputText)
+            else
+                controller.crack(
+                    method,
+                    inputText
+                        .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
+                        .encodeTo("hex")
+                )
         } ui
             {
                 isProcessing.value = false

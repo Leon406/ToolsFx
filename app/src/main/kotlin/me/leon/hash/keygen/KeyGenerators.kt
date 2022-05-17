@@ -13,29 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.keygen
-
-import java.security.SecureRandom
+package me.leon.hash.keygen
 
 /**
- * A KeyGenerator that uses [SecureRandom] to generate byte array-based keys.
- *
- * No specific provider is used for the `SecureRandom`, so the platform default will be used.
+ * Factory for commonly used key generators. Public API for constructing a [BytesKeyGenerator] or
+ * [StringKeyGenerator].
  *
  * @author Keith Donald
  */
-internal class SecureRandomBytesKeyGenerator
-@JvmOverloads
-constructor(override val keyLength: Int = DEFAULT_KEY_LENGTH) : BytesKeyGenerator {
-    private val random = SecureRandom()
+object KeyGenerators {
 
-    override fun generateKey(): ByteArray {
-        val bytes = ByteArray(keyLength)
-        random.nextBytes(bytes)
-        return bytes
+    @JvmStatic
+    fun secureRandom(): BytesKeyGenerator {
+        return SecureRandomBytesKeyGenerator()
     }
 
-    companion object {
-        private const val DEFAULT_KEY_LENGTH = 8
+    @JvmStatic
+    fun secureRandom(keyLength: Int): BytesKeyGenerator {
+        return SecureRandomBytesKeyGenerator(keyLength)
+    }
+
+    fun shared(keyLength: Int): BytesKeyGenerator {
+        return SharedKeyGenerator(secureRandom(keyLength).generateKey())
+    }
+
+    fun string(): StringKeyGenerator {
+        return HexEncodingStringKeyGenerator(secureRandom())
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.keygen
+package me.leon.hash.keygen
 
 import me.leon.ext.toHex
 
