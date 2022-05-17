@@ -1516,8 +1516,8 @@ class BCrypt {
                 -1,
                 -1
             )
-        const val MIN_logRounds = 4
-        const val MAX_logRounds = 31
+        const val MIN_LOG_ROUNDS = 4
+        const val MAX_LOG_ROUNDS = 31
 
         /**
          * Encode a byte array using bcrypt's slightly-modified base64 encoding scheme. Note that
