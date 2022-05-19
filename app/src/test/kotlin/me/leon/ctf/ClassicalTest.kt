@@ -53,24 +53,30 @@ class ClassicalTest {
 
     @Test
     fun affine() {
-        "AFFINECIPHER".affineEncrypt(5, 8).also {
-            assertEquals("IHHWVCSWFRCP", it)
-            assertEquals("AFFINECIPHER", it.affineDecrypt(5, 8))
+        "AffineCipher".affineEncrypt(5, 8).also {
+            assertEquals("IhhwvcSwfrcp", it)
+            assertEquals("AffineCipher", it.affineDecrypt(5, 8))
         }
     }
 
     @Test
     fun vig() {
-        "ATTACKATDAWN".virgeneneEncode("LEMONLEMONLE").also { println(it) }
-        "CRYPTO IS SHORT FOR CRYPTOGRAPHY".virgeneneEncode("LEON").also { println(it) }
-        "LXFOPVEFRNHR".virgeneneDecode("LEMONLEMONLE").also { println(it) }
+        val key = "LEMONLEMONLE"
+        "ATTACKATDAWN".virgeneneEncode(key).also {
+            assertEquals("LXFOPVEFRNHR", it)
+            assertEquals("ATTACKATDAWN", it.virgeneneDecode(key))
+        }
+        "AttackAtDawn".virgeneneEncode(key).also {
+            assertEquals("LxfopvEfRnhr", it)
+            assertEquals("AttackAtDawn", it.virgeneneDecode(key))
+        }
     }
 
     @Test
     fun atbash() {
         "Hello".atBash().also {
-            assertEquals("SVOOL", it)
-            assertEquals("Hello".uppercase(), it.atBash())
+            assertEquals("Svool", it)
+            assertEquals("Hello", it.atBash())
         }
     }
 
@@ -122,8 +128,8 @@ class ClassicalTest {
 
     @Test
     fun qwe() {
-        assertEquals("Hello Leon".stripAllSpace().uppercase(), "ITSSGSTGF".qweDecrypt())
-        assertEquals("ITSSGSTGF", "Hello Leon".qweEncrypt())
+        assertEquals("Hello Leon".stripAllSpace(), "ItssgStgf".qweDecrypt())
+        assertEquals("ItssgStgf", "Hello Leon".qweEncrypt())
     }
 
     @Test

@@ -1721,7 +1721,7 @@ class BCrypt {
                 minor = salt[2]
                 require(
                     !(minor != 'a' && minor != 'x' && minor != 'y' && minor != 'b' ||
-                            salt[3] != '$')
+                        salt[3] != '$')
                 ) { "Invalid salt revision" }
                 off = 4
             }
@@ -1777,7 +1777,7 @@ class BCrypt {
             val rs = StringBuilder()
             require(
                 !(!prefix.startsWith("$2") ||
-                        prefix[2] != 'a' && prefix[2] != 'y' && prefix[2] != 'b')
+                    prefix[2] != 'a' && prefix[2] != 'y' && prefix[2] != 'b')
             ) { "Invalid prefix" }
             require(!(logRounds < 4 || logRounds > 31)) { "Invalid logRounds" }
             rs.append("$2")

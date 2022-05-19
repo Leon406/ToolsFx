@@ -1,18 +1,26 @@
 package me.leon.classical
 
+import me.leon.ext.math.circleIndex
+
 fun String.virgeneneEncode(key: String) =
-    uppercase()
-        .mapIndexed { index, c ->
-            c.takeUnless { it in 'A'..'Z' }
-                ?: ('A' + (c + key[index % key.length].code - 130).code % 26)
+    mapIndexed { index, c ->
+            val shift = key[index % key.length].uppercaseChar() - 'A'
+            when (c) {
+                in 'A'..'Z' -> 'A' + (c.code - 'A'.code + shift).circleIndex()
+                in 'a'..'z' -> 'a' + (c.code - 'a'.code + shift).circleIndex()
+                else -> c
+            }
         }
         .joinToString("")
 
 fun String.virgeneneDecode(key: String, decryptLength: Int = 0) =
-    uppercase()
-        .take(decryptLength.takeIf { it > 0 } ?: length)
+    take(decryptLength.takeIf { it > 0 } ?: length)
         .mapIndexed { index, c ->
-            c.takeUnless { it in 'A'..'Z' }
-                ?: ('A' + (c - key[index % key.length].code + 130).code % 26)
+            val shift = key[index % key.length].uppercaseChar() - 'A'
+            when (c) {
+                in 'A'..'Z' -> 'A' + (c.code - 'A'.code - shift).circleIndex()
+                in 'a'..'z' -> 'a' + (c.code - 'a'.code - shift).circleIndex()
+                else -> c
+            }
         }
         .joinToString("")
