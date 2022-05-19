@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.scrypt
+package me.leon.hash.scrypt
 
-import hash.keygen.BytesKeyGenerator
-import hash.keygen.KeyGenerators.secureRandom
-import hash.password.PasswordEncoder
 import java.security.MessageDigest
 import kotlin.math.ln
 import kotlin.math.pow
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
+import me.leon.hash.keygen.BytesKeyGenerator
+import me.leon.hash.keygen.KeyGenerators.secureRandom
+import me.leon.hash.password.PasswordEncoder
 import org.bouncycastle.crypto.generators.SCrypt
 
 /**

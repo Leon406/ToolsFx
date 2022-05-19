@@ -31,6 +31,11 @@ class DigestController : Controller() {
             method.passwordHashingType()!!.hash(data.decodeToByteArray(inputEncode))
         } else data.decodeToByteArray(inputEncode).hash2String(method)
 
+    fun passwordHashingCrack(method: String, hashed: String) =
+        catch({ "digest crack error: $it" }) {
+            dicts.find { pw -> method.passwordHashingType()!!.check(pw, hashed) } ?: ""
+        }
+
     fun digestFile(method: String, path: String): String =
         catch({ "digest file error: $it" }) {
             if (path.isEmpty()) ""

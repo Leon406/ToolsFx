@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.keygen
+package me.leon.hash.keygen
 
-import hash.keygen.KeyGenerators.secureRandom
 import java.util.Base64
+import me.leon.hash.keygen.KeyGenerators.secureRandom
 
 /**
  * A StringKeyGenerator that generates base64-encoded String keys. Delegates to a [ ] for the actual

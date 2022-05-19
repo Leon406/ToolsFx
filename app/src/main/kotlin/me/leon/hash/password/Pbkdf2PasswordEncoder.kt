@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.password
+package me.leon.hash.password
 
-import hash.keygen.BytesKeyGenerator
-import hash.keygen.KeyGenerators
-import hash.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm
 import java.security.*
 import java.util.Base64
 import javax.crypto.SecretKeyFactory
@@ -25,6 +22,9 @@ import javax.crypto.spec.PBEKeySpec
 import me.leon.encode.base.base64
 import me.leon.ext.hex2ByteArray
 import me.leon.ext.toHex
+import me.leon.hash.keygen.BytesKeyGenerator
+import me.leon.hash.keygen.KeyGenerators
+import me.leon.hash.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm
 
 /**
  * A [PasswordEncoder] implementation that uses PBKDF2 with :
@@ -146,3 +146,15 @@ constructor(
         private const val DEFAULT_ITERATIONS = 185000
     }
 }
+
+val PBE_ENCODERS =
+    Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values().fold(
+            mutableMapOf<SecretKeyFactoryAlgorithm, Pbkdf2PasswordEncoder>()
+        ) { acc, secretKeyFactoryAlgorithm ->
+        acc.apply {
+            put(
+                secretKeyFactoryAlgorithm,
+                Pbkdf2PasswordEncoder().apply { setAlgorithm(secretKeyFactoryAlgorithm) }
+            )
+        }
+    }

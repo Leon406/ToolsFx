@@ -11,7 +11,7 @@
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-package hash.bcrypt
+package me.leon.hash.bcrypt
 
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -37,22 +37,22 @@ import kotlin.experimental.and
  * &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("It matches");<br></br> else<br></br>
  * &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("It does not match");<br></br> ` *
  *
- * The gensalt() method takes an optional parameter (log_rounds) that determines the computational
+ * The gensalt() method takes an optional parameter (logRounds) that determines the computational
  * complexity of the hashing:
  *
  * ` String strong_salt = BCrypt.gensalt(10)<br></br> String stronger_salt =
  * BCrypt.gensalt(12)<br></br> ` *
  *
- * The amount of work increases exponentially (2**log_rounds), so each increment is twice as much
- * work. The default log_rounds is 10, and the valid range is 4 to 31.
+ * The amount of work increases exponentially (2**logRounds), so each increment is twice as much
+ * work. The default logRounds is 10, and the valid range is 4 to 31.
  *
  * @author Damien Miller
  * @version 0.3
  */
 class BCrypt {
     // Expanded Blowfish key
-    private lateinit var P: IntArray
-    private lateinit var S: IntArray
+    private lateinit var p: IntArray
+    private lateinit var s: IntArray
 
     /**
      * Blowfish encipher a single 64-bit block encoded as two 32-bit halves
@@ -64,67 +64,67 @@ class BCrypt {
         var n: Int
         var l = lr[off]
         var r = lr[off + 1]
-        l = l xor P[0]
+        l = l xor p[0]
         var i = 0
         while (i <= BLOWFISH_NUM_ROUNDS - 2) {
 
             // Feistel substitution on left word
-            n = S[l shr 24 and 0xff]
-            n += S[0x100 or (l shr 16 and 0xff)]
-            n = n xor S[0x200 or (l shr 8 and 0xff)]
-            n += S[0x300 or (l and 0xff)]
-            r = r xor (n xor P[++i])
+            n = s[l shr 24 and 0xff]
+            n += s[0x100 or (l shr 16 and 0xff)]
+            n = n xor s[0x200 or (l shr 8 and 0xff)]
+            n += s[0x300 or (l and 0xff)]
+            r = r xor (n xor p[++i])
 
             // Feistel substitution on right word
-            n = S[r shr 24 and 0xff]
-            n += S[0x100 or (r shr 16 and 0xff)]
-            n = n xor S[0x200 or (r shr 8 and 0xff)]
-            n += S[0x300 or (r and 0xff)]
-            l = l xor (n xor P[++i])
+            n = s[r shr 24 and 0xff]
+            n += s[0x100 or (r shr 16 and 0xff)]
+            n = n xor s[0x200 or (r shr 8 and 0xff)]
+            n += s[0x300 or (r and 0xff)]
+            l = l xor (n xor p[++i])
         }
-        lr[off] = r xor P[BLOWFISH_NUM_ROUNDS + 1]
+        lr[off] = r xor p[BLOWFISH_NUM_ROUNDS + 1]
         lr[off + 1] = l
     }
 
     /** Initialise the Blowfish key schedule */
-    private fun init_key() {
-        P = P_orig.clone()
-        S = S_orig.clone()
+    private fun initKey() {
+        p = P_orig.clone()
+        s = S_orig.clone()
     }
 
     /**
      * Key the Blowfish cipher
      *
      * @param key an array containing the key
-     * @param sign_ext_bug true to implement the 2x bug
+     * @param signExtBug true to implement the 2x bug
      * @param safety bit 16 is set when the safety measure is requested
      */
-    private fun key(key: ByteArray, sign_ext_bug: Boolean, safety: Int) {
+    private fun key(key: ByteArray, signExtBug: Boolean) {
         val koffp = intArrayOf(0)
         val lr = intArrayOf(0, 0)
-        val plen = P.size
-        val slen = S.size
+        val plen = p.size
+        val slen = s.size
         var i = 0
         while (i < plen) {
-            if (!sign_ext_bug) {
-                P[i] = P[i] xor streamtoword(key, koffp)
+            if (!signExtBug) {
+                p[i] = p[i] xor streamtoword(key, koffp)
             } else {
-                P[i] = P[i] xor streamtoword_bug(key, koffp)
+                p[i] = p[i] xor streamtowordBug(key, koffp)
             }
             i++
         }
         i = 0
         while (i < plen) {
             encipher(lr, 0)
-            P[i] = lr[0]
-            P[i + 1] = lr[1]
+            p[i] = lr[0]
+            p[i + 1] = lr[1]
             i += 2
         }
         i = 0
         while (i < slen) {
             encipher(lr, 0)
-            S[i] = lr[0]
-            S[i + 1] = lr[1]
+            s[i] = lr[0]
+            s[i + 1] = lr[1]
             i += 2
         }
     }
@@ -135,22 +135,22 @@ class BCrypt {
      *
      * @param data salt information
      * @param key password information
-     * @param sign_ext_bug true to implement the 2x bug
+     * @param signExtBug true to implement the 2x bug
      * @param safety bit 16 is set when the safety measure is requested
      */
-    private fun ekskey(data: ByteArray, key: ByteArray, sign_ext_bug: Boolean, safety: Int) {
+    private fun ekskey(data: ByteArray, key: ByteArray, signExtBug: Boolean, safety: Int) {
         val koffp = intArrayOf(0)
         val doffp = intArrayOf(0)
         val lr = intArrayOf(0, 0)
-        val plen = P.size
-        val slen = S.size
+        val plen = p.size
+        val slen = s.size
         val signp = intArrayOf(0) // non-benign sign-extension flag
         var diff = 0 // zero iff correct and buggy are same
         var i = 0
         while (i < plen) {
             val words = streamtowords(key, koffp, signp)
             diff = diff or (words[0] xor words[1])
-            P[i] = P[i] xor words[if (sign_ext_bug) 1 else 0]
+            p[i] = p[i] xor words[if (signExtBug) 1 else 0]
             i++
         }
         var sign = signp[0]
@@ -179,14 +179,14 @@ class BCrypt {
          * Eksblowfish loop. By doing it to only one of these two, we deviate from a state
          * that could be directly specified by a password to the buggy algorithm (and to
          * the fully correct one as well, but that's a side-effect).
-         */ P[0] = P[0] xor sign
+         */ p[0] = p[0] xor sign
         i = 0
         while (i < plen) {
             lr[0] = lr[0] xor streamtoword(data, doffp)
             lr[1] = lr[1] xor streamtoword(data, doffp)
             encipher(lr, 0)
-            P[i] = lr[0]
-            P[i + 1] = lr[1]
+            p[i] = lr[0]
+            p[i + 1] = lr[1]
             i += 2
         }
         i = 0
@@ -194,8 +194,8 @@ class BCrypt {
             lr[0] = lr[0] xor streamtoword(data, doffp)
             lr[1] = lr[1] xor streamtoword(data, doffp)
             encipher(lr, 0)
-            S[i] = lr[0]
-            S[i + 1] = lr[1]
+            s[i] = lr[0]
+            s[i + 1] = lr[1]
             i += 2
         }
     }
@@ -205,30 +205,30 @@ class BCrypt {
      *
      * @param password the password to hash
      * @param salt the binary salt to hash with the password
-     * @param log_rounds the binary logarithm of the number of rounds of hashing to apply
-     * @param sign_ext_bug true to implement the 2x bug
+     * @param logRounds the binary logarithm of the number of rounds of hashing to apply
+     * @param signExtBug true to implement the 2x bug
      * @param safety bit 16 is set when the safety measure is requested
      * @return an array containing the binary hashed password
      */
-    private fun crypt_raw(
+    private fun cryptRaw(
         password: ByteArray,
         salt: ByteArray,
-        log_rounds: Int,
-        sign_ext_bug: Boolean,
+        logRounds: Int,
+        signExtBug: Boolean,
         safety: Int
     ): ByteArray {
         var j: Int
         val cdata = bf_crypt_ciphertext.clone()
         val clen = cdata.size
-        require(!(log_rounds < 4 || log_rounds > 31)) { "Bad number of rounds" }
-        val rounds = 1 shl log_rounds
+        require(!(logRounds < 4 || logRounds > 31)) { "Bad number of rounds" }
+        val rounds = 1 shl logRounds
         require(salt.size == BCRYPT_SALT_LEN) { "Bad salt length" }
-        init_key()
-        ekskey(salt, password, sign_ext_bug, safety)
+        initKey()
+        ekskey(salt, password, signExtBug, safety)
         var i = 0
         while (i < rounds) {
-            key(password, sign_ext_bug, safety)
-            key(salt, false, safety)
+            key(password, signExtBug)
+            key(salt, false)
             i++
         }
         i = 0
@@ -1529,7 +1529,7 @@ class BCrypt {
          * @exception IllegalArgumentException if the length is invalid
          */
         @Throws(IllegalArgumentException::class)
-        fun encode_base64(d: ByteArray, len: Int, rs: StringBuilder) {
+        fun encodeBase64(d: ByteArray, len: Int, rs: StringBuilder) {
             var off = 0
             var c1: Int
             var c2: Int
@@ -1580,7 +1580,7 @@ class BCrypt {
          * @throws IllegalArgumentException if maxLen is invalid
          */
         @Throws(IllegalArgumentException::class)
-        fun decode_base64(s: String, maxLen: Int): ByteArray {
+        fun decodeBase64(s: String, maxLen: Int): ByteArray {
             val rs = StringBuilder()
             var off = 0
             val slen = s.length
@@ -1675,13 +1675,13 @@ class BCrypt {
          * @param offp a "pointer" (as a one-entry array) to the current offset into data
          * @return the next word of material from data
          */
-        private fun streamtoword_bug(data: ByteArray, offp: IntArray): Int {
+        private fun streamtowordBug(data: ByteArray, offp: IntArray): Int {
             return streamtowords(data, offp, intArrayOf(0))[1]
         }
 
-        fun roundsForLogRounds(log_rounds: Int): Long {
-            require(!(log_rounds < 4 || log_rounds > 31)) { "Bad number of rounds" }
-            return 1L shl log_rounds
+        fun roundsForLogRounds(logRounds: Int): Long {
+            require(!(logRounds < 4 || logRounds > 31)) { "Bad number of rounds" }
+            return 1L shl logRounds
         }
 
         /**
@@ -1721,7 +1721,7 @@ class BCrypt {
                 minor = salt[2]
                 require(
                     !(minor != 'a' && minor != 'x' && minor != 'y' && minor != 'b' ||
-                        salt[3] != '$')
+                            salt[3] != '$')
                 ) { "Invalid salt revision" }
                 off = 4
             }
@@ -1731,13 +1731,13 @@ class BCrypt {
             require(!(off == 4 && saltLength < 29)) { "Invalid salt" }
             rounds = salt.substring(off, off + 2).toInt()
             val realSalt = salt.substring(off + 3, off + 25)
-            val saltB = decode_base64(realSalt, BCRYPT_SALT_LEN)
+            val saltB = decodeBase64(realSalt, BCRYPT_SALT_LEN)
             if (minor >= 'a') {
                 tmpPass = tmpPass.copyOf(tmpPass.size + 1)
             }
             val b = BCrypt()
             hashed =
-                b.crypt_raw(tmpPass, saltB, rounds, minor == 'x', if (minor == 'a') 0x10000 else 0)
+                b.cryptRaw(tmpPass, saltB, rounds, minor == 'x', if (minor == 'a') 0x10000 else 0)
             rs.append("$2")
             if (minor >= 'a') {
                 rs.append(minor)
@@ -1748,8 +1748,8 @@ class BCrypt {
             }
             rs.append(rounds)
             rs.append("$")
-            encode_base64(saltB, saltB.size, rs)
-            encode_base64(hashed, bf_crypt_ciphertext.size * 4 - 1, rs)
+            encodeBase64(saltB, saltB.size, rs)
+            encodeBase64(hashed, bf_crypt_ciphertext.size * 4 - 1, rs)
             return rs.toString()
         }
 
@@ -1758,12 +1758,12 @@ class BCrypt {
         @JvmStatic
         fun genSalt(
             prefix: String = "$2a",
-            log_rounds: Int = GENSALT_DEFAULT_LOG2_ROUNDS,
+            logRounds: Int = GENSALT_DEFAULT_LOG2_ROUNDS,
             random: SecureRandom = SecureRandom()
         ): String {
             val rnd = ByteArray(BCRYPT_SALT_LEN)
             random.nextBytes(rnd)
-            return genSalt(rnd, prefix, log_rounds)
+            return genSalt(rnd, prefix, logRounds)
         }
 
         @JvmOverloads
@@ -1772,23 +1772,23 @@ class BCrypt {
         fun genSalt(
             salt: ByteArray,
             prefix: String = "$2a",
-            log_rounds: Int = GENSALT_DEFAULT_LOG2_ROUNDS,
+            logRounds: Int = GENSALT_DEFAULT_LOG2_ROUNDS,
         ): String {
             val rs = StringBuilder()
             require(
                 !(!prefix.startsWith("$2") ||
-                    prefix[2] != 'a' && prefix[2] != 'y' && prefix[2] != 'b')
+                        prefix[2] != 'a' && prefix[2] != 'y' && prefix[2] != 'b')
             ) { "Invalid prefix" }
-            require(!(log_rounds < 4 || log_rounds > 31)) { "Invalid log_rounds" }
+            require(!(logRounds < 4 || logRounds > 31)) { "Invalid logRounds" }
             rs.append("$2")
             rs.append(prefix[2])
             rs.append("$")
-            if (log_rounds < 10) {
+            if (logRounds < 10) {
                 rs.append("0")
             }
-            rs.append(log_rounds)
+            rs.append(logRounds)
             rs.append("$")
-            encode_base64(salt, salt.size, rs)
+            encodeBase64(salt, salt.size, rs)
             return rs.toString()
         }
 

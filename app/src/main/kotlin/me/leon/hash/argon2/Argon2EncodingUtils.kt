@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hash.argon2
+package me.leon.hash.argon2
 
 import java.util.Base64
 import org.bouncycastle.crypto.params.Argon2Parameters
