@@ -235,8 +235,11 @@
 - [x] 新佛曰/兽曰/熊曰(需联网)
 - [x] rabbit
 - [x] aaencode/jjencode
+- [x] RSA crack (nec,pqec)
 
 ![ctf](./art/ctf.gif)
+
+![rsa_nec](./art/rsa_nec.gif)
 
 ### PBE
 

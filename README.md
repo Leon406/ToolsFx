@@ -225,8 +225,10 @@ support file, big file which is larger than 8Gi
 - [x] 新佛曰/兽曰/熊曰(online)
 - [x] rabbit
 - [x] aaencode/jjencode
+- [x] RSA crack (nec,pqec)
 
 ![ctf](./art/ctf.gif)
+![rsa_nec](./art/rsa_nec.gif)
 
 ### PBE
 
