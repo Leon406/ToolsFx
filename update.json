@@ -1,5 +1,8 @@
-{"version":"1.13.1.beta","info":"1.13.1.beta
+{"version":"1.13.2.beta","info":"1.13.2.beta
 
+🔥 ctf模块新增RSA-NEC,RSA-PQEC 破解
+🔥 atBash,affine,virgenene,qwe支持保留大小写
+🔥 新增SpringSecurity密码hash,支持crack
 🔥 rot13/rot18/caeser support case recovery
 🔥 优化编码crack结果,不显示无效结果
 🔥 其他优化
