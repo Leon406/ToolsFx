@@ -66,6 +66,10 @@ class ClassicalTest {
             assertEquals("LXFOPVEFRNHR", it)
             assertEquals("ATTACKATDAWN", it.virgeneneDecode(key))
         }
+        "ATTACK AT DAWN".virgeneneEncode(key).also {
+            assertEquals("LXFOPV EF RNHR", it)
+            assertEquals("ATTACK AT DAWN", it.virgeneneDecode(key))
+        }
         "AttackAtDawn".virgeneneEncode(key).also {
             assertEquals("LxfopvEfRnhr", it)
             assertEquals("AttackAtDawn", it.virgeneneDecode(key))
