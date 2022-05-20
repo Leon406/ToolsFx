@@ -5,8 +5,8 @@ import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 import me.leon.*
-import me.leon.asymmetric.RsaSolver.solveNEC
-import me.leon.asymmetric.RsaSolver.solvePQEC
+import me.leon.ctf.rsa.RsaSolver.solveNEC
+import me.leon.ctf.rsa.RsaSolver.solvePQEC
 import org.junit.Test
 
 /**
@@ -49,6 +49,7 @@ class RsaTest {
         val phiN = p.phi(q)
         println(e.invert(phiN))
     }
+
     /** n e c , 小 e, 开方爆破 c= m^e mod n => kn+c = m^e ==> 开e次根 m =(kn+c)^(1/e) */
     @Test
     fun rsa_02() {
@@ -128,25 +129,37 @@ class RsaTest {
     /** n (多个数相乘,含合数) e c */
     @Test
     fun rsa7() {
+        println("_______  n 由两个素数相乘 ________")
         // n 由两个素数相乘
-        var params = "rsa04.txt".parseRsaParams().also { println(it) }
+        var params = "rsa04_2.txt".parseRsaParams()
         var n = params["n"]!!
         var e = params["e"]!!
         var c = params["c"]!!
 
-        solveNEC(n, e, c)
+        solveNEC(n, e, c).also { println(it) }
 
+        println("_______ n 为素数 ________")
+
+        // n 为素数
+        params = "rsa04.txt".parseRsaParams()
+        n = params["n"]!!
+        e = params["e"]!!
+        c = params["c"]!!
+
+        solveNEC(n, e, c).also { println(it) }
+
+        println("_______ n 由多个数相乘,含合数 ________")
         // n 由多个数相乘,含合数
-        params = "rsa07.txt".parseRsaParams().also { println(it) }
+        params = "rsa07.txt".parseRsaParams()
         e = params["e"]!!
         n = params["n"]!!
         c = params["c"]!!
 
         solveNEC(n, e, c)
 
+        println("_______ nc不互素 ________")
         // nc不互素
-        params = "rsa11.txt".parseRsaParams().also { println(it) }
-        e = params["e"]!!
+        params = "rsa11.txt".parseRsaParams()
         n = params["n"]!!
         c = params["c"]!!
 

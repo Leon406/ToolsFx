@@ -4,6 +4,8 @@ import me.leon.P1
 import me.leon.P2
 import me.leon.classical.*
 import me.leon.ctf.*
+import me.leon.ctf.rsa.RsaSolver
+import me.leon.ext.parseRsaParams
 
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
@@ -561,5 +563,23 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
                 "global variable name, default is '$'",
                 "palindromic,false as default,if has value is true"
             )
+    },
+    RSA_NEC("RSA-NEC") {
+        override fun encrypt(raw: String, params: Map<String, String>) = decrypt(raw, params)
+
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            with(raw.parseRsaParams()) { RsaSolver.solveNEC(this["n"]!!, this["e"]!!, this["c"]!!) }
+
+        override fun isIgnoreSpace() = false
+    },
+    RSA_PQEC("RSA-PQEC") {
+        override fun encrypt(raw: String, params: Map<String, String>) = decrypt(raw, params)
+
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            with(raw.parseRsaParams()) {
+                RsaSolver.solvePQEC(this["p"]!!, this["q"]!!, this["e"]!!, this["c"]!!)
+            }
+
+        override fun isIgnoreSpace() = false
     },
 }

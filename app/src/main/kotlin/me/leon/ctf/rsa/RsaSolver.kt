@@ -1,10 +1,10 @@
-package me.leon.asymmetric
+package me.leon.ctf.rsa
 
 import java.math.BigInteger
 import me.leon.*
 
 object RsaSolver {
-    /** 1.e大小判断 2.NC互素判断 N C 不互素 gcm(n,c) = p 3.factor Db分解,自动过滤合数 */
+    /** 1.e大小判断,小于6直接开方 2.n为素数 3.NC互素判断 N C 不互素 gcm(n,c) = p 4.factor Db分解,自动过滤合数 */
     fun solveNEC(n: BigInteger, e: BigInteger, c: BigInteger): String {
         if (e < 6.toBigInteger()) {
             for (k in 1..1000) {
@@ -14,6 +14,11 @@ object RsaSolver {
                 }
             }
             return "no solution"
+        } else if (n.isProbablePrime(100)) {
+            val phi = n - BigInteger.ONE
+            (c.modPow(e.invert(phi), n)).also {
+                return it.n2s()
+            }
         } else if (n.gcd(c) != BigInteger.ONE) {
             val p = n.gcd(c)
             val q = n / p
