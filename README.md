@@ -43,6 +43,8 @@
 
 ![encode](./art/encode.gif)
 
+![one key decode](./art/one_key_decode.gif)
+
 **String Process(e.g. Split)**
 
 ![encode_split](./art/encode_split.gif)

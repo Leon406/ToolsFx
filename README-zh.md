@@ -50,6 +50,8 @@
 
 ![encode](./art/encode.gif)
 
+![one key decode](./art/one_key_decode.gif)
+
 **字符处理(以分割为例)**
 
 ![encode_split](./art/encode_split.gif)
