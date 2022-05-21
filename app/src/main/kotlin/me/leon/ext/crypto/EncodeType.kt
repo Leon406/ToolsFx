@@ -161,12 +161,26 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base62(dict)
     },
-    Base85("base85", BASE85_DICT) {
+    Base85("base85(ASCII85)", BASE85_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base85Decode(dict)
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base85(dict)
+    },
+    Base85IPv6("base85_IPv6", BASE85_IPV6_DICT) {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base85Decode(dict.ifEmpty { BASE85_IPV6_DICT })
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base85(dict.ifEmpty { BASE85_IPV6_DICT })
+    },
+    Z85("Z85(ZeroMQ)", Z85_DICT) {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base85Decode(dict.ifEmpty { Z85_DICT })
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base85(dict.ifEmpty { Z85_DICT })
     },
     Base91("base91", BASE91_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =

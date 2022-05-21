@@ -297,4 +297,88 @@ class EncodeTest {
             EncodeType.Radix10.encode2String(it, "", "UTF-8").also { println(it) }
         }
     }
+
+    @Test
+    fun b85() {
+        "".toByteArray().base85().also { assertEquals("", it) }
+        "1".toByteArray().base85().also {
+            assertEquals("0`", it)
+            assertEquals("1", it.base85Decode().decodeToString())
+        }
+        "12".toByteArray().base85().also {
+            assertEquals("0er", it)
+            assertEquals("12", it.base85Decode().decodeToString())
+        }
+        "123".toByteArray().base85().also {
+            assertEquals("0etN", it)
+            assertEquals("123", it.base85Decode().decodeToString())
+        }
+        "1234".toByteArray().base85().also {
+            assertEquals("0etOA", it)
+            assertEquals("1234", it.base85Decode().decodeToString())
+        }
+        "12345".toByteArray().base85().also {
+            assertEquals("0etOA2#", it)
+            assertEquals("12345", it.base85Decode().decodeToString())
+        }
+
+        "123".toByteArray().base85(Z85_DICT).also {
+            assertEquals("f!\$J", it)
+            assertEquals("123", it.base85Decode(Z85_DICT).decodeToString())
+        }
+        "123".toByteArray().base85(BASE85_IPV6_DICT).also {
+            assertEquals("F)}j", it)
+            assertEquals("123", it.base85Decode(BASE85_IPV6_DICT).decodeToString())
+        }
+    }
+
+    @Test
+    fun b85Decode() {
+        "9jn"
+            .map { BASE85_DICT.indexOf(it) }
+            .chunked(5)
+            .map {
+                val count =
+                    when (it.size) {
+                        2 -> 1
+                        3 -> 2
+                        4 -> 3
+                        else -> 4
+                    }
+                (it.getOrElse(0) { 0 } * 85 * 85 * 85 * 85 +
+                        it.getOrElse(1) { 255 } * 85 * 85 * 85 +
+                        it.getOrElse(2) { 255 } * 85 * 85 +
+                        it.getOrElse(3) { 255 } * 85 +
+                        it.getOrElse(4) { 255 })
+                    .toBigInteger()
+                    .toByteArray()
+                    .take(count)
+            }
+            .flatMap { it.map { it } }
+            .toByteArray()
+            .also { println(it.decodeToString()) }
+    }
+
+    @Test
+    fun crack() {
+        val inputText =
+            "4B595954494D32515046324757595A534E52415653334357474E4A575955544E4B5A4D46434F4B5947425346" +
+                "4D5A444E4D51334557524B5A4F424944473542554B595A44534B324E49565746515532464B4934" +
+                    "5649564B464E4E494543504A35"
+        val propInput = inputText.split(".+ :\\s*".toRegex()).filterNot(String::isBlank).first()
+        println("$inputText \n $propInput")
+        println(controller.decode2String(propInput, EncodeType.Base16, ""))
+        EncodeType.values()
+            .map { it.type to controller.decode2String(propInput, it, "") }
+            .filterNot {
+                it.second.isEmpty() ||
+                    it.second.contains(propInput, true) ||
+                    it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex())
+            }
+            .joinToString("\n") {
+                println("__" + it.second + "__")
+                it.first + " :\t" + it.second
+            }
+            .also { println(it) }
+    }
 }
