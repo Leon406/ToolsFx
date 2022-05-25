@@ -364,7 +364,7 @@ class EncodeTest {
         val inputText =
             "4B595954494D32515046324757595A534E52415653334357474E4A575955544E4B5A4D46434F4B5947425346" +
                 "4D5A444E4D51334557524B5A4F424944473542554B595A44534B324E49565746515532464B4934" +
-                    "5649564B464E4E494543504A35"
+                "5649564B464E4E494543504A35"
         val propInput = inputText.split(".+ :\\s*".toRegex()).filterNot(String::isBlank).first()
         println("$inputText \n $propInput")
         println(controller.decode2String(propInput, EncodeType.Base16, ""))
