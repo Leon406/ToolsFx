@@ -1,13 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: crawler
+name: automated-test
 
 # Controls when the action will run. 
 on:
-  push:
-    branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
   # Triggers the workflow on push or pull request events but only for the master branch
   #  schedule:
   #    # 定时任务

@@ -97,19 +97,19 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
      * Checks the validity of an unencoded password against an encoded one in the form
      * "{SSHA}sQuQF8vj8Eg2Y1hPdh3bkQhCKQBgjhQI".
      *
-     * @param rawPassword unencoded password to be verified.
+     * @param password unencoded password to be verified.
      * @param encodedPassword the actual SSHA or SHA encoded password
      * @return true if they match (independent of the case of the prefix).
      */
-    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
-        return matches(rawPassword.toString(), encodedPassword)
+    override fun matches(password: CharSequence, encodedPassword: String): Boolean {
+        return matches(password.toString(), encodedPassword)
     }
 
-    private fun matches(rawPassword: String, encodedPassword: String): Boolean {
-        val prefix = extractPrefix(encodedPassword) ?: return encodedPassword == rawPassword
+    private fun matches(password: String, encodedPassword: String): Boolean {
+        val prefix = extractPrefix(encodedPassword) ?: return encodedPassword == password
         val salt = getSalt(encodedPassword, prefix)
         val startOfHash = prefix.length
-        val encodedRawPass = encode(rawPassword, salt).substring(startOfHash)
+        val encodedRawPass = encode(password, salt).substring(startOfHash)
         return encodedRawPass == encodedPassword.substring(startOfHash)
     }
 

@@ -4,6 +4,7 @@ import kotlin.test.assertEquals
 import me.leon.ext.*
 import me.leon.ext.crypto.JavascriptCipher
 import org.junit.Test
+import java.lang.System.getProperty
 
 class Execute {
     @Test
@@ -27,9 +28,11 @@ class Execute {
         //                inputStream.bufferedReader().use { it.lines().forEach { println(it) } }
         //            }
         //        }
-        Runtime.getRuntime()
-            .exec("cmd /c chcp 65001 && ping www.baidu.com")
-            .inputStream.bufferedReader().use { it.lines().forEach { println(it) } }
+
+        if (getProperty("os.name").contains("Windows"))
+            Runtime.getRuntime()
+                .exec("cmd /c chcp 65001 && ping www.baidu.com")
+                .inputStream.bufferedReader().use { it.lines().forEach { println(it) } }
     }
 
     @Test
