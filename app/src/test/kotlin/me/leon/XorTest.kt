@@ -30,15 +30,6 @@ class XorTest {
                 .decodeToString()
         )
 
-        val ints = intArrayOf(71, 65, 77, 69)
-        "E:/download/360/xor (1).txt"
-            .toFile()
-            .readBytes()
-            .mapIndexed { index, byte -> byte xor (ints[index % 4]).toByte() }
-            .toByteArray()
-            .decodeToString()
-            .also { println(it) }
-        println("!-,\"<".toByteArray().xor("flag{").joinToString(" "))
     }
 
     @Test

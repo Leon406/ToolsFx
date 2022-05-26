@@ -9,8 +9,7 @@ class ClassicalTest {
     @Test
     fun caesar() {
         val plain = "hello! yoshiko"
-        println(plain.shift26(3))
-        assertEquals("KHOOR! BRVKLNR", plain.shift26(3))
+        assertEquals("khoor! brvklnr", plain.shift26(3))
         assertEquals(plain.uppercase(), "KHOOR! BRVKLNR".shift26(23))
         assertEquals(plain.uppercase(), "KHOOR! BRVKLNR".shift26(-3))
         val encrypt = "PELCGBTENCUL"
@@ -48,7 +47,6 @@ class ClassicalTest {
         assertEquals("678fo", "123sb".rot18())
         assertEquals("678fO", "123sB".rot18())
         assertEquals("123sb", "123sb".rot18().rot18())
-        println()
     }
 
     @Test
@@ -151,7 +149,6 @@ class ClassicalTest {
         val encrypt = "ACDTAKTANTAW"
         assertEquals(encrypt, msg.railFenceWEncrypt(3))
         assertEquals(msg, encrypt.railFenceWDecrypt(3))
-        println(msg.railFenceWEncrypt(3, 1))
         assertEquals("ATNATCADWTKA", msg.railFenceWEncrypt(3, 1))
         assertEquals(msg, "ATNATCADWTKA".railFenceWDecrypt(3, 1))
     }
@@ -186,7 +183,6 @@ class ClassicalTest {
         val key = "QUEENLY"
         val encrypt = "QNXEPV YT WTWP"
         // 它的密钥开头是一个关键词，之后则是明文的重复
-        println(msg.autoKey(key))
         assertEquals(encrypt, msg.autoKey(key))
         assertEquals(msg, encrypt.autoKeyDecrypt(key))
         assertEquals(encrypt.stripAllSpace(), msg.autoKey(key).stripAllSpace())
@@ -204,17 +200,17 @@ class ClassicalTest {
 
     @Test
     fun nihiList() {
-        "I am leon thank you for using my software".nihilist("helloworld").also { println(it) }
-        "33 2335 13121441 4511234134 541451 311421 5144334132 3554 4414314515232112"
-            .nihilistDecrypt("helloworld")
-            .also { println(it) }
+        val data = "I am leon thank you for using my software"
+        val encoded = "33 2335 13121441 4511234134 541451 311421 5144334132 3554 4414314515232112"
+        assertEquals(encoded, data.nihilist("helloworld"))
+        assertEquals(data.uppercase(), encoded.nihilistDecrypt("helloworld"))
     }
 
     @Test
     fun baudot() {
         val encrypted =
             "11001 00011 00111 01001 11000 10000 00100 11001 10101 00100 10010 00001 11000 01100" +
-                " 11011 01010 10110 10101"
+                    " 11011 01010 10110 10101"
         val plain = "baudot by leon406"
         assertEquals(encrypted, plain.baudot())
         assertEquals(plain, encrypted.baudotDecode())
@@ -231,15 +227,12 @@ class ClassicalTest {
     fun gray() {
         val data = "graycode加密"
         data.grayEncode().also {
-            println(it)
             assertEquals(data, it.grayDecode())
         }
         data.grayEncode(4).also {
-            println(it)
             assertEquals(data, it.grayDecode(4))
         }
         data.grayEncode(5).also {
-            println(it)
             assertEquals(data, it.grayDecode(5))
         }
     }
@@ -277,8 +270,8 @@ class ClassicalTest {
         val msg = "flag{8b1330652db0d937e6cdc4d4810118ed_A\$\$CII_and_\$uM}"
         val encoded =
             "0 102 210 307 410 533 589 687 736 787 838 886 940 993 1043 1143 1241 1289 1389 1446 1497 1552 1653" +
-                " 1707 1806 1906 2005 2057 2157 2209 2265 2314 2362 2411 2460 2516 2617 2717 2812 2877 2913" +
-                " 2949 3016 3089 3162 3257 3354 3464 3564 3659 3695 3812 3889 4014"
+                    " 1707 1806 1906 2005 2057 2157 2209 2265 2314 2362 2411 2460 2516 2617 2717 2812 2877 2913" +
+                    " 2949 3016 3089 3162 3257 3354 3464 3564 3659 3695 3812 3889 4014"
 
         assertEquals(encoded, msg.asciiSum())
         assertEquals(msg, encoded.asciiSumDecode())

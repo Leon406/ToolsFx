@@ -193,13 +193,15 @@ class HashTest {
                             "$1-"
                         ))
                     .also {
-                        println("$it")
-                        if (it.contains("PasswordHashing"))
-                            assertEquals(
-                                expectedMap[it.replace("PasswordHashing", "")],
-                                digestController.digest(it.replace("PasswordHashing", ""), testData)
-                            )
-                        else if (it.contains("512"))
+                        println(it)
+                        if (it.contains("PasswordHashing")) {
+                            if (it.contains("SpringSecurity").not()) {
+                                assertEquals(
+                                    expectedMap[it.replace("PasswordHashing", "")],
+                                    digestController.digest(it.replace("PasswordHashing", ""), testData)
+                                )
+                            }
+                        } else if (it.contains("512"))
                             assertEquals(expectedMap[it], testData.repeat(8).hash(it))
                         else if (it.contains("256") && !it.contains("(SHA256)"))
                             assertEquals(expectedMap[it], testData.repeat(4).hash(it))

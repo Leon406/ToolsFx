@@ -3,6 +3,7 @@ package me.leon
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class NetTest {
 
@@ -13,7 +14,10 @@ class NetTest {
                 "19098&keySource=VodBuildInKMS")
             .readBytesFromNet()
             .base64()
-            .also { println(it) }
+            .also {
+                println(it)
+                assertEquals("5VyPyIv3693VdklBeXVY3g==", it)
+            }
     }
 
     @Test
@@ -25,14 +29,6 @@ class NetTest {
             .also { println(it) }
     }
 
-    @Test
-    fun fetchJson() {
-        var l: MutableList<String>? = mutableListOf("", "")
-        l.safeAs<HashSet<String>>().also { println(it) }
-        l = null
-        l.safeAs<HashSet<String>>().also { println(it) }
-        l.cast<HashSet<String>>()
-    }
 
     @Test
     fun fileRead() {

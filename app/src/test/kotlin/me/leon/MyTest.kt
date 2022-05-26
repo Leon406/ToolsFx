@@ -8,9 +8,15 @@ import java.time.format.DateTimeFormatter
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.crypto.parsePublicKeyFromCerFile
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
+import java.security.Security
 
 class MyTest {
+
+    init {
+        Security.addProvider(BouncyCastleProvider())
+    }
 
     @Test
     fun cerParse() {
@@ -33,9 +39,9 @@ class MyTest {
         val now = LocalDateTime.now()
         println(now)
         LocalDateTime.parse(
-                "2020-10-11 10:00:00",
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            )
+            "2020-10-11 10:00:00",
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        )
             .toInstant(ZoneOffset.of("+8"))
             .toEpochMilli()
             .also { println(it) }
