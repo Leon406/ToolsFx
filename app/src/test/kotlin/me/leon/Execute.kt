@@ -29,8 +29,7 @@ class Execute {
         //        }
         Runtime.getRuntime()
             .exec("cmd /c chcp 65001 && ping www.baidu.com")
-            //            .exec("python E:/gitrepo/pyutil/Args.py a b c")
-            .apply { inputStream.bufferedReader().use { it.lines().forEach { println(it) } } }
+            .inputStream.bufferedReader().use { it.lines().forEach { println(it) } }
     }
 
     @Test
@@ -46,7 +45,7 @@ class Execute {
     return d
 }"""
         )
-        Nashorn.invoke("getKey", arrayOf(2, 0, 3, 12, 6, 1, 14, 3, 5, 0, 6, 8)).also { println(it) }
+        Nashorn.invoke("getKey", intArrayOf(2, 0, 3, 12, 6, 1, 14, 3, 5, 0, 6, 8)).also { println(it) }
         JavascriptCipher.aaEncode("aadfsdf").also {
             println(it)
             JavascriptCipher.aaDecode(it).also { println(it) }

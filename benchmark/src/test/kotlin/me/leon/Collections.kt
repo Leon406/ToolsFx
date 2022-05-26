@@ -18,9 +18,8 @@ class Collections {
         }
         arraySetOf<Int>()
         arraySetOf(4, 1, 2, 3, 3, 41, 4, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0).also { println(it) }
-        var cache = lruCache<String, String>(3).also { println(it) }
         // sizeOf每个元素的大小 create 元素不存在时是否创建,默认不创建
-        cache =
+        val cache =
             lruCache(
                 6,
                 { _: String, _: String -> 2 },

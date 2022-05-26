@@ -30,7 +30,7 @@ class XorTest {
                 .decodeToString()
         )
 
-        val ints = arrayOf(71, 65, 77, 69)
+        val ints = intArrayOf(71, 65, 77, 69)
         "E:/download/360/xor (1).txt"
             .toFile()
             .readBytes()

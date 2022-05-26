@@ -6,7 +6,6 @@ import kotlin.collections.set
 import kotlin.system.measureTimeMillis
 import me.leon.SimpleMsgEvent
 import me.leon.Styles
-import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
 import me.leon.ext.fx.*
@@ -62,9 +61,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                    "cost: $timeConsumption ms"
+                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                "cost: $timeConsumption ms"
     private var inputText: String
         get() =
             taInput.text.takeIf {
@@ -202,15 +201,15 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     item("reverse") { action { taInput.text = inputText.reversed() } }
                     item("remove all space by line") {
                         action {
-                            taInput.text = inputText.lineSplit().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
-                                .joinToString(System.lineSeparator())
+                            taInput.text =
+                                inputText
+                                    .lineSplit()
+                                    .map { it.stripAllSpace() }
+                                    .filterNot { it.isEmpty() }
+                                    .joinToString(System.lineSeparator())
                         }
                     }
-                    item("remove all space") {
-                        action {
-                            taInput.text = inputText.stripAllSpace()
-                        }
-                    }
+                    item("remove all space") { action { taInput.text = inputText.stripAllSpace() } }
                 }
                 textProperty().addListener { _, _, _ ->
                     timeConsumption = 0

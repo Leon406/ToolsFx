@@ -18,6 +18,5 @@ class UdpServer(val port: Int) {
 
             println(packet.data.decodeToString(0, packet.length))
         }
-        socket.close()
     }
 }

@@ -198,8 +198,8 @@ class EncodeTest {
         )
 
         assertContentEquals(
-            arrayOf(128510, 128507),
-            arrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
+            intArrayOf(128510, 128507),
+            intArrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
         )
         println("🗾".unicodeCharToInt())
     }

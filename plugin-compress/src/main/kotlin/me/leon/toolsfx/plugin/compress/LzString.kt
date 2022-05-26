@@ -165,7 +165,7 @@ object LzString {
         var numBits = 3
         var enlargeIn = 4
         var dictSize = 4
-        var next = 0
+        var next: Int
         fun doPower(initBits: Int, initPower: Int, initMaxPowerFactor: Int, mode: Int = 0) {
             bits = initBits
             maxpower = initMaxPowerFactor.power()

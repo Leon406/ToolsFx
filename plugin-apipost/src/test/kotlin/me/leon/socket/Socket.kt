@@ -14,10 +14,10 @@ object Socket {
     }
 
     private fun tcpTest() {
-        TcpClient("localhost", 11111).apply { fromConsole() }
+        TcpClient("localhost", 11111).fromConsole()
     }
 
     private fun udpTest() {
-        UdpClient("localhost", 11112, 11113).apply { fromConsole() }
+        UdpClient("localhost", 11112, 11113).fromConsole()
     }
 }
