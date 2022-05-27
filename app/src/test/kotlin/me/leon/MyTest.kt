@@ -2,6 +2,7 @@ package me.leon
 
 import java.io.File
 import java.nio.charset.Charset
+import java.security.Security
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -10,7 +11,6 @@ import me.leon.ext.*
 import me.leon.ext.crypto.parsePublicKeyFromCerFile
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
-import java.security.Security
 
 class MyTest {
 
@@ -39,9 +39,9 @@ class MyTest {
         val now = LocalDateTime.now()
         println(now)
         LocalDateTime.parse(
-            "2020-10-11 10:00:00",
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        )
+                "2020-10-11 10:00:00",
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            )
             .toInstant(ZoneOffset.of("+8"))
             .toEpochMilli()
             .also { println(it) }

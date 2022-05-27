@@ -29,7 +29,6 @@ class XorTest {
                 .toByteArray()
                 .decodeToString()
         )
-
     }
 
     @Test

@@ -173,10 +173,31 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
         runAsync {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
-            if (isEncrypt)
-                if (isFile.get())
+            runCatching {
+                if (isEncrypt)
+                    if (isFile.get())
+                        inputText.lineAction2String {
+                            controller.encryptByFile(
+                                keyIvInputView.keyByteArray,
+                                it,
+                                keyIvInputView.ivByteArray,
+                                cipher
+                            )
+                        }
+                    else
+                        controller.encrypt(
+                            keyIvInputView.keyByteArray,
+                            inputText,
+                            keyIvInputView.ivByteArray,
+                            cipher,
+                            selectedCharset.get(),
+                            isSingleLine.get(),
+                            inputEncode,
+                            outputEncode
+                        )
+                else if (isFile.get())
                     inputText.lineAction2String {
-                        controller.encryptByFile(
+                        controller.decryptByFile(
                             keyIvInputView.keyByteArray,
                             it,
                             keyIvInputView.ivByteArray,
@@ -184,7 +205,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                         )
                     }
                 else
-                    controller.encrypt(
+                    controller.decrypt(
                         keyIvInputView.keyByteArray,
                         inputText,
                         keyIvInputView.ivByteArray,
@@ -194,26 +215,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                         inputEncode,
                         outputEncode
                     )
-            else if (isFile.get())
-                inputText.lineAction2String {
-                    controller.decryptByFile(
-                        keyIvInputView.keyByteArray,
-                        it,
-                        keyIvInputView.ivByteArray,
-                        cipher
-                    )
-                }
-            else
-                controller.decrypt(
-                    keyIvInputView.keyByteArray,
-                    inputText,
-                    keyIvInputView.ivByteArray,
-                    cipher,
-                    selectedCharset.get(),
-                    isSingleLine.get(),
-                    inputEncode,
-                    outputEncode
-                )
+            }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 isProcessing.value = false

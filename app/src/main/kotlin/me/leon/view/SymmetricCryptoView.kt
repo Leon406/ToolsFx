@@ -249,10 +249,33 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
         runAsync {
             startTime = System.currentTimeMillis()
             isProcessing.value = true
-            if (isEncrypt)
-                if (isFile.get())
+            runCatching {
+                if (isEncrypt)
+                    if (isFile.get())
+                        inputText.lineAction2String {
+                            controller.encryptByFile(
+                                keyIvInputView.keyByteArray,
+                                it,
+                                keyIvInputView.ivByteArray,
+                                cipher,
+                                keyIvInputView.associatedData
+                            )
+                        }
+                    else
+                        controller.encrypt(
+                            keyIvInputView.keyByteArray,
+                            inputText,
+                            keyIvInputView.ivByteArray,
+                            cipher,
+                            selectedCharset.get(),
+                            isSingleLine.get(),
+                            inputEncode,
+                            outputEncode,
+                            keyIvInputView.associatedData
+                        )
+                else if (isFile.get())
                     inputText.lineAction2String {
-                        controller.encryptByFile(
+                        controller.decryptByFile(
                             keyIvInputView.keyByteArray,
                             it,
                             keyIvInputView.ivByteArray,
@@ -260,8 +283,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                             keyIvInputView.associatedData
                         )
                     }
-                else
-                    controller.encrypt(
+                else {
+                    controller.decrypt(
                         keyIvInputView.keyByteArray,
                         inputText,
                         keyIvInputView.ivByteArray,
@@ -272,29 +295,9 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                         outputEncode,
                         keyIvInputView.associatedData
                     )
-            else if (isFile.get())
-                inputText.lineAction2String {
-                    controller.decryptByFile(
-                        keyIvInputView.keyByteArray,
-                        it,
-                        keyIvInputView.ivByteArray,
-                        cipher,
-                        keyIvInputView.associatedData
-                    )
                 }
-            else {
-                controller.decrypt(
-                    keyIvInputView.keyByteArray,
-                    inputText,
-                    keyIvInputView.ivByteArray,
-                    cipher,
-                    selectedCharset.get(),
-                    isSingleLine.get(),
-                    inputEncode,
-                    outputEncode,
-                    keyIvInputView.associatedData
-                )
             }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 isProcessing.value = false

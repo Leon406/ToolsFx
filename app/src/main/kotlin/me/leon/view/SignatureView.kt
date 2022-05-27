@@ -264,15 +264,18 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private fun sign() =
         runAsync {
             startTime = System.currentTimeMillis()
-            controller.sign(
-                selectedKeyPairAlg.get(),
-                selectedSigAlg.get(),
-                key,
-                msg,
-                inputEncode,
-                outputEncode,
-                isSingleLine.get()
-            )
+            runCatching {
+                controller.sign(
+                    selectedKeyPairAlg.get(),
+                    selectedSigAlg.get(),
+                    key,
+                    msg,
+                    inputEncode,
+                    outputEncode,
+                    isSingleLine.get()
+                )
+            }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 taSigned.text = it
@@ -283,17 +286,20 @@ class SignatureView : Fragment(messages["signVerify"]) {
 
     private fun verify() =
         runAsync {
-            startTime = System.currentTimeMillis()
-            controller.verify(
-                selectedKeyPairAlg.get(),
-                selectedSigAlg.get(),
-                key,
-                msg,
-                inputEncode,
-                outputEncode,
-                signText,
-                isSingleLine.get()
-            )
+            runCatching {
+                startTime = System.currentTimeMillis()
+                controller.verify(
+                    selectedKeyPairAlg.get(),
+                    selectedSigAlg.get(),
+                    key,
+                    msg,
+                    inputEncode,
+                    outputEncode,
+                    signText,
+                    isSingleLine.get()
+                )
+            }
+                .getOrElse { it.stacktrace() }
         } ui
             { state ->
                 primaryStage.showToast("result: \n$state")

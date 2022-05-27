@@ -1,10 +1,10 @@
 package me.leon
 
+import java.lang.System.getProperty
 import kotlin.test.assertEquals
 import me.leon.ext.*
 import me.leon.ext.crypto.JavascriptCipher
 import org.junit.Test
-import java.lang.System.getProperty
 
 class Execute {
     @Test
@@ -32,7 +32,9 @@ class Execute {
         if (getProperty("os.name").contains("Windows"))
             Runtime.getRuntime()
                 .exec("cmd /c chcp 65001 && ping www.baidu.com")
-                .inputStream.bufferedReader().use { it.lines().forEach { println(it) } }
+                .inputStream
+                .bufferedReader()
+                .use { it.lines().forEach { println(it) } }
     }
 
     @Test
@@ -48,7 +50,9 @@ class Execute {
     return d
 }"""
         )
-        Nashorn.invoke("getKey", intArrayOf(2, 0, 3, 12, 6, 1, 14, 3, 5, 0, 6, 8)).also { println(it) }
+        Nashorn.invoke("getKey", intArrayOf(2, 0, 3, 12, 6, 1, 14, 3, 5, 0, 6, 8)).also {
+            println(it)
+        }
         JavascriptCipher.aaEncode("aadfsdf").also {
             println(it)
             JavascriptCipher.aaDecode(it).also { println(it) }

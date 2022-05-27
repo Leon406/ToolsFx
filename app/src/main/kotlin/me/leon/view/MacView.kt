@@ -171,25 +171,29 @@ class MacView : Fragment("MAC") {
     private fun doMac() =
         runAsync {
             startTime = System.currentTimeMillis()
-            if (method.contains("POLY1305|-GMAC|ZUC".toRegex()))
-                controller.macWithIv(
-                    inputText,
-                    keyIvInputView.keyByteArray,
-                    keyIvInputView.ivByteArray,
-                    method,
-                    inputEncode,
-                    outputEncode,
-                    isSingleLine.get()
-                )
-            else
-                controller.mac(
-                    inputText,
-                    keyIvInputView.keyByteArray,
-                    method,
-                    inputEncode,
-                    outputEncode,
-                    isSingleLine.get()
-                )
+
+            runCatching {
+                if (method.contains("POLY1305|-GMAC|ZUC".toRegex()))
+                    controller.macWithIv(
+                        inputText,
+                        keyIvInputView.keyByteArray,
+                        keyIvInputView.ivByteArray,
+                        method,
+                        inputEncode,
+                        outputEncode,
+                        isSingleLine.get()
+                    )
+                else
+                    controller.mac(
+                        inputText,
+                        keyIvInputView.keyByteArray,
+                        method,
+                        inputEncode,
+                        outputEncode,
+                        isSingleLine.get()
+                    )
+            }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 outputText = it

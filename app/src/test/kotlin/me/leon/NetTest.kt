@@ -1,9 +1,9 @@
 package me.leon
 
+import kotlin.test.assertEquals
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class NetTest {
 
@@ -28,7 +28,6 @@ class NetTest {
             .readHeadersFromNet()
             .also { println(it) }
     }
-
 
     @Test
     fun fileRead() {

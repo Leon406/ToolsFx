@@ -268,43 +268,46 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         runAsync {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
-            if (isEncrypt)
-                if (privateKeyEncrypt.get())
-                    controller.priEncrypt(
+            runCatching {
+                if (isEncrypt)
+                    if (privateKeyEncrypt.get())
+                        controller.priEncrypt(
+                            keyText,
+                            alg,
+                            inputText,
+                            isSingleLine.get(),
+                            inputEncode = inputEncode,
+                            outputEncode = outputEncode
+                        )
+                    else
+                        controller.pubEncrypt(
+                            keyText,
+                            alg,
+                            inputText,
+                            isSingleLine.get(),
+                            inputEncode = inputEncode,
+                            outputEncode = outputEncode
+                        )
+                else if (privateKeyEncrypt.get())
+                    controller.pubDecrypt(
                         keyText,
                         alg,
                         inputText,
                         isSingleLine.get(),
-                        inputEncode = inputEncode,
-                        outputEncode = outputEncode
+                        inputEncode,
+                        outputEncode
                     )
                 else
-                    controller.pubEncrypt(
+                    controller.priDecrypt(
                         keyText,
                         alg,
                         inputText,
                         isSingleLine.get(),
-                        inputEncode = inputEncode,
-                        outputEncode = outputEncode
+                        inputEncode,
+                        outputEncode
                     )
-            else if (privateKeyEncrypt.get())
-                controller.pubDecrypt(
-                    keyText,
-                    alg,
-                    inputText,
-                    isSingleLine.get(),
-                    inputEncode,
-                    outputEncode
-                )
-            else
-                controller.priDecrypt(
-                    keyText,
-                    alg,
-                    inputText,
-                    isSingleLine.get(),
-                    inputEncode,
-                    outputEncode
-                )
+            }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 isProcessing.value = false
