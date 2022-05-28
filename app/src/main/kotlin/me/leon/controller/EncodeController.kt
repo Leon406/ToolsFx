@@ -50,7 +50,7 @@ class EncodeController : Controller() {
         dic: String = "",
         charset: String = "UTF-8"
     ): ByteArray =
-        catch({ "解码错误: ${it.lineSplit().first()}".toByteArray() }) {
+        catch({ "解码错误: ${it.lines().first()}".toByteArray() }) {
             println("decode $type $dic $charset $encoded")
             if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
         }

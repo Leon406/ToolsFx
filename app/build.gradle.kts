@@ -25,7 +25,7 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk18on:${rootProject.extra["bouncycastle_version"]}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
     implementation("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
-    implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
+        implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
     api("com.google.code.gson:gson:2.9.0")
     implementation(project(":plugin-lib"))
     implementation("org.openjdk.nashorn:nashorn-core:15.4")

@@ -42,7 +42,7 @@ class SignatureController : Controller() {
                             kpAlg,
                             sigAlg,
                             pub,
-                            signed.lineSplit()[i].decodeToByteArray(outEncode)
+                            signed.lines()[i].decodeToByteArray(outEncode)
                         )
                         .toString()
                 }

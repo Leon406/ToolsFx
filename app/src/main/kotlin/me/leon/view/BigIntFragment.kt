@@ -31,7 +31,7 @@ class BigIntFragment : Fragment("BigInt") {
                 "b=${ta5.bits()}  " +
                 "Output=${
                         runCatching {
-                            outputText.lineSplit().first().toBigInteger().bitLength().toString()
+                            outputText.lines().first().toBigInteger().bitLength().toString()
                         }.getOrDefault("0")
                     }  " +
                 "cost: $timeConsumption ms "
@@ -255,7 +255,7 @@ class BigIntFragment : Fragment("BigInt") {
                 isProcessing.value = false
                 outputText =
                     runCatching {
-                            it.lineSplit().joinToString("\n") {
+                            it.lines().joinToString("\n") {
                                 println("$it ${selectedRadix.get().toInt()}")
                                 it.toBigInteger().toString(selectedRadix.get().toInt())
                             }

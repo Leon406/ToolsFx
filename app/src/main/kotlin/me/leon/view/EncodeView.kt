@@ -270,7 +270,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     .text
                     .split(".+ :\\s*".toRegex())
                     .first(String::isNotBlank)
-                    .lineSplit()
+                    .lines()
                     .first()
             EncodeType.values()
                 .map { it.type to controller.decode2String(propInput, it, "") }
