@@ -11,23 +11,25 @@ import me.leon.ext.crypto.EncodeType
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
+import java.io.File
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val isRegexp = SimpleBooleanProperty(false)
     private val isSplitRegexp = SimpleBooleanProperty(false)
+    private val isFileMode = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
     private lateinit var taOutput: TextArea
     private lateinit var tfReplaceFrom: TextField
     private var replaceFromText
-        get() = tfReplaceFrom.text.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")
+        get() = tfReplaceFrom.text.unescape()
         set(value) {
             tfReplaceFrom.text = value
         }
 
     private lateinit var tfReplaceTo: TextField
     private var replaceToText
-        get() = tfReplaceTo.text.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")
+        get() = tfReplaceTo.text.unescape()
         set(value) {
             tfReplaceTo.text = value
         }
@@ -47,10 +49,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         get() =
             tfSeprator
                 .text
-                .also { println(it) }
-                .replace("\\n", "\n")
-                .replace("\\r", "\r")
-                .replace("\\t", "\t")
+                .unescape()
                 .also { println("__${it}___") }
         set(value) {
             tfSeprator.text = value
@@ -61,9 +60,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                "cost: $timeConsumption ms"
+                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                    "cost: $timeConsumption ms"
     private var inputText: String
         get() =
             taInput.text.takeIf {
@@ -80,7 +79,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         }
     private lateinit var tfExtract: TextField
     private var extractReg
-        get() = tfExtract.text.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")
+        get() = tfExtract.text.unescape()
         set(value) {
             tfExtract.text = value
         }
@@ -90,10 +89,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                else "not support file larger than 10M"
+                if (isFileMode.get()) {
+                    absolutePath
+                } else
+                    if (length() <= 10 * 1024 * 1024)
+                        if (realExtension() in unsupportedExts) "unsupported file extension"
+                        else readText()
+                    else "not support file larger than 10M"
             }
     }
 
@@ -155,7 +157,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     measureTimeMillis {
                         outputText =
                             inputText
-                                .split("\n|\r\n".toRegex())
+                                .lines()
                                 .distinct()
                                 .joinToString(System.lineSeparator())
                     }
@@ -203,7 +205,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         action {
                             taInput.text =
                                 inputText
-                                    .lineSplit()
+                                    .lines()
                                     .map { it.stripAllSpace() }
                                     .filterNot { it.isEmpty() }
                                     .joinToString(System.lineSeparator())
@@ -225,6 +227,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             tfReplaceTo = textfield { promptText = messages["replaced"] }
             checkbox(messages["regexp"], isRegexp)
             button(messages["run"], imageview("/img/run.png")) { action { doReplace() } }
+            checkbox(messages["fileMode"], isFileMode)
         }
         hbox {
             addClass(Styles.left)
@@ -305,13 +308,38 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             if (replaceFromText.isNotEmpty()) {
                 println(replaceToText)
                 outputText =
-                    if (isRegexp.get()) inputText.replace(replaceFromText.toRegex(), replaceToText)
-                    else inputText.replace(replaceFromText, replaceToText)
+                    if (isFileMode.get())
+                        renameFiles()
+                    else
+                        replaceStr(inputText)
             }
         }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
             }
+    }
+
+    private fun replaceStr(name: String) = if (isRegexp.get()) name.replace(replaceFromText.toRegex(), replaceToText)
+    else name.replace(replaceFromText, replaceToText)
+
+    private fun renameFiles(): String {
+        return inputText.lineAction {
+            val file = it.toFile()
+            if (file.exists().not()) {
+                return "$it file not exists!"
+            }
+            if (file.isDirectory) {
+                file.walk().filter(File::isFile)
+                    .filter { it.name != replaceStr(it.name) }
+                    .map { f ->
+                        File(f.parent, replaceStr(f.name)).also {
+                            f.renameTo(it)
+                        }.absolutePath
+                    }
+                    .joinToString(System.lineSeparator())
+            } else
+                File(file.parent, replaceStr(file.name)).also { file.renameTo(it) }.absolutePath
+        }.joinToString(System.lineSeparator())
     }
 }
