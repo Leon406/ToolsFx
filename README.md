@@ -268,13 +268,13 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj plugin download ht
 
 ## Version Choose
 
-- with jre environment
-    - jdk8 choose suffix with jdk8
-    - jdk11+ choose suffix with jdk11 & also need to config javafx environment
-- w/o jre environment(Windows user only)
-    - 64bit Windows x64 (jre11)
-    - 32/64bit Windows x86 (jre8,have no idea, choose this)
-- beta (jar file)
+- with jre environment (for developer)
+    - jdk8                         ----   choose suffix with jdk8-all-platform
+    - jdk11+                     ----   choose suffix with  jdk17-no-jfx-all-platform & also need to config javafx environment
+- w/o jre environment(Windows user only,normal user)
+    - 64bit Windows       ----   withjre-win-x64(latest LTS version)
+    - 32/64bit Windows  ----   jdk8-withjre-windows-x86  (if have no idea, choose this)
+- beta (jar file, for geeker)
   copy jar file to lib directory and delete ToolsFx-xxx.jar or app-xx.jar
 
 ## How to Run

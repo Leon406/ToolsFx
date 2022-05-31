@@ -280,17 +280,18 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 ## 版本选择
 
-- 有jre环境(文件大)
-    - jdk8 选择jdk8的版本
-    - jdk11+ 选择jdk11的版本 + 同时需要配置javafx环境
+- 未安装JDK/JRE (普通用户,无需配置,直接使用,文件较大)
+    - 64位 Windows        -----	withjre-win-x64(最新LTS 版本)
+    - 32/64位 Windows  -----	jdk8-withjre-windows-x86 (JRE 8,不知道就选这个)
 
-- 无jre环境(文件小)
-    - 64位 windows系统 x64 (jre11)
-    - 32/64位 windows系统 x86 (jre8,不知道就选这个)
+- 已安装JDK/JRE (开发人员,需配置,文件小)
+    
+    - JDK8(Oracle 官方)   -----	jdk8-all-platform
+    - JDK11+                     -----	jdk17-no-jfx-all-platform + 配置javafx环境变量
+    
+- beta版 (尝鲜用户,可以成功运行上面任意一个文件后,jar文件)
 
-- beta版 (jar文件)
-
-  需要复制到lib目录,同时删除ToolsFx-xxx.jar和 app-xxx.jar
+   需要复制到lib目录,同时删除ToolsFx-xxx.jar(旧文件名)和 app-xxx.jar
 
 ## 如何运行
 
