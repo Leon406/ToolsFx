@@ -268,31 +268,46 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
     private val excludeEncode = arrayOf(EncodeType.Radix8, EncodeType.Radix10, EncodeType.Radix32)
     private fun crack() {
+        startTime = System.currentTimeMillis()
+        var encoded = taInput.text.substringAfter("\t")
+        isProcessing.value = true
+        println("read ${System.currentTimeMillis() - startTime}")
+        val encodeMethods = mutableListOf<String>()
         runAsync {
-            isProcessing.value = true
-            startTime = System.currentTimeMillis()
-            val propInput = taInput.text.substringAfter("\t")
-            EncodeType.values()
-                .filterNot { it in excludeEncode }
-                .asSequence()
-                .map { encode ->
-                    val start = System.currentTimeMillis()
-                    encode.type to
-                        kotlin
-                                .runCatching { controller.decode2String(propInput, encode, "") }
-                                .getOrElse { it.message }!!
-                            .also { println("$encode ${System.currentTimeMillis() - start}") }
-                }
-                .find {
-                    (it.second.isEmpty() ||
-                            it.second.contains(propInput, true) ||
-                            it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex()) ||
-                            it.first == EncodeType.UrlEncode.type &&
-                                propInput.length == it.second.length)
-                        .not()
-                }
-                ?.run { "$first :\t$second" }
-                ?: ""
+            while (true) {
+                EncodeType.values()
+                    .filterNot { it in excludeEncode }
+                    .asSequence()
+                    .map { encode ->
+                        println("map $encode ${System.currentTimeMillis() - startTime}")
+                        val start = System.currentTimeMillis()
+                        encode.type to
+                            kotlin
+                                    .runCatching { controller.decode2String(encoded, encode, "") }
+                                    .getOrElse { it.message }!!
+                                .also {
+                                    println(
+                                        "after decode: $encode ${System.currentTimeMillis() - start}"
+                                    )
+                                }
+                    }
+                    .find {
+                        (it.second.isEmpty() ||
+                                it.second.contains(encoded, true) ||
+                                it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex()) ||
+                                it.first == EncodeType.UrlEncode.type &&
+                                    encoded.length == it.second.length)
+                            .not()
+                    }
+                    ?.run {
+                        encodeMethods.add(first)
+                        encoded = second
+                    }
+                    ?: break
+            }
+            encodeMethods.mapIndexed { i, type -> "${i+1} $type" }.joinToString("-->") +
+                "\n" +
+                encoded
         } ui
             {
                 isProcessing.value = false
