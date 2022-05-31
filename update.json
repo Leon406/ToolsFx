@@ -1,9 +1,11 @@
-{"version":"1.13.2.beta","info":"1.13.2.beta
+{"version":"1.13.3.beta","info":"1.13.3.beta
 
-🔥 ctf模块新增RSA-NEC,RSA-PQEC 破解
-🔥 atBash,affine,virgenene,qwe支持保留大小写
-🔥 新增SpringSecurity密码hash,支持crack
-🔥 rot13/rot18/caeser support case recovery
-🔥 优化编码crack结果,不显示无效结果
+🔥 编码一键解码(直到无法解码)
+🔥 新增base85扩展Z85,Base64-IPv6
+🔥 string process support remove space
+🔥 新增字符处理 文件名替换
 🔥 其他优化
+
+升级方式  下载最新app.jar复制到lib目录下,同时删除旧jar包,
+
   "}
