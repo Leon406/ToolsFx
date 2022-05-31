@@ -266,12 +266,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
             val propInput =
-                taInput
-                    .text
-                    .split(".+ :\\s*".toRegex())
-                    .first(String::isNotBlank)
-                    .lines()
-                    .first()
+                taInput.text.split(".+ :\\s*".toRegex()).first(String::isNotBlank).lines().first()
             EncodeType.values()
                 .map { it.type to controller.decode2String(propInput, it, "") }
                 .filterNot {

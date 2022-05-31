@@ -1,5 +1,6 @@
 package me.leon.controller
 
+import me.leon.DEBUG
 import me.leon.ext.catch
 import me.leon.ext.crypto.PBE
 import me.leon.ext.lineAction2String
@@ -16,7 +17,7 @@ class PBEController : Controller() {
         isSingleLine: Boolean
     ) =
         catch({ "encrypt error: $it" }) {
-            println("encrypt  $alg $data")
+            if (DEBUG) println("encrypt  $alg $data")
             if (isSingleLine)
                 data.lineAction2String {
                     PBE.encrypt(password, it, salt, alg, iteration, keyLength)
@@ -34,7 +35,7 @@ class PBEController : Controller() {
         isSingleLine: Boolean
     ) =
         catch({ "decrypt error: $it" }) {
-            println("decrypt  $alg $data")
+            if (DEBUG) println("decrypt  $alg $data")
             if (isSingleLine)
                 data.lineAction2String {
                     PBE.decrypt(password, it, saltLength, alg, iteration, keyLength)

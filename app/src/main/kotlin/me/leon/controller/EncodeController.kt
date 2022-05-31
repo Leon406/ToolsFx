@@ -1,6 +1,7 @@
 package me.leon.controller
 
 import java.nio.charset.Charset
+import me.leon.DEBUG
 import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
 import tornadofx.*
@@ -27,7 +28,7 @@ class EncodeController : Controller() {
         charset: String = "UTF-8"
     ): String =
         catch({ "编码错误: $it" }) {
-            println("encode2String $type $dic $charset")
+            if (DEBUG) println("encode2String $type $dic $charset")
             if (raw.isEmpty()) "" else type.encode2String(raw, dic, charset)
         }
 
@@ -51,7 +52,7 @@ class EncodeController : Controller() {
         charset: String = "UTF-8"
     ): ByteArray =
         catch({ "解码错误: ${it.lines().first()}".toByteArray() }) {
-            println("decode $type $dic $charset $encoded")
+            if (DEBUG) println("decode $type $dic $charset $encoded")
             if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
         }
 }

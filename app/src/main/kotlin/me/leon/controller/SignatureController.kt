@@ -38,12 +38,7 @@ class SignatureController : Controller() {
             if (isSingleLine)
                 msg.lineActionIndex { s, i ->
                     s.decodeToByteArray(inputEncode)
-                        .verify(
-                            kpAlg,
-                            sigAlg,
-                            pub,
-                            signed.lines()[i].decodeToByteArray(outEncode)
-                        )
+                        .verify(kpAlg, sigAlg, pub, signed.lines()[i].decodeToByteArray(outEncode))
                         .toString()
                 }
             else

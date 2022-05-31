@@ -1,5 +1,6 @@
 package me.leon.controller
 
+import me.leon.DEBUG
 import me.leon.ext.*
 import me.leon.ext.crypto.*
 import tornadofx.*
@@ -16,7 +17,7 @@ class AsymmetricCryptoController : Controller() {
         outputEncode: String = "base64"
     ): String =
         catch({ "encrypt error: $it}" }) {
-            println("encrypt $key  $alg $data")
+            if (DEBUG) println("encrypt $key  $alg $data")
             if (isSingleLine)
                 data.lineAction2String {
                     it.decodeToByteArray(inputEncode)
@@ -42,7 +43,7 @@ class AsymmetricCryptoController : Controller() {
         outputEncode: String = "raw"
     ): String =
         catch({ "decrypt error: $it" }) {
-            println("decrypt $key  $alg $data")
+            if (DEBUG) println("decrypt $key  $alg $data")
             if (isSingleLine)
                 data.lineAction2String {
                     it.decodeToByteArray(inputEncode)
@@ -83,7 +84,7 @@ class AsymmetricCryptoController : Controller() {
         outputEncode: String = "raw"
     ) =
         catch({ "decrypt error: $it" }) {
-            println("decrypt $key  $alg $data")
+            if (DEBUG) println("decrypt $key  $alg $data")
             if (isSingleLine)
                 data.lineAction2String {
                     it.decodeToByteArray(inputEncode).pubDecrypt(key, alg).encodeTo(outputEncode)

@@ -1,6 +1,7 @@
 package me.leon.controller
 
 import java.io.File
+import me.leon.DEBUG
 import me.leon.classical.xor
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -20,7 +21,7 @@ class SymmetricCryptoController : Controller() {
         associatedData: ByteArray = byteArrayOf()
     ): String =
         catch({ "encrypt error: $it" }) {
-            println("encrypt  $alg")
+            if (DEBUG) println("encrypt  $alg")
             if (isSingleLine)
                 data.lineAction2String {
                     encrypt(it, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
@@ -57,7 +58,7 @@ class SymmetricCryptoController : Controller() {
         associatedData: ByteArray = byteArrayOf()
     ) =
         catch({ "encrypt error: $it" }) {
-            println("encrypt  $alg")
+            if (DEBUG) println("encrypt  $alg")
             val parentFile = path.toFile().parentFile.absolutePath
             val encryptDir =
                 File(parentFile, "enc").also { if (!it.exists()) it.mkdirs() }.absolutePath
@@ -87,7 +88,7 @@ class SymmetricCryptoController : Controller() {
         associatedData: ByteArray = byteArrayOf()
     ) =
         catch({ "decrypt error: $it" }) {
-            println("decrypt  $alg")
+            if (DEBUG) println("decrypt  $alg")
             val parentFile = path.toFile().parentFile.absolutePath
             val decryptDir =
                 File(parentFile, "dec").also { if (!it.exists()) it.mkdirs() }.absolutePath
@@ -118,7 +119,7 @@ class SymmetricCryptoController : Controller() {
         associatedData: ByteArray = byteArrayOf()
     ): String =
         catch({ "decrypt error: $it" }) {
-            println("decrypt  $alg")
+            if (DEBUG) println("decrypt  $alg")
             if (isSingleLine)
                 data.lineAction2String {
                     decrypt(it, inputEncode, charset, key, iv, alg, outputEncode, associatedData)

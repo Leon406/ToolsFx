@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.*
 import kotlin.collections.set
@@ -11,7 +12,6 @@ import me.leon.ext.crypto.EncodeType
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
-import java.io.File
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
     override val closeable = SimpleBooleanProperty(false)
@@ -46,11 +46,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private lateinit var tfSeprator: TextField
     private var sepratorText
-        get() =
-            tfSeprator
-                .text
-                .unescape()
-                .also { println("__${it}___") }
+        get() = tfSeprator.text.unescape().also { println("__${it}___") }
         set(value) {
             tfSeprator.text = value
         }
@@ -60,9 +56,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                    "cost: $timeConsumption ms"
+                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                "cost: $timeConsumption ms"
     private var inputText: String
         get() =
             taInput.text.takeIf {
@@ -91,11 +87,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             with(it.first()) {
                 if (isFileMode.get()) {
                     absolutePath
-                } else
-                    if (length() <= 10 * 1024 * 1024)
-                        if (realExtension() in unsupportedExts) "unsupported file extension"
-                        else readText()
-                    else "not support file larger than 10M"
+                } else if (length() <= 10 * 1024 * 1024)
+                    if (realExtension() in unsupportedExts) "unsupported file extension"
+                    else readText()
+                else "not support file larger than 10M"
             }
     }
 
@@ -156,10 +151,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 action {
                     measureTimeMillis {
                         outputText =
-                            inputText
-                                .lines()
-                                .distinct()
-                                .joinToString(System.lineSeparator())
+                            inputText.lines().distinct().joinToString(System.lineSeparator())
                     }
                         .also {
                             timeConsumption = it
@@ -307,11 +299,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         measureTimeMillis {
             if (replaceFromText.isNotEmpty()) {
                 println(replaceToText)
-                outputText =
-                    if (isFileMode.get())
-                        renameFiles()
-                    else
-                        replaceStr(inputText)
+                outputText = if (isFileMode.get()) renameFiles() else replaceStr(inputText)
             }
         }
             .also {
@@ -320,26 +308,28 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
     }
 
-    private fun replaceStr(name: String) = if (isRegexp.get()) name.replace(replaceFromText.toRegex(), replaceToText)
-    else name.replace(replaceFromText, replaceToText)
+    private fun replaceStr(name: String) =
+        if (isRegexp.get()) name.replace(replaceFromText.toRegex(), replaceToText)
+        else name.replace(replaceFromText, replaceToText)
 
     private fun renameFiles(): String {
-        return inputText.lineAction {
-            val file = it.toFile()
-            if (file.exists().not()) {
-                return "$it file not exists!"
+        return inputText
+            .lineAction {
+                val file = it.toFile()
+                if (file.exists().not()) {
+                    return "$it file not exists!"
+                }
+                if (file.isDirectory) {
+                    file.walk()
+                        .filter(File::isFile)
+                        .filter { it.name != replaceStr(it.name) }
+                        .map { f ->
+                            File(f.parent, replaceStr(f.name)).also { f.renameTo(it) }.absolutePath
+                        }
+                        .joinToString(System.lineSeparator())
+                } else
+                    File(file.parent, replaceStr(file.name)).also { file.renameTo(it) }.absolutePath
             }
-            if (file.isDirectory) {
-                file.walk().filter(File::isFile)
-                    .filter { it.name != replaceStr(it.name) }
-                    .map { f ->
-                        File(f.parent, replaceStr(f.name)).also {
-                            f.renameTo(it)
-                        }.absolutePath
-                    }
-                    .joinToString(System.lineSeparator())
-            } else
-                File(file.parent, replaceStr(file.name)).also { file.renameTo(it) }.absolutePath
-        }.joinToString(System.lineSeparator())
+            .joinToString(System.lineSeparator())
     }
 }
