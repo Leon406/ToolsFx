@@ -91,6 +91,7 @@ class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
                     }
                 }
             }
+            item("GC") { action { System.gc() } }
         }
     }
 

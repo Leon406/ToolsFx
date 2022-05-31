@@ -59,32 +59,11 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.toString(Charset.forName(charset)).toUnicodeString()
     },
-    JsHexEncode("jsHex(shell code)") {
-        override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.jsHexDecodeString().toByteArray(Charset.forName(charset))
-
-        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            bytes.toString(Charset.forName(charset)).toJsHexEncodeString()
-    },
-    JsOctalEncode("jsOctal") {
-        override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.jsOctalDecodeString().toByteArray(Charset.forName(charset))
-
-        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            bytes.toString(Charset.forName(charset)).toJsOctalEncodeString()
-    },
     Hex("hex") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.replace("""\\x|\s|0x|\\""".toRegex(), "").hex2ByteArray()
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) = bytes.toHex()
-    },
-    HexReverse("hexReverse") {
-        override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.replace("""\\x|\s|0x|\\""".toRegex(), "").hexReverse2ByteArray()
-
-        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            bytes.toHexReverse()
     },
     Decimal("decimal(ASCII)") {
         override fun decode(encoded: String, dict: String, charset: String) =
@@ -104,13 +83,6 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.toBinaryString()
-    },
-    Base64Url("base64Url", BASE64_URL_DICT) {
-        override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.base64UrlDecode(dict)
-
-        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            bytes.base64Url(dict)
     },
     Base16("base16", BASE16_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
@@ -161,12 +133,12 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base62(dict)
     },
-    Base85("base85(ASCII85)", BASE85_DICT) {
+    Base64Url("base64Url", BASE64_URL_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.base85Decode(dict)
+            encoded.base64UrlDecode(dict)
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            bytes.base85(dict)
+            bytes.base64Url(dict)
     },
     Base85IPv6("base85_IPv6", BASE85_IPV6_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
@@ -175,12 +147,19 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base85(dict.ifEmpty { BASE85_IPV6_DICT })
     },
-    Z85("Z85(ZeroMQ)", Z85_DICT) {
+    JsHexEncode("jsHex(shell code)") {
         override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.base85Decode(dict.ifEmpty { Z85_DICT })
+            encoded.jsHexDecodeString().toByteArray(Charset.forName(charset))
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
-            bytes.base85(dict.ifEmpty { Z85_DICT })
+            bytes.toString(Charset.forName(charset)).toJsHexEncodeString()
+    },
+    JsOctalEncode("jsOctal") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.jsOctalDecodeString().toByteArray(Charset.forName(charset))
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.toString(Charset.forName(charset)).toJsOctalEncodeString()
     },
     Base91("base91", BASE91_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
@@ -247,5 +226,26 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.toString(Charset.forName(charset)).toHtmlEntity(isAll = true)
-    }
+    },
+    Base85("base85(ASCII85)", BASE85_DICT) {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base85Decode(dict)
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base85(dict)
+    },
+    Z85("Z85(ZeroMQ)", Z85_DICT) {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base85Decode(dict.ifEmpty { Z85_DICT })
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base85(dict.ifEmpty { Z85_DICT })
+    },
+    HexReverse("hexReverse") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.replace("""\\x|\s|0x|\\""".toRegex(), "").hexReverse2ByteArray()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.toHexReverse()
+    },
 }

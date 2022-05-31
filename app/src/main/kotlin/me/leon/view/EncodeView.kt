@@ -266,12 +266,21 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             }
     }
 
-    private val excludeEncode = arrayOf(EncodeType.Radix8, EncodeType.Radix10, EncodeType.Radix32)
+    private val excludeEncode =
+        arrayOf(
+            EncodeType.Radix8,
+            EncodeType.Base16,
+            EncodeType.Decimal,
+            EncodeType.Radix10,
+            EncodeType.Radix32,
+            EncodeType.Radix64,
+        )
+
     private fun crack() {
         startTime = System.currentTimeMillis()
         var encoded = taInput.text.substringAfter("\t")
         isProcessing.value = true
-        println("read ${System.currentTimeMillis() - startTime}")
+        if (DEBUG) println("read ${System.currentTimeMillis() - startTime}")
         val encodeMethods = mutableListOf<String>()
         runAsync {
             while (true) {
@@ -279,16 +288,18 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     .filterNot { it in excludeEncode }
                     .asSequence()
                     .map { encode ->
-                        println("map $encode ${System.currentTimeMillis() - startTime}")
+                        if (DEBUG) println("map $encode ${System.currentTimeMillis() - startTime}")
                         val start = System.currentTimeMillis()
                         encode.type to
                             kotlin
                                     .runCatching { controller.decode2String(encoded, encode, "") }
                                     .getOrElse { it.message }!!
                                 .also {
-                                    println(
-                                        "after decode: $encode ${System.currentTimeMillis() - start}"
-                                    )
+                                    if (DEBUG)
+                                        println(
+                                            "after decode:${System.currentTimeMillis() - startTime} " +
+                                                    "$encode ${System.currentTimeMillis() - start}"
+                                        )
                                 }
                     }
                     .find {
@@ -305,7 +316,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     }
                     ?: break
             }
-            encodeMethods.mapIndexed { i, type -> "${i+1} $type" }.joinToString("-->") +
+            encodeMethods.mapIndexed { i, type -> "${i + 1} $type" }.joinToString("-->") +
                 "\n" +
                 encoded
         } ui
@@ -314,6 +325,8 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 taOutput.text = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
+                // 手动gc, 立即回收创建的临时字符串
+                System.gc()
             }
     }
 }

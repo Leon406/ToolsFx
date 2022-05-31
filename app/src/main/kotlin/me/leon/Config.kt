@@ -6,6 +6,7 @@ const val VERSION = "1.13.3.beta"
 const val BUILD_DATE = "2022-06-01"
 const val REPO_URL = "https://github.com/Leon406/ToolsFx"
 const val REPO_ISSUE = "https://github.com/Leon406/ToolsFx/issues/new"
+const val PJ52_URL = "https://www.52pojie.cn/thread-1501153-1-1.html"
 const val LAN_ZOU_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9av2kb?pwd=52pj"
 const val LAN_ZOU_PLUGIN_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9w4cof?pwd=ax63"
 const val CHECK_UPDATE_URL =
