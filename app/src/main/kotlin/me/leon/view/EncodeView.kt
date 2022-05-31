@@ -231,29 +231,34 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         runAsync {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
-            repeat(times) {
-                result =
-                    if (isEncode)
-                        controller.encode2String(
-                            result,
-                            encodeType,
-                            tfCustomDict.text,
-                            selectedCharset.get(),
-                            isSingleLine.get()
-                        )
-                    else
-                        controller.decode2String(
-                            result,
-                            encodeType,
-                            tfCustomDict.text,
-                            selectedCharset.get(),
-                            isSingleLine.get()
-                        )
+
+            runCatching {
+                repeat(times) {
+                    result =
+                        if (isEncode)
+                            controller.encode2String(
+                                result,
+                                encodeType,
+                                tfCustomDict.text,
+                                selectedCharset.get(),
+                                isSingleLine.get()
+                            )
+                        else
+                            controller.decode2String(
+                                result,
+                                encodeType,
+                                tfCustomDict.text,
+                                selectedCharset.get(),
+                                isSingleLine.get()
+                            )
+                }
+                result
             }
+                .getOrElse { it.stacktrace() }
         } ui
             {
                 isProcessing.value = false
-                taOutput.text = result
+                taOutput.text = it
                 if (Prefs.autoCopy)
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
                 timeConsumption = System.currentTimeMillis() - startTime
@@ -261,22 +266,33 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             }
     }
 
+    private val excludeEncode = arrayOf(EncodeType.Radix8, EncodeType.Radix10, EncodeType.Radix32)
     private fun crack() {
         runAsync {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
-            val propInput =
-                taInput.text.split(".+ :\\s*".toRegex()).first(String::isNotBlank).lines().first()
+            val propInput = taInput.text.substringAfter("\t")
             EncodeType.values()
-                .map { it.type to controller.decode2String(propInput, it, "") }
-                .filterNot {
-                    it.second.isEmpty() ||
-                        it.second.contains(propInput, true) ||
-                        it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex()) ||
-                        it.first == EncodeType.UrlEncode.type &&
-                            propInput.length == it.second.length
+                .filterNot { it in excludeEncode }
+                .asSequence()
+                .map { encode ->
+                    val start = System.currentTimeMillis()
+                    encode.type to
+                        kotlin
+                                .runCatching { controller.decode2String(propInput, encode, "") }
+                                .getOrElse { it.message }!!
+                            .also { println("$encode ${System.currentTimeMillis() - start}") }
                 }
-                .joinToString("\n") { it.first + " :\t" + it.second }
+                .find {
+                    (it.second.isEmpty() ||
+                            it.second.contains(propInput, true) ||
+                            it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex()) ||
+                            it.first == EncodeType.UrlEncode.type &&
+                                propInput.length == it.second.length)
+                        .not()
+                }
+                ?.run { "$first :\t$second" }
+                ?: ""
         } ui
             {
                 isProcessing.value = false
