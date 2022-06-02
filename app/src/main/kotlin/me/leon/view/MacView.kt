@@ -76,6 +76,7 @@ class MacView : Fragment("MAC") {
                 }
 
             button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
         }
@@ -154,7 +155,10 @@ class MacView : Fragment("MAC") {
                         outputEncode = new.cast<RadioButton>().text
                     }
                 }
-            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { outputText.copy() }
+            }
         }
         taOutput =
             textarea {

@@ -100,6 +100,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             label(messages["input"])
             spacing = DEFAULT_SPACING
             button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
                 action {
                     inputText = clipboardText()
                     timeConsumption = 0
@@ -107,16 +108,20 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
             button(graphic = imageview("/img/uppercase.png")) {
+                tooltip(messages["uppercase"])
                 action { outputText = inputText.uppercase() }
             }
 
             button(graphic = imageview("/img/lowercase.png")) {
+                tooltip(messages["lowercase"])
                 action { outputText = inputText.lowercase() }
             }
             button(graphic = imageview("/img/trimIndent.png")) {
+                tooltip(messages["trimIndent"])
                 action { outputText = inputText.trimIndent() }
             }
             button(graphic = imageview("/img/ascend.png")) {
+                tooltip(messages["orderByStringASC"])
                 action {
                     measureTimeMillis {
                         outputText =
@@ -132,6 +137,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
             button(graphic = imageview("/img/descend.png")) {
+                tooltip(messages["orderByStringDESC"])
                 action {
                     measureTimeMillis {
                         outputText =
@@ -148,6 +154,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
 
             button(graphic = imageview("/img/deduplicate.png")) {
+                tooltip(messages["deduplicateLine"])
                 action {
                     measureTimeMillis {
                         outputText =
@@ -160,6 +167,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
             button(graphic = imageview("/img/statistic.png")) {
+                tooltip(messages["letterStatistics"])
                 action {
                     measureTimeMillis {
                         outputText =
@@ -192,8 +200,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     item(messages["recoverEncoding"]) {
                         action { runAsync { inputText.recoverEncoding() } ui { taInput.text = it } }
                     }
-                    item("reverse") { action { taInput.text = inputText.reversed() } }
-                    item("remove all space by line") {
+                    item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
+                    item(messages["removeAllSpaceByLine"]) {
                         action {
                             taInput.text =
                                 inputText
@@ -203,7 +211,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                                     .joinToString(System.lineSeparator())
                         }
                     }
-                    item("remove all space") { action { taInput.text = inputText.stripAllSpace() } }
+                    item(messages["removeAllSpace"]) {
+                        action { taInput.text = inputText.stripAllSpace() }
+                    }
                 }
                 textProperty().addListener { _, _, _ ->
                     timeConsumption = 0
@@ -249,8 +259,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { outputText.copy() }
+            }
             button(graphic = imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     taInput.text = outputText
                     taOutput.text = ""

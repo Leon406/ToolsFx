@@ -25,16 +25,16 @@ class BigIntFragment : Fragment("BigInt") {
     private val bottomInfo
         get() =
             "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: P=${ta1.bits()}  " +
-                "Q=${ta2.bits()}  " +
-                "N=${ta3.bits()}  " +
-                "a=${ta4.bits()}  " +
-                "b=${ta5.bits()}  " +
-                "Output=${
+                    "Q=${ta2.bits()}  " +
+                    "N=${ta3.bits()}  " +
+                    "a=${ta4.bits()}  " +
+                    "b=${ta5.bits()}  " +
+                    "Output=${
                         runCatching {
                             outputText.lines().first().toBigInteger().bitLength().toString()
                         }.getOrDefault("0")
                     }  " +
-                "cost: $timeConsumption ms "
+                    "cost: $timeConsumption ms "
     private var outputText: String
         get() = taOutput.text
         set(value) {
@@ -109,24 +109,30 @@ class BigIntFragment : Fragment("BigInt") {
             addClass(Styles.left)
             label(messages["output"])
             button("P", graphic = imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     ta1.text = outputText
                     taOutput.text = ""
                 }
             }
             button("Q", graphic = imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     ta2.text = outputText
                     taOutput.text = ""
                 }
             }
             button("N", graphic = imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     ta3.text = outputText
                     taOutput.text = ""
                 }
             }
-            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { outputText.copy() }
+            }
         }
             .also { vBox.add(it) }
         taOutput =
@@ -134,45 +140,44 @@ class BigIntFragment : Fragment("BigInt") {
                 promptText = messages["outputHint"]
                 isWrapText = true
                 contextmenu {
-                    item("numberToString") {
-                        action {
-                            outputText =
-                                outputText.lineAction2String {
-                                    it.toBigInteger(selectedRadix.get().toInt()).n2s()
-                                }
-                        }
-                    }
-                    item("stringToNumber") {
-                        action {
-                            outputText =
-                                outputText.lineAction2String {
-                                    it.s2n().toString(selectedRadix.get().toInt())
-                                }
-                        }
-                    }
-                    item("numberToBase64") {
-                        action {
-                            outputText =
-                                outputText.lineAction2String {
-                                    it.toBigInteger(selectedRadix.get().toInt())
-                                        .toByteArray()
-                                        .base64()
-                                }
-                        }
-                    }
-                    item("base64ToNumber") {
-                        action {
-                            outputText =
-                                outputText.lineAction2String {
-                                    it.base64Decode()
-                                        .toBigInteger()
-                                        .toString(selectedRadix.get().toInt())
-                                }
-                        }
-                    }
+                    item("numberToString") { action { number2String() } }
+                    item("stringToNumber") { action { string2Number() } }
+                    item("numberToBase64") { action { number2Base64() } }
+                    item("base64ToNumber") { action { base64ToNumber() } }
                 }
             }
                 .also { vBox.add(it) }
+    }
+
+    private fun number2String() {
+        outputText =
+            outputText.lineAction2String {
+                it.toBigInteger(selectedRadix.get().toInt()).n2s()
+            }
+    }
+
+    private fun string2Number() {
+        outputText =
+            outputText.lineAction2String {
+                it.s2n().toString(selectedRadix.get().toInt())
+            }
+    }
+
+    private fun number2Base64() {
+        outputText =
+            outputText.lineAction2String {
+                it.toBigInteger(selectedRadix.get().toInt())
+                    .toByteArray()
+                    .base64()
+            }
+    }
+
+    private fun base64ToNumber() {
+        outputText = outputText.lineAction2String {
+            it.base64Decode()
+                .toBigInteger()
+                .toString(selectedRadix.get().toInt())
+        }
     }
 
     private fun inputLayout(vBox: VBox) {
@@ -251,18 +256,18 @@ class BigIntFragment : Fragment("BigInt") {
                 )
             )
         } ui
-            {
-                isProcessing.value = false
-                outputText =
-                    runCatching {
+                {
+                    isProcessing.value = false
+                    outputText =
+                        runCatching {
                             it.lines().joinToString("\n") {
                                 println("$it ${selectedRadix.get().toInt()}")
                                 it.toBigInteger().toString(selectedRadix.get().toInt())
                             }
                         }
-                        .getOrDefault(it)
-                timeConsumption = System.currentTimeMillis() - startTime
-                bottomView.text = bottomInfo
-            }
+                            .getOrDefault(it)
+                    timeConsumption = System.currentTimeMillis() - startTime
+                    bottomView.text = bottomInfo
+                }
     }
 }

@@ -109,9 +109,13 @@ class QrcodeView : Fragment("Qrcode") {
             spacing = DEFAULT_SPACING_3X
             label(messages["content"])
             button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
                 action { ta.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button(graphic = imageview("/img/import.png")) { action { ta.text = clipboardText() } }
+            button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
+                action { ta.text = clipboardText() }
+            }
         }
         vbox {
             alignment = Pos.CENTER_RIGHT
@@ -150,6 +154,7 @@ class QrcodeView : Fragment("Qrcode") {
         hbox {
             label(messages["qrImg"])
             button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
                 action { iv.image?.copy()?.also { if (it) primaryStage.showToast("复制二维码成功") } }
             }
         }

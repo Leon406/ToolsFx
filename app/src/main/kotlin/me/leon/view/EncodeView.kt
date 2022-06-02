@@ -75,9 +75,11 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             label(messages["input"])
             spacing = DEFAULT_SPACING
             button(graphic = imageview("/img/openwindow.png")) {
+                tooltip(messages["newWindow"])
                 action { find<EncodeView>().openWindow() }
             }
             button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
         }
@@ -196,8 +198,12 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { outputText.copy() }
+            }
             button(graphic = imageview("/img/jump.png")) {
+                tooltip(messages["goStringProcess"])
                 action {
                     fire(SimpleMsgEvent(taOutput.text, 1))
                     val tabPane = findParentOfType(TabPane::class)
@@ -207,6 +213,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 }
             }
             button(graphic = imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
@@ -298,7 +305,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     if (DEBUG)
                                         println(
                                             "after decode:${System.currentTimeMillis() - startTime} " +
-                                                    "$encode ${System.currentTimeMillis() - start}"
+                                                "$encode ${System.currentTimeMillis() - start}"
                                         )
                                 }
                     }

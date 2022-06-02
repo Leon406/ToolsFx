@@ -134,6 +134,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 }
 
             button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
         }
@@ -222,8 +223,12 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                     }
                 }
 
-            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { outputText.copy() }
+            }
             button(graphic = imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     taInput.text = outputText
                     taOutput.text = ""

@@ -170,6 +170,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                 }
 
             button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
                 action { taRaw.text = clipboardText() }
             }
         }
@@ -183,6 +184,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
         hbox {
             label(messages["key"])
             button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
                 action { taKey.text = clipboardText() }
             }
         }
@@ -246,7 +248,10 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     }
                 }
 
-            button(graphic = imageview("/img/copy.png")) { action { signText.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { signText.copy() }
+            }
         }
 
         taSigned =

@@ -98,7 +98,10 @@ class ApiPostView : PluginFragment("ApiPost") {
                     promptText = "input your url"
                     onDragEntered = curlFileHandler
                 }
-            button(graphic = imageview("/img/import.png")) { action { resetUi(clipboardText()) } }
+            button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
+                action { resetUi(clipboardText()) }
+            }
             button(graphic = imageview("/img/run.png")) {
                 enableWhen(!isRunning)
                 action {
@@ -174,6 +177,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                 action { openInternalWindow<SettingsView>() }
             }
             button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
                 action {
                     Request(
                             tfUrl.text,
@@ -303,7 +307,10 @@ class ApiPostView : PluginFragment("ApiPost") {
             //            button("UnicodeDecode") {
             //                action { taRspContent.text = taRspContent.text.unicodeMix2String() }
             //            }
-            button(graphic = imageview("/img/copy.png")) { action { taRspContent.text.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { taRspContent.text.copy() }
+            }
 
             checkbox("prettify", isPretty)
         }

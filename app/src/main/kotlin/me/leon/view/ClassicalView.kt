@@ -56,9 +56,11 @@ class ClassicalView : Fragment(messages["classical"]) {
             spacing = DEFAULT_SPACING
             label(messages["input"])
             button(graphic = imageview("/img/openwindow.png")) {
+                tooltip(messages["newWindow"])
                 action { find<ClassicalView>().openWindow() }
             }
             button(graphic = imageview("/img/import.png")) {
+                tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
         }
@@ -161,8 +163,12 @@ class ClassicalView : Fragment(messages["classical"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/img/copy.png")) { action { outputText.copy() } }
+            button(graphic = imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
+                action { outputText.copy() }
+            }
             button(graphic = imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     taInput.text = outputText
                     taOutput.text = ""

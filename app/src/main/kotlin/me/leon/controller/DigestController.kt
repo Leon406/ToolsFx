@@ -6,9 +6,8 @@ import me.leon.ext.crypto.*
 import tornadofx.*
 
 class DigestController : Controller() {
-    private val dicts by lazy {
-        DICT_DIR.toFile().listFiles()?.flatMap { it.readLines() }?.distinct() ?: listOf()
-    }
+    private val dicts
+        get() = DICT_DIR.toFile().listFiles()?.flatMap { it.readLines() }?.distinct() ?: listOf()
 
     fun digest(
         method: String,
@@ -48,7 +47,7 @@ class DigestController : Controller() {
 
     // 首次加载1400W, 8s,  100w md5 1s  21c40fc4ddd462df2509b232fef4ec6c
     // 1400w 单线程 14s md5  dd2978f9ae7014cd2d1884c5a1bbbca2
-    // 1400w parallelStream 6s md5  dd2978f9ae7014cd2d1884c5a1bbbca2
+    // 1400w parallelStream 3s-6s md5  dd2978f9ae7014cd2d1884c5a1bbbca2
     fun crack(method: String, data: String) =
         catch({ "digest crack error: $it" }) {
             if (digest(method, data, "raw").length != data.length) {

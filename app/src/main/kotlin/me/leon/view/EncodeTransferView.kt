@@ -64,6 +64,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 combobox(selectedSrcCharset, CHARSETS) { cellFormat { text = it } }
                 spacing = DEFAULT_SPACING
                 button(graphic = imageview("/img/openwindow.png")) {
+                    tooltip(messages["newWindow"])
                     action { find<EncodeTransferView>().openWindow() }
                 }
             }
@@ -118,6 +119,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
             button(messages["up"], imageview("/img/up.png")) {
+                tooltip(messages["up"])
                 action {
                     taInput.text = outputText
                     taOutput.text = ""
@@ -125,6 +127,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
             button(messages["copy"], imageview("/img/copy.png")) {
+                tooltip(messages["copy"])
                 action { outputText.copy() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }

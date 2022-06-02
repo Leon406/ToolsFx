@@ -84,7 +84,7 @@ class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
                 }
             }
 
-            item("open in new window") {
+            item(messages["newWindow"]) {
                 action {
                     with(this@tabpane.selectionModel.selectedIndex) {
                         if (this < views.size) find(views[this]).openWindow()
