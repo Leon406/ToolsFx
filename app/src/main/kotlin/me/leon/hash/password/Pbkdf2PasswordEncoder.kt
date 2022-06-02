@@ -68,9 +68,9 @@ constructor(
         }
     }
 
-    override fun encode(rawPassword: CharSequence): String {
+    override fun encode(password: CharSequence): String {
         val salt = saltGenerator.generateKey()
-        val encoded = encode(rawPassword, salt)
+        val encoded = encode(password, salt)
         return encode(encoded)
     }
 
@@ -85,10 +85,10 @@ constructor(
         } else bytes.toHex()
     }
 
-    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+    override fun matches(password: CharSequence, encodedPassword: String): Boolean {
         val digested = decode(encodedPassword)
         val salt = digested.sliceArray(0 until saltGenerator.keyLength)
-        return MessageDigest.isEqual(digested, encode(rawPassword, salt))
+        return MessageDigest.isEqual(digested, encode(password, salt))
     }
 
     fun matchesWithSalt(

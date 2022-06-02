@@ -48,8 +48,8 @@ constructor(
         this.strength = if (strength == -1) 10 else strength
     }
 
-    override fun encode(rawPassword: CharSequence): String {
-        return hashpw(rawPassword.toString(), salt)
+    override fun encode(password: CharSequence): String {
+        return hashpw(password.toString(), salt)
     }
 
     fun encode(rawPassword: CharSequence, salt: ByteArray): String {
@@ -59,7 +59,7 @@ constructor(
     private val salt: String
         get() = genSalt(version.version, strength, random ?: SecureRandom())
 
-    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+    override fun matches(password: CharSequence, encodedPassword: String): Boolean {
         if (encodedPassword.isEmpty()) {
             println("Empty encoded password")
             return false
@@ -69,7 +69,7 @@ constructor(
             println("Encoded password does not look like BCrypt")
             return false
         }
-        return checkPw(rawPassword.toString(), encodedPassword)
+        return checkPw(password.toString(), encodedPassword)
     }
 
     override fun upgradeEncoding(encodedPassword: String): Boolean {

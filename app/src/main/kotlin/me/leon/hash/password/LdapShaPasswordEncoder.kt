@@ -52,15 +52,15 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
      * Calculates the hash of password (and salt bytes, if supplied) and returns a base64 encoded
      * concatenation of the hash and salt, prefixed with {SHA} (or {SSHA} if salt was used).
      *
-     * @param rawPass the password to be encoded.
+     * @param password the password to be encoded.
      * @return the encoded password in the specified format
      */
-    override fun encode(rawPass: CharSequence): String {
-        return encode(rawPass, saltGenerator.generateKey())
+    override fun encode(password: CharSequence): String {
+        return encode(password, saltGenerator.generateKey())
     }
 
-    fun encode(rawPassword: CharSequence, salt: ByteArray?): String {
-        val sha = getSha(rawPassword)
+    fun encode(password: CharSequence, salt: ByteArray?): String {
+        val sha = getSha(password)
         if (salt != null && salt.isNotEmpty()) {
             sha.update(salt)
         }
@@ -69,9 +69,9 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
         return prefix + hash.base64()
     }
 
-    private fun getSha(rawPassword: CharSequence): MessageDigest {
+    private fun getSha(password: CharSequence): MessageDigest {
         return try {
-            MessageDigest.getInstance("SHA").apply { update(rawPassword.toString().toByteArray()) }
+            MessageDigest.getInstance("SHA").apply { update(password.toString().toByteArray()) }
         } catch (ignored: NoSuchAlgorithmException) {
             throw IllegalStateException("No SHA implementation available!")
         }

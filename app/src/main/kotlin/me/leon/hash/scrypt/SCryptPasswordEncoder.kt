@@ -73,16 +73,16 @@ constructor(
         saltGenerator = secureRandom(saltLength)
     }
 
-    override fun encode(rawPassword: CharSequence): String {
-        return digest(rawPassword, saltGenerator.generateKey())
+    override fun encode(password: CharSequence): String {
+        return digest(password, saltGenerator.generateKey())
     }
 
-    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+    override fun matches(password: CharSequence, encodedPassword: String): Boolean {
         if (encodedPassword.length < keyLength) {
             println("Empty encoded password")
             return false
         }
-        return decodeAndCheckMatches(rawPassword, encodedPassword)
+        return decodeAndCheckMatches(password, encodedPassword)
     }
 
     override fun upgradeEncoding(encodedPassword: String): Boolean {

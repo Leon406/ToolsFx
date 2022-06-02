@@ -66,13 +66,13 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
      * Encodes the rawPass using a MessageDigest. If a salt is specified it will be merged with the
      * password before encoding.
      *
-     * @param rawPassword The plain text password
+     * @param password The plain text password
      * @return Hex string of password digest or base64 encoded string if encodeHashAsBase64 is
      * enabled.
      */
-    override fun encode(rawPassword: CharSequence): String {
+    override fun encode(password: CharSequence): String {
         val salt = PREFIX + saltGenerator.generateKey() + SUFFIX
-        return digest(salt, rawPassword)
+        return digest(salt, password)
     }
 
     fun digest(salt: String, rawPassword: CharSequence): String {
@@ -96,13 +96,13 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
      * Takes a previously encoded password and compares it with a rawpassword after mixing in the
      * salt and encoding that value
      *
-     * @param rawPassword plain text password
+     * @param password plain text password
      * @param encodedPassword previously encoded password
      * @return true or false
      */
-    override fun matches(rawPassword: CharSequence, encodedPassword: String): Boolean {
+    override fun matches(password: CharSequence, encodedPassword: String): Boolean {
         val salt = extractSalt(encodedPassword)
-        return encodedPassword == digest(salt, rawPassword)
+        return encodedPassword == digest(salt, password)
     }
 
     /**
