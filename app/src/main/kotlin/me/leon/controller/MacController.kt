@@ -18,11 +18,11 @@ class MacController : Controller() {
     ) =
         catch({ "mac error: $it" }) {
             if (DEBUG) println("mac $msg  $alg ")
-            if (isSingleLine)
+            if (isSingleLine) {
                 msg.lineAction2String {
                     it.decodeToByteArray(inputEncode).mac(keyByteArray, alg).encodeTo(outputEncode)
                 }
-            else msg.decodeToByteArray(inputEncode).mac(keyByteArray, alg).encodeTo(outputEncode)
+            } else msg.decodeToByteArray(inputEncode).mac(keyByteArray, alg).encodeTo(outputEncode)
         }
 
     fun macWithIv(
@@ -35,15 +35,16 @@ class MacController : Controller() {
         isSingleLine: Boolean = false
     ) =
         catch({ "mac error: $it" }) {
-            if (isSingleLine)
+            if (isSingleLine) {
                 msg.lineAction2String {
                     it.decodeToByteArray(inputEncode)
                         .macWithIv(keyByteArray, ivByteArray, alg)
                         .encodeTo(outputEncode)
                 }
-            else
+            } else {
                 msg.decodeToByteArray(inputEncode)
                     .macWithIv(keyByteArray, ivByteArray, alg)
                     .encodeTo(outputEncode)
+            }
         }
 }

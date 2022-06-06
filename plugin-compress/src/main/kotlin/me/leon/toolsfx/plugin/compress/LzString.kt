@@ -10,6 +10,10 @@ object LzString {
     private const val keyStrUri =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$"
 
+    private val Int.string
+        get() = this.toChar().toString()
+    private fun Int.power() = 1 shl this
+
     private data class Data(var value: Char = '0', var position: Int = 0, var index: Int = 1)
 
     private inline fun String.charLess256(yes: call, no: call) {
@@ -20,7 +24,6 @@ object LzString {
         }
     }
 
-    private fun Int.power() = 1 shl this
     private fun compress(
         source: String,
         bitsPerChar: Int,
@@ -145,8 +148,6 @@ object LzString {
         return contextData.joinToString("")
     }
 
-    private val Int.string
-        get() = this.toChar().toString()
     private fun decompress(
         length: Int,
         resetValue: Int,
@@ -236,7 +237,7 @@ object LzString {
 
     fun compress(source: String) = compress(source, 16) { it.toChar() }
     fun decompress(compressed: String) =
-        if (compressed.isBlank()) null else decompress(compressed.length, 32768) { compressed[it] }
+        if (compressed.isBlank()) null else decompress(compressed.length, 32_768) { compressed[it] }
 
     fun decompressFromEncodedURIComponent(input: String) =
         when {
@@ -253,7 +254,7 @@ object LzString {
             1 -> "$res==="
             2 -> "$res=="
             3 -> "$res="
-            else -> throw IllegalStateException("Illegal base64url string!")
+            else -> error("Illegal base64url string!")
         }
     }
 
@@ -266,7 +267,7 @@ object LzString {
     fun decompressFromUTF16(input: String) =
         when {
             input.isBlank() -> null
-            else -> decompress(input.length, 16384) { (input[it].code - 32).toChar() }
+            else -> decompress(input.length, 16_384) { (input[it].code - 32).toChar() }
         }
 
     fun compressToUTF16(input: String) = compress(input, 15) { (it + 32).toChar() } + " "

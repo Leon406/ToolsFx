@@ -198,7 +198,7 @@ class EncodeTest {
         )
 
         assertContentEquals(
-            intArrayOf(128510, 128507),
+            intArrayOf(128_510, 128_507),
             intArrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
         )
         println("🗾".unicodeCharToInt())
@@ -354,7 +354,7 @@ class EncodeTest {
                     .toByteArray()
                     .take(count)
             }
-            .flatMap { it.map { it } }
+            .flatten()
             .toByteArray()
             .also { println(it.decodeToString()) }
     }

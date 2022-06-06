@@ -76,7 +76,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
     GEO_AMPA("geoAmap") {
         override fun process(raw: String, params: MutableMap<String, String>): String {
             val address = "address=${raw.urlEncoded}"
-            val queries = "address=${raw}&key=282f521c5c372f233da702769e43bfba&output=json"
+            val queries = "address=$raw&key=282f521c5c372f233da702769e43bfba&output=json"
             return ("https://restapi.amap.com/v3/geocode/geo?" +
                     "$address&key=282f521c5c372f233da702769e43bfba&output=json" +
                     "&sig=${(queries + "57b0452167c85d33217472e4e53028ec").hash("md5")}")

@@ -8,7 +8,6 @@ object Prefs {
     private const val LANGUAGE = "language"
     private const val AUTO_COPY = "autoCopy"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
-    fun preference(): Preferences = preference
     var isIgnoreUpdate
         get() = preference.getBoolean(IGNORE_UPDATE, false)
         set(value) {
@@ -29,4 +28,5 @@ object Prefs {
         set(value) {
             preference.putBoolean(AUTO_COPY, value)
         }
+    fun preference(): Preferences = preference
 }

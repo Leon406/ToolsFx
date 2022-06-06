@@ -1,6 +1,7 @@
 package me.leon.ctf
 
-/** ported from https://github.com/yuanfux/zero-width-lib */
+// ported from https://github.com/yuanfux/zero-width-lib
+
 // \u200c
 private const val ZERO_WIDTH_NON_JOINER = '‌'
 

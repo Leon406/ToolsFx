@@ -6,14 +6,14 @@ plugins {
 }
 
 javafx {
-    //latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
+    // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
     version = rootProject.extra["jfx_version"] as String
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
         "javafx.web",
-//            if you use javafx.fxml,then uncomment it
-//            'javafx.fxml'
+    // if you use javafx.fxml,then uncomment it
+    // "javafx.fxml"
     )
 }
 

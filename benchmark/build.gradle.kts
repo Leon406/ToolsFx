@@ -6,7 +6,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-
 dependencies {
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("org.openjdk.jol:jol-core:0.16")

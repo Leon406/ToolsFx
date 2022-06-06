@@ -31,14 +31,15 @@ fun makeCipher(
         val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
         if (alg.contains("ECB|RC4".toRegex())) init(cipherMode, keySpec)
         // require jdk 11
-        else if (alg.equals("ChaCha20", true))
+        else if (alg.equals("ChaCha20", true)) {
             init(cipherMode, keySpec, ChaCha20ParameterSpec(iv, 7))
-        else
+        } else {
             init(cipherMode, keySpec, IvParameterSpec(iv)).also {
                 if (alg.contains(AEAD_MODE_REG) && associatedData.isNotEmpty()) {
                     updateAAD(associatedData)
                 }
             }
+        }
     }
 
 fun String.encryptFile(

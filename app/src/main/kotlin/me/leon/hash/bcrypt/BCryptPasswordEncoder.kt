@@ -36,9 +36,6 @@ constructor(
     var strength: Int = -1,
     private var random: SecureRandom? = null
 ) : PasswordEncoder {
-    companion object {
-        private val REG_BCRYPT = "\\$2([ayb])?\\$(\\d\\d)\\$[./0-9A-Za-z]{53}".toRegex()
-    }
 
     init {
         require(
@@ -48,6 +45,9 @@ constructor(
         this.strength = if (strength == -1) 10 else strength
     }
 
+    private val salt: String
+        get() = genSalt(version.version, strength, random ?: SecureRandom())
+
     override fun encode(password: CharSequence): String {
         return hashpw(password.toString(), salt)
     }
@@ -55,9 +55,6 @@ constructor(
     fun encode(rawPassword: CharSequence, salt: ByteArray): String {
         return hashpw(rawPassword.toString(), genSalt(salt, version.version, strength))
     }
-
-    private val salt: String
-        get() = genSalt(version.version, strength, random ?: SecureRandom())
 
     override fun matches(password: CharSequence, encodedPassword: String): Boolean {
         if (encodedPassword.isEmpty()) {
@@ -92,5 +89,9 @@ constructor(
         `$2A`("$2a"),
         `$2Y`("$2y"),
         `$2B`("$2b")
+    }
+
+    companion object {
+        private val REG_BCRYPT = "\\$2([ayb])?\\$(\\d\\d)\\$[./0-9A-Za-z]{53}".toRegex()
     }
 }

@@ -47,10 +47,10 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 128 * 1024)
+                if (length() <= 128 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 128KB"
+                } else "not support file larger than 128KB"
             }
     }
 
@@ -175,7 +175,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
     private fun run() {
         runAsync {
             startTime = System.currentTimeMillis()
-            if (isSingleLine.get())
+            if (isSingleLine.get()) {
                 inputText.lineAction2String {
                     val decode =
                         controller.decode(
@@ -188,7 +188,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                     println("transfer $encodeString")
                     controller.encode2String(decode, dstEncodeType, "", selectedDstCharset.get())
                 }
-            else {
+            } else {
                 val decode =
                     controller.decode(
                         inputText,
@@ -204,8 +204,9 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
         } ui
             {
                 taOutput.text = it
-                if (Prefs.autoCopy)
+                if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
             }

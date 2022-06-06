@@ -6,21 +6,21 @@ plugins {
 }
 
 javafx {
-    //latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
+    // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
     version = rootProject.extra["jfx_version"] as String
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
         "javafx.web",
-//            if you use javafx.fxml,then uncomment it
-//            'javafx.fxml'
+    // if you use javafx.fxml,then uncomment it
+    // "javafx.fxml"
     )
 }
 
 dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
-    //compress dependencies
+    // compress dependencies
     implementation("org.apache.commons:commons-compress:1.21")
     implementation("com.github.luben:zstd-jni:1.5.2-1")
     implementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")

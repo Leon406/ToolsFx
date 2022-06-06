@@ -43,15 +43,16 @@ class DigestView : Fragment(messages["hash"]) {
 
     private val eventHandler = fileDraggedHandler {
         inputText =
-            if (isFileMode.get())
+            if (isFileMode.get()) {
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
-            else
+            } else {
                 with(it.first()) {
-                    if (length() <= 10 * 1024 * 1024)
+                    if (length() <= 10 * 1024 * 1024) {
                         if (realExtension() in unsupportedExts) "unsupported file extension"
                         else readText()
-                    else "not support file larger than 10M"
+                    } else "not support file larger than 10M"
                 }
+            }
     }
 
     private val selectedAlgItem = SimpleStringProperty(ALGOS_HASH.keys.first())
@@ -68,6 +69,11 @@ class DigestView : Fragment(messages["hash"]) {
     private var timeConsumption = 0L
     private var startTime = 0L
     private var inputEncode = "raw"
+
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { labelInfo = label(info) }
+    }
 
     private val centerNode = vbox {
         addClass(Styles.group)
@@ -194,30 +200,27 @@ class DigestView : Fragment(messages["hash"]) {
         runAsync {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
-            if (method.startsWith("SpringSecurity"))
+            if (method.startsWith("SpringSecurity")) {
                 controller.passwordHashingCrack(method, inputText)
-            else
+            } else {
                 controller.crack(
                     method,
                     inputText
                         .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
                         .encodeTo("hex")
                 )
+            }
         } ui
             {
                 isProcessing.value = false
                 outputText = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
-                if (Prefs.autoCopy)
+                if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
                 System.gc()
             }
-    }
-
-    override val root = borderpane {
-        center = centerNode
-        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doHash() =
@@ -238,7 +241,8 @@ class DigestView : Fragment(messages["hash"]) {
                 outputText = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
-                if (Prefs.autoCopy)
+                if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
             }
 }

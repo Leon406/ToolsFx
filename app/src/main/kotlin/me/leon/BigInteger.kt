@@ -37,7 +37,9 @@ fun BigInteger.decrypt(d: String, n: String) = decrypt(BigInteger(d), BigInteger
 fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
 
 fun List<BigInteger>.phi(): BigInteger =
-    filter { it > BigInteger.ZERO }.fold(BigInteger.ONE) { acc, it -> acc * (it - BigInteger.ONE) }
+    filter { it > BigInteger.ZERO }.fold(BigInteger.ONE) { acc, int ->
+        acc * (int - BigInteger.ONE)
+    }
 
 fun List<BigInteger>.propN(n: BigInteger) =
     filter { it < BigInteger.ZERO }.fold(n) { acc, bigInteger -> acc / bigInteger.abs() }
@@ -45,29 +47,33 @@ fun List<BigInteger>.propN(n: BigInteger) =
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 
 fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
-    "http://www.factordb.com/index.php?query=$digit".readFromNet().also {
-        "<td>(\\w+)</td>".toRegex().find(it)?.let {
-            when (it.groupValues[1]) {
-                "P" -> return listOf(digit.toBigInteger())
-                "FF" -> "Composite, fully factored"
-                "C" ->
-                    return listOf(digit.toBigInteger()).also {
-                        println("Composite, no factors known")
-                    }
-                "CF" -> "Composite, factors known"
-                else -> return listOf(digit.toBigInteger()).also { println("Unknown") }
-            }
-        }
+    val response = "http://www.factordb.com/index.php?query=$digit".readFromNet()
 
-        "index\\.php\\?id=\\d+".toRegex().findAll(it).toList().map { it.value }.also {
-            if (it.size >= 3) {
-                return it.filterIndexed { i, _ -> i != 0 }.map { getPrimeFromFactorDbPath(it) }
-            } else {
-                println("无法分解")
-                return listOf(digit.toBigInteger())
+    var result = emptyList<BigInteger>()
+
+    "<td>(\\w+)</td>".toRegex().find(response)?.let {
+        result =
+            when (it.groupValues[1]) {
+                "P" -> listOf(digit.toBigInteger())
+                "FF" -> emptyList<BigInteger>().also { println("Composite, fully factored") }
+                "C" -> listOf(digit.toBigInteger()).also { println("Composite, no factors known") }
+                "CF" -> emptyList<BigInteger>().also { println("Composite, factors known") }
+                else -> listOf(digit.toBigInteger()).also { println("Unknown") }
             }
+    }
+
+    if (result.isEmpty()) {
+        "index\\.php\\?id=\\d+".toRegex().findAll(response).toList().map { it.value }.also {
+            result =
+                if (it.size >= 3) {
+                    it.filterIndexed { i, _ -> i != 0 }.map { getPrimeFromFactorDbPath(it) }
+                } else {
+                    println("无法分解")
+                    listOf(digit.toBigInteger())
+                }
         }
     }
+    return result
 }
 
 private fun getPrimeFromFactorDbPath(path: String) =

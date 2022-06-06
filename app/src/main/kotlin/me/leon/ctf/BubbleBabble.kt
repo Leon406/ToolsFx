@@ -26,9 +26,10 @@ object BubbleBabble {
         for (i in 0 until k / 2 + 1) {
             C[i] =
                 if (i == 0) 1
-                else
+                else {
                     ((C[i - 1] * 5 + D[((i + 1) * 2) - 3 - 1] * 7 + D[((i + 1) * 2) - 2 - 1]) % 36)
                         .toByte()
+                }
         }
         for (i in 0 until k / 2) { // 每两个数据构建一个五元组
             val a = ((D[i * 2].toInt() shr 6 and 3) + C[i]) % 6

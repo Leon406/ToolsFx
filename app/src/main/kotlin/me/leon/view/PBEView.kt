@@ -50,14 +50,14 @@ class PBEView : Fragment("PBE") {
 
     private var saltByteArray
         get() =
-            if (tfSalt.text.isEmpty() && isEncrypt)
+            if (tfSalt.text.isEmpty() && isEncrypt) {
                 controller.getSalt(saltLength).also {
                     tfSalt.text = it.toHex()
                     tgGroup.selectToggle(
                         tgGroup.toggles.first { it.cast<RadioButton>().text == "hex" }
                     )
                 }
-            else tfSalt.text.decodeToByteArray(saltEncode)
+            } else tfSalt.text.decodeToByteArray(saltEncode)
         set(value) {
             tfSalt.text = value.encodeTo(saltEncode)
         }
@@ -65,10 +65,10 @@ class PBEView : Fragment("PBE") {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 128 * 1024)
+                if (length() <= 128 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 128KB"
+                } else "not support file larger than 128KB"
             }
     }
 
@@ -195,7 +195,7 @@ class PBEView : Fragment("PBE") {
             if (taInput.text.isEmpty()) return@runAsync ""
             isProcessing.value = true
             runCatching {
-                if (isEncrypt)
+                if (isEncrypt) {
                     controller.encrypt(
                         tfPwd.text,
                         inputText,
@@ -205,8 +205,7 @@ class PBEView : Fragment("PBE") {
                         keyLength,
                         isSingleLine.get()
                     )
-                else {
-
+                } else {
                     saltByteArray = inputText.base64Decode().sliceArray(8 until (8 + saltLength))
                     controller.decrypt(
                         tfPwd.text,
@@ -225,8 +224,9 @@ class PBEView : Fragment("PBE") {
                 isProcessing.value = false
                 taOutput.text =
                     it.also {
-                        if (it.startsWith("U2FsdGVk"))
+                        if (it.startsWith("U2FsdGVk")) {
                             saltByteArray = it.base64Decode().sliceArray(8 until (8 + saltLength))
+                        }
                     }
                 timeConsumption = System.currentTimeMillis() - startTime
                 infoLabel.text = info

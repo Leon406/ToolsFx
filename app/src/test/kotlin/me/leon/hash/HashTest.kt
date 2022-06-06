@@ -11,55 +11,6 @@ import me.leon.ext.toHex
 import org.junit.Test
 
 class HashTest {
-
-    init {
-        Security.addProvider(org.bouncycastle.jce.provider.BouncyCastleProvider())
-    }
-
-    @Test
-    fun crc32() {
-        CRC32().apply { update("hello".toByteArray()) }.value.also {
-            assertEquals("3610a686", it.toString(16))
-        }
-        "hello".toByteArray().crc32().also { assertEquals("3610a686", it) }
-    }
-
-    @Test
-    fun adler32() {
-        "hello".toByteArray().adler32().also { assertEquals("062c0215", it) }
-    }
-
-    @Test
-    fun crc64() {
-        val readBytes = File(TEST_PRJ_DIR, "LICENSE").readBytes()
-        readBytes.run {
-            CRC64()
-                .apply {
-                    update(this@run)
-                    assertEquals("ea9848a519ac78d9", this.crcHex())
-                }
-                .crcDecimal()
-                .also { assertEquals("16904341075272693977", it) }
-        }
-    }
-
-    @Test
-    fun hash() {
-        println("hello".hash("TupleHash128"))
-        println("hello".hash("TupleHash256"))
-        println("hello".hash("ParallelHash128"))
-        println("hello".hash("ParallelHash256"))
-        println("hello".hash("Blake3-256"))
-        "hello".hash().also { assertEquals("5d41402abc4b2a76b9719d911017c592", it) }
-        "hello".toByteArray().hash().also {
-            assertEquals("5d41402abc4b2a76b9719d911017c592", it.toHex())
-        }
-
-        File(TEST_PRJ_DIR, "LICENSE").hash().also {
-            assertEquals("219b0e44bbfc8ffd26c6cd91bb3c5138", it)
-        }
-    }
-
     private val expectedMap =
         mapOf(
             "MD5" to "25d55ad283aa400af464c76d713c07ad",
@@ -177,6 +128,54 @@ class HashTest {
             "md5(SHA512)" to "32d938bec236b8d25ac5af4404f3f916",
         )
 
+    init {
+        Security.addProvider(org.bouncycastle.jce.provider.BouncyCastleProvider())
+    }
+
+    @Test
+    fun crc32() {
+        CRC32().apply { update("hello".toByteArray()) }.value.also {
+            assertEquals("3610a686", it.toString(16))
+        }
+        "hello".toByteArray().crc32().also { assertEquals("3610a686", it) }
+    }
+
+    @Test
+    fun adler32() {
+        "hello".toByteArray().adler32().also { assertEquals("062c0215", it) }
+    }
+
+    @Test
+    fun crc64() {
+        val readBytes = File(TEST_PRJ_DIR, "LICENSE").readBytes()
+        readBytes.run {
+            CRC64()
+                .apply {
+                    update(this@run)
+                    assertEquals("ea9848a519ac78d9", this.crcHex())
+                }
+                .crcDecimal()
+                .also { assertEquals("16904341075272693977", it) }
+        }
+    }
+
+    @Test
+    fun hash() {
+        println("hello".hash("TupleHash128"))
+        println("hello".hash("TupleHash256"))
+        println("hello".hash("ParallelHash128"))
+        println("hello".hash("ParallelHash256"))
+        println("hello".hash("Blake3-256"))
+        "hello".hash().also { assertEquals("5d41402abc4b2a76b9719d911017c592", it) }
+        "hello".toByteArray().hash().also {
+            assertEquals("5d41402abc4b2a76b9719d911017c592", it.toHex())
+        }
+
+        File(TEST_PRJ_DIR, "LICENSE").hash().also {
+            assertEquals("219b0e44bbfc8ffd26c6cd91bb3c5138", it)
+        }
+    }
+
     @Test
     fun allHash() {
         val digestController = DigestController()
@@ -185,13 +184,14 @@ class HashTest {
         for ((k, v) in ALGOS_HASH) {
             for (alg in v) {
                 (if (k == "PasswordHashing") "PasswordHashing$alg"
-                    else
-                        "${k}${alg.takeIf { requireNotNull(ALGOS_HASH[k]).size > 1 } ?: ""}"
+                    else {
+                        "${k}${alg.takeIf { requireNotNull(ALGOS_HASH[k]).size > 1 }.orEmpty()}"
                             .replace("SHA2", "SHA-")
                             .replace(
                                 "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
                                 "$1-"
-                            ))
+                            )
+                    })
                     .also {
                         println(it)
                         if (it.contains("PasswordHashing")) {
@@ -204,11 +204,13 @@ class HashTest {
                                     )
                                 )
                             }
-                        } else if (it.contains("512"))
+                        } else if (it.contains("512")) {
                             assertEquals(expectedMap[it], testData.repeat(8).hash(it))
-                        else if (it.contains("256") && !it.contains("(SHA256)"))
+                        } else if (it.contains("256") && !it.contains("(SHA256)")) {
                             assertEquals(expectedMap[it], testData.repeat(4).hash(it))
-                        else assertEquals(expectedMap[it], digestController.digest(it, testData))
+                        } else {
+                            assertEquals(expectedMap[it], digestController.digest(it, testData))
+                        }
                     }
             }
         }

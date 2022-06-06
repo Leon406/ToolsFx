@@ -5,10 +5,10 @@ import java.io.InputStreamReader
 import java.net.*
 
 class UdpClient(val host: String, val port: Int, clientPort: Int) {
-    private var socket: DatagramSocket = DatagramSocket(clientPort)
+    private val socket = DatagramSocket(clientPort)
 
     init {
-        println("已连接${host}:$clientPort")
+        println("已连接$host:$clientPort")
     }
 
     fun fromConsole() {

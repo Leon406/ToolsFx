@@ -25,8 +25,9 @@ class ReplaceTest {
         val d2 = "一二三四五六七八九十"
         val sb = StringBuilder(d2)
         measureTimeMillis {
-            sb.replace(replaceMap.keys.joinToString("|").toRegex()) { replaceMap[it.value] ?: "" }
-            //                .also { println(it) }
+            sb.replace(replaceMap.keys.joinToString("|").toRegex()) {
+                replaceMap[it.value].orEmpty()
+            }
         }
             .also { println("$it") }
 

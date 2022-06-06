@@ -29,11 +29,6 @@ class MyTest {
     }
 
     @Test
-    fun exceptionTest() {
-        println(NullPointerException().stacktrace())
-    }
-
-    @Test
     fun localDate() {
 
         val now = LocalDateTime.now()

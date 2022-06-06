@@ -1,12 +1,13 @@
 package me.leon.encode
 
 import java.nio.charset.Charset
+import me.leon.UTF8
 import me.leon.ext.hex2String
 import me.leon.ext.toHex
 
 object QuotePrintable {
 
-    fun encode(src: String, charset: String = "UTF-8") =
+    fun encode(src: String, charset: String = UTF8) =
         src
             .also { println("encode $src $charset") }
             .toCharArray()
@@ -29,7 +30,7 @@ object QuotePrintable {
             .chunked(75)
             .joinToString("=\r\n")
 
-    fun decode(src: String, charset: String = "UTF-8"): String {
+    fun decode(src: String, charset: String = UTF8): String {
         val preHandle = src.lowercase().split("=(?:\r\n|\n)".toRegex()).joinToString("")
         val sb = StringBuilder()
         val hex = StringBuilder()

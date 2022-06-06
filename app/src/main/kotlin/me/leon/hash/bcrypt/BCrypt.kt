@@ -1583,7 +1583,7 @@ class BCrypt {
         fun decodeBase64(s: String, maxLen: Int): ByteArray {
             val rs = StringBuilder()
             var off = 0
-            val slen = s.length
+            val sLen = s.length
             var olen = 0
             var c1: Byte
             var c2: Byte
@@ -1591,7 +1591,7 @@ class BCrypt {
             var c4: Byte
             var o: Byte
             require(maxLen > 0) { "Invalid maxolen" }
-            while (off < slen - 1 && olen < maxLen) {
+            while (off < sLen - 1 && olen < maxLen) {
                 c1 = char64(s[off++])
                 c2 = char64(s[off++])
                 if (c1.toInt() == -1 || c2.toInt() == -1) {
@@ -1600,7 +1600,7 @@ class BCrypt {
                 o = (c1.toInt() shl 2).toByte()
                 o = (o.toInt() or ((c2 and 0x30).toInt() shr 4)).toByte()
                 rs.append(Char(o.toUShort()))
-                if (++olen >= maxLen || off >= slen) {
+                if (++olen >= maxLen || off >= sLen) {
                     break
                 }
                 c3 = char64(s[off++])
@@ -1610,7 +1610,7 @@ class BCrypt {
                 o = ((c2 and 0x0f).toInt() shl 4).toByte()
                 o = (o.toInt() or ((c3 and 0x3c).toInt() shr 2)).toByte()
                 rs.append(Char(o.toUShort()))
-                if (++olen >= maxLen || off >= slen) {
+                if (++olen >= maxLen || off >= sLen) {
                     break
                 }
                 c4 = char64(s[off++])
@@ -1629,7 +1629,7 @@ class BCrypt {
         }
 
         /**
-         * Cycically extract a word of key material
+         * Cynically extract a word of key material
          *
          * @param data the string to extract the data from
          * @param offp a "pointer" (as a one-entry array) to the current offset into data

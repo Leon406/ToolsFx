@@ -43,9 +43,9 @@ constructor(
                 continue
             }
             val token =
-                if (charPointer + defaultTokenLength <= str.length) // The string we found.
-                 str.substring(charPointer, charPointer + defaultTokenLength)
-                else str.substring(charPointer, charPointer + (str.length - charPointer))
+                if (charPointer + defaultTokenLength <= str.length) {
+                    str.substring(charPointer, charPointer + defaultTokenLength)
+                } else str.substring(charPointer, charPointer + (str.length - charPointer))
             var b = false
             for (tokenCheck in Token.values()) {
                 if (tokenCheck.value == token) {
@@ -56,10 +56,11 @@ constructor(
                 }
             }
             // If the token was invalid, b is false.
-            if (!b)
-                if (charPointer + defaultTokenLength > str.length)
+            if (!b) {
+                if (charPointer + defaultTokenLength > str.length) {
                     charPointer += str.length - charPointer
-                else charPointer++
+                } else charPointer++
+            }
         }
 
         loopAllTokens(tokens)

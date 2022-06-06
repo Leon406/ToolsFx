@@ -49,7 +49,7 @@ import org.bouncycastle.crypto.generators.SCrypt
 class SCryptPasswordEncoder
 @JvmOverloads
 constructor(
-    var cpuCost: Int = 16384,
+    var cpuCost: Int = 16_384,
     var memoryCost: Int = 8,
     var parallelization: Int = 1,
     var keyLength: Int = 32,
@@ -59,7 +59,7 @@ constructor(
 
     init {
         require(cpuCost > 1) { "Cpu cost parameter must be > 1." }
-        require(!(memoryCost == 1 && cpuCost > 65536)) {
+        require(!(memoryCost == 1 && cpuCost > 65_536)) {
             "Cpu cost parameter must be > 1 and < 65536."
         }
         require(memoryCost >= 1) { "Memory cost must be >= 1." }

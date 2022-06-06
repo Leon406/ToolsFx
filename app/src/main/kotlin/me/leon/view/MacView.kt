@@ -39,10 +39,10 @@ class MacView : Fragment("MAC") {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 10 * 1024 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                } else "not support file larger than 10M"
             }
     }
 
@@ -110,10 +110,10 @@ class MacView : Fragment("MAC") {
             println("selectedBits __ $newValue")
             newValue?.run {
                 method =
-                    if (selectedAlgItem.get() == "GMAC") "${newValue}-GMAC"
-                    else if (selectedAlgItem.get().contains("ZUC-256"))
-                        "${selectedAlgItem.get()}-${newValue}"
-                    else {
+                    if (selectedAlgItem.get() == "GMAC") "$newValue-GMAC"
+                    else if (selectedAlgItem.get().contains("ZUC-256")) {
+                        "${selectedAlgItem.get()}-$newValue"
+                    } else {
                         "${selectedAlgItem.get()}${
                             newValue.takeIf {
                                 algorithm[selectedAlgItem.get()]!!.size > 1
@@ -177,7 +177,7 @@ class MacView : Fragment("MAC") {
             startTime = System.currentTimeMillis()
 
             runCatching {
-                if (method.contains("POLY1305|-GMAC|ZUC".toRegex()))
+                if (method.contains("POLY1305|-GMAC|ZUC".toRegex())) {
                     controller.macWithIv(
                         inputText,
                         keyIvInputView.keyByteArray,
@@ -187,7 +187,7 @@ class MacView : Fragment("MAC") {
                         outputEncode,
                         isSingleLine.get()
                     )
-                else
+                } else {
                     controller.mac(
                         inputText,
                         keyIvInputView.keyByteArray,
@@ -196,6 +196,7 @@ class MacView : Fragment("MAC") {
                         outputEncode,
                         isSingleLine.get()
                     )
+                }
             }
                 .getOrElse { it.stacktrace() }
         } ui
@@ -203,7 +204,8 @@ class MacView : Fragment("MAC") {
                 outputText = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
-                if (Prefs.autoCopy)
+                if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
             }
 }

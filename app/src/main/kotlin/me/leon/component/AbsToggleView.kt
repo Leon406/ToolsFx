@@ -17,12 +17,12 @@ abstract class AbsToggleView(
 
     private var tg: ToggleGroup = ToggleGroup()
 
+    val selectText
+        get() = data[selectedIndex]
+
     fun select(index: Int) {
         tg.selectToggle(tg.toggles[index])
     }
-
-    val selectText
-        get() = data[selectedIndex]
 
     fun Node.populate() {
         visibleWhen(visible)

@@ -143,7 +143,7 @@ constructor(
     companion object {
         private const val DEFAULT_SALT_LENGTH = 8
         private const val DEFAULT_HASH_WIDTH = 256
-        private const val DEFAULT_ITERATIONS = 185000
+        private const val DEFAULT_ITERATIONS = 185_000
     }
 }
 

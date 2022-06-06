@@ -33,19 +33,21 @@ fun String.parseCurl() =
                             ("POST".takeIf { acc.method == "GET" } ?: acc.method).also {
                                 val value = s.removeFirstAndEndQuotes(3)
                                 if (value.contains("@file")) {
-                                    if (value.startsWith("{") || value.startsWith("["))
+                                    if (value.startsWith("{") || value.startsWith("[")) {
                                         acc.params.putAll(
                                             value.fromJson(MutableMap::class.java) as
                                                 Map<out String, Any>
                                         )
-                                    else acc.params.putAll(value.paramsParse().also { println(it) })
+                                    } else {
+                                        acc.params.putAll(value.paramsParse().also { println(it) })
+                                    }
                                 } else if (this@parseCurl.contains(
                                         "Content-Type: application/json",
                                         true
                                     )
-                                )
+                                ) {
                                     acc.rawBody = value
-                                else acc.params.putAll(value.paramsParse())
+                                } else acc.params.putAll(value.paramsParse())
                             }
                     s.startsWith("--data-binary") ->
                         acc.method =
@@ -65,9 +67,9 @@ fun String.parseCurl() =
                                         "Content-Type: application/json",
                                         true
                                     )
-                                )
+                                ) {
                                     acc.rawBody = value
-                                else acc.params.putAll(value.paramsParse())
+                                } else acc.params.putAll(value.paramsParse())
                             }
                     s.startsWith("-H") ->
                         with(s.removeFirstAndEndQuotes(3)) {

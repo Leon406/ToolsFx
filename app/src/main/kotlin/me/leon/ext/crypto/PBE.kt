@@ -87,8 +87,9 @@ object PBE {
     ): String {
         val base64Decode = data.base64Decode()
         val salt = base64Decode.sliceArray(8 until (8 + saltLength))
-        if (alg.contains("HMAC", true))
+        if (alg.contains("HMAC", true)) {
             return generatePBEKey(key, salt, alg, keyLength, iteration).encoded.base64()
+        }
         val cipher = makeCipher(alg, key, salt, iteration, keyLength, Cipher.DECRYPT_MODE)
         return cipher
             .doFinal(base64Decode.sliceArray((8 + saltLength)..base64Decode.lastIndex))
@@ -118,8 +119,9 @@ object PBE {
         iteration: Int,
         keyLength: Int
     ): String {
-        if (alg.contains("HMAC", true))
+        if (alg.contains("HMAC", true)) {
             return generatePBEKey(password, salt, alg, keyLength, iteration).encoded.base64()
+        }
         val cipher = makeCipher(alg, password, salt, iteration, keyLength, Cipher.ENCRYPT_MODE)
         // openssl
         return ("Salted__".toByteArray() + salt + cipher.doFinal(data.toByteArray())).base64()

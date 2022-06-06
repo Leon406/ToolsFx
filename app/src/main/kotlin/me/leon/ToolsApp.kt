@@ -20,10 +20,11 @@ class ToolsApp : App(Home::class, Styles::class) {
     private fun initConfig() {
 
         var file = File(APP_ROOT, "ToolsFx.properties")
-        if (!file.exists())
+        if (!file.exists()) {
             javaClass.getResourceAsStream("/ToolsFx.properties")?.use {
                 it.copyTo(file.outputStream())
             }
+        }
         properties.load(file.inputStream())
         file = File(DICT_DIR, "top1000.txt")
 

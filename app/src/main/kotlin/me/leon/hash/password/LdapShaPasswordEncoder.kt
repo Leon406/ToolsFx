@@ -73,7 +73,7 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
         return try {
             MessageDigest.getInstance("SHA").apply { update(password.toString().toByteArray()) }
         } catch (ignored: NoSuchAlgorithmException) {
-            throw IllegalStateException("No SHA implementation available!")
+            error("No SHA implementation available!")
         }
     }
 
@@ -139,7 +139,6 @@ constructor(private val saltGenerator: BytesKeyGenerator = secureRandom()) : Pas
     }
 
     companion object {
-        /** The number of bytes in SHA hash */
         private const val SHA_LENGTH = 20
         private const val SSHA_PREFIX = "{SSHA}"
         private val SSHA_PREFIX_LC = SSHA_PREFIX.lowercase()

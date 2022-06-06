@@ -21,31 +21,31 @@ class SymmetricTest {
         val plain = "Hello World!你好".toByteArray()
         val key = "1234567890123456".toByteArray()
         val iv = "1234567890123456".toByteArray()
-        plain.encrypt(key, iv, "Shacal2").let {
+        plain.encrypt(key, iv, "Shacal2").also {
             println(it.base64())
-            it.decrypt(key, iv, "Shacal2").let { assertTrue { plain.contentEquals(it) } }
+            it.decrypt(key, iv, "Shacal2").also { assertTrue { plain.contentEquals(it) } }
         }
-        plain.encrypt(key, iv, "VMPC-KSA3").let {
+        plain.encrypt(key, iv, "VMPC-KSA3").also {
             println(it.base64())
-            it.decrypt(key, iv, "VMPC-KSA3").let { assertTrue { plain.contentEquals(it) } }
+            it.decrypt(key, iv, "VMPC-KSA3").also { assertTrue { plain.contentEquals(it) } }
         }
-        plain.encrypt(key, iv, "ARC4").let {
+        plain.encrypt(key, iv, "ARC4").also {
             println(it.base64())
-            it.decrypt(key, iv, "ARC4").let { assertTrue { plain.contentEquals(it) } }
+            it.decrypt(key, iv, "ARC4").also { assertTrue { plain.contentEquals(it) } }
         }
-        plain.encrypt(key + key, iv, "GOST28147").let {
+        plain.encrypt(key + key, iv, "GOST28147").also {
             println(it.base64())
-            it.decrypt(key + key, iv, "GOST28147").let { assertTrue { plain.contentEquals(it) } }
+            it.decrypt(key + key, iv, "GOST28147").also { assertTrue { plain.contentEquals(it) } }
         }
-        plain.encrypt(key + key, iv, "GOST3412-2015").let {
+        plain.encrypt(key + key, iv, "GOST3412-2015").also {
             println(it.base64())
-            it.decrypt(key + key, iv, "GOST3412-2015").let {
+            it.decrypt(key + key, iv, "GOST3412-2015").also {
                 assertTrue { plain.contentEquals(it) }
             }
         }
-        plain.encrypt(key, iv, "Noekeon").let {
+        plain.encrypt(key, iv, "Noekeon").also {
             println(it.base64())
-            it.decrypt(key, iv, "Noekeon").let { assertTrue { plain.contentEquals(it) } }
+            it.decrypt(key, iv, "Noekeon").also { assertTrue { plain.contentEquals(it) } }
         }
     }
 

@@ -36,10 +36,11 @@ class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
         if (isEnableSignature) views.add(SignatureView::class)
         if (isEnableQrcode) views.add(QrcodeView::class)
         if (isEnablePBE) views.add(PBEView::class)
-        if (isEnableInternalWebview)
+        if (isEnableInternalWebview) {
             runCatching { Class.forName("javafx.scene.web.WebView") }.onSuccess {
                 views.add(OnlineWebView::class)
             }
+        }
     }
 
     override val root = tabpane {

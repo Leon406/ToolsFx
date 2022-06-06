@@ -46,9 +46,9 @@ constructor(
         // So we aren't going to loop through all characters.
         while (charPointer < str.length) {
             val token =
-                if (charPointer + defaultTokenLength <= str.length)
+                if (charPointer + defaultTokenLength <= str.length) {
                     str.substring(charPointer, charPointer + defaultTokenLength)
-                else str.substring(charPointer, charPointer + (str.length - charPointer))
+                } else str.substring(charPointer, charPointer + (str.length - charPointer))
             if (isValidToken(token)) {
                 if (token.equals(Token.START, ignoreCase = true)) started = true
                 else if (token.equals(Token.END, ignoreCase = true)) break
@@ -83,14 +83,16 @@ constructor(
                         var level = 1
                         while (level > 0) {
                             tokenPointer++
-                            if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true))
+                            if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
+                            ) {
                                 level++
-                            else if (tokens[tokenPointer].equals(
+                            } else if (tokens[tokenPointer].equals(
                                     Token.BRACKET_RIGHT,
                                     ignoreCase = true
                                 )
-                            )
+                            ) {
                                 level--
+                            }
                         }
                     }
                 Token.BRACKET_RIGHT -> {
@@ -98,14 +100,16 @@ constructor(
                         var level = 1
                         while (level > 0) {
                             tokenPointer--
-                            if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true))
+                            if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
+                            ) {
                                 level--
-                            else if (tokens[tokenPointer].equals(
+                            } else if (tokens[tokenPointer].equals(
                                     Token.BRACKET_RIGHT,
                                     ignoreCase = true
                                 )
-                            )
+                            ) {
                                 level++
+                            }
                         }
                     }
                 }

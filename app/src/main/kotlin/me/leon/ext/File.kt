@@ -80,22 +80,23 @@ val multiExts = listOf("zip", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "jar"
 val unsupportedExts = magics.values
 
 fun File.realExtension() =
-    if (isFile)
+    if (isFile) {
         if (extension.lowercase() == "txt") "txt"
-        else
+        else {
             inputStream().use {
                 it.readNBytes(10).toHex().let { hex ->
                     //            println(name)
                     magics.keys.firstOrNull { hex.startsWith(it, true) }?.let { key ->
                         //                    println(name + " " + key + " " + magics[key])
-                        (if (magics[key] in multiExts)
+                        (if (magics[key] in multiExts) {
                             extension.takeIf { it != name } ?: magics[key]
-                        else magics[key])
+                        } else magics[key])
                     }
                         ?: extension.also { println("unknown magic number $hex $name") }
                 }
             }
-    else "dir"
+        }
+    } else "dir"
 
 fun File.toBase64() = readBytes().base64()
 

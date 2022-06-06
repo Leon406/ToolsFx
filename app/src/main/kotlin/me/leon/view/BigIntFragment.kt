@@ -25,24 +25,21 @@ class BigIntFragment : Fragment("BigInt") {
     private val bottomInfo
         get() =
             "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: P=${ta1.bits()}  " +
-                    "Q=${ta2.bits()}  " +
-                    "N=${ta3.bits()}  " +
-                    "a=${ta4.bits()}  " +
-                    "b=${ta5.bits()}  " +
-                    "Output=${
+                "Q=${ta2.bits()}  " +
+                "N=${ta3.bits()}  " +
+                "a=${ta4.bits()}  " +
+                "b=${ta5.bits()}  " +
+                "Output=${
                         runCatching {
                             outputText.lines().first().toBigInteger().bitLength().toString()
                         }.getOrDefault("0")
                     }  " +
-                    "cost: $timeConsumption ms "
+                "cost: $timeConsumption ms "
     private var outputText: String
         get() = taOutput.text
         set(value) {
             taOutput.text = value
         }
-
-    private fun TextArea.bits() =
-        "0".takeIf { text.isBlank() } ?: text.toBigInteger(selectedRadix.get().toInt()).bitLength()
 
     private val radix = listOf("2", "8", "10", "16", "36")
     private val selectedRadix = SimpleStringProperty("10")
@@ -55,10 +52,13 @@ class BigIntFragment : Fragment("BigInt") {
     lateinit var ta5: TextArea
     lateinit var ta6: TextArea
     private var selectedAlgo: String = calculatorType.keys.first()
+
     override val root = borderpane {
         center = centerLayout()
         bottom = hbox { bottomView = label(bottomInfo) }
     }
+    private fun TextArea.bits() =
+        "0".takeIf { text.isBlank() } ?: text.toBigInteger(selectedRadix.get().toInt()).bitLength()
 
     private fun centerLayout(): VBox {
         return vbox {
@@ -151,33 +151,25 @@ class BigIntFragment : Fragment("BigInt") {
 
     private fun number2String() {
         outputText =
-            outputText.lineAction2String {
-                it.toBigInteger(selectedRadix.get().toInt()).n2s()
-            }
+            outputText.lineAction2String { it.toBigInteger(selectedRadix.get().toInt()).n2s() }
     }
 
     private fun string2Number() {
-        outputText =
-            outputText.lineAction2String {
-                it.s2n().toString(selectedRadix.get().toInt())
-            }
+        outputText = outputText.lineAction2String { it.s2n().toString(selectedRadix.get().toInt()) }
     }
 
     private fun number2Base64() {
         outputText =
             outputText.lineAction2String {
-                it.toBigInteger(selectedRadix.get().toInt())
-                    .toByteArray()
-                    .base64()
+                it.toBigInteger(selectedRadix.get().toInt()).toByteArray().base64()
             }
     }
 
     private fun base64ToNumber() {
-        outputText = outputText.lineAction2String {
-            it.base64Decode()
-                .toBigInteger()
-                .toString(selectedRadix.get().toInt())
-        }
+        outputText =
+            outputText.lineAction2String {
+                it.base64Decode().toBigInteger().toString(selectedRadix.get().toInt())
+            }
     }
 
     private fun inputLayout(vBox: VBox) {
@@ -256,18 +248,18 @@ class BigIntFragment : Fragment("BigInt") {
                 )
             )
         } ui
-                {
-                    isProcessing.value = false
-                    outputText =
-                        runCatching {
+            {
+                isProcessing.value = false
+                outputText =
+                    runCatching {
                             it.lines().joinToString("\n") {
                                 println("$it ${selectedRadix.get().toInt()}")
                                 it.toBigInteger().toString(selectedRadix.get().toInt())
                             }
                         }
-                            .getOrDefault(it)
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    bottomView.text = bottomInfo
-                }
+                        .getOrDefault(it)
+                timeConsumption = System.currentTimeMillis() - startTime
+                bottomView.text = bottomInfo
+            }
     }
 }

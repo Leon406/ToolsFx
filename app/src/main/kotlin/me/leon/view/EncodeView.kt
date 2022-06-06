@@ -51,13 +51,23 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private var isEncode = true
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
+    private val excludeEncode =
+        arrayOf(
+            EncodeType.Radix8,
+            EncodeType.Base16,
+            EncodeType.Decimal,
+            EncodeType.Radix10,
+            EncodeType.Radix32,
+            EncodeType.Radix64,
+        )
+
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 10 * 1024 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                } else "not support file larger than 10M"
             }
     }
 
@@ -242,7 +252,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             runCatching {
                 repeat(times) {
                     result =
-                        if (isEncode)
+                        if (isEncode) {
                             controller.encode2String(
                                 result,
                                 encodeType,
@@ -250,7 +260,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                 selectedCharset.get(),
                                 isSingleLine.get()
                             )
-                        else
+                        } else {
                             controller.decode2String(
                                 result,
                                 encodeType,
@@ -258,6 +268,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                 selectedCharset.get(),
                                 isSingleLine.get()
                             )
+                        }
                 }
                 result
             }
@@ -266,22 +277,13 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             {
                 isProcessing.value = false
                 taOutput.text = it
-                if (Prefs.autoCopy)
+                if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
             }
     }
-
-    private val excludeEncode =
-        arrayOf(
-            EncodeType.Radix8,
-            EncodeType.Base16,
-            EncodeType.Decimal,
-            EncodeType.Radix10,
-            EncodeType.Radix32,
-            EncodeType.Radix64,
-        )
 
     private fun crack() {
         startTime = System.currentTimeMillis()
@@ -302,11 +304,12 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     .runCatching { controller.decode2String(encoded, encode, "") }
                                     .getOrElse { it.message }!!
                                 .also {
-                                    if (DEBUG)
+                                    if (DEBUG) {
                                         println(
                                             "after decode:${System.currentTimeMillis() - startTime} " +
                                                 "$encode ${System.currentTimeMillis() - start}"
                                         )
+                                    }
                                 }
                     }
                     .find {

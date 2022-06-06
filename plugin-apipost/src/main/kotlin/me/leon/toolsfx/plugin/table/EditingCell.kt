@@ -18,6 +18,12 @@ class EditingCell<S, T> : TableCell<S, T> {
 
     var textFieldCell: TextField
 
+    val contextTableView: TableView<S>
+        get() = tableView
+
+    private val converter: ObjectProperty<StringConverter<T>?> =
+        SimpleObjectProperty(this, "converter")
+
     constructor() : this(null) {
         textFieldCell = createTextField(this, getConverter())
     }
@@ -34,9 +40,6 @@ class EditingCell<S, T> : TableCell<S, T> {
         textFieldCell = createTextField(this, getConverter())
         textFieldCell.isEditable = isFieldEditable
     }
-
-    private val converter: ObjectProperty<StringConverter<T>?> =
-        SimpleObjectProperty(this, "converter")
 
     fun converterProperty(): ObjectProperty<StringConverter<T>?> {
         return converter
@@ -69,9 +72,6 @@ class EditingCell<S, T> : TableCell<S, T> {
         super.updateItem(item, empty)
         updateItem(this, getConverter(), null, null, textFieldCell)
     }
-
-    val contextTableView: TableView<S>
-        get() = tableView
 
     fun setNextColumn(event: KeyEvent) {
         val nextColumn: TableColumn<S, *>? = getNextColumn(!event.isShiftDown)
@@ -147,6 +147,9 @@ class EditingCell<S, T> : TableCell<S, T> {
     }
 
     companion object {
+        private var currentRow = -1
+        private var control = 0
+
         fun <S> forTableColumn(): Callback<TableColumn<S, String>, TableCell<S, String>> {
             return forTableColumn(DefaultStringConverter())
         }
@@ -163,8 +166,5 @@ class EditingCell<S, T> : TableCell<S, T> {
         ): Callback<TableColumn<S, T>, TableCell<S, T>> {
             return Callback { EditingCell(converter, isFieldEditable) }
         }
-
-        private var currentRow = -1
-        private var control = 0
     }
 }

@@ -79,7 +79,7 @@ fun String.toJsOctalEncodeString() =
         .toString()
 
 fun String.unicode2String() =
-    if (contains("&#"))
+    if (contains("&#")) {
         "(?i)&#x([0-9a-f]+);|&#(\\d+);"
             .toRegex()
             .findAll(this)
@@ -89,11 +89,12 @@ fun String.unicode2String() =
             }
             .fold(StringBuilder()) { acc, (c, radix) -> acc.append(c.toInt(radix).toUnicodeChar()) }
             .toString()
-    else
+    } else {
         split("(?i)\\\\u\\+?".toRegex())
             .filterIndexed { index, _ -> index != 0 }
             .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toChar()) }
             .toString()
+    }
 
 fun String.htmlEntity2String() =
     if (contains("&#")) {

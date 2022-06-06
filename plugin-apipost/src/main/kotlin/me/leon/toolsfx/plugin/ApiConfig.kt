@@ -40,14 +40,15 @@ object ApiConfig {
         }
 
     var timeOut: Int
-        get() = Prefs.preference().getInt(TIME_OUT, 10000)
+        get() = Prefs.preference().getInt(TIME_OUT, 10_000)
         set(value) {
             Prefs.preference().putInt(TIME_OUT, value)
         }
 
     fun resortFromConfig() {
-        if (isEnableProxy)
+        if (isEnableProxy) {
             HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
+        }
         HttpUrlUtil.globalHeaders.putAll(
             parseHeaderString(globalHeaders) as MutableMap<String, String>
         )
@@ -63,9 +64,9 @@ object ApiConfig {
         tOut: Int,
     ) {
         isEnableProxy = isEnablePro
-        if (isEnableProxy)
+        if (isEnableProxy) {
             HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
-        else HttpUrlUtil.setupProxy()
+        } else HttpUrlUtil.setupProxy()
         val previousHeaders: MutableMap<String, String> =
             parseHeaderString(globalHeaders) as MutableMap<String, String>
         HttpUrlUtil.globalHeaders - previousHeaders.keys

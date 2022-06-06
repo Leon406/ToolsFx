@@ -9,7 +9,7 @@ fun String.unicodeCharToInt() =
     toByteArray(Charsets.UTF_32BE).fold(0) { acc, b -> acc * 256 + b.toInt().and(0xFF) }
 
 fun Int.toUnicodeChar(): String =
-    takeIf { it < 65536 }?.toChar()?.toString()
+    takeIf { it < 65_536 }?.toChar()?.toString()
         ?: toBigInteger().toByteArray().padStart(4, 0x00).toString(Charsets.UTF_32BE)
 
 fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {

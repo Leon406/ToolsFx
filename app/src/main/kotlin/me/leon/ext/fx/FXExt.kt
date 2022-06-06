@@ -45,9 +45,7 @@ fun Window.multiFileChooser(hint: String = "请选择多个文件"): List<File>?
 fun fileDraggedHandler(block: (List<File>) -> Unit) =
     EventHandler<DragEvent> {
         println("${it.dragboard.hasFiles()}______" + it.eventType)
-        if (it.eventType.name == "DRAG_ENTERED") {
-            if (it.dragboard.hasFiles()) {
-                block.invoke(it.dragboard.files)
-            }
+        if (it.eventType.name == "DRAG_ENTERED" && it.dragboard.hasFiles()) {
+            block.invoke(it.dragboard.files)
         }
     }

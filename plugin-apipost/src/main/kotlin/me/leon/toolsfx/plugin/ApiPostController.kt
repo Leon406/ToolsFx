@@ -36,14 +36,15 @@ class ApiPostController : Controller() {
         bodyType: BodyType = BodyType.RAW,
     ) =
         if (method != "POST") request(url, method, params, headers)
-        else if (bodyType == BodyType.RAW) throw IllegalArgumentException("call postRaw")
-        else
+        else if (bodyType == BodyType.RAW) kotlin.error("call postRaw")
+        else {
             HttpUrlUtil.post(
                 url.replacePlaceHolders(),
                 replacePlaceHolder(params),
                 replacePlaceHolder(headers),
                 bodyType == BodyType.JSON
             )
+        }
 
     fun postRaw(
         url: String,

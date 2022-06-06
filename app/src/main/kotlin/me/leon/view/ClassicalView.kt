@@ -44,10 +44,10 @@ class ClassicalView : Fragment(messages["classical"]) {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 128 * 1024)
+                if (length() <= 128 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 128KB"
+                } else "not support file larger than 128KB"
             }
     }
     private val centerNode = vbox {
@@ -205,16 +205,17 @@ class ClassicalView : Fragment(messages["classical"]) {
     private fun run() {
         measureTimeMillis {
             taOutput.text =
-                if (isEncrypt)
+                if (isEncrypt) {
                     controller.encrypt(
                         inputText,
                         encodeType,
                         cryptoParams,
                         isSingleLine.get(),
                     )
-                else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
-            if (Prefs.autoCopy)
+                } else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
+            if (Prefs.autoCopy) {
                 outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+            }
             //            fire(SimpleMsgEvent(taOutput.text, 1))
         }
             .also {

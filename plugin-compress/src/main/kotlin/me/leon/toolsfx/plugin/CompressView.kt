@@ -44,10 +44,10 @@ class CompressView : PluginFragment(messages["compression"]) {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024)
+                if (length() <= 10 * 1024 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                } else "not support file larger than 10M"
             }
     }
 
@@ -175,7 +175,7 @@ class CompressView : PluginFragment(messages["compression"]) {
     private fun doCrypto() {
         runAsync {
             isProcessing.value = true
-            if (isCompress)
+            if (isCompress) {
                 controller.compress(
                     inputText,
                     cipher.compressType(),
@@ -183,7 +183,7 @@ class CompressView : PluginFragment(messages["compression"]) {
                     outputEncode,
                     isSingleLine.get(),
                 )
-            else
+            } else {
                 controller.decompress(
                     inputText,
                     cipher.compressType(),
@@ -191,6 +191,7 @@ class CompressView : PluginFragment(messages["compression"]) {
                     outputEncode,
                     isSingleLine.get(),
                 )
+            }
         } ui
             {
                 isProcessing.value = false

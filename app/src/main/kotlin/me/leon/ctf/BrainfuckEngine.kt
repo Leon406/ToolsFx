@@ -43,10 +43,7 @@ constructor(
         consoleReader = InputStreamReader(inputStream)
     }
 
-    /** The current line the engine is at. */
     private var lineCount = 0
-
-    /** The current column the engine is at. */
     private var columnCount = 0
 
     /**

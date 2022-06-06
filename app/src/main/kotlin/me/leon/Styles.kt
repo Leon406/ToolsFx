@@ -5,26 +5,8 @@ import javafx.scene.text.FontWeight
 import tornadofx.*
 
 class Styles : Stylesheet() {
-    companion object {
-        // Define our styles
-        val myButton by cssclass()
-        val group by cssclass()
-        val center by cssclass()
-        val left by cssclass()
-
-        // Define our colors
-        val hoverColor = c("#a1a3a6")
-        val dangerColor = c("#a94442")
-
-        // Define our size
-        val px14 = 14.px
-        val px5 = 5.px
-        val px10 = 10.px
-        val px20 = 20.px
-    }
 
     init {
-
         myButton {
             padding = box(px10)
             fontSize = px20
@@ -56,5 +38,22 @@ class Styles : Stylesheet() {
             fontWeight = FontWeight.BOLD
             maxWidth = infinity
         }
+    }
+    companion object {
+        // Define our styles
+        val myButton by cssclass()
+        val group by cssclass()
+        val center by cssclass()
+        val left by cssclass()
+
+        // Define our colors
+        val hoverColor = c("#a1a3a6")
+        val dangerColor = c("#a94442")
+
+        // Define our size
+        val px14 = 14.px
+        val px5 = 5.px
+        val px10 = 10.px
+        val px20 = 20.px
     }
 }

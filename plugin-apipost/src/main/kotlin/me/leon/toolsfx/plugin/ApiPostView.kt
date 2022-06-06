@@ -76,10 +76,10 @@ class ApiPostView : PluginFragment("ApiPost") {
     private val curlFileHandler = fileDraggedHandler {
         with(it.first()) {
             println(absolutePath)
-            if (length() <= 128 * 1024)
+            if (length() <= 128 * 1024) {
                 if (realExtension() in unsupportedExts) "unsupported file extension"
                 else resetUi(readText())
-            else "not support file larger than 128KB"
+            } else "not support file larger than 128KB"
         }
     }
     override val root = vbox {
@@ -114,7 +114,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                     isRunning.value = true
                     runAsync {
                         runCatching {
-                            if (selectedMethod.get() == "POST")
+                            if (selectedMethod.get() == "POST") {
                                 when (bodyTypeMap[selectedBodyType.get()]) {
                                     BodyType.JSON, BodyType.FORM_DATA ->
                                         uploadParams?.run {
@@ -132,11 +132,12 @@ class ApiPostView : PluginFragment("ApiPost") {
                                                 reqHeaders.apply {
                                                     if (selectedBodyType.get() ==
                                                             BodyType.FORM_DATA.type
-                                                    )
+                                                    ) {
                                                         put(
                                                             "Content-Type",
                                                             "application/x-www-form-urlencoded"
                                                         )
+                                                    }
                                                 },
                                                 bodyTypeMap[selectedBodyType.get()] == BodyType.JSON
                                             )
@@ -147,13 +148,14 @@ class ApiPostView : PluginFragment("ApiPost") {
                                             reqHeaders
                                         )
                                 }
-                            else
+                            } else {
                                 controller.request(
                                     tfUrl.text,
                                     selectedMethod.get(),
                                     reqTableParams as MutableMap<String, Any>,
                                     reqHeaders
                                 )
+                            }
                         }
                             .onSuccess {
                                 textRspStatus.text = it.statusInfo

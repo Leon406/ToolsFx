@@ -87,11 +87,16 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             with(it.first()) {
                 if (isFileMode.get()) {
                     absolutePath
-                } else if (length() <= 10 * 1024 * 1024)
+                } else if (length() <= 10 * 1024 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 10M"
+                } else "not support file larger than 10M"
             }
+    }
+
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private val centerNode = vbox {
@@ -304,11 +309,6 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
     }
 
-    override val root = borderpane {
-        center = centerNode
-        bottom = hbox { labelInfo = label(info) }
-    }
-
     private fun doReplace() {
         measureTimeMillis {
             if (replaceFromText.isNotEmpty()) {
@@ -341,8 +341,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                             File(f.parent, replaceStr(f.name)).also { f.renameTo(it) }.absolutePath
                         }
                         .joinToString(System.lineSeparator())
-                } else
+                } else {
                     File(file.parent, replaceStr(file.name)).also { file.renameTo(it) }.absolutePath
+                }
             }
             .joinToString(System.lineSeparator())
     }

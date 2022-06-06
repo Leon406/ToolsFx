@@ -181,7 +181,7 @@ enum class Calculator(val algo: String) : ICalculator {
     FACTORIAL("P!") {
         override fun calculate(ints: List<BigInteger>): String {
             val intNum = ints[0].toInt()
-            if (intNum <= 1 || intNum > 120000) error("range: 1<=P<=120000")
+            if (intNum <= 1 || intNum > 120_000) error("range: 1<=P<=120000")
             return (1..intNum)
                 .fold(BigInteger.ONE) { acc, i -> acc.multiply(i.toBigInteger()) }
                 .toString()
@@ -190,7 +190,7 @@ enum class Calculator(val algo: String) : ICalculator {
     FACTORIAL_PRIME("P#") {
         override fun calculate(ints: List<BigInteger>): String {
             val intNum = ints[0].toInt()
-            if (intNum <= 1 || intNum > 120000) error("range: 1<=P<=120000")
+            if (intNum <= 1 || intNum > 120_000) error("range: 1<=P<=120000")
             return (1..intNum)
                 .map { it.toBigInteger() }
                 .filter { it.isProbablePrime(100) }

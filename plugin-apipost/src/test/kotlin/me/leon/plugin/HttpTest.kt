@@ -6,6 +6,8 @@ import me.leon.toolsfx.plugin.net.*
 import org.junit.Test
 
 class HttpTest {
+
+    private val httpConfigPath = File(File("").absoluteFile.parentFile, "/testdata/https")
     @Test
     fun getTest() {
         HttpUrlUtil.get(
@@ -156,8 +158,6 @@ class HttpTest {
         println(NetHelper.parseHeaderString(headers))
         println(NetHelper.parseHeaderString(header2))
     }
-
-    private val httpConfigPath = File(File("").absoluteFile.parentFile, "/testdata/https")
 
     @Test
     fun cert() {

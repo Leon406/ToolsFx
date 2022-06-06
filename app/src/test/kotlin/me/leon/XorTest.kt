@@ -7,6 +7,8 @@ import me.leon.ext.*
 import org.junit.Test
 
 class XorTest {
+    private val imgMagicNumbers = arrayOf("ffd8", "8950", "4749", "5249", "4949", "504b")
+    private val fileExtension = arrayOf("jpg", "png", "gif", "webp", "tif", "zip")
 
     @Test
     fun xorCrack() {
@@ -58,27 +60,24 @@ class XorTest {
         }
     }
 
-    private val imgMagicNumbers = arrayOf("ffd8", "8950", "4749", "5249", "4949", "504b")
-    private val fileExtension = arrayOf("jpg", "png", "gif", "webp", "tif", "zip")
     private fun weChatXorKey(file: File): Pair<Byte, String> {
         file.inputStream().use {
-            it.readNBytes(2).toHex().let { hex ->
-                for (bytes in imgMagicNumbers.map { it.hex2ByteArray() }) {
-                    val keys =
-                        hex
-                            .hex2ByteArray()
-                            .mapIndexed { index, c ->
-                                (c.toInt() xor bytes[index % bytes.size].toInt()).toByte()
-                            }
-                            .toByteArray()
-                            .also { println(it.contentToString()) }
-                    if (keys.first() == keys.last()) {
-                        println(imgMagicNumbers.indexOf(bytes.toHex()))
-                        return keys.first() to fileExtension[imgMagicNumbers.indexOf(bytes.toHex())]
-                    }
+            val hex = it.readNBytes(2).toHex()
+            for (bytes in imgMagicNumbers.map { it.hex2ByteArray() }) {
+                val keys =
+                    hex
+                        .hex2ByteArray()
+                        .mapIndexed { index, c ->
+                            (c.toInt() xor bytes[index % bytes.size].toInt()).toByte()
+                        }
+                        .toByteArray()
+                        .also { println(it.contentToString()) }
+                if (keys.first() == keys.last()) {
+                    println(imgMagicNumbers.indexOf(bytes.toHex()))
+                    return keys.first() to fileExtension[imgMagicNumbers.indexOf(bytes.toHex())]
                 }
             }
         }
-        throw UnknownError()
+        error("unMatch")
     }
 }

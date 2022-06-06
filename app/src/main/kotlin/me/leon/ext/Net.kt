@@ -3,7 +3,7 @@ package me.leon.ext
 import java.net.HttpURLConnection
 import java.net.URL
 
-private const val DEFAULT_TIME_OUT = 10000
+private const val DEFAULT_TIME_OUT = 10_000
 const val RESPONSE_OK = 200
 
 fun String.readBytesFromNet(
@@ -32,8 +32,9 @@ fun String.readBytesFromNet(
 
                 if (method.equals("post", true)) {
                     val dataBytes = data.toByteArray()
-                    if (dataBytes.isNotEmpty())
+                    if (dataBytes.isNotEmpty()) {
                         addRequestProperty("Content-Length", dataBytes.size.toString())
+                    }
                     doOutput = true
                     connect()
                     outputStream.write(dataBytes)
@@ -72,7 +73,7 @@ fun String.readStreamFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME
     }
         .getOrElse {
             println("read bytes err ${it.stacktrace()} ")
-            throw IllegalStateException()
+            error(it.stacktrace())
         }
 
 fun String.readFromNet(resumeUrl: String = ""): String =

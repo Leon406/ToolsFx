@@ -29,12 +29,13 @@ class Execute {
         //            }
         //        }
 
-        if (getProperty("os.name").contains("Windows"))
+        if (getProperty("os.name").contains("Windows")) {
             Runtime.getRuntime()
                 .exec("cmd /c chcp 65001 && ping www.baidu.com")
                 .inputStream
                 .bufferedReader()
                 .use { it.lines().forEach { println(it) } }
+        }
     }
 
     @Test

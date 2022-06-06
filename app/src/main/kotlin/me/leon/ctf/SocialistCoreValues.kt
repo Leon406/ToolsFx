@@ -17,16 +17,17 @@ fun String.socialistCoreValues() =
                         SOCIALISM[2 * this] + SOCIALISM[2 * this + 1].toString()
                     }
                     else -> {
-                        if (Random.nextBoolean())
+                        if (Random.nextBoolean()) {
                             SOCIALISM[2 * 10] +
                                 SOCIALISM[2 * 10 + 1].toString() +
                                 SOCIALISM[2 * (this - 10)] +
                                 SOCIALISM[2 * (this - 10) + 1].toString()
-                        else
+                        } else {
                             SOCIALISM[2 * 11] +
                                 SOCIALISM[2 * 11 + 1].toString() +
                                 SOCIALISM[2 * (this - 6)] +
                                 SOCIALISM[2 * (this - 6) + 1].toString()
+                        }
                     }
                 }
             }

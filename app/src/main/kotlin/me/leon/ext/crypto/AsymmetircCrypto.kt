@@ -89,20 +89,18 @@ fun String.toPublicKey(alg: String): PublicKey? {
     }
 }
 
-fun String.toPrivateKey(alg: String): PrivateKey? {
+fun String.toPrivateKey(alg: String): PrivateKey? =
     try {
         val keySpec = PKCS8EncodedKeySpec(removePemInfo().keyAutoDecode())
-        return KeyFactory.getInstance(alg.properKeyPairAlg()).generatePrivate(keySpec)
+        KeyFactory.getInstance(alg.properKeyPairAlg()).generatePrivate(keySpec)
     } catch (ignore: Exception) {
         if (alg.contains("RSA")) {
-            return with(parseRsaParams()) {
+            with(parseRsaParams()) {
                 KeyFactory.getInstance(alg.properKeyPairAlg())
                     .generatePrivate(RSAPrivateKeySpec(this["n"], this["d"]))
             }
-        }
-        return null
+        } else null
     }
-}
 
 fun ByteArray.pubDecrypt(key: String, alg: String) = pubDecrypt(key.toPublicKey(alg), alg)
 

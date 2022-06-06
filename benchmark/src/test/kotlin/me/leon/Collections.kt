@@ -33,13 +33,13 @@ class Collections {
         cache.put("2", "22")
         println(cache.toString() + " " + cache.snapshot())
         //        cache.put("2", "22")
-        println(cache.get("1"))
+        println(cache["1"])
         println(cache.toString() + " " + cache.snapshot())
-        println(cache.get("2"))
+        println(cache["2"])
         println(cache.toString() + " " + cache.snapshot())
         cache.put("4", "1")
         println(cache.toString() + " " + cache.snapshot())
-        println(cache.get("5"))
+        println(cache["5"])
         println(cache.toString() + " " + cache.snapshot())
 
         SparseArrayCompat<String>().put(1, "1")
@@ -143,11 +143,12 @@ class Collections {
 
     @Test
     fun typeMemory() {
-        println(GraphLayout.parseInstance(mapOf<String, Any>()).toFootprint())
+        println(GraphLayout.parseInstance(emptyMap<String, Any>()).toFootprint())
         println(GraphLayout.parseInstance(mutableMapOf<String, Any>()).toFootprint())
         val stringList =
             mutableListOf("330108000001", "330108000002", "330108000003", "330108000004")
-        val longList = mutableListOf(330108000001L, 330108000002L, 330108000003L, 330108000004L)
+        val longList =
+            mutableListOf(330_108_000_001L, 330_108_000_002L, 330_108_000_003L, 330_108_000_004L)
         println(
             GraphLayout.parseInstance(stringList).also { println(it.totalSize()) }.toPrintable()
         )

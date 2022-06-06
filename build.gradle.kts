@@ -1,8 +1,8 @@
 
 plugins {
     kotlin("jvm") version "1.6.21"
-    id("com.diffplug.spotless") version "6.5.0"
-    id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("com.diffplug.spotless") version "6.7.0"
+    id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
@@ -25,6 +25,9 @@ subprojects {
         maven { url = uri("https://maven.aliyun.com/repository/public") }
         maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
+    }
+    dependencies {
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
     }
 }
 

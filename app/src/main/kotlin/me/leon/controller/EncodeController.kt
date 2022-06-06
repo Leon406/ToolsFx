@@ -15,11 +15,11 @@ class EncodeController : Controller() {
         charset: String = "UTF-8",
         isSingleLine: Boolean = false
     ) =
-        if (isSingleLine)
+        if (isSingleLine) {
             raw.lineAction2String {
                 encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
             }
-        else encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
+        } else encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
 
     fun encode2String(
         raw: ByteArray,
@@ -39,16 +39,17 @@ class EncodeController : Controller() {
         charset: String = "UTF-8",
         isSingleLine: Boolean = false
     ) =
-        if (isSingleLine)
+        if (isSingleLine) {
             encoded.lineAction2String {
                 decode(it, type, dic, charset).toString(Charset.forName(charset)).also {
                     if (it.contains(REG_NON_PRINTABLE)) kotlin.error(EXCEPTION_NON_PRINTABLE)
                 }
             }
-        else
+        } else {
             decode(encoded, type, dic, charset).toString(Charset.forName(charset)).also {
                 if (it.contains(REG_NON_PRINTABLE)) kotlin.error(EXCEPTION_NON_PRINTABLE)
             }
+        }
 
     fun decode(
         encoded: String,

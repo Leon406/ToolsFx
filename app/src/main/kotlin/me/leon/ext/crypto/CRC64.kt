@@ -26,6 +26,72 @@ import java.util.zip.Checksum
  */
 class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
 
+    init {
+        for (n in 0..255) {
+            var crc = n.toLong()
+            repeat(8) { crc = if (crc and 1 == 1L) crc ushr 1 xor POLY else crc ushr 1 }
+            table[n] = crc
+        }
+    }
+
+    /** Get 8 byte representation of current CRC64 value. */
+    val bytes: ByteArray
+        get() {
+            val b = ByteArray(8)
+            for (i in 0..7) {
+                b[7 - i] = (value ushr i * 8).toByte()
+            }
+            return b
+        }
+    constructor(b: ByteArray, len: Int) : this(0) {
+        update(b, len)
+    }
+
+    /** Update CRC64 with new byte block. */
+    fun update(b: ByteArray, len: Int) {
+        var lenTmp = len
+        var idx = 0
+        value = value.inv()
+        while (lenTmp > 0) {
+            value = table[(value xor b[idx].toLong()).toInt() and 0xff] xor (value ushr 8)
+            idx++
+            lenTmp--
+        }
+        value = value.inv()
+    }
+
+    /** Update CRC64 with new byte. */
+    fun update(b: Byte) {
+        value = value.inv()
+        value = table[(value xor b.toLong()).toInt() and 0xff] xor (value ushr 8)
+        value = value.inv()
+    }
+
+    override fun update(b: Int) {
+        update((b and 0xFF).toByte())
+    }
+
+    override fun update(b: ByteArray, off: Int, len: Int) {
+        var tmpLen = len
+        var i = off
+        while (tmpLen > 0) {
+            update(b[i++])
+            tmpLen--
+        }
+    }
+
+    override fun getValue(): Long {
+        return value
+    }
+
+    override fun reset() {
+        value = 0
+    }
+
+    fun crcHex() = value.toULong().toString(16)
+
+    fun crcDecimal() = value.toULong().toString()
+
     companion object {
         // c96c5795d7870f42 kotlin signed long is  -0x3693a86a2878f0be
         private const val POLY = -0x3693a86a2878f0beL // ECMA-182
@@ -34,6 +100,8 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
         //        private const val POLY = 0x972777519512027136 // ISO
         /* CRC64 calculation table. */
         private val table: LongArray = LongArray(256)
+
+        private const val GF2_DIM = 64
 
         /** Construct new CRC64 instance from byte array. */
         fun fromBytes(b: ByteArray): CRC64 {
@@ -44,8 +112,6 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
             }
             return CRC64(l)
         }
-
-        private const val GF2_DIM = 64
 
         /*
          * dimension of GF(2) vectors (length
@@ -162,72 +228,5 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
             crc1Tmp = crc1Tmp xor crc2
             return crc1Tmp
         }
-
-        init {
-            for (n in 0..255) {
-                var crc = n.toLong()
-                repeat(8) { crc = if (crc and 1 == 1L) crc ushr 1 xor POLY else crc ushr 1 }
-                table[n] = crc
-            }
-        }
     }
-
-    constructor(b: ByteArray, len: Int) : this(0) {
-        update(b, len)
-    }
-
-    /** Get 8 byte representation of current CRC64 value. */
-    val bytes: ByteArray
-        get() {
-            val b = ByteArray(8)
-            for (i in 0..7) {
-                b[7 - i] = (value ushr i * 8).toByte()
-            }
-            return b
-        }
-
-    /** Update CRC64 with new byte block. */
-    fun update(b: ByteArray, len: Int) {
-        var lenTmp = len
-        var idx = 0
-        value = value.inv()
-        while (lenTmp > 0) {
-            value = table[(value xor b[idx].toLong()).toInt() and 0xff] xor (value ushr 8)
-            idx++
-            lenTmp--
-        }
-        value = value.inv()
-    }
-
-    /** Update CRC64 with new byte. */
-    fun update(b: Byte) {
-        value = value.inv()
-        value = table[(value xor b.toLong()).toInt() and 0xff] xor (value ushr 8)
-        value = value.inv()
-    }
-
-    override fun update(b: Int) {
-        update((b and 0xFF).toByte())
-    }
-
-    override fun update(b: ByteArray, off: Int, len: Int) {
-        var tmpLen = len
-        var i = off
-        while (tmpLen > 0) {
-            update(b[i++])
-            tmpLen--
-        }
-    }
-
-    override fun getValue(): Long {
-        return value
-    }
-
-    override fun reset() {
-        value = 0
-    }
-
-    fun crcHex() = value.toULong().toString(16)
-
-    fun crcDecimal() = value.toULong().toString()
 }

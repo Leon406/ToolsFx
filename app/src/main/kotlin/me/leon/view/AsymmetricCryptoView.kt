@@ -73,39 +73,32 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         val firstFile = it.first()
         keyText =
             if (firstFile.extension in listOf("pk8", "key", "der")) firstFile.readBytes().base64()
-            else if (firstFile.extension in listOf("cer", "crt"))
+            else if (firstFile.extension in listOf("cer", "crt")) {
                 firstFile.parsePublicKeyFromCerFile()
-            else
+            } else {
                 with(firstFile) {
-                    if (length() <= 128 * 1024)
+                    if (length() <= 128 * 1024) {
                         if (realExtension() in unsupportedExts) "unsupported file extension"
                         else readText()
-                    else "not support file larger than 128KB"
+                    } else "not support file larger than 128KB"
                 }
+            }
         updateKeySize()
-    }
-
-    private fun updateKeySize() {
-        runAsync {
-            runCatching {
-                    if (isPrivateKey) {
-                        controller.lengthFromPri(keyText)
-                    } else {
-                        controller.lengthFromPub(keyText)
-                    }
-                }
-                .getOrDefault(1024)
-        } ui { selectedBits.set(it) }
     }
 
     private val inputEventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 128 * 1024)
+                if (length() <= 128 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
                     else readText()
-                else "not support file larger than 128KB"
+                } else "not support file larger than 128KB"
             }
+    }
+
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private val centerNode = vbox {
@@ -260,9 +253,18 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 isWrapText = true
             }
     }
-    override val root = borderpane {
-        center = centerNode
-        bottom = hbox { labelInfo = label(info) }
+
+    private fun updateKeySize() {
+        runAsync {
+            runCatching {
+                    if (isPrivateKey) {
+                        controller.lengthFromPri(keyText)
+                    } else {
+                        controller.lengthFromPub(keyText)
+                    }
+                }
+                .getOrDefault(1024)
+        } ui { selectedBits.set(it) }
     }
 
     private fun doCrypto() {
@@ -275,8 +277,8 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
             runCatching {
-                if (isEncrypt)
-                    if (privateKeyEncrypt.get())
+                if (isEncrypt) {
+                    if (privateKeyEncrypt.get()) {
                         controller.priEncrypt(
                             keyText,
                             alg,
@@ -285,7 +287,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             inputEncode = inputEncode,
                             outputEncode = outputEncode
                         )
-                    else
+                    } else {
                         controller.pubEncrypt(
                             keyText,
                             alg,
@@ -294,7 +296,8 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             inputEncode = inputEncode,
                             outputEncode = outputEncode
                         )
-                else if (privateKeyEncrypt.get())
+                    }
+                } else if (privateKeyEncrypt.get()) {
                     controller.pubDecrypt(
                         keyText,
                         alg,
@@ -303,7 +306,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                         inputEncode,
                         outputEncode
                     )
-                else
+                } else {
                     controller.priDecrypt(
                         keyText,
                         alg,
@@ -312,6 +315,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                         inputEncode,
                         outputEncode
                     )
+                }
             }
                 .getOrElse { it.stacktrace() }
         } ui

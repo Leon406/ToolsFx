@@ -44,15 +44,16 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
-            if (isFile.get())
+            if (isFile.get()) {
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
-            else
+            } else {
                 with(it.first()) {
-                    if (length() <= 128 * 1024)
+                    if (length() <= 128 * 1024) {
                         if (realExtension() in unsupportedExts) "unsupported file extension"
                         else readText()
-                    else "not support file larger than 128KB, plz use file mode!!!"
+                    } else "not support file larger than 128KB, plz use file mode!!!"
                 }
+            }
     }
 
     private val algs =
@@ -179,8 +180,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
             runCatching {
-                if (isEncrypt)
-                    if (isFile.get())
+                if (isEncrypt) {
+                    if (isFile.get()) {
                         inputText.lineAction2String {
                             controller.encryptByFile(
                                 keyIvInputView.keyByteArray,
@@ -189,7 +190,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                 cipher
                             )
                         }
-                    else
+                    } else {
                         controller.encrypt(
                             keyIvInputView.keyByteArray,
                             inputText,
@@ -200,7 +201,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                             inputEncode,
                             outputEncode
                         )
-                else if (isFile.get())
+                    }
+                } else if (isFile.get()) {
                     inputText.lineAction2String {
                         controller.decryptByFile(
                             keyIvInputView.keyByteArray,
@@ -209,7 +211,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                             cipher
                         )
                     }
-                else
+                } else {
                     controller.decrypt(
                         keyIvInputView.keyByteArray,
                         inputText,
@@ -220,6 +222,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                         inputEncode,
                         outputEncode
                     )
+                }
             }
                 .getOrElse { it.stacktrace() }
         } ui

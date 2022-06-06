@@ -44,8 +44,8 @@ class RsaTest {
     /** 已知 p q e求d 已知 p q ==> n = pq , phiN = (p-1)(q-1) */
     @Test
     fun rsa2() {
-        val p = 473398607161.toBigInteger()
-        val q = 4511491.toBigInteger()
+        val p = 473_398_607_161.toBigInteger()
+        val q = 4_511_491.toBigInteger()
         val e = 17.toBigInteger()
         val phiN = p.phi(q)
         println(e.invert(phiN))
@@ -194,7 +194,7 @@ class RsaTest {
         val dp = requireNotNull(params["dp"])
         var p = BigInteger.ONE
         var q = BigInteger.ONE
-        for (k in 1..65537) {
+        for (k in 1..65_537) {
             p = (e * dp - BigInteger.ONE) / k.toBigInteger() + BigInteger.ONE
             if (n.gcd(p) != BigInteger.ONE) {
                 q = n / p
@@ -265,7 +265,7 @@ class RsaTest {
                     "826653444453257342990474092233543389488631718467806742449257243340911537016978649186" +
                     "95050507247415283070309")
                 .toBigInteger()
-        measureTimedValue { i.root(30000) }.also {
+        measureTimedValue { i.root(30_000) }.also {
             println(it.value.contentToString())
             println("${it.value.first().n2s()} ${it.duration}")
         }
