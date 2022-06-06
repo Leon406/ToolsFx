@@ -12,6 +12,7 @@ import tornadofx.FX.Companion.messages
 
 class UpdateFragment : Fragment(messages["latestVer"]) {
     private val releaseInfo: ReleaseInfo by params
+
     override val root = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING_2X

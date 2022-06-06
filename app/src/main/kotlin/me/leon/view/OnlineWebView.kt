@@ -11,12 +11,15 @@ import me.leon.ext.fx.openInBrowser
 import tornadofx.*
 
 class OnlineWebView : Fragment("Browser") {
-    private var web: WebView by singleAssign()
-    private var tfUrl: TextField by singleAssign()
-    private val selectedUrl = SimpleStringProperty(ToolsApp.extUrls.first())
+
     private val fontJS by lazy {
         javaClass.getResourceAsStream("/js/font.js")?.readBytes()?.decodeToString()
     }
+
+    private val selectedUrl = SimpleStringProperty(ToolsApp.extUrls.first())
+
+    private var web: WebView by singleAssign()
+    private var tfUrl: TextField by singleAssign()
 
     override val root = borderpane {
         top =

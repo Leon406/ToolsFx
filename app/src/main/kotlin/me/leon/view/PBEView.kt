@@ -15,19 +15,29 @@ import tornadofx.*
 
 class PBEView : Fragment("PBE") {
     private val controller: PBEController by inject()
+
+    private var timeConsumption = 0L
+    private var startTime = 0L
+    private var isEncrypt = true
+    private val algs = PBE.PBE_CRYPTO.toList()
+    private var saltEncode = "hex"
+
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
-
     private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var taInput: TextArea
-    private lateinit var tfPwd: TextField
-    private lateinit var tfIteration: TextField
-    private lateinit var tfKeyLength: TextField
-    private lateinit var tfSalt: TextField
-    private lateinit var tfSaltLength: TextField
-    private lateinit var tgGroup: ToggleGroup
-    private var isEncrypt = true
-    private lateinit var taOutput: TextArea
+    private val selectedAlg = SimpleStringProperty(algs.first())
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
+
+    private var taInput: TextArea by singleAssign()
+    private var tfPwd: TextField by singleAssign()
+    private var tfIteration: TextField by singleAssign()
+    private var tfKeyLength: TextField by singleAssign()
+    private var tfSalt: TextField by singleAssign()
+    private var tfSaltLength: TextField by singleAssign()
+    private var tgGroup: ToggleGroup by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var infoLabel: Label by singleAssign()
+
     private val inputText: String
         get() = taInput.text
     private val outputText: String
@@ -36,17 +46,14 @@ class PBEView : Fragment("PBE") {
         get() = tfKeyLength.text.toInt()
     private val saltLength
         get() = tfSaltLength.text.toInt()
-    private var timeConsumption = 0L
-    private var startTime = 0L
+    private val cipher
+        get() = "PBEWith${selectedAlg.get()}"
     private val info
         get() =
             "PBE Cipher: $cipher   charset: ${selectedCharset.get()} " +
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
-    private lateinit var infoLabel: Label
-
-    private var saltEncode = "hex"
 
     private var saltByteArray
         get() =
@@ -71,14 +78,6 @@ class PBEView : Fragment("PBE") {
                 } else "not support file larger than 128KB"
             }
     }
-
-    private val algs = PBE.PBE_CRYPTO.toList()
-
-    private val selectedAlg = SimpleStringProperty(algs.first())
-
-    private val cipher
-        get() = "PBEWith${selectedAlg.get()}"
-    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private val centerNode = vbox {
         addClass(Styles.group)

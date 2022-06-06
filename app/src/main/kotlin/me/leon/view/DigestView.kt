@@ -16,15 +16,26 @@ import tornadofx.FX.Companion.messages
 
 class DigestView : Fragment(messages["hash"]) {
     private val controller: DigestController by inject()
+
+    private var timeConsumption = 0L
+    private var startTime = 0L
+    private var inputEncode = "raw"
+    private var method = "MD5"
+
     override val closeable = SimpleBooleanProperty(false)
     private val isFileMode = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val isEnableFileMode = SimpleBooleanProperty(true)
-    private lateinit var taInput: TextArea
-    private lateinit var labelInfo: Label
-    lateinit var taOutput: TextArea
-    private lateinit var tfCount: TextField
+    private val selectedAlgItem = SimpleStringProperty(ALGOS_HASH.keys.first())
+    private val selectedBits = SimpleStringProperty(ALGOS_HASH.values.first().first())
+
+    private var taInput: TextArea by singleAssign()
+    private var labelInfo: Label by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var tfCount: TextField by singleAssign()
+    private var cbBits: ComboBox<String> by singleAssign()
+
     private var inputText: String
         get() = taInput.text
         set(value) {
@@ -38,8 +49,6 @@ class DigestView : Fragment(messages["hash"]) {
 
     private val times
         get() = tfCount.text.toIntOrNull() ?: 1.also { tfCount.text = "1" }
-
-    var method = "MD5"
 
     private val eventHandler = fileDraggedHandler {
         inputText =
@@ -55,9 +64,6 @@ class DigestView : Fragment(messages["hash"]) {
             }
     }
 
-    private val selectedAlgItem = SimpleStringProperty(ALGOS_HASH.keys.first())
-    private val selectedBits = SimpleStringProperty(ALGOS_HASH.values.first().first())
-    lateinit var cbBits: ComboBox<String>
     private val info
         get() =
             "Hash: $method bits: ${selectedBits.get()} " +
@@ -65,15 +71,6 @@ class DigestView : Fragment(messages["hash"]) {
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "count: $times cost: $timeConsumption ms  " +
                 "file mode: ${isFileMode.get()}"
-
-    private var timeConsumption = 0L
-    private var startTime = 0L
-    private var inputEncode = "raw"
-
-    override val root = borderpane {
-        center = centerNode
-        bottom = hbox { labelInfo = label(info) }
-    }
 
     private val centerNode = vbox {
         addClass(Styles.group)
@@ -194,6 +191,11 @@ class DigestView : Fragment(messages["hash"]) {
                     item("hex") { action { taOutput.text = taOutput.text.base64Decode().toHex() } }
                 }
             }
+    }
+
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun crack() {

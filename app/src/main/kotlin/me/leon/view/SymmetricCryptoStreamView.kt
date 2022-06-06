@@ -16,46 +16,12 @@ import tornadofx.FX.Companion.messages
 
 class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private val controller: SymmetricCryptoController by inject()
-    override val closeable = SimpleBooleanProperty(false)
-    private val isFile = SimpleBooleanProperty(false)
-    private val isEnableIv = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var taInput: TextArea
-    private lateinit var tgInput: ToggleGroup
-    private lateinit var tgOutput: ToggleGroup
-    private var isEncrypt = true
-    private lateinit var taOutput: TextArea
-    private val inputText: String
-        get() = taInput.text
-    private val outputText: String
-        get() = taOutput.text
-    private var timeConsumption = 0L
-    private var startTime = 0L
-    private val info
-        get() =
-            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} " +
-                "${messages["inputLength"]}: ${inputText.length}  " +
-                "${messages["outputLength"]}: ${outputText.length}  " +
-                "cost: $timeConsumption ms"
-    private lateinit var infoLabel: Label
-    private val keyIvInputView = KeyIvInputView(isEnableIv)
+
     private var inputEncode = "raw"
     private var outputEncode = "base64"
-
-    private val eventHandler = fileDraggedHandler {
-        taInput.text =
-            if (isFile.get()) {
-                it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
-            } else {
-                with(it.first()) {
-                    if (length() <= 128 * 1024) {
-                        if (realExtension() in unsupportedExts) "unsupported file extension"
-                        else readText()
-                    } else "not support file larger than 128KB, plz use file mode!!!"
-                }
-            }
-    }
-
+    private var isEncrypt = true
+    private var timeConsumption = 0L
+    private var startTime = 0L
     private val algs =
         mutableListOf(
             "RC4", // aka ARC4
@@ -73,12 +39,51 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             "Zuc-128",
             "Zuc-256",
         )
+
+    override val closeable = SimpleBooleanProperty(false)
+    private val isFile = SimpleBooleanProperty(false)
+    private val isEnableIv = SimpleBooleanProperty(false)
+    private val isProcessing = SimpleBooleanProperty(false)
     private val selectedAlg = SimpleStringProperty(algs.first())
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
+    private val isSingleLine = SimpleBooleanProperty(false)
+
+    private lateinit var taInput: TextArea
+    private lateinit var tgInput: ToggleGroup
+    private lateinit var tgOutput: ToggleGroup
+    private lateinit var taOutput: TextArea
+    private lateinit var infoLabel: Label
+    private val keyIvInputView = KeyIvInputView(isEnableIv)
+
+    private val inputText: String
+        get() = taInput.text
+    private val outputText: String
+        get() = taOutput.text
+
+    private val info
+        get() =
+            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} " +
+                "${messages["inputLength"]}: ${inputText.length}  " +
+                "${messages["outputLength"]}: ${outputText.length}  " +
+                "cost: $timeConsumption ms"
+
+    private val eventHandler = fileDraggedHandler {
+        taInput.text =
+            if (isFile.get()) {
+                it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
+            } else {
+                with(it.first()) {
+                    if (length() <= 128 * 1024) {
+                        if (realExtension() in unsupportedExts) "unsupported file extension"
+                        else readText()
+                    } else "not support file larger than 128KB, plz use file mode!!!"
+                }
+            }
+    }
 
     private val cipher
         get() = selectedAlg.get()
-    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
-    private val isSingleLine = SimpleBooleanProperty(false)
+
     private val centerNode = vbox {
         addClass(Styles.group)
         hbox {

@@ -11,8 +11,14 @@ import me.leon.ext.crypto.*
 import tornadofx.*
 
 class ECCurveCalculator : View("ECCurveCalculator") {
+
+    private var isMultiply = false
+    private var eccMethod = "multiply"
+    private var radix = 16
+
     private val selectedCurve = SimpleStringProperty(allCurves.last())
     private val isShowY2 = SimpleBooleanProperty(false)
+
     private var tfX1: TextField by singleAssign()
     private var tfY1: TextField by singleAssign()
     private var tfX2: TextField by singleAssign()
@@ -20,9 +26,6 @@ class ECCurveCalculator : View("ECCurveCalculator") {
     private var tfX: TextField by singleAssign()
     private var tfY: TextField by singleAssign()
     private var fPoint2: Field by singleAssign()
-    private var isMultiply = false
-    private var eccMethod = "multiply"
-    private var radix = 16
 
     override val root = form {
         fieldset {

@@ -14,9 +14,11 @@ import tornadofx.FX.Companion.messages
 class AboutView : Fragment(messages["about"]) {
 
     override val closeable = SimpleBooleanProperty(false)
-    private var txtLatestVersion: Text by singleAssign()
-    private lateinit var releaseInfo: ReleaseInfo
+
     private val isFetching = SimpleBooleanProperty(false)
+
+    private var txtLatestVersion: Text by singleAssign()
+    private var releaseInfo: ReleaseInfo by singleAssign()
 
     override val root = vbox {
         alignment = Pos.CENTER

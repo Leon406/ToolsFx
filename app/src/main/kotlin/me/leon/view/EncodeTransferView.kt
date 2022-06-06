@@ -16,15 +16,23 @@ import tornadofx.FX.Companion.messages
 
 class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
     private val controller: EncodeController by inject()
-    override val closeable = SimpleBooleanProperty(false)
-    private lateinit var taInput: TextArea
-    private lateinit var taOutput: TextArea
-    private lateinit var labelInfo: Label
-    private lateinit var tfCustomDict: TextField
-    private var enableDict = SimpleBooleanProperty(true)
-    private val isSingleLine = SimpleBooleanProperty(false)
+
     private var timeConsumption = 0L
     private var startTime = 0L
+    private var dstEncodeType = EncodeType.UrlEncode
+    private var srcEncodeType = EncodeType.Base64
+    private var isEncode = true
+
+    override val closeable = SimpleBooleanProperty(false)
+    private var enableDict = SimpleBooleanProperty(true)
+    private val isSingleLine = SimpleBooleanProperty(false)
+    private val selectedSrcCharset = SimpleStringProperty(CHARSETS.first())
+    private val selectedDstCharset = SimpleStringProperty(CHARSETS.first())
+
+    private var taInput: TextArea by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var labelInfo: Label by singleAssign()
+    private var tfCustomDict: TextField by singleAssign()
     private val info: String
         get() =
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
@@ -37,12 +45,6 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
-
-    private var dstEncodeType = EncodeType.UrlEncode
-    private var srcEncodeType = EncodeType.Base64
-    private var isEncode = true
-    private val selectedSrcCharset = SimpleStringProperty(CHARSETS.first())
-    private val selectedDstCharset = SimpleStringProperty(CHARSETS.first())
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =

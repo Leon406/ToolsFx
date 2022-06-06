@@ -12,17 +12,30 @@ import tornadofx.*
 
 class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val controller: AsymmetricCryptoController by inject()
+
+    private var timeConsumption = 0L
+    private var startTime = 0L
+    private var isEncrypt = true
+    private var inputEncode = "raw"
+    private var outputEncode = "base64"
+    private val algos = ASYMMETRIC_ALGOS.keys.toMutableList()
+
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
     private val isProcessing = SimpleBooleanProperty(false)
     private val isEnablePadding = SimpleBooleanProperty(true)
     private val isShowDerivedKey = SimpleBooleanProperty(true)
+    private val selectedAlg = SimpleStringProperty(algos.first())
+    private val selectedBits = SimpleIntegerProperty(ASYMMETRIC_ALGOS[selectedAlg.get()]!!.first())
 
     private var cbBits: ComboBox<Number> by singleAssign()
-    lateinit var taInput: TextArea
-    lateinit var taKey: TextArea
-    lateinit var taOutput: TextArea
+    private var taInput: TextArea by singleAssign()
+    private var taKey: TextArea by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var tgInput: ToggleGroup by singleAssign()
+    private var tgOutput: ToggleGroup by singleAssign()
+
     private var inputText: String
         get() = taInput.text
         set(value) {
@@ -33,8 +46,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         set(value) {
             taOutput.text = value
         }
-    private var timeConsumption = 0L
-    private var startTime = 0L
+
     private val info
         get() =
             "${selectedAlg.get()}  bits: ${selectedBits.get()}  mode: ${
@@ -45,7 +57,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
     private val selectedPadding = SimpleStringProperty(RSA_PADDINGS.first())
-    private lateinit var labelInfo: Label
+    private var labelInfo: Label by singleAssign()
     private var keyText: String
         get() = taKey.text.trim()
         set(value) {
@@ -57,15 +69,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             with(selectedAlg.get()) {
                 if (this == "RSA") "$this/NONE/${selectedPadding.get()}" else this
             }
-    private var isEncrypt = true
-    private var inputEncode = "raw"
-    private var outputEncode = "base64"
-    private lateinit var tgInput: ToggleGroup
-    private lateinit var tgOutput: ToggleGroup
 
-    private val algos = ASYMMETRIC_ALGOS.keys.toMutableList()
-    private val selectedAlg = SimpleStringProperty(algos.first())
-    private val selectedBits = SimpleIntegerProperty(ASYMMETRIC_ALGOS[selectedAlg.get()]!!.first())
     private val isPrivateKey
         get() = isEncrypt && privateKeyEncrypt.get() || !isEncrypt && !privateKeyEncrypt.get()
 
@@ -94,11 +98,6 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                     else readText()
                 } else "not support file larger than 128KB"
             }
-    }
-
-    override val root = borderpane {
-        center = centerNode
-        bottom = hbox { labelInfo = label(info) }
     }
 
     private val centerNode = vbox {
@@ -252,6 +251,11 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 promptText = messages["outputHint"]
                 isWrapText = true
             }
+    }
+
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun updateKeySize() {

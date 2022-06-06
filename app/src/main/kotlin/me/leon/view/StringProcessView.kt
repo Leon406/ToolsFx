@@ -14,26 +14,37 @@ import tornadofx.*
 import tornadofx.FX.Companion.messages
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
+
+    private var timeConsumption = 0L
+    private var encodeType = EncodeType.Base64
+    private var isEncode = true
+
     override val closeable = SimpleBooleanProperty(false)
     private val isRegexp = SimpleBooleanProperty(false)
     private val isSplitRegexp = SimpleBooleanProperty(false)
     private val isFileMode = SimpleBooleanProperty(false)
-    private lateinit var taInput: TextArea
-    private lateinit var taOutput: TextArea
-    private lateinit var tfReplaceFrom: TextField
+
+    private var taInput: TextArea by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var tfReplaceFrom: TextField by singleAssign()
+    private var tfReplaceTo: TextField by singleAssign()
+    private var tfSplitLength: TextField by singleAssign()
+    private var tfSeprator: TextField by singleAssign()
+    private var labelInfo: Label by singleAssign()
+    private var tfExtract: TextField by singleAssign()
+
     private var replaceFromText
         get() = tfReplaceFrom.text.unescape()
         set(value) {
             tfReplaceFrom.text = value
         }
 
-    private lateinit var tfReplaceTo: TextField
     private var replaceToText
         get() = tfReplaceTo.text.unescape()
         set(value) {
             tfReplaceTo.text = value
         }
-    private lateinit var tfSplitLength: TextField
+
     private var splitLengthText
         get() =
             runCatching { tfSplitLength.text.toInt() }.getOrElse {
@@ -44,15 +55,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             tfSplitLength.text = value.toString()
         }
 
-    private lateinit var tfSeprator: TextField
     private var sepratorText
         get() = tfSeprator.text.unescape().also { println("__${it}___") }
         set(value) {
             tfSeprator.text = value
         }
 
-    private lateinit var labelInfo: Label
-    private var timeConsumption = 0L
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
@@ -73,14 +81,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         set(value) {
             taOutput.text = value
         }
-    private lateinit var tfExtract: TextField
     private var extractReg
         get() = tfExtract.text.unescape()
         set(value) {
             tfExtract.text = value
         }
-    private var encodeType = EncodeType.Base64
-    private var isEncode = true
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -93,12 +98,6 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 } else "not support file larger than 10M"
             }
     }
-
-    override val root = borderpane {
-        center = centerNode
-        bottom = hbox { labelInfo = label(info) }
-    }
-
     private val centerNode = vbox {
         addClass(Styles.group)
         hbox {
@@ -283,6 +282,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 isWrapText = true
             }
         subscribe<SimpleMsgEvent> { inputText = it.msg }
+    }
+    override val root = borderpane {
+        center = centerNode
+        bottom = hbox { labelInfo = label(info) }
     }
 
     private fun doExtract() {

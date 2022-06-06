@@ -15,18 +15,23 @@ import tornadofx.FX.Companion.messages
 
 class ClassicalView : Fragment(messages["classical"]) {
     private val controller: ClassicalController by inject()
+
+    private var timeConsumption = 0L
+    private var isEncrypt = true
+    private var encodeType = ClassicalCryptoType.CAESAR
+
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
-    private var encodeType = ClassicalCryptoType.CAESAR
     private val decodeIgnoreSpace = SimpleBooleanProperty(encodeType.isIgnoreSpace())
     private val param1Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 0)
     private val param2Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 1)
-    private lateinit var taInput: TextArea
-    private lateinit var taOutput: TextArea
-    private lateinit var tfParam1: TextField
-    private lateinit var tfParam2: TextField
-    private lateinit var labelInfo: Label
-    private var timeConsumption = 0L
+
+    private var taInput: TextArea by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var tfParam1: TextField by singleAssign()
+    private var tfParam2: TextField by singleAssign()
+    private var labelInfo: Label by singleAssign()
+
     private val info: String
         get() =
             "${if (isEncrypt) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
@@ -35,8 +40,6 @@ class ClassicalView : Fragment(messages["classical"]) {
         get() = taInput.text.takeUnless { decodeIgnoreSpace.get() } ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
-
-    private var isEncrypt = true
 
     private val cryptoParams
         get() = mapOf("p1" to tfParam1.text, "p2" to tfParam2.text)

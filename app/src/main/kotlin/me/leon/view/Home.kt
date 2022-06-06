@@ -21,7 +21,7 @@ import tornadofx.*
 import tornadofx.FX.Companion.messages
 
 class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
-    private var views: MutableList<KClass<out Fragment>> = mutableListOf()
+    private val views: MutableList<KClass<out Fragment>> = mutableListOf()
 
     init {
         if (isEnableClassical) views.add(ClassicalView::class)

@@ -17,11 +17,25 @@ import tornadofx.*
 
 class BigIntFragment : Fragment("BigInt") {
     val controller: CalculatorController by inject()
-    override val closeable = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
-    private lateinit var bottomView: Label
+
     private var timeConsumption = 0L
     private var startTime = 0L
+    private val radix = listOf("2", "8", "10", "16", "36")
+    private var selectedAlgo: String = calculatorType.keys.first()
+
+    override val closeable = SimpleBooleanProperty(false)
+    private val isProcessing = SimpleBooleanProperty(false)
+    private val selectedRadix = SimpleStringProperty("10")
+
+    private var bottomView: Label by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var ta1: TextArea by singleAssign()
+    private var ta2: TextArea by singleAssign()
+    private var ta3: TextArea by singleAssign()
+    private var ta4: TextArea by singleAssign()
+    private var ta5: TextArea by singleAssign()
+    private var ta6: TextArea by singleAssign()
+
     private val bottomInfo
         get() =
             "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: P=${ta1.bits()}  " +
@@ -41,22 +55,11 @@ class BigIntFragment : Fragment("BigInt") {
             taOutput.text = value
         }
 
-    private val radix = listOf("2", "8", "10", "16", "36")
-    private val selectedRadix = SimpleStringProperty("10")
-
-    lateinit var taOutput: TextArea
-    lateinit var ta1: TextArea
-    lateinit var ta2: TextArea
-    lateinit var ta3: TextArea
-    lateinit var ta4: TextArea
-    lateinit var ta5: TextArea
-    lateinit var ta6: TextArea
-    private var selectedAlgo: String = calculatorType.keys.first()
-
     override val root = borderpane {
         center = centerLayout()
         bottom = hbox { bottomView = label(bottomInfo) }
     }
+
     private fun TextArea.bits() =
         "0".takeIf { text.isBlank() } ?: text.toBigInteger(selectedRadix.get().toInt()).bitLength()
 

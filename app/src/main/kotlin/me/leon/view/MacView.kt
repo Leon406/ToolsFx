@@ -14,28 +14,39 @@ import tornadofx.*
 
 class MacView : Fragment("MAC") {
     private val controller: MacController by inject()
+
+    private var method = "HmacMD5"
+    private val regAlgReplace =
+        "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
+    private var timeConsumption = 0L
+    private var startTime = 0L
+    private var inputEncode = "raw"
+    private var outputEncode = "hex"
+
     override val closeable = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)
     private val enableBits = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
-    private lateinit var taInput: TextArea
-    private lateinit var labelInfo: Label
-    private lateinit var taOutput: TextArea
-    private var timeConsumption = 0L
-    private var startTime = 0L
+    private val selectedAlgItem = SimpleStringProperty(algorithm.keys.first())
+    private val selectedBits = SimpleStringProperty(algorithm.values.first().first())
+
+    private var taInput: TextArea by singleAssign()
+    private var labelInfo: Label by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var cbBits: ComboBox<String> by singleAssign()
+    private var tgInput: ToggleGroup by singleAssign()
+    private var tgOutput: ToggleGroup by singleAssign()
+    private val keyIvInputView = KeyIvInputView(enableIv)
+
     private val inputText: String
         get() = taInput.text
+
     private var outputText: String
         get() = taOutput.text
         set(value) {
             taOutput.text = value
         }
-    private val keyIvInputView = KeyIvInputView(enableIv)
 
-    private var method = "HmacMD5"
-
-    private val regAlgReplace =
-        "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
@@ -46,19 +57,12 @@ class MacView : Fragment("MAC") {
             }
     }
 
-    private val selectedAlgItem = SimpleStringProperty(algorithm.keys.first())
-    private val selectedBits = SimpleStringProperty(algorithm.values.first().first())
-    private lateinit var cbBits: ComboBox<String>
     private val info
         get() =
             "MAC: $method " +
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
-    private var inputEncode = "raw"
-    private var outputEncode = "hex"
-    private lateinit var tgInput: ToggleGroup
-    private lateinit var tgOutput: ToggleGroup
 
     private val centerNode = vbox {
         addClass(Styles.group)

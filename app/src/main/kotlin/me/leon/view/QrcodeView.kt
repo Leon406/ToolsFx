@@ -26,32 +26,26 @@ import me.leon.ext.ocr.BaiduOcr
 import tornadofx.*
 
 class QrcodeView : Fragment("Qrcode") {
-    // 切图区域的起始位置x
     private var startX = 0.0
-
-    // 切图区域的起始位置y
     private var startY = 0.0
-
-    // 切图区域宽
     private var w = 0.0
-
-    // 切图区域高
     private var h = 0.0
 
-    // 切图区域
-    private lateinit var hBox: HBox
-    private lateinit var button: Button
-    private lateinit var ta: TextArea
-    private lateinit var textCount: Text
-
-    // 切成的图片展示区域
-    private lateinit var iv: ImageView
+    private val errorLvs = listOf("L ~7%", "M ~15%", "Q ~25%", "H ~30%")
     private var isOcr = false
 
-    private val errorLvs = listOf("L ~7%", "M ~15%", "Q ~25%", "H ~30%")
     private val selectedErrLv = SimpleStringProperty(errorLvs.first())
-
     override val closeable = SimpleBooleanProperty(false)
+
+    // 切图区域
+    private var hBox: HBox by singleAssign()
+    private var button: Button by singleAssign()
+    private var ta: TextArea by singleAssign()
+    private var textCount: Text by singleAssign()
+
+    // 切成的图片展示区域
+    private var iv: ImageView by singleAssign()
+
     private val eventHandler = fileDraggedHandler {
         ta.text =
             runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }.getOrElse {

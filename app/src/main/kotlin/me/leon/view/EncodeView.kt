@@ -15,18 +15,41 @@ import tornadofx.FX.Companion.messages
 
 class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val controller: EncodeController by inject()
+
+    private var timeConsumption = 0L
+    private var startTime = 0L
+    private var encodeType = EncodeType.Base64
+    private var isEncode = true
+    private val excludeEncode =
+        arrayOf(
+            EncodeType.Radix8,
+            EncodeType.Base16,
+            EncodeType.Decimal,
+            EncodeType.Radix10,
+            EncodeType.Radix32,
+            EncodeType.Radix64,
+        )
+    private val encodeTypeWithSpace =
+        arrayOf(
+            EncodeType.UuEncode,
+            EncodeType.XxEncode,
+            EncodeType.QuotePrintable,
+            EncodeType.PunyCode,
+        )
+
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private val isProcessing = SimpleBooleanProperty(false)
-    private var taInput: TextArea by singleAssign()
-    private lateinit var taOutput: TextArea
-    private lateinit var labelInfo: Label
-    private lateinit var tfCustomDict: TextField
-    private lateinit var tfCount: TextField
     private var enableDict = SimpleBooleanProperty(true)
-    private var timeConsumption = 0L
-    private var startTime = 0L
+    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
+
+    private var taInput: TextArea by singleAssign()
+    private var taOutput: TextArea by singleAssign()
+    private var labelInfo: Label by singleAssign()
+    private var tfCustomDict: TextField by singleAssign()
+    private var tfCount: TextField by singleAssign()
+
     private val times
         get() =
             tfCount.text.toIntOrNull()?.takeIf { it <= 40 }
@@ -47,20 +70,6 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val outputText: String
         get() = taOutput.text
 
-    private var encodeType = EncodeType.Base64
-    private var isEncode = true
-    private val selectedCharset = SimpleStringProperty(CHARSETS.first())
-
-    private val excludeEncode =
-        arrayOf(
-            EncodeType.Radix8,
-            EncodeType.Base16,
-            EncodeType.Decimal,
-            EncodeType.Radix10,
-            EncodeType.Radix32,
-            EncodeType.Radix64,
-        )
-
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
@@ -70,14 +79,6 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 } else "not support file larger than 10M"
             }
     }
-
-    private val encodeTypeWithSpace =
-        arrayOf(
-            EncodeType.UuEncode,
-            EncodeType.XxEncode,
-            EncodeType.QuotePrintable,
-            EncodeType.PunyCode,
-        )
 
     private val centerNode = vbox {
         addClass(Styles.group)
