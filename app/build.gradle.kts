@@ -3,6 +3,7 @@ version = "1.13.3.beta"
 
 plugins {
     application
+    kotlin("plugin.serialization") version "1.7.0"
 }
 
 javafx {
@@ -30,6 +31,7 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     testImplementation("cn.hutool:hutool-all:5.8.1")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
