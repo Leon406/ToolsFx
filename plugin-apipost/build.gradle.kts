@@ -24,6 +24,6 @@ dependencies {
     testImplementation("org.xerial:sqlite-jdbc:3.36.0.3")
     testImplementation("net.java.dev.jna:jna:5.11.0")
     testImplementation("net.java.dev.jna:jna-platform:5.11.0")
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

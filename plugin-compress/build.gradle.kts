@@ -26,6 +26,6 @@ dependencies {
     implementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
     implementation("org.tukaani:xz:1.9")
     implementation("org.brotli:dec:0.1.2")
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

@@ -20,6 +20,6 @@ javafx {
 dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

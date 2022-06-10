@@ -12,5 +12,5 @@ dependencies {
     implementation("org.openjdk.jmh:jmh-core:1.35")
     kapt("org.openjdk.jmh:jmh-generator-annprocess:1.35")
     implementation(project(":app"))
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${rootProject.extra["kotlin_version"]}")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
