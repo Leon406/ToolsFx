@@ -3,7 +3,6 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import kotlin.system.measureTimeMillis
 import me.leon.Styles
 import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
@@ -17,6 +16,7 @@ class ClassicalView : Fragment(messages["classical"]) {
     private val controller: ClassicalController by inject()
 
     private var timeConsumption = 0L
+    private var startTime = 0L
     private var isEncrypt = true
     private var encodeType = ClassicalCryptoType.CAESAR
 
@@ -25,6 +25,7 @@ class ClassicalView : Fragment(messages["classical"]) {
     private val decodeIgnoreSpace = SimpleBooleanProperty(encodeType.isIgnoreSpace())
     private val param1Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 0)
     private val param2Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 1)
+    private val isProcessing = SimpleBooleanProperty(false)
 
     private var taInput: TextArea by singleAssign()
     private var taOutput: TextArea by singleAssign()
@@ -160,7 +161,10 @@ class ClassicalView : Fragment(messages["classical"]) {
                     run()
                 }
             }
-            button(messages["run"], imageview("/img/run.png")) { action { run() } }
+            button(messages["run"], imageview("/img/run.png")) {
+                action { run() }
+                enableWhen(!isProcessing)
+            }
             button(messages["codeFrequency"]) { action { "https://quipqiup.com/".openInBrowser() } }
         }
         hbox {
@@ -206,23 +210,25 @@ class ClassicalView : Fragment(messages["classical"]) {
     }
 
     private fun run() {
-        measureTimeMillis {
-            taOutput.text =
-                if (isEncrypt) {
-                    controller.encrypt(
-                        inputText,
-                        encodeType,
-                        cryptoParams,
-                        isSingleLine.get(),
-                    )
-                } else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
-            if (Prefs.autoCopy) {
-                outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-            }
-            //            fire(SimpleMsgEvent(taOutput.text, 1))
-        }
-            .also {
-                timeConsumption = it
+        isProcessing.value = true
+        startTime = System.currentTimeMillis()
+        runAsync {
+            if (isEncrypt) {
+                controller.encrypt(
+                    inputText,
+                    encodeType,
+                    cryptoParams,
+                    isSingleLine.get(),
+                )
+            } else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
+        } ui
+            {
+                isProcessing.value = false
+                taOutput.text = it
+                if (Prefs.autoCopy) {
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                }
+                timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
             }
     }

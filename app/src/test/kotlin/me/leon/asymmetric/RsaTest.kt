@@ -5,7 +5,8 @@ import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 import me.leon.*
-import me.leon.ctf.rsa.RsaSolver.solveNEC
+import me.leon.ctf.rsa.RsaSolver.solve
+import me.leon.ctf.rsa.RsaSolver.solveN2E2C2
 import me.leon.ctf.rsa.RsaSolver.solvePQEC
 import org.junit.Test
 
@@ -30,15 +31,7 @@ class RsaTest {
     @Test
     fun rsa1() {
         val params = "rsa01.txt".parseRsaParams().also { println(it) }
-
-        val n = requireNotNull(params["n"])
-        val e = requireNotNull(params["e"])
-        val phi = requireNotNull(params["phi"])
-        val c = requireNotNull(params["c"])
-        c.decrypt(e.invert(phi).also { println(it) }, n).also {
-            println(it)
-            assertEquals("picoCTF{sma11_N_n0_g0od_55304594}", it)
-        }
+        assertEquals("picoCTF{sma11_N_n0_g0od_55304594}", solve(params))
     }
 
     /** 已知 p q e求d 已知 p q ==> n = pq , phiN = (p-1)(q-1) */
@@ -49,17 +42,17 @@ class RsaTest {
         val e = 17.toBigInteger()
         val phiN = p.phi(q)
         println(e.invert(phiN))
+        assertEquals("125631357777427553", e.invert(phiN).toString())
     }
 
     /** n e c , 小 e, 开方爆破 c= m^e mod n => kn+c = m^e ==> 开e次根 m =(kn+c)^(1/e) */
     @Test
     fun rsa_02() {
         val params = "rsa02.txt".parseRsaParams().also { println(it) }
-        val e = requireNotNull(params["e"])
-        val n = requireNotNull(params["n"])
-        val c = requireNotNull(params["c"])
-
-        solveNEC(n, e, c).also { println(it) }
+        solve(params).also {
+            println(it)
+            assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", it)
+        }
     }
 
     /** 已知 p q e c求 m 已知 p q ==> n = pq , phiN = (p-1)(q-1) */
@@ -67,37 +60,24 @@ class RsaTest {
     fun rsa3() {
         // yafu 分解n后，可以得到p q
         var params = "rsa03.txt".parseRsaParams().also { println(it) }
-        var p = requireNotNull(params["p"])
-        var q = requireNotNull(params["q"])
-        var e = requireNotNull(params["e"])
-        var c = requireNotNull(params["c"])
-
-        solvePQEC(p, q, e, c).also { println(it) }
+        solvePQEC(params).also {
+            println(it)
+            assertEquals("flag{01d80670b01b654fe4831a3e81870734}", it)
+        }
 
         // p q ec
         params = "rsa03_1.txt".parseRsaParams().also { println(it) }
-        p = requireNotNull(params["p"])
-        q = requireNotNull(params["q"])
-        e = requireNotNull(params["e"])
-        c = requireNotNull(params["c"])
-
-        solvePQEC(p, q, e, c).also { println(it) }
+        solvePQEC(params).also {
+            println(it)
+            assertEquals("flag{01d80670b01b654fe4831a3e81870734}", it)
+        }
 
         // e phi不互素
         params = "rsa03_2.txt".parseRsaParams().also { println(it) }
-        p = requireNotNull(params["p"])
-        q = requireNotNull(params["q"])
-        e = requireNotNull(params["e"])
-        c = requireNotNull(params["c"])
-        solvePQEC(p, q, e, c).also { println(it) }
-    }
-
-    /** 已知e =1 , c , m <n ,求m m^e≡c(mod n) ， 当 e 为1 时， m^e≡m^1≡m≡c(mod n) 由于m是小于n的，题目中给出的密文c就是m */
-    @Test
-    fun rsa4() {
-        val c =
-            "56006392793403067781861231386277942050474101531963376999457063633948500765747587998496106575433840765"
-        c.toBigInteger().toByteArray().toString(Charsets.UTF_8).also { println(it) }
+        solvePQEC(params).also {
+            println(it)
+            assertEquals("flag{1f803313-8999-4ec3-abc6-907a10fde606}", it)
+        }
     }
 
     /** 已知e =1 , c , m >n ,求m m^e≡c(mod n) ， 当 e 为1 时， m^e≡m^1≡m≡c(mod n) 由于m是小于n的，题目中给出的密文c就是m */
@@ -133,38 +113,30 @@ class RsaTest {
         println("_______  n 由两个素数相乘 ________")
         // n 由两个素数相乘
         var params = "rsa04_2.txt".parseRsaParams()
-        var n = requireNotNull(params["n"])
-        var e = requireNotNull(params["e"])
-        var c = requireNotNull(params["c"])
 
-        solveNEC(n, e, c).also { println(it) }
+        solve(params).also {
+            println(it)
+            assertEquals("flag{8fb873baba0df4a6423be9f4bd525d93}", it)
+        }
 
         println("_______ n 为素数 ________")
 
         // n 为素数
         params = "rsa04.txt".parseRsaParams()
-        n = requireNotNull(params["n"])
-        e = requireNotNull(params["e"])
-        c = requireNotNull(params["c"])
-
-        solveNEC(n, e, c).also { println(it) }
+        solve(params).also {
+            println(it)
+            assertEquals("flag{8fb873baba0df4a6423be9f4bd525d93}", it)
+        }
 
         println("_______ n 由多个数相乘,含合数 ________")
         // n 由多个数相乘,含合数
         params = "rsa07.txt".parseRsaParams()
-        e = requireNotNull(params["e"])
-        n = requireNotNull(params["n"])
-        c = requireNotNull(params["c"])
-
-        solveNEC(n, e, c)
+        solve(params).also { assertEquals("", it) }
 
         println("_______ nc不互素 ________")
         // nc不互素
         params = "rsa11.txt".parseRsaParams()
-        n = requireNotNull(params["n"])
-        c = requireNotNull(params["c"])
-
-        solveNEC(n, e, c)
+        solve(params).also { assertEquals("", it) }
     }
 
     /** 共模攻击 已知两组 n,e,c , 共模 n, e不同 */
@@ -179,6 +151,8 @@ class RsaTest {
         val c2 = requireNotNull(params["c2"])
         val (_, s1, s2) = e1.gcdExt(e2)
         println((c1.modPow(s1, n1) * c2.modPow(s2, n2) % n1).n2s())
+
+        println(solveN2E2C2(params))
     }
 
     /**
