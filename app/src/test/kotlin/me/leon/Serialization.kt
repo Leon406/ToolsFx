@@ -5,10 +5,10 @@ import kotlinx.serialization.json.Json
 
 inline fun <reified T> T.toJson() = Json.encodeToString(this)
 
-inline fun <reified T> String.fromJson() = Json { ignoreUnknownKeys = true }.decodeFromString<T>(this)
+inline fun <reified T> String.fromJson() =
+    Json { ignoreUnknownKeys = true }.decodeFromString<T>(this)
 
-@Serializable
-data class Data(val a: Int, val b: String = "null")
+@Serializable data class Data(val a: Int, val b: String = "null")
 
 fun main() {
 

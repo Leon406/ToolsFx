@@ -44,6 +44,8 @@ fun List<BigInteger>.phi(): BigInteger =
 fun List<BigInteger>.propN(n: BigInteger) =
     filter { it < BigInteger.ZERO }.fold(n) { acc, bigInteger -> acc / bigInteger.abs() }
 
+fun BigInteger.eulerPhi(n: Int) = minus(BigInteger.ONE) * pow(n - 1)
+
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 
 fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
@@ -63,29 +65,56 @@ fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
     }
 
     if (result.isEmpty()) {
-        "index\\.php\\?id=\\d+".toRegex().findAll(response).toList().map { it.value }.also {
-            result =
-                if (it.size >= 3) {
-                    it.filterIndexed { i, _ -> i != 0 }.map { getPrimeFromFactorDbPath(it) }
-                } else {
-                    println("无法分解")
-                    listOf(digit.toBigInteger())
-                }
-        }
+        "index\\.php\\?id=\\d+"
+            .toRegex()
+            .findAll(response.substringAfter(" = "))
+            .toList()
+            .map { it.value }
+            .also {
+                println(it)
+                val resultLine =
+                    response.lines().find { it.contains(" = ") }!!
+                        .substringAfter(" = ")
+                        .replace("<font color=\"#\\d+\">|</\\w+>".toRegex(), "")
+                println(resultLine)
+                result =
+                    if (it.size >= 2) {
+                        it.map { getPrimeFromFactorDbPath(it) }
+                    } else {
+                        val prime = getPrimeFromFactorDbPath(it.first())
+                        val list = mutableListOf<BigInteger>()
+                        "\\^(\\d+)".toRegex().find(response)?.run {
+                            //                            println("$prime ^" + groupValues[1])
+                            repeat(groupValues[1].toInt()) { list.add(prime) }
+                        }
+                        list.apply {
+                            if (isEmpty()) {
+                                add(digit.toBigInteger())
+                                println("无法分解")
+                            }
+                        }
+                    }
+            }
     }
     return result
 }
 
 private fun getPrimeFromFactorDbPath(path: String) =
-    "http://www.factordb.com/$path".readFromNet().run {
-        "value=\"(\\d+)\"".toRegex().find(this)!!.groupValues[1].toBigInteger().also { digit ->
-            "<td>(\\w+)</td>".toRegex().find(this)?.let {
-                when (it.groupValues[1]) {
-                    "P" -> return digit
-                    "FF" -> println("Composite, fully factored")
-                    "C" -> return -digit.also { println("Composite, no factors known") }
-                    "CF" -> println("Composite, factors known")
-                    else -> return digit.also { println("Unknown") }
+    if (path.length < 32 && path.substringAfter("=").toBigInteger().isProbablePrime(100)) {
+        println("quick judge is prime")
+        path.substringAfter("=").toBigInteger()
+    } else {
+        "http://www.factordb.com/$path".readFromNet().run {
+            println("getPrimeFromFactorDbPath $path")
+            "value=\"(\\d+)\"".toRegex().find(this)!!.groupValues[1].toBigInteger().also { digit ->
+                "<td>(\\w+)</td>".toRegex().find(this)?.let {
+                    when (it.groupValues[1]) {
+                        "P" -> return digit
+                        "FF" -> println("Composite, fully factored")
+                        "C" -> return -digit.also { println("Composite, no factors known") }
+                        "CF" -> println("Composite, factors known")
+                        else -> return digit.also { println("Unknown") }
+                    }
                 }
             }
         }

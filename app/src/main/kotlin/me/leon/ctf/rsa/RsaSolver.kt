@@ -5,6 +5,7 @@ import me.leon.*
 
 object RsaSolver {
 
+    private val modeNECP = listOf("n", "e", "c", "p")
     private val modeNEC = listOf("n", "e", "c")
     private val modeNCD = listOf("n", "c", "d")
     private val modeN2E2C2 = listOf("n1", "e1", "c1", "n2", "e2", "c2")
@@ -27,39 +28,25 @@ object RsaSolver {
     fun solve(params: MutableMap<String, BigInteger>): String =
         when {
             params.containKeys(modeNECPhi) ->
-                params["c"]!!.decrypt(params["e"]!!.invert(params["phi"]!!), params["n"]!!)
+                params["c"]!!.decrypt(params["e"]!!.invert(params["phi"]!!), params["n"]!!).also {
+                    println("solve N E C Phi ")
+                }
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeDpDq) -> solveDpDq(params)
-            params.containKeys(modeNCD) -> params["c"]!!.decrypt(params["d"]!!, params["n"]!!)
+            params.containKeys(modeNCD) ->
+                params["c"]!!.decrypt(params["d"]!!, params["n"]!!).also { println("solve N C D ") }
             params.containKeys(modeN2E2C2) -> solveN2E2C2(params)
             params.containKeys(modeNE2C2) -> solveNE2C2(params)
             params.containKeys(modeN2EC2) -> solveN2EC2(params)
             params.containKeys(modePQEC) -> solvePQEC(params)
+            params.containKeys(modeNECP) -> solvePQEC(params)
+            params.containKeys(modeNEC) -> solveNEC(params)
             params.containKeys(modeEC) && params["e"] == BigInteger.ONE -> params["c"]!!.n2s()
-            params.containKeys(modeNEC) && params["e"]!! < 6.toBigInteger() ->
-                smallE(params["n"]!!, params["c"]!!, params["e"]!!)
-            params.containKeys(modeNEC) && params["n"]!!.isProbablePrime(100) -> {
-                println("prime")
-                val c = requireNotNull(params["c"])
-                val n = requireNotNull(params["n"])
-                val e = requireNotNull(params["e"])
-                val phi = n - BigInteger.ONE
-                (c.modPow(e.invert(phi), n)).also { println(it) }.n2s()
-            }
-            params.containKeys(modeNEC) && params["n"]!!.gcd(params["c"]) != BigInteger.ONE -> {
-                println("nc")
-                val c = requireNotNull(params["c"])
-                val n = requireNotNull(params["n"])
-                val e = requireNotNull(params["e"])
-                val p = n.gcd(c)
-                val q = n / p
-                val phi = p.phi(q)
-                (c.modPow(e.invert(phi), n) / p).n2s()
-            }
-            else -> factorDbSolve(params["n"]!!, params["e"]!!, params["c"]!!)
+            else -> error("wrong parameters!!!")
         }
 
     private fun solveN2EC2(params: MutableMap<String, BigInteger>): String {
+        println("solve N2 E C2")
         val e = requireNotNull(params["e"])
         val n1 = requireNotNull(params["n1"])
         val c1 = requireNotNull(params["c1"])
@@ -77,6 +64,7 @@ object RsaSolver {
     }
 
     fun solveN2E2C2(params: MutableMap<String, BigInteger>): String {
+        println("solve N2 E2 C2")
         val n1 = requireNotNull(params["n1"])
         val n2 = requireNotNull(params["n2"])
         val e1 = requireNotNull(params["e1"])
@@ -87,17 +75,74 @@ object RsaSolver {
         return (c1.modPow(s1, n1) * c2.modPow(s2, n2) % n1).n2s()
     }
 
-    private fun factorDbSolve(n: BigInteger, e: BigInteger, c: BigInteger): String {
-        n.factorDb().also {
-            println(it)
-            if (it.size >= 2) {
-                val phi = it.phi()
-                val d = e.invert(phi).also { println(it) }
-                val propN = it.propN(n)
-                return c.decrypt(d, propN).also { println(it) }
+    private fun solveNEC(params: MutableMap<String, BigInteger>): String {
+        val n = requireNotNull(params["n"])
+        val e = requireNotNull(params["e"])
+        val c = requireNotNull(params["c"])
+        return solveNEC(n, e, c)
+    }
+
+    private fun solveNEC(n: BigInteger, e: BigInteger, c: BigInteger): String {
+        println("solve N E C")
+        return when {
+            e == BigInteger.ONE -> c.n2s().also { println("e = 1") }
+            n.isProbablePrime(100) -> {
+                println("nec n is prime")
+                val phi = n - BigInteger.ONE
+                c.modPow(e.invert(phi), n).n2s()
             }
-            return "no solution"
+            e < 6.toBigInteger() -> smallE(n, c, e).also { println("small e= $e") }
+            n.gcd(c) != BigInteger.ONE -> {
+                println("n c not mutual prime")
+                val p = n.gcd(c)
+                val q = n / p
+                val phi = p.phi(q)
+                (c.modPow(e.invert(phi), n) / p).n2s()
+            }
+            fermat(n).isNotEmpty() -> {
+                println("fermat factor")
+                val fermatResult = fermat(n)
+                return solvePQEC(fermatResult.first(), fermatResult.last(), e, c)
+            }
+            else -> {
+                println("factor db")
+                n.factorDb().let {
+                    if (it.groupBy { it }.size == 1) {
+                        println("${it.first()} ^ ${it.size}")
+                        val phi = it.first().eulerPhi(it.size)
+                        val d = e.invert(phi).also { println(it) }
+                        val propN = it.propN(n)
+                        c.decrypt(d, propN).also { println(it) }
+                    } else if (it.size >= 2) {
+                        val phi = it.phi()
+                        val d = e.invert(phi).also { println(it) }
+                        val propN = it.propN(n)
+                        c.decrypt(d, propN).also { println(it) }
+                    } else "no solution"
+                }
+            }
         }
+    }
+
+    fun fermat(n: BigInteger): Array<BigInteger> {
+        with(n.sqrtAndRemainder()) {
+            if (this.last() != BigInteger.ZERO) {
+                var a = first() + BigInteger.ONE
+                var count = 0
+                var b: BigInteger = BigInteger.ONE
+                while (count < 10_000) {
+                    val b1 = a.pow(2) - n
+                    b = b1.sqrt()
+                    count++
+                    if (b * b == b1) {
+                        println("solved iteration $count \n\tp = ${a + b} \n\tq= ${a - b}\n")
+                        return arrayOf(a + b, a - b)
+                    } else a++
+                }
+            }
+        }
+        println("no fermat solution")
+        return arrayOf()
     }
 
     private fun smallE(n: BigInteger, c: BigInteger, e: BigInteger): String {
@@ -129,6 +174,7 @@ object RsaSolver {
     }
 
     private fun solveDpDq(params: MutableMap<String, BigInteger>): String {
+        println("solveDpDq")
         val p = requireNotNull(params["p"])
         val q = requireNotNull(params["q"])
         val c = requireNotNull(params["c"])
@@ -147,10 +193,14 @@ object RsaSolver {
     /** 知p,q, 即只知 n d e phi互素判断 */
     fun solvePQEC(params: MutableMap<String, BigInteger>): String {
         val p = requireNotNull(params["p"])
-        val q = requireNotNull(params["q"])
+        val q = params["q"] ?: (params["n"]!! / p)
         val e = requireNotNull(params["e"])
         val c = requireNotNull(params["c"])
+        return solvePQEC(p, q, e, c)
+    }
 
+    private fun solvePQEC(p: BigInteger, q: BigInteger, e: BigInteger, c: BigInteger): String {
+        println("solve P Q E C")
         val n = p * q
         val phi = p.phi(q)
 

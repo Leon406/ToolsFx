@@ -3,7 +3,7 @@ package me.leon.ext
 import java.math.BigInteger
 
 fun String.parseRsaParams() =
-    replace("\"|'", "").split("\n|\r\n".toRegex()).filterNot { it.isBlank() }.fold(
+    replace("\"|'", "").split("\n|\r\n".toRegex()).filter { it.contains("=") }.fold(
         mutableMapOf<String, BigInteger>()
     ) { acc, s ->
         acc.apply {
