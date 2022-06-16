@@ -6,8 +6,10 @@ import me.leon.*
 object RsaSolver {
 
     private val modeNEC = listOf("n", "e", "c")
+    private val modeNCD = listOf("n", "c", "d")
     private val modeN2E2C2 = listOf("n1", "e1", "c1", "n2", "e2", "c2")
     private val modeN2EC2 = listOf("n1", "c1", "n2", "e", "c2")
+    private val modeNE2C2 = listOf("n", "c1", "e2", "e1", "c2")
     private val modeEC = listOf("e", "c")
     private val modeNECPhi = listOf("n", "e", "c", "phi")
     private val modePQEC = listOf("p", "q", "e", "c")
@@ -28,7 +30,9 @@ object RsaSolver {
                 params["c"]!!.decrypt(params["e"]!!.invert(params["phi"]!!), params["n"]!!)
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeDpDq) -> solveDpDq(params)
+            params.containKeys(modeNCD) -> params["c"]!!.decrypt(params["d"]!!, params["n"]!!)
             params.containKeys(modeN2E2C2) -> solveN2E2C2(params)
+            params.containKeys(modeNE2C2) -> solveNE2C2(params)
             params.containKeys(modeN2EC2) -> solveN2EC2(params)
             params.containKeys(modePQEC) -> solvePQEC(params)
             params.containKeys(modeEC) && params["e"] == BigInteger.ONE -> params["c"]!!.n2s()
@@ -64,6 +68,12 @@ object RsaSolver {
         val q1 = n1 / p
         val d1 = e.invert(p.phi(q1))
         return c1.decrypt(d1, n1)
+    }
+
+    private fun solveNE2C2(params: MutableMap<String, BigInteger>): String {
+        params["n1"] = requireNotNull(params["n"])
+        params["n2"] = requireNotNull(params["n"])
+        return solveN2E2C2(params)
     }
 
     fun solveN2E2C2(params: MutableMap<String, BigInteger>): String {
