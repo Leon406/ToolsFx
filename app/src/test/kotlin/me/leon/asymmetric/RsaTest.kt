@@ -31,7 +31,7 @@ class RsaTest {
      */
     @Test
     fun rsa1() {
-        val params = "rsa01.txt".parseRsaParams().also { println(it) }
+        val params = "rsa01.txt".parseRsaParams()
         assertEquals("picoCTF{sma11_N_n0_g0od_55304594}", solve(params))
     }
 
@@ -49,7 +49,7 @@ class RsaTest {
     /** n e c , 小 e, 开方爆破 c= m^e mod n => kn+c = m^e ==> 开e次根 m =(kn+c)^(1/e) */
     @Test
     fun rsa_02() {
-        val params = "rsa02.txt".parseRsaParams().also { println(it) }
+        val params = "rsa02.txt".parseRsaParams()
         solve(params).also {
             println(it)
             assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", it)
@@ -60,21 +60,21 @@ class RsaTest {
     @Test
     fun rsa3() {
         // yafu 分解n后，可以得到p q
-        var params = "rsa03.txt".parseRsaParams().also { println(it) }
+        var params = "rsa03.txt".parseRsaParams()
         solvePQEC(params).also {
             println(it)
             assertEquals("flag{01d80670b01b654fe4831a3e81870734}", it)
         }
 
         // p q ec
-        params = "rsa03_1.txt".parseRsaParams().also { println(it) }
+        params = "rsa03_1.txt".parseRsaParams()
         solvePQEC(params).also {
             println(it)
             assertEquals("flag{01d80670b01b654fe4831a3e81870734}", it)
         }
 
         // e phi不互素
-        params = "rsa03_2.txt".parseRsaParams().also { println(it) }
+        params = "rsa03_2.txt".parseRsaParams()
         solvePQEC(params).also {
             println(it)
             assertEquals("flag{1f803313-8999-4ec3-abc6-907a10fde606}", it)
@@ -145,7 +145,7 @@ class RsaTest {
     /** 共模攻击 已知两组 n,e,c , 共模 n, e不同 */
     @Test
     fun rsa8() {
-        val params = "rsa08.txt".parseRsaParams().also { println(it) }
+        val params = "rsa08.txt".parseRsaParams()
         val n1 = requireNotNull(params["n1"])
         val n2 = requireNotNull(params["n2"])
         val e1 = requireNotNull(params["e1"])
@@ -164,7 +164,7 @@ class RsaTest {
      */
     @Test
     fun rsa9() {
-        val params = "rsa09.txt".parseRsaParams().also { println(it) }
+        val params = "rsa09.txt".parseRsaParams()
         val n = requireNotNull(params["n"])
         val e = requireNotNull(params["e"])
         val c = requireNotNull(params["c"])
@@ -193,7 +193,7 @@ class RsaTest {
      */
     @Test
     fun rsa10() {
-        val params = "rsa10.txt".parseRsaParams().also { println(it) }
+        val params = "rsa10.txt".parseRsaParams()
         val p = requireNotNull(params["p"])
         val q = requireNotNull(params["q"])
         val c = requireNotNull(params["c"])
@@ -207,6 +207,11 @@ class RsaTest {
         val m = (((mp - mq) * invQ) % p) * q + mq
 
         println(m.n2s())
+    }
+    @Test
+    fun rsa_wiener() {
+        val params = "rsa14_wiener.txt".parseRsaParams()
+        solve(params).also { assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", it) }
     }
 
     @OptIn(ExperimentalTime::class)
@@ -238,11 +243,11 @@ class RsaTest {
 
         println("49".toBigInteger().root().joinToString("\n"))
         fermat(n)
-        var params = "n1.txt".parseRsaParams().also { println(it) }
+        var params = "n1.txt".parseRsaParams()
 
         fermat(requireNotNull(params["n"]))
 
-        params = "n2.txt".parseRsaParams().also { println(it) }
+        params = "n2.txt".parseRsaParams()
         fermat(requireNotNull(params["n"]))
     }
 

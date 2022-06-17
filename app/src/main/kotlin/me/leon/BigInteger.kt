@@ -76,3 +76,95 @@ fun BigInteger.root(n: Int = 2): Array<BigInteger> {
     }
     return with(mid * sig.toBigInteger()) { arrayOf(this, this@root - this.pow(n)) }
 }
+
+/** this is e */
+fun BigInteger.wiener(n: BigInteger): Array<BigInteger> {
+    if (this > n.pow(2).multiply(n.root().first())) {
+        println("e > n^(1.5) -> this is not guaranteed to work")
+    }
+    var x = this
+    var y = n
+    var guessK: BigInteger
+    var guessDg: BigInteger
+    val guessD: BigInteger
+    val pMinusQDiv2: BigInteger
+    // i = 0
+    // q[0] = [e/n]
+    // n[0] = q[0]
+    // d[0] = 1
+    val q0 = x / y
+    val n0 = q0
+    val d0 = BigInteger.ONE
+    var temp = x
+    x = y
+    y = temp.add(y.multiply(q0).negate())
+
+    // i = 1
+    // q[1] = [n / (e - n * [e/n])]
+    // n[1] = q[0] * q[1] + 1
+    // d[1] = q[1]
+    var qI = x / y
+    val n1 = q0 * qI + BigInteger.ONE
+    val d1 = qI
+    // i = 2
+    var dI2 = d0
+    var dI1 = d1
+    var dI = dI1
+    var nI2 = n0
+    var nI1 = n1
+    var nI = nI1
+    var i = 1
+    while (x.add(-y * qI).signum() != 0) {
+        // uncomment for debug
+        //        println("q[$i] = $qI")
+        //        println("n[$i] = $nI")
+        //        println("d[$i] = $dI")
+        i++
+        temp = x
+        x = y
+        y = temp.add(-y * qI)
+        qI = x / y
+
+        // d[i] = q[i] * d[i-1] + d[i-2]
+        // n[i] = q[i] * n[i-1] + n[i-2]
+        dI = qI * dI1 + dI2
+        nI = qI * nI1 + nI2
+        dI2 = dI1
+        dI1 = dI
+        nI2 = nI1
+        nI1 = nI
+
+        if (i % 2 == 0) {
+            // k / dg = <q[0],...,q[i-1],q[i]+1>
+            // k = (q[i] + 1) * n[i-1] + n[i-2]
+            guessK = nI1 + nI2
+            // dg = (q[i] + 1) * d[i-1] + d[i-2]
+            guessDg = dI1 + dI2
+        } else {
+            // k / dg = <q[0],...,q[i-1],q[i]>
+            // k = q[i] * n[i-1] + n[i-2]
+            guessK = nI1
+            // dg = q[i] * d[i-1] + d[i-2]
+            guessDg = dI1
+        }
+
+        // phi(n) = (edg) / k
+        val phiN = this * guessDg / guessK
+        // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
+        val pPlusQDiv2 = (n - phiN + BigInteger.ONE) / BigInteger.TWO
+        val root = pPlusQDiv2.pow(2).subtract(n).root()
+        if (root.last() == BigInteger.ZERO) {
+            // ((p-q)/2)^2 = ((p+q)/2)^2 - pq
+            pMinusQDiv2 = root.first()
+            // d = (dg / g) = dg / (edg mod k)
+            guessD = guessDg / ((this * guessDg) % guessK)
+            // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
+            val guessP = pPlusQDiv2 + pMinusQDiv2
+            // q = (p+q)/2 - (p-q)/2
+            val guessQ = pPlusQDiv2 - pMinusQDiv2
+            println("Success")
+            return arrayOf(guessD, guessP, guessQ)
+        }
+    }
+    return arrayOf()
+}

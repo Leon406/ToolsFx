@@ -141,6 +141,11 @@ object RsaSolver {
                 c.modPow(e.invert(phi), n).n2s()
             }
             e < 6.toBigInteger() -> smallE(n, c, e).also { println("small e= $e") }
+            e.bitLength() > 100 ->
+                with(e.wiener(n)) {
+                    println("wiener attack")
+                    if (isEmpty()) "wiener failed" else c.decrypt(this.first(), n)
+                }
             n.gcd(c) != BigInteger.ONE -> {
                 println("n c not mutual prime")
                 val p = n.gcd(c)
