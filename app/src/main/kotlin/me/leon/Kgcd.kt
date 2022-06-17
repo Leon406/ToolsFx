@@ -38,3 +38,16 @@ object Kgcd {
         return gcdext(a, b, x, y)
     }
 }
+
+fun crt(divideResults: List<DivideResult>): BigInteger {
+    val modulusList = divideResults.map { it.quotient }
+    val m = modulusList.fold(BigInteger.ONE) { acc, s -> acc * s }
+    val lcmOfModulus = modulusList.fold(modulusList.first()) { acc, bigInteger -> acc.lcm(bigInteger) }
+    return modulusList.map { m / it }.mapIndexed { index, mi ->
+        divideResults[index].remainder * mi * mi.modInverse(modulusList[index])
+    }.sumOf { it } % lcmOfModulus
+}
+
+data class DivideResult(val remainder: BigInteger, val quotient: BigInteger) {
+    constructor(remainder: String, quotient: String) : this(remainder.toBigInteger(), quotient.toBigInteger())
+}

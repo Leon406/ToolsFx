@@ -22,7 +22,7 @@ fun BigInteger.invert(phi: BigInteger): BigInteger = modInverse(phi)
 fun BigInteger.gcdExt(other: BigInteger) = Kgcd.gcdext(this, other)
 
 // this = c
-fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n).toByteArray().decodeToString()
+fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n).n2s()
 
 fun BigInteger.n2s() = toByteArray().decodeToString()
 
@@ -49,6 +49,7 @@ fun BigInteger.eulerPhi(n: Int) = minus(BigInteger.ONE) * pow(n - 1)
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 
 fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
+    //todo http://factordb.com/api?query=12345
     val response = "http://www.factordb.com/index.php?query=$digit".readFromNet()
 
     var result = emptyList<BigInteger>()

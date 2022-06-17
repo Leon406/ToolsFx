@@ -1,7 +1,7 @@
 package me.leon.ctf.rsa
 
-import java.math.BigInteger
 import me.leon.*
+import java.math.BigInteger
 
 object RsaSolver {
 
@@ -14,8 +14,10 @@ object RsaSolver {
     private val modeEC = listOf("e", "c")
     private val modeNECPhi = listOf("n", "e", "c", "phi")
     private val modePQEC = listOf("p", "q", "e", "c")
+    private val modePQEC2 = listOf("p1", "q1", "e1", "c1", "p2", "q2", "e2", "c2")
     private val modeDpDq = listOf("dp", "dq", "p", "q", "c")
     private val modeDp = listOf("dp", "e", "c", "n")
+    private val modeBroadcastN3C3 = listOf("n1", "c1", "n2", "c2", "n3", "c3")
 
     /**
      * 1. dp泄露
@@ -31,11 +33,16 @@ object RsaSolver {
                 params["c"]!!.decrypt(params["e"]!!.invert(params["phi"]!!), params["n"]!!).also {
                     println("solve N E C Phi ")
                 }
+            params.containKeys(modeBroadcastN3C3) -> solveBroadCast(params)
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeDpDq) -> solveDpDq(params)
-            params.containKeys(modeNCD) ->
-                params["c"]!!.decrypt(params["d"]!!, params["n"]!!).also { println("solve N C D ") }
+            params.containKeys(modeNCD) -> solveNCD(params)
+
             params.containKeys(modeN2E2C2) -> solveN2E2C2(params)
+            params.containKeys(modePQEC2) -> solveN2E2C2(params.apply {
+                put("n1", params["p1"]!! * params["q1"]!!)
+                put("n2", params["p2"]!! * params["q2"]!!)
+            })
             params.containKeys(modeNE2C2) -> solveNE2C2(params)
             params.containKeys(modeN2EC2) -> solveN2EC2(params)
             params.containKeys(modePQEC) -> solvePQEC(params)
@@ -44,6 +51,46 @@ object RsaSolver {
             params.containKeys(modeEC) && params["e"] == BigInteger.ONE -> params["c"]!!.n2s()
             else -> error("wrong parameters!!!")
         }
+
+    private fun solveNCD(params: MutableMap<String, BigInteger>): String {
+        println("solve N C D ")
+        val n = requireNotNull(params["n"])
+        val d = requireNotNull(params["d"])
+        val c = requireNotNull(params["c"])
+        return c.decrypt(d, n)
+    }
+
+    private fun solveBroadCast(params: MutableMap<String, BigInteger>): String {
+        println("solve broadcast")
+        val n1 = requireNotNull(params["n1"])
+        val c1 = requireNotNull(params["c1"])
+        val n2 = requireNotNull(params["n2"])
+        val c2 = requireNotNull(params["c2"])
+        val n3 = requireNotNull(params["n3"])
+        val c3 = requireNotNull(params["c3"])
+
+
+        val me = crt(
+            listOf(
+                DivideResult(c1, n1),
+                DivideResult(c2, n2),
+                DivideResult(c3, n3),
+            )
+        )
+        println(me)
+
+        val cx = me % (n1 * n2 * n3)
+
+        for (i in 1..20) {
+            println("$i")
+            val result = cx.root(i)
+            if (result.last() == BigInteger.ONE) {
+                println("got result ${result.first()}")
+                break
+            }
+        }
+        return ""
+    }
 
     private fun solveN2EC2(params: MutableMap<String, BigInteger>): String {
         println("solve N2 E C2")
