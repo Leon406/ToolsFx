@@ -1,7 +1,7 @@
 package me.leon.ctf.rsa
 
-import java.math.BigInteger
 import me.leon.*
+import java.math.BigInteger
 
 object RsaSolver {
 
@@ -33,6 +33,7 @@ object RsaSolver {
                 params["c"]!!.decrypt(params["e"]!!.invert(params["phi"]!!), params["n"]!!).also {
                     println("solve N E C Phi ")
                 }
+
             params.containKeys(modeBroadcastN3C3) -> solveBroadCast(params)
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeDpDq) -> solveDpDq(params)
@@ -45,6 +46,7 @@ object RsaSolver {
                         put("n2", params["p2"]!! * params["q2"]!!)
                     }
                 )
+
             params.containKeys(modeNE2C2) -> solveNE2C2(params)
             params.containKeys(modeN2EC2) -> solveN2EC2(params)
             params.containKeys(modePQEC) -> solvePQEC(params)
@@ -80,6 +82,7 @@ object RsaSolver {
                 )
             )
         println(me)
+        println(me.root(3).joinToString("\t\n"))
 
         val cx = me % (n1 * n2 * n3)
 
@@ -99,11 +102,21 @@ object RsaSolver {
         val e = requireNotNull(params["e"])
         val n1 = requireNotNull(params["n1"])
         val c1 = requireNotNull(params["c1"])
+        val c2 = requireNotNull(params["c2"])
         val n2 = requireNotNull(params["n2"])
         val p = n1.gcd(n2)
         val q1 = n1 / p
-        val d1 = e.invert(p.phi(q1))
-        return c1.decrypt(d1, n1)
+        val q2 = n2 / p
+        println("gcd: ${e.gcd(p.phi(q1))}")
+
+        return runCatching {
+            val d1 = e.invert(p.phi(q1))
+            c1.decrypt(d1, n1)
+        }
+            .getOrElse {
+                val d2 = e.invert(p.phi(q2))
+                c2.decrypt(d2, n2)
+            }
     }
 
     private fun solveNE2C2(params: MutableMap<String, BigInteger>): String {
@@ -140,12 +153,14 @@ object RsaSolver {
                 val phi = n - BigInteger.ONE
                 c.modPow(e.invert(phi), n).n2s()
             }
+
             e < 6.toBigInteger() -> smallE(n, c, e).also { println("small e= $e") }
             e.bitLength() > 100 ->
                 with(e.wiener(n)) {
                     println("wiener attack")
                     if (isEmpty()) "wiener failed" else c.decrypt(this.first(), n)
                 }
+
             n.gcd(c) != BigInteger.ONE -> {
                 println("n c not mutual prime")
                 val p = n.gcd(c)
@@ -153,11 +168,13 @@ object RsaSolver {
                 val phi = p.phi(q)
                 (c.modPow(e.invert(phi), n) / p).n2s()
             }
+
             fermat(n).isNotEmpty() -> {
                 println("fermat factor")
                 val fermatResult = fermat(n)
                 return solvePQEC(fermatResult.first(), fermatResult.last(), e, c)
             }
+
             else -> {
                 println("factor db")
                 n.factorDb().let {
@@ -277,12 +294,13 @@ object RsaSolver {
         println("solve P Q E C")
         val n = p * q
         val phi = p.phi(q)
-
         return if (e.gcd(phi) == BigInteger.ONE) {
+            println("solve P Q E C e phi mutual prime")
             val d = e.invert(p.phi(q))
             c.decrypt(d, p * q)
         } else {
             val t = e.gcd(phi)
+            println("solve P Q E C e phi not mutual prime!! $t")
             val t1 = e / t
             val dt1 = t1.invert(phi)
             c.modPow(dt1, n).root(t.toInt()).first().n2s()
