@@ -82,19 +82,18 @@ object RsaSolver {
                 )
             )
         println(me)
-        println(me.root(3).joinToString("\t\n"))
 
         val cx = me % (n1 * n2 * n3)
 
-        for (i in 1..20) {
+        for (i in 2..100) {
             println("$i")
             val result = cx.root(i)
-            if (result.last() == BigInteger.ONE) {
-                println("got result ${result.first()}")
-                break
+            if (result.last() == BigInteger.ZERO) {
+                println("$i got result ${result.first()}")
+                return result.first().n2s()
             }
         }
-        return ""
+        return "no solution!!!"
     }
 
     private fun solveN2EC2(params: MutableMap<String, BigInteger>): String {

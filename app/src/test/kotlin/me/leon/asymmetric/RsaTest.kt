@@ -254,11 +254,19 @@ class RsaTest {
     @Test
     fun crtTest() {
         // 三三数之剩二，五五数之剩三，七七数之剩二。问物几何？
-        val data2 =
+        val data =
             listOf(
                 DivideResult("2", "3"),
                 DivideResult("3", "5"),
                 DivideResult("2", "7"),
+            )
+        println(crt(data))
+
+        val data2 =
+            listOf(
+                DivideResult("43", "87"),
+                DivideResult("80", "115"),
+                DivideResult("65", "187"),
             )
         println(crt(data2))
     }
