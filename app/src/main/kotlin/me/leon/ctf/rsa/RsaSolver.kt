@@ -1,7 +1,7 @@
 package me.leon.ctf.rsa
 
-import me.leon.*
 import java.math.BigInteger
+import me.leon.*
 
 object RsaSolver {
 
@@ -37,12 +37,14 @@ object RsaSolver {
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeDpDq) -> solveDpDq(params)
             params.containKeys(modeNCD) -> solveNCD(params)
-
             params.containKeys(modeN2E2C2) -> solveN2E2C2(params)
-            params.containKeys(modePQEC2) -> solveN2E2C2(params.apply {
-                put("n1", params["p1"]!! * params["q1"]!!)
-                put("n2", params["p2"]!! * params["q2"]!!)
-            })
+            params.containKeys(modePQEC2) ->
+                solveN2E2C2(
+                    params.apply {
+                        put("n1", params["p1"]!! * params["q1"]!!)
+                        put("n2", params["p2"]!! * params["q2"]!!)
+                    }
+                )
             params.containKeys(modeNE2C2) -> solveNE2C2(params)
             params.containKeys(modeN2EC2) -> solveN2EC2(params)
             params.containKeys(modePQEC) -> solvePQEC(params)
@@ -69,14 +71,14 @@ object RsaSolver {
         val n3 = requireNotNull(params["n3"])
         val c3 = requireNotNull(params["c3"])
 
-
-        val me = crt(
-            listOf(
-                DivideResult(c1, n1),
-                DivideResult(c2, n2),
-                DivideResult(c3, n3),
+        val me =
+            crt(
+                listOf(
+                    DivideResult(c1, n1),
+                    DivideResult(c2, n2),
+                    DivideResult(c3, n3),
+                )
             )
-        )
         println(me)
 
         val cx = me % (n1 * n2 * n3)

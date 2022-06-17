@@ -1,6 +1,7 @@
 package me.leon
 
 import java.math.BigInteger
+import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 
 // this = p
@@ -49,77 +50,11 @@ fun BigInteger.eulerPhi(n: Int) = minus(BigInteger.ONE) * pow(n - 1)
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 
 fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
-    //todo http://factordb.com/api?query=12345
-    val response = "http://www.factordb.com/index.php?query=$digit".readFromNet()
-
-    var result = emptyList<BigInteger>()
-
-    "<td>(\\w+)</td>".toRegex().find(response)?.let {
-        result =
-            when (it.groupValues[1]) {
-                "P" -> listOf(digit.toBigInteger())
-                "FF" -> emptyList<BigInteger>().also { println("Composite, fully factored") }
-                "C" -> listOf(digit.toBigInteger()).also { println("Composite, no factors known") }
-                "CF" -> emptyList<BigInteger>().also { println("Composite, factors known") }
-                else -> listOf(digit.toBigInteger()).also { println("Unknown") }
-            }
-    }
-
-    if (result.isEmpty()) {
-        "index\\.php\\?id=\\d+"
-            .toRegex()
-            .findAll(response.substringAfter(" = "))
-            .toList()
-            .map { it.value }
-            .also {
-                println(it)
-                val resultLine =
-                    response.lines().find { it.contains(" = ") }!!
-                        .substringAfter(" = ")
-                        .replace("<font color=\"#\\d+\">|</\\w+>".toRegex(), "")
-                println(resultLine)
-                result =
-                    if (it.size >= 2) {
-                        it.map { getPrimeFromFactorDbPath(it) }
-                    } else {
-                        val prime = getPrimeFromFactorDbPath(it.first())
-                        val list = mutableListOf<BigInteger>()
-                        "\\^(\\d+)".toRegex().find(response)?.run {
-                            //                            println("$prime ^" + groupValues[1])
-                            repeat(groupValues[1].toInt()) { list.add(prime) }
-                        }
-                        list.apply {
-                            if (isEmpty()) {
-                                add(digit.toBigInteger())
-                                println("无法分解")
-                            }
-                        }
-                    }
-            }
-    }
-    return result
+    return "http://factordb.com/api?query=$digit"
+        .readFromNet()
+        .fromJson(FactorDbResponse::class.java)
+        .factorList
 }
-
-private fun getPrimeFromFactorDbPath(path: String) =
-    if (path.length < 32 && path.substringAfter("=").toBigInteger().isProbablePrime(100)) {
-        println("quick judge is prime")
-        path.substringAfter("=").toBigInteger()
-    } else {
-        "http://www.factordb.com/$path".readFromNet().run {
-            println("getPrimeFromFactorDbPath $path")
-            "value=\"(\\d+)\"".toRegex().find(this)!!.groupValues[1].toBigInteger().also { digit ->
-                "<td>(\\w+)</td>".toRegex().find(this)?.let {
-                    when (it.groupValues[1]) {
-                        "P" -> return digit
-                        "FF" -> println("Composite, fully factored")
-                        "C" -> return -digit.also { println("Composite, no factors known") }
-                        "CF" -> println("Composite, factors known")
-                        else -> return digit.also { println("Unknown") }
-                    }
-                }
-            }
-        }
-    }
 
 // ported from
 // https://github.com/ryanInf/python2-libnum/blob/316c378ba268577320a239b2af0d766c1c9bfc6d/libnum/common.py
