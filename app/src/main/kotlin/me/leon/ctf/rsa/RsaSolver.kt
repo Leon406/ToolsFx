@@ -162,16 +162,36 @@ object RsaSolver {
                 println("factor db")
                 n.factorDb().let {
                     if (it.groupBy { it }.size == 1) {
-                        println("${it.first()} ^ ${it.size}")
+                        println("euler solve ${it.first()} ^ ${it.size}")
                         val phi = it.first().eulerPhi(it.size)
                         val d = e.invert(phi).also { println(it) }
                         val propN = it.propN(n)
                         c.decrypt(d, propN).also { println(it) }
                     } else if (it.size >= 2) {
                         val phi = it.phi()
-                        val d = e.invert(phi).also { println(it) }
-                        val propN = it.propN(n)
-                        c.decrypt(d, propN).also { println(it) }
+                        val gcd = e.gcd(phi)
+
+                        if (gcd == BigInteger.ONE) {
+                            println("e phi mutual prime ")
+                            val d = e.invert(phi).also { println(it) }
+                            val propN = it.propN(n)
+                            c.decrypt(d, propN).also { println(it) }
+                        } else {
+                            println("e phi are not mutual prime  $gcd")
+                            val d = (e / gcd).invert(phi).also { println(it) }
+                            val m = c.modPow(d, n)
+                            var result = ""
+                            for (i in 1..1_000_000) {
+                                val root = (m + n * i.toBigInteger()).root(gcd.toInt())
+                                if (root.last() == BigInteger.ZERO) {
+                                    println(i)
+                                    result = root.first().n2s()
+                                    println("times $i ${root.first()} $result")
+                                    break
+                                }
+                            }
+                            result
+                        }
                     } else "no solution"
                 }
             }
