@@ -1,9 +1,12 @@
-{"version":"1.13.3.beta","info":"1.13.3.beta
+{"version":"1.13.4.beta","info":"1.13.4.beta
 
-🔥 编码一键解码(直到无法解码)
-🔥 新增base85扩展Z85,Base64-IPv6
-🔥 string process support remove space
-🔥 新增字符处理 文件名替换
+🔥 RSA-crack新增wiener攻击
+🔥 RSA-crack新增共模,共指数
+🔥 RSA-crack新增nec 费马分解
+🔥 RSA-crack新增e=3 低指数广播
+🔥 RSA-crack新增dp泄露, dp dq功能
+🔥 RSA-crack新增 ncd,necp,ec参数
+🔥 增强CTF RSA-crack功能,由原RSA-nec,RSA-pqec合并
 🔥 其他优化
 
 升级方式  下载最新app.jar复制到lib目录下,同时删除旧jar包,
