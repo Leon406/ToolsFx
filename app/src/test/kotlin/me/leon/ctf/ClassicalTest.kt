@@ -137,10 +137,16 @@ class ClassicalTest {
     @Test
     fun railFence() {
         val msg = "ATTACKATDAWN"
-        val encrypt = "AKWTANTT@AD@CA@"
+        val encrypt = "AKWTANTTADCA"
+
         val count = 5
+
         assertEquals(encrypt, msg.railFenceEncrypt(count))
-        assertEquals(msg, encrypt.railFenceDecrypt(5))
+        assertEquals(msg, encrypt.railFenceDecrypt(count))
+        (2 until msg.length).forEach {
+            println(it)
+            assertEquals(msg, msg.railFenceEncrypt(it).railFenceDecrypt(it))
+        }
     }
 
     @Test
