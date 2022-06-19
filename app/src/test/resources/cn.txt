@@ -1954,7 +1954,7 @@ Maximum unique locations discovered:	发现的最大唯一位置数：
 Medium	中
 Medium active	主动扫描（中）
 Medium severity	优先度中
-Memory: (.*)	内存: $1
+Memory(: ?.*)?	内存$1
 Message	消息
 Message Editor	消息编辑器
 Message actions	消息操作
@@ -3682,3 +3682,12 @@ Note: you should not delete these files if another instance of Burp is currently
 running.	运行中。
 Proxy host:	代理主机：
 Proxy port:	代理端口：
+TLS Trust	信任TLS
+Verify upstream TLS	验证上游TLS
+Add tab	添加选项卡
+More tabs	更多选项卡
+Tabs options	选项卡设置
+Estimated system impact(.*)	预估系统影响$1
+System impact	系统影响
+(?i)Consider unloading some extensions?	考虑卸载一些扩展
+Overall:	总体上:
