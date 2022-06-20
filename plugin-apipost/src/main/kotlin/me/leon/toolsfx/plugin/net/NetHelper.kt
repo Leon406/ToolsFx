@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package me.leon.toolsfx.plugin.net
 
 import java.net.*

@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package me.leon.toolsfx.plugin.table
 
 import javafx.event.EventHandler
