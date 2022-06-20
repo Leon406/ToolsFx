@@ -1,12 +1,20 @@
-package me.leon.asymmetric
+package me.leon.factor
 
-import me.leon.FactorDbResponse
+import kotlin.system.measureTimeMillis
+import me.leon.*
+import me.leon.ctf.rsa.*
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
-import me.leon.getPrimeFromFactorDb
 import org.junit.Test
 
-class Factors {
+/**
+ * trial divide rho p-1
+ *
+ * https://github.com/nishanth17/factor/blob/master/factor.py
+ * http://helper.ipam.ucla.edu/publications/scws4/scws4_6744.pdf
+ */
+class FactorTest {
+
     @Test
     fun factor() {
         val bigDigit =
@@ -57,5 +65,38 @@ class Factors {
             .readFromNet()
             .fromJson(FactorDbResponse::class.java)
             .also { println(it.allFactorMap) }
+    }
+
+    @Test
+    fun trialDivide() {
+        measureTimeMillis {
+            println("123122331123112312313223123".toBigInteger().trialDivide())
+            println("65536".toBigInteger().trialDivide())
+        }
+            .also { println(it) }
+    }
+
+    @Test
+    fun fermatFactor() {
+        var params = "n1.txt".parseRsaParams()
+        requireNotNull(params["n"]).fermat()
+        params = "n2.txt".parseRsaParams()
+        requireNotNull(params["n"]).fermat()
+        params = "n3.txt".parseRsaParams()
+        requireNotNull(params["n"]).fermat()
+    }
+
+    @Test
+    fun rho() {
+        requireNotNull("n_rho.txt".parseRsaParams()["n"]).pollardsRhoFactors(200_000).also {
+            println(it)
+        }
+    }
+
+    @Test
+    fun pm1() {
+        requireNotNull("n_pm1.txt".parseRsaParams()["n"]).pollardsPM1Factors(200_000).also {
+            println(it)
+        }
     }
 }

@@ -1,11 +1,9 @@
-package me.leon.asymmetric
+package me.leon.ctf
 
-import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 import me.leon.*
-import me.leon.ctf.rsa.RsaSolver.fermat
 import me.leon.ctf.rsa.RsaSolver.solve
 import me.leon.ctf.rsa.RsaSolver.solveN2E2C2
 import me.leon.ctf.rsa.RsaSolver.solvePQEC
@@ -86,28 +84,18 @@ class RsaTest {
     fun rsa5() {
         val c =
             "56006392793403067781861231386277942050474101531963376999457063633948500765747587998496106575433840765"
-        c.toBigInteger().toByteArray().toString(Charsets.UTF_8).also { println(it) }
+        c.toBigInteger().toByteArray().toString(Charsets.UTF_8).also {
+            assertEquals("flag{046b9e03-474f-4ac0-9372-25bfc545dc08}", it)
+        }
         val params = "rsa05.txt".parseRsaParams().also { println(it) }
-        println(solve(params))
+        assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", solve(params))
     }
 
     /** 两组e相同, nc不同,且N不互素 */
     @Test
     fun rsa6() {
         val params = "rsa06.txt".parseRsaParams().also { println(it) }
-        val e = requireNotNull(params["e"])
-        val n1 = requireNotNull(params["n1"])
-        val c1 = requireNotNull(params["c1"])
-        val n2 = requireNotNull(params["n2"])
-        val c2 = requireNotNull(params["c2"])
-
-        val p = n1.gcd(n2)
-        val q1 = n1 / p
-        val q2 = n2 / p
-        val d1 = e.invert(p.phi(q1))
-        val d2 = e.invert(p.phi(q2))
-        c1.decrypt(d1, n1).also { println(it) }
-        c2.decrypt(d2, n2).also { println(it) }
+        assertEquals("flag{c9a2c0b2-d078-44a2-b942-3c1030483781}", solve(params))
     }
 
     /** n (多个数相乘,含合数) e c */
@@ -128,33 +116,25 @@ class RsaTest {
         params = "rsa04.txt".parseRsaParams()
         solve(params).also {
             println(it)
-            assertEquals("flag{8fb873baba0df4a6423be9f4bd525d93}", it)
+            assertEquals("flag{630b1953a612a8392af021393e36538b}", it.toBigInteger().n2s())
         }
 
         println("_______ n 由多个数相乘,含合数 ________")
         // n 由多个数相乘,含合数
         params = "rsa07.txt".parseRsaParams()
-        solve(params).also { assertEquals("", it) }
+        solve(params).also { assertEquals("flag{5c066086-178b-46a7-b0f8-f1afba6f2910}", it) }
 
         println("_______ nc不互素 ________")
         // nc不互素
         params = "rsa11.txt".parseRsaParams()
-        solve(params).also { assertEquals("", it) }
+        solve(params).also { assertEquals("flag{ac8eec28-edb0-498f-b50d-94407a3f104f}", it) }
     }
 
     /** 共模攻击 已知两组 n,e,c , 共模 n, e不同 */
     @Test
     fun rsa8() {
         val params = "rsa08.txt".parseRsaParams()
-        val n1 = requireNotNull(params["n1"])
-        val n2 = requireNotNull(params["n2"])
-        val e1 = requireNotNull(params["e1"])
-        val e2 = requireNotNull(params["e2"])
-        val c1 = requireNotNull(params["c1"])
-        val c2 = requireNotNull(params["c2"])
-        val (_, s1, s2) = e1.gcdExt(e2)
-        println((c1.modPow(s1, n1) * c2.modPow(s2, n2) % n1).n2s())
-
+        assertEquals("flag{01d80670b01b654fe4831a3e81870734}", solveN2E2C2(params))
         println(solveN2E2C2(params))
     }
 
@@ -165,20 +145,7 @@ class RsaTest {
     @Test
     fun rsa9() {
         val params = "rsa09.txt".parseRsaParams()
-        val n = requireNotNull(params["n"])
-        val e = requireNotNull(params["e"])
-        val c = requireNotNull(params["c"])
-        val dp = requireNotNull(params["dp"])
-        var p = BigInteger.ONE
-        var q = BigInteger.ONE
-        for (k in 1..65_537) {
-            p = (e * dp - BigInteger.ONE) / k.toBigInteger() + BigInteger.ONE
-            if (n.gcd(p) != BigInteger.ONE) {
-                q = n / p
-                break
-            }
-        }
-        println(c.decrypt(e.invert(p.phi(q)), n))
+        assertEquals("flag{b098c622-5a99-4aff-a0a7-7b082e7e1c92}", solve(params))
     }
 
     /**
@@ -194,25 +161,21 @@ class RsaTest {
     @Test
     fun rsa10() {
         val params = "rsa10.txt".parseRsaParams()
-        val p = requireNotNull(params["p"])
-        val q = requireNotNull(params["q"])
-        val c = requireNotNull(params["c"])
-        val dp = requireNotNull(params["dp"])
-        val dq = requireNotNull(params["dq"])
-
-        val invQ = q.invert(p)
-        val mp = c.modPow(dp, p)
-        val mq = c.modPow(dq, q)
-
-        val m = (((mp - mq) * invQ) % p) * q + mq
-
-        println(m.n2s())
+        assertEquals("flag{96bd68e0-983e-4683-83c5-9cde3d18bea3}", solve(params))
     }
 
     @Test
     fun rsa_wiener() {
-        val params = "rsa14_wiener.txt".parseRsaParams()
+        var params = "rsa14_wiener.txt".parseRsaParams()
         solve(params).also { assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", it) }
+
+        params = "rsa14_wiener2.txt".parseRsaParams()
+        assertEquals("Tr0y{W1eNer_AttaCk_1s_p0werfu1!}", solve(params))
+    }
+    @Test
+    fun rsa_broadcast() {
+        val params = "rsa15_broadcast.txt".parseRsaParams()
+        solve(params).also { assertEquals("flag{59007b62-e7d6-423a-a662-c4706c91a06a}", it) }
     }
 
     @OptIn(ExperimentalTime::class)
@@ -228,30 +191,6 @@ class RsaTest {
             println(it.value.contentToString())
             println("${it.value.first().n2s()} ${it.duration}")
         }
-    }
-
-    @Test
-    fun fermaFactor() {
-        val n =
-            ("1123639643894546407917671714319647108788043012479864019452312458488316148374435576188172092479" +
-                    "8661332027501424643154414538029585287580122761405974427818841257794157497994556608202723391478" +
-                    "0277601817059243175334203054448092234441280346543672103311370689586938405828928194954878260459" +
-                    "5657715607415666894223213940210846234934035289857248111540669831812129978798287391650259139688" +
-                    "4489682255184448165523604671743400422220149772905676655777228607948091675612455989601008858361" +
-                    "7593273704033067606741955063942803870243573225867322980601699624268943607759818771698956329279" +
-                    "06390632063530920611197753716095903307467004289983267")
-                .toBigInteger()
-
-        println("49".toBigInteger().root().joinToString("\n"))
-        fermat(n)
-        var params = "n1.txt".parseRsaParams()
-
-        fermat(requireNotNull(params["n"]))
-
-        params = "n2.txt".parseRsaParams()
-        fermat(requireNotNull(params["n"]))
-        params = "n3.txt".parseRsaParams()
-        fermat(requireNotNull(params["n"]))
     }
 
     @Test

@@ -6,8 +6,6 @@ fun String.parseRsaParams() =
     replace("\"|'", "").split("\n|\r\n".toRegex()).filter { it.contains("[=:：]".toRegex()) }.fold(
         mutableMapOf<String, BigInteger>()
     ) { acc, s ->
-        println(this)
-        println("__________")
         acc.apply {
             with(s.split("\\s*[=:：]\\s*".toRegex())) {
                 println(this)

@@ -79,12 +79,9 @@ object RsaSolver {
                     DivideResult(c3, n3),
                 )
             )
-        println(me)
-
         val cx = me % (n1 * n2 * n3)
 
         for (i in 2..100) {
-            println("$i")
             val result = cx.root(i)
             if (result.last() == BigInteger.ZERO) {
                 println("$i got result ${result.first()}")
@@ -163,14 +160,10 @@ object RsaSolver {
                 val phi = p.phi(q)
                 (c.modPow(e.invert(phi), n) / p).n2s()
             }
-            fermat(n).isNotEmpty() -> {
-                println("fermat factor")
-                val fermatResult = fermat(n)
-                return solvePQEC(fermatResult.first(), fermatResult.last(), e, c)
-            }
             else -> {
-                println("factor db")
-                n.factorDb().let {
+                println("fmt: start")
+                val factors = factor(n)
+                factors.let {
                     if (it.groupBy { it }.size == 1) {
                         println("euler solve ${it.first()} ^ ${it.size}")
                         val phi = it.first().eulerPhi(it.size)
@@ -208,25 +201,22 @@ object RsaSolver {
         }
     }
 
-    fun fermat(n: BigInteger): Array<BigInteger> {
-        with(n.sqrtAndRemainder()) {
-            if (this.last() != BigInteger.ZERO) {
-                var a = first() + BigInteger.ONE
-                var count = 0
-                var b: BigInteger = BigInteger.ONE
-                while (count < 10_000) {
-                    val b1 = a.pow(2) - n
-                    b = b1.sqrt()
-                    count++
-                    if (b * b == b1) {
-                        println("solved iteration $count \n\tp = ${a + b} \n\tq= ${a - b}\n")
-                        return arrayOf(a + b, a - b)
-                    } else a++
-                }
-            }
+    private fun factor(n: BigInteger): MutableList<BigInteger> {
+        var factors = n.fermat()
+        if (factors.size == 1) {
+            println("fmt: fail, start rho ")
+            factors = n.pollardsRhoFactors()
         }
-        println("no fermat solution")
-        return arrayOf()
+        if (factors.size == 1 || factors.any { it < BigInteger.ZERO }) {
+            println("rho: fail, start p-1")
+            factors = n.pollardsPM1Factors()
+        }
+
+        if (factors.size == 1 || factors.any { it < BigInteger.ZERO }) {
+            println("pm1: failed, start factor db ")
+            factors = n.factorDb().toMutableList()
+        }
+        return factors
     }
 
     private fun smallE(n: BigInteger, c: BigInteger, e: BigInteger): String {
