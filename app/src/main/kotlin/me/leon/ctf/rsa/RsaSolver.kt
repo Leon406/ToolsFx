@@ -150,7 +150,7 @@ object RsaSolver {
                 val phi = n - BigInteger.ONE
                 c.modPow(e.invert(phi), n).n2s()
             }
-            e < 6.toBigInteger() -> smallE(n, c, e).also { println("small e= $e") }
+            e < 6.toBigInteger() -> smallE(n, c, e)
             e.bitLength() > 100 ->
                 with(e.wiener(n)) {
                     println("wiener attack")
@@ -230,8 +230,10 @@ object RsaSolver {
     }
 
     private fun smallE(n: BigInteger, c: BigInteger, e: BigInteger): String {
-        for (k in 1..1000) {
-            val m = (k.toBigInteger() * n + c).root(e.toInt())
+        val exp = e.toInt()
+        println("small e= $exp")
+        for (k in 0..10_000) {
+            val m = (k.toBigInteger() * n + c).root(exp)
             if (m[1] == BigInteger.ZERO) {
                 return m.first().n2s()
             }

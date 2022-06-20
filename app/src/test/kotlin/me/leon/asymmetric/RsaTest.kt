@@ -208,6 +208,7 @@ class RsaTest {
 
         println(m.n2s())
     }
+
     @Test
     fun rsa_wiener() {
         val params = "rsa14_wiener.txt".parseRsaParams()
@@ -248,6 +249,8 @@ class RsaTest {
         fermat(requireNotNull(params["n"]))
 
         params = "n2.txt".parseRsaParams()
+        fermat(requireNotNull(params["n"]))
+        params = "n3.txt".parseRsaParams()
         fermat(requireNotNull(params["n"]))
     }
 
