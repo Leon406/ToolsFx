@@ -24,6 +24,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         arrayOf(
             EncodeType.Radix8,
             EncodeType.Base16,
+            EncodeType.Octal,
             EncodeType.Decimal,
             EncodeType.Radix10,
             EncodeType.Radix32,
