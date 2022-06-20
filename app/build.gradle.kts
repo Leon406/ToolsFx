@@ -32,7 +32,7 @@ dependencies {
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-    testImplementation("cn.hutool:hutool-all:5.8.1")
+    testImplementation("cn.hutool:hutool-all:5.8.3")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
