@@ -1,6 +1,7 @@
-package me.leon.factor
+package me.leon.math.factor
 
 import kotlin.system.measureTimeMillis
+import kotlin.test.assertEquals
 import me.leon.*
 import me.leon.ctf.rsa.*
 import me.leon.ext.fromJson
@@ -90,6 +91,7 @@ class FactorTest {
     fun rho() {
         requireNotNull("n_rho.txt".parseRsaParams()["n"]).pollardsRhoFactors(200_000).also {
             println(it)
+            assertEquals(4, it.size)
         }
     }
 

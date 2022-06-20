@@ -1,8 +1,6 @@
 package me.leon.ctf
 
 import kotlin.test.assertEquals
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTimedValue
 import me.leon.*
 import me.leon.ctf.rsa.RsaSolver.solve
 import me.leon.ctf.rsa.RsaSolver.solveN2E2C2
@@ -40,18 +38,14 @@ class RsaTest {
         val q = 4_511_491.toBigInteger()
         val e = 17.toBigInteger()
         val phiN = p.phi(q)
-        println(e.invert(phiN))
         assertEquals("125631357777427553", e.invert(phiN).toString())
     }
 
-    /** n e c , 小 e, 开方爆破 c= m^e mod n => kn+c = m^e ==> 开e次根 m =(kn+c)^(1/e) */
+    /** n e c , 小 e, e=3 开方爆破 c= m^e mod n => kn+c = m^e ==> 开e次根 m =(kn+c)^(1/e) */
     @Test
     fun rsa_02() {
         val params = "rsa02.txt".parseRsaParams()
-        solve(params).also {
-            println(it)
-            assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", it)
-        }
+        assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", solve(params))
     }
 
     /** 已知 p q e c求 m 已知 p q ==> n = pq , phiN = (p-1)(q-1) */
@@ -59,24 +53,15 @@ class RsaTest {
     fun rsa3() {
         // yafu 分解n后，可以得到p q
         var params = "rsa03.txt".parseRsaParams()
-        solvePQEC(params).also {
-            println(it)
-            assertEquals("flag{01d80670b01b654fe4831a3e81870734}", it)
-        }
+        assertEquals("flag{01d80670b01b654fe4831a3e81870734}", solvePQEC(params))
 
         // p q ec
         params = "rsa03_1.txt".parseRsaParams()
-        solvePQEC(params).also {
-            println(it)
-            assertEquals("flag{01d80670b01b654fe4831a3e81870734}", it)
-        }
+        assertEquals("flag{01d80670b01b654fe4831a3e81870734}", solvePQEC(params))
 
         // e phi不互素
         params = "rsa03_2.txt".parseRsaParams()
-        solvePQEC(params).also {
-            println(it)
-            assertEquals("flag{1f803313-8999-4ec3-abc6-907a10fde606}", it)
-        }
+        assertEquals("flag{1f803313-8999-4ec3-abc6-907a10fde606}", solvePQEC(params))
     }
 
     /** 已知e =1 , c , m >n ,求m m^e≡c(mod n) ， 当 e 为1 时， m^e≡m^1≡m≡c(mod n) 由于m是小于n的，题目中给出的密文c就是m */
@@ -87,47 +72,39 @@ class RsaTest {
         c.toBigInteger().toByteArray().toString(Charsets.UTF_8).also {
             assertEquals("flag{046b9e03-474f-4ac0-9372-25bfc545dc08}", it)
         }
-        val params = "rsa05.txt".parseRsaParams().also { println(it) }
+        val params = "rsa05.txt".parseRsaParams()
         assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", solve(params))
     }
 
     /** 两组e相同, nc不同,且N不互素 */
     @Test
     fun rsa6() {
-        val params = "rsa06.txt".parseRsaParams().also { println(it) }
+        val params = "rsa06.txt".parseRsaParams()
         assertEquals("flag{c9a2c0b2-d078-44a2-b942-3c1030483781}", solve(params))
     }
 
     /** n (多个数相乘,含合数) e c */
     @Test
     fun rsa7() {
-        println("_______  n 由两个素数相乘 ________")
         // n 由两个素数相乘
+        println("_______  n 由两个素数相乘 ________")
         var params = "rsa04_2.txt".parseRsaParams()
-
-        solve(params).also {
-            println(it)
-            assertEquals("flag{8fb873baba0df4a6423be9f4bd525d93}", it)
-        }
-
-        println("_______ n 为素数 ________")
+        assertEquals("flag{8fb873baba0df4a6423be9f4bd525d93}", solve(params))
 
         // n 为素数
+        println("_______ n 为素数 ________")
         params = "rsa04.txt".parseRsaParams()
-        solve(params).also {
-            println(it)
-            assertEquals("flag{630b1953a612a8392af021393e36538b}", it.toBigInteger().n2s())
-        }
+        assertEquals("flag{630b1953a612a8392af021393e36538b}", solve(params).toBigInteger().n2s())
 
-        println("_______ n 由多个数相乘,含合数 ________")
         // n 由多个数相乘,含合数
+        println("_______ n 由多个数相乘,含合数 ________")
         params = "rsa07.txt".parseRsaParams()
-        solve(params).also { assertEquals("flag{5c066086-178b-46a7-b0f8-f1afba6f2910}", it) }
+        assertEquals("flag{5c066086-178b-46a7-b0f8-f1afba6f2910}", solve(params))
 
-        println("_______ nc不互素 ________")
         // nc不互素
+        println("_______ nc不互素 ________")
         params = "rsa11.txt".parseRsaParams()
-        solve(params).also { assertEquals("flag{ac8eec28-edb0-498f-b50d-94407a3f104f}", it) }
+        assertEquals("flag{ac8eec28-edb0-498f-b50d-94407a3f104f}", solve(params))
     }
 
     /** 共模攻击 已知两组 n,e,c , 共模 n, e不同 */
@@ -135,7 +112,6 @@ class RsaTest {
     fun rsa8() {
         val params = "rsa08.txt".parseRsaParams()
         assertEquals("flag{01d80670b01b654fe4831a3e81870734}", solveN2E2C2(params))
-        println(solveN2E2C2(params))
     }
 
     /**
@@ -167,49 +143,15 @@ class RsaTest {
     @Test
     fun rsa_wiener() {
         var params = "rsa14_wiener.txt".parseRsaParams()
-        solve(params).also { assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", it) }
+        assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", solve(params))
 
         params = "rsa14_wiener2.txt".parseRsaParams()
         assertEquals("Tr0y{W1eNer_AttaCk_1s_p0werfu1!}", solve(params))
     }
+
     @Test
     fun rsa_broadcast() {
         val params = "rsa15_broadcast.txt".parseRsaParams()
         solve(params).also { assertEquals("flag{59007b62-e7d6-423a-a662-c4706c91a06a}", it) }
-    }
-
-    @OptIn(ExperimentalTime::class)
-    @Test
-    fun rootN() {
-        val i =
-            ("2217344750798294937344050117513831761010547351781457575945714176628679412650463329" +
-                    "4234669550268044399317656271118568881021332348369140068180238399943422830231427029931" +
-                    "826653444453257342990474092233543389488631718467806742449257243340911537016978649186" +
-                    "95050507247415283070309")
-                .toBigInteger()
-        measureTimedValue { i.root(30_000) }.also {
-            println(it.value.contentToString())
-            println("${it.value.first().n2s()} ${it.duration}")
-        }
-    }
-
-    @Test
-    fun crtTest() {
-        // 三三数之剩二，五五数之剩三，七七数之剩二。问物几何？
-        val data =
-            listOf(
-                DivideResult("2", "3"),
-                DivideResult("3", "5"),
-                DivideResult("2", "7"),
-            )
-        println(crt(data))
-
-        val data2 =
-            listOf(
-                DivideResult("43", "87"),
-                DivideResult("80", "115"),
-                DivideResult("65", "187"),
-            )
-        println(crt(data2))
     }
 }

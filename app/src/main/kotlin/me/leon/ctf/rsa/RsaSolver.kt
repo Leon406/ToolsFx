@@ -154,7 +154,7 @@ object RsaSolver {
                     if (isEmpty()) "wiener failed" else c.decrypt(this.first(), n)
                 }
             n.gcd(c) != BigInteger.ONE -> {
-                println("n c not mutual prime")
+                println("n c are not coprime")
                 val p = n.gcd(c)
                 val q = n / p
                 val phi = p.phi(q)
@@ -175,12 +175,12 @@ object RsaSolver {
                         val gcd = e.gcd(phi)
 
                         if (gcd == BigInteger.ONE) {
-                            println("e phi mutual prime ")
+                            println("e phi are coprime ")
                             val d = e.invert(phi).also { println(it) }
                             val propN = it.propN(n)
                             c.decrypt(d, propN).also { println(it) }
                         } else {
-                            println("e phi are not mutual prime  $gcd")
+                            println("e phi are not are coprime  $gcd")
                             val d = (e / gcd).invert(phi).also { println(it) }
                             val m = c.modPow(d, n)
                             var result = ""
@@ -280,12 +280,12 @@ object RsaSolver {
         val n = p * q
         val phi = p.phi(q)
         return if (e.gcd(phi) == BigInteger.ONE) {
-            println("solve P Q E C e phi mutual prime")
+            println("solve P Q E C e phi are coprime")
             val d = e.invert(p.phi(q))
             c.decrypt(d, p * q)
         } else {
             val t = e.gcd(phi)
-            println("solve P Q E C e phi not mutual prime!! $t")
+            println("solve P Q E C e phi not are coprime!! $t")
             val t1 = e / t
             val dt1 = t1.invert(phi)
             c.modPow(dt1, n).root(t.toInt()).first().n2s()
