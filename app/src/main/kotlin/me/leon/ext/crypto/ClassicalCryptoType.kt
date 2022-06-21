@@ -571,5 +571,12 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
             with(raw.parseRsaParams()) { RsaSolver.solve(this) }
 
         override fun isIgnoreSpace() = false
+    },
+    DNA("DNA") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.dna()
+
+        override fun decrypt(raw: String, params: Map<String, String>): String = raw.dnaDecode()
+
+        override fun isIgnoreSpace() = false
     }
 }
