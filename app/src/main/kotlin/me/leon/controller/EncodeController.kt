@@ -17,7 +17,7 @@ class EncodeController : Controller() {
     ) =
         if (isSingleLine) {
             raw.lineAction2String {
-                encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
+                encode2String(it.toByteArray(Charset.forName(charset)), type, dic, charset)
             }
         } else encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
 

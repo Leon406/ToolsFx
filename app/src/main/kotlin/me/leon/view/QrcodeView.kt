@@ -38,7 +38,7 @@ class QrcodeView : Fragment("Qrcode") {
     override val closeable = SimpleBooleanProperty(false)
 
     // 切图区域
-    private var hBox: HBox by singleAssign()
+    private lateinit var hBox: HBox
     private var button: Button by singleAssign()
     private var ta: TextArea by singleAssign()
     private var textCount: Text by singleAssign()
