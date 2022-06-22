@@ -154,4 +154,15 @@ class RsaTest {
         val params = "rsa15_broadcast.txt".parseRsaParams()
         solve(params).also { assertEquals("flag{59007b62-e7d6-423a-a662-c4706c91a06a}", it) }
     }
+
+    @Test
+    fun rsa_pqrec() {
+        // 三个因子
+        var params = "rsa_19_pqrec.txt".parseRsaParams()
+        solve(params).also { assertEquals("flag{9617be6d-80e6-4748-92eb-b1eadfd94509}", it) }
+
+        // 四个因子
+        params = "rsa_19_pqrec2.txt".parseRsaParams()
+        solve(params).also { assertEquals("flag{077f0bed-c7dc-46e1-800a-bb2dc27a218f}", it) }
+    }
 }

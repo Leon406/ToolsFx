@@ -8,6 +8,8 @@ object RsaSolver {
     private val modeNECP = listOf("n", "e", "c", "p")
     private val modeNEC = listOf("n", "e", "c")
     private val modeNCD = listOf("n", "c", "d")
+    private val modePQREC = listOf("p", "q", "r", "e", "c")
+    private val modePQRnEC = listOf("p", "q", "r1", "r2", "e", "c")
     private val modeN2E2C2 = listOf("n1", "e1", "c1", "n2", "e2", "c2")
     private val modeN2EC2 = listOf("n1", "c1", "n2", "e", "c2")
     private val modeNE2C2 = listOf("n", "c1", "e2", "e1", "c2")
@@ -36,6 +38,7 @@ object RsaSolver {
             params.containKeys(modeBroadcastN3C3) -> solveBroadCast(params)
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeDpDq) -> solveDpDq(params)
+            params.containKeys(modePQREC) || params.containKeys(modePQRnEC) -> solvePQREC(params)
             params.containKeys(modeNCD) -> solveNCD(params)
             params.containKeys(modeN2E2C2) -> solveN2E2C2(params)
             params.containKeys(modePQEC2) ->
@@ -53,6 +56,17 @@ object RsaSolver {
             params.containKeys(modeEC) && params["e"] == BigInteger.ONE -> params["c"]!!.n2s()
             else -> error("wrong parameters!!!")
         }
+
+    private fun solvePQREC(params: MutableMap<String, BigInteger>): String {
+        println("solve P Q R E C")
+        val e = requireNotNull(params["e"])
+        val c = requireNotNull(params["c"])
+        val factors =
+            params.keys.filter { it.startsWith("r") || it == "p" || it == "q" }.map { params[it]!! }
+        val n = params["n"] ?: factors.product()
+        val phi = factors.phi()
+        return c.decrypt(e.invert(phi), n)
+    }
 
     private fun solveNCD(params: MutableMap<String, BigInteger>): String {
         println("solve N C D ")
@@ -171,11 +185,12 @@ object RsaSolver {
                         val propN = it.propN(n)
                         c.decrypt(d, propN).also { println(it) }
                     } else if (it.size >= 2) {
+                        println(it)
                         val phi = it.phi()
                         val gcd = e.gcd(phi)
 
                         if (gcd == BigInteger.ONE) {
-                            println("e phi are coprime ")
+                            println("e phi are coprime $phi")
                             val d = e.invert(phi).also { println(it) }
                             val propN = it.propN(n)
                             c.decrypt(d, propN).also { println(it) }

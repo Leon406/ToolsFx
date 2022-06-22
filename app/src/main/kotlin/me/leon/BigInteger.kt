@@ -42,6 +42,8 @@ fun List<BigInteger>.phi(): BigInteger =
         acc * (int - BigInteger.ONE)
     }
 
+fun List<BigInteger>.product(): BigInteger = fold(BigInteger.ONE) { acc, int -> acc * int }
+
 fun BigInteger.isMutualPrime(other: BigInteger) = gcd(other) == BigInteger.ONE
 
 fun List<BigInteger>.propN(n: BigInteger) =
