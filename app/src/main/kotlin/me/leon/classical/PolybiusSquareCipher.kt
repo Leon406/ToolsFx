@@ -1,6 +1,7 @@
 package me.leon.classical
 
 import me.leon.ext.crypto.TABLE_A_Z_WO_J
+import me.leon.ext.stripAllSpace
 
 /** @link https://wtool.com.cn/polybius.html */
 const val DEFAULT_POLYBIUS_ENCODE_MAP = "12345"
@@ -10,9 +11,10 @@ fun String.polybius(
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
     replacePair: Pair<String, String> = "J" to "I"
 ): String {
+    val properTable = table.stripAllSpace().uppercase()
     val map =
-        table.uppercase().associateWith {
-            val i = table.uppercase().indexOf(it)
+        properTable.associateWith {
+            val i = properTable.indexOf(it)
             "${encodeMap[i / encodeMap.length]}${encodeMap[i % encodeMap.length]}"
         }
     return uppercase()
@@ -25,9 +27,10 @@ fun String.polybiusDecrypt(
     table: String = TABLE_A_Z_WO_J,
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
 ): String {
+    val properTable = table.stripAllSpace().uppercase()
     val map =
-        table.uppercase().associateBy {
-            val i = table.uppercase().indexOf(it)
+        properTable.associateBy {
+            val i = properTable.indexOf(it)
             "${encodeMap[i / encodeMap.length]}${encodeMap[i % encodeMap.length]}"
         }
     val sb = StringBuilder()
