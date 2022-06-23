@@ -201,7 +201,7 @@
 - [x] SM2
 - [x] 其他 BouncyCastle支持的算法
 
-### 古典密码 (for CTF)
+### CTF (古典密码及其他 )  [wiki](https://github.com/Leon406/ToolsFx/wiki/CTF)
 
 - [x] 凯撒
 - [x] rot5/rot13/rot18/rot47
@@ -234,7 +234,7 @@
 - [x] 格雷码(Gray code)
 - [x] 佛曰
 - [x] 希尔密码
-- [x] 新佛曰/兽曰/熊曰(需联网)
+- [x] 新佛曰/兽音/熊曰(需联网)
 - [x] rabbit
 - [x] aaencode/jjencode
 - [x] RSA crack (nec,pqec)
@@ -285,7 +285,7 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
     - 32/64位 Windows  -----	jdk8-withjre-windows-x86 (JRE 8,不知道就选这个)
 
 - 已安装JDK/JRE (开发人员,需配置,文件小)
-    
+  
     - JDK8(Oracle 官方)   -----	jdk8-all-platform
     - JDK11+                     -----	jdk17-no-jfx-all-platform + 配置javafx环境变量
     

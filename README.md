@@ -192,7 +192,7 @@ support file, big file which is larger than 8Gi
 - [x] SM2
 - [ ] other
 
-### Classical Crypto (for CTF)
+### Classical Crypto (for CTF) 
 
 - [x] caesar
 - [x] rot5/rot13/rot18/rot47
@@ -224,7 +224,7 @@ support file, big file which is larger than 8Gi
 - [x] Gray code
 - [x] Buddha Says(佛曰)
 - [x] Hill Cipher
-- [x] 新佛曰/兽曰/熊曰(online)
+- [x] 新佛曰/兽音/熊曰(online)
 - [x] rabbit
 - [x] aaencode/jjencode
 - [x] RSA crack (nec,pqec)

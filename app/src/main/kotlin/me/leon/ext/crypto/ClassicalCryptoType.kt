@@ -212,7 +212,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun paramsCount() = 1
 
-        override fun paramsHints() = listOf("table $TABLE_A_Z_WO_J", "")
+        override fun paramsHints() = listOf("key", "")
 
         override fun isIgnoreSpace() = false
     },
@@ -503,7 +503,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: Map<String, String>): String =
             PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Buddha, raw)
     },
-    Roar("兽曰(online)") {
+    Roar("兽音(online)") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Roar, raw)
 

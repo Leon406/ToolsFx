@@ -151,7 +151,7 @@
 - feat(app): encode add radix64
 - feat(app): add stream cipher ChaCha20,ChaCha20-Poly1305
 - feat(app): 新增base45
-- feat(app): 新增在线密码新佛曰/兽曰/熊曰,js密码rabbit/aaencode/jjencode
+- feat(app): 新增在线密码新佛曰/兽音/熊曰,js密码rabbit/aaencode/jjencode
 - feat(app): 新增更新内容提示
 - feat(app): 优化pem解析
 - feat(app): 新增公钥密码密钥文件解析格式cer,der
