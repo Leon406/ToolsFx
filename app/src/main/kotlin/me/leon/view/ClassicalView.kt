@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.Styles
+import me.leon.WIKI_CTF
 import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -166,6 +167,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 enableWhen(!isProcessing)
             }
             button(messages["codeFrequency"]) { action { "https://quipqiup.com/".openInBrowser() } }
+            button("wiki") { action { WIKI_CTF.openInBrowser() } }
         }
         hbox {
             spacing = DEFAULT_SPACING
