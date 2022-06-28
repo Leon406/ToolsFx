@@ -459,17 +459,17 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     Bifid("bifid") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.bifid(params[P1]!!, params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5)
+            raw.bifid(params[P1]!!.ifEmpty { TABLE_A_Z_WO_J }, params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5)
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.bifidDecrypt(
-                params[P1]!!,
+                params[P1]!!.ifEmpty { TABLE_A_Z_WO_J },
                 params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5
             )
 
         override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf(" key,length 25 ", "period, default 5")
+        override fun paramsHints() = listOf(" key,length 25,default A-Z(w/o J) ", "period, default 5")
     },
     GrayCode("grayCode") {
         override fun encrypt(raw: String, params: Map<String, String>) =
