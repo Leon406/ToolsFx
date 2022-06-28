@@ -17,5 +17,6 @@ const val DEV_UPDATE_URL =
 const val DEV_UPDATE_URL2 = "https://raw.githubusercontent.com/Leon406/ToolsFx/dev/update.json"
 const val LICENSE = "https://raw.githubusercontent.com/Leon406/ToolsFx/main/LICENSE"
 const val WIKI_CTF = "https://github.com/Leon406/ToolsFx/wiki/CTF"
+const val WIKI = "https://github.com/Leon406/ToolsFx/wiki/Home"
 val APP_ROOT: String = File("").absolutePath
 val DICT_DIR: String = "$APP_ROOT/dict"

@@ -28,9 +28,12 @@ class AboutView : Fragment(messages["about"]) {
         text("Build: $BUILD_DATE")
         text("JRE: ${System.getProperty("java.runtime.version")}")
         text("VM: ${System.getProperty("java.vm.name")}")
+
+        hyperlink("wiki").action { WIKI.openInBrowser() }
         hyperlink("吾爱破解地址").action { PJ52_URL.openInBrowser() }
         hyperlink(messages["feedback"]).action { REPO_ISSUE.openInBrowser() }
         hyperlink(messages["license"]).action { LICENSE.openInBrowser() }
+
         button(messages["checkUpdate"]) {
             enableWhen(!isFetching)
             action {
@@ -58,17 +61,17 @@ class AboutView : Fragment(messages["about"]) {
             isFetching.value = true
             DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2)
         } ui
-            {
-                isFetching.value = false
-                releaseInfo = it.fromJson(ReleaseInfo::class.java)
-                txtLatestVersion.text =
-                    if (it.isEmpty()) messages["unknown"]
-                    else if (VERSION != releaseInfo.version) {
-                        "${messages["latestVer"]} v${releaseInfo.version}".also {
-                            find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
-                        }
-                    } else messages["alreadyLatest"]
-            }
+                {
+                    isFetching.value = false
+                    releaseInfo = it.fromJson(ReleaseInfo::class.java)
+                    txtLatestVersion.text =
+                        if (it.isEmpty()) messages["unknown"]
+                        else if (VERSION != releaseInfo.version) {
+                            "${messages["latestVer"]} v${releaseInfo.version}".also {
+                                find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
+                            }
+                        } else messages["alreadyLatest"]
+                }
     }
 
     private fun checkUpdate(isAuto: Boolean = true) {
@@ -77,16 +80,16 @@ class AboutView : Fragment(messages["about"]) {
             isFetching.value = true
             CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2)
         } ui
-            {
-                isFetching.value = false
-                releaseInfo = it.fromJson(ReleaseInfo::class.java)
-                txtLatestVersion.text =
-                    if (it.isEmpty()) messages["unknown"]
-                    else if (!VERSION.contains("beta") && VERSION != releaseInfo.version) {
-                        "${messages["latestVer"]} v${releaseInfo.version}".also {
-                            find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
-                        }
-                    } else messages["alreadyLatest"]
-            }
+                {
+                    isFetching.value = false
+                    releaseInfo = it.fromJson(ReleaseInfo::class.java)
+                    txtLatestVersion.text =
+                        if (it.isEmpty()) messages["unknown"]
+                        else if (!VERSION.contains("beta") && VERSION != releaseInfo.version) {
+                            "${messages["latestVer"]} v${releaseInfo.version}".also {
+                                find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
+                            }
+                        } else messages["alreadyLatest"]
+                }
     }
 }
