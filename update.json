@@ -1,14 +1,18 @@
-{"version":"1.13.4.beta","info":"1.13.4.beta
+{"version":"1.13.5.beta","info":"1.13.5.beta
 
-🔥 RSA-crack新增wiener攻击
-🔥 RSA-crack新增共模,共指数
-🔥 RSA-crack新增nec 费马分解
-🔥 RSA-crack新增e=3 低指数广播
-🔥 RSA-crack新增dp泄露, dp dq功能
-🔥 RSA-crack新增 ncd,necp,ec参数
-🔥 增强CTF RSA-crack功能,由原RSA-nec,RSA-pqec合并
+🔥 CTF autoKey 提示语错误,修正兽音
+🔥 CTF playfair/ADGFX兼容包含空白符号的table
+🔥 CTF playFair支持大小写还原
+🔥 RSA-crack 新增n多因子解密 p q r r1 r2 rn
+🔥 修复QrCode截屏识别错误, 编码逐行功能无效
+🔥 CTF新增 DNA加密解
+🔥 编码一键crack不正确, 排除octal
+🔥 RSA-crack 加入本地质因分解算法 rho,p-1
+🔥 RSA-crack 小指数开方不包含 c^(n/1)
+🔥 railfence normal 移除占位符
 🔥 其他优化
 
-升级方式  下载最新app.jar复制到lib目录下,同时删除旧jar包,
+升级方式  下载最新app.jar复制到lib目录下,同时删除旧jar包
+新增 CTF wiki  https://github.com/Leon406/ToolsFx/wiki/CTF
 
   "}

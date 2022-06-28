@@ -12,7 +12,7 @@ fun BigInteger.trialDivide(): MutableList<BigInteger> {
     if (isProbablePrime(100)) return factors.apply { add(this@trialDivide) }
     println("div: start divide")
     var n = this
-    while (n % TWO == BigInteger.ZERO) {
+    while (n % TWO == ZERO) {
         factors.add(TWO)
         n /= TWO
     }
@@ -22,7 +22,7 @@ fun BigInteger.trialDivide(): MutableList<BigInteger> {
         // optimize, avoid prime loop
         if (n.isProbablePrime(100)) break
 
-        if (n % f == BigInteger.ZERO) {
+        if (n % f == ZERO) {
             factors.add(f)
             n /= f
         } else {
@@ -36,10 +36,10 @@ fun BigInteger.trialDivide(): MutableList<BigInteger> {
 
 fun BigInteger.fermat(): MutableList<BigInteger> {
     with(sqrtAndRemainder()) {
-        if (this.last() != BigInteger.ZERO) {
-            var a = first() + BigInteger.ONE
+        if (this.last() != ZERO) {
+            var a = first() + ONE
             var count = 0
-            var b: BigInteger = BigInteger.ONE
+            var b: BigInteger
             while (count < 10_000) {
                 val b1 = a.pow(2) - this@fermat
                 b = b1.sqrt()

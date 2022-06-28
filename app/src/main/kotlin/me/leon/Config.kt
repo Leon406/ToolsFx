@@ -2,7 +2,7 @@ package me.leon
 
 import java.io.File
 
-const val VERSION = "1.13.4.beta"
+const val VERSION = "1.13.5.beta"
 const val BUILD_DATE = "2022-06-21"
 const val REPO_URL = "https://github.com/Leon406/ToolsFx"
 const val REPO_ISSUE = "https://github.com/Leon406/ToolsFx/issues/new"
