@@ -165,4 +165,10 @@ class RsaTest {
         params = "rsa_19_pqrec2.txt".parseRsaParams()
         solve(params).also { assertEquals("flag{077f0bed-c7dc-46e1-800a-bb2dc27a218f}", it) }
     }
+
+    @Test
+    fun rsa_n2ec() {
+        val params = "rsa_20_n2ec.txt".parseRsaParams()
+        solve(params).also { assertEquals("SangFor{qSccmm1WrgvIg2Uq_cZhmqNfEGTz2GV8}", it) }
+    }
 }

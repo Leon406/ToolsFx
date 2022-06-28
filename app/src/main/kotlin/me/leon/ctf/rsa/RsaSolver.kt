@@ -7,6 +7,7 @@ object RsaSolver {
 
     private val modeNECP = listOf("n", "e", "c", "p")
     private val modeNEC = listOf("n", "e", "c")
+    private val modeN2EC = listOf("n1", "n2", "e", "c")
     private val modeNCD = listOf("n", "c", "d")
     private val modePQREC = listOf("p", "q", "r", "e", "c")
     private val modePQRnEC = listOf("p", "q", "r1", "r2", "e", "c")
@@ -37,6 +38,13 @@ object RsaSolver {
                 }
             params.containKeys(modeBroadcastN3C3) -> solveBroadCast(params)
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
+            params.containKeys(modeN2EC) ->
+                solveN2EC2(
+                    params.apply {
+                        this["c1"] = this["c"]!!
+                        this["c2"] = this["c"]!!
+                    }
+                )
             params.containKeys(modeDpDq) -> solveDpDq(params)
             params.containKeys(modePQREC) || params.containKeys(modePQRnEC) -> solvePQREC(params)
             params.containKeys(modeNCD) -> solveNCD(params)
@@ -116,15 +124,11 @@ object RsaSolver {
         val q1 = n1 / p
         val q2 = n2 / p
         println("gcd: ${e.gcd(p.phi(q1))}")
-
-        return runCatching {
-            val d1 = e.invert(p.phi(q1))
-            c1.decrypt(d1, n1)
-        }
-            .getOrElse {
-                val d2 = e.invert(p.phi(q2))
-                c2.decrypt(d2, n2)
-            }
+        val d2 = e.invert(p.phi(q2))
+        val c = c2.modPow(d2, n2)
+        val d1 = e.invert(p.phi(q1))
+        val decrypt = c.decrypt(d1, n1)
+        return REG_NON_PRINTABLE.find(decrypt)?.run { c1.decrypt(d1, n1) } ?: run { decrypt }
     }
 
     private fun solveNE2C2(params: MutableMap<String, BigInteger>): String {

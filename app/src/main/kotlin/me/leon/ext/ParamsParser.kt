@@ -9,7 +9,7 @@ fun String.parseRsaParams() =
         acc.apply {
             with(s.split("\\s*[=:：]\\s*".toRegex())) {
                 acc[this[0].lowercase()] =
-                    this[1].takeUnless { it.startsWith("0x", true) }?.toBigInteger()
+                    this[1].trim().takeUnless { it.startsWith("0x", true) }?.toBigInteger()
                         ?: this[1].substring(2).trim().toBigInteger(16)
             }
         }
