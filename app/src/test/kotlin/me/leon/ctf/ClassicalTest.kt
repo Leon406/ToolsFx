@@ -2,6 +2,8 @@ package me.leon.ctf
 
 import kotlin.test.assertEquals
 import me.leon.classical.*
+import me.leon.ext.crypto.TABLE_A_Z
+import me.leon.ext.crypto.TABLE_A_Z_LOWER
 import me.leon.ext.stripAllSpace
 import org.junit.Test
 
@@ -54,6 +56,13 @@ class ClassicalTest {
         "AffineCipher".affineEncrypt(5, 8).also {
             assertEquals("IhhwvcSwfrcp", it)
             assertEquals("AffineCipher", it.affineDecrypt(5, 8))
+        }
+
+        "aoxL{XaaHKP_tHgwpc_hN_ToXnnht}".affineDecrypt(37, 23, TABLE_A_Z_LOWER + TABLE_A_Z).also {
+            println(it)
+        }
+        "flaG(AffINE_cIpher_iS_ClAssic}".affineEncrypt(37, 23, TABLE_A_Z_LOWER + TABLE_A_Z).also {
+            println(it)
         }
     }
 
@@ -267,6 +276,16 @@ class ClassicalTest {
 
         assertEquals(encrypted, data.hillEncrypt(key, fromZero = false))
         assertEquals(data, encrypted.hillDecrypt(key, fromZero = false))
+    }
+
+    @Test
+    fun hillCrack() {
+        var key = "hillpassw"
+        var data = "lamkjihsisfxfojgacbduappfmu"
+
+        repeat(25) {
+            runCatching { data.hillEncrypt(key.caesar(it), fromZero = false).also { println(it) } }
+        }
     }
 
     @Test
