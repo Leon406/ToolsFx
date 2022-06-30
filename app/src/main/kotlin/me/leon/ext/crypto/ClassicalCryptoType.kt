@@ -582,5 +582,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: Map<String, String>): String = raw.dnaDecode()
 
         override fun isIgnoreSpace() = false
+    },
+    TAP_CODE("tapCode") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.tapCode()
+
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            raw.tapCodeDecrypt()
+
+        override fun isIgnoreSpace() = false
     }
 }

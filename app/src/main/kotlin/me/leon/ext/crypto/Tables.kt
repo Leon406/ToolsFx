@@ -5,3 +5,4 @@ const val TABLE_HANDY_CODE =
 const val TABLE_A_Z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const val TABLE_A_Z_LOWER = "abcdefghijklmnopqrstuvwxyz"
 const val TABLE_A_Z_WO_J = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+const val TABLE_A_Z_WO_K = "ABCDEFGHIJLMNOPQRSTUVWXYZ"

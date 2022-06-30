@@ -117,6 +117,17 @@ class ClassicalTest {
     }
 
     @Test
+    fun tapeCode() {
+        val msg = "water"
+        val tapCode = "••••• ••   • •   •••• ••••   • •••••   •••• ••"
+        val encrypted = "5211441542"
+
+        assertEquals(encrypted, msg.tapCode())
+        assertEquals(msg.uppercase(), encrypted.tapCodeDecrypt())
+        assertEquals(msg.uppercase(), tapCode.tapCodeDecrypt())
+    }
+
+    @Test
     fun bacon() {
         val msg = "Leon 406 Hello"
         var encrypted = "ABABAAABAAABBABABBAA 406 AABBBAABAAABABAABABAABBAB"
