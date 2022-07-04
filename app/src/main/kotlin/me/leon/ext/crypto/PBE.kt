@@ -44,13 +44,13 @@ object PBE {
             "SHAand256bitAES-CBC-BC",
             "SHAand192bitAES-CBC-BC",
             "SHAand128bitAES-CBC-BC",
-            "SHAand3-keyTRIPLEDES-CBC",
-            "SHAand2-keyTRIPLEDES-CBC",
+            "SHAand3-keyTripleDES-CBC",
+            "SHAand2-keyTripleDES-CBC",
             "SHAand128bitRC4",
             "SHAand40bitRC4",
             "SHAand128bitRC2-CBC",
             "SHAand40bitRC2-CBC",
-            "SHAandTWOFISH-CBC",
+            "SHAandTwoFISH-CBC",
             "SHAandIDEA-CBC"
         )
 

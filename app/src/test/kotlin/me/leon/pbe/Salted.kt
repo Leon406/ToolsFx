@@ -59,13 +59,13 @@ class Salted {
         }
     }
 
-    private fun kdf(pass: ByteArray, salt: ByteArray, outputSize: Int = 48): ByteArray {
+    private fun kdf(pass: ByteArray, salt: ByteArray, outputSize: Int = 48, hash: String = "MD5"): ByteArray {
         val tmpKey = pass + salt
-        var key = tmpKey.hash()
+        var key = tmpKey.hash(hash)
 
         var resultKey = key
         while (resultKey.size < outputSize) {
-            key = (key + tmpKey).hash()
+            key = (key + tmpKey).hash(hash)
             resultKey += key
         }
         println(resultKey.size)
