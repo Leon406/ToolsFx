@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.*
 import javafx.scene.control.*
 import me.leon.Styles
+import me.leon.TEXT_AREA_LINES
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -127,6 +128,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 isWrapText = true
                 prefHeight = DEFAULT_SPACING_16X
                 onDragEntered = inputEventHandler
+                prefRowCount = TEXT_AREA_LINES
             }
 
         hbox {
@@ -250,6 +252,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
+                prefRowCount = TEXT_AREA_LINES
             }
     }
 

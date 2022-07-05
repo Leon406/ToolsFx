@@ -3,8 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import me.leon.Styles
-import me.leon.WIKI_CTF
+import me.leon.*
 import me.leon.controller.ClassicalController
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -60,6 +59,7 @@ class ClassicalView : Fragment(messages["classical"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["input"])
+            addClass(Styles.left)
             button(graphic = imageview("/img/openwindow.png")) {
                 tooltip(messages["newWindow"])
                 action { find<ClassicalView>().openWindow() }
@@ -68,10 +68,14 @@ class ClassicalView : Fragment(messages["classical"]) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
+
+            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
         }
 
         taInput =
             textarea {
+                prefRowCount = TEXT_AREA_LINES
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
@@ -151,12 +155,8 @@ class ClassicalView : Fragment(messages["classical"]) {
             spacing = DEFAULT_SPACING
             alignment = Pos.CENTER
             togglegroup {
-                spacing = DEFAULT_SPACING
-                alignment = Pos.CENTER
                 radiobutton(messages["encrypt"]) { isSelected = true }
                 radiobutton(messages["decrypt"])
-                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
-                checkbox(messages["singleLine"], isSingleLine)
                 selectedToggleProperty().addListener { _, _, new ->
                     isEncrypt = new.cast<RadioButton>().text == messages["encrypt"]
                     run()
@@ -189,6 +189,7 @@ class ClassicalView : Fragment(messages["classical"]) {
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
+                prefRowCount = TEXT_AREA_LINES - 2
                 contextmenu {
                     item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
                     item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }

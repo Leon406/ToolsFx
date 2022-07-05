@@ -142,6 +142,7 @@ class BigIntFragment : Fragment("BigInt") {
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
+                prefRowCount = TEXT_AREA_LINES - 2
                 contextmenu {
                     item("numberToString") { action { number2String() } }
                     item("stringToNumber") { action { string2Number() } }

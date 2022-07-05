@@ -90,6 +90,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         addClass(Styles.group)
         hbox {
             label(messages["input"])
+            addClass(Styles.left)
             spacing = DEFAULT_SPACING
             button(graphic = imageview("/img/openwindow.png")) {
                 tooltip(messages["newWindow"])
@@ -99,6 +100,13 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
+            checkbox(messages["singleLine"], isSingleLine) {
+                selectedProperty().addListener { _, _, newValue ->
+                    decodeIgnoreSpace.set(!newValue)
+                }
+            }
+            checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
+            checkbox(messages["fileMode"], isFileMode)
         }
 
         taInput =
@@ -106,6 +114,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+                prefRowCount = TEXT_AREA_LINES
                 contextmenu {
                     item(messages["loadFromNet"]) {
                         action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
@@ -181,13 +190,6 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
                 radiobutton(messages["encode"]) { isSelected = true }
                 radiobutton(messages["decode"])
-                checkbox(messages["singleLine"], isSingleLine) {
-                    selectedProperty().addListener { _, _, newValue ->
-                        decodeIgnoreSpace.set(!newValue)
-                    }
-                }
-                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
-                checkbox(messages["fileMode"], isFileMode)
                 label("times:")
                 tfCount =
                     textfield("1") {
@@ -238,6 +240,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
+                prefRowCount = TEXT_AREA_LINES
             }
     }
     override val root = borderpane {

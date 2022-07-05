@@ -3,7 +3,8 @@ package me.leon
 import java.io.File
 
 const val VERSION = "1.13.5.beta"
-const val BUILD_DATE = "2022-06-28"
+const val BUILD_DATE = "2022-07-05"
+const val TEXT_AREA_LINES = 8
 const val REPO_URL = "https://github.com/Leon406/ToolsFx"
 const val REPO_ISSUE = "https://github.com/Leon406/ToolsFx/issues/new"
 const val PJ52_URL = "https://www.52pojie.cn/thread-1501153-1-1.html"

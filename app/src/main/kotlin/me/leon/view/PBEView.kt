@@ -113,6 +113,9 @@ class PBEView : Fragment("PBE") {
                     prefWidth = DEFAULT_SPACING_8X
                     textFormatter = intTextFormatter
                 }
+        }
+        hbox {
+            addClass(Styles.left)
             label(messages["saltLen"])
             tfSaltLength =
                 textfield("8") {

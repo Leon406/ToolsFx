@@ -5,8 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import me.leon.CHARSETS
-import me.leon.Styles
+import me.leon.*
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import me.leon.ext.crypto.*
@@ -98,6 +97,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             textarea {
                 promptText = messages["inputHint"]
                 isWrapText = true
+                prefRowCount = TEXT_AREA_LINES - 2
                 onDragEntered = eventHandler
                 textProperty().addListener { _, _, _ -> labelInfo.text = info }
             }
@@ -164,6 +164,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
 
         taOutput =
             textarea {
+                prefRowCount = TEXT_AREA_LINES - 2
                 promptText = messages["outputHint"]
                 isWrapText = true
             }
