@@ -40,6 +40,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
     override val closeable = SimpleBooleanProperty(false)
     private val isSingleLine = SimpleBooleanProperty(false)
+    private val isFileMode = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(true)
     private val isProcessing = SimpleBooleanProperty(false)
     private var enableDict = SimpleBooleanProperty(true)
@@ -74,10 +75,14 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (length() <= 10 * 1024 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 10M"
+                if (isFileMode.get()) {
+                    this.absolutePath
+                } else {
+                    if (length() <= 10 * 1024 * 1024) {
+                        if (realExtension() in unsupportedExts) "unsupported file extension"
+                        else readText()
+                    } else "not support file larger than 10M"
+                }
             }
     }
 
@@ -186,7 +191,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         println("$observable $oldValue  $newValue")
                     }
                 }
-
+                checkbox(messages["fileMode"], isFileMode)
                 label("times:")
                 tfCount =
                     textfield("1") {
@@ -289,7 +294,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
     private fun crack() {
         startTime = System.currentTimeMillis()
-        var encoded = taInput.text.substringAfter("\t")
+        var encoded =
+            if (isFileMode.get()) taInput.text.toFile().readText()
+            else taInput.text.substringAfter("\t")
         isProcessing.value = true
         if (DEBUG) println("read ${System.currentTimeMillis() - startTime}")
         val encodeMethods = mutableListOf<String>()

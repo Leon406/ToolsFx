@@ -1,9 +1,10 @@
 package me.leon.controller
 
 import java.nio.charset.Charset
-import me.leon.*
-import me.leon.ext.*
+import me.leon.DEBUG
+import me.leon.ext.catch
 import me.leon.ext.crypto.EncodeType
+import me.leon.ext.lineAction2String
 import tornadofx.*
 
 class EncodeController : Controller() {
@@ -41,14 +42,10 @@ class EncodeController : Controller() {
     ) =
         if (isSingleLine) {
             encoded.lineAction2String {
-                decode(it, type, dic, charset).toString(Charset.forName(charset)).also {
-                    if (it.contains(REG_NON_PRINTABLE)) kotlin.error(EXCEPTION_NON_PRINTABLE)
-                }
+                decode(it, type, dic, charset).toString(Charset.forName(charset))
             }
         } else {
-            decode(encoded, type, dic, charset).toString(Charset.forName(charset)).also {
-                if (it.contains(REG_NON_PRINTABLE)) kotlin.error(EXCEPTION_NON_PRINTABLE)
-            }
+            decode(encoded, type, dic, charset).toString(Charset.forName(charset))
         }
 
     fun decode(
@@ -58,7 +55,7 @@ class EncodeController : Controller() {
         charset: String = "UTF-8"
     ): ByteArray =
         catch({ "解码错误: ${it.lines().first()}".toByteArray() }) {
-            if (DEBUG) println("decode $type $dic $charset $encoded")
+            if (DEBUG) println("decode $type $dic $charset ${encoded.length}")
             if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
         }
 }

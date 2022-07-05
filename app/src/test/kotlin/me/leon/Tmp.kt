@@ -3,6 +3,7 @@ package me.leon
 import java.security.Security
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import me.leon.ext.crypto.EncodeType
 import me.leon.hash.argon2.Argon2PasswordEncoder
 import me.leon.hash.bcrypt.BCryptPasswordEncoder
 import me.leon.hash.password.*
@@ -152,5 +153,6 @@ class Tmp {
     @Test
     fun big() {
         "12".toBigInteger().toString(16).also { println(it) }
+        println(EncodeType.values().joinToString(" "))
     }
 }
