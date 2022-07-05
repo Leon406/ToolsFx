@@ -2,7 +2,7 @@
 plugins {
     kotlin("jvm") version "1.7.0"
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
-    id("com.diffplug.spotless") version "6.7.2"
+    id("com.diffplug.spotless") version "6.8.0"
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
@@ -22,8 +22,8 @@ subprojects {
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     repositories {
-        mavenCentral()
         maven { url = uri("https://maven.aliyun.com/repository/public") }
+        mavenCentral()
         maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
     }
