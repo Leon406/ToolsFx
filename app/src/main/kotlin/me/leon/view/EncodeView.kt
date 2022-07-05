@@ -186,11 +186,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         decodeIgnoreSpace.set(!newValue)
                     }
                 }
-                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
-                    selectedProperty().addListener { observable, oldValue, newValue ->
-                        println("$observable $oldValue  $newValue")
-                    }
-                }
+                checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
                 checkbox(messages["fileMode"], isFileMode)
                 label("times:")
                 tfCount =

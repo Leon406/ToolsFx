@@ -36,7 +36,7 @@ private fun parseKey(key: String): Array<IntArray> {
         }
     val determinant = keyMatrix.determinant(keyMatrix.size)
     if (determinant % 26 in arrayOf(0, 13) || determinant % 26 % 2 == 0) {
-        keyMatrix.showMatrix()
+//        keyMatrix.showMatrix()
         throw IllegalArgumentException("wrong key matrix")
     }
     return keyMatrix
