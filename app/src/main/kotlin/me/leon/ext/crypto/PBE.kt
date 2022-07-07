@@ -31,10 +31,12 @@ object PBE {
     val PBE_CRYPTO =
         arrayOf(
             "MD5and256bitAES-CBC-OPENSSL",
+            "MD5andRC4",
+            "MD5andDES",
+            "MD5andTripleDES",
             "MD5and192bitAES-CBC-OPENSSL",
             "MD5and128bitAES-CBC-OPENSSL",
             "MD5andRC2",
-            "MD5andDES",
             "MD2andDES",
             "SHA1andDES",
             "SHA1andRC2",
@@ -54,46 +56,57 @@ object PBE {
             "SHAandIDEA-CBC"
         )
 
+    fun decrypt(
+        password: String,
+        data: String,
+        saltLength: Int,
+        alg: String,
+        iteration: Int = 1,
+        keyLength: Int = 128
+    ): String {
+        val base64Decode = data.base64Decode()
+        val salt = base64Decode.sliceArray(8 until (8 + saltLength))
+        return when {
+            alg.contains("HMAC", true) ->
+                generatePBEKey(password, salt, alg, keyLength, iteration).encoded.base64()
+            alg == "PBEWithMD5andRC4" -> data.openSslDecrypt("RC4", password.toByteArray(), 32, 0)
+            alg == "PBEWithMD5andTripleDES" ->
+                data.openSslDecrypt("DESede/CBC/PKCS5Padding", password.toByteArray(), 24, 8)
+            else ->
+                with(makeCipher(alg, password, salt, iteration, keyLength, Cipher.DECRYPT_MODE)) {
+                    doFinal(base64Decode.sliceArray((8 + saltLength)..base64Decode.lastIndex))
+                        .decodeToString()
+                }
+        }
+    }
+
+    fun encrypt(
+        password: String,
+        data: String,
+        salt: ByteArray,
+        alg: String,
+        iteration: Int = 1,
+        keyLength: Int = 128
+    ) =
+        when {
+            alg.contains("HMAC", true) ->
+                generatePBEKey(password, salt, alg, keyLength, iteration).encoded.base64()
+            alg == "PBEWithMD5andRC4" ->
+                data.openSslEncrypt("RC4", password.toByteArray(), salt, 32, 0)
+            alg == "PBEWithMD5andTripleDES" ->
+                data.openSslEncrypt("DESede/CBC/PKCS5Padding", password.toByteArray(), salt, 24, 8)
+            else ->
+                with(makeCipher(alg, password, salt, iteration, keyLength, Cipher.ENCRYPT_MODE)) {
+                    ("Salted__".toByteArray() + salt + doFinal(data.toByteArray())).base64()
+                }
+        }
+
     @Throws(NoSuchAlgorithmException::class)
     fun getSalt(len: Int = 8): ByteArray {
         val sr = SecureRandom.getInstance("SHA1PRNG")
         val salt = ByteArray(len)
         sr.nextBytes(salt)
         return salt
-    }
-
-    private fun generatePBEKey(
-        password: String,
-        salt: ByteArray = byteArrayOf(),
-        alg: String,
-        keyLen: Int = 128,
-        saltLen: Int = 8,
-        iterations: Int = 1
-    ): SecretKey {
-        val chars = password.toCharArray()
-        val saltBytes = salt.takeUnless { it.isEmpty() } ?: getSalt(saltLen)
-        val spec = PBEKeySpec(chars, saltBytes, iterations, keyLen)
-        val skf = SecretKeyFactory.getInstance(alg)
-        return skf.generateSecret(spec)
-    }
-
-    fun decrypt(
-        key: String,
-        data: String,
-        saltLength: Int,
-        alg: String,
-        iteration: Int,
-        keyLength: Int
-    ): String {
-        val base64Decode = data.base64Decode()
-        val salt = base64Decode.sliceArray(8 until (8 + saltLength))
-        if (alg.contains("HMAC", true)) {
-            return generatePBEKey(key, salt, alg, keyLength, iteration).encoded.base64()
-        }
-        val cipher = makeCipher(alg, key, salt, iteration, keyLength, Cipher.DECRYPT_MODE)
-        return cipher
-            .doFinal(base64Decode.sliceArray((8 + saltLength)..base64Decode.lastIndex))
-            .decodeToString()
     }
 
     private fun makeCipher(
@@ -111,19 +124,18 @@ object PBE {
             println("key ${key.encoded.base64()}  iv ${iv?.base64()}")
         }
 
-    fun encrypt(
+    private fun generatePBEKey(
         password: String,
-        data: String,
-        salt: ByteArray,
+        salt: ByteArray = byteArrayOf(),
         alg: String,
-        iteration: Int,
-        keyLength: Int
-    ): String {
-        if (alg.contains("HMAC", true)) {
-            return generatePBEKey(password, salt, alg, keyLength, iteration).encoded.base64()
-        }
-        val cipher = makeCipher(alg, password, salt, iteration, keyLength, Cipher.ENCRYPT_MODE)
-        // openssl
-        return ("Salted__".toByteArray() + salt + cipher.doFinal(data.toByteArray())).base64()
+        keyLen: Int = 128,
+        saltLen: Int = 8,
+        iterations: Int = 1
+    ): SecretKey {
+        val chars = password.toCharArray()
+        val saltBytes = salt.takeUnless { it.isEmpty() } ?: getSalt(saltLen)
+        val spec = PBEKeySpec(chars, saltBytes, iterations, keyLen)
+        val skf = SecretKeyFactory.getInstance(alg)
+        return skf.generateSecret(spec)
     }
 }
