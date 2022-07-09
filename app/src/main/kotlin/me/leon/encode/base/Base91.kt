@@ -69,7 +69,7 @@ object Base91 {
             }
         }
         if (dv != -1) {
-            output.write(((dbq or dv shl dn).toByte()).toInt())
+            output.write(((dbq or (dv shl dn)).toByte()).toInt())
         }
         return output.toByteArray()
     }
