@@ -1,5 +1,5 @@
 group = "me.leon.tools"
-version = "1.13.5.beta"
+version = "1.13.6.beta"
 
 plugins {
     application
