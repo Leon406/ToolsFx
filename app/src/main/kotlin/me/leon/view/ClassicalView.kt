@@ -26,11 +26,13 @@ class ClassicalView : Fragment(messages["classical"]) {
     private val param1Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 0)
     private val param2Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 1)
     private val isProcessing = SimpleBooleanProperty(false)
+    private val hasCrack = SimpleBooleanProperty(encodeType.hasCrack())
 
     private var taInput: TextArea by singleAssign()
     private var taOutput: TextArea by singleAssign()
     private var tfParam1: TextField by singleAssign()
     private var tfParam2: TextField by singleAssign()
+    private var tfCrackKey: TextField by singleAssign()
     private var labelInfo: Label by singleAssign()
 
     private val info: String
@@ -119,6 +121,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.classicalType()
+                        hasCrack.value = encodeType.hasCrack()
                         param1Enabled.set(encodeType.paramsCount() > 0)
                         param2Enabled.set(encodeType.paramsCount() > 1)
                         tfParam1.promptText = encodeType.paramsHints()[0]
@@ -167,7 +170,19 @@ class ClassicalView : Fragment(messages["classical"]) {
                 enableWhen(!isProcessing)
             }
             button(messages["codeFrequency"]) { action { "https://quipqiup.com/".openInBrowser() } }
+
             button("wiki") { action { WIKI_CTF.openInBrowser() } }
+            button("crack", imageview("/img/crack.png")) {
+                enableWhen(!isProcessing)
+                visibleWhen(hasCrack)
+                action { crack() }
+            }
+            label("crack key:") { visibleWhen(hasCrack) }
+            tfCrackKey =
+                textfield("flag|ctf") {
+                    visibleWhen(hasCrack)
+                    prefWidth = DEFAULT_SPACING_8X
+                }
         }
         hbox {
             spacing = DEFAULT_SPACING
@@ -234,5 +249,27 @@ class ClassicalView : Fragment(messages["classical"]) {
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
             }
+    }
+
+    private fun crack() {
+        isProcessing.value = true
+        startTime = System.currentTimeMillis()
+        runAsync {
+            controller.crack(
+                inputText,
+                encodeType,
+                tfCrackKey.text.takeUnless { it.isNullOrEmpty() } ?: "flag",
+                isSingleLine.get(),
+            )
+        } ui
+                {
+                    isProcessing.value = false
+                    taOutput.text = it
+                    if (Prefs.autoCopy) {
+                        outputText.copy().also { primaryStage.showToast(messages["copied"]) }
+                    }
+                    timeConsumption = System.currentTimeMillis() - startTime
+                    labelInfo.text = info
+                }
     }
 }

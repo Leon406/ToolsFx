@@ -113,10 +113,10 @@ fun BigInteger.wiener(n: BigInteger): Array<BigInteger> {
     // i = 2
     var dI2 = d0
     var dI1 = d1
-    var dI = dI1
+    var dI: BigInteger
     var nI2 = n0
     var nI1 = n1
-    var nI = nI1
+    var nI: BigInteger
     var i = 1
     while (x.add(-y * qI).signum() != 0) {
         // uncomment for debug

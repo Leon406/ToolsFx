@@ -1,5 +1,8 @@
 package me.leon.encode
 
+import kotlin.system.measureNanoTime
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 import me.leon.controller.EncodeController
 import me.leon.ctf.bubbleBabble
 import me.leon.ctf.bubbleBabbleDecode2String
@@ -9,9 +12,6 @@ import me.leon.ext.crypto.EncodeType
 import me.leon.ext.crypto.encodeTypeMap
 import org.junit.Before
 import org.junit.Test
-import kotlin.system.measureNanoTime
-import kotlin.test.assertContentEquals
-import kotlin.test.assertEquals
 
 class EncodeTest {
 
@@ -44,9 +44,9 @@ class EncodeTest {
 
         val binary =
             "1110010110111100100000001110010110001111100100011110010110110111101001011110010110000" +
-                    "101101101111110100110011011100001101110010110010000100010000010000001100010011110010010000" +
-                    "001101100011001010110111101101110001101000011000000110110010000000011010100110010011100000" +
-                    "1101111011010100110100101100101001011100110001101101110"
+                "101101101111110100110011011100001101110010110010000100010000010000001100010011110010010000" +
+                "001101100011001010110111101101110001101000011000000110110010000000011010100110010011100000" +
+                "1101111011010100110100101100101001011100110001101101110"
         assertEquals(binary, controller.encode2String(raw, EncodeType.Binary))
         assertEquals(raw, controller.decode2String(binary, EncodeType.Binary))
 
@@ -56,7 +56,7 @@ class EncodeTest {
 
         val unicode =
             "\\u5f00\\u53d1\\u5de5\\u5177\\u96c6\\u5408\\u20\\u62\\u79\\u20\\u6c\\u65\\u6f\\u6e\\u34" +
-                    "\\u30\\u36\\u40\\u35\\u32\\u70\\u6f\\u6a\\u69\\u65\\u2e\\u63\\u6e"
+                "\\u30\\u36\\u40\\u35\\u32\\u70\\u6f\\u6a\\u69\\u65\\u2e\\u63\\u6e"
         assertEquals(unicode, controller.encode2String(raw, EncodeType.Unicode))
         assertEquals(raw, controller.decode2String(unicode, EncodeType.Unicode))
 
@@ -268,7 +268,7 @@ class EncodeTest {
     fun unicode() {
         val da =
             "\\xf0\\x9f\\x99\\x83\\xf0\\x9f\\x92\\xb5\\xf0\\x9f\\x8c\\xbf\\xf0\\x9f\\x8e\\xa4\\xf0\\x9f" +
-                    "\\x9a\\xaa\\xf0\\x9f\\x8c\\x8f\\xf0\\x9f\\x90\\x8e\\xf0\\x9f\\xa5\\x8b\\xf0\\x9f\\x9a\\xab"
+                "\\x9a\\xaa\\xf0\\x9f\\x8c\\x8f\\xf0\\x9f\\x90\\x8e\\xf0\\x9f\\xa5\\x8b\\xf0\\x9f\\x9a\\xab"
 
         assertEquals("🙃💵🌿🎤🚪🌏🐎🥋🚫", da.jsHexDecodeString())
     }
@@ -285,10 +285,10 @@ class EncodeTest {
     fun radix() {
         val raw =
             "19WIG196SRWK1R6OGHT6EPDXM48A1RT5SSWKMVNZN1W46WGFF15F3NV9WN5CDK7WZTR0HXXJLWZ89KSPOQS1BYQRY53FIBPAL" +
-                    "3NH4H9VQDYBOUWDZ1BTLGETOD1CJNESMW48BPM1WNFZZSZGEVYNNSCDLR6X754LJIGIPCKHJV8RMZOH6OQ4X5XELVH1L" +
-                    "73G4B5GQ83O4N8802OPP83510DUT2H4YJORJMVIVIZ4STKI1BAZ4R5VP1MM3Z2HHNLZ108JUA5IFPJL21U8TVL5IH6" +
-                    "LQTHDFH9YOIZJVKZY0IRVXDMOFI7LAXB2P50RAP6H33UHGMDR4TV0TN3H2YBXM11Z8FONNAOEGL31AN42OTX7LZX61" +
-                    "F98G32KJFGPP6WD1ZFWMUKBH7FMT"
+                "3NH4H9VQDYBOUWDZ1BTLGETOD1CJNESMW48BPM1WNFZZSZGEVYNNSCDLR6X754LJIGIPCKHJV8RMZOH6OQ4X5XELVH1L" +
+                "73G4B5GQ83O4N8802OPP83510DUT2H4YJORJMVIVIZ4STKI1BAZ4R5VP1MM3Z2HHNLZ108JUA5IFPJL21U8TVL5IH6" +
+                "LQTHDFH9YOIZJVKZY0IRVXDMOFI7LAXB2P50RAP6H33UHGMDR4TV0TN3H2YBXM11Z8FONNAOEGL31AN42OTX7LZX61" +
+                "F98G32KJFGPP6WD1ZFWMUKBH7FMT"
 
         //        BigInteger(raw, 36).toString(10).also {
         //            println(it)
@@ -365,8 +365,8 @@ class EncodeTest {
     fun crack() {
         val inputText =
             "4B595954494D32515046324757595A534E52415653334357474E4A575955544E4B5A4D46434F4B5947425346" +
-                    "4D5A444E4D51334557524B5A4F424944473542554B595A44534B324E49565746515532464B4934" +
-                    "5649564B464E4E494543504A35"
+                "4D5A444E4D51334557524B5A4F424944473542554B595A44534B324E49565746515532464B4934" +
+                "5649564B464E4E494543504A35"
         val propInput = inputText.split(".+ :\\s*".toRegex()).filterNot(String::isBlank).first()
         println("$inputText \n $propInput")
         println(controller.decode2String(propInput, EncodeType.Base16, ""))
@@ -374,8 +374,8 @@ class EncodeTest {
             .map { it.type to controller.decode2String(propInput, it, "") }
             .filterNot {
                 it.second.isEmpty() ||
-                        it.second.contains(propInput, true) ||
-                        it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex())
+                    it.second.contains(propInput, true) ||
+                    it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex())
             }
             .joinToString("\n") {
                 println("__" + it.second + "__")

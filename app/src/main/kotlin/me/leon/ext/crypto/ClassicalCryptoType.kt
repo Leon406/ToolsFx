@@ -5,15 +5,34 @@ import me.leon.P2
 import me.leon.classical.*
 import me.leon.ctf.*
 import me.leon.ctf.rsa.RsaSolver
+import me.leon.ext.containsRegexIgnoreCase
 import me.leon.ext.parseRsaParams
 
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
-        override fun encrypt(raw: String, params: Map<String, String>) = raw.caesar25()
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.shift26(params[P1]!!.toInt())
 
-        override fun decrypt(raw: String, params: Map<String, String>) = raw.caesar25()
+        override fun decrypt(raw: String, params: Map<String, String>) =
+            raw.shift26(26 - params[P1]!!.toInt())
 
         override fun isIgnoreSpace() = false
+
+        override fun paramsCount() = 1
+
+        override fun paramsHints() = listOf("shift", "")
+
+        override fun hasCrack() = true
+
+        override fun crack(raw: String, keyword: String): String {
+            for (i in (1..25)) {
+                val decrypted = raw.shift26(26 - i)
+                if (decrypted.containsRegexIgnoreCase(keyword)) {
+                    return "shift: $i${System.lineSeparator()}\t$decrypted"
+                }
+            }
+            return ""
+        }
     },
     ROT5("rot5") {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.shift10(5)
@@ -55,6 +74,18 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsHints() = listOf("factor a", "b")
 
         override fun isIgnoreSpace() = false
+        override fun hasCrack() = true
+        override fun crack(raw: String, keyword: String): String {
+            for (a in 1..25) for (b in 1..25) {
+                runCatching {
+                    val decrypted = raw.affineDecrypt(a, b)
+                    if (decrypted.containsRegexIgnoreCase(keyword)) {
+                        return "$a*x+$b: ${System.lineSeparator()}\t$decrypted"
+                    }
+                }
+            }
+            return ""
+        }
     },
     RAILFENCE("railFence") {
         override fun encrypt(raw: String, params: Map<String, String>) =
@@ -62,6 +93,20 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.railFenceDecrypt(params[P1]!!.toInt())
+
+        override fun hasCrack() = true
+
+        override fun crack(raw: String, keyword: String): String {
+            for (i in 2..26) {
+                runCatching {
+                    val decrypted = raw.railFenceDecrypt(i)
+                    if (decrypted.containsRegexIgnoreCase(keyword)) {
+                        return "railFence $i: ${System.lineSeparator()}\t$decrypted"
+                    }
+                }
+            }
+            return ""
+        }
 
         override fun paramsCount() = 1
 
@@ -77,6 +122,20 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun paramsCount() = 2
 
         override fun paramsHints() = listOf("fence number", "offset,default is 0")
+
+        override fun hasCrack() = true
+
+        override fun crack(raw: String, keyword: String): String {
+            for (i in 2..26) {
+                runCatching {
+                    val decrypted = raw.railFenceWDecrypt(i)
+                    if (decrypted.containsRegexIgnoreCase(keyword)) {
+                        return "railFenceW $i: ${System.lineSeparator()}\t$decrypted"
+                    }
+                }
+            }
+            return ""
+        }
     },
     VIRGENENE("virgenene") {
         override fun encrypt(raw: String, params: Map<String, String>) =
@@ -283,9 +342,9 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.alphabetIndex(
-                    params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
-                    params[P2]?.ifEmpty { " " } ?: " "
-                )
+                params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
+                params[P2]?.ifEmpty { " " } ?: " "
+            )
                 .also { println("alphabetIndex $raw $params") }
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
@@ -529,6 +588,26 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
             raw.hillDecrypt(params[P1] ?: "", fromZero = params[P2]?.isEmpty() ?: true)
 
         override fun paramsCount() = 2
+
+        override fun hasCrack() = true
+
+        override fun crack(raw: String, keyword: String): String {
+            val range = 0..25
+            val results = mutableListOf<String>()
+            for (k1 in range) {
+                for (k2 in range) for (k3 in range) for (k4 in range) {
+                    runCatching {
+                        val decrypted = raw.hillDecrypt("$k1 $k2 $k3 $k4", fromZero = false)
+                        if (decrypted.containsRegexIgnoreCase(keyword)) {
+                            results.add(
+                                "hill $k1 $k2 $k3 $k4: ${System.lineSeparator()}\t$decrypted"
+                            )
+                        }
+                    }
+                }
+            }
+            return results.joinToString(System.lineSeparator())
+        }
 
         override fun paramsHints() =
             listOf("key matrix,like 1 2 0 1 or bcab", "A = 0 as default,if has value A =1")

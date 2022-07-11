@@ -34,4 +34,15 @@ class ClassicalController : Controller() {
             if (isSingleLine) encoded.lineAction2String { type.decrypt(it, params) }
             else type.decrypt(encoded, params)
         }
+
+    fun crack(
+        encoded: String,
+        type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
+        keyword: String,
+        isSingleLine: Boolean = false
+    ) =
+        catch({ "解密错误: $it" }) {
+            if (isSingleLine) encoded.lineAction2String { type.crack(it, keyword) }
+            else type.crack(encoded, keyword)
+        }
 }
