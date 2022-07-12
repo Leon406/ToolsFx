@@ -1,6 +1,5 @@
 package me.leon.ctf
 
-import me.leon.ext.binary2Ascii
 import me.leon.ext.stripAllSpace
 
 fun String.cetacean() =
@@ -13,5 +12,5 @@ fun String.cetacean() =
 
 fun String.cetaceanDecrypt() =
     stripAllSpace().chunked(16).joinToString("") {
-        it.takeLast(8).replace("e", "1").replace("E", "0").binary2Ascii()
+        it.replace("e", "1").replace("E", "0").toBigInteger(2).toInt().toChar().toString()
     }
