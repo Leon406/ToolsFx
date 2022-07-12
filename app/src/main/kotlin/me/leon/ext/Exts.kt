@@ -27,4 +27,5 @@ fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
         acc.apply { acc.add(this@sliceList.slice(ranges[i])) }
     }
 }
+
 fun String.containsRegexIgnoreCase(keyword: String) = contains("(?i)$keyword".toRegex())

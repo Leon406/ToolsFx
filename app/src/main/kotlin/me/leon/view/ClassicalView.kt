@@ -262,14 +262,14 @@ class ClassicalView : Fragment(messages["classical"]) {
                 isSingleLine.get(),
             )
         } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text = it
-                    if (Prefs.autoCopy) {
-                        outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-                    }
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
+            {
+                isProcessing.value = false
+                taOutput.text = it
+                if (Prefs.autoCopy) {
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
                 }
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+            }
     }
 }

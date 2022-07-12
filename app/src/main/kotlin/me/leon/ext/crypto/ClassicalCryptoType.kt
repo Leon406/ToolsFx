@@ -342,9 +342,9 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     AlphabetIndex("a1z26") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.alphabetIndex(
-                params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
-                params[P2]?.ifEmpty { " " } ?: " "
-            )
+                    params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
+                    params[P2]?.ifEmpty { " " } ?: " "
+                )
                 .also { println("alphabetIndex $raw $params") }
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
@@ -667,6 +667,31 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.tapCodeDecrypt()
+
+        override fun isIgnoreSpace() = false
+    },
+    CAESAR_BOX("caesar box") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.caesarBox(params[P1]!!.toInt())
+
+        override fun decrypt(raw: String, params: Map<String, String>) =
+            raw.caesarBoxDecrypt(params[P1]!!.toInt())
+
+        override fun paramsCount() = 1
+        override fun paramsHints() = listOf("height", "")
+        override fun isIgnoreSpace() = false
+    },
+    ROT8000("rot8000") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.rot8000()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.rot8000()
+
+        override fun isIgnoreSpace() = false
+    },
+    CETACEAN("cetacean") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.cetacean()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.cetaceanDecrypt()
 
         override fun isIgnoreSpace() = false
     }
