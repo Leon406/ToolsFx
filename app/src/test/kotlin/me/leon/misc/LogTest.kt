@@ -12,7 +12,7 @@ class LogTest {
             .trimMargin()
             .replace("\n", "")
             .toRegex()
-    private val logPath = "C:\\Users\\Leon\\Desktop\\ngixlog\\601\\access.log"
+    private val logPath = "C:\\Users\\Leon\\Desktop\\ngixlog\\601\\access.lo"
 
     @Test
     fun rawString() {
@@ -23,6 +23,7 @@ class LogTest {
     fun logFilter() {
         logPath
             .toFile()
+            .also { if (!it.exists()) return }
             .bufferedReader()
             .lineSequence()
             .map { logFormat.find(it) to it }
@@ -105,6 +106,7 @@ class LogTest {
         var count = 0
         logPath
             .toFile()
+            .also { if (!it.exists()) return }
             .bufferedReader()
             .lineSequence()
             .map { logFormat.find(it) }
@@ -133,6 +135,7 @@ class LogTest {
         var count = 0
         logPath
             .toFile()
+            .also { if (!it.exists()) return }
             .bufferedReader()
             .lineSequence()
             .map { logFormat.find(it) }
