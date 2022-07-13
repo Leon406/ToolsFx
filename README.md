@@ -228,6 +228,7 @@ support file, big file which is larger than 8Gi
 - [x] rabbit
 - [x] aaencode/jjencode
 - [x] RSA crack (nec,pqec)
+- [x] etc.
 
 ![ctf](./art/ctf.gif)
 ![rsa_nec](./art/rsa_nec.gif)

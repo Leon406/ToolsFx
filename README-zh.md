@@ -238,6 +238,7 @@
 - [x] rabbit
 - [x] aaencode/jjencode
 - [x] RSA crack (nec,pqec)
+- [x] 其他
 
 ![ctf](./art/ctf.gif)
 
