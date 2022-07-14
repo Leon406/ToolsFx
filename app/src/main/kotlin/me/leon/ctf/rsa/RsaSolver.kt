@@ -86,24 +86,19 @@ object RsaSolver {
 
     private fun solveBroadCast(params: MutableMap<String, BigInteger>): String {
         println("solve broadcast")
-        val n1 = requireNotNull(params["n1"])
-        val c1 = requireNotNull(params["c1"])
-        val n2 = requireNotNull(params["n2"])
-        val c2 = requireNotNull(params["c2"])
-        val n3 = requireNotNull(params["n3"])
-        val c3 = requireNotNull(params["c3"])
+        val modular =
+            params.keys.filter { it.startsWith("n") }.fold(BigInteger.ONE) { acc, s ->
+                acc * params[s]!!
+            }
+        val e = params.keys.count { it.startsWith("n") }
+        val divides =
+            params.keys.filter { it.startsWith("n") }.map {
+                DivideResult(params["c" + it.substring(1)]!!, params[it]!!)
+            }
+        val me = crt(divides)
+        val cx = me % modular
 
-        val me =
-            crt(
-                listOf(
-                    DivideResult(c1, n1),
-                    DivideResult(c2, n2),
-                    DivideResult(c3, n3),
-                )
-            )
-        val cx = me % (n1 * n2 * n3)
-
-        for (i in 2..100) {
+        for (i in e - 1..100) {
             val result = cx.root(i)
             if (result.last() == BigInteger.ZERO) {
                 println("$i got result ${result.first()}")

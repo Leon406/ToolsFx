@@ -8,9 +8,13 @@ fun String.parseRsaParams() =
     ) { acc, s ->
         acc.apply {
             with(s.split("\\s*[=:：]\\s*".toRegex())) {
+                val value = this[1].trim()
                 acc[this[0].lowercase()] =
-                    this[1].trim().takeUnless { it.startsWith("0x", true) }?.toBigInteger()
-                        ?: this[1].substring(2).trim().toBigInteger(16)
+                    when {
+                        value.startsWith("0x", true) -> value.substring(2).toBigInteger(16)
+                        value.startsWith("0", true) -> value.substring(1).toBigInteger(8)
+                        else -> value.toBigInteger()
+                    }
             }
         }
     }
