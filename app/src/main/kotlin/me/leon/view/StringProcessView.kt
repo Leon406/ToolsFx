@@ -258,6 +258,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             checkbox(messages["regexp"]) { isVisible = false }
             button(messages["run"], imageview("/img/run.png")) { action { doExtract() } }
+            checkbox(messages["fileMode"], isFileMode)
         }
 
         hbox {
@@ -290,7 +291,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun doExtract() {
         measureTimeMillis {
-            outputText = extractReg.toRegex().findAll(inputText).map { it.value }.joinToString("\n")
+            outputText =
+                extractReg
+                    .toRegex()
+                    .findAll(if (isFileMode.get()) inputText.toFile().readText() else inputText)
+                    .map { it.value }
+                    .joinToString("\n")
         }
             .also {
                 timeConsumption = it

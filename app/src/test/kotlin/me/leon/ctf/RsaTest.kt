@@ -151,8 +151,14 @@ class RsaTest {
 
     @Test
     fun rsa_broadcast() {
-        val params = "rsa15_broadcast.txt".parseRsaParams()
-        solve(params).also { assertEquals("flag{59007b62-e7d6-423a-a662-c4706c91a06a}", it) }
+        var params = "rsa15_broadcast.txt".parseRsaParams()
+        assertEquals("flag{59007b62-e7d6-423a-a662-c4706c91a06a}", solve(params))
+
+        params = "rsa15_broadcast_10.txt".parseRsaParams()
+        assertEquals("flag{wo0_th3_tr4in_i5_leav1ng_g3t_on_it}", solve(params))
+
+        params = "rsa15_broadcast_octal.txt".parseRsaParams()
+        assertEquals("noxCTF{D4mn_y0u_h4s74d_wh47_4_b100dy_b4s74rd!}", solve(params))
     }
 
     @Test
