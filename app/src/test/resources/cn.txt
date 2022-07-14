@@ -3005,13 +3005,13 @@ Stored XSS	存储型XSS
 Streaming Responses	数据流(Streaming)响应
 Streaming response [double-click to cancel]	流式响应[双击取消]
 Streaming response [not stored]	流式响应[未保存]
-Strict transport security not enforced	未强制使用HTTP严格安全传输
+Strict transport security not enforced	未强制使用HTTPS(HSTS,禁止HTTP访问)
 String echo	文字列表示
 String match for False:	字符串匹配不存在:
 String match for True:	字符串匹配存在:
-Strip Accept-Encoding headers in incoming requests	从收到的请求中删除Accept-Encoding报头
+Strip Accept-Encoding headers in incoming requests	删除请求中的Accept-Encoding报头
 Strip Connection header over HTTP/2	删除HTTP/2 Connection报头
-Strip Proxy-* headers in incoming requests	从收到的请求中删除Proxy- *报头
+Strip Proxy-* headers in incoming requests	除请求中的Proxy- *报头
 Strip Sec-WebSocket-Extensions headers in incoming requests	从传入请求中删除Sec-WebSocket-Extensions报头
 Strip chunked encoding metadata in streaming responses	从流响应中删除分块编码元数据
 Submit BApp rating	BApp评级传输
@@ -3082,10 +3082,10 @@ The actions below will be performed in sequence when this rule is applied to a r
 The analysis is based on a sample of (\d+) tokens?. Based on the sample size, the reliability of the results is: (.*)	分析$1基于令牌样本。 根据样本量，可靠性如下： $2
 The capture server hostname ([-_.0-9a-z]*) could not be resolved to an IP address. Ensure that an appropriate DNS entry exists for the server. No connections to the polling server at ([-_.0-9a-z]*) could be opened. The collaborator will not work in this configuration. 	捕获服务器主机名$1无法解析为IP地址。 确保存在适用于服务器的DNS条目。 我无法连接到投票服务器$2。 协作者无法使用此设置。
 The central point of access for all information you need to use Burp Proxy.	访问使用Burp代理所需的所有信息的中心点。
-The certificate and private key were successfully exported.	成功导出了证书和私钥。
-The certificate and private key were successfully imported.	证书和私钥已成功导入。
-The certificate was loaded successfully.	证书成功加载。
-The certificate was successfully exported.	成功导出了证书。
+The certificate and private key were successfully exported.	证书和私钥导出成功。
+The certificate and private key were successfully imported.	证书和私钥导入成功。
+The certificate was loaded successfully.	加载证书成功。
+The certificate was successfully exported.	导出证书成功。
 The chart indicates the degree of confidence in the randomness of the sample at each bit position. The significance level at each position is the probability of the observed bit-level results occurring, assuming that the sample is randomly generated.	该图显示了每个位位置处样本随机性的可靠性。假设样本是随机生成的，每个位置的显着性水平是观察到的位级别的发生概率。
 The chart indicates the degree of confidence in the randomness of the sample at each character position. The significance level at each position is the probability of the observed character-level results occurring, assuming that the sample is randomly generated.	该图显示了每个字符位置的样本随机性的可靠性。假设样本是随机生成的，每个位置的显着性水平是观察到的字符水平的发生概率。
 The chart shows the maximum bits of entropy available at each position, given the size of the character set used at that position. The total amount of possible entropy is ([.0-9]+) bits.	该图显示了在该位置使用的字符集大小给出的每个位置的最大熵位。 有效熵的总数是$1.

@@ -25,7 +25,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             EncodeType.Radix8,
             EncodeType.Base16,
             EncodeType.Octal,
-            EncodeType.Decimal,
+            //            EncodeType.Decimal,
             EncodeType.Radix10,
             EncodeType.Radix32,
             EncodeType.Radix64,
@@ -230,7 +230,12 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             button(graphic = imageview("/img/up.png")) {
                 tooltip(messages["up"])
                 action {
-                    taInput.text = outputText
+                    taInput.text =
+                        outputText.takeUnless { it.contains(REG_CRACK_HEADER) }
+                            ?: outputText
+                                .lines()
+                                .filterNot { it.contains(REG_CRACK_HEADER) }
+                                .joinToString(System.lineSeparator())
                     taOutput.text = ""
                 }
             }
@@ -323,7 +328,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     .find {
                         (it.second.isEmpty() ||
                                 it.second.contains(encoded, true) ||
-                                it.second.contains("[\u0000-\u001F]|解码错误:|�".toRegex()) ||
+                                it.second.contains(REG_NON_PRINTABLE) ||
                                 it.first == EncodeType.UrlEncode.type &&
                                     encoded.length == it.second.length)
                             .not()
