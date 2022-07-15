@@ -81,8 +81,10 @@ class FactorTest {
     fun fermatFactor() {
         var params = "n1.txt".parseRsaParams()
         requireNotNull(params["n"]).fermat()
+
         params = "n2.txt".parseRsaParams()
         requireNotNull(params["n"]).fermat()
+
         params = "n3.txt".parseRsaParams()
         requireNotNull(params["n"]).fermat()
     }
@@ -93,6 +95,11 @@ class FactorTest {
             println(it)
             assertEquals(4, it.size)
         }
+
+
+        println("118273132683105007025190320003".toBigInteger().also {
+            println(it.root(4).contentToString())
+        }.pollardsRhoFactors(200_0000))
     }
 
     @Test

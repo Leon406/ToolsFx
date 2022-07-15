@@ -6,6 +6,11 @@ import java.math.BigInteger.*
 /** 时间复杂度 O(sqrt(N)) 优化 加入试除后 素数判断 */
 val THREE = 3.toBigInteger()
 
+
+/**
+ * 小于 10_000
+ * 时间复杂度 O(sqrt(N))
+ */
 fun BigInteger.trialDivide(): MutableList<BigInteger> {
     val factors = mutableListOf<BigInteger>()
     // optimize, avoid prime loop
@@ -34,13 +39,17 @@ fun BigInteger.trialDivide(): MutableList<BigInteger> {
     return factors
 }
 
-fun BigInteger.fermat(): MutableList<BigInteger> {
+/**
+ *  适用因子相差较小
+ *  时间复杂度 O(|p-q|)
+ */
+fun BigInteger.fermat(iteration: Int = 10_000): MutableList<BigInteger> {
     with(sqrtAndRemainder()) {
         if (this.last() != ZERO) {
             var a = first() + ONE
             var count = 0
             var b: BigInteger
-            while (count < 10_000) {
+            while (count < iteration) {
                 val b1 = a.pow(2) - this@fermat
                 b = b1.sqrt()
                 count++
@@ -73,6 +82,9 @@ fun BigInteger.pollardsRhoFactors(iteration: Int = 10_000): MutableList<BigInteg
     return factors
 }
 
+/**
+ *  小因子速度更快  时间复杂度 O(n^1/4).
+ */
 fun BigInteger.pollardsRho(funBias: BigInteger = ONE, maxIteration: Int = 10_000): BigInteger {
     // optimize, avoid prime loop
     if (isProbablePrime(100)) return this
