@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import me.leon.CHARSETS
+import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.compress.compressType
@@ -127,7 +127,7 @@ class CompressView : PluginFragment(messages["compression"]) {
                 }
             }
             checkbox(messages["singleLine"], isSingleLine)
-            button(messages["run"], imageview("/img/run.png")) {
+            button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
@@ -146,11 +146,11 @@ class CompressView : PluginFragment(messages["compression"]) {
                         outputEncode = newValue.cast<RadioButton>().text
                     }
                 }
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
-            button(graphic = imageview("/img/up.png")) {
+            button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     taInput.text = outputText

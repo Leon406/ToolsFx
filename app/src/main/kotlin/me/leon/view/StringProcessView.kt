@@ -5,8 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.*
 import kotlin.collections.set
 import kotlin.system.measureTimeMillis
-import me.leon.SimpleMsgEvent
-import me.leon.Styles
+import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
 import me.leon.ext.fx.*
@@ -232,7 +231,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             tfReplaceFrom = textfield { promptText = messages["text2Replaced"] }
             tfReplaceTo = textfield { promptText = messages["replaced"] }
             checkbox(messages["regexp"], isRegexp)
-            button(messages["run"], imageview("/img/run.png")) { action { doReplace() } }
+            button(messages["run"], imageview(IMG_RUN)) { action { doReplace() } }
             checkbox(messages["fileMode"], isFileMode)
         }
         hbox {
@@ -243,7 +242,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             tfSplitLength = textfield { promptText = messages["splitLength"] }
             tfSeprator = textfield { promptText = messages["delimiter"] }
             checkbox(messages["regexp"], isSplitRegexp) { isVisible = false }
-            button(messages["run"], imageview("/img/run.png")) { action { doSplit() } }
+            button(messages["run"], imageview(IMG_RUN)) { action { doSplit() } }
         }
 
         hbox {
@@ -257,18 +256,18 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     prefWidth = 330.0
                 }
             checkbox(messages["regexp"]) { isVisible = false }
-            button(messages["run"], imageview("/img/run.png")) { action { doExtract() } }
+            button(messages["run"], imageview(IMG_RUN)) { action { doExtract() } }
             checkbox(messages["fileMode"], isFileMode)
         }
 
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
-            button(graphic = imageview("/img/up.png")) {
+            button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     taInput.text = outputText

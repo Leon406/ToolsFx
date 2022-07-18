@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
+import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import tornadofx.*
@@ -13,9 +14,11 @@ class LocationView : PluginFragment("LocationView") {
     override val date: String = "2022-04-06"
     override val author = "Leon406"
     override val description = "经纬度相关"
+
     init {
         println("Plugin Info:$description $version $date $author  ")
     }
+
     lateinit var taInput: TextArea
     lateinit var taOutput: TextArea
     private val controller: LocationController by inject()
@@ -101,7 +104,7 @@ class LocationView : PluginFragment("LocationView") {
             paddingLeft = DEFAULT_SPACING
             checkbox(messages["singleLine"], isSingleLine)
 
-            button(messages["run"], imageview("/img/run.png")) { action { doProcess() } }
+            button(messages["run"], imageview(IMG_RUN)) { action { doProcess() } }
             button("百度坐标拾取") {
                 action { "https://api.map.baidu.com/lbsapi/getpoint/index.html".openInBrowser() }
             }
@@ -112,11 +115,11 @@ class LocationView : PluginFragment("LocationView") {
             spacing = DEFAULT_SPACING
             alignment = Pos.CENTER_LEFT
             label(messages["output"])
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
-            button(graphic = imageview("/img/up.png")) {
+            button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     taInput.text = outputText

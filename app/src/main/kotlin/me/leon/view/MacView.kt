@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import me.leon.*
 import me.leon.Styles
 import me.leon.component.KeyIvInputView
 import me.leon.controller.MacController
@@ -137,7 +138,7 @@ class MacView : Fragment("MAC") {
             alignment = Pos.TOP_LEFT
             hgap = DEFAULT_SPACING
             checkbox(messages["singleLine"], isSingleLine)
-            button(messages["run"], imageview("/img/run.png")) {
+            button(messages["run"], imageview(IMG_RUN)) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action {
                     if (inputText.isNotEmpty()) doMac()
@@ -159,7 +160,7 @@ class MacView : Fragment("MAC") {
                         outputEncode = new.cast<RadioButton>().text
                     }
                 }
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }

@@ -116,11 +116,11 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
             checkbox(messages["singleLine"], isSingleLine)
-            button(messages["transfer"], imageview("/img/run.png")) {
+            button(messages["transfer"], imageview(IMG_RUN)) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["up"], imageview("/img/up.png")) {
+            button(messages["up"], imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     taInput.text = outputText
@@ -128,7 +128,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
             }
-            button(messages["copy"], imageview("/img/copy.png")) {
+            button(messages["copy"], imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)

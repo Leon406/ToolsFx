@@ -2,8 +2,7 @@ package me.leon.view
 
 import javafx.beans.property.*
 import javafx.scene.control.*
-import me.leon.Styles
-import me.leon.TEXT_AREA_LINES
+import me.leon.*
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -189,7 +188,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
             }
 
-            button(messages["run"], imageview("/img/run.png")) { action { doCrypto() } }
+            button(messages["run"], imageview(IMG_RUN)) { action { doCrypto() } }
             button(messages["genKeypair"]) {
                 enableWhen(!isProcessing)
                 action {
@@ -233,11 +232,11 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                         outputEncode = newValue.cast<RadioButton>().text
                     }
                 }
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
-            button(graphic = imageview("/img/up.png")) {
+            button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     inputText = outputText

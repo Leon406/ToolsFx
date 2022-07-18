@@ -9,6 +9,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.text.Text
+import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
@@ -104,7 +105,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                 tooltip(messages["pasteFromClipboard"])
                 action { resetUi(clipboardText()) }
             }
-            button(graphic = imageview("/img/run.png")) {
+            button(graphic = imageview(IMG_RUN)) {
                 enableWhen(!isRunning)
                 action {
                     if (tfUrl.text.isEmpty() ||
@@ -180,7 +181,7 @@ class ApiPostView : PluginFragment("ApiPost") {
             button(graphic = imageview("/img/settings.png")) {
                 action { openInternalWindow<SettingsView>() }
             }
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action {
                     Request(
@@ -311,7 +312,7 @@ class ApiPostView : PluginFragment("ApiPost") {
             //            button("UnicodeDecode") {
             //                action { taRspContent.text = taRspContent.text.unicodeMix2String() }
             //            }
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { taRspContent.text.copy() }
             }

@@ -4,8 +4,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.concurrent.Worker
 import javafx.scene.control.TextField
 import javafx.scene.web.WebView
-import me.leon.Styles
-import me.leon.ToolsApp
+import me.leon.*
 import me.leon.ext.DEFAULT_SPACING_40X
 import me.leon.ext.fx.openInBrowser
 import tornadofx.*
@@ -55,7 +54,7 @@ class OnlineWebView : Fragment("Browser") {
                     println("selectedUrl2 ${tfUrl.text}")
                     web.engine.load(tfUrl.text)
                 }
-                button(graphic = imageview("/img/run.png")) {
+                button(graphic = imageview(IMG_RUN)) {
                     action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
                 }
                 button(graphic = imageview("/img/browser.png")) {

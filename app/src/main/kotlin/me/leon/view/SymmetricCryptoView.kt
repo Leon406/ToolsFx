@@ -5,8 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import me.leon.CHARSETS
-import me.leon.Styles
+import me.leon.*
 import me.leon.component.KeyIvInputView
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.*
@@ -209,7 +208,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             }
             checkbox(messages["fileMode"], isFile)
             checkbox(messages["singleLine"], isSingleLine)
-            button(messages["run"], imageview("/img/run.png")) {
+            button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
@@ -229,11 +228,11 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                     }
                 }
 
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
-            button(graphic = imageview("/img/up.png")) {
+            button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     taInput.text = outputText

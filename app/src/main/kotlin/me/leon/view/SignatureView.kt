@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import me.leon.*
 import me.leon.Styles
 import me.leon.controller.SignatureController
 import me.leon.encode.base.base64
@@ -251,7 +252,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     }
                 }
 
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { signText.copy() }
             }

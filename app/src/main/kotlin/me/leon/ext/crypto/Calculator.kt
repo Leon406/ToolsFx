@@ -3,6 +3,7 @@ package me.leon.ext.crypto
 import java.math.BigInteger
 import java.security.SecureRandom
 import me.leon.*
+import me.leon.ctf.rsa.factor
 
 enum class Calculator(val algo: String) : ICalculator {
     PLUS("P+Q") {
@@ -11,14 +12,39 @@ enum class Calculator(val algo: String) : ICalculator {
             return ints[0].add(ints[1]).toString()
         }
     },
-    PLUS_MOD("(P+Q) mod N") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].add(ints[1]).mod(ints[2]).toString()
-        }
-    },
     MINUS("P-Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0] - (ints[1])).toString()
+        }
+    },
+    MULTIPLY("P*Q") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return (ints[0] * (ints[1])).toString()
+        }
+    },
+    DIVIDE_REMAINDER("P/Q") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].divideAndRemainder((ints[1])).joinToString("\n")
+        }
+    },
+    EXPONENT("P^e") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].pow(ints[3].toInt()).toString()
+        }
+    },
+    ROOT("P^(1/e)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return with(ints[0].root(ints[3].toInt())) { "${this[0]}\n${this[1]}" }
+        }
+    },
+    MOD("P mod Q") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return (ints[0] % (ints[1])).toString()
+        }
+    },
+    PLUS_MOD("(P+Q) mod N") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].add(ints[1]).mod(ints[2]).toString()
         }
     },
     MINUS_MOD("(P-Q) mod N") {
@@ -26,19 +52,9 @@ enum class Calculator(val algo: String) : ICalculator {
             return ints[0].subtract(ints[1]).mod(ints[2]).toString()
         }
     },
-    MULTIPY("P*Q") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0] * (ints[1])).toString()
-        }
-    },
-    MULTIPY_MOD("(P*Q) mod N") {
+    MULTIPLY_MOD("(P*Q) mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].multiply(ints[1]).mod(ints[2]).toString()
-        }
-    },
-    DIVIDE_REMAINDER("P/Q") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].divideAndRemainder((ints[1])).joinToString("\n")
         }
     },
     DIVIDE_MOD("(P/Q) mod N") {
@@ -50,19 +66,60 @@ enum class Calculator(val algo: String) : ICalculator {
                 .toString()
         }
     },
-    EXPONENT("P^a") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].pow(ints[3].toInt()).toString()
-        }
-    },
-    MOD_POW("P^a mod N") {
+    MOD_POW("P^e mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].modPow(ints[3], ints[2]).toString()
         }
     },
-    MOD("P mod Q") {
+    INVERSE("P^-1 mod N") {
         override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0] % (ints[1])).toString()
+            return ints[0].modInverse(ints[2]).toString()
+        }
+    },
+    PRIME("isPrime(P)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return (ints[0].isProbablePrime(100)).toString()
+        }
+    },
+    FACTOR("factor(N)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return (ints[2].factor()).joinToString("\n")
+        }
+    },
+    RSA_D("e^-1 % (P-1)(Q-1)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[3].invert(ints[0].phi(ints[1])).toString()
+        }
+    },
+    RSA_DECRYPT("C^d mod N") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[5].modPow(ints[4], ints[2]).toString()
+        }
+    },
+    GCD("gcd(P,Q)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].gcd(ints[1]).toString()
+        }
+    },
+    LCM("lcm(P,Q)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].lcm(ints[1]).toString()
+        }
+    },
+    KGCD("gcdExt(P,Q)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].gcdExt(ints[1]).joinToString("\n")
+        }
+    },
+    GEN_PRIME("P bits prime?") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return BigInteger.probablePrime(ints[0].toInt(), SecureRandom.getInstance("SHA1PRNG"))
+                .toString()
+        }
+    },
+    PRIME_NEXT("next prime?") {
+        override fun calculate(ints: List<BigInteger>): String {
+            return ints[0].nextProbablePrime().toString()
         }
     },
     AND("P & Q") {
@@ -90,92 +147,19 @@ enum class Calculator(val algo: String) : ICalculator {
             return ints[0].xor(ints[1]).toString()
         }
     },
-    SHIFT_LEFT("P << a") {
+    SHIFT_LEFT("P << e") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].shiftLeft(ints[3].toInt()).toString()
         }
     },
-    SHIFT_RIGHT("P >> a") {
+    SHIFT_RIGHT("P >> e") {
         override fun calculate(ints: List<BigInteger>): String {
             return ints[0].shiftRight(ints[3].toInt()).toString()
         }
     },
-    GCD("gcd(P,Q)") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].gcd(ints[1]).toString()
-        }
-    },
-    LCM("lcm(P,Q)") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].lcm(ints[1]).toString()
-        }
-    },
-    KGCD("gcdExt(P,Q)") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].gcdExt(ints[1]).joinToString("\n")
-        }
-    },
-    INVERSE("P^-1 mod N") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].modInverse(ints[2]).toString()
-        }
-    },
-    GEN_PRIME("P bits prime?") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return BigInteger.probablePrime(ints[0].toInt(), SecureRandom.getInstance("SHA1PRNG"))
-                .toString()
-        }
-    },
-    PRIME("Prime(P)") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].isProbablePrime(100)).toString()
-        }
-    },
-    FACTOR("factorDb(P)") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].factorDb()).joinToString("\n")
-        }
-    },
-    ROOT("P^(1/a)") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return with(ints[0].root(ints[3].toInt())) { "${this[0]}\n${this[1]}" }
-        }
-    },
-    COMPLEX0("a*P+b*Q") {
+    COMPLEX0("e*P+d*Q") {
         override fun calculate(ints: List<BigInteger>): String {
             return (ints[0] * ints[3] + ints[1] * ints[4]).toString()
-        }
-    },
-    COMPLEX01("P^a+Q^b+N") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].pow(ints[3].toInt()) + ints[1].pow(ints[4].toInt()) + ints[2])
-                .toString()
-        }
-    },
-
-    // ints[2]
-    COMPLEX3("P*Q*N*a*b") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints
-                .fold(BigInteger.ONE) { acc, bigInteger -> acc.multiply(bigInteger) }
-                .toString()
-        }
-    },
-    COMPLEX4("P^a * Q^b mod N") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].pow(ints[3].toInt()) * ints[1].pow(ints[4].toInt()))
-                .mod(ints[2])
-                .toString()
-        }
-    },
-    PHI("(P-1)*(Q-1)") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0].phi(ints[1])).toString()
-        }
-    },
-    PRIME_NEXT("next prime?") {
-        override fun calculate(ints: List<BigInteger>): String {
-            return ints[0].nextProbablePrime().toString()
         }
     },
     FACTORIAL("P!") {

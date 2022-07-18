@@ -4,8 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import me.leon.CHARSETS
-import me.leon.Styles
+import me.leon.*
 import me.leon.controller.PBEController
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
@@ -157,10 +156,10 @@ class PBEView : Fragment("PBE") {
             }
 
             checkbox(messages["singleLine"], isSingleLine)
-            button("generate salt", imageview("/img/run.png")) {
+            button("generate salt", imageview(IMG_RUN)) {
                 action { controller.getSalt(saltLength).also { saltByteArray = it } }
             }
-            button(messages["run"], imageview("/img/run.png")) {
+            button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!isProcessing)
                 action { doCrypto() }
             }
@@ -168,11 +167,11 @@ class PBEView : Fragment("PBE") {
         hbox {
             label(messages["output"])
             spacing = DEFAULT_SPACING
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
-            button(graphic = imageview("/img/up.png")) {
+            button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     taInput.text = outputText

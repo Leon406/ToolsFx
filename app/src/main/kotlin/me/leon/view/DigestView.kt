@@ -4,8 +4,7 @@ import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.control.*
-import me.leon.ALGOS_HASH
-import me.leon.Styles
+import me.leon.*
 import me.leon.controller.DigestController
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
@@ -156,7 +155,7 @@ class DigestView : Fragment(messages["hash"]) {
                     prefWidth = DEFAULT_SPACING_8X
                     enableWhen(!isFileMode)
                 }
-            button(messages["run"], imageview("/img/run.png")) {
+            button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!isProcessing)
                 action { doHash() }
             }
@@ -173,7 +172,7 @@ class DigestView : Fragment(messages["hash"]) {
         }
         hbox {
             label(messages["output"])
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }

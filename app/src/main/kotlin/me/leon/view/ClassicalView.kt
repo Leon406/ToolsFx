@@ -165,7 +165,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                     run()
                 }
             }
-            button(messages["run"], imageview("/img/run.png")) {
+            button(messages["run"], imageview(IMG_RUN)) {
                 action { run() }
                 enableWhen(!isProcessing)
             }
@@ -187,11 +187,11 @@ class ClassicalView : Fragment(messages["classical"]) {
         hbox {
             spacing = DEFAULT_SPACING
             label(messages["output"])
-            button(graphic = imageview("/img/copy.png")) {
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
-            button(graphic = imageview("/img/up.png")) {
+            button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     taInput.text = outputText
