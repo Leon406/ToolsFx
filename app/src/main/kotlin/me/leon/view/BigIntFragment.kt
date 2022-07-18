@@ -41,8 +41,9 @@ class BigIntFragment : Fragment("BigInt") {
             "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: P=${ta1.bits()}  " +
                 "Q=${ta2.bits()}  " +
                 "N=${ta3.bits()}  " +
-                "a=${ta4.bits()}  " +
-                "b=${ta5.bits()}  " +
+                "e=${ta4.bits()}  " +
+                "d=${ta5.bits()}  " +
+                "C=${ta6.bits()}  " +
                 "Output=${
                         runCatching {
                             outputText.lines().first().toBigInteger().bitLength().toString()
@@ -61,7 +62,8 @@ class BigIntFragment : Fragment("BigInt") {
     }
 
     private fun TextArea.bits() =
-        "0".takeIf { text.isBlank() } ?: text.toBigInteger(selectedRadix.get().toInt()).bitLength()
+        "0".takeIf { text.isBlank() }
+            ?: text.stripAllSpace().toBigInteger(selectedRadix.get().toInt()).bitLength()
 
     private fun centerLayout(): VBox {
         return vbox {
@@ -97,7 +99,7 @@ class BigIntFragment : Fragment("BigInt") {
                 addClass(Styles.group, Styles.center)
                 label("radix:")
                 combobox(selectedRadix, radix) { cellFormat { text = it } }
-                button(messages["run"], imageview("/img/run.png")) {
+                button(messages["run"], imageview(IMG_RUN)) {
                     enableWhen(!isProcessing)
                     action { calculate() }
                 }
@@ -111,28 +113,55 @@ class BigIntFragment : Fragment("BigInt") {
         hbox {
             addClass(Styles.left)
             label(messages["output"])
-            button("P", graphic = imageview("/img/up.png")) {
+            button("P", graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
-                    ta1.text = outputText
+                    if (selectedAlgo == Calculator.FACTOR.algo) {
+                        val lines = outputText.lines()
+                        ta1.text = lines.first()
+                        ta2.text = lines.last()
+                    } else {
+                        ta1.text = outputText
+                    }
+
                     taOutput.text = ""
                 }
             }
-            button("Q", graphic = imageview("/img/up.png")) {
+            button("Q", graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
-                    ta2.text = outputText
+                    if (selectedAlgo == Calculator.FACTOR.algo) {
+                        val lines = outputText.lines()
+                        ta1.text = lines.first()
+                        ta2.text = lines.last()
+                    } else {
+                        ta2.text = outputText
+                    }
                     taOutput.text = ""
                 }
             }
-            button("N", graphic = imageview("/img/up.png")) {
+            button("N", graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
                     ta3.text = outputText
                     taOutput.text = ""
                 }
             }
-            button(graphic = imageview("/img/copy.png")) {
+            button("e", graphic = imageview(IMG_UP)) {
+                tooltip(messages["up"])
+                action {
+                    ta4.text = outputText
+                    taOutput.text = ""
+                }
+            }
+            button("d", graphic = imageview(IMG_UP)) {
+                tooltip(messages["up"])
+                action {
+                    ta5.text = outputText
+                    taOutput.text = ""
+                }
+            }
+            button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
@@ -204,7 +233,7 @@ class BigIntFragment : Fragment("BigInt") {
                     prefWidth = DEFAULT_SPACING_40X
                 }
 
-            label("a:")
+            label("e:")
             ta4 =
                 textarea {
                     isWrapText = true
@@ -215,7 +244,7 @@ class BigIntFragment : Fragment("BigInt") {
         hbox {
             prefHeight = DEFAULT_SPACING_10X
             alignment = Pos.CENTER_LEFT
-            label("b:")
+            label("d:")
             ta5 =
                 textarea {
                     isWrapText = true
@@ -224,7 +253,6 @@ class BigIntFragment : Fragment("BigInt") {
             label("C:")
             ta6 =
                 textarea {
-                    enableWhen(SimpleBooleanProperty(false))
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
@@ -233,7 +261,7 @@ class BigIntFragment : Fragment("BigInt") {
     }
 
     private fun calculate() {
-        if (ta1.text.isBlank()) {
+        if (ta1.text.isBlank() && ta3.text.isBlank()) {
             return
         }
         runAsync {

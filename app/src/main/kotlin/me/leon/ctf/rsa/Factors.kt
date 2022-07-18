@@ -161,7 +161,7 @@ fun BigInteger.factor(): MutableList<BigInteger> {
     return factor(
         listOf(
             {
-                println("---div---")
+                println("---div--- $it")
                 it.trialDivide()
             },
             {
@@ -195,12 +195,13 @@ fun BigInteger.factor(): MutableList<BigInteger> {
 typealias FactorFun = (integer: BigInteger) -> List<BigInteger>
 
 private fun BigInteger.factor(funList: List<FactorFun>): MutableList<BigInteger> {
+    if (this <= THREE) return mutableListOf(this)
     var last: BigInteger = this
     val factors: MutableList<BigInteger> = mutableListOf()
     for (func in funList) {
         factors.addAll(func(last.abs()))
         last = factors.last()
-        if (last > ZERO) break
+        if (last >= ZERO) break
         factors.remove(last)
     }
 
