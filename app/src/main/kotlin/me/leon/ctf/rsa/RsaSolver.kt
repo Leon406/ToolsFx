@@ -174,8 +174,8 @@ object RsaSolver {
                 (c.modPow(e.invert(phi), n) / p).n2s()
             }
             else -> {
-                println("fmt: start")
-                val factors = factor(n)
+                println("factor: start")
+                val factors = n.factor()
                 factors.let {
                     if (it.groupBy { it }.size == 1) {
                         println("euler solve ${it.first()} ^ ${it.size}")
@@ -213,24 +213,6 @@ object RsaSolver {
                 }
             }
         }
-    }
-
-    private fun factor(n: BigInteger): MutableList<BigInteger> {
-        var factors = n.fermat()
-        if (factors.size == 1) {
-            println("fmt: fail, start rho ")
-            factors = n.pollardsRhoFactors()
-        }
-        if (factors.size == 1 || factors.any { it < BigInteger.ZERO }) {
-            println("rho: fail, start p-1")
-            factors = n.pollardsPM1Factors()
-        }
-
-        if (factors.size == 1 || factors.any { it < BigInteger.ZERO }) {
-            println("pm1: failed, start factor db ")
-            factors = n.factorDb().toMutableList()
-        }
-        return factors
     }
 
     private fun smallE(n: BigInteger, c: BigInteger, e: BigInteger): String {

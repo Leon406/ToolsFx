@@ -54,10 +54,13 @@ fun BigInteger.eulerPhi(n: Int) = minus(BigInteger.ONE) * pow(n - 1)
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 
 fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
-    return "http://factordb.com/api?query=$digit"
-        .readFromNet()
-        .fromJson(FactorDbResponse::class.java)
-        .factorList
+    return runCatching {
+        "http://factordb.com/api?query=$digit"
+            .readFromNet(timeout = 3000)
+            .fromJson(FactorDbResponse::class.java)
+            .factorList
+    }
+        .getOrElse { mutableListOf(digit.toBigInteger().negate()) }
 }
 
 // ported from

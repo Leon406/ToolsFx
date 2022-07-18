@@ -76,11 +76,12 @@ fun String.readStreamFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME
             error(it.stacktrace())
         }
 
-fun String.readFromNet(resumeUrl: String = ""): String =
-    runCatching { if (startsWith("http")) String(this.readBytesFromNet()) else "" }.getOrElse {
-        println("read err ${it.stacktrace()} ")
-        if (resumeUrl.isEmpty()) "" else resumeUrl.readFromNet()
-    }
+fun String.readFromNet(resumeUrl: String = "", timeout: Int = DEFAULT_TIME_OUT): String =
+    runCatching { if (startsWith("http")) String(this.readBytesFromNet(timeout = timeout)) else "" }
+        .getOrElse {
+            println("read err ${it.stacktrace()} ")
+            if (resumeUrl.isEmpty()) "" else resumeUrl.readFromNet()
+        }
 
 fun String.simpleReadFromNet(): String {
     val split = split(" ")

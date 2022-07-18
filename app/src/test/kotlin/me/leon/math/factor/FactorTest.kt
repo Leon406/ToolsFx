@@ -18,6 +18,7 @@ class FactorTest {
 
     @Test
     fun factor() {
+        // prime
         val bigDigit =
             "1346863473634347390771796960343437621220633518755545874225794040661818948117783599221788567624315" +
                 "5145465521141546915941147336786447889325606555333350540003"
@@ -27,6 +28,7 @@ class FactorTest {
                 "199186976436198142009306796121098855338013353484450237516704784370730555447242806847332" +
                 "980515991676603036451831461614974853586336814921296688024020657977899055504895476451187" +
                 "87266601929429724133167768465309665906113"
+
         getPrimeFromFactorDb(bigDigit2).also { println(it) }
         getPrimeFromFactorDb("183469842288888698417653802680141427113").also { println(it) }
         val bigDigit3 =
@@ -37,11 +39,9 @@ class FactorTest {
                 "600889701275302276327083264777557131716259404433809587040455066545789922339494264087685069" +
                 "28486718265947502369103630279494597681246462305557663234176934418614365600722888121379448849" +
                 "54974348317322412816157152702695143094487806945533233359294549423"
-        getPrimeFromFactorDb(bigDigit3).also { println(it) }
-    }
 
-    @Test
-    fun factor2() {
+        getPrimeFromFactorDb(bigDigit3).also { println(it) }
+
         val n =
             "10967139461853415659071654077230663606055071146545582952638294516827112521800750316180738615328664832" +
                 "8529071790130095763349089936429151343426469415497138306284842512691195220650548494501337831" +
@@ -75,6 +75,7 @@ class FactorTest {
             println("65536".toBigInteger().trialDivide())
         }
             .also { println(it) }
+        println("118273132683105007025190320003".toBigInteger().trialDivide())
     }
 
     @Test
@@ -90,22 +91,37 @@ class FactorTest {
     }
 
     @Test
+    fun factorAllInOne() {
+        println("118273132683105007025190320003".toBigInteger().factor())
+        println("118273132683105007025190320003123".toBigInteger().factor())
+        println("118273132683105007025190320123123232546346012312312303123".toBigInteger().factor())
+        println(
+            "118273132683105007025190320123123232546346012312312301231231231233123"
+                .toBigInteger()
+                .factor()
+        )
+    }
+
+    @Test
     fun rho() {
-        requireNotNull("n_rho.txt".parseRsaParams()["n"]).pollardsRhoFactors(200_000).also {
+        requireNotNull("n_rho.txt".parseRsaParams()["n"]).pollardsRhoFactors().also {
             println(it)
             assertEquals(4, it.size)
         }
 
-
-        println("118273132683105007025190320003".toBigInteger().also {
-            println(it.root(4).contentToString())
-        }.pollardsRhoFactors(200_0000))
+        println(
+            "118273132683105007025190320123123232"
+                .toBigInteger()
+                .also {
+                    println("--------factor: " + it.factor())
+                    println(it.root(4).contentToString())
+                }
+                .pollardsRhoFactors()
+        )
     }
 
     @Test
     fun pm1() {
-        requireNotNull("n_pm1.txt".parseRsaParams()["n"]).pollardsPM1Factors(200_000).also {
-            println(it)
-        }
+        requireNotNull("n_pm1.txt".parseRsaParams()["n"]).pollardsPM1Factors().also { println(it) }
     }
 }

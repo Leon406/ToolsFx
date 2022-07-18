@@ -136,6 +136,15 @@ class RsaTest {
      */
     @Test
     fun rsa10() {
+        var params = "rsa12_fermat.txt".parseRsaParams()
+        assertEquals("flag{01d80670b01b654fe4831a3e81870734}", solve(params))
+
+        params = "rsa12_fermat2.txt".parseRsaParams()
+        assertEquals("flag{d1fference_between_p_And_q_1s_t00_5mall}", solve(params))
+    }
+
+    @Test
+    fun rsa12_fermat() {
         val params = "rsa10.txt".parseRsaParams()
         assertEquals("flag{96bd68e0-983e-4683-83c5-9cde3d18bea3}", solve(params))
     }
