@@ -1,11 +1,11 @@
 package me.leon.ctf
 
-import kotlin.test.assertEquals
 import me.leon.*
 import me.leon.ctf.rsa.RsaSolver.solve
 import me.leon.ctf.rsa.RsaSolver.solveN2E2C2
 import me.leon.ctf.rsa.RsaSolver.solvePQEC
 import org.junit.Test
+import kotlin.test.assertEquals
 
 /**
  * p q 两个素数 dp dq 两个指数
@@ -136,17 +136,17 @@ class RsaTest {
      */
     @Test
     fun rsa10() {
+        val params = "rsa10.txt".parseRsaParams()
+        assertEquals("flag{96bd68e0-983e-4683-83c5-9cde3d18bea3}", solve(params))
+    }
+
+    @Test
+    fun rsa12_fermat() {
         var params = "rsa12_fermat.txt".parseRsaParams()
         assertEquals("flag{01d80670b01b654fe4831a3e81870734}", solve(params))
 
         params = "rsa12_fermat2.txt".parseRsaParams()
         assertEquals("flag{d1fference_between_p_And_q_1s_t00_5mall}", solve(params))
-    }
-
-    @Test
-    fun rsa12_fermat() {
-        val params = "rsa10.txt".parseRsaParams()
-        assertEquals("flag{96bd68e0-983e-4683-83c5-9cde3d18bea3}", solve(params))
     }
 
     @Test
