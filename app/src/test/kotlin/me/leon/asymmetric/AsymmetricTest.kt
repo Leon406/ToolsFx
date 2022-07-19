@@ -1,9 +1,14 @@
 package me.leon.asymmetric
 
+import java.io.File
 import java.security.Security
+import javax.crypto.Cipher
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import me.leon.TEST_ASYMMETRIC_DIR
+import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 import me.leon.ext.crypto.*
 import me.leon.ext.hex2ByteArray
 import me.leon.ext.toHex
@@ -18,7 +23,7 @@ class AsymmetricTest {
         Security.addProvider(BouncyCastleProvider())
     }
 
-    val pri =
+    val pri8 =
         "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAI4PFaNoiyF51e4v63d4okNnf1URlT+j8JwHR1wRka5LK9" +
             "Rx+hAT8AMvjwpYECS8SEFxz9QKqQHf91NcMklyDvX5s2wHiWAu+KCsfBw0eW5K7WhED6MuiSGkWNVP8kAUvXFHL" +
             "1hZwH0qjpkqwGs3kmUigkVAfmD3hR84ulFUp82BAgMBAAECgYAb0bRpFbX5TkSoqlWwRb1w+bmjzRevKMmbpIlC" +
@@ -30,6 +35,9 @@ class AsymmetricTest {
             "8eX5dK3q7wANcxEzwJhN90CJTJeO8qzHPn0ph3pVwOm4ZeVGBJoijxx8CQAfYcZWIuAQvpeP890BaKehYWPZe/5" +
             "Ch83wJXjKzJnyKByaXA58wLmWJu0mkb8NmLeqEEZzujT0I8xnVRwXHT68="
 
+    val pub = File(TEST_ASYMMETRIC_DIR, "pub_2048_pkcs1.pem").readText()
+    val pri = File(TEST_ASYMMETRIC_DIR, "pri_2048_pkcs1.pem").readText()
+
     @Test
     fun rsaKey() {
 
@@ -38,9 +46,61 @@ class AsymmetricTest {
             checkKeyPair(it[0], it[1])
         }
 
-        pkcs8ToPkcs1(pri).also {
+        pkcs8ToPkcs1(pri8).also {
             println(it)
-            pkcs1ToPkcs8(it).also { assertEquals(pri, it) }
+            pkcs1ToPkcs8(it).also { assertEquals(pri8, it) }
+        }
+    }
+
+    /**
+     * OAEP MGF1 bouncy castle MGF1 算法默认 SHA256 Oracle MGF1 算法默认 SHA1 python pycryptodome 算法默认
+     * 与hash算法一致
+     */
+    @Test
+    fun rsaOaepTest() {
+        val msg = "价大放送胜多负少东方闪电收到否价大价大价大价大价大价大价11".toByteArray()
+        println(msg.size)
+
+        val alg = "RSA/NONE/OAEPWithSHA1AndMGF1Padding"
+
+        val encryptionCipher = Cipher.getInstance(alg)
+
+        val publicKey = pub.toPublicKey("RSA")
+        encryptionCipher.init(Cipher.ENCRYPT_MODE, publicKey, OAEP_PARAM_SPEC_SHA1)
+        val encrypted = encryptionCipher.doFinal(msg).base64()
+        println(encrypted)
+
+        val decryptCipher = Cipher.getInstance(alg, "BC")
+        decryptCipher.init(Cipher.DECRYPT_MODE, pri.toPrivateKey(alg), OAEP_PARAM_SPEC_SHA1)
+        println(decryptCipher.doFinal(encrypted.base64Decode()).decodeToString())
+    }
+
+    @Test
+    fun controllerTest() {
+        val controller = AsymmetricCryptoController()
+        val key = File(TEST_ASYMMETRIC_DIR, "rsa_oaep_sha1.txt").readText()
+        val ss =
+            "CQGd9sC/h9lnLpua50/071knSsP4N8WdmRsjoNIdfclrBhMjp7NoM5xy2SlNLLC2yh7wbRw08nwjo6UF4tmGKKfcjP" +
+                "cb4l4bFa5uvyMY1nJBvmqQylDbiCnsODjhpB1BJfdpU1LUKtwsCxbc7fPL/zzUdWgO+of/R9WmM+QOBPag" +
+                "TANbJo0mpDYxvNKRjvac9Bw4CQTTh87moqsNRSE/Ik5tV2pkFRZfQxAZWuVePsHp0RXVitHwvKzwmN9vMq" +
+                "Gm57Wb2Sto64db4gLJDh9GROQN+EQh3yLoSS8NNtBrZCDddzfKHa8wv6zN/5znvBstsDBkGyi88NzQxw9" +
+                "kOGjCWtwpRw=="
+        val alg2 = "RSA/NONE/OAEP"
+        assertEquals(
+            "EKO{classic_rsa_challenge_is_boring_but_necessary}",
+            controller.priDecrypt(key, alg2, ss)
+        )
+
+        assertEquals(2048, controller.lengthFromPub(pub))
+        assertEquals(2048, controller.lengthFromPri(pri))
+        val plain = "text dfsd dfsdf  dfsdf df sdf  dsf "
+
+        RSA_PADDINGS.map { "RSA/NONE/$it" }.forEach {
+            runCatching {
+                println("alg : $it")
+                val encrypt = controller.pubEncrypt(pub, it, plain)
+                assertEquals(plain, controller.priDecrypt(pri, it, encrypt))
+            }
         }
     }
 
