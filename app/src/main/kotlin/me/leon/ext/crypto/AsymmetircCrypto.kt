@@ -4,11 +4,14 @@ import java.io.*
 import java.math.BigInteger
 import java.security.*
 import java.security.cert.CertificateFactory
-import java.security.interfaces.*
+import java.security.interfaces.RSAPrivateCrtKey
 import java.security.spec.*
 import javax.crypto.Cipher
+import javax.crypto.spec.OAEPParameterSpec
+import javax.crypto.spec.PSource
 import me.leon.encode.base.*
-import me.leon.ext.*
+import me.leon.ext.hex2ByteArray
+import me.leon.ext.parseRsaParams
 import org.bouncycastle.asn1.ASN1Primitive
 import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
@@ -31,18 +34,24 @@ val RSA_PADDINGS =
     listOf(
         "PKCS1Padding",
         "NoPadding",
+        "ISO9796-1Padding",
+        "OAEP",
         "OAEPWithMD5AndMGF1Padding",
         "OAEPWithSHA1AndMGF1Padding",
         "OAEPWithSHA224AndMGF1Padding",
-        "OAEPWithSHA256AndMGF1Padding",
-        "OAEPWithSHA384AndMGF1Padding",
-        "OAEPWithSHA512AndMGF1Padding",
         "OAEPWithSHA3-224AndMGF1Padding",
+        // key 大于512位
+        "OAEPWithSHA256AndMGF1Padding",
         "OAEPWithSHA3-256AndMGF1Padding",
+        "OAEPWithSHA384AndMGF1Padding",
         "OAEPWithSHA3-384AndMGF1Padding",
+        // key 大于1024位
+        "OAEPWithSHA512AndMGF1Padding",
         "OAEPWithSHA3-512AndMGF1Padding",
-        "ISO9796-1Padding",
     )
+
+val OAEP_PARAM_SPEC_SHA1 =
+    OAEPParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, PSource.PSpecified.DEFAULT)
 
 fun String.removePemInfo() =
     replace("---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
@@ -106,7 +115,12 @@ fun ByteArray.pubDecrypt(key: String, alg: String) = pubDecrypt(key.toPublicKey(
 
 fun ByteArray.pubDecrypt(publicKey: PublicKey?, alg: String): ByteArray =
     Cipher.getInstance(alg).run {
-        init(Cipher.DECRYPT_MODE, publicKey)
+        if (alg.isOAEP()) {
+            init(Cipher.DECRYPT_MODE, publicKey, OAEP_PARAM_SPEC_SHA1)
+            return@pubDecrypt doFinal(this@pubDecrypt)
+        } else {
+            init(Cipher.DECRYPT_MODE, publicKey)
+        }
         toList()
             .chunked(publicKey!!.bitLength() / BYTE_BITS) { this.doFinal(it.toByteArray()) }
             .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
@@ -114,16 +128,31 @@ fun ByteArray.pubDecrypt(publicKey: PublicKey?, alg: String): ByteArray =
     }
 
 fun ByteArray.pubEncrypt(publicKey: PublicKey?, alg: String, reserved: Int = 11): ByteArray {
-    return Cipher.getInstance(alg).run {
-        init(Cipher.ENCRYPT_MODE, publicKey)
+    return Cipher.getInstance(alg.properOAEPAlg()).run {
+        if (alg.isOAEP()) {
+            init(Cipher.ENCRYPT_MODE, publicKey, OAEP_PARAM_SPEC_SHA1)
+            println("_______isOAEP")
+            //            return@pubEncrypt doFinal(this@pubEncrypt)
+        } else {
+            init(Cipher.ENCRYPT_MODE, publicKey)
+        }
+        println("_______ ${publicKey!!.bitLength()} ${if (alg.contains("RSA")) reserved else 0}")
         toList()
             .chunked(
-                publicKey!!.bitLength() / BYTE_BITS - if (alg.contains("RSA")) reserved else 0
-            ) { this.doFinal(it.toByteArray()) }
+                (publicKey!!.bitLength() / BYTE_BITS - if (alg.contains("RSA")) reserved else 0)
+                    .also { println("chunk size $it") }
+            ) {
+                println("list size ${it.size}")
+                this.doFinal(it.toByteArray())
+            }
             .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
             .toByteArray()
     }
 }
+
+private fun String.properOAEPAlg() = if (isOAEP()) this.replace("OAEP", RSA_PADDINGS[4]) else this
+
+private fun String.isOAEP() = endsWith("OAEP")
 
 fun ByteArray.pubEncrypt(key: String, alg: String, reserved: Int = 11) =
     if (alg == "SM2") sm2(true, key.removePemInfo().keyAutoDecode().toECPublicKeyParams())
@@ -138,8 +167,14 @@ fun ByteArray.asymmetricDecrypt(
     key: Key?,
     alg: String,
 ): ByteArray =
-    Cipher.getInstance(alg).run {
-        init(Cipher.DECRYPT_MODE, key)
+    Cipher.getInstance(alg.properOAEPAlg(), BouncyCastleProvider.PROVIDER_NAME).run {
+        println("alg $alg")
+        if (alg.isOAEP()) {
+            init(Cipher.DECRYPT_MODE, key, OAEP_PARAM_SPEC_SHA1)
+            return@asymmetricDecrypt doFinal(this@asymmetricDecrypt)
+        } else {
+            init(Cipher.DECRYPT_MODE, key)
+        }
         val bitLen =
             when (key) {
                 is PublicKey -> {
@@ -152,6 +187,8 @@ fun ByteArray.asymmetricDecrypt(
                     1024
                 }
             }
+
+        println(bitLen)
         toList()
             .chunked(bitLen / BYTE_BITS) { this.doFinal(it.toByteArray()) }
             .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
@@ -166,8 +203,12 @@ fun ByteArray.privateDecrypt(
     else asymmetricDecrypt(key.toPrivateKey(alg), alg)
 
 fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray =
-    Cipher.getInstance(alg).run {
-        init(Cipher.ENCRYPT_MODE, key)
+    Cipher.getInstance(alg.properOAEPAlg()).run {
+        if (alg.isOAEP()) {
+            init(Cipher.ENCRYPT_MODE, key, OAEP_PARAM_SPEC_SHA1)
+        } else {
+            init(Cipher.ENCRYPT_MODE, key)
+        }
         val bitLen =
             when (key) {
                 is PublicKey -> {
