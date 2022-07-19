@@ -1,18 +1,16 @@
-{"version":"1.13.6.beta","info":"1.13.6.beta
+{"version":"1.13.7.beta","info":"1.13.7.beta
 
-🔥 PBE支持 Md5andRC4 Md5andTripleDe
-🔥 内置浏览器支持websocket
-🔥 调整样式及部分布局
-🔥 编码crack支持 文件模式式(建议文件大于1M时使用)
-🔥 CTF新增 tapCode敲击码
-🔥 CTF bifid默认字典
-🔥 CTF,关于加入wiki入口
-🔥 RSA-crack新增 N2EC参数,优化参数解析
+🔥 非对称加密模块,RSA新增,与python OAEP互通算法
+🔥 CTF新增 阴阳怪气算法
+🔥 大数运算优化, 新增简单的RSA d及解密计算
+🔥 编码crack优化
+🔥 字符处理 提取支持文件(文件flag查找)
+🔥 RSA-crack 支持8进制解析,广播支持大于3组数据
+🔥 CTF新增 Rot8000, Caesar Box, Cetacean cipher
+🔥 CTF add crack for rain fence,caeser,2x2 hill,curve cipher, affine ciphe
 🔥 其他优化
 
-🐞 base91特定长度最后一位解码错误
-
 升级方式  下载最新app.jar复制到lib目录下,同时删除旧jar包
-使用前必看README和wiki  https://github.com/Leon406/ToolsFx/wiki/CTF
+使用前必看README和wiki
 
   "}
