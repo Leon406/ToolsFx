@@ -291,7 +291,7 @@ class ClassicalTest {
 
     @Test
     fun hillCrack() {
-        var key = "13 6 3 21"
+        //        val key = "13 6 3 21"
         val data = "dloguszijluswogany".replace("[^a-zA-Z]".toRegex(), "")
         var decrypt = ""
         val flag = "flag"

@@ -42,4 +42,14 @@ class CtfTest2 {
         assertEquals(expected, data.cetacean())
         assertEquals(data, expected.cetaceanDecrypt())
     }
+
+    @Test
+    fun yygqTest() {
+        //        println("好sdf手动蝶阀".yygq()
+        //            .also {
+        //                println(it.yygqDecode())
+        //            })
+
+        println(File(TEST_CTF_DIR, "yygq.txt").readText().yygqDecode())
+    }
 }

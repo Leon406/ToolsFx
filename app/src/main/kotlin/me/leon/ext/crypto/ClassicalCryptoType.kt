@@ -694,5 +694,12 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: Map<String, String>) = raw.cetaceanDecrypt()
 
         override fun isIgnoreSpace() = false
+    },
+    YYGQ("阴阳怪气") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.yygq()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.yygqDecode()
+
+        override fun isIgnoreSpace() = false
     }
 }
