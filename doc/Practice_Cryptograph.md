@@ -26,7 +26,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 ```
 
-### playload
+### payload
 
 - 标准中注册的声明
   - **标准中注册的声明** (建议但不强制使用) ：
