@@ -1,14 +1,27 @@
 package me.leon
 
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert.*
-import org.junit.Test
+import org.hamcrest.CoreMatchers.both
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import org.mockito.Mock
+import org.mockito.Mockito.anyInt
+import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
+import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 class ParamsTest(private val p1: Int, private val p2: Int, private val p3: String) {
 
+    @Mock
+    lateinit var mockList: List<Int>
+
+    @Before
+    fun init() {
+        MockitoAnnotations.openMocks(this)
+    }
     @Test
     fun ppp() {
         println("$p1 $p2 $p3")
@@ -18,6 +31,17 @@ class ParamsTest(private val p1: Int, private val p2: Int, private val p3: Strin
     @Test
     fun testAssertThatBothContainsString() {
         assertThat("albumen", both(containsString("a")).and(containsString("b")))
+    }
+
+    @Test
+    fun mockTest() {
+//        val list = Mockito.mock(List::class.java)
+        `when`(mockList[anyInt()]).thenReturn(100)
+        `when`(mockList[1]).thenReturn(666)
+
+        assertEquals(0, mockList.size)
+        assertEquals(666, mockList[1])
+
     }
 
     companion object {
