@@ -1,5 +1,6 @@
 package me.leon
 
+import kotlin.test.assertEquals
 import org.hamcrest.CoreMatchers.both
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
@@ -10,13 +11,11 @@ import org.mockito.Mock
 import org.mockito.Mockito.anyInt
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
-import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 class ParamsTest(private val p1: Int, private val p2: Int, private val p3: String) {
 
-    @Mock
-    lateinit var mockList: List<Int>
+    @Mock lateinit var mockList: List<Int>
 
     @Before
     fun init() {
@@ -35,13 +34,12 @@ class ParamsTest(private val p1: Int, private val p2: Int, private val p3: Strin
 
     @Test
     fun mockTest() {
-//        val list = Mockito.mock(List::class.java)
+        //        val list = Mockito.mock(List::class.java)
         `when`(mockList[anyInt()]).thenReturn(100)
         `when`(mockList[1]).thenReturn(666)
 
         assertEquals(0, mockList.size)
         assertEquals(666, mockList[1])
-
     }
 
     companion object {
