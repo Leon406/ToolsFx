@@ -8,8 +8,10 @@ plugins {
 }
 
 repositories {
+    maven { url = uri("https://mirrors.tencent.com/nexus/repository/maven-public") }
+    maven { url = uri("https://mirrors.huaweicloud.com/repository/maven/") }
     maven { url = uri("https://maven.aliyun.com/repository/public") }
-    mavenCentral()
+//    mavenCentral()
     maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
     maven { url = uri("https://maven.aliyun.com/repository/google") }
 }
@@ -22,8 +24,10 @@ subprojects {
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     repositories {
+//        mavenCentral()
+        maven { url = uri("https://mirrors.tencent.com/nexus/repository/maven-public") }
+        maven { url = uri("https://mirrors.huaweicloud.com/repository/maven/") }
         maven { url = uri("https://maven.aliyun.com/repository/public") }
-        mavenCentral()
         maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
     }
