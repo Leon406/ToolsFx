@@ -81,7 +81,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun isIgnoreSpace() = false
         override fun hasCrack() = true
         override fun crack(raw: String, keyword: String): String {
-            for (a in 1..25) for (b in 1..25) {
+            for (a in 1..26) for (b in 1..26) {
                 runCatching {
                     val decrypted = raw.affineDecrypt(a, b)
                     if (decrypted.containsRegexIgnoreCase(keyword)) {
