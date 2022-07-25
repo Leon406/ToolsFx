@@ -328,3 +328,6 @@ Cookie:
 payload
 Inspector
 INSPECTOR
+WebSocket
+And
+Or

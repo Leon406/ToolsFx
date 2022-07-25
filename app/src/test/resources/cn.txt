@@ -53,7 +53,7 @@
 (.*)[Ss]howing only commented and highlighted items(.*)	$1仅显示带注释及高亮的项目$2
 (.*)[Ss]howing only commented items(.*)	$1仅显示带注释的项目$2
 (.*)[Ss]howing only highlighted items(.*)	$1仅显示高亮的项目$2
-(.*)[Ss]howing only listener (.*)	$1仅显示侦听器(listener)$2
+(.*)[Ss]howing only listener (.*)	$1仅显示监听器(listener)$2
 (.*)[Ss]howing specific extensions(.*)	$1显示指定的扩展名$2
 (.*)\[Pro version only\](.*)	$1[仅限专业版]$2
 (.*)\[Pro version with 64-bit Java only\](.*)	$1[仅限64位Java的专业版]$2
@@ -208,12 +208,12 @@ Add a new header	添加新报头
 Add a new interception rule	添加新的拦截规则
 Add a new item	添加新项目
 Add a new item by pasting a URL	粘贴网址并添加新项目
-Add a new listener	添加一个侦听器
+Add a new listener	添加一个监听器
 Add a new macro	添加一个新的宏
 Add a new match/replace rule	添加一个新的匹配/替换规则
 Add a new parameter	添加一个新参数
 Add a new payload processing rule	添加一个新的payload处理规则
-Add a new proxy listener	添加一个新的代理侦听器
+Add a new proxy listener	添加一个新的代理监听器
 Add a new task	添加新任务
 Add a new upstream proxy rule	添加一条新的上行代理规则
 Add all items requested through Proxy to site map	将通过代理请求的所有项目添加到站点地图
@@ -349,14 +349,14 @@ Are you sure you want to remove ("[^"]+")\?	$1您确定要删除吗？
 Are you sure you want to remove this action?	您确定要删除此操作吗？
 Are you sure you want to remove this certificate?	您确定要删除此证书吗？
 Are you sure you want to remove this item?	您确定要删除此项吗？
-Are you sure you want to remove this listener?	您确定要删除此侦听器吗？
+Are you sure you want to remove this listener?	您确定要删除此监听器吗？
 Are you sure you want to remove this macro?	您确定要删除此宏吗？
 Are you sure you want to remove this rule?	您确定要删除此规则吗？
 Are you sure you want to restore default Burp Collaborator server options?	您确定要将Burp Collaborator服务器选项重置为默认值吗？
 Are you sure you want to restore default Burp Extender options?	您确定要将Burp Extender选项重置为默认值吗？
 Are you sure you want to restore default HTML rendering options?	您确定要将HTML呈现选项重置为默认值吗？
 Are you sure you want to restore default HTTP message display options?	您确定要将HTTP消息显示选项重置为默认值吗？
-Are you sure you want to restore default Java environment options?	您确定要将Java环境选项还原为默认值吗？
+Are you sure you want to restore default Java environment options?	您确定要将Java环境选项重置为默认值吗？
 Are you sure you want to restore default Python environment options?	您确定要将Python环境选项重置为默认值吗？
 Are you sure you want to restore default Ruby environment options?	您确定要将Ruby环境选项重置为默认值吗？
 Are you sure you want to restore default SOCKS proxy options?	您确定要恢复默认的SOCKS代理选项吗？
@@ -388,8 +388,8 @@ Are you sure you want to restore default logging options?	您确定要将日志�
 Are you sure you want to restore default macros options?	您确定要将宏选项重置为默认值吗？
 Are you sure you want to restore default match and replace options?	您确定要将搜索和替换选项重置为默认值吗？
 Are you sure you want to restore default match grep options?	您确定要将match grep选项重置为默认值吗？
-Are you sure you want to restore default miscellaneous proxy options?	您确定要将其他代理选项还原为默认值吗？
-Are you sure you want to restore default miscellaneous proxy settings options?	您确定要还原默认代理配置选项吗？
+Are you sure you want to restore default miscellaneous proxy options?	您确定要将其他代理选项重置为默认值吗？
+Are you sure you want to restore default miscellaneous proxy settings options?	您确定要重置默认代理配置选项吗？
 Are you sure you want to restore default out-of-scope requests options?	您确定要将范围外请求选项重置为默认值吗？
 Are you sure you want to restore default passive scanning areas options?	您确定要将被动扫描目标选项重置为默认值吗？
 Are you sure you want to restore default passive spidering options?	您确定要将被动拼接选项重置为默认值吗？
@@ -398,14 +398,14 @@ Are you sure you want to restore default performance feedback options?	您确定
 Are you sure you want to restore default platform authentication options?	您确定要将平台身份验证选项重置为默认值吗？
 Are you sure you want to restore default proxy history logging options?	您确定要将代理历史记录日志选项恢复为默认值吗？
 Are you sure you want to restore default proxy interception options?	您确定要将代理拦截选项恢复为默认值吗？
-Are you sure you want to restore default proxy listeners options?	您确定要将代理侦听器选项还原为默认值吗？
+Are you sure you want to restore default proxy listeners options?	您确定要将代理监听器选项重置为默认值吗？
 Are you sure you want to restore default redirections options?	您确定要将重定向选项重置为默认值吗？
 Are you sure you want to restore default request engine options?	您确定要将请求引擎选项重置为默认值吗？
 Are you sure you want to restore default request headers options?	您确定要将请求头选项重置为默认值吗？
 Are you sure you want to restore default response modification options?	您确定要将响应操作选项重置为默认值吗？
 Are you sure you want to restore default rest api options?	您确定要将REST API选项重置为默认值吗？
 Are you sure you want to restore default scan issues options?	您确定要将扫描项目选项重置为默认值吗？
-Are you sure you want to restore default scheduled tasks options?	您确定要将计划任务选项还原为默认值吗？
+Are you sure you want to restore default scheduled tasks options?	您确定要将计划任务选项重置为默认值吗？
 Are you sure you want to restore default server SSL certificates options?	您确定要将服务器SSL证书选项重置为默认值吗？
 Are you sure you want to restore default session handling rules options?	您确定要将会话处理规则选项重置为默认值吗？
 Are you sure you want to restore default spider engine options?	您确定要将Spider引擎选项重置为默认值吗？
@@ -418,7 +418,7 @@ Are you sure you want to restore default temporary files location options?	您�
 Are you sure you want to restore default timeouts options?	您确定要将超时选项重置为默认值吗？
 Are you sure you want to restore default token analysis options?	您确定要将令牌分析选项重置为默认值吗？
 Are you sure you want to restore default token handling options?	您确定要将令牌处理选项重置为默认值吗？
-Are you sure you want to restore default upstream proxy servers options?	您确定要还原为默认代理服务器选项吗？
+Are you sure you want to restore default upstream proxy servers options?	您确定要重置为默认代理服务器选项吗？
 Are you sure you want to restore default user interface options?	您确定要将用户界面选项重置为默认值吗？
 Are you sure you want to restore defaults for Project options?	您确定要恢复为项目选项的默认值吗？
 Are you sure you want to restore defaults for Proxy?	您确定要将代理选项重置为默认值吗？
@@ -719,7 +719,7 @@ Clear log	清空日志
 Clear queues	清除队列
 Clear the contents of the viewer	清除查看器内容
 Clear §	清除payload位置 §
-Cleartext submission of password(\s+\[\d+\])?	发送密码$1
+Cleartext submission of password(\s+\[\d+\])?	明文密码传输$1
 Click "Copy to clipboard" to generate Burp Collaborator payloads that you can use in your own testing. Any interactions that result from using the payloads will appear below.	单击“复制到剪贴板”以生成可以在自己的测试中使用的Burp协作器payload。使用payload产生的任何交互都将显示在下面。
 Click the stars to rate the '(.*)' BApp	$1 请点击星星来评价BApp
 Click to modify	点击修改
@@ -1019,7 +1019,7 @@ Directories - long	目录 - 长
 Directories - short	目录 - 简短
 Directories / files . extensions	目录 / 文件 扩展名
 Directories only	仅限目录
-Directory listing(\s+\[\d+\])?	目录列表$1
+Directory listing(\s+\[\d+\])?	目录遍历$1
 Directory:	目录：
 Disable Java SNI extension (requires restart)	禁用Java SNI扩展（需重启）
 Disable SSL session resume	禁用SSL会话恢复
@@ -1146,7 +1146,7 @@ Edit payload processing rule	编辑payload处理规则
 Edit platform authentication credentials	编辑平台身份验证凭据
 Edit prefix for in-scope URLs	编辑范围内URL的前缀
 Edit prefix for out-of-scope URLs	编辑范围外的范围前缀
-Edit proxy listener	编辑代理侦听器
+Edit proxy listener	编辑代理监听器
 Edit request header	编辑请求头
 Edit request interception rule	编辑请求拦截规则
 Edit resource pool	编辑资源池
@@ -1159,7 +1159,7 @@ Edit the selected cookie	编辑所选Cookie
 Edit the selected custom parameter location	编辑所选定义参数位置
 Edit the selected header	编辑所选报头
 Edit the selected item	编辑所选项目
-Edit the selected listener	编辑所选侦听器
+Edit the selected listener	编辑所选监听器
 Edit the selected macro	编辑所选宏
 Edit the selected parameter	编辑所选参数
 Edit the selected rule	编辑所选规则
@@ -1825,7 +1825,7 @@ Load platform authentication options	加载平台认证选项
 Load project options	载入项目配置
 Load proxy history logging options	读取代理历史日志选项
 Load proxy interception options	读取代理拦截选项
-Load proxy listeners options	加载代理侦听器选项
+Load proxy listeners options	加载代理监听器选项
 Load redirections options	加载重定向选项
 Load request engine options	加载请求引擎选项
 Load request headers options	读取请求头选项
@@ -1866,7 +1866,7 @@ Location of JRuby JAR file:	JRuby JAR文件位置：
 Location of Jython standalone JAR file:	Jython的JAR文件位置：
 Location(s):	位置:
 Locations	位置
-Log exceptions to a local directory:	异常日志本地目录
+Log exceptions to a local directory:	本地异常日志目录
 LogFilter	日志过滤器
 Logger	日志
 Logger is empty	无日志
@@ -2197,7 +2197,7 @@ Paste one or more items from the clipboard	从剪贴板粘贴一个或多个项�
 Paste response	粘贴响应
 Pasted value is not a valid URL	粘贴的值不是有效的URL
 Path(.*)	路径$1
-Path-relative style sheet import(\s+\[\d+\])?	阅读相对路径的样式表$1
+Path-relative style sheet import(\s+\[\d+\])?	相对路径的样式表导入$1
 Pause	暂停
 Pause Automated Tasks	暂停自动任务
 Pause Scanner	暂停扫描器
@@ -2442,7 +2442,7 @@ Remove the selected custom parameter location	删除自定义参数位置
 Remove the selected header	删除所选报头
 Remove the selected item	删除所选项目
 Remove the selected items	删除所选项目
-Remove the selected listener	删除选定侦听器
+Remove the selected listener	删除选定监听器
 Remove the selected macro	删除选定宏
 Remove the selected parameter	删除所选参数
 Remove the selected rule	删除所选规则
@@ -2535,7 +2535,7 @@ Restore setting from when Burp was last closed	从Burp最后关闭恢复配置
 Restore state	状态恢复
 Restore state wizard	状态恢复向导
 Restoring site map - please wait...	恢复站点地图 - 请稍候...
-Restoring: (\d+)% complete	在还原过程中： $1%完成
+Restoring: (\d+)% complete	正在恢复中： $1%完成
 Restrict to requests containing these parameters:	限制包含这些参数的请求：
 Results	结果
 Results Tab	结果标签
@@ -2663,7 +2663,7 @@ Save platform authentication options	保存平台认证配置
 Save project options	保存项目配置
 Save proxy history logging options	保存代理历史日志配置
 Save proxy interception options	保存代理拦截配置
-Save proxy listeners options	保存代理侦听器配置
+Save proxy listeners options	保存代理监听器配置
 Save redirections options	保存重定向配置
 Save report	保存报告
 Save request engine options	保存请求引擎配置
@@ -2745,6 +2745,9 @@ Select	选择
 Backup file	备份文件
 Web cache poisoning	网页缓存投毒
 WebSocket URL poisoning	WebSocket URL投毒
+WebSocket URL poisoning (DOM-based)	WebSocket URL投毒(基于DOM)
+WebSocket URL poisoning (reflected DOM-based)	WebSocket URL投毒(反射型DOM)
+WebSocket URL poisoning (stored DOM-based)	WebSocket URL投毒(存储型DOM)
 Select BApp File	请选择BApp文件
 Select Live Capture Request	选择实时捕获请求
 Select a directory	目录选择
@@ -3166,6 +3169,7 @@ These settings control logging of HTTP requests and responses.	控制HTTP请求�
 These settings control some specific details of Burp Proxy's behavior. You can change the default settings here to deal with particular problems or situations.	这是一个控制Burp Proxy详细操作的设置。您可以更改默认设置以解决特定问题和情况。
 These settings control the SSL protocols and ciphers that Burp will use when performing SSL negotiation with upstream servers. If you are experiencing problems with SSL negotiation, you can use these settings to request use of specific protocols or ciphers. Use these options with caution as misconfiguration may break all your outgoing SSL connections.	控制Burp用于与更高级别服务器执行SSL协商的SSL协议和密码。如果您遇到SSL协商问题，可以将其配置为使用特定协议和密码。配置错误可能会导致所有传出的SSL连接中断，因此请谨慎使用。
 These settings control the TLS protocols and ciphers that Burp will use when performing TLS negotiation with upstream servers. If you are experiencing problems with TLS negotiation, you can use these settings to request use of specific protocols or ciphers. Use these options with caution as misconfiguration may break all your outgoing TLS connections.	控制Burp用于与更高级别服务器执行TLS协商的TLS协议和密码。如果您遇到TLS协商问题，可以将其配置为使用特定协议和密码。配置错误可能会导致所有传出的TLS连接中断，因此请谨慎使用。
+These settings control the TLS protocols that this proxy listener will use when performing TLS negotiation with the browser. If you are experiencing problems with TLS negotiation, you can use these settings to request use of specific protocols.	设置控制此代理监听器在与浏览器执行TLS协商时将使用的TLS协议。如果您遇到TLS协商问题，可以使用这些设置请求使用特定协议。
 These settings control the behavior of Burp Scanner's JavaScript analysis.	控制Burp Scanner JavaScript解析的行为。
 These settings control the engine used for making HTTP requests and harvesting tokens when performing the live capture.	配置引擎的行为以在执行实时捕获和收集令牌时生成HTTP请求。
 These settings control the engine used for making HTTP requests when discovering content.	设置搜索内容时用于创建HTTP请求的引擎。
@@ -3446,6 +3450,7 @@ Use a specific character set:	使用指定的字符集：
 Use advanced scope control	使用高级范围设置
 Use all items with responses	使用所有响应项
 Use all supported protocols and ciphers of your Java installation	使用已安装Java中支持的协议和密码
+Use the default protocols of your Java installation	使用已安装Java中支持的协议和密码
 Use built-in lists	使用内置列表
 Use cookies	使用cookie
 Use cookies from Burp's cookie jar	使用Burp的Cookie jar的cookies
@@ -3534,9 +3539,9 @@ WebSockets history	WebSocket历史记录
 WebSockets history is empty	WebSockets历史记录为空
 Weeks	周
 Welcome ...	欢迎...
-Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。重译版V3.1 by leon406
-Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。重译版V3.1 by leon406
-Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目.重译版V3.1 by leon406
+Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。 重译版V3.1 by leon406
+Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。 重译版V3.1 by leon406
+Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目。 重译版V3.1 by leon406
 When following redirections, understand the following types:	跟随重定向时，识别以下类型：
 When items are added to Target scope:	将项目添加到目标范围时：
 When the same insertion point is observed in a large number of requests with no variation in results, perform a more efficient quick scan, for the following insertion point types:	如果在许多请求中存在相同的插入点且结果没有变化，我们将更有效，更快地扫描下一个插入点类型：
@@ -3558,7 +3563,7 @@ Wrap text	自动换行
 X-Forwarded-For dependent response(\s+\[\d+\])?	X-Forwarded-For-dependent响应$1
 X509 certificate for (.*)	$1X509证书
 XML / SOAP injection	XML / SOAP注入
-XML entity expansion(\s+\[\d+\])?	部署XML实体$1
+XML entity expansion(\s+\[\d+\])?	XML实体扩展$1
 XML external entity injection(\s+\[\d+\])?	XML外部实体注入$1
 XML injection(\s+\[\d+\])?	XML注入$1
 XPath injection(\s+\[\d+\])?	XPath注入$1
@@ -3698,3 +3703,39 @@ Search tabs	搜索选项卡
 This setting controls Burp's use of HTTP/1 keep-alive for outbound connections.	控制Burp对HTTP/1 keep-alive的出站连接的
 This applies to waiting for a socket to connect	应用于等待套接字连接
 Set "Connection" header on incoming requests when using HTTP/1	使用HTTP/1时，在传入请求上设置“Connection”报头
+Unable to check for updates due to network error. Please check your network configuration and try again.	网络错误,无法更新.请检查网络配置并重试。
+Create tab group	新建标签组
+Repeater options for this tab	此标签重放器配置
+Restore global defaults	恢复全局默认配置
+Use a preset scan mode	使用预设扫描模式
+Use a custom configuration	使用自定义配置
+Remember my choice for future scans	以后扫描使用此配置
+Balanced	平衡
+Lightweight	轻量
+Deep	深度
+Achieve greater coverage and gain a better understanding of a site's security posture. Scanning time depends heavily on the target site's size and complexity.	实现更大的覆盖范围，更好地了解网站的安全态势。扫描时间在很大程度上取决于目标站点的大小和复杂性句号
+Provides a balance between coverage and speed. You will typically see the results of a Balanced scan within a few hours.	在覆盖率和速度之间保持平衡。您通常会在几个小时内看到结果。
+Scan configurations and modes are groups of settings that define how a scan is performed. Scan modes offer preset options designed to let you trade off speed and coverage. Alternatively, you can select one or more custom configurations. Burp Scanner applies any selected configurations in order, enabling you to fine-tune scanning behaviour.	扫描配置和模式是一组定义如何执行扫描的设置。扫描模式提供预设选项，让您在速度和覆盖范围之间进行权衡。或者，您可以选择一个或多个自定义配置。Burp 扫描按顺序应用任何选定的配置，使您能够微调
+Gain fast feedback on a site's security - for when speed is a priority. Lightweight mode will complete within 15 minutes.	快速获得网站安全反馈-速度优先。轻量模式在15分钟内完成。
+Invalid configuration	非法配置
+This setting enables use of the HTTP/2 protocol by the listener.	设置监听器是否使用HTTP/2
+Support HTTP/2	支持HTTP/2
+At least one protocol must be selected	至少选择一个协议
+Use custom protocols	使用自定义协议
+JWT weak HMAC secret	JWT使用HMAC弱口令
+JWT signature not verified	JWT签名未验证
+JWT self-signed JWK header supported	JWT支持自签名JWK头部
+JWT private key disclosed	JWT私钥泄露
+JWT none algorithm supported	JWT支持none算法
+JWT arbitrary x5u header supported	JWT支持x5u头部
+JWT arbitrary jku header supported	JWT支持jku头部
+Json Web Key Set disclosed	Json网页密钥集泄露
+Rename tab	重命名标签
+Close tab	关闭标签
+Close other tabs	关闭其他标签
+Close tabs to the left	关闭左边所有标签
+Close tabs to the right	关闭右边所有标签
+Reopen closed tab	打开已关闭标签
+Tab view options	标签视图设置
+Scrolling view	滚动视图
+Wrapped view	包裹视图

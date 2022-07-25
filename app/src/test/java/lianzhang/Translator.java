@@ -14,9 +14,9 @@ import java.util.regex.PatternSyntaxException;
 /** javac -encoding UTF-8 Translator.java -Xlint:unchecked */
 public class Translator {
     static boolean debug;
-    Map<String, String> literal = new HashMap<>(2048);
+    Map<String, String> literal = new HashMap<>(8192);
     static List<String> white = new ArrayList<>(512);
-    Map<Pattern, String> regexp = new HashMap<>(256);
+    Map<Pattern, String> regexp = new HashMap<>(1024);
     private static Map<String, Translator> map = new HashMap<>(2);
     static final Pattern pattern = Pattern.compile(".*\\$\\d.*");
     static final Pattern patternChinese = Pattern.compile("[\u4e00-\u9fa5]+");
