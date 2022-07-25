@@ -139,7 +139,7 @@ fun ByteArray.pubEncrypt(publicKey: PublicKey?, alg: String, reserved: Int = 11)
         println("_______ ${publicKey!!.bitLength()} ${if (alg.contains("RSA")) reserved else 0}")
         toList()
             .chunked(
-                (publicKey!!.bitLength() / BYTE_BITS - if (alg.contains("RSA")) reserved else 0)
+                (publicKey.bitLength() / BYTE_BITS - if (alg.contains("RSA")) reserved else 0)
                     .also { println("chunk size $it") }
             ) {
                 println("list size ${it.size}")

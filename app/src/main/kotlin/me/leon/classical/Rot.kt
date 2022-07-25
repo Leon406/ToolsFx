@@ -16,11 +16,11 @@ fun String.rot18() =
         }
         .joinToString("")
 
-fun String.shift26(bias: Int) =
+fun String.shift26(bias: Int, biasLower: Int = bias) =
     map {
             when (it) {
                 in 'A'..'Z' -> 'A' + (it + bias - 'A').circleIndex()
-                in 'a'..'z' -> 'a' + (it + bias - 'a').circleIndex()
+                in 'a'..'z' -> 'a' + (it + biasLower - 'a').circleIndex()
                 else -> it
             }
         }

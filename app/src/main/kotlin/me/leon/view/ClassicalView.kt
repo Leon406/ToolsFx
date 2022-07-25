@@ -5,7 +5,6 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.*
 import me.leon.controller.ClassicalController
-import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.crypto.*
 import me.leon.ext.fx.*
@@ -81,28 +80,9 @@ class ClassicalView : Fragment(messages["classical"]) {
                 promptText = messages["inputHint"]
                 isWrapText = true
                 onDragEntered = eventHandler
+
                 contextmenu {
-                    item(messages["loadFromNet"]) {
-                        action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
-                    }
-                    item(messages["loadFromNetLoop"]) {
-                        action {
-                            runAsync { inputText.simpleReadFromNet() } ui { taInput.text = it }
-                        }
-                    }
-                    item(messages["loadFromNet2"]) {
-                        action {
-                            runAsync { inputText.readBytesFromNet().base64() } ui
-                                {
-                                    taInput.text = it
-                                }
-                        }
-                    }
-                    item(messages["readHeadersFromNet"]) {
-                        action {
-                            runAsync { inputText.readHeadersFromNet() } ui { taInput.text = it }
-                        }
-                    }
+                    item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
                 }
             }
         hbox {

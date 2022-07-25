@@ -11,24 +11,29 @@ import me.leon.ext.parseRsaParams
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.shift26(params[P1]!!.toInt())
+            raw.shift26(params[P1]!!.toInt(), params[P2]!!.ifEmpty { params[P1] }!!.toInt())
 
         override fun decrypt(raw: String, params: Map<String, String>) =
-            raw.shift26(26 - params[P1]!!.toInt())
+            raw.shift26(
+                26 - params[P1]!!.toInt(),
+                26 - params[P2]!!.ifEmpty { params[P1] }!!.toInt()
+            )
 
         override fun isIgnoreSpace() = false
 
-        override fun paramsCount() = 1
+        override fun paramsCount() = 2
 
-        override fun paramsHints() = listOf("shift", "")
+        override fun paramsHints() = listOf("shift", "shift lower(default is same to shift)")
 
         override fun hasCrack() = true
 
         override fun crack(raw: String, keyword: String): String {
             for (i in (1..25)) {
-                val decrypted = raw.shift26(26 - i)
-                if (decrypted.containsRegexIgnoreCase(keyword)) {
-                    return "shift: $i${System.lineSeparator()}\t$decrypted"
+                for (j in (1..25)) {
+                    val decrypted = raw.shift26(26 - i, 26 - j)
+                    if (decrypted.containsRegexIgnoreCase(keyword)) {
+                        return "shift: $i shift(lower): $j${System.lineSeparator()}\t$decrypted"
+                    }
                 }
             }
             return ""
