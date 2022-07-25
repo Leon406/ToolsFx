@@ -1,9 +1,13 @@
 group = "me.leon.tools"
 version = "1.13.7.beta"
 
+repositories {
+    mavenLocal()
+}
+
 plugins {
     application
-    kotlin("plugin.serialization") version "1.7.0"
+    kotlin("plugin.serialization") version "1.7.10"
 }
 
 javafx {
@@ -13,8 +17,8 @@ javafx {
         "javafx.controls",
         "javafx.swing",
         "javafx.web",
-    // if you use javafx.fxml,then uncomment it
-    // 'javafx.fxml'
+        // if you use javafx.fxml,then uncomment it
+        // 'javafx.fxml'
     )
 }
 application {

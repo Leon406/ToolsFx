@@ -13,14 +13,24 @@ class FileTest {
 
         gradleJarsDir.toFile().walk().filter { it.isFile }.forEach {
             val path =
-                it.absolutePath.replace(gradleJarsDir, "").replace("""\\\w{40}""".toRegex(), "")
+                it.absolutePath.replace(gradleJarsDir, "").replace("""\\\w{38,}""".toRegex(), "")
             val properPath =
                 path.substringBefore("\\").replace(".", "\\") + "\\" + path.substringAfter("\\")
             val dstFile = (m2Dir + "\\" + properPath).toFile()
             if (dstFile.exists().not()) {
                 println("copy: ${dstFile.absolutePath}")
                 //                it.copyTo(dstFile)
-                //                it.renameTo(dstFile)
+                if (dstFile.parentFile.exists().not()) {
+                    dstFile.parentFile.mkdirs()
+                }
+                val renameState = it.renameTo(dstFile)
+                if (!renameState) {
+                    println("rename failed: ${dstFile.absolutePath}")
+                    it.copyTo(dstFile)
+                }
+            } else {
+                val delete = it.delete()
+                println("exist: $it ")
             }
         }
     }

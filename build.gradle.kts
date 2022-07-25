@@ -1,20 +1,9 @@
-
 plugins {
     kotlin("jvm") version "1.7.10"
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
     id("com.diffplug.spotless") version "6.8.0"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("org.openjfx.javafxplugin") version "0.0.13"
-}
-
-repositories {
-    mavenLocal()
-    maven { url = uri("https://mirrors.tencent.com/nexus/repository/maven-public") }
-    maven { url = uri("https://mirrors.huaweicloud.com/repository/maven") }
-    maven { url = uri("https://maven.aliyun.com/repository/public") }
-//    mavenCentral()
-    maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
-    maven { url = uri("https://maven.aliyun.com/repository/google") }
 }
 
 apply(from = "${rootProject.projectDir}/config/Versions.gradle.kts")
