@@ -1,16 +1,20 @@
-{"version":"1.13.7.beta","info":"1.13.7.beta
+{"version":"1.14.0","info":"1.14.0,
 
-🔥 非对称加密模块,RSA新增,与python OAEP互通算法
-🔥 CTF新增 阴阳怪气算法
-🔥 大数运算优化, 新增简单的RSA d及解密计算
-🔥 编码crack优化
+🔥 调整样式及部分布局,加入wiki入口
+🔥 编码新增一键crack, 支持大文件
+🔥 rot13/rot18/caeser/atBash,affine,virgenene,qwe 支持保留大小写
+🔥 ctf模块新增RSA-crack (详见wiki)
+🔥 ctf模块新增DNA,tapCode,Rot8000, Caesar Box, Cetacean cipher,阴阳怪气
 🔥 字符处理 提取支持文件(文件flag查找)
-🔥 RSA-crack 支持8进制解析,广播支持大于3组数据
-🔥 CTF新增 Rot8000, Caesar Box, Cetacean cipher
+🔥 PBE支持 Md5andRC4 Md5andTripleDes
+🔥 内置浏览器支持websocket, ws wss
 🔥 CTF add crack for rain fence,caeser,2x2 hill,curve cipher, affine ciphe
-🔥 其他优化
+🔥 大数运算优化, 新增简单的RSA d及解密计算
+🔥 其他优化及bug修复,
 
-升级方式  下载最新app.jar复制到lib目录下,同时删除旧jar包
-使用前必看README和wiki
+
+详见changelog.md
+
+使用前请看README和wiki
 
   "}
