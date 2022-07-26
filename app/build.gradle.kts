@@ -1,5 +1,5 @@
 group = "me.leon.tools"
-version = "1.13.7.beta"
+version = "1.14.0"
 
 repositories {
     mavenLocal()
