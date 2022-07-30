@@ -1,16 +1,7 @@
-{"version":"1.14.0","info":"1.14.0,
+{"version":"1.14.1.beta","info":"1.14.1.beta
 
-🔥 调整样式及部分布局,加入wiki入口
-🔥 编码新增一键crack, 支持大文件
-🔥 rot13/rot18/caeser/atBash,affine,virgenene,qwe 支持保留大小写
-🔥 ctf模块新增RSA-crack (详见wiki)
-🔥 ctf模块新增DNA,tapCode,Rot8000, Caesar Box, Cetacean cipher,阴阳怪气
-🔥 字符处理 提取支持文件(文件flag查找)
-🔥 PBE支持 Md5andRC4 Md5andTripleDes
-🔥 内置浏览器支持websocket, ws wss
-🔥 CTF add crack for rain fence,caeser,2x2 hill,curve cipher, affine ciphe
-🔥 大数运算优化, 新增简单的RSA d及解密计算
-🔥 其他优化及bug修复,
+🔥 修复playfair部分解码错误
+🔥 更改CTF词频分析内容
 
 
 详见changelog.md
