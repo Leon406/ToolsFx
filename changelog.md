@@ -222,3 +222,56 @@
 - fix(app): 大数开根精度丢失
 - fix(app): 正式版升级提示
 - fix(app): base64Url编码包含=
+  
+# v1.14.0  
+## feature:
+- feat(app): CTF caesar支持大小写不同偏移
+- feat(app): 非对称加密模块,RSA新增,与python OAEP互通算法
+- feat(app): CTF新增 阴阳怪气算法
+- feat(app): 大数运算优化, 新增简单的RSA d及解密计算
+- feat(app): 编码crack优化
+- feat(app): 字符处理 提取支持文件
+- feat(app): RSA-crack 支持8进制解析,广播支持大于3组数据
+- feat(app): CTF新增 Rot8000, Caesar Box, Cetacean cipher
+- feat(app): CTF add crack for rain fence,caeser,2x2 hill,curve cipher, affine cipher
+- feat(app): PBE支持 Md5andRC4 Md5andTripleDes
+- feat(app): update ToolsFx.properties, add sagecell
+- feat(app): 内置浏览器支持websocket, ws wss
+- feat(app): 调整样式及部分布局
+- feat(app): 编码crack支持 文件模式(建议文件大于1M时使用)
+- feat(app): CTF新增 tapCode敲击码
+- feat(app): CTF,关于加入wiki入口
+- feat(app): CTF bifid默认字典
+- feat(app): RSA-crack新增 N2EC参数,优化参数解析
+- feat(app): CTF playfair/ADGFX兼容包含空白符号的table
+- feat(app): CTF playFair支持大小写还原
+- feat(app): RSA-crack 新增n多因子解密 p q r r1 r2 rn
+- feat(app): CTF新增 DNA加密解密
+- feat(app): RSA-crack 加入本地质因分解算法 rho,p-1
+- feat(app): RSA-crack支持低指数e=3 广播攻击
+- feat(app): RSA-crack新增NEC e phi不互素算法
+- feat(app): RSA-crack新增 wiener attack
+- feat(app): 优化factorDb请求,RSA-crack支持更多模式
+- feat(app): RSA-crack新增 ncd, nc1c2e1e2模式
+- feat(app): 增强RSA-crack功能
+- feat: #55
+- feat(app): 新增字符处理 文件名替换
+- feat(app): string process support remove space
+- feat(app): 新增base85扩展Z85,Base64-IPv6
+- feat(app): 一键解码操作优化
+- feat(app): ctf模块新增RSA-NEC,RSA-PQEC 破解
+- feat(app): atBash,affine,virgenene,qwe支持保留大小写
+- feat(app): 新增SpringSecurity密码hash,支持crack
+- feat: #50 rot13/rot18/caeser support case recovery
+- feat(app): 优化编码crack编码结果,不显示无效编码结果
+
+## bug fix:
+- fix(app): base91特定长度最后一位解码错误
+- fix(app): 去除NON_PRINTABLE换行符
+- fix(app): CTF autoKey 提示语错误,修正兽音
+- fix(app): QrCode截屏识别错误, 编码逐行功能无效
+- fix(app): 编码一键crack不正确, 排除octal
+- fix(app): RSA-crack 小指数开方不包含 c^(n/1)
+- fix(app): RSA参数解析错误
+- fix(app): 异常优化
+- fix(app): virgenene 非字母偏移
