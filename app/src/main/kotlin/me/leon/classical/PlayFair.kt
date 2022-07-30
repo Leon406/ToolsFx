@@ -29,8 +29,8 @@ fun String.playFair(keyword: String): String {
             val p2 = i2.point()
             // same row
             if (p1.first == p2.first) {
-                tmpChars.add(alphabet[5 * p1.first + (p2.second + 1) % 5].propCase(char1))
                 tmpChars.add(alphabet[5 * p2.first + (p1.second + 1) % 5].propCase(char2))
+                tmpChars.add(alphabet[5 * p1.first + (p2.second + 1) % 5].propCase(char1))
             } else if (p1.second == p2.second) { // same column
                 tmpChars.add(alphabet[5 * ((p1.first + 1) % 5) + p2.second].propCase(char1))
                 tmpChars.add(alphabet[5 * ((p2.first + 1) % 5) + p1.second].propCase(char2))
@@ -63,8 +63,8 @@ fun String.playFairDecrypt(keyword: String): String {
             val p2 = i2.point()
             // same row
             if (p1.first == p2.first) {
-                tmpChars.add(alphabet[5 * p1.first + (p2.second + 4) % 5].propCase(char1))
                 tmpChars.add(alphabet[5 * p2.first + (p1.second + 4) % 5].propCase(char2))
+                tmpChars.add(alphabet[5 * p1.first + (p2.second + 4) % 5].propCase(char1))
             } else if (p1.second == p2.second) { // same column
                 tmpChars.add(alphabet[5 * ((p1.first + 4) % 5) + p2.second].propCase(char1))
                 tmpChars.add(alphabet[5 * ((p2.first + 4) % 5) + p1.second].propCase(char2))
