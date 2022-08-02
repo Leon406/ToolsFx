@@ -9,7 +9,15 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        maven { url = uri("https://mirrors.tencent.com/nexus/repository/maven-public") }
+        maven { url = uri("https://mirrors.huaweicloud.com/repository/maven") }
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+    }
+}
 rootProject.name = "ToolsFx"
 include(
 "app",

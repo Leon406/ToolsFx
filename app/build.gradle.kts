@@ -1,10 +1,6 @@
 group = "me.leon.tools"
 version = "1.14.1.beta"
 
-repositories {
-    mavenLocal()
-}
-
 plugins {
     application
     kotlin("plugin.serialization") version "1.7.10"
@@ -31,7 +27,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
-    api("com.google.code.gson:gson:2.9.0")
+    api("com.google.code.gson:gson:2.9.1")
     implementation(project(":plugin-lib"))
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
