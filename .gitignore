@@ -7,3 +7,4 @@ out/
 /local.properties
 /tools/toMerged/
 dict/
+*.json

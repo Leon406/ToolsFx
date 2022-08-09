@@ -15,6 +15,16 @@ fun String.paramsParse() =
         }
     }
 
+fun String.cookieParse() =
+    split("; *".toRegex()).fold(mutableMapOf<String, Any>()) { acc, param ->
+        acc.apply {
+            if (param.isNotEmpty()) {
+                val (key, value) = param.split("=")
+                acc[key] = value
+            }
+        }
+    }
+
 fun String.parseCurl() =
     trim()
         // 去掉浏览器多余的分割符
