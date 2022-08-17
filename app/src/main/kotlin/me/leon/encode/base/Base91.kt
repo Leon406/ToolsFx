@@ -88,6 +88,10 @@ fun ByteArray.base91(dict: String = BASE91_DICT, charset: String = "UTF-8") =
     )
 
 fun String.base91Decode(dict: String = BASE91_DICT) =
-    Base91.decode(toByteArray(), dict.ifEmpty { BASE91_DICT }.toByteArray())
+    if (this.toCharArray().all { it in dict }) {
+        Base91.decode(toByteArray(), dict.ifEmpty { BASE91_DICT }.toByteArray())
+    } else {
+        error("非法字符")
+    }
 
 fun String.base91Decode2String(dict: String = BASE91_DICT) = String(base91Decode(dict))
