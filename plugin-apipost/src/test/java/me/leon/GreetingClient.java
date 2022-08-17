@@ -1,7 +1,7 @@
 package me.leon;
 
-import java.net.*;
 import java.io.*;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public class GreetingClient {
@@ -23,7 +23,6 @@ public class GreetingClient {
             System.err.println(e);
         }
     }
-
 
     public void sendMsgData(String msg) throws Exception {
         System.out.println("Just connected to " + socket.getRemoteSocketAddress());
@@ -48,7 +47,7 @@ public class GreetingClient {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inFromServer));
         System.out.println("++++++++Server says ");
         String line = reader.readLine();
-        while (line!= null) {
+        while (line != null) {
             System.out.println(line);
             line = reader.readLine();
         }

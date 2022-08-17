@@ -20,7 +20,6 @@ public class ServerSocketChannels implements Runnable {
 
     private volatile boolean stop;
 
-
     public ServerSocketChannels(int port) {
 
         try {
@@ -44,10 +43,10 @@ public class ServerSocketChannels implements Runnable {
     public void run() {
         while (!stop) {
             try {
-                //selector.select()会一直阻塞到有一个通道在你注册的事件上就绪了
-                //selector.select(1000)会阻塞到1s后然后接着执行，相当于1s轮询检查
+                // selector.select()会一直阻塞到有一个通道在你注册的事件上就绪了
+                // selector.select(1000)会阻塞到1s后然后接着执行，相当于1s轮询检查
                 selector.select(1000);
-                //找到所有准备接续的key
+                // 找到所有准备接续的key
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 Iterator<SelectionKey> it = selectionKeys.iterator();
                 SelectionKey key = null;
@@ -79,7 +78,7 @@ public class ServerSocketChannels implements Runnable {
     }
 
     public void handle(SelectionKey key) throws IOException {
-        //如果key是有效的
+        // 如果key是有效的
         if (key.isValid()) {
             if (key.isAcceptable()) {
                 doAccept(key);
@@ -88,7 +87,6 @@ public class ServerSocketChannels implements Runnable {
             }
         }
     }
-
 
     /**
      * 处理客户端连接事件
@@ -104,28 +102,31 @@ public class ServerSocketChannels implements Runnable {
     }
 
     public void doReadable(SelectionKey key) throws IOException {
-        //获得通道对象
+        // 获得通道对象
         SocketChannel sc = (SocketChannel) key.channel();
         ByteBuffer readBuffer = ByteBuffer.allocate(1024);
-        //从channel读数据到缓冲区
+        // 从channel读数据到缓冲区
         int readBytes = sc.read(readBuffer);
         if (readBytes > 0) {
             readBuffer.flip();
-            //returns the number of elements between the current position and the  limit.
+            // returns the number of elements between the current position and the  limit.
             // 要读取的字节长度
             byte[] bytes = new byte[readBuffer.remaining()];
-            //将缓冲区的数据读到bytes数组
+            // 将缓冲区的数据读到bytes数组
             readBuffer.get(bytes);
             String body = new String(bytes, StandardCharsets.UTF_8);
-            System.out.println(Thread.currentThread().getName() + ": the time server receive order: " + body);
-            String currenttime = "query time order".equals(body) ? new Date(System.currentTimeMillis()).toString() : "bad order";
+            System.out.println(
+                    Thread.currentThread().getName() + ": the time server receive order: " + body);
+            String currenttime =
+                    "query time order".equals(body)
+                            ? new Date(System.currentTimeMillis()).toString()
+                            : "bad order";
             doWrite(sc, currenttime);
-        } else  {
+        } else {
             key.channel();
             sc.close();
         }
     }
-
 
     public void doWrite(SocketChannel channel, String response) throws IOException {
         if (response != null && !"".equals(response)) {
@@ -133,11 +134,10 @@ public class ServerSocketChannels implements Runnable {
             ByteBuffer write = ByteBuffer.allocate(bytes.length);
             write.put(bytes);
             write.flip();
-            //将缓冲数据写入渠道，返回给客户端
+            // 将缓冲数据写入渠道，返回给客户端
             channel.write(write);
         }
     }
-
 
     public static void main(String[] args) {
         int port = 8010;
@@ -145,6 +145,3 @@ public class ServerSocketChannels implements Runnable {
         server.run();
     }
 }
-
-
-

@@ -15,18 +15,19 @@ public class GreetingServer extends Thread {
         serverSocket = new ServerSocket(port);
     }
 
-
     public void run() {
         while (true) {
             try {
-                System.out.println("Waiting for client on port " +
-                        serverSocket.getLocalPort() + "...");
+                System.out.println(
+                        "Waiting for client on port " + serverSocket.getLocalPort() + "...");
                 Socket client = serverSocket.accept();
 
                 System.out.println("Just connected to " + client.getRemoteSocketAddress());
                 InputStream inputStream = client.getInputStream();
-                String msg = "Thank you for connecting to " + client.getLocalSocketAddress()
-                        + "\tGoodbye!";
+                String msg =
+                        "Thank you for connecting to "
+                                + client.getLocalSocketAddress()
+                                + "\tGoodbye!";
 
                 DataInputStream in = new DataInputStream(inputStream);
 
@@ -37,7 +38,6 @@ public class GreetingServer extends Thread {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
 
                 client.close();
                 System.out.println();
@@ -54,8 +54,7 @@ public class GreetingServer extends Thread {
 
     public static void main(String[] args) {
         int port = 8888;
-        if (args.length != 0)
-            port = Integer.parseInt(args[0]);
+        if (args.length != 0) port = Integer.parseInt(args[0]);
         try {
             Thread t = new GreetingServer(port);
             t.start();
@@ -63,8 +62,6 @@ public class GreetingServer extends Thread {
             e.printStackTrace();
         }
 
-        while (true) {
-
-        }
+        while (true) {}
     }
 }
