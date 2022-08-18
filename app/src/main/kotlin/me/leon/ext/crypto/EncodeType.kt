@@ -248,4 +248,25 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.toHexReverse()
     },
+    UTF7("utf7") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.uft7Decode().toByteArray()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.toString(charset.toCharset()).utf7()
+    },
+    UTF7_ALL("utf7 all") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.uft7Decode().toByteArray()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.toString(charset.toCharset()).utf7(true)
+    },
+ UTF7_EXT("utf7(rfc3501)") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.uft7ExtDecode().toByteArray()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.toString(charset.toCharset()).utf7Ext()
+    },
 }

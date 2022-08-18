@@ -29,6 +29,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             EncodeType.Radix10,
             EncodeType.Radix32,
             EncodeType.Radix64,
+            EncodeType.UTF7,
+            EncodeType.UTF7_ALL,
+            EncodeType.UTF7_EXT,
         )
     private val encodeTypeWithSpace =
         arrayOf(

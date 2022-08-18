@@ -290,10 +290,6 @@ class EncodeTest {
                 "LQTHDFH9YOIZJVKZY0IRVXDMOFI7LAXB2P50RAP6H33UHGMDR4TV0TN3H2YBXM11Z8FONNAOEGL31AN42OTX7LZX61" +
                 "F98G32KJFGPP6WD1ZFWMUKBH7FMT"
 
-        //        BigInteger(raw, 36).toString(10).also {
-        //            println(it)
-        //        }
-
         EncodeType.Base36.decode(raw, "", "UTF-8").also {
             println(it)
             EncodeType.Radix10.encode2String(it, "", "UTF-8").also { println(it) }
@@ -359,6 +355,30 @@ class EncodeTest {
             .flatten()
             .toByteArray()
             .also { println(it.decodeToString()) }
+    }
+
+    @Test
+    fun utf7() {
+        //        println("£†".toByteArray(Charsets.UTF_16BE).base64(UTF7_Base64, false))
+        //        println("£1".toByteArray(Charsets.UTF_16BE).base64(UTF7_Base64, false))
+        println("Hello, World!".utf7())
+        println("1 + 1 = 2".utf7())
+        println("x';xss:expression(alert(1));font-family:'".utf7())
+        println("x';xss:expression(alert(1));font-family:'".utf7(true))
+        println("£1".utf7())
+
+        val all = "+VMhUyFTIdoSQ/WYv-"
+        println("哈哈哈的都是".utf7())
+        println("哈哈哈&12的都是".utf7Ext())
+        println("&VMhUyFTIdoSQ/WYv-".uft7ExtDecode())
+        println(
+            ("+AHgAJwA7AHgAcwBzADoAZQB4AHAAcgBlAHMAcwBpAG8AbgAoAGEAbABlAHIAdAAoADEAKQApADsAZgBvA" +
+                    "G4AdAAtAGYAYQBtAGkAbAB5ADoAJw-").uft7Decode()
+        )
+        println("&VMhUyFTI-&-12&doSQ/WYv-".uft7ExtDecode())
+        println(all.uft7Decode())
+
+        println("A编码示例bC+12".utf7())
     }
 
     @Test
