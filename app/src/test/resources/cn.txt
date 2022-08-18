@@ -857,7 +857,7 @@ Copy links in selected items	复制所选条目的链接
 Copy links in selection	复制所选链接
 Copy links in this branch	复制此分支里的链接
 Copy links in this host	复制此主机里的链接
-Copy links?	复制链接
+(?i)Copy links?	复制链接
 Copy other payload	复制其他payload
 Copy project	复制项目
 Copy request	复制请求
@@ -2393,7 +2393,7 @@ Registering a user. Estimating time remaining...	用户注册正在进行中。�
 Regular expression	正则表达式
 Reinstall	重新安装
 Relationship	关系
-Release notes(.*)	发行说明$1
+Release notes(.*)	版本说明$1
 Reliability	可信性
 Read timeout for site resources:	站点资源读取超时:
 Remediation background	修复方法(Remediation background)
@@ -3408,7 +3408,7 @@ Unlimited	无限制
 Unpack gzip / deflate	gzip/deflate解压
 Unpack gzip / deflate in requests	解压请求中的gzip/deflate
 Unpack gzip / deflate in responses	解压响应中的gzip/deflate
-Up	向上
+Up	上移
 Up One Level	上一级
 Update Content-Length	更新Content-Length
 Update Content-Length header	更新Content-Length
@@ -3515,7 +3515,7 @@ View filter settings	视图过滤设置
 Capture filter settings	捕获过滤设置
 View filter:	视图过滤：
 View filter: Please wait ...	视图过滤：请稍后...
-View release notes	显示发行说明
+View release notes	显示版本说明
 Vulnerability classifications [where applicable]	漏洞分类[如果适用]
 Waiting	待机中
 Waiting to pause	已暂停
@@ -3539,9 +3539,9 @@ WebSockets history	WebSocket历史记录
 WebSockets history is empty	WebSockets历史记录为空
 Weeks	周
 Welcome ...	欢迎...
-Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。 重译版V3.1 by leon406
-Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。 重译版V3.1 by leon406
-Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目。 重译版V3.1 by leon406
+Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。 重译版V3.2 by leon406
+Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。 重译版V3.2 by leon406
+Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目。 重译版V3.2 by leon406
 When following redirections, understand the following types:	跟随重定向时，识别以下类型：
 When items are added to Target scope:	将项目添加到目标范围时：
 When the same insertion point is observed in a large number of requests with no variation in results, perform a more efficient quick scan, for the following insertion point types:	如果在许多请求中存在相同的插入点且结果没有变化，我们将更有效，更快地扫描下一个插入点类型：
@@ -3739,3 +3739,12 @@ Reopen closed tab	打开已关闭标签
 Tab view options	标签视图设置
 Scrolling view	滚动视图
 Wrapped view	包裹视图
+Enable	启用
+No proxy listeners are currently running	代理监听器未运行
+No proxy listeners are currently running - Site map will not be populated	代理监听器未运行 - 不显示站点地图
+Failed to start proxy service on (.*).	启动代理服务失败 $1
+Check whether another service is already using this port.	检查端口是否被占用。
+Try again	重试
+Proxy Listener	代理监听器
+Loading...	加载中...
+Waiting for data...	等待数据...
