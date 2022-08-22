@@ -1,7 +1,8 @@
-{"version":"1.14.1.beta","info":"1.14.1.beta
+{"version":"1.14.2.beta","info":"1.14.2.beta
 
-🔥 修复playfair部分解码错误
-🔥 更改CTF词频分析内容
+🔥 编码新增hex_octal_binary混合编码
+🔥 编码新增UTF-7/UTF-7-All
+🔥 修复base91, base92一键解码错误
 
 
 详见changelog.md
