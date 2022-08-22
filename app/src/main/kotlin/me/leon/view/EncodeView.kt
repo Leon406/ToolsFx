@@ -316,8 +316,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         if (DEBUG) println("map $encode ${System.currentTimeMillis() - startTime}")
                         val start = System.currentTimeMillis()
                         encode.type to
-                            kotlin
-                                    .runCatching { controller.decode2String(encoded, encode, "") }
+                            runCatching { controller.decode2String(encoded, encode, "") }
                                     .getOrElse { it.message }!!
                                 .also {
                                     if (DEBUG) {
