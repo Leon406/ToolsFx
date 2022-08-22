@@ -1,5 +1,6 @@
 package me.leon.ctf
 
+import me.leon.encode.base.BYTE_MASK
 import javax.crypto.Cipher
 import me.leon.ext.crypto.makeCipher
 
@@ -19,7 +20,7 @@ fun String.buddhaSays(): String {
             fold(StringBuilder("佛曰：")) { acc, b ->
                     acc.apply {
                         if (b >= 0) append(BYTE_MAP[b.toInt()])
-                        else append(BYTE128MAP.random()).append(BYTE_MAP[b.toInt() and 0xFF - 128])
+                        else append(BYTE128MAP.random()).append(BYTE_MAP[b.toInt() and BYTE_MASK - 128])
                     }
                 }
                 .toString()
