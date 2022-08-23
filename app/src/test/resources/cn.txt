@@ -1715,6 +1715,7 @@ Last used	最后使用
 Launch Smuggle probe	发起走私(Smuggle)探测
 Learn	学习
 Learn Tab	学习标签
+Learn tab	学习标签
 Learn how to find more vulnerabilities using Burp Suite.	了解如何使用 Burp Suite查找更多漏洞。
 Learn more	学习更多
 Learn, explore and discover	学习，探索和发现
@@ -1793,19 +1794,19 @@ Load client SSL certificates options	加载客户端SSL证书选项
 Load cookie jar options	阅读cookie jar选项
 Load crawler options	加载爬虫程序选项
 Load custom lists from directory:	从目录中读取自定义列表：
-Load data from file	从文件中读取数据
+Load data from file	从文件加载
 Load extract grep options	加载提取的grep选项
 Load form submission options	加载表单提交选项
 Load from Burp project file	从Burp项目文件中读取
 Load from Burp state file	从Burp状态文件中读取
 Load from Burp state file [Pro version only]	从Burp状态文件中读取[仅限专业版]
-Load from configuration file	从文件中读取设置
+Load from configuration file	从文件读取设置
 Load hostname resolution options	加载主机名解析选项
 Load hotkey options	加载热键选项
 Load intercept WebSockets messages options	加载WebSocket消息的拦截选项
 Load intercept client requests options	加载客户端请求的拦截选项
 Load intercept server responses options	读取服务器响应拦截选项
-Load items from file	从文件中读取项目
+Load items from file	从文件读取条目
 Load live active scanning options	加载实时活动扫描选项
 Load live capture options	加载实时捕获选项
 Load live passive scanning options	加载实时被动扫描选项
@@ -2026,7 +2027,7 @@ New live passive crawling configuration	新建被动爬虫设置
 New live task	新建实时任务
 New project file	新建项目文件
 New project name:	新项目名称：
-New project on disk	在磁盘新建项目
+New project on disk	新建磁盘项目
 New resource pool	新资源池
 New scan	新建扫描
 New scanning configuration	新建扫描配置
@@ -2108,10 +2109,10 @@ Once configured, you can browse the API documentation and interact with the API 
 Once configured, you can browse the API documentation and interact with the API at: [Service URL]/[API key].	设置完成后，您可以浏览API文档，并可以使用[服务URL] / [API密钥]与API进行通信。
 One bit failed the test \(bit (\d+)\)\. All other bits passed the test\. 	有一点未通过测试(bit $1)。所有其他位都通过了测试
 Online activation	在线激活
-Open Browser	打开自带浏览器
+Open Browser	打开内嵌浏览器
 Open Inspector settings	打开Inspector设置
 Open backup	打开备份
-Open browser	打开自带浏览器
+Open browser	打开内嵌浏览器
 Open by default	默认打开
 Open config file	打开配置文件
 Open cookie jar	打开Cookie jar
@@ -3434,8 +3435,8 @@ Updating results	结果更新中
 Upstream Proxy Servers	上游代理服务器
 Usable Bits of Entropy	可用的熵位
 Use (Request|Response|Proxy).(Host|Path|Query|Time|Complete|Method|Cookies||RTT|Complete|Status|Length|InferredType|Comment|Tool|ListenInterface) Value As LogFilter	使用该$1的$2作为过滤条件
-Use Burp defaults	使用Burp的默认值
-Use Burp's embedded browser	使用Burp自带浏览器
+Use Burp defaults	使用Burp默认值
+Use Burp's embedded browser	使用Burp内嵌浏览器
 Use HTTP version 1.1	使用HTTP版本1.1
 Use HTTP/1.0 in requests to server	在对服务器的请求中使用 HTTP/1.0
 Use HTTP/1.0 in responses to client	使用HTTP/1.0响应客户端
@@ -3471,7 +3472,7 @@ Use login credentials (username & password)	使用登录凭证（用户名&密�
 Use lower case alpha characters	使用小写字母
 Use nested insertion points	使用嵌套插入点
 Use only selected branches	仅使用选定分支
-Use options saved with project	使用项目中保存的选项
+Use options saved with project	使用项目中保存的配置
 Use proxy server to connect	使用代理服务器进行连接
 Use recorded login sequences (record using Burp's Chrome extension)	使用记录的登录序列（使用Burp Chrome扩展进行记录）
 Use static analysis techniques	使用静态分析方法
@@ -3748,3 +3749,6 @@ Try again	重试
 Proxy Listener	代理监听器
 Loading...	加载中...
 Waiting for data...	等待数据...
+Don't show this again	不再显示
+Hide the Learn tab for future use?	隐藏学习标签？
+You can turn this tab on again from User Options > Misc	您可以在用户配置 > 杂项重新启用
