@@ -321,30 +321,30 @@ Are you sure you want to cancel the import?	您确定要取消导入吗？
 Are you sure you want to cancel this macro?	您确定要取消此宏吗？
 Are you sure you want to cancel this rule?	您确定要取消此规则吗？
 Are you sure you want to cancel this streaming response?	您确定要取消流媒体响应吗？
-Are you sure you want to cancel?	你确定要退出吗?
+Are you sure you want to cancel?	您确定要退出吗?
 Are you sure you want to change options and re-run the comparison?	您确定要更改选项并重新执行比较吗？
 Are you sure you want to clear all events?	您确定要清除所有活动吗？
 Are you sure you want to clear queues?	您确定要清除队列吗？
 Are you sure you want to clear the entire request template?	您确定要清除整个请求模板吗？
-Are you sure you want to clear the history?	你确定要清除历史吗？
+Are you sure you want to clear the history?	您确定要清除历史吗？
 Are you sure you want to clear the list?	您确定要清除列表吗？
-Are you sure you want to close the comparison?	你确定要关闭比较吗？
-Are you sure you want to close the tracer?	你确定要关闭跟踪器吗？
+Are you sure you want to close the comparison?	您确定要关闭比较吗？
+Are you sure you want to close the tracer?	您确定要关闭跟踪器吗？
 Are you sure you want to close this Burp Collaborator client? Any further interactions from its payloads will be lost.	您确定要关闭Burp Collaborator客户端吗？来自该payloads的后续通信将会丢失。
-Are you sure you want to close this window?	你确定要关闭这个窗口吗？
+Are you sure you want to close this window?	您确定要关闭这个窗口吗？
 Are you sure you want to delete all issues for the selected item?	您确定要删除所有的项目吗？
 Are you sure you want to delete task (\d+)?	您确定要删除$1任务？
 Are you sure you want to delete task (\d+)\?	您确定要删除$1任务？
 Are you sure you want to delete the configuration "(.*)"\?	您确定要删除"$1"设置吗？
 Are you sure you want to delete the selected item?	您确定要删除所选项吗？
 Are you sure you want to delete the selected items?	您确定要删除所选项吗？
-Are you sure you want to empty the cookie jar?	你确定要清空cookie jar吗？
+Are you sure you want to empty the cookie jar?	您确定要清空cookie jar吗？
 Are you sure you want to exit the wizard?	您确定要退出向导吗？
 Are you sure you want to exit this content discovery session?	您确定要结束此内容搜索会话吗？
-Are you sure you want to exit?	你确定要退出吗?
-Are you sure you want to listen on all interfaces?	你确定在所有接口上侦听吗？
-Are you sure you want to proceed?	你确定要继续吗？
-Are you sure you want to regenerate Burp's CA certificate?	你想重新生成Burp的CA证书吗？
+Are you sure you want to exit?	您确定要退出吗?
+Are you sure you want to listen on all interfaces?	您确定在所有接口上侦听吗？
+Are you sure you want to proceed?	您确定要继续吗？
+Are you sure you want to regenerate Burp's CA certificate?	您想重新生成Burp的CA证书吗？
 Are you sure you want to remove ("[^"]+")\?	$1您确定要删除吗？
 Are you sure you want to remove this action?	您确定要删除此操作吗？
 Are you sure you want to remove this certificate?	您确定要删除此证书吗？
@@ -437,11 +437,11 @@ Are you sure you want to restore default client TLS certificates options?	您确
 Are you sure you want to restore default TLS negotiation workarounds options?	您确定要将TLS协商选项重置为默认值吗？
 Are you sure you want to restore default message editor request views options?	您确定要将消息编辑器请求视图选项重置为默认值吗？
 Are you sure you want to restore default message editor response views options?	您确定要将消息编辑器响应视图选项重置为默认值吗？
-Are you sure you want to retest the macro?	你确定要重新测试宏吗？
+Are you sure you want to retest the macro?	您确定要重新测试宏吗？
 Are you sure you want to shut down Burp and launch the downloaded file?	关闭Burp并启动下载的文件？
-Are you sure you want to shut down Burp and run the new version?	你确定要关闭Burp并开始新版本吗？
-Are you sure you want to stop?	你确定要停止吗？
-Are you sure you want to unload ("[^"]+")\?	$1你确定要卸载吗？
+Are you sure you want to shut down Burp and run the new version?	您确定要关闭Burp并开始新版本吗？
+Are you sure you want to stop?	您确定要停止吗？
+Are you sure you want to unload ("[^"]+")\?	$1您确定要卸载吗？
 At a significance level of 1%, the amount of effective entropy is estimated to be: (\d+) bits.	1%在显着性水平，有效熵量的评估如下：$1 位
 At least one URL to scan must be specified.	请指定至少一个要扫描的URL.
 At least one item to scan must be specified.	请指定至少一个要扫描的项目.
@@ -1055,7 +1055,7 @@ Do not take full ownership of the project	不获得项目的完整所有权
 Do nothing	不操作
 Do passive scan	被动扫描
 Do platform authentication	执行平台认证
-Do you wish to continue?	你想继续吗？
+Do you wish to continue?	您想继续吗？
 Dock on the left	停靠左侧
 Dock on the right	停靠右侧
 Document domain manipulation \(DOM-based\)(\s+\[\d+\])?	文档域操作（基于DOM）$1
@@ -2351,12 +2351,12 @@ Random delay	随机延迟
 Rating(.*)	评分$1
 Raw view	原始视图
 Re-analyze macro	重新解析宏
-Re-analyzing the macro may alter the parameter configuration of macro items. Are you sure you want to continue?	重新分析宏时，宏项的参数设置会发生变化。你想继续吗？
+Re-analyzing the macro may alter the parameter configuration of macro items. Are you sure you want to continue?	重新分析宏时，宏项的参数设置会发生变化。您想继续吗？
 Re-colorize the display based on the current payload markers	使用当前payload标记重新着色显示
 Re-enable	重新启用
 Re-enter license key	重新输入许可证密钥
 Re-record macro	记录宏
-Re-recording the macro will delete the current macro items. Are you sure you want to continue?	重新录制宏时，将删除当前宏项。你想继续吗？
+Re-recording the macro will delete the current macro items. Are you sure you want to continue?	重新录制宏时，将删除当前宏项。您想继续吗？
 Ready	准备完毕
 Reattach (.*)	$1重组
 Recent destinations buffer size:	最近的目标缓冲区大小：
@@ -3114,7 +3114,7 @@ The following rules determine whether Burp sends each outgoing request to a prox
 The free edition of Burp contains a demo version of Burp Intruder. Some functionality is disabled, and attacks are time throttled.	Burp的免费版本包含Burp 攻击器的演示版本。某些功能已被禁用，攻击会定时。
 The item itself	条目本身
 No group defined	未定义组
-The macro contains no items. Are you sure you want to proceed?	宏中没有条目。你确定要继续吗？
+The macro contains no items. Are you sure you want to proceed?	宏中没有条目。您确定要继续吗？
 The name is already used	该名称已被使用
 The options below control the types of analysis that is performed at the bit level.	一下选项控制在字符级别执行的分析类型。
 The options below control the types of analysis that is performed at the bit level.	控制在位级执行的分析类型。
@@ -3135,7 +3135,7 @@ The selected item is not a directory	所选项目不是目录
 The selected project file appears to be corrupt and cannot be opened.	所选项目已损坏，无法打开。
 The supplied license key was not recognized. Please try re-entering your license key.	我们无法识别许可证密钥。请重新输入许可证密钥。
 Theme:	主题:
-There appears to be a copy of Burp Infiltrator in the selected folder. Do you want to overwrite it?	所选文件夹中有一个Burp Infiltrator的副本。你想覆盖它吗？
+There appears to be a copy of Burp Infiltrator in the selected folder. Do you want to overwrite it?	所选文件夹中有一个Burp Infiltrator的副本。您想覆盖它吗？
 There's no need to configure your proxy settings manually. Use Burp's embedded Chromium browser to start testing right away. 	无需手动配置代理,使用Burp的嵌入式Chromium浏览器就可以开始测试。
 Therefore some bits may record a significance level that is below the FIPS pass level even though they do not strictly fail the FIPS test.	因此，某些位可能低于FIPS通过级别，尽管它们不会通过严格的FIPS测试。
 These settings are configured within user options but can be overridden here for this specific project.	这些设置在用户选项中，但可以在此覆盖指定的项目。
@@ -3287,12 +3287,12 @@ This type of live task analyses HTTP messages and adds entries to the Target sit
 This uses a single set of payloads. It iterates through the payloads, and places the same payload into all of the defined payload positions at once.	使用一组payload。 它遍历payload，并一次将相同的payload放置到所有定义的payload位置。
 This version of Burp requires a license key. To continue, please paste your license key below, or load it from file.	此版本的Burp需要许可证密钥。要继续，请粘贴下面的许可证密钥或从文件中读取。
 This will clear all existing custom iterator settings	清除所有现有的自定义迭代器
-This will close all Burp projects and shutdown - are you sure you want to exit?	关闭所有Burp项目并关闭 - 你确定要退出吗？
-This will close all Burp windows - are you sure you want to exit?	这将会关闭所有的BURP窗口 - 你确定想要退出吗?
+This will close all Burp projects and shutdown - are you sure you want to exit?	关闭所有Burp项目并关闭 - 您确定要退出吗？
+This will close all Burp windows - are you sure you want to exit?	这将会关闭所有的BURP窗口 - 您确定想要退出吗?
 This will enable other network users to use the proxy and view the proxy history.	其他网络用户将能够使用代理浏览代理历史记录。
 This will enable other network users to use the service.	其他网络用户将能够使用此服务。
 This will exit the current attack	结束当前攻击
-This will update the requests and responses in the macro definition with those made in this test. Are you sure you want to proceed?	此测试生成的请求和响应将在宏定义中更新。你确定要继续吗？
+This will update the requests and responses in the macro definition with those made in this test. Are you sure you want to proceed?	此测试生成的请求和响应将在宏定义中更新。您确定要继续吗？
 This wizard lets you remove certain information which Burp saves on your computer. Choose which items you would like to remove.	该向导将删除保存在计算机上的特定信息Burp。请选择您要删除的项目。
 Throttle (milliseconds):	延迟(ms)(Throttle):
 Throttle between requests (milliseconds):	请求限制(ms)：
@@ -3518,7 +3518,7 @@ View filter:	视图过滤：
 View filter: Please wait ...	视图过滤：请稍后...
 View release notes	显示版本说明
 Vulnerability classifications [where applicable]	漏洞分类[如果适用]
-Waiting	待机中
+Waiting	等待中
 Waiting to pause	已暂停
 Warning	警告
 Warning: The CSRF form uses a different encoding type than the original request, and so the application may not process the request in the way required.	警告：由于CSRF表单使用与原始请求不同的编码，因此应用程序可能无法以指定的方式处理请求。
