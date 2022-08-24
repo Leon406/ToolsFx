@@ -1,10 +1,10 @@
 package me.leon.ext
 
+import java.nio.charset.Charset
 import me.leon.encode.*
 import me.leon.encode.base.BYTE_BITS
 import me.leon.encode.base.BYTE_MASK
 import tornadofx.*
-import java.nio.charset.Charset
 
 const val HEX_RADIX = 16
 const val DECIMAL_RADIX = 10
@@ -29,8 +29,7 @@ fun String.hexReverse2ByteArray() =
 fun ByteArray.toBinaryString(padding: Boolean = true) =
     joinToString("") {
         (it.toInt() and BYTE_MASK).toString(2).run {
-            if (padding) padStart(BYTE_BITS, '0')
-            else this
+            if (padding) padStart(BYTE_BITS, '0') else this
         }
     }
 
@@ -90,7 +89,7 @@ fun String.unicode2String() =
             .findAll(this)
             .map {
                 it.groupValues[1].ifEmpty { it.groupValues[2] } to
-                        if (it.groupValues[0].contains("x", true)) HEX_RADIX else DECIMAL_RADIX
+                    if (it.groupValues[0].contains("x", true)) HEX_RADIX else DECIMAL_RADIX
             }
             .fold(StringBuilder()) { acc, (c, radix) -> acc.append(c.toInt(radix).toUnicodeChar()) }
             .toString()
@@ -116,12 +115,12 @@ fun String.htmlEntity2String() =
 /** htmlEntity编解码 */
 fun String.toHtmlEntity(radix: Int = 10, isAll: Boolean = true) =
     fold(StringBuilder()) { acc, c ->
-        if (isAll) acc.append(c.code.toHtmlEntityAll(radix))
-        else acc.append(c.code.toHtmlEntity() ?: c)
-    }
+            if (isAll) acc.append(c.code.toHtmlEntityAll(radix))
+            else acc.append(c.code.toHtmlEntity() ?: c)
+        }
         .toString()
 
 fun String.unicodeMix2String() =
     StringBuilder(this).replace(
-        "(?i:\\\\u\\+?[0-9a-zA-Z]{1,5}|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
-    ) { it.value.unicode2String() }
+            "(?i:\\\\u\\+?[0-9a-zA-Z]{1,5}|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
+        ) { it.value.unicode2String() }

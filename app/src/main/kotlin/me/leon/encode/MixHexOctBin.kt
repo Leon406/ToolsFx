@@ -1,28 +1,26 @@
 package me.leon.encode
 
+import java.security.SecureRandom
 import me.leon.UTF8
 import me.leon.ext.*
-import java.security.SecureRandom
 
 fun String.mixEncode(charset: String = UTF8) =
     toByteArray(charset.toCharset()).joinToString("") { it.mixCharEncode() }
 
-fun ByteArray.mixEncode() =
-    joinToString("") { it.mixCharEncode() }
+fun ByteArray.mixEncode() = joinToString("") { it.mixCharEncode() }
 
 val chars = arrayOf('b', 'o', 'x', 'B', 'O', 'X')
+
 fun String.mixDecode(): ByteArray {
-    if( first() !='0') return byteArrayOf()
+    if (first() != '0') return byteArrayOf()
     if (length > 1024 * 1024) error("data too large")
 
     val list = mutableListOf<String>()
     var start = 0
     for (index in indices) {
-        if (index < length - 2) {
-            if (this[index + 1] == '0' && this[index + 2] in chars) {
-                list.add(this.substring(start, index + 1))
-                start = index + 1
-            }
+        if (index < length - 2 && this[index + 1] == '0' && this[index + 2] in chars) {
+            list.add(this.substring(start, index + 1))
+            start = index + 1
         }
     }
     if (start < length) {
@@ -44,6 +42,7 @@ private fun String.mixCharDecode(): Byte {
 }
 
 val random = SecureRandom()
+
 private fun Byte.mixCharEncode(): String {
     val bytes = byteArrayOf(this)
     return when (random.nextInt(3)) {
@@ -53,4 +52,3 @@ private fun Byte.mixCharEncode(): String {
         else -> error("never reached")
     }
 }
-

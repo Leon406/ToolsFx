@@ -270,8 +270,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
             bytes.toString(charset.toCharset()).utf7Ext()
     },
     MIX_HEX_OCT_BIN("HexOctBin") {
-        override fun decode(encoded: String, dict: String, charset: String) =
-            encoded.mixDecode()
+        override fun decode(encoded: String, dict: String, charset: String) = encoded.mixDecode()
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.mixEncode()

@@ -1,5 +1,9 @@
 package me.leon.encode
 
+import java.io.File
+import kotlin.system.measureNanoTime
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 import me.leon.TEST_ENCODE_DIR
 import me.leon.controller.EncodeController
 import me.leon.ctf.bubbleBabble
@@ -10,10 +14,6 @@ import me.leon.ext.crypto.EncodeType
 import me.leon.ext.crypto.encodeTypeMap
 import org.junit.Before
 import org.junit.Test
-import java.io.File
-import kotlin.system.measureNanoTime
-import kotlin.test.assertContentEquals
-import kotlin.test.assertEquals
 
 class EncodeTest {
 
@@ -410,17 +410,14 @@ class EncodeTest {
     @Test
     fun mix() {
         val data = File(TEST_ENCODE_DIR, "mix_bin_oct_hex.txt").readText()
-//        println(data.mixDecode2String())
+        println(data.mixDecode2String())
 
         var msg = "你好leon406"
         var message = msg.mixEncode()
         assertEquals(msg, message.mixDecode2String())
         msg = "l"
-        message = msg.mixEncode()
         println("0b110001".mixDecode2String())
         println("0o61".mixDecode2String())
         println("0x31".mixDecode2String())
-
     }
 }
-
