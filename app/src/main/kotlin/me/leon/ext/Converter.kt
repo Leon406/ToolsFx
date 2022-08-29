@@ -43,7 +43,9 @@ fun String.binary2ByteArray() =
 
 /** unicode编解码 */
 fun String.toUnicodeString() =
-    fold(StringBuilder()) { acc, c -> acc.append("\\u").append(c.code.toString(HEX_RADIX)) }
+    fold(StringBuilder()) { acc, c ->
+            acc.append("\\u").append(c.code.toString(HEX_RADIX).padStart(4, '0'))
+        }
         .toString()
 
 /** js hex 编解码 \x61 */
