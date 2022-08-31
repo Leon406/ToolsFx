@@ -193,7 +193,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
                 radiobutton(messages["encode"]) { isSelected = true }
                 radiobutton(messages["decode"])
-                label("times:")
+                label("times:") {
+                    tooltip("encode or decode  times \nor crack minimum result length")
+                }
                 tfCount =
                     textfield("1") {
                         textFormatter = intTextFormatter
@@ -332,7 +334,8 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                 it.second.contains(encoded, true) ||
                                 it.second.contains(REG_NON_PRINTABLE) ||
                                 it.first == EncodeType.UrlEncode.type &&
-                                    encoded.length == it.second.length)
+                                    encoded.length == it.second.length ||
+                                encoded.length <= times)
                             .not()
                     }
                     ?.run {
@@ -341,13 +344,12 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     }
                     ?: break
             }
-            encodeMethods.mapIndexed { i, type -> "${i + 1} $type" }.joinToString("-->") +
-                "\n" +
-                encoded
+            encodeMethods.mapIndexed { i, type -> "${i + 1} $type" }.joinToString("-->")
         } ui
             {
                 isProcessing.value = false
-                taOutput.text = it
+                taOutput.text =
+                    if (encodeMethods.isNotEmpty()) "$it\n$encoded" else "no crack result!!!"
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
                 // 手动gc, 立即回收创建的临时字符串

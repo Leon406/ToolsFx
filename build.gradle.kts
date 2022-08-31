@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.7.10"
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
-    id("com.diffplug.spotless") version "6.9.0"
+    id("com.diffplug.spotless") version "6.10.0"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
