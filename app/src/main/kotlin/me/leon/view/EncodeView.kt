@@ -56,21 +56,20 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private var tfCount: TextField by singleAssign()
 
     private val times
-        get() =
-            tfCount.text.toIntOrNull() ?: 1.also { tfCount.text = it.toString() }
+        get() = tfCount.text.toIntOrNull() ?: 1.also { tfCount.text = it.toString() }
 
     private val info: String
         get() =
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
-                    " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "count: $times cost: $timeConsumption ms"
+                " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "count: $times cost: $timeConsumption ms"
     private val inputText: String
         get() =
             taInput.text.takeIf {
                 isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                ?: taInput.text.stripAllSpace()
+                    ?: taInput.text.stripAllSpace()
     private val outputText: String
         get() = taOutput.text
 
@@ -129,9 +128,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     item(messages["loadFromNet2"]) {
                         action {
                             runAsync { inputText.readBytesFromNet().base64() } ui
-                                    {
-                                        taInput.text = it
-                                    }
+                                {
+                                    taInput.text = it
+                                }
                         }
                     }
                     item(messages["readHeadersFromNet"]) {
@@ -290,15 +289,15 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             }
                 .getOrElse { it.stacktrace() }
         } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text = it
-                    if (Prefs.autoCopy) {
-                        outputText.copy().also { primaryStage.showToast(messages["copied"]) }
-                    }
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
+            {
+                isProcessing.value = false
+                taOutput.text = it
+                if (Prefs.autoCopy) {
+                    outputText.copy().also { primaryStage.showToast(messages["copied"]) }
                 }
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+            }
     }
 
     private fun crack() {
@@ -318,23 +317,23 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         if (DEBUG) println("map $encode ${System.currentTimeMillis() - startTime}")
                         val start = System.currentTimeMillis()
                         encode.type to
-                                runCatching { controller.decode2String(encoded, encode, "") }
+                            runCatching { controller.decode2String(encoded, encode, "") }
                                     .getOrElse { it.message }!!
-                                    .also {
-                                        if (DEBUG) {
-                                            println(
-                                                "after decode:${System.currentTimeMillis() - startTime} " +
-                                                        "$encode ${System.currentTimeMillis() - start}"
-                                            )
-                                        }
+                                .also {
+                                    if (DEBUG) {
+                                        println(
+                                            "after decode:${System.currentTimeMillis() - startTime} " +
+                                                "$encode ${System.currentTimeMillis() - start}"
+                                        )
                                     }
+                                }
                     }
                     .find {
                         (it.second.isEmpty() ||
                                 it.second.contains(encoded, true) ||
                                 it.second.contains(REG_NON_PRINTABLE) ||
                                 it.first == EncodeType.UrlEncode.type &&
-                                encoded.length == it.second.length ||
+                                    encoded.length == it.second.length ||
                                 it.second.length < times)
                             .not()
                     }
@@ -346,14 +345,14 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             }
             encodeMethods.mapIndexed { i, type -> "${i + 1} $type" }.joinToString("-->")
         } ui
-                {
-                    isProcessing.value = false
-                    taOutput.text =
-                        if (encodeMethods.isNotEmpty()) "$it\n$encoded" else "no crack result!!!"
-                    timeConsumption = System.currentTimeMillis() - startTime
-                    labelInfo.text = info
-                    // 手动gc, 立即回收创建的临时字符串
-                    System.gc()
-                }
+            {
+                isProcessing.value = false
+                taOutput.text =
+                    if (encodeMethods.isNotEmpty()) "$it\n$encoded" else "no crack result!!!"
+                timeConsumption = System.currentTimeMillis() - startTime
+                labelInfo.text = info
+                // 手动gc, 立即回收创建的临时字符串
+                System.gc()
+            }
     }
 }
