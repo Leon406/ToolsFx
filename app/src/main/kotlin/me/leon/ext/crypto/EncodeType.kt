@@ -70,6 +70,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base62(dict)
     },
+    Base69("base69", BASE69_DICT) {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base69Decode(dict)
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base69(dict)
+    },
     Base91("base91", BASE91_DICT) {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.base91Decode(dict)
@@ -111,6 +118,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base100()
+    },
+    Base65536("base65536", "") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base65536Decode()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base65536()
     },
     Radix64("radix64") {
         override fun decode(encoded: String, dict: String, charset: String) =

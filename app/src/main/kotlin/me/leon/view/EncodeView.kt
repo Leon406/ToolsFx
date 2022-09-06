@@ -32,6 +32,8 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             EncodeType.UTF7,
             EncodeType.UTF7_ALL,
             EncodeType.UTF7_EXT,
+            EncodeType.Base69,
+            EncodeType.Base65536,
         )
     private val encodeTypeWithSpace =
         arrayOf(
@@ -39,6 +41,8 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             EncodeType.XxEncode,
             EncodeType.QuotePrintable,
             EncodeType.PunyCode,
+            EncodeType.Base69,
+            EncodeType.Base65536,
         )
 
     override val closeable = SimpleBooleanProperty(false)
@@ -160,7 +164,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value =
-                            encodeType.type.contains("base") && encodeType.type != "base100"
+                            encodeType.type.contains("base") &&
+                                encodeType.type != "base100" &&
+                                encodeType.type != "base65536"
                         tfCustomDict.text = encodeType.defaultDict
                         val isIgnore = encodeType !in encodeTypeWithSpace
                         decodeIgnoreSpace.set(isIgnore)
