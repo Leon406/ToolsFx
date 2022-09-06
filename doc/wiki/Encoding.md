@@ -116,6 +116,32 @@ JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju
 5byA5Y-R5bel5YW36ZuG5ZCIIGJ5IGxlb240MDZANTJwb2ppZS5jbg==
 ```
 
+## [base65536](https://base65536.penclub.club/)
+
+使用unicode(32比特)进行编码
+
+**特征**: 中文生僻字
+
+**测试数据**:
+
+```
+𤋥𦮀𡞏𣷥𦮥𣶅𢇩𦮆𠺐霠啹马𐙯攴甶朵𒁰鹪捥𐙣
+```
+
+## [base69](https://pshihn.github.io/base69/)
+
+在*BASE64*的基础上编码形成新的加密方式
+
+**特征**: 数字字母 `+/-*<>|`   结尾AA数字=
+
+**测试数据**:
+
+```
+tBqBQAOAsA+AjAgBWBkB8ATBtAaBOBbA>A5AyAIA*ABA|A0BQAbAMARB2B4AjBwAbAQAGAOBTA*AZBlB0AUBlAhBbA4AAA2=
+```
+
+## 
+
 ## [base85](https://en.wikipedia.org/wiki/Ascii85)
 
 又称**Ascii85**, 字典为ASCII码序列
@@ -378,6 +404,44 @@ smu81pcfi7irf9f5gmruj6s6sm88g832f4g6opbfdoq30di06kp70rrad5iisore
 ```
 %E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E9%9B%86%E5%90%88%20by%20leon406%4052pojie.cn
 ```
+
+## utf7
+
+[RFC 2152标准](https://www.rfc-editor.org/rfc/inline-errata/rfc2152.html)
+
+**特征**:  编码字符为 +开头  -结尾
+
+**测试数据**:
+
+```
++AHgAJwA7AHgAcwBzADoAZQB4AHAAcgBlAHMAcwBpAG8AbgAoAGEAbABlAHIAdAAoADEAKQApADsAZgBvAG4AdAAtAGYAYQBtAGkAbAB5ADoAJw-
+```
+
+## utf7-all
+
+所有字符都进行utf7编码
+
+**特征**:  编码字符为  +开头  -结尾
+
+**测试数据**:
+
+```
++XwBT0V3lUXeWxlQIAGIAeQBsAGUAbwBuADQAMAA2AEAANQAyAHAAbwBqAGkAZQAuAGMAbg-
+```
+
+## utf7(imap)
+
+[RFC 3501标准](https://www.rfc-editor.org/rfc/inline-errata/rfc3501.html)
+
+**特征**:  编码字符为 &开头  -结尾
+
+**测试数据**:
+
+```
+&XwBT0V3lUXeWxlQI-byleon406@52pojie.cn
+```
+
+## 
 
 ## [uuEncode](http://cryptowikis.com/EncodeDecode/UUencode/)
 
