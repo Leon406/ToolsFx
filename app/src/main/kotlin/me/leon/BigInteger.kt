@@ -38,9 +38,9 @@ fun BigInteger.decrypt(d: String, n: String) = decrypt(BigInteger(d), BigInteger
 fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
 
 fun List<BigInteger>.phi(): BigInteger =
-    filter { it > BigInteger.ZERO }.fold(BigInteger.ONE) { acc, int ->
-        acc * (int - BigInteger.ONE)
-    }
+    filter { it > BigInteger.ZERO }.groupBy { it }.map { it.key to it.value.size }.fold(
+        BigInteger.ONE
+    ) { acc, pair -> acc * pair.first.eulerPhi(pair.second) }
 
 fun List<BigInteger>.product(): BigInteger = fold(BigInteger.ONE) { acc, int -> acc * int }
 
@@ -49,7 +49,8 @@ fun BigInteger.isMutualPrime(other: BigInteger) = gcd(other) == BigInteger.ONE
 fun List<BigInteger>.propN(n: BigInteger) =
     filter { it < BigInteger.ZERO }.fold(n) { acc, bigInteger -> acc / bigInteger.abs() }
 
-fun BigInteger.eulerPhi(n: Int) = minus(BigInteger.ONE) * pow(n - 1)
+fun BigInteger.eulerPhi(n: Int) =
+    if (n == 1) minus(BigInteger.ONE) else minus(BigInteger.ONE) * pow(n - 1)
 
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 

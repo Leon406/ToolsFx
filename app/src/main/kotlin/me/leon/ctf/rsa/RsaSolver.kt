@@ -198,7 +198,7 @@ object RsaSolver {
                             val d = (e / gcd).invert(phi).also { println(it) }
                             val m = c.modPow(d, n)
                             var result = ""
-                            for (i in 1..1_000_000) {
+                            for (i in 0..1_000_000) {
                                 val root = (m + n * i.toBigInteger()).root(gcd.toInt())
                                 if (root.last() == BigInteger.ZERO) {
                                     println(i)
