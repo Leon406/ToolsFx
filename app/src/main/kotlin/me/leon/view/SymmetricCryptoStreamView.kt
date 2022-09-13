@@ -88,27 +88,25 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
         hbox {
             label(messages["input"])
             addClass(Styles.left)
-            tgInput =
-                togglegroup {
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("base64")
-                    radiobutton("hex")
-                    selectedToggleProperty().addListener { _, _, newValue ->
-                        inputEncode = newValue.cast<RadioButton>().text
-                    }
+            tgInput = togglegroup {
+                radiobutton("raw") { isSelected = true }
+                radiobutton("base64")
+                radiobutton("hex")
+                selectedToggleProperty().addListener { _, _, newValue ->
+                    inputEncode = newValue.cast<RadioButton>().text
                 }
+            }
 
             button(graphic = imageview("/img/import.png")) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
         }
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-            }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = eventHandler
+        }
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
@@ -143,16 +141,15 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
         hbox {
             addClass(Styles.left)
             label(messages["output"])
-            tgOutput =
-                togglegroup {
-                    radiobutton("raw")
-                    radiobutton("base64") { isSelected = true }
-                    radiobutton("hex")
-                    selectedToggleProperty().addListener { _, _, newValue ->
-                        println("output ${newValue.cast<RadioButton>().text}")
-                        outputEncode = newValue.cast<RadioButton>().text
-                    }
+            tgOutput = togglegroup {
+                radiobutton("raw")
+                radiobutton("base64") { isSelected = true }
+                radiobutton("hex")
+                selectedToggleProperty().addListener { _, _, newValue ->
+                    println("output ${newValue.cast<RadioButton>().text}")
+                    outputEncode = newValue.cast<RadioButton>().text
                 }
+            }
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
@@ -168,11 +165,10 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                 }
             }
         }
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-            }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+        }
     }
     override val root = borderpane {
         center = centerNode
@@ -184,10 +180,31 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
             runCatching {
-                if (isEncrypt) {
-                    if (isFile.get()) {
+                    if (isEncrypt) {
+                        if (isFile.get()) {
+                            inputText.lineAction2String {
+                                controller.encryptByFile(
+                                    keyIvInputView.keyByteArray,
+                                    it,
+                                    keyIvInputView.ivByteArray,
+                                    cipher
+                                )
+                            }
+                        } else {
+                            controller.encrypt(
+                                keyIvInputView.keyByteArray,
+                                inputText,
+                                keyIvInputView.ivByteArray,
+                                cipher,
+                                selectedCharset.get(),
+                                isSingleLine.get(),
+                                inputEncode,
+                                outputEncode
+                            )
+                        }
+                    } else if (isFile.get()) {
                         inputText.lineAction2String {
-                            controller.encryptByFile(
+                            controller.decryptByFile(
                                 keyIvInputView.keyByteArray,
                                 it,
                                 keyIvInputView.ivByteArray,
@@ -195,7 +212,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                             )
                         }
                     } else {
-                        controller.encrypt(
+                        controller.decrypt(
                             keyIvInputView.keyByteArray,
                             inputText,
                             keyIvInputView.ivByteArray,
@@ -206,28 +223,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                             outputEncode
                         )
                     }
-                } else if (isFile.get()) {
-                    inputText.lineAction2String {
-                        controller.decryptByFile(
-                            keyIvInputView.keyByteArray,
-                            it,
-                            keyIvInputView.ivByteArray,
-                            cipher
-                        )
-                    }
-                } else {
-                    controller.decrypt(
-                        keyIvInputView.keyByteArray,
-                        inputText,
-                        keyIvInputView.ivByteArray,
-                        cipher,
-                        selectedCharset.get(),
-                        isSingleLine.get(),
-                        inputEncode,
-                        outputEncode
-                    )
                 }
-            }
                 .getOrElse { it.stacktrace() }
         } ui
             {

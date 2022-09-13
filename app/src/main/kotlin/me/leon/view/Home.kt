@@ -37,9 +37,8 @@ class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
         if (isEnableQrcode) views.add(QrcodeView::class)
         if (isEnablePBE) views.add(PBEView::class)
         if (isEnableInternalWebview) {
-            runCatching { Class.forName("javafx.scene.web.WebView") }.onSuccess {
-                views.add(OnlineWebView::class)
-            }
+            runCatching { Class.forName("javafx.scene.web.WebView") }
+                .onSuccess { views.add(OnlineWebView::class) }
         }
     }
 

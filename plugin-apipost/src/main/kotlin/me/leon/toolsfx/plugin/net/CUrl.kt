@@ -45,16 +45,14 @@ fun String.parseCurl() =
                                 if (value.contains("@file")) {
                                     if (value.startsWith("{") || value.startsWith("[")) {
                                         acc.params.putAll(
-                                            value.fromJson(MutableMap::class.java) as
-                                                Map<out String, Any>
+                                            value.fromJson(MutableMap::class.java)
+                                                as Map<out String, Any>
                                         )
                                     } else {
                                         acc.params.putAll(value.paramsParse().also { println(it) })
                                     }
-                                } else if (this@parseCurl.contains(
-                                        "Content-Type: application/json",
-                                        true
-                                    )
+                                } else if (
+                                    this@parseCurl.contains("Content-Type: application/json", true)
                                 ) {
                                     acc.rawBody = value
                                 } else acc.params.putAll(value.paramsParse())
@@ -70,13 +68,11 @@ fun String.parseCurl() =
                                 val value = s.removeFirstAndEndQuotes(7)
                                 if (value.contains("@file")) {
                                     acc.params.putAll(
-                                        value.fromJson(MutableMap::class.java) as
-                                            Map<out String, Any>
+                                        value.fromJson(MutableMap::class.java)
+                                            as Map<out String, Any>
                                     )
-                                } else if (this@parseCurl.contains(
-                                        "Content-Type: application/json",
-                                        true
-                                    )
+                                } else if (
+                                    this@parseCurl.contains("Content-Type: application/json", true)
                                 ) {
                                     acc.rawBody = value
                                 } else acc.params.putAll(value.paramsParse())

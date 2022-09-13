@@ -330,9 +330,9 @@ object HttpUrlUtil {
             .append(conn.url.toString())
             .append(" (${time}ms)")
             .appendLine()
-        conn.headerFields.filter { it.key != null }.forEach { (t, u) ->
-            sb.append("\t$t: ${u.joinToString(";")}").appendLine()
-        }
+        conn.headerFields
+            .filter { it.key != null }
+            .forEach { (t, u) -> sb.append("\t$t: ${u.joinToString(";")}").appendLine() }
         sb.appendLine()
             .also {
                 if (rsp.isNotEmpty()) {

@@ -14,8 +14,8 @@ interface CLibrary : Library {
 
     companion object {
         val INSTANCE =
-            Native.load(if (Platform.isWindows()) "msvcrt" else "c", CLibrary::class.java) as
-                CLibrary
+            Native.load(if (Platform.isWindows()) "msvcrt" else "c", CLibrary::class.java)
+                as CLibrary
     }
 }
 

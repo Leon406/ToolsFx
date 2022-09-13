@@ -32,13 +32,13 @@ class HashCrackTest {
         val mask = "86170????????"
         println(BASE58_DICT.sliceCount(Runtime.getRuntime().availableProcessors()))
         measureTimeMillis {
-            mask.maskCrack(dict) { it.hash("SHA-256") == hash }.also { println(it) }
-        }
+                mask.maskCrack(dict) { it.hash("SHA-256") == hash }.also { println(it) }
+            }
             .also { println(it) }
 
         measureTimeMillis {
-            mask.maskCrackParallel(dict) { it.hash("SHA-256") == hash }.also { println(it) }
-        }
+                mask.maskCrackParallel(dict) { it.hash("SHA-256") == hash }.also { println(it) }
+            }
             .also { println(it) }
     }
 
@@ -51,9 +51,8 @@ class HashCrackTest {
         measureTimeMillis { mask.maskCrackParallel(dict) { it == pass }.also { println(it) } }
             .also { println(it) }
 
-        measureTimeMillis { mask.maskCrack(dict) { it == pass }.also { println(it) } }.also {
-            println(it)
-        }
+        measureTimeMillis { mask.maskCrack(dict) { it == pass }.also { println(it) } }
+            .also { println(it) }
     }
 
     @Test
@@ -114,8 +113,7 @@ class HashCrackTest {
                     sqs.addAll(d.map { sb.toString().next(it) })
                 } else {
                     sqs =
-                        sqs
-                            .map {
+                        sqs.map {
                                 it.run {
                                     if (sb.isEmpty()) {
                                         it.next(dict)
@@ -135,8 +133,7 @@ class HashCrackTest {
         if (sb.isNotEmpty()) {
             sqs.map { it.nextFix(sb.toString()) }
         }
-        return sqs
-            .parallelStream()
+        return sqs.parallelStream()
             .map { it.find { condition.invoke(it) } }
             .filter { it != null }
             .findFirst()

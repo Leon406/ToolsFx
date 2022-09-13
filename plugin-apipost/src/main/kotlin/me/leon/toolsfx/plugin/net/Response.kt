@@ -13,7 +13,8 @@ data class Response(
 
     val headerInfo: String
         get() =
-            headers.filterNot { it.key.isNullOrEmpty() }.entries.joinToString("\n\n") {
-                "${it.key}: ${it.value}"
-            }
+            headers
+                .filterNot { it.key.isNullOrEmpty() }
+                .entries
+                .joinToString("\n\n") { "${it.key}: ${it.value}" }
 }

@@ -3,10 +3,14 @@ package me.leon;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/** @author liuchao */
+/**
+ * @author liuchao
+ */
 public class LinkedListTest {
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void addFromHeaderTest(int size) {
         LinkedList<String> list = new LinkedList<>();
         long timeStart = System.nanoTime();
@@ -18,7 +22,9 @@ public class LinkedListTest {
         System.out.println("LinkedList从集合头部位置新增元素花费的时间 ops/ns : " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void addFromMidTest(int size) {
         LinkedList<String> list = new LinkedList<>();
         long timeStart = System.nanoTime();
@@ -31,7 +37,9 @@ public class LinkedListTest {
         System.out.println("LinkedList从集合中间位置新增元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void addFromTailTest(int size) {
         LinkedList<String> list = new LinkedList<String>();
         long timeStart = System.nanoTime();
@@ -43,7 +51,9 @@ public class LinkedListTest {
         System.out.println("LinkedList从集合尾部位置新增元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void deleteFromHeaderTest(int size) {
         LinkedList<String> list = new LinkedList<>();
         for (int i = 0; i < size; i++) {
@@ -60,7 +70,9 @@ public class LinkedListTest {
         System.out.println("LinkedList从集合头部位置删除元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void deleteFromMidTest(int size) {
         LinkedList<String> list = new LinkedList<>();
 
@@ -80,7 +92,9 @@ public class LinkedListTest {
         System.out.println("LinkedList从集合中间位置删除元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static boolean deleteFromTailTest(int size) {
         LinkedList<String> list = new LinkedList<>();
         for (int i = 0; i < size; i++) {
@@ -99,7 +113,9 @@ public class LinkedListTest {
         return true;
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void getByForTest(int size) {
         LinkedList<String> list = new LinkedList<>();
         for (int i = 0; i < size; i++) {
@@ -116,7 +132,9 @@ public class LinkedListTest {
         System.out.println("LinkedList for(;;)循环花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void getByIteratorTest(int size) {
         LinkedList<String> list = new LinkedList<>();
         for (int i = 0; i < size; i++) {

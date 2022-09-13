@@ -48,9 +48,8 @@ class QrcodeView : Fragment("Qrcode") {
 
     private val eventHandler = fileDraggedHandler {
         ta.text =
-            runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }.getOrElse {
-                it.stacktrace()
-            }
+            runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }
+                .getOrElse { it.stacktrace() }
     }
 
     override val root = vbox {
@@ -114,17 +113,16 @@ class QrcodeView : Fragment("Qrcode") {
         vbox {
             alignment = Pos.CENTER_RIGHT
             spacing = DEFAULT_SPACING
-            ta =
-                textarea {
-                    promptText = messages["qrHint"]
-                    isWrapText = true
-                    prefHeight = DEFAULT_SPACING_10X
-                    onDragEntered = eventHandler
-                    textProperty().addListener { _, _, newValue ->
-                        println(newValue.length)
-                        textCount.text = "text count: ${newValue.length}"
-                    }
+            ta = textarea {
+                promptText = messages["qrHint"]
+                isWrapText = true
+                prefHeight = DEFAULT_SPACING_10X
+                onDragEntered = eventHandler
+                textProperty().addListener { _, _, newValue ->
+                    println(newValue.length)
+                    textCount.text = "text count: ${newValue.length}"
                 }
+            }
 
             textCount = text("text count: 0")
         }
@@ -177,103 +175,99 @@ class QrcodeView : Fragment("Qrcode") {
         stage.show()
 
         // 切图窗口绑定鼠标按下事件
-        anchorPane.onMousePressed =
-            EventHandler { event: MouseEvent ->
-                // 清除锚点布局中所有子元素
-                anchorPane.children.clear()
-                // 创建切图区域
-                hBox =
-                    HBox().apply {
-                        background = null
-                        border =
-                            Border(
-                                BorderStroke(
-                                    Paint.valueOf("#c03700"),
-                                    BorderStrokeStyle.SOLID,
-                                    null,
-                                    BorderWidths(2.0)
-                                )
+        anchorPane.onMousePressed = EventHandler { event: MouseEvent ->
+            // 清除锚点布局中所有子元素
+            anchorPane.children.clear()
+            // 创建切图区域
+            hBox =
+                HBox().apply {
+                    background = null
+                    border =
+                        Border(
+                            BorderStroke(
+                                Paint.valueOf("#c03700"),
+                                BorderStrokeStyle.SOLID,
+                                null,
+                                BorderWidths(2.0)
                             )
-                    }
-                anchorPane.children.add(hBox)
-                // 记录并设置起始位置
-                startX = event.sceneX
-                startY = event.sceneY
-                AnchorPane.setLeftAnchor(hBox, startX)
-                AnchorPane.setTopAnchor(hBox, startY)
-            }
+                        )
+                }
+            anchorPane.children.add(hBox)
+            // 记录并设置起始位置
+            startX = event.sceneX
+            startY = event.sceneY
+            AnchorPane.setLeftAnchor(hBox, startX)
+            AnchorPane.setTopAnchor(hBox, startY)
+        }
         // 绑定鼠标按下拖拽的事件
         addMouseDraggedEvent(anchorPane)
         // 绑定鼠标松开事件
         addMouseReleasedEvent(anchorPane, stage)
-        scene.onKeyPressed =
-            EventHandler { event: KeyEvent ->
-                if (event.code == KeyCode.ESCAPE) {
-                    stage.close()
-                    primaryStage.isIconified = false
-                }
+        scene.onKeyPressed = EventHandler { event: KeyEvent ->
+            if (event.code == KeyCode.ESCAPE) {
+                stage.close()
+                primaryStage.isIconified = false
             }
+        }
     }
 
     private fun addMouseReleasedEvent(anchorPane: AnchorPane, stage: Stage) {
-        anchorPane.onMouseReleased =
-            EventHandler { event: MouseEvent ->
-                // 记录最终长宽
-                w = abs(event.sceneX - startX)
-                h = abs(event.sceneY - startY)
-                anchorPane.style = "-fx-background-color: #00000000"
-                // 添加剪切按钮，并显示在切图区域的底部
-                val b = Button(messages["cut"])
-                hBox.border =
-                    Border(
-                        BorderStroke(
-                            Paint.valueOf("#85858544"),
-                            BorderStrokeStyle.SOLID,
-                            null,
-                            BorderWidths(2.0)
-                        )
+        anchorPane.onMouseReleased = EventHandler { event: MouseEvent ->
+            // 记录最终长宽
+            w = abs(event.sceneX - startX)
+            h = abs(event.sceneY - startY)
+            anchorPane.style = "-fx-background-color: #00000000"
+            // 添加剪切按钮，并显示在切图区域的底部
+            val b = Button(messages["cut"])
+            hBox.border =
+                Border(
+                    BorderStroke(
+                        Paint.valueOf("#85858544"),
+                        BorderStrokeStyle.SOLID,
+                        null,
+                        BorderWidths(2.0)
                     )
-                hBox.children.add(b)
-                hBox.alignment = Pos.BOTTOM_RIGHT
-                // 为切图按钮绑定切图事件
-                b.onAction =
-                    EventHandler {
-                        // 切图辅助舞台
-                        stage.close()
-                        runCatching { captureImg() }.onFailure {
-                            it.printStackTrace()
-                            primaryStage.showToast(messages["recognizeError"])
-                        }
-                        // 主舞台还原
-                        primaryStage.isIconified = false
+                )
+            hBox.children.add(b)
+            hBox.alignment = Pos.BOTTOM_RIGHT
+            // 为切图按钮绑定切图事件
+            b.onAction = EventHandler {
+                // 切图辅助舞台
+                stage.close()
+                runCatching { captureImg() }
+                    .onFailure {
+                        it.printStackTrace()
+                        primaryStage.showToast(messages["recognizeError"])
                     }
+                // 主舞台还原
+                primaryStage.isIconified = false
             }
+        }
     }
 
     private fun addMouseDraggedEvent(anchorPane: AnchorPane) {
-        anchorPane.onMouseDragged =
-            EventHandler { event: MouseEvent ->
-                // 用label记录切图区域的长宽
-                val label =
-                    Label().apply {
-                        alignment = Pos.CENTER
-                        prefHeight = DEFAULT_SPACING_4X
-                        prefWidth = DEFAULT_SPACING_20X
-                        textFill = Paint.valueOf("#ffffff") // 白色填充
-                        style = "-fx-background-color: #000000" // 黑背景
-                    }
+        anchorPane.onMouseDragged = EventHandler { event: MouseEvent ->
+            // 用label记录切图区域的长宽
+            val label =
+                Label().apply {
+                    alignment = Pos.CENTER
+                    prefHeight = DEFAULT_SPACING_4X
+                    prefWidth = DEFAULT_SPACING_20X
+                    textFill = Paint.valueOf("#ffffff") // 白色填充
+                    style = "-fx-background-color: #000000" // 黑背景
+                }
 
-                anchorPane.children.add(label)
-                AnchorPane.setLeftAnchor(label, startX + DEFAULT_SPACING_4X)
-                AnchorPane.setTopAnchor(label, startY)
+            anchorPane.children.add(label)
+            AnchorPane.setLeftAnchor(label, startX + DEFAULT_SPACING_4X)
+            AnchorPane.setTopAnchor(label, startY)
 
-                // 计算宽高并且完成切图区域的动态效果
-                w = abs(event.sceneX - startX)
-                h = abs(event.sceneY - startY)
-                hBox.prefWidth = w
-                hBox.prefHeight = h
-                label.text = "宽：$w 高：$h"
-            }
+            // 计算宽高并且完成切图区域的动态效果
+            w = abs(event.sceneX - startX)
+            h = abs(event.sceneY - startY)
+            hBox.prefWidth = w
+            hBox.prefHeight = h
+            label.text = "宽：$w 高：$h"
+        }
     }
 
     @Throws(Exception::class)
@@ -285,9 +279,9 @@ class QrcodeView : Fragment("Qrcode") {
         iv.image = bufferedImage
         runAsync {
             runCatching {
-                if (isOcr) BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
-                else screenCapture.qrReader()
-            }
+                    if (isOcr) BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
+                    else screenCapture.qrReader()
+                }
                 .getOrElse { it.stacktrace() }
         } ui { ta.text = it }
     }

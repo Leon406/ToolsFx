@@ -91,12 +91,11 @@ class DigestView : Fragment(messages["hash"]) {
                 action { inputText = clipboardText() }
             }
         }
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-            }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = eventHandler
+        }
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
@@ -177,19 +176,16 @@ class DigestView : Fragment(messages["hash"]) {
                 action { outputText.copy() }
             }
         }
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-                contextmenu {
-                    item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
-                    item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
-                    item("base64") {
-                        action { taOutput.text = taOutput.text.hex2ByteArray().base64() }
-                    }
-                    item("hex") { action { taOutput.text = taOutput.text.base64Decode().toHex() } }
-                }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+            contextmenu {
+                item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
+                item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
+                item("base64") { action { taOutput.text = taOutput.text.hex2ByteArray().base64() } }
+                item("hex") { action { taOutput.text = taOutput.text.base64Decode().toHex() } }
             }
+        }
     }
 
     override val root = borderpane {

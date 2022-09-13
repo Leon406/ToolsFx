@@ -108,7 +108,8 @@ class ApiPostView : PluginFragment("ApiPost") {
             button(graphic = imageview(IMG_RUN)) {
                 enableWhen(!isRunning)
                 action {
-                    if (tfUrl.text.isEmpty() ||
+                    if (
+                        tfUrl.text.isEmpty() ||
                             !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
                     ) {
                         primaryStage.showToast("plz input legal url")
@@ -117,49 +118,52 @@ class ApiPostView : PluginFragment("ApiPost") {
                     isRunning.value = true
                     runAsync {
                         runCatching {
-                            if (selectedMethod.get() == "POST") {
-                                when (bodyTypeMap[selectedBodyType.get()]) {
-                                    BodyType.JSON, BodyType.FORM_DATA ->
-                                        uploadParams?.run {
-                                            controller.uploadFile(
+                                if (selectedMethod.get() == "POST") {
+                                    when (bodyTypeMap[selectedBodyType.get()]) {
+                                        BodyType.JSON,
+                                        BodyType.FORM_DATA ->
+                                            uploadParams?.run {
+                                                controller.uploadFile(
+                                                    tfUrl.text,
+                                                    listOf(this.value.toFile()),
+                                                    this.key,
+                                                    reqTableParams as MutableMap<String, Any>,
+                                                    reqHeaders
+                                                )
+                                            }
+                                                ?: controller.post(
+                                                    tfUrl.text,
+                                                    reqTableParams as MutableMap<String, Any>,
+                                                    reqHeaders.apply {
+                                                        if (
+                                                            selectedBodyType.get() ==
+                                                                BodyType.FORM_DATA.type
+                                                        ) {
+                                                            put(
+                                                                "Content-Type",
+                                                                "application/x-www-form-urlencoded"
+                                                            )
+                                                        }
+                                                    },
+                                                    bodyTypeMap[selectedBodyType.get()] ==
+                                                        BodyType.JSON
+                                                )
+                                        else ->
+                                            controller.postRaw(
                                                 tfUrl.text,
-                                                listOf(this.value.toFile()),
-                                                this.key,
-                                                reqTableParams as MutableMap<String, Any>,
+                                                taReqContent.text,
                                                 reqHeaders
                                             )
-                                        }
-                                            ?: controller.post(
-                                                tfUrl.text,
-                                                reqTableParams as MutableMap<String, Any>,
-                                                reqHeaders.apply {
-                                                    if (selectedBodyType.get() ==
-                                                            BodyType.FORM_DATA.type
-                                                    ) {
-                                                        put(
-                                                            "Content-Type",
-                                                            "application/x-www-form-urlencoded"
-                                                        )
-                                                    }
-                                                },
-                                                bodyTypeMap[selectedBodyType.get()] == BodyType.JSON
-                                            )
-                                    else ->
-                                        controller.postRaw(
-                                            tfUrl.text,
-                                            taReqContent.text,
-                                            reqHeaders
-                                        )
+                                    }
+                                } else {
+                                    controller.request(
+                                        tfUrl.text,
+                                        selectedMethod.get(),
+                                        reqTableParams as MutableMap<String, Any>,
+                                        reqHeaders
+                                    )
                                 }
-                            } else {
-                                controller.request(
-                                    tfUrl.text,
-                                    selectedMethod.get(),
-                                    reqTableParams as MutableMap<String, Any>,
-                                    reqHeaders
-                                )
                             }
-                        }
                             .onSuccess {
                                 textRspStatus.text = it.statusInfo
                                 taRspHeaders.text = it.headerInfo
@@ -247,12 +251,11 @@ class ApiPostView : PluginFragment("ApiPost") {
         stackpane {
             spacing = 8.0
             prefHeight = 200.0
-            taReqContent =
-                textarea {
-                    promptText = "request body"
-                    isWrapText = true
-                    visibleWhen(!showReqHeader)
-                }
+            taReqContent = textarea {
+                promptText = "request body"
+                isWrapText = true
+                visibleWhen(!showReqHeader)
+            }
             table =
                 tableview(requestParams) {
                     visibleWhen(showReqTable)
@@ -280,12 +283,11 @@ class ApiPostView : PluginFragment("ApiPost") {
                     isEditable = true
                 }
 
-            taReqHeaders =
-                textarea {
-                    promptText = "request headers"
-                    isWrapText = true
-                    visibleWhen(showReqHeader)
-                }
+            taReqHeaders = textarea {
+                promptText = "request headers"
+                isWrapText = true
+                visibleWhen(showReqHeader)
+            }
         }
 
         hbox {
@@ -326,20 +328,18 @@ class ApiPostView : PluginFragment("ApiPost") {
         stackpane {
             prefHeight = 300.0
             spacing = 8.0
-            taRspHeaders =
-                textarea {
-                    promptText = "response headers"
-                    isEditable = false
-                    isWrapText = true
-                    visibleWhen(showRspHeader)
-                }
-            taRspContent =
-                textarea {
-                    promptText = "response body"
-                    isEditable = false
-                    isWrapText = true
-                    visibleWhen(!showRspHeader)
-                }
+            taRspHeaders = textarea {
+                promptText = "response headers"
+                isEditable = false
+                isWrapText = true
+                visibleWhen(showRspHeader)
+            }
+            taRspContent = textarea {
+                promptText = "response body"
+                isEditable = false
+                isWrapText = true
+                visibleWhen(!showRspHeader)
+            }
         }
         title = "ApiPost"
     }
@@ -357,8 +357,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                 selectedBodyType.value = bodyType[1]
 
                 val tmpParam =
-                    params
-                        .entries
+                    params.entries
                         .fold(mutableListOf<HttpParams>()) { acc, mutableEntry ->
                             acc.apply {
                                 add(

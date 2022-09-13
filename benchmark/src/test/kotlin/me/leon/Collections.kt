@@ -21,11 +21,11 @@ class Collections {
         // sizeOf每个元素的大小 create 元素不存在时是否创建,默认不创建
         val cache =
             lruCache(
-                6,
-                { _: String, _: String -> 2 },
-                { k: String -> "$k+111" },
-                { b, k, old, new -> if (!b) println("$k change : $old --> $new") }
-            )
+                    6,
+                    { _: String, _: String -> 2 },
+                    { k: String -> "$k+111" },
+                    { b, k, old, new -> if (!b) println("$k change : $old --> $new") }
+                )
                 .also { println(it) }
         cache.put("1", "1")
         cache.put("2", "2")

@@ -149,8 +149,8 @@ constructor(
 
 val PBE_ENCODERS =
     Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values().fold(
-            mutableMapOf<SecretKeyFactoryAlgorithm, Pbkdf2PasswordEncoder>()
-        ) { acc, secretKeyFactoryAlgorithm ->
+        mutableMapOf<SecretKeyFactoryAlgorithm, Pbkdf2PasswordEncoder>()
+    ) { acc, secretKeyFactoryAlgorithm ->
         acc.apply {
             put(
                 secretKeyFactoryAlgorithm,

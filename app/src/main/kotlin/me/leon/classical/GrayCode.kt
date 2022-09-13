@@ -7,8 +7,7 @@ fun String.grayEncode(length: Int = 0, delimiter: String = " "): String {
     val binary = toBinaryString()
     val len = length.takeIf { it > 0 } ?: binary.length
     return binary.chunked(len).joinToString(delimiter) {
-        it
-            .foldIndexed(StringBuilder()) { index, acc, c ->
+        it.foldIndexed(StringBuilder()) { index, acc, c ->
                 acc.apply {
                     if (index == 0) {
                         acc.append(c)
@@ -27,8 +26,7 @@ fun String.grayDecode(length: Int = 0, delimiter: String = " "): String {
     return binary
         .chunked(len)
         .joinToString("") {
-            it
-                .foldIndexed(StringBuilder()) { index, acc, c ->
+            it.foldIndexed(StringBuilder()) { index, acc, c ->
                     acc.apply {
                         if (index == 0) {
                             acc.append(c)

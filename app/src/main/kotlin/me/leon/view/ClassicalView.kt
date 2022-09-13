@@ -74,17 +74,16 @@ class ClassicalView : Fragment(messages["classical"]) {
             checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
         }
 
-        taInput =
-            textarea {
-                prefRowCount = TEXT_AREA_LINES
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
+        taInput = textarea {
+            prefRowCount = TEXT_AREA_LINES
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = eventHandler
 
-                contextmenu {
-                    item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
-                }
+            contextmenu {
+                item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
             }
+        }
         hbox {
             addClass(Styles.left)
             label("${messages["encrypt"]}:")
@@ -120,18 +119,16 @@ class ClassicalView : Fragment(messages["classical"]) {
         hbox {
             spacing = DEFAULT_SPACING
             alignment = Pos.BASELINE_CENTER
-            tfParam1 =
-                textfield {
-                    prefWidth = DEFAULT_SPACING_40X
-                    promptText = encodeType.paramsHints()[0]
-                    visibleWhen(param1Enabled)
-                }
-            tfParam2 =
-                textfield {
-                    prefWidth = DEFAULT_SPACING_40X
-                    promptText = encodeType.paramsHints()[1]
-                    visibleWhen(param2Enabled)
-                }
+            tfParam1 = textfield {
+                prefWidth = DEFAULT_SPACING_40X
+                promptText = encodeType.paramsHints()[0]
+                visibleWhen(param1Enabled)
+            }
+            tfParam2 = textfield {
+                prefWidth = DEFAULT_SPACING_40X
+                promptText = encodeType.paramsHints()[1]
+                visibleWhen(param2Enabled)
+            }
         }
 
         hbox {
@@ -180,26 +177,25 @@ class ClassicalView : Fragment(messages["classical"]) {
             }
         }
 
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-                prefRowCount = TEXT_AREA_LINES - 2
-                contextmenu {
-                    item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
-                    item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
-                    item("reverse") {
-                        action {
-                            taOutput.text =
-                                taOutput.text.split("\r\n|\n".toRegex()).joinToString("\r\n") {
-                                    it.reversed()
-                                }
-                        }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+            prefRowCount = TEXT_AREA_LINES - 2
+            contextmenu {
+                item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
+                item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
+                item("reverse") {
+                    action {
+                        taOutput.text =
+                            taOutput.text.split("\r\n|\n".toRegex()).joinToString("\r\n") {
+                                it.reversed()
+                            }
                     }
-
-                    item("clear") { action { taOutput.text = "" } }
                 }
+
+                item("clear") { action { taOutput.text = "" } }
             }
+        }
     }
 
     override val root = borderpane {

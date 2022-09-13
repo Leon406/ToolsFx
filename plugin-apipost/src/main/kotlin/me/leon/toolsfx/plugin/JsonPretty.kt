@@ -11,25 +11,31 @@ fun String.prettyJson(): String {
             else {
                 acc.apply {
                     when (c) {
-                        '{', '[' ->
-                            if (this@prettyJson[index + 1] == '}' ||
+                        '{',
+                        '[' ->
+                            if (
+                                this@prettyJson[index + 1] == '}' ||
                                     this@prettyJson[index + 1] == ']'
                             ) {
                                 append(c)
                             } else append(c).appendLine().append(s.repeat(++indentNumber))
                         ',' ->
-                            if (this@prettyJson.substring(index + 1).matches("^\\s*\\w.*".toRegex())
+                            if (
+                                this@prettyJson.substring(index + 1).matches("^\\s*\\w.*".toRegex())
                             ) {
                                 append(c)
                             } else append(c).appendLine().append(s.repeat(indentNumber))
                         ':' ->
-                            if (this@prettyJson[index - 1] == '"' &&
+                            if (
+                                this@prettyJson[index - 1] == '"' &&
                                     this@prettyJson[index + 1] != ' '
                             ) {
                                 append(c).append(" ")
                             } else append(c)
-                        '}', ']' ->
-                            if (this@prettyJson[index - 1] == '{' ||
+                        '}',
+                        ']' ->
+                            if (
+                                this@prettyJson[index - 1] == '{' ||
                                     this@prettyJson[index - 1] == '['
                             ) {
                                 append(c)

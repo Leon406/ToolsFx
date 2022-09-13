@@ -25,7 +25,8 @@ class AsymmetricCryptoController : Controller() {
                         .encodeTo(outputEncode)
                 }
             } else {
-                data.decodeToByteArray(inputEncode)
+                data
+                    .decodeToByteArray(inputEncode)
                     .pubEncrypt(key, alg, reserved)
                     .encodeTo(outputEncode)
             }
@@ -73,7 +74,8 @@ class AsymmetricCryptoController : Controller() {
                         .encodeTo(outputEncode)
                 }
             } else {
-                data.decodeToByteArray(inputEncode)
+                data
+                    .decodeToByteArray(inputEncode)
                     .privateEncrypt(key, alg, reserved)
                     .encodeTo(outputEncode)
             }

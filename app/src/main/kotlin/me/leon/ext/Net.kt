@@ -13,40 +13,40 @@ fun String.readBytesFromNet(
     headers: Map<String, Any> = mapOf()
 ) =
     runCatching {
-        URL(this)
-            .openConnection()
-            .cast<HttpURLConnection>()
-            .apply {
-                connectTimeout = timeout
-                readTimeout = timeout
-                setRequestProperty("Content-Type", "zh-CN,zh;q=0.9,en;q=0.8")
-                setRequestProperty("Accept-Language", "application/json; charset=utf-8")
-                setRequestProperty(
-                    "user-agent",
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                        "Chrome/86.0.4240.198 Safari/537.36"
-                )
-                for ((k, v) in headers) setRequestProperty(k, v.toString())
+            URL(this)
+                .openConnection()
+                .cast<HttpURLConnection>()
+                .apply {
+                    connectTimeout = timeout
+                    readTimeout = timeout
+                    setRequestProperty("Content-Type", "zh-CN,zh;q=0.9,en;q=0.8")
+                    setRequestProperty("Accept-Language", "application/json; charset=utf-8")
+                    setRequestProperty(
+                        "user-agent",
+                        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                            "Chrome/86.0.4240.198 Safari/537.36"
+                    )
+                    for ((k, v) in headers) setRequestProperty(k, v.toString())
 
-                requestMethod = method
+                    requestMethod = method
 
-                if (method.equals("post", true)) {
-                    val dataBytes = data.toByteArray()
-                    if (dataBytes.isNotEmpty()) {
-                        addRequestProperty("Content-Length", dataBytes.size.toString())
+                    if (method.equals("post", true)) {
+                        val dataBytes = data.toByteArray()
+                        if (dataBytes.isNotEmpty()) {
+                            addRequestProperty("Content-Length", dataBytes.size.toString())
+                        }
+                        doOutput = true
+                        connect()
+                        outputStream.write(dataBytes)
+                        outputStream.flush()
+                        outputStream.close()
                     }
-                    doOutput = true
-                    connect()
-                    outputStream.write(dataBytes)
-                    outputStream.flush()
-                    outputStream.close()
                 }
-            }
-            .takeIf { it.responseCode == RESPONSE_OK }
-            ?.inputStream
-            ?.readBytes()
-            ?: byteArrayOf()
-    }
+                .takeIf { it.responseCode == RESPONSE_OK }
+                ?.inputStream
+                ?.readBytes()
+                ?: byteArrayOf()
+        }
         .getOrElse {
             println("read bytes err ${it.stacktrace()} ")
             byteArrayOf()
@@ -54,23 +54,23 @@ fun String.readBytesFromNet(
 
 fun String.readStreamFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME_OUT) =
     runCatching {
-        URL(this)
-            .openConnection()
-            .cast<HttpURLConnection>()
-            .apply {
-                connectTimeout = timeout
-                readTimeout = timeout
-                setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
-                setRequestProperty(
-                    "user-agent",
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                        "Chrome/86.0.4240.198 Safari/537.36"
-                )
-                requestMethod = method
-            }
-            .takeIf { it.responseCode == RESPONSE_OK }
-            ?.inputStream
-    }
+            URL(this)
+                .openConnection()
+                .cast<HttpURLConnection>()
+                .apply {
+                    connectTimeout = timeout
+                    readTimeout = timeout
+                    setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+                    setRequestProperty(
+                        "user-agent",
+                        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                            "Chrome/86.0.4240.198 Safari/537.36"
+                    )
+                    requestMethod = method
+                }
+                .takeIf { it.responseCode == RESPONSE_OK }
+                ?.inputStream
+        }
         .getOrElse {
             println("read bytes err ${it.stacktrace()} ")
             error(it.stacktrace())
@@ -91,31 +91,31 @@ fun String.simpleReadFromNet(): String {
 
 fun String.readHeadersFromNet(timeout: Int = DEFAULT_TIME_OUT) =
     runCatching {
-        URL(this)
-            .openConnection()
-            .cast<HttpURLConnection>()
-            .apply {
-                connectTimeout = timeout
-                readTimeout = timeout
-                setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
-                setRequestProperty(
-                    "user-agent",
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                        "Chrome/86.0.4240.198 Safari/537.36"
-                )
-            }
-            .headerFields
-            .toList()
-            .joinToString(System.lineSeparator()) {
-                it.second
-                    .foldIndexed(StringBuilder()) { i, acc, s ->
-                        acc.append("${it.first}: $s").apply {
-                            if (i != it.second.lastIndex) append(System.lineSeparator())
+            URL(this)
+                .openConnection()
+                .cast<HttpURLConnection>()
+                .apply {
+                    connectTimeout = timeout
+                    readTimeout = timeout
+                    setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+                    setRequestProperty(
+                        "user-agent",
+                        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                            "Chrome/86.0.4240.198 Safari/537.36"
+                    )
+                }
+                .headerFields
+                .toList()
+                .joinToString(System.lineSeparator()) {
+                    it.second
+                        .foldIndexed(StringBuilder()) { i, acc, s ->
+                            acc.append("${it.first}: $s").apply {
+                                if (i != it.second.lastIndex) append(System.lineSeparator())
+                            }
                         }
-                    }
-                    .toString()
-            }
-    }
+                        .toString()
+                }
+        }
         .getOrElse {
             val stacktrace = it.stacktrace()
             println("read bytes err $stacktrace ")

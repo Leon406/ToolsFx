@@ -45,8 +45,7 @@ fun String.trifidDecrypt(key: String, period: Int = 1) =
             .joinToString("")
             .chunked(period * 3)
             .joinToString("") {
-                it
-                    .foldIndexed(CharArray(it.length)) { index, acc, c ->
+                it.foldIndexed(CharArray(it.length)) { index, acc, c ->
                         acc.apply {
                             val s = index / (this.size / 3)
                             val m = index % (this.size / 3)

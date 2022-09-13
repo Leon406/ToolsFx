@@ -83,13 +83,12 @@ constructor(
                         var level = 1
                         while (level > 0) {
                             tokenPointer++
-                            if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
+                            if (
+                                tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
                             ) {
                                 level++
-                            } else if (tokens[tokenPointer].equals(
-                                    Token.BRACKET_RIGHT,
-                                    ignoreCase = true
-                                )
+                            } else if (
+                                tokens[tokenPointer].equals(Token.BRACKET_RIGHT, ignoreCase = true)
                             ) {
                                 level--
                             }
@@ -100,13 +99,12 @@ constructor(
                         var level = 1
                         while (level > 0) {
                             tokenPointer--
-                            if (tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
+                            if (
+                                tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
                             ) {
                                 level--
-                            } else if (tokens[tokenPointer].equals(
-                                    Token.BRACKET_RIGHT,
-                                    ignoreCase = true
-                                )
+                            } else if (
+                                tokens[tokenPointer].equals(Token.BRACKET_RIGHT, ignoreCase = true)
                             ) {
                                 level++
                             }

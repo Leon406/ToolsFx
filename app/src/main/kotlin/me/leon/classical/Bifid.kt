@@ -16,8 +16,7 @@ fun String.bifidDecrypt(key: String, period: Int = 1) =
         .polybius(key)
         .chunked(period * 2)
         .joinToString("") {
-            it
-                .foldIndexed(CharArray(it.length)) { index, acc, c ->
+            it.foldIndexed(CharArray(it.length)) { index, acc, c ->
                     acc.apply {
                         if (index < this.size / 2) {
                             this[index * 2] = c

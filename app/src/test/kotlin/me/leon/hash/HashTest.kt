@@ -134,9 +134,10 @@ class HashTest {
 
     @Test
     fun crc32() {
-        CRC32().apply { update("hello".toByteArray()) }.value.also {
-            assertEquals("3610a686", it.toString(16))
-        }
+        CRC32()
+            .apply { update("hello".toByteArray()) }
+            .value
+            .also { assertEquals("3610a686", it.toString(16)) }
         "hello".toByteArray().crc32().also { assertEquals("3610a686", it) }
     }
 

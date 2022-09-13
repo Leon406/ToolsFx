@@ -107,28 +107,26 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         hbox {
             addClass(Styles.left)
             label(messages["input"]) { tooltip("加密时为明文,解密时为base64编码的密文") }
-            tgInput =
-                togglegroup {
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("base64")
-                    radiobutton("hex")
-                    selectedToggleProperty().addListener { _, _, newValue ->
-                        inputEncode = newValue.cast<RadioButton>().text
-                    }
+            tgInput = togglegroup {
+                radiobutton("raw") { isSelected = true }
+                radiobutton("base64")
+                radiobutton("hex")
+                selectedToggleProperty().addListener { _, _, newValue ->
+                    inputEncode = newValue.cast<RadioButton>().text
                 }
+            }
             button(graphic = imageview("/img/import.png")) {
                 tooltip(messages["pasteFromClipboard"])
                 action { inputText = clipboardText() }
             }
         }
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                prefHeight = DEFAULT_SPACING_16X
-                onDragEntered = inputEventHandler
-                prefRowCount = TEXT_AREA_LINES
-            }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            prefHeight = DEFAULT_SPACING_16X
+            onDragEntered = inputEventHandler
+            prefRowCount = TEXT_AREA_LINES
+        }
 
         hbox {
             label(messages["key"])
@@ -140,12 +138,11 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 }
             }
         }
-        taKey =
-            textarea {
-                promptText = messages["inputHintAsy"]
-                isWrapText = true
-                onDragEntered = keyEventHandler
-            }
+        taKey = textarea {
+            promptText = messages["inputHintAsy"]
+            isWrapText = true
+            onDragEntered = keyEventHandler
+        }
 
         hbox {
             addClass(Styles.left)
@@ -222,16 +219,15 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         hbox {
             addClass(Styles.left)
             label(messages["output"])
-            tgOutput =
-                togglegroup {
-                    radiobutton("raw")
-                    radiobutton("base64") { isSelected = true }
-                    radiobutton("hex")
-                    selectedToggleProperty().addListener { _, _, newValue ->
-                        println("output ${newValue.cast<RadioButton>().text}")
-                        outputEncode = newValue.cast<RadioButton>().text
-                    }
+            tgOutput = togglegroup {
+                radiobutton("raw")
+                radiobutton("base64") { isSelected = true }
+                radiobutton("hex")
+                selectedToggleProperty().addListener { _, _, newValue ->
+                    println("output ${newValue.cast<RadioButton>().text}")
+                    outputEncode = newValue.cast<RadioButton>().text
                 }
+            }
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
@@ -247,12 +243,11 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 }
             }
         }
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-                prefRowCount = TEXT_AREA_LINES
-            }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+            prefRowCount = TEXT_AREA_LINES
+        }
     }
 
     override val root = borderpane {
@@ -283,46 +278,46 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             isProcessing.value = true
             startTime = System.currentTimeMillis()
             runCatching {
-                if (isEncrypt) {
-                    if (privateKeyEncrypt.get()) {
-                        controller.priEncrypt(
+                    if (isEncrypt) {
+                        if (privateKeyEncrypt.get()) {
+                            controller.priEncrypt(
+                                keyText,
+                                alg,
+                                inputText,
+                                isSingleLine.get(),
+                                inputEncode = inputEncode,
+                                outputEncode = outputEncode
+                            )
+                        } else {
+                            controller.pubEncrypt(
+                                keyText,
+                                alg,
+                                inputText,
+                                isSingleLine.get(),
+                                inputEncode = inputEncode,
+                                outputEncode = outputEncode
+                            )
+                        }
+                    } else if (privateKeyEncrypt.get()) {
+                        controller.pubDecrypt(
                             keyText,
                             alg,
                             inputText,
                             isSingleLine.get(),
-                            inputEncode = inputEncode,
-                            outputEncode = outputEncode
+                            inputEncode,
+                            outputEncode
                         )
                     } else {
-                        controller.pubEncrypt(
+                        controller.priDecrypt(
                             keyText,
                             alg,
                             inputText,
                             isSingleLine.get(),
-                            inputEncode = inputEncode,
-                            outputEncode = outputEncode
+                            inputEncode,
+                            outputEncode
                         )
                     }
-                } else if (privateKeyEncrypt.get()) {
-                    controller.pubDecrypt(
-                        keyText,
-                        alg,
-                        inputText,
-                        isSingleLine.get(),
-                        inputEncode,
-                        outputEncode
-                    )
-                } else {
-                    controller.priDecrypt(
-                        keyText,
-                        alg,
-                        inputText,
-                        isSingleLine.get(),
-                        inputEncode,
-                        outputEncode
-                    )
                 }
-            }
                 .getOrElse { it.stacktrace() }
         } ui
             {

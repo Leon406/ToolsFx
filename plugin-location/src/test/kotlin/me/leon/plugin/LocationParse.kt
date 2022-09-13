@@ -25,23 +25,25 @@ class LocationParse {
             .readStreamFromNet()
             .also {
                 createReader(it).readObject().also {
-                    it.getJsonArray("geocodes").map { it.asJsonObject() }.forEach { jo ->
-                        jo.getString("location").split(",").run {
-                            CoordinatorTransform.distance(
-                                    addr[4].toDouble(),
-                                    addr[3].toDouble(),
-                                    this[1].toDouble(),
-                                    this[0].toDouble()
-                                )
-                                .also {
-                                    if (it > 200) {
-                                        println(
-                                            "${jo.getString("level")} 误差: $it db $addr amap ${this@run}"
-                                        )
+                    it.getJsonArray("geocodes")
+                        .map { it.asJsonObject() }
+                        .forEach { jo ->
+                            jo.getString("location").split(",").run {
+                                CoordinatorTransform.distance(
+                                        addr[4].toDouble(),
+                                        addr[3].toDouble(),
+                                        this[1].toDouble(),
+                                        this[0].toDouble()
+                                    )
+                                    .also {
+                                        if (it > 200) {
+                                            println(
+                                                "${jo.getString("level")} 误差: $it db $addr amap ${this@run}"
+                                            )
+                                        }
                                     }
-                                }
+                            }
                         }
-                    }
                 }
             }
     }

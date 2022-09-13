@@ -70,27 +70,25 @@ class MacView : Fragment("MAC") {
         hbox {
             label(messages["input"])
             addClass(Styles.left)
-            tgInput =
-                togglegroup {
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("base64")
-                    radiobutton("hex")
-                    selectedToggleProperty().addListener { _, _, newValue ->
-                        inputEncode = newValue.cast<RadioButton>().text
-                    }
+            tgInput = togglegroup {
+                radiobutton("raw") { isSelected = true }
+                radiobutton("base64")
+                radiobutton("hex")
+                selectedToggleProperty().addListener { _, _, newValue ->
+                    inputEncode = newValue.cast<RadioButton>().text
                 }
+            }
 
             button(graphic = imageview("/img/import.png")) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
         }
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-            }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = eventHandler
+        }
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
@@ -152,24 +150,22 @@ class MacView : Fragment("MAC") {
         hbox {
             label(messages["output"])
             addClass(Styles.left)
-            tgOutput =
-                togglegroup {
-                    radiobutton("hex") { isSelected = true }
-                    radiobutton("base64")
-                    selectedToggleProperty().addListener { _, _, new ->
-                        outputEncode = new.cast<RadioButton>().text
-                    }
+            tgOutput = togglegroup {
+                radiobutton("hex") { isSelected = true }
+                radiobutton("base64")
+                selectedToggleProperty().addListener { _, _, new ->
+                    outputEncode = new.cast<RadioButton>().text
                 }
+            }
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { outputText.copy() }
             }
         }
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-            }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+        }
     }
 
     override val root = borderpane {
@@ -182,27 +178,27 @@ class MacView : Fragment("MAC") {
             startTime = System.currentTimeMillis()
 
             runCatching {
-                if (method.contains("POLY1305|-GMAC|ZUC".toRegex())) {
-                    controller.macWithIv(
-                        inputText,
-                        keyIvInputView.keyByteArray,
-                        keyIvInputView.ivByteArray,
-                        method,
-                        inputEncode,
-                        outputEncode,
-                        isSingleLine.get()
-                    )
-                } else {
-                    controller.mac(
-                        inputText,
-                        keyIvInputView.keyByteArray,
-                        method,
-                        inputEncode,
-                        outputEncode,
-                        isSingleLine.get()
-                    )
+                    if (method.contains("POLY1305|-GMAC|ZUC".toRegex())) {
+                        controller.macWithIv(
+                            inputText,
+                            keyIvInputView.keyByteArray,
+                            keyIvInputView.ivByteArray,
+                            method,
+                            inputEncode,
+                            outputEncode,
+                            isSingleLine.get()
+                        )
+                    } else {
+                        controller.mac(
+                            inputText,
+                            keyIvInputView.keyByteArray,
+                            method,
+                            inputEncode,
+                            outputEncode,
+                            isSingleLine.get()
+                        )
+                    }
                 }
-            }
                 .getOrElse { it.stacktrace() }
         } ui
             {

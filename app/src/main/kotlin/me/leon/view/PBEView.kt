@@ -87,12 +87,11 @@ class PBEView : Fragment("PBE") {
                 action { taInput.text = clipboardText() }
             }
         }
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-            }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = eventHandler
+        }
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
@@ -131,15 +130,14 @@ class PBEView : Fragment("PBE") {
             tfSalt = textfield { promptText = "optional,可空" }
             vbox {
                 addClass(Styles.group)
-                tgGroup =
-                    togglegroup {
-                        radiobutton("hex") { isSelected = true }
-                        radiobutton("base64")
-                        radiobutton("raw")
-                        selectedToggleProperty().addListener { _, _, new ->
-                            saltEncode = new.cast<RadioButton>().text
-                        }
+                tgGroup = togglegroup {
+                    radiobutton("hex") { isSelected = true }
+                    radiobutton("base64")
+                    radiobutton("raw")
+                    selectedToggleProperty().addListener { _, _, new ->
+                        saltEncode = new.cast<RadioButton>().text
                     }
+                }
             }
         }
         hbox {
@@ -179,11 +177,10 @@ class PBEView : Fragment("PBE") {
                 }
             }
         }
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-            }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+        }
     }
     override val root = borderpane {
         center = centerNode
@@ -196,29 +193,30 @@ class PBEView : Fragment("PBE") {
             if (taInput.text.isEmpty()) return@runAsync ""
             isProcessing.value = true
             runCatching {
-                if (isEncrypt) {
-                    controller.encrypt(
-                        tfPwd.text,
-                        inputText,
-                        saltByteArray,
-                        cipher,
-                        tfIteration.text.toInt(),
-                        keyLength,
-                        isSingleLine.get()
-                    )
-                } else {
-                    saltByteArray = inputText.base64Decode().sliceArray(8 until (8 + saltLength))
-                    controller.decrypt(
-                        tfPwd.text,
-                        inputText,
-                        saltLength,
-                        cipher,
-                        tfIteration.text.toInt(),
-                        keyLength,
-                        isSingleLine.get()
-                    )
+                    if (isEncrypt) {
+                        controller.encrypt(
+                            tfPwd.text,
+                            inputText,
+                            saltByteArray,
+                            cipher,
+                            tfIteration.text.toInt(),
+                            keyLength,
+                            isSingleLine.get()
+                        )
+                    } else {
+                        saltByteArray =
+                            inputText.base64Decode().sliceArray(8 until (8 + saltLength))
+                        controller.decrypt(
+                            tfPwd.text,
+                            inputText,
+                            saltLength,
+                            cipher,
+                            tfIteration.text.toInt(),
+                            keyLength,
+                            isSingleLine.get()
+                        )
+                    }
                 }
-            }
                 .getOrElse { it.stacktrace() }
         } ui
             {

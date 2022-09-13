@@ -31,7 +31,8 @@ fun String.affineDecrypt(factor: Int, bias: Int, table: String = TABLE_A_Z) =
                         TABLE_A_Z_LOWER[
                             (this * (TABLE_A_Z_LOWER.indexOf(it) - bias)).circleIndex(
                                 TABLE_A_Z_LOWER.length
-                            )]
+                            )
+                        ]
                     else -> it
                 }
             }

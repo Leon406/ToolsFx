@@ -93,14 +93,13 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 }
             }
         }
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                prefRowCount = TEXT_AREA_LINES - 2
-                onDragEntered = eventHandler
-                textProperty().addListener { _, _, _ -> labelInfo.text = info }
-            }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            prefRowCount = TEXT_AREA_LINES - 2
+            onDragEntered = eventHandler
+            textProperty().addListener { _, _, _ -> labelInfo.text = info }
+        }
 
         hbox {
             label(messages["customDict"])
@@ -162,12 +161,11 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             }
         }
 
-        taOutput =
-            textarea {
-                prefRowCount = TEXT_AREA_LINES - 2
-                promptText = messages["outputHint"]
-                isWrapText = true
-            }
+        taOutput = textarea {
+            prefRowCount = TEXT_AREA_LINES - 2
+            promptText = messages["outputHint"]
+            isWrapText = true
+        }
     }
 
     override val root = borderpane {

@@ -7,9 +7,9 @@ import tornadofx.*
 class ApiPostController : Controller() {
 
     private fun replacePlaceHolder(maps: MutableMap<String, Any>): MutableMap<String, Any> {
-        maps.entries.filter { it.value is String }.forEach { entry ->
-            maps[entry.key] = (entry.value as String).replacePlaceHolders()
-        }
+        maps.entries
+            .filter { it.value is String }
+            .forEach { entry -> maps[entry.key] = (entry.value as String).replacePlaceHolders() }
         return maps
     }
 

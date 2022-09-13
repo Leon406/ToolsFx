@@ -18,11 +18,11 @@ fun String.openSslEncrypt(
 ): String {
     val kdf = kdf(pass, salt, keySize + ivSize, hash)
     return makeCipher(
-        alg,
-        kdf.sliceArray(0 until keySize),
-        kdf.sliceArray(keySize..kdf.lastIndex),
-        Cipher.ENCRYPT_MODE
-    )
+            alg,
+            kdf.sliceArray(0 until keySize),
+            kdf.sliceArray(keySize..kdf.lastIndex),
+            Cipher.ENCRYPT_MODE
+        )
         .run {
             (SALT_PREFIX.toByteArray() + salt + doFinal(this@openSslEncrypt.toByteArray())).base64()
         }
@@ -37,11 +37,11 @@ fun String.openSslDecrypt(
 ): String {
     val kdf = parseKdf(this, pass, keySize + ivSize, hash)
     return makeCipher(
-        alg,
-        kdf.sliceArray(0 until keySize),
-        kdf.sliceArray(keySize..kdf.lastIndex),
-        Cipher.DECRYPT_MODE
-    )
+            alg,
+            kdf.sliceArray(0 until keySize),
+            kdf.sliceArray(keySize..kdf.lastIndex),
+            Cipher.DECRYPT_MODE
+        )
         .run {
             val base64Decode = base64Decode()
             doFinal(base64Decode.sliceArray((8 + SALT_SIZE)..base64Decode.lastIndex))

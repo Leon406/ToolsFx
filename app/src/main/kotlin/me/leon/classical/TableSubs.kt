@@ -10,7 +10,8 @@ fun String.tableDecode(table: String, delimiter: String = " ", startCode: Char =
 
 fun String.tableEncode(table: String, delimiter: String = " ", startCode: Char = 'A') =
     with(table.split("\\s+|$delimiter".toRegex())) {
-        uppercase().filter { it.isUpperCase() }.toCharArray().joinToString(delimiter) {
-            this[it - startCode]
-        }
+        uppercase()
+            .filter { it.isUpperCase() }
+            .toCharArray()
+            .joinToString(delimiter) { this[it - startCode] }
     }

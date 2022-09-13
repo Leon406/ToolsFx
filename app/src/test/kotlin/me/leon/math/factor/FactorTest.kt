@@ -71,9 +71,9 @@ class FactorTest {
     @Test
     fun trialDivide() {
         measureTimeMillis {
-            println("123122331123112312313223123".toBigInteger().trialDivide())
-            println("65536".toBigInteger().trialDivide())
-        }
+                println("123122331123112312313223123".toBigInteger().trialDivide())
+                println("65536".toBigInteger().trialDivide())
+            }
             .also { println(it) }
         println("118273132683105007025190320003".toBigInteger().trialDivide())
     }

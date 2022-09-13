@@ -46,10 +46,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private var splitLengthText
         get() =
-            runCatching { tfSplitLength.text.toInt() }.getOrElse {
-                tfSplitLength.text = "8"
-                8
-            }
+            runCatching { tfSplitLength.text.toInt() }
+                .getOrElse {
+                    tfSplitLength.text = "8"
+                    8
+                }
         set(value) {
             tfSplitLength.text = value.toString()
         }
@@ -127,12 +128,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 tooltip(messages["orderByStringASC"])
                 action {
                     measureTimeMillis {
-                        outputText =
-                            inputText
-                                .split("\n|\r\n".toRegex())
-                                .sorted()
-                                .joinToString(System.lineSeparator())
-                    }
+                            outputText =
+                                inputText
+                                    .split("\n|\r\n".toRegex())
+                                    .sorted()
+                                    .joinToString(System.lineSeparator())
+                        }
                         .also {
                             timeConsumption = it
                             labelInfo.text = info
@@ -143,12 +144,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 tooltip(messages["orderByStringDESC"])
                 action {
                     measureTimeMillis {
-                        outputText =
-                            inputText
-                                .split("\n|\r\n".toRegex())
-                                .sortedDescending()
-                                .joinToString(System.lineSeparator())
-                    }
+                            outputText =
+                                inputText
+                                    .split("\n|\r\n".toRegex())
+                                    .sortedDescending()
+                                    .joinToString(System.lineSeparator())
+                        }
                         .also {
                             timeConsumption = it
                             labelInfo.text = info
@@ -160,9 +161,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 tooltip(messages["deduplicateLine"])
                 action {
                     measureTimeMillis {
-                        outputText =
-                            inputText.lines().distinct().joinToString(System.lineSeparator())
-                    }
+                            outputText =
+                                inputText.lines().distinct().joinToString(System.lineSeparator())
+                        }
                         .also {
                             timeConsumption = it
                             labelInfo.text = info
@@ -173,16 +174,16 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 tooltip(messages["letterStatistics"])
                 action {
                     measureTimeMillis {
-                        outputText =
-                            inputText
-                                .fold(mutableMapOf<Char, Int>()) { acc, c ->
-                                    acc.apply { acc[c] = (acc[c] ?: 0) + 1 }
-                                }
-                                .toList()
-                                .joinToString(System.lineSeparator()) {
-                                    "${it.first}: ${it.second}"
-                                }
-                    }
+                            outputText =
+                                inputText
+                                    .fold(mutableMapOf<Char, Int>()) { acc, c ->
+                                        acc.apply { acc[c] = (acc[c] ?: 0) + 1 }
+                                    }
+                                    .toList()
+                                    .joinToString(System.lineSeparator()) {
+                                        "${it.first}: ${it.second}"
+                                    }
+                        }
                         .also {
                             timeConsumption = it
                             labelInfo.text = info
@@ -191,38 +192,37 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
         }
 
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-                contextmenu {
-                    item(messages["loadFromNet"]) {
-                        action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
-                    }
-                    item(messages["recoverEncoding"]) {
-                        action { runAsync { inputText.recoverEncoding() } ui { taInput.text = it } }
-                    }
-                    item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
-                    item(messages["removeAllSpaceByLine"]) {
-                        action {
-                            taInput.text =
-                                inputText
-                                    .lines()
-                                    .map { it.stripAllSpace() }
-                                    .filterNot { it.isEmpty() }
-                                    .joinToString(System.lineSeparator())
-                        }
-                    }
-                    item(messages["removeAllSpace"]) {
-                        action { taInput.text = inputText.stripAllSpace() }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = eventHandler
+            contextmenu {
+                item(messages["loadFromNet"]) {
+                    action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
+                }
+                item(messages["recoverEncoding"]) {
+                    action { runAsync { inputText.recoverEncoding() } ui { taInput.text = it } }
+                }
+                item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
+                item(messages["removeAllSpaceByLine"]) {
+                    action {
+                        taInput.text =
+                            inputText
+                                .lines()
+                                .map { it.stripAllSpace() }
+                                .filterNot { it.isEmpty() }
+                                .joinToString(System.lineSeparator())
                     }
                 }
-                textProperty().addListener { _, _, _ ->
-                    timeConsumption = 0
-                    labelInfo.text = info
+                item(messages["removeAllSpace"]) {
+                    action { taInput.text = inputText.stripAllSpace() }
                 }
             }
+            textProperty().addListener { _, _, _ ->
+                timeConsumption = 0
+                labelInfo.text = info
+            }
+        }
         hbox {
             addClass(Styles.left)
             paddingTop = DEFAULT_SPACING
@@ -250,11 +250,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             paddingTop = DEFAULT_SPACING
             paddingBottom = DEFAULT_SPACING
             label(messages["extract"])
-            tfExtract =
-                textfield {
-                    promptText = messages["extractHint"]
-                    prefWidth = 330.0
-                }
+            tfExtract = textfield {
+                promptText = messages["extractHint"]
+                prefWidth = 330.0
+            }
             checkbox(messages["regexp"]) { isVisible = false }
             button(messages["run"], imageview(IMG_RUN)) { action { doExtract() } }
             checkbox(messages["fileMode"], isFileMode)
@@ -276,11 +275,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
         }
 
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-            }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+        }
         subscribe<SimpleMsgEvent> { inputText = it.msg }
     }
     override val root = borderpane {
@@ -290,13 +288,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun doExtract() {
         measureTimeMillis {
-            outputText =
-                extractReg
-                    .toRegex()
-                    .findAll(if (isFileMode.get()) inputText.toFile().readText() else inputText)
-                    .map { it.value }
-                    .joinToString("\n")
-        }
+                outputText =
+                    extractReg
+                        .toRegex()
+                        .findAll(if (isFileMode.get()) inputText.toFile().readText() else inputText)
+                        .map { it.value }
+                        .joinToString("\n")
+            }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
@@ -306,11 +304,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private fun doSplit() {
 
         measureTimeMillis {
-            outputText =
-                inputText.toList().chunked(splitLengthText).joinToString(sepratorText) {
-                    it.joinToString("")
-                }
-        }
+                outputText =
+                    inputText.toList().chunked(splitLengthText).joinToString(sepratorText) {
+                        it.joinToString("")
+                    }
+            }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
@@ -319,11 +317,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun doReplace() {
         measureTimeMillis {
-            if (replaceFromText.isNotEmpty()) {
-                println(replaceToText)
-                outputText = if (isFileMode.get()) renameFiles() else replaceStr(inputText)
+                if (replaceFromText.isNotEmpty()) {
+                    println(replaceToText)
+                    outputText = if (isFileMode.get()) renameFiles() else replaceStr(inputText)
+                }
             }
-        }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
@@ -342,7 +340,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     return "$it file not exists!"
                 }
                 if (file.isDirectory) {
-                    file.walk()
+                    file
+                        .walk()
                         .filter(File::isFile)
                         .filter { it.name != replaceStr(it.name) }
                         .map { f ->

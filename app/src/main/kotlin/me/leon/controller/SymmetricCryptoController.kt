@@ -40,13 +40,13 @@ class SymmetricCryptoController : Controller() {
         associatedData: ByteArray = byteArrayOf()
     ) =
         if (alg.startsWith("XXTEA")) {
-            XXTEA
-                .encrypt(data.decodeToByteArray(inputEncode, charset), key)
+            XXTEA.encrypt(data.decodeToByteArray(inputEncode, charset), key)
                 .encodeTo(outputEncode, charset)
         } else if (alg == "XOR") {
             data.decodeToByteArray(inputEncode, charset).xor(key).encodeTo(outputEncode, charset)
         } else {
-            data.decodeToByteArray(inputEncode, charset)
+            data
+                .decodeToByteArray(inputEncode, charset)
                 .encrypt(key, iv, alg, associatedData)
                 .encodeTo(outputEncode, charset)
         }
@@ -138,13 +138,13 @@ class SymmetricCryptoController : Controller() {
         associatedData: ByteArray = byteArrayOf()
     ) =
         if (alg.startsWith("XXTEA")) {
-            XXTEA
-                .decrypt(data.decodeToByteArray(inputEncode, charset), key)
+            XXTEA.decrypt(data.decodeToByteArray(inputEncode, charset), key)
                 .encodeTo(outputEncode, charset)
         } else if (alg == "XOR") {
             data.decodeToByteArray(inputEncode, charset).xor(key).encodeTo(outputEncode, charset)
         } else {
-            data.decodeToByteArray(inputEncode, charset)
+            data
+                .decodeToByteArray(inputEncode, charset)
                 .decrypt(key, iv, alg, associatedData)
                 .encodeTo(outputEncode, charset)
         }

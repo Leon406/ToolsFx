@@ -75,7 +75,8 @@ object NetHelper {
     fun String.proxyType() =
         when (this) {
             "DIRECT" -> Proxy.Type.DIRECT
-            "SOCKS4", "SOCKS5" -> Proxy.Type.SOCKS
+            "SOCKS4",
+            "SOCKS5" -> Proxy.Type.SOCKS
             "HTTP" -> Proxy.Type.HTTP
             else -> Proxy.Type.DIRECT
         }

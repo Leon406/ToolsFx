@@ -34,9 +34,12 @@ fun String.mixDecode2String() = mixDecode().toString(Charsets.UTF_8)
 private fun String.mixCharDecode(): Byte {
     val raw = substring(2)
     return when (substring(0, 2)) {
-        "0b", "0B" -> raw.binary2ByteArray().first()
-        "0x", "0X" -> raw.hex2ByteArray().first()
-        "0o", "0O" -> raw.octalByteDecode()
+        "0b",
+        "0B" -> raw.binary2ByteArray().first()
+        "0x",
+        "0X" -> raw.hex2ByteArray().first()
+        "0o",
+        "0O" -> raw.octalByteDecode()
         else -> this.toByteArray().first()
     }
 }

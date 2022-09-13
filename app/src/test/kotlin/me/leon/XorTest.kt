@@ -15,8 +15,7 @@ class XorTest {
         val raw = "dsdfdsf你好"
         val encoded = listOf(7, 66, 86, 85, 7, 66, 84, -41, -34, -111, -41, -106, -34)
         val key = "c123"
-        raw
-            .toByteArray()
+        raw.toByteArray()
             .mapIndexed { index, c -> c.toInt() xor key[index % key.length].code }
             .also { println(it) }
 
@@ -37,10 +36,13 @@ class XorTest {
     fun readWechat() {
         val dir = "Your wechat image directory"
 
-        dir.toFile().walk().filter { it.extension == "dat" }.forEach {
-            println(it.absolutePath)
-            decryptFile(it)
-        }
+        dir.toFile()
+            .walk()
+            .filter { it.extension == "dat" }
+            .forEach {
+                println(it.absolutePath)
+                decryptFile(it)
+            }
     }
 
     private fun decryptFile(it: File) {
@@ -65,8 +67,7 @@ class XorTest {
             val hex = it.readNBytes(2).toHex()
             for (bytes in imgMagicNumbers.map { it.hex2ByteArray() }) {
                 val keys =
-                    hex
-                        .hex2ByteArray()
+                    hex.hex2ByteArray()
                         .mapIndexed { index, c ->
                             (c.toInt() xor bytes[index % bytes.size].toInt()).toByte()
                         }

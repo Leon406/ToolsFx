@@ -99,15 +99,14 @@ internal object CellGenerator {
     fun <T> createTextField(cell: Cell<T>, converter: StringConverter<T>?): TextField {
         val textField = TextField(getItemText(cell, converter))
         val cellEdit = cell as EditingCell<*, *>
-        textField.onMouseExited =
-            EventHandler {
-                checkNotNull(converter) {
-                    ("Attempting to convert text input into Object, but provided " +
-                        "StringConverter is null. Be sure to set a StringConverter " +
-                        "in your cell factory.")
-                }
-                cell.commitEdit(converter.fromString(textField.text))
+        textField.onMouseExited = EventHandler {
+            checkNotNull(converter) {
+                ("Attempting to convert text input into Object, but provided " +
+                    "StringConverter is null. Be sure to set a StringConverter " +
+                    "in your cell factory.")
             }
+            cell.commitEdit(converter.fromString(textField.text))
+        }
         textField.addEventFilter(KeyEvent.KEY_PRESSED) { event: KeyEvent ->
             when (event.code) {
                 KeyCode.ESCAPE -> {

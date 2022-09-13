@@ -21,9 +21,9 @@ private val reverseMap by lazy {
 }
 // ASCII
 fun String.pawnshop() =
-    toCharArray().filter { it.code in 0..127 }.joinToString(" ") {
-        it.code.split().joinToString("") { map[it]!!.random().toString() }
-    }
+    toCharArray()
+        .filter { it.code in 0..127 }
+        .joinToString(" ") { it.code.split().joinToString("") { map[it]!!.random().toString() } }
 
 private fun Int.split() = this.toString().toCharArray().map { it - '0' }
 

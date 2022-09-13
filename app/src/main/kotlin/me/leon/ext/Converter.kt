@@ -134,5 +134,5 @@ fun String.toHtmlEntity(radix: Int = 10, isAll: Boolean = true) =
 
 fun String.unicodeMix2String() =
     StringBuilder(this).replace(
-            "(?i:\\\\u\\+?[0-9a-zA-Z]{1,5}|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
-        ) { it.value.unicode2String() }
+        "(?i:\\\\u\\+?[0-9a-zA-Z]{1,5}|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
+    ) { it.value.unicode2String() }

@@ -163,28 +163,26 @@ class SignatureView : Fragment(messages["signVerify"]) {
         hbox {
             label(messages["plain"])
             addClass(Styles.left)
-            tgInput =
-                togglegroup {
-                    radiobutton("raw") { isSelected = true }
-                    radiobutton("base64")
-                    radiobutton("hex")
-                    selectedToggleProperty().addListener { _, _, newValue ->
-                        inputEncode = newValue.cast<RadioButton>().text
-                    }
+            tgInput = togglegroup {
+                radiobutton("raw") { isSelected = true }
+                radiobutton("base64")
+                radiobutton("hex")
+                selectedToggleProperty().addListener { _, _, newValue ->
+                    inputEncode = newValue.cast<RadioButton>().text
                 }
+            }
 
             button(graphic = imageview("/img/import.png")) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taRaw.text = clipboardText() }
             }
         }
-        taRaw =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = inputEventHandler
-                prefHeight = DEFAULT_SPACING_16X
-            }
+        taRaw = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = inputEventHandler
+            prefHeight = DEFAULT_SPACING_16X
+        }
         hbox {
             label(messages["key"])
             button(graphic = imageview("/img/import.png")) {
@@ -192,12 +190,11 @@ class SignatureView : Fragment(messages["signVerify"]) {
                 action { taKey.text = clipboardText() }
             }
         }
-        taKey =
-            textarea {
-                promptText = messages["inputHintAsy"]
-                isWrapText = true
-                onDragEntered = eventHandler
-            }
+        taKey = textarea {
+            promptText = messages["inputHintAsy"]
+            isWrapText = true
+            onDragEntered = eventHandler
+        }
 
         hbox {
             addClass(Styles.left)
@@ -243,14 +240,13 @@ class SignatureView : Fragment(messages["signVerify"]) {
         hbox {
             addClass(Styles.left)
             label(messages["sig"])
-            tgOutput =
-                togglegroup {
-                    radiobutton("base64") { isSelected = true }
-                    radiobutton("hex")
-                    selectedToggleProperty().addListener { _, _, newValue ->
-                        outputEncode = newValue.cast<RadioButton>().text
-                    }
+            tgOutput = togglegroup {
+                radiobutton("base64") { isSelected = true }
+                radiobutton("hex")
+                selectedToggleProperty().addListener { _, _, newValue ->
+                    outputEncode = newValue.cast<RadioButton>().text
                 }
+            }
 
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
@@ -258,12 +254,11 @@ class SignatureView : Fragment(messages["signVerify"]) {
             }
         }
 
-        taSigned =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-                prefHeight = DEFAULT_SPACING_10X
-            }
+        taSigned = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+            prefHeight = DEFAULT_SPACING_10X
+        }
     }
     override val root = borderpane {
         center = centerNode
@@ -274,16 +269,16 @@ class SignatureView : Fragment(messages["signVerify"]) {
         runAsync {
             startTime = System.currentTimeMillis()
             runCatching {
-                controller.sign(
-                    selectedKeyPairAlg.get(),
-                    selectedSigAlg.get(),
-                    key,
-                    msg,
-                    inputEncode,
-                    outputEncode,
-                    isSingleLine.get()
-                )
-            }
+                    controller.sign(
+                        selectedKeyPairAlg.get(),
+                        selectedSigAlg.get(),
+                        key,
+                        msg,
+                        inputEncode,
+                        outputEncode,
+                        isSingleLine.get()
+                    )
+                }
                 .getOrElse { it.stacktrace() }
         } ui
             {
@@ -296,18 +291,18 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private fun verify() =
         runAsync {
             runCatching {
-                startTime = System.currentTimeMillis()
-                controller.verify(
-                    selectedKeyPairAlg.get(),
-                    selectedSigAlg.get(),
-                    key,
-                    msg,
-                    inputEncode,
-                    outputEncode,
-                    signText,
-                    isSingleLine.get()
-                )
-            }
+                    startTime = System.currentTimeMillis()
+                    controller.verify(
+                        selectedKeyPairAlg.get(),
+                        selectedSigAlg.get(),
+                        key,
+                        msg,
+                        inputEncode,
+                        outputEncode,
+                        signText,
+                        isSingleLine.get()
+                    )
+                }
                 .getOrElse { it.stacktrace() }
         } ui
             { state ->

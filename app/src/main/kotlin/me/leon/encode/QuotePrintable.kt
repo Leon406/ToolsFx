@@ -8,8 +8,7 @@ import me.leon.ext.toHex
 object QuotePrintable {
 
     fun encode(src: String, charset: String = UTF8) =
-        src
-            .also { println("encode $src $charset") }
+        src.also { println("encode $src $charset") }
             .toCharArray()
             .map {
                 when (it.code) {
@@ -18,8 +17,7 @@ object QuotePrintable {
                     in 0..15 -> "=0${it.code.toString(16)}"
                     in 128..255 -> "=${it.code.toString(16)}"
                     else ->
-                        it
-                            .toString()
+                        it.toString()
                             .toByteArray(Charset.forName(charset))
                             .toHex()
                             .chunked(2)

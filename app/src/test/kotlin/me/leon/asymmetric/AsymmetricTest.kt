@@ -95,13 +95,14 @@ class AsymmetricTest {
         assertEquals(2048, controller.lengthFromPri(pri))
         val plain = "text dfsd dfsdf  dfsdf df sdf  dsf "
 
-        RSA_PADDINGS.map { "RSA/NONE/$it" }.forEach {
-            runCatching {
-                println("alg : $it")
-                val encrypt = controller.pubEncrypt(pub, it, plain)
-                assertEquals(plain, controller.priDecrypt(pri, it, encrypt))
+        RSA_PADDINGS.map { "RSA/NONE/$it" }
+            .forEach {
+                runCatching {
+                    println("alg : $it")
+                    val encrypt = controller.pubEncrypt(pub, it, plain)
+                    assertEquals(plain, controller.priDecrypt(pri, it, encrypt))
+                }
             }
-        }
     }
 
     @Test

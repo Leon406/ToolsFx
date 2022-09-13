@@ -222,13 +222,15 @@ class EncodeTest {
         assertEquals(base58, raw.base58())
 
         measureNanoTime {
-            raw.toByteArray().baseCheck().also { assertEquals(raw, String(it.baseCheckDecode())) }
-        }
+                raw.toByteArray().baseCheck().also {
+                    assertEquals(raw, String(it.baseCheckDecode()))
+                }
+            }
             .also { println("total $it") }
 
         measureNanoTime {
-            raw.base58Check().also { assertEquals(raw, it.base58CheckDecode2String()) }
-        }
+                raw.base58Check().also { assertEquals(raw, it.base58CheckDecode2String()) }
+            }
             .also { println("total2 $it") }
     }
 

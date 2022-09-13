@@ -38,9 +38,10 @@ fun BigInteger.decrypt(d: String, n: String) = decrypt(BigInteger(d), BigInteger
 fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
 
 fun List<BigInteger>.phi(): BigInteger =
-    filter { it > BigInteger.ZERO }.groupBy { it }.map { it.key to it.value.size }.fold(
-        BigInteger.ONE
-    ) { acc, pair -> acc * pair.first.eulerPhi(pair.second) }
+    filter { it > BigInteger.ZERO }
+        .groupBy { it }
+        .map { it.key to it.value.size }
+        .fold(BigInteger.ONE) { acc, pair -> acc * pair.first.eulerPhi(pair.second) }
 
 fun List<BigInteger>.product(): BigInteger = fold(BigInteger.ONE) { acc, int -> acc * int }
 
@@ -56,11 +57,11 @@ fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toStrin
 
 fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
     return runCatching {
-        "http://factordb.com/api?query=$digit"
-            .readFromNet(timeout = 3000)
-            .fromJson(FactorDbResponse::class.java)
-            .factorList
-    }
+            "http://factordb.com/api?query=$digit"
+                .readFromNet(timeout = 3000)
+                .fromJson(FactorDbResponse::class.java)
+                .factorList
+        }
         .getOrElse { mutableListOf(digit.toBigInteger().negate()) }
 }
 

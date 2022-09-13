@@ -111,74 +111,74 @@ class BigIntFragment : Fragment("BigInt") {
 
     private fun outputLayout(vBox: VBox) {
         hbox {
-            addClass(Styles.left)
-            label(messages["output"])
-            button("P", graphic = imageview(IMG_UP)) {
-                tooltip(messages["up"])
-                action {
-                    if (selectedAlgo == Calculator.FACTOR.algo) {
-                        val lines = outputText.lines()
-                        ta1.text = lines.first()
-                        ta2.text = lines.last()
-                    } else {
-                        ta1.text = outputText
-                    }
+                addClass(Styles.left)
+                label(messages["output"])
+                button("P", graphic = imageview(IMG_UP)) {
+                    tooltip(messages["up"])
+                    action {
+                        if (selectedAlgo == Calculator.FACTOR.algo) {
+                            val lines = outputText.lines()
+                            ta1.text = lines.first()
+                            ta2.text = lines.last()
+                        } else {
+                            ta1.text = outputText
+                        }
 
-                    taOutput.text = ""
-                }
-            }
-            button("Q", graphic = imageview(IMG_UP)) {
-                tooltip(messages["up"])
-                action {
-                    if (selectedAlgo == Calculator.FACTOR.algo) {
-                        val lines = outputText.lines()
-                        ta1.text = lines.first()
-                        ta2.text = lines.last()
-                    } else {
-                        ta2.text = outputText
+                        taOutput.text = ""
                     }
-                    taOutput.text = ""
+                }
+                button("Q", graphic = imageview(IMG_UP)) {
+                    tooltip(messages["up"])
+                    action {
+                        if (selectedAlgo == Calculator.FACTOR.algo) {
+                            val lines = outputText.lines()
+                            ta1.text = lines.first()
+                            ta2.text = lines.last()
+                        } else {
+                            ta2.text = outputText
+                        }
+                        taOutput.text = ""
+                    }
+                }
+                button("N", graphic = imageview(IMG_UP)) {
+                    tooltip(messages["up"])
+                    action {
+                        ta3.text = outputText
+                        taOutput.text = ""
+                    }
+                }
+                button("e", graphic = imageview(IMG_UP)) {
+                    tooltip(messages["up"])
+                    action {
+                        ta4.text = outputText
+                        taOutput.text = ""
+                    }
+                }
+                button("d", graphic = imageview(IMG_UP)) {
+                    tooltip(messages["up"])
+                    action {
+                        ta5.text = outputText
+                        taOutput.text = ""
+                    }
+                }
+                button(graphic = imageview(IMG_COPY)) {
+                    tooltip(messages["copy"])
+                    action { outputText.copy() }
                 }
             }
-            button("N", graphic = imageview(IMG_UP)) {
-                tooltip(messages["up"])
-                action {
-                    ta3.text = outputText
-                    taOutput.text = ""
-                }
-            }
-            button("e", graphic = imageview(IMG_UP)) {
-                tooltip(messages["up"])
-                action {
-                    ta4.text = outputText
-                    taOutput.text = ""
-                }
-            }
-            button("d", graphic = imageview(IMG_UP)) {
-                tooltip(messages["up"])
-                action {
-                    ta5.text = outputText
-                    taOutput.text = ""
-                }
-            }
-            button(graphic = imageview(IMG_COPY)) {
-                tooltip(messages["copy"])
-                action { outputText.copy() }
-            }
-        }
             .also { vBox.add(it) }
         taOutput =
             textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-                prefRowCount = TEXT_AREA_LINES - 2
-                contextmenu {
-                    item("numberToString") { action { number2String() } }
-                    item("stringToNumber") { action { string2Number() } }
-                    item("numberToBase64") { action { number2Base64() } }
-                    item("base64ToNumber") { action { base64ToNumber() } }
+                    promptText = messages["outputHint"]
+                    isWrapText = true
+                    prefRowCount = TEXT_AREA_LINES - 2
+                    contextmenu {
+                        item("numberToString") { action { number2String() } }
+                        item("stringToNumber") { action { string2Number() } }
+                        item("numberToBase64") { action { number2Base64() } }
+                        item("base64ToNumber") { action { base64ToNumber() } }
+                    }
                 }
-            }
                 .also { vBox.add(it) }
     }
 
@@ -207,56 +207,50 @@ class BigIntFragment : Fragment("BigInt") {
 
     private fun inputLayout(vBox: VBox) {
         hbox {
-            prefHeight = DEFAULT_SPACING_10X
-            alignment = Pos.CENTER_LEFT
-            label("P:")
-            ta1 =
-                textarea {
+                prefHeight = DEFAULT_SPACING_10X
+                alignment = Pos.CENTER_LEFT
+                label("P:")
+                ta1 = textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
-            label("Q:")
-            ta2 =
-                textarea {
+                label("Q:")
+                ta2 = textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
-        }
+            }
             .also { vBox.add(it) }
         hbox {
-            prefHeight = DEFAULT_SPACING_10X
-            alignment = Pos.CENTER_LEFT
-            label("N:")
-            ta3 =
-                textarea {
+                prefHeight = DEFAULT_SPACING_10X
+                alignment = Pos.CENTER_LEFT
+                label("N:")
+                ta3 = textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
 
-            label("e:")
-            ta4 =
-                textarea {
+                label("e:")
+                ta4 = textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
-        }
+            }
             .also { vBox.add(it) }
         hbox {
-            prefHeight = DEFAULT_SPACING_10X
-            alignment = Pos.CENTER_LEFT
-            label("d:")
-            ta5 =
-                textarea {
+                prefHeight = DEFAULT_SPACING_10X
+                alignment = Pos.CENTER_LEFT
+                label("d:")
+                ta5 = textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
-            label("C:")
-            ta6 =
-                textarea {
+                label("C:")
+                ta6 = textarea {
                     isWrapText = true
                     prefWidth = DEFAULT_SPACING_40X
                 }
-        }
+            }
             .also { vBox.add(it) }
     }
 

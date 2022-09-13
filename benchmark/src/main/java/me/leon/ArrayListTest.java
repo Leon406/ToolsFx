@@ -5,9 +5,11 @@ import java.util.Iterator;
 
 public class ArrayListTest {
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void addFromHeaderTest(int size) {
-        ArrayList<String> list = new ArrayList<String>(size);
+        ArrayList<String> list = new ArrayList<>(size);
 
         long timeStart = System.nanoTime();
         for (int i = 0; i < size; i++) {
@@ -19,7 +21,9 @@ public class ArrayListTest {
         System.out.println("ArrayList头部位置新增元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void addFromMidTest(int size) {
         ArrayList<String> list = new ArrayList<>(size);
         long timeStart = System.nanoTime();
@@ -32,7 +36,9 @@ public class ArrayListTest {
         System.out.println("ArrayList从集合中间位置新增元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void addFromTailTest(int size) {
         ArrayList<String> list = new ArrayList<>(size);
 
@@ -46,7 +52,9 @@ public class ArrayListTest {
         System.out.println("ArrayList从集合尾部位置新增元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void deleteFromHeaderTest(int size) {
         ArrayList<String> list = new ArrayList<>();
 
@@ -63,7 +71,9 @@ public class ArrayListTest {
         System.out.println("ArrayList从集合头部位置删除元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void deleteFromMidTest(int size) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -80,7 +90,9 @@ public class ArrayListTest {
         System.out.println("ArrayList从集合中间位置删除元素花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static boolean deleteFromTailTest(int size) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -100,7 +112,9 @@ public class ArrayListTest {
         return true;
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void getByForTest(int size) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -117,7 +131,9 @@ public class ArrayListTest {
         System.out.println("ArrayList for(;;)循环花费的时间 ops/ns: " + (timeEnd - timeStart) / size);
     }
 
-    /** @param size */
+    /**
+     * @param size
+     */
     public static void getByIteratorTest(int size) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {

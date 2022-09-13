@@ -86,12 +86,14 @@ fun File.realExtension() =
             inputStream().use {
                 it.readNBytes(10).toHex().let { hex ->
                     //            println(name)
-                    magics.keys.firstOrNull { hex.startsWith(it, true) }?.let { key ->
-                        //                    println(name + " " + key + " " + magics[key])
-                        (if (magics[key] in multiExts) {
-                            extension.takeIf { it != name } ?: magics[key]
-                        } else magics[key])
-                    }
+                    magics.keys
+                        .firstOrNull { hex.startsWith(it, true) }
+                        ?.let { key ->
+                            //                    println(name + " " + key + " " + magics[key])
+                            (if (magics[key] in multiExts) {
+                                extension.takeIf { it != name } ?: magics[key]
+                            } else magics[key])
+                        }
                         ?: extension.also { println("unknown magic number $hex $name") }
                 }
             }

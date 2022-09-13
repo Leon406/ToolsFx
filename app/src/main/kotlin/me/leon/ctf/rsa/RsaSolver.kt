@@ -87,14 +87,14 @@ object RsaSolver {
     private fun solveBroadCast(params: MutableMap<String, BigInteger>): String {
         println("solve broadcast")
         val modular =
-            params.keys.filter { it.startsWith("n") }.fold(BigInteger.ONE) { acc, s ->
-                acc * params[s]!!
-            }
+            params.keys
+                .filter { it.startsWith("n") }
+                .fold(BigInteger.ONE) { acc, s -> acc * params[s]!! }
         val e = params.keys.count { it.startsWith("n") }
         val divides =
-            params.keys.filter { it.startsWith("n") }.map {
-                DivideResult(params["c" + it.substring(1)]!!, params[it]!!)
-            }
+            params.keys
+                .filter { it.startsWith("n") }
+                .map { DivideResult(params["c" + it.substring(1)]!!, params[it]!!) }
         val me = crt(divides)
         val cx = me % modular
 

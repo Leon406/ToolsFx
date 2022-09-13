@@ -60,12 +60,11 @@ class LocationView : PluginFragment("LocationView") {
             }
         }
 
-        taInput =
-            textarea {
-                isWrapText = true
-                onDragEntered = eventHandler
-                promptText = promptList.first()
-            }
+        taInput = textarea {
+            isWrapText = true
+            onDragEntered = eventHandler
+            promptText = promptList.first()
+        }
         hbox {
             alignment = Pos.CENTER_LEFT
             paddingTop = DEFAULT_SPACING
@@ -88,8 +87,8 @@ class LocationView : PluginFragment("LocationView") {
                         taInput.promptText =
                             when (locationServiceType) {
                                 LocationServiceType.DISTANCE -> promptList[1]
-                                LocationServiceType.GEO_BD, LocationServiceType.GEO_AMPA ->
-                                    promptList.last()
+                                LocationServiceType.GEO_BD,
+                                LocationServiceType.GEO_AMPA -> promptList.last()
                                 else -> promptList.first()
                             }
                         println(locationServiceType)
@@ -127,11 +126,10 @@ class LocationView : PluginFragment("LocationView") {
                 }
             }
         }
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-            }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+        }
     }
 
     private fun doProcess() {

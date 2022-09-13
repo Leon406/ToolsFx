@@ -30,18 +30,16 @@ class KeyIvInputView(
         tfKey = textfield { promptText = messages["keyHint"] }
         add(toggleKey.root)
         label("iv:") { visibleWhen(enableIv) }
-        tfIv =
-            textfield {
-                promptText = messages["ivHint"]
-                visibleWhen(enableIv)
-            }
+        tfIv = textfield {
+            promptText = messages["ivHint"]
+            visibleWhen(enableIv)
+        }
         add(toggleIv.root)
         label("associateData:") { visibleWhen(enableAssociatedData) }
-        tfData =
-            textfield {
-                promptText = messages["associateDataHint"]
-                visibleWhen(enableAssociatedData)
-            }
+        tfData = textfield {
+            promptText = messages["associateDataHint"]
+            visibleWhen(enableAssociatedData)
+        }
         add(toggleData.root)
     }
 }

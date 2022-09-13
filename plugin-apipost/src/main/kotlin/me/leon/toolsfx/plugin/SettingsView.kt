@@ -39,17 +39,15 @@ class SettingsView : View("Setting") {
             spacing = 8.0
             alignment = Pos.CENTER_LEFT
             checkbox("p12", isP12)
-            tfCerPath =
-                textfield {
-                    promptText = "file path(drag file here)"
-                    onDragEntered = eventHandler
-                }
+            tfCerPath = textfield {
+                promptText = "file path(drag file here)"
+                onDragEntered = eventHandler
+            }
 
-            tfCerPass =
-                textfield {
-                    enableWhen(isP12)
-                    promptText = "pkcs12 password"
-                }
+            tfCerPass = textfield {
+                enableWhen(isP12)
+                promptText = "pkcs12 password"
+            }
         }
         label("Proxy")
         hbox {

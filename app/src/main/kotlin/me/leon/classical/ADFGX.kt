@@ -36,8 +36,7 @@ fun String.adfgxDecrypt(
     val count = length % key.length
     val len = length / key.length
     val keyM2: MutableMap<Char, Pair<MutableList<Char>, Int>> =
-        key
-            .foldIndexed(mutableMapOf<Char, Pair<MutableList<Char>, Int>>()) { index, acc, c ->
+        key.foldIndexed(mutableMapOf<Char, Pair<MutableList<Char>, Int>>()) { index, acc, c ->
                 acc.apply {
                     acc[c] = mutableListOf<Char>() to (len + (if (index < count) 1 else 0))
                 }

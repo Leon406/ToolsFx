@@ -114,37 +114,29 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             checkbox(messages["fileMode"], isFileMode)
         }
 
-        taInput =
-            textarea {
-                promptText = messages["inputHint"]
-                isWrapText = true
-                onDragEntered = eventHandler
-                prefRowCount = TEXT_AREA_LINES
-                contextmenu {
-                    item(messages["loadFromNet"]) {
-                        action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
-                    }
-                    item(messages["loadFromNetLoop"]) {
-                        action {
-                            runAsync { inputText.simpleReadFromNet() } ui { taInput.text = it }
-                        }
-                    }
-                    item(messages["loadFromNet2"]) {
-                        action {
-                            runAsync { inputText.readBytesFromNet().base64() } ui
-                                {
-                                    taInput.text = it
-                                }
-                        }
-                    }
-                    item(messages["readHeadersFromNet"]) {
-                        action {
-                            runAsync { inputText.readHeadersFromNet() } ui { taInput.text = it }
-                        }
+        taInput = textarea {
+            promptText = messages["inputHint"]
+            isWrapText = true
+            onDragEntered = eventHandler
+            prefRowCount = TEXT_AREA_LINES
+            contextmenu {
+                item(messages["loadFromNet"]) {
+                    action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
+                }
+                item(messages["loadFromNetLoop"]) {
+                    action { runAsync { inputText.simpleReadFromNet() } ui { taInput.text = it } }
+                }
+                item(messages["loadFromNet2"]) {
+                    action {
+                        runAsync { inputText.readBytesFromNet().base64() } ui { taInput.text = it }
                     }
                 }
-                textProperty().addListener { _, _, _ -> labelInfo.text = info }
+                item(messages["readHeadersFromNet"]) {
+                    action { runAsync { inputText.readHeadersFromNet() } ui { taInput.text = it } }
+                }
             }
+            textProperty().addListener { _, _, _ -> labelInfo.text = info }
+        }
         hbox {
             addClass(Styles.left)
             paddingTop = DEFAULT_SPACING
@@ -231,9 +223,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 action {
                     fire(SimpleMsgEvent(taOutput.text, 1))
                     val tabPane = findParentOfType(TabPane::class)
-                    tabPane?.selectionModel?.select(
-                        tabPane.tabs.first { it.text == messages["stringProcess"] }
-                    )
+                    tabPane
+                        ?.selectionModel
+                        ?.select(tabPane.tabs.first { it.text == messages["stringProcess"] })
                 }
             }
             button(graphic = imageview(IMG_UP)) {
@@ -250,12 +242,11 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             }
         }
 
-        taOutput =
-            textarea {
-                promptText = messages["outputHint"]
-                isWrapText = true
-                prefRowCount = TEXT_AREA_LINES
-            }
+        taOutput = textarea {
+            promptText = messages["outputHint"]
+            isWrapText = true
+            prefRowCount = TEXT_AREA_LINES
+        }
     }
     override val root = borderpane {
         center = centerNode
@@ -270,29 +261,29 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             startTime = System.currentTimeMillis()
 
             runCatching {
-                if (times > 40) kotlin.error("times should be not large than 40")
-                repeat(times) {
-                    result =
-                        if (isEncode) {
-                            controller.encode2String(
-                                result,
-                                encodeType,
-                                tfCustomDict.text,
-                                selectedCharset.get(),
-                                isSingleLine.get()
-                            )
-                        } else {
-                            controller.decode2String(
-                                result,
-                                encodeType,
-                                tfCustomDict.text,
-                                selectedCharset.get(),
-                                isSingleLine.get()
-                            )
-                        }
+                    if (times > 40) kotlin.error("times should be not large than 40")
+                    repeat(times) {
+                        result =
+                            if (isEncode) {
+                                controller.encode2String(
+                                    result,
+                                    encodeType,
+                                    tfCustomDict.text,
+                                    selectedCharset.get(),
+                                    isSingleLine.get()
+                                )
+                            } else {
+                                controller.decode2String(
+                                    result,
+                                    encodeType,
+                                    tfCustomDict.text,
+                                    selectedCharset.get(),
+                                    isSingleLine.get()
+                                )
+                            }
+                    }
+                    result
                 }
-                result
-            }
                 .getOrElse { it.stacktrace() }
         } ui
             {
@@ -324,7 +315,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         val start = System.currentTimeMillis()
                         encode.type to
                             runCatching { controller.decode2String(encoded, encode, "") }
-                                    .getOrElse { it.message }!!
+                                .getOrElse { it.message }!!
                                 .also {
                                     if (DEBUG) {
                                         println(

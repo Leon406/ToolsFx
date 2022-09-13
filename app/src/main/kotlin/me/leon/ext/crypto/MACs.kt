@@ -118,7 +118,8 @@ object MACs {
                     "ZUC-128" -> Zuc128Mac()
                     "ZUC-256-32" -> Zuc256Mac(32)
                     "ZUC-256-64" -> Zuc256Mac(64)
-                    "ZUC-256", "ZUC-256-128" -> Zuc256Mac(128)
+                    "ZUC-256",
+                    "ZUC-256-128" -> Zuc256Mac(128)
                     else -> error("Unsupported algorithm")
                 }
             mac.macWithIv(keyByteArray, ivByteArray, data)

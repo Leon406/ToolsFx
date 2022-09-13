@@ -10,10 +10,10 @@ object BaiduOcr {
 
     fun accessToken(ak: String = apiKey, sk: String = secretKey) =
         ("https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials" +
-                    "&client_id=$ak" +
-                    "&client_secret=$sk")
-                .simpleReadFromNet()
-                .fromJson(MutableMap::class.java)["access_token"]
+                "&client_id=$ak" +
+                "&client_secret=$sk")
+            .simpleReadFromNet()
+            .fromJson(MutableMap::class.java)["access_token"]
             ?.also { token = it as String }
 
     fun ocr(url: String): String {
