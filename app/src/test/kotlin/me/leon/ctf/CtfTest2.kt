@@ -4,6 +4,7 @@ import java.io.File
 import kotlin.test.assertEquals
 import me.leon.TEST_CTF_DIR
 import me.leon.ext.*
+import me.leon.ext.crypto.*
 import org.junit.Test
 
 class CtfTest2 {
@@ -66,13 +67,48 @@ class CtfTest2 {
         // https://upload-images.jianshu.io/upload_images/7648905-6c4a8341a9f08b3e.png?imageMogr2/auto-orient/strip|imageView2/2/w/1007/format/webp
 
         val testData = "B2" // 10110010
-        assertEquals("0110010110100110", testData.hex2ByteArray().manchester())
-        assertEquals("10110010", testData.hex2ByteArray().manchester().manchesterDecode())
-        assertEquals("1001101001011001", testData.hex2ByteArray().manchester(true))
-        assertEquals("10110010", testData.hex2ByteArray().manchester(true).manchesterDecode(true))
-        assertEquals("1010011010100101", testData.hex2ByteArray().manchesterDiff())
+        val testDataHex = "0xB2" // 10110010
+        val testDataBinary = "0b10110010" // 10110010
+        val encoded = "0110010110100110" // 10110010
+        val encodedStandard = "1001101001011001" // 10110010
+        assertEquals(encoded, testData.hex2ByteArray().manchester())
+        assertEquals(encoded, testDataHex.manchester())
+        assertEquals(encoded, testDataBinary.manchester())
 
-        assertEquals("10110010", testData.hex2ByteArray().manchesterDiff().manchesterDiffDecode())
+        assertEquals("10110010", testData.hex2ByteArray().manchester().manchesterDecode())
+        assertEquals(encodedStandard, testDataHex.manchester(true))
+        assertEquals("10110010", encodedStandard.manchesterDecode(true))
+        assertEquals("1010011010100101", testDataHex.manchesterDiff())
+
+        assertEquals("10110010", testDataHex.manchesterDiff().manchesterDiffDecode())
         println("10010011011000100001000101101010111111001101".manchesterDecode())
+        "5555555595555A65556AA696AA6666666955".manchesterHexDecode().also {
+            println(it)
+            assertEquals("fffffed31f645055f9", it.binary2ByteArray(true).toHex())
+        }
+    }
+
+    @Test
+    fun autoDecode() {
+        val format = "%9s\t%6s\t%6s"
+        val testData =
+            listOf(
+                "0b1110101",
+                "0B1110101",
+                "1110101",
+                "1310103",
+                "1310109",
+                "0O1310103",
+                "0o1310103",
+                "abCD",
+                "0xabCD",
+                "0XabCD",
+            )
+
+        println(format.format("raw", "binary", "hex"))
+        testData.forEach {
+            println(it.autoDecodeToByteArray().toHex())
+            println(format.format(it, BINARY_REGEX.matches(it), HEX_REGEX.matches(it)))
+        }
     }
 }

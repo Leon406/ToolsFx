@@ -158,8 +158,6 @@ fun ByteArray.pubEncrypt(key: String, alg: String, reserved: Int = 11) =
     if (alg == "SM2") sm2(true, key.removePemInfo().keyAutoDecode().toECPublicKeyParams())
     else pubEncrypt(key.toPublicKey(alg), alg, reserved)
 
-val HEX_REGEX = "^[\\da-fA-F]+$".toRegex()
-
 fun String.keyAutoDecode(): ByteArray =
     if (HEX_REGEX.matches(this)) hex2ByteArray() else base64Decode()
 

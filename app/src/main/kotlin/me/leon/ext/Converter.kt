@@ -4,6 +4,8 @@ import java.nio.charset.Charset
 import me.leon.encode.*
 import me.leon.encode.base.BYTE_BITS
 import me.leon.encode.base.BYTE_MASK
+import me.leon.ext.crypto.BINARY_LEAD_REGEX
+import me.leon.ext.crypto.HEX_LEAD_REGEX
 import tornadofx.*
 
 const val HEX_RADIX = 16
@@ -21,7 +23,11 @@ fun String.hex2String(charset: String = "UTF-8") =
     hex2ByteArray().toString(Charset.forName(charset))
 
 fun String.hex2ByteArray() =
-    stripAllSpace().chunked(2).map { it.toInt(HEX_RADIX).toByte() }.toByteArray()
+    stripAllSpace()
+        .replace(HEX_LEAD_REGEX, "")
+        .chunked(2)
+        .map { it.toInt(HEX_RADIX).toByte() }
+        .toByteArray()
 
 fun String.hexReverse2ByteArray() =
     stripAllSpace().chunked(2).map { it.reversed().toInt(HEX_RADIX).toByte() }.toByteArray()
@@ -38,8 +44,12 @@ fun String.toBinaryString() = toByteArray().toBinaryString()
 
 fun String.binary2Ascii() = String(binary2ByteArray(), Charsets.UTF_8)
 
-fun String.binary2ByteArray() =
-    toList().chunked(BYTE_BITS).map { it.joinToString("").toInt(2).toByte() }.toByteArray()
+fun String.binary2ByteArray(reversed: Boolean = false) =
+    replace(BINARY_LEAD_REGEX, "")
+        .toList()
+        .chunked(BYTE_BITS)
+        .map { it.joinToString("").run { if (reversed) reversed() else this }.toInt(2).toByte() }
+        .toByteArray()
 
 /** unicode编解码 */
 fun String.toUnicodeString() =

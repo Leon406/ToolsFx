@@ -1,10 +1,11 @@
 package me.leon.ext
 
 import java.nio.charset.Charset
+import me.leon.encode.*
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
-import me.leon.encode.octal
-import me.leon.encode.octalDecode
+import me.leon.ext.crypto.BINARY_REGEX
+import me.leon.ext.crypto.HEX_WITH_LEAD_REGEX
 
 val ENCODERS = listOf("raw", "hex", "base64", "oct", "binary")
 
@@ -29,6 +30,21 @@ fun String.decodeToByteArray(encoder: String = "raw", charset: String = "UTF-8")
         "hex" -> hex2ByteArray()
         "base64" -> base64Decode()
         else -> error("Unknown encoder: $encoder")
+    }
+
+/**
+ * 自动解码成 ByteArray
+ *
+ * 0b/0B, 按照二进制解码 0x/0X, 按照十六进制解码
+ */
+fun String.autoDecodeToByteArray(): ByteArray =
+    if (length < 3) toByteArray()
+    else {
+        when {
+            BINARY_REGEX.matches(this) -> binary2ByteArray()
+            HEX_WITH_LEAD_REGEX.matches(this) -> hex2ByteArray()
+            else -> toByteArray()
+        }
     }
 
 fun ByteArray.encodeTo(encoder: String, charset: String = "UTF-8") =

@@ -1,6 +1,6 @@
 package me.leon.ctf
 
-import me.leon.ext.toBinaryString
+import me.leon.ext.*
 
 val ENCODE_8023 = arrayOf("10", "01")
 val ENCODE_STANDARD = arrayOf("01", "10")
@@ -10,10 +10,15 @@ fun ByteArray.manchester(isStandard: Boolean = false) =
         .map { if (isStandard) ENCODE_STANDARD[(it - '0')] else ENCODE_8023[(it - '0')] }
         .joinToString("")
 
+fun String.manchester(isStandard: Boolean = false) = autoDecodeToByteArray().manchester(isStandard)
+
 fun String.manchesterDecode(isStandard: Boolean = false) =
     chunked(2)
         .map { if (isStandard) ENCODE_STANDARD.indexOf(it) else ENCODE_8023.indexOf(it) }
         .joinToString("")
+
+fun String.manchesterHexDecode(isStandard: Boolean = false) =
+    hex2ByteArray().toBinaryString().manchesterDecode(isStandard)
 
 fun ByteArray.manchesterDiff() =
     toBinaryString()
@@ -24,6 +29,8 @@ fun ByteArray.manchesterDiff() =
             }
         }
         .toString()
+
+fun String.manchesterDiff() = autoDecodeToByteArray().manchesterDiff()
 
 fun String.manchesterDiffDecode() =
     chunked(2)
@@ -39,3 +46,6 @@ fun String.manchesterDiffDecode() =
             }
         }
         .toString()
+
+fun String.manchesterHexDiff() =
+    hex2ByteArray().toBinaryString().manchesterDiffDecode()
