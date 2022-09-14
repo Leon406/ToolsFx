@@ -5,7 +5,7 @@ interface IClassical {
     fun encrypt(raw: String, params: Map<String, String>): String
 
     fun decrypt(raw: String, params: Map<String, String>): String
-    open fun crack(raw: String, keyword: String): String {
+    fun crack(raw: String, keyword: String): String {
         return ""
     }
 

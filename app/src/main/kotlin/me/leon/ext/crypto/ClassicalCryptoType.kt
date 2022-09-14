@@ -28,15 +28,17 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun hasCrack() = true
 
         override fun crack(raw: String, keyword: String): String {
+            val sb = StringBuilder()
             for (i in (1..25)) {
                 for (j in (1..25)) {
                     val decrypted = raw.shift26(26 - i, 26 - j)
                     if (decrypted.containsRegexIgnoreCase(keyword)) {
-                        return "shift: $i shift(lower): $j${System.lineSeparator()}\t$decrypted"
+                        sb.append("shift: $i shift(lower): $j${System.lineSeparator()}\t$decrypted")
+                            .appendLine()
                     }
                 }
             }
-            return ""
+            return sb.toString()
         }
     },
     ROT5("rot5") {
@@ -81,15 +83,16 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun isIgnoreSpace() = false
         override fun hasCrack() = true
         override fun crack(raw: String, keyword: String): String {
+            val sb = StringBuilder()
             for (a in 1..26) for (b in 1..26) {
                 runCatching {
                     val decrypted = raw.affineDecrypt(a, b)
                     if (decrypted.containsRegexIgnoreCase(keyword)) {
-                        return "$a*x+$b: ${System.lineSeparator()}\t$decrypted"
+                        sb.append("$a*x+$b: ${System.lineSeparator()}\t$decrypted").appendLine()
                     }
                 }
             }
-            return ""
+            return sb.toString()
         }
     },
     RAILFENCE("railFence") {
@@ -102,15 +105,17 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun hasCrack() = true
 
         override fun crack(raw: String, keyword: String): String {
-            for (i in 2..26) {
+            val sb = StringBuilder()
+            for (i in 2 until raw.length) {
                 runCatching {
                     val decrypted = raw.railFenceDecrypt(i)
                     if (decrypted.containsRegexIgnoreCase(keyword)) {
-                        return "railFence $i: ${System.lineSeparator()}\t$decrypted"
+                        sb.append("railFence $i: ${System.lineSeparator()}\t$decrypted")
+                            .appendLine()
                     }
                 }
             }
-            return ""
+            return sb.toString()
         }
 
         override fun paramsCount() = 1
@@ -131,15 +136,17 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun hasCrack() = true
 
         override fun crack(raw: String, keyword: String): String {
-            for (i in 2..26) {
+            val sb = StringBuilder()
+            for (i in 2 until raw.length) {
                 runCatching {
                     val decrypted = raw.railFenceWDecrypt(i)
                     if (decrypted.containsRegexIgnoreCase(keyword)) {
-                        return "railFenceW $i: ${System.lineSeparator()}\t$decrypted"
+                        sb.append("railFenceW $i: ${System.lineSeparator()}\t$decrypted")
+                            .appendLine()
                     }
                 }
             }
-            return ""
+            return sb.toString()
         }
     },
     VIRGENENE("virgenene") {
