@@ -88,10 +88,7 @@ fun BigInteger.pollardsRhoFactors(
 }
 
 /** 小因子速度更快 时间复杂度 O(n^1/4). */
-fun BigInteger.pollardsRho(
-    funBias: BigInteger = ONE,
-    timeOut: Int = TIME_OUT
-): BigInteger {
+fun BigInteger.pollardsRho(funBias: BigInteger = ONE, timeOut: Int = TIME_OUT): BigInteger {
     // optimize, avoid prime loop
     if (isProbablePrime(100)) return this
     println("rho: start factor $this")

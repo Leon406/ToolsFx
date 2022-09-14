@@ -167,7 +167,7 @@ object RsaSolver {
                     if (isEmpty()) "wiener failed" else c.decrypt(this.first(), n)
                 }
             n.gcd(c) != BigInteger.ONE -> {
-                println("n c are not coprime")
+                println("n c are not co-prime")
                 val p = n.gcd(c)
                 val q = n / p
                 val phi = p.phi(q)
@@ -189,19 +189,18 @@ object RsaSolver {
                         val gcd = e.gcd(phi)
 
                         if (gcd == BigInteger.ONE) {
-                            println("e phi are coprime $phi")
+                            println("e phi are co-prime $phi")
                             val d = e.invert(phi).also { println(it) }
                             val propN = it.propN(n)
                             c.decrypt(d, propN).also { println(it) }
                         } else {
-                            println("e phi are not are coprime  $gcd")
+                            println("e phi are not are co-prime  $gcd")
                             val d = (e / gcd).invert(phi).also { println(it) }
                             val m = c.modPow(d, n)
                             var result = ""
                             for (i in 0..1_000_000) {
                                 val root = (m + n * i.toBigInteger()).root(gcd.toInt())
                                 if (root.last() == BigInteger.ZERO) {
-                                    println(i)
                                     result = root.first().n2s()
                                     println("times $i ${root.first()} $result")
                                     break
@@ -276,12 +275,12 @@ object RsaSolver {
         val n = p * q
         val phi = p.phi(q)
         return if (e.gcd(phi) == BigInteger.ONE) {
-            println("solve P Q E C e phi are coprime")
+            println("solve P Q E C e phi are co-prime")
             val d = e.invert(p.phi(q))
             c.decrypt(d, p * q)
         } else {
             val t = e.gcd(phi)
-            println("solve P Q E C e phi not are coprime!! $t")
+            println("solve P Q E C e phi not are co-prime!! $t")
             val t1 = e / t
             val dt1 = t1.invert(phi)
             c.modPow(dt1, n).root(t.toInt()).first().n2s()
