@@ -33,9 +33,9 @@ object RsaSolver {
     fun solve(params: MutableMap<String, BigInteger>): String =
         when {
             params.containKeys(modeNECPhi) ->
-                params["c"]!!.decrypt(params["e"]!!.invert(params["phi"]!!), params["n"]!!).also {
-                    println("solve N E C Phi ")
-                }
+                params["c"]!!
+                    .decrypt2String(params["e"]!!.invert(params["phi"]!!), params["n"]!!)
+                    .also { println("solve N E C Phi ") }
             params.containKeys(modeBroadcastN3C3) -> solveBroadCast(params)
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeN2EC) ->
@@ -73,7 +73,7 @@ object RsaSolver {
             params.keys.filter { it.startsWith("r") || it == "p" || it == "q" }.map { params[it]!! }
         val n = params["n"] ?: factors.product()
         val phi = factors.phi()
-        return c.decrypt(e.invert(phi), n)
+        return c.decrypt2String(e.invert(phi), n)
     }
 
     private fun solveNCD(params: MutableMap<String, BigInteger>): String {
@@ -81,7 +81,7 @@ object RsaSolver {
         val n = requireNotNull(params["n"])
         val d = requireNotNull(params["d"])
         val c = requireNotNull(params["c"])
-        return c.decrypt(d, n)
+        return c.decrypt2String(d, n)
     }
 
     private fun solveBroadCast(params: MutableMap<String, BigInteger>): String {
@@ -122,8 +122,8 @@ object RsaSolver {
         val d2 = e.invert(p.phi(q2))
         val c = c2.modPow(d2, n2)
         val d1 = e.invert(p.phi(q1))
-        val decrypt = c.decrypt(d1, n1)
-        return REG_NON_PRINTABLE.find(decrypt)?.run { c1.decrypt(d1, n1) } ?: run { decrypt }
+        val decrypt = c.decrypt2String(d1, n1)
+        return REG_NON_PRINTABLE.find(decrypt)?.run { c1.decrypt2String(d1, n1) } ?: run { decrypt }
     }
 
     private fun solveNE2C2(params: MutableMap<String, BigInteger>): String {
@@ -164,7 +164,7 @@ object RsaSolver {
             e.bitLength() > 100 ->
                 with(e.wiener(n)) {
                     println("wiener attack")
-                    if (isEmpty()) "wiener failed" else c.decrypt(this.first(), n)
+                    if (isEmpty()) "wiener failed" else c.decrypt2String(this.first(), n)
                 }
             n.gcd(c) != BigInteger.ONE -> {
                 println("n c are not co-prime")
@@ -182,7 +182,7 @@ object RsaSolver {
                         val phi = it.first().eulerPhi(it.size)
                         val d = e.invert(phi).also { println(it) }
                         val propN = it.propN(n)
-                        c.decrypt(d, propN).also { println(it) }
+                        c.decrypt2String(d, propN).also { println(it) }
                     } else if (it.size >= 2) {
                         println(it)
                         val phi = it.phi()
@@ -192,7 +192,7 @@ object RsaSolver {
                             println("e phi are co-prime $phi")
                             val d = e.invert(phi).also { println(it) }
                             val propN = it.propN(n)
-                            c.decrypt(d, propN).also { println(it) }
+                            c.decrypt2String(d, propN).also { println(it) }
                         } else {
                             println("e phi are not are co-prime  $gcd")
                             val d = (e / gcd).invert(phi).also { println(it) }
@@ -241,7 +241,7 @@ object RsaSolver {
                 break
             }
         }
-        return c.decrypt(e.invert(p.phi(q)), n)
+        return c.decrypt2String(e.invert(p.phi(q)), n)
     }
 
     private fun solveDpDq(params: MutableMap<String, BigInteger>): String {
@@ -277,7 +277,7 @@ object RsaSolver {
         return if (e.gcd(phi) == BigInteger.ONE) {
             println("solve P Q E C e phi are co-prime")
             val d = e.invert(p.phi(q))
-            c.decrypt(d, p * q)
+            c.decrypt2String(d, p * q)
         } else {
             val t = e.gcd(phi)
             println("solve P Q E C e phi not are co-prime!! $t")

@@ -23,7 +23,12 @@ fun BigInteger.invert(phi: BigInteger): BigInteger = modInverse(phi)
 fun BigInteger.gcdExt(other: BigInteger) = Kgcd.gcdext(this, other)
 
 // this = c
-fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n).n2s()
+fun BigInteger.decrypt2String(d: BigInteger, n: BigInteger): String =
+    with(modPow(d, n).n2s()) {
+        REG_NON_PRINTABLE.find(this)?.run { modPow(d, n).toString() } ?: run { this }
+    }
+
+fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n)
 
 fun BigInteger.n2s() = toByteArray().decodeToString()
 
@@ -32,7 +37,7 @@ fun String.s2n() = BigInteger(toByteArray())
 fun ByteArray.toBigInteger() = BigInteger(this)
 
 // this = c
-fun BigInteger.decrypt(d: String, n: String) = decrypt(BigInteger(d), BigInteger(n))
+fun BigInteger.decrypt2String(d: String, n: String) = decrypt2String(BigInteger(d), BigInteger(n))
 
 // this = n
 fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
