@@ -12,7 +12,7 @@ class LogTest {
             .trimMargin()
             .replace("\n", "")
             .toRegex()
-    private val logPath = "C:\\Users\\Leon\\Desktop\\ngixlog\\601\\access.lo"
+    private val logPath = "C:\\Users\\Leon\\Downloads\\access.log"
 
     @Test
     fun rawString() {
@@ -85,17 +85,7 @@ class LogTest {
 
     private fun filterCondition(result: NginxLog): Boolean =
         // true
-
-        result.request.contains("/public/legopinion/opinion-detail.jsp") &&
-            //        result.ipCondition("119.39.205.9") // &&
-            result.statusRangeCondition(200, 400) ||
-            result.statusRangeCondition(500) &&
-                result.timeRangeCondition(
-                    "01/Jun/2022:12:00:19 +0800",
-                    "01/Jun/2022:13:53:59 +0800"
-                )
-    //                 &&result.refererCondition("-") &&
-    //                result.uaCondition("Android")
+        result.uaCondition("Android")
 
     private fun groupCondition(result: NginxLog): Boolean = filterCondition(result)
 

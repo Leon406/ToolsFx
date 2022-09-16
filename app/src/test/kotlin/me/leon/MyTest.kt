@@ -1,12 +1,16 @@
 package me.leon
 
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.charset.Charset
 import java.security.Security
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 import me.leon.encode.base.base64
+import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import me.leon.ext.crypto.parsePublicKeyFromCerFile
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -81,6 +85,22 @@ class MyTest {
     fun updateJsonParse() {
         File("${TEST_PRJ_DIR.absolutePath}/update.json").readText().fromJson(Map::class.java).also {
             println(it["info"])
+        }
+    }
+
+    @Test
+    fun zip() {
+        val data =
+            "UEsDBBQAAAAIAAldCFXqOw7cKAAAACYAAAAIAAAAZmxhZy50eHRLy0lMrzZISk02SEwxTkk0MjQ0TjY3SDU1SEsxNTM0T7JI" +
+                    "NU+zrAUAUEsBAhQAFAAAAAgACV0IVeo7DtwoAAAAJgAAAAgAJAAAAAAAAAAgAAAAAAAAAGZsYWcudHh0CgAgAAAA" +
+                    "AAABABgAGxEfk9iq2AEbER+T2KrYAQJF+4rYqtgBUEsFBgAAAAABAAEAWgAAAE4AAAAAAA"
+
+        ZipInputStream(ByteArrayInputStream(data.base64Decode())).run {
+            var entry: ZipEntry? = null
+            while (nextEntry?.also { entry = it } != null) {
+                println(entry)
+                println(this.readAllBytes().decodeToString())
+            }
         }
     }
 }
