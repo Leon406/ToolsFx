@@ -24,6 +24,7 @@ object HttpUrlUtil {
     private var isDebug = false
     var timeOut = 10_000
     private var proxy: Proxy = Proxy.NO_PROXY
+    var followRedirect: Boolean = false
     var downloadFolder = File(File("").absoluteFile, "downloads")
     private var preAction: (Request) -> Unit = DEFAULT_PRE_ACTION
     private var postAction: (ByteArray) -> String = DEFAULT_POST_ACTION
@@ -99,7 +100,7 @@ object HttpUrlUtil {
 
     private fun httpConfig(conn: HttpURLConnection, info: String = "") {
         conn.doOutput = true
-        conn.instanceFollowRedirects = true
+        conn.instanceFollowRedirects = followRedirect
         conn.readTimeout = timeOut
         conn.connectTimeout = timeOut
         showRequestInfo(conn, info)

@@ -12,14 +12,14 @@ import javafx.scene.text.Text
 import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.fx.*
-import me.leon.toolsfx.plugin.ApiConfig.resortFromConfig
+import me.leon.toolsfx.plugin.ApiConfig.restoreFromConfig
 import me.leon.toolsfx.plugin.net.*
 import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.4.1"
-    override val date: String = "2022-04-06"
+    override val version = "v1.5.0"
+    override val date: String = "2022-09-16"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -86,7 +86,7 @@ class ApiPostView : PluginFragment("ApiPost") {
         }
     }
     override val root = vbox {
-        resortFromConfig()
+        restoreFromConfig()
         prefWidth = 800.0
         spacing = 8.0
         paddingAll = 8

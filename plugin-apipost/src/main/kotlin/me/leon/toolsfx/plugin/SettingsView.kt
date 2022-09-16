@@ -15,6 +15,7 @@ class SettingsView : View("Setting") {
     private val proxies = listOf("HTTP", "SOCKS4", "SOCKS5")
     private val selectedProxy = SimpleStringProperty(ApiConfig.proxyType)
     private val isEnableProxy = SimpleBooleanProperty(ApiConfig.isEnableProxy)
+    private val isFollowRedirect = SimpleBooleanProperty(ApiConfig.followRedirect)
     private val isP12 = SimpleBooleanProperty(false)
     private lateinit var taHeaders: TextArea
     private lateinit var tfIp: TextField
@@ -34,6 +35,13 @@ class SettingsView : View("Setting") {
         alignment = Pos.CENTER
         label("TimeOut")
         tfTime = textfield(ApiConfig.timeOut.toString()) { promptText = "global header" }
+
+        hbox {
+            label("FollowRedirect")
+            alignment = Pos.CENTER_LEFT
+            checkbox("", isFollowRedirect)
+        }
+
         label("Certification")
         hbox {
             spacing = 8.0
@@ -81,7 +89,8 @@ class SettingsView : View("Setting") {
                     selectedProxy.get(),
                     tfIp.text,
                     tfPort.text,
-                    tfTime.text.toInt()
+                    tfTime.text.toInt(),
+                    isFollowRedirect.get()
                 )
                 close()
             }

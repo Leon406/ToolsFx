@@ -12,6 +12,7 @@ object ApiConfig {
     private const val PROXY_HOST = "proxyHost"
     private const val PROXY_PORT = "proxyPort"
     private const val TIME_OUT = "timeout"
+    private const val FOLLOW_REDIRECT = "followRedirect"
     var isEnableProxy
         get() = Prefs.preference().getBoolean(IS_ENABLE_PROXY, false)
         set(value) {
@@ -44,8 +45,13 @@ object ApiConfig {
         set(value) {
             Prefs.preference().putInt(TIME_OUT, value)
         }
+    var followRedirect: Boolean
+        get() = Prefs.preference().getBoolean(FOLLOW_REDIRECT, false)
+        set(value) {
+            Prefs.preference().putBoolean(FOLLOW_REDIRECT, value)
+        }
 
-    fun resortFromConfig() {
+    fun restoreFromConfig() {
         if (isEnableProxy) {
             HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
         }
@@ -53,6 +59,7 @@ object ApiConfig {
             parseHeaderString(globalHeaders) as MutableMap<String, String>
         )
         HttpUrlUtil.timeOut = timeOut
+        HttpUrlUtil.followRedirect = followRedirect
     }
 
     fun saveConfig(
@@ -62,6 +69,7 @@ object ApiConfig {
         pHost: String,
         pPort: String,
         tOut: Int,
+        redirect: Boolean,
     ) {
         isEnableProxy = isEnablePro
         if (isEnableProxy) {
@@ -79,5 +87,7 @@ object ApiConfig {
         proxyPort = pPort
         HttpUrlUtil.timeOut = tOut
         timeOut = tOut
+        HttpUrlUtil.followRedirect = redirect
+        followRedirect = redirect
     }
 }
