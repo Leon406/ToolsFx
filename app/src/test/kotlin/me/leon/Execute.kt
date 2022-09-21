@@ -40,17 +40,19 @@ class Execute {
 
     @Test
     fun nashorn() {
-        Nashorn.loadString(
-            """function getKey(a) {
-    for (var c = [], d = "", b = 48; 58 > b; b++)
-        c.push(String.fromCharCode(b));
-    for (b = 64; 91 > b; b++)
-        c.push(String.fromCharCode(b));
-    for (b = 0; b < a.length; b++)
-        d += c[a[b]];
-    return d
-}"""
-        )
+        val js =
+            """
+            function getKey(a) {
+                for (var c = [], d = "", b = 48; 58 > b; b++)
+                    c.push(String.fromCharCode(b));
+                for (b = 64; 91 > b; b++)
+                    c.push(String.fromCharCode(b));
+                for (b = 0; b < a.length; b++)
+                    d += c[a[b]];
+                return d
+            }
+        """.trimIndent()
+        Nashorn.loadString(js)
         Nashorn.invoke("getKey", intArrayOf(2, 0, 3, 12, 6, 1, 14, 3, 5, 0, 6, 8)).also {
             println(it)
         }

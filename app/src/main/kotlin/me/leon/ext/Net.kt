@@ -10,7 +10,7 @@ fun String.readBytesFromNet(
     method: String = "GET",
     timeout: Int = DEFAULT_TIME_OUT,
     data: String = "",
-    headers: Map<String, Any> = mapOf()
+    headers: Map<String, Any> = emptyMap()
 ) =
     runCatching {
             URL(this)

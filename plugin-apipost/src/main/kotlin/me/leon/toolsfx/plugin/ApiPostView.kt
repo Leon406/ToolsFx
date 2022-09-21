@@ -35,7 +35,7 @@ class ApiPostView : PluginFragment("ApiPost") {
     private lateinit var taRspHeaders: TextArea
     private lateinit var taRspContent: TextArea
     private lateinit var table: TableView<HttpParams>
-    private val isPretty = SimpleBooleanProperty(true)
+    private val prettyProperty = SimpleBooleanProperty(true)
     private val methods =
         mutableListOf(
             "POST",
@@ -55,8 +55,8 @@ class ApiPostView : PluginFragment("ApiPost") {
     private val showRspHeader = SimpleBooleanProperty(false)
     private val showReqHeader = SimpleBooleanProperty(false)
     private val showReqTable = SimpleBooleanProperty(false)
-    private val isRunning = SimpleBooleanProperty(false)
-    private var requestParams = FXCollections.observableArrayList(HttpParams())
+    private val running = SimpleBooleanProperty(false)
+    private val requestParams = FXCollections.observableArrayList(HttpParams())
     private val showTableList = listOf("json", "form-data")
 
     private val reqHeaders
@@ -106,77 +106,81 @@ class ApiPostView : PluginFragment("ApiPost") {
                 action { resetUi(clipboardText()) }
             }
             button(graphic = imageview(IMG_RUN)) {
-                enableWhen(!isRunning)
+                enableWhen(!running)
                 action {
                     if (
                         tfUrl.text.isEmpty() ||
-                            !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
+                        !tfUrl.text.startsWith("http") && tfUrl.text.length < 11
                     ) {
                         primaryStage.showToast("plz input legal url")
                         return@action
                     }
-                    isRunning.value = true
+                    running.value = true
                     runAsync {
                         runCatching {
-                                if (selectedMethod.get() == "POST") {
-                                    when (bodyTypeMap[selectedBodyType.get()]) {
-                                        BodyType.JSON,
-                                        BodyType.FORM_DATA ->
-                                            uploadParams?.run {
-                                                controller.uploadFile(
-                                                    tfUrl.text,
-                                                    listOf(this.value.toFile()),
-                                                    this.key,
-                                                    reqTableParams as MutableMap<String, Any>,
-                                                    reqHeaders
-                                                )
-                                            }
-                                                ?: controller.post(
-                                                    tfUrl.text,
-                                                    reqTableParams as MutableMap<String, Any>,
-                                                    reqHeaders.apply {
-                                                        if (
-                                                            selectedBodyType.get() ==
-                                                                BodyType.FORM_DATA.type
-                                                        ) {
-                                                            put(
-                                                                "Content-Type",
-                                                                "application/x-www-form-urlencoded"
-                                                            )
-                                                        }
-                                                    },
-                                                    bodyTypeMap[selectedBodyType.get()] ==
-                                                        BodyType.JSON
-                                                )
-                                        else ->
-                                            controller.postRaw(
+                            if (selectedMethod.get() == "POST") {
+                                val bodyType = bodyTypeMap[selectedBodyType.get()]
+                                requireNotNull(bodyType)
+                                when (bodyType) {
+                                    BodyType.JSON,
+                                    BodyType.FORM_DATA ->
+                                        uploadParams?.run {
+                                            controller.uploadFile(
                                                 tfUrl.text,
-                                                taReqContent.text,
+                                                listOf(this.value.toFile()),
+                                                this.key,
+                                                reqTableParams as MutableMap<String, Any>,
                                                 reqHeaders
                                             )
-                                    }
-                                } else {
-                                    controller.request(
-                                        tfUrl.text,
-                                        selectedMethod.get(),
-                                        reqTableParams as MutableMap<String, Any>,
-                                        reqHeaders
-                                    )
+                                        }
+                                            ?: controller.post(
+                                                tfUrl.text,
+                                                reqTableParams as MutableMap<String, Any>,
+                                                reqHeaders.apply {
+                                                    if (
+                                                        selectedBodyType.get() ==
+                                                        BodyType.FORM_DATA.type
+                                                    ) {
+                                                        put(
+                                                            "Content-Type",
+                                                            "application/x-www-form-urlencoded"
+                                                        )
+                                                    }
+                                                },
+                                                bodyType ==
+                                                        BodyType.JSON
+                                            )
+
+                                    BodyType.RAW ->
+                                        controller.postRaw(
+                                            tfUrl.text,
+                                            taReqContent.text,
+                                            reqHeaders
+                                        )
                                 }
+                            } else {
+                                controller.request(
+                                    tfUrl.text,
+                                    selectedMethod.get(),
+                                    reqTableParams as MutableMap<String, Any>,
+                                    reqHeaders
+                                )
                             }
+                        }
                             .onSuccess {
                                 textRspStatus.text = it.statusInfo
                                 taRspHeaders.text = it.headerInfo
                                 taRspContent.text =
-                                    if (isPretty.get()) it.data.unicodeMix2String().prettyJson()
-                                    else it.data
-                                this@ApiPostView.isRunning.value = false
+                                    if (prettyProperty.get()) {
+                                        it.data.unicodeMix2String().prettyJson()
+                                    } else it.data
+                                this@ApiPostView.running.value = false
                             }
                             .onFailure {
                                 textRspStatus.text = it.message
                                 taRspHeaders.text = ""
                                 taRspContent.text = it.stacktrace()
-                                this@ApiPostView.isRunning.value = false
+                                this@ApiPostView.running.value = false
                             }
                     }
                 }
@@ -189,12 +193,12 @@ class ApiPostView : PluginFragment("ApiPost") {
                 tooltip(messages["copy"])
                 action {
                     Request(
-                            tfUrl.text,
-                            selectedMethod.get(),
-                            reqTableParams as MutableMap<String, Any>,
-                            reqHeaders,
-                            taReqContent.text
-                        )
+                        tfUrl.text,
+                        selectedMethod.get(),
+                        reqTableParams as MutableMap<String, Any>,
+                        reqHeaders,
+                        taReqContent.text
+                    )
                         .apply {
                             isJson = selectedBodyType.get() == BodyType.JSON.type
                             requestParams
@@ -275,7 +279,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.5))
                         onDragEntered = eventHandler
                     }
-                    column("isFile", HttpParams::isFileProperty) {
+                    column("isFile", HttpParams::fileProperty) {
                         cellFactory = CheckBoxTableCell.forTableColumn(this)
                         prefWidthProperty().bind(this@tableview.widthProperty().multiply(0.1))
                     }
@@ -319,7 +323,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                 action { taRspContent.text.copy() }
             }
 
-            checkbox("prettify", isPretty)
+            checkbox("prettify", prettyProperty)
         }
         stackpane {
             alignment = Pos.CENTER_RIGHT
@@ -364,9 +368,9 @@ class ApiPostView : PluginFragment("ApiPost") {
                                     HttpParams().apply {
                                         keyProperty.value = mutableEntry.key
                                         valueProperty.value = mutableEntry.value.toString()
-                                        isFileProperty.value =
+                                        fileProperty.value =
                                             mutableEntry.key in fileKeys ||
-                                                mutableEntry.value.toString() == "@file"
+                                                    mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }

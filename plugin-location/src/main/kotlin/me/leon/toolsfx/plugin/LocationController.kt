@@ -5,8 +5,8 @@ import me.leon.ext.stacktrace
 import tornadofx.*
 
 class LocationController : Controller() {
-    fun process(type: LocationServiceType, input: String, isSingleLine: Boolean): String {
-        return if (isSingleLine) input.lineAction2String { process(type, it) }
+    fun process(type: LocationServiceType, input: String, singleLine: Boolean): String {
+        return if (singleLine) input.lineAction2String { process(type, it) }
         else process(type, input)
     }
 

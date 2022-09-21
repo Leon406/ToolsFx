@@ -276,17 +276,15 @@ potential-bugs:
     active: true
   IgnoredReturnValue:
     active: true
-    restrictToAnnotatedMethods: true
+    restrictToConfig: true
     returnValueAnnotations:
       - '*.CheckReturnValue'
       - '*.CheckResult'
   ImplicitUnitReturnType:
     active: true
   MapGetWithNotNullAssertionOperator:
-    active: true
+    active: false
   UnconditionalJumpStatementInLoop:
-    active: true
-  UnreachableCatchBlock:
     active: true
   UnsafeCast:
     active: true
@@ -297,16 +295,11 @@ potential-bugs:
     active: false
   Deprecation:
     active: false
-  DuplicateCaseInWhenExpression:
-    active: true
-  EqualsAlwaysReturnsTrueOrFalse:
-    active: true
-  EqualsWithHashCodeExist:
-    active: true
-
 style:
   CanBeNonNullable:
     active: false
+  CascadingCallWrapping:
+    active: true
   ClassOrdering:
     active: true
   CollapsibleIfStatements:
@@ -331,7 +324,10 @@ style:
   ForbiddenImport:
     active: true
     imports:
-      - 'org.assertj.core.api.Assertions'
+      - value: 'org.assertj.core.api.Assertions'
+        reason: 'Import Assertions.assertThat instead.'
+      - value: 'org.junit.jupiter.api.Assertions*'
+        reason: 'Use AssertJ assertions instead.'
   ForbiddenMethodCall:
     active: false
     methods:
@@ -340,6 +336,8 @@ style:
       - 'java.net.URL.openStream'
       - 'java.lang.Class.getResourceAsStream'
       - 'java.lang.ClassLoader.getResourceAsStream'
+      - 'org.jetbrains.kotlin.diagnostics.DiagnosticUtils.getLineAndColumnInPsiFile'
+
   ForbiddenVoid:
     active: true
   LibraryCodeMustSpecifyReturnType:
@@ -377,9 +375,11 @@ style:
   RedundantVisibilityModifierRule:
     active: true
   ReturnCount:
-    active: false
+    active: true
     excludeGuardClauses: true
   SpacingBetweenPackageAndImports:
+    active: true
+  TrimMultilineRawString:
     active: true
   UnderscoresInNumericLiterals:
     active: true
@@ -443,6 +443,10 @@ formatting:
     active: false
     autoCorrect: true
   Filename:
+    active: false
+  FunctionReturnTypeSpacing:
+    active: true
+  FunctionStartOfBodySpacing:
     active: true
   FinalNewline:
     active: true
@@ -456,11 +460,18 @@ formatting:
     active: false
     autoCorrect: true
     indentSize: 4
-    continuationIndentSize: 4
   MaximumLineLength:
     active: true
     maxLineLength: 120
     ignoreBackTickedIdentifier: false
+  NullableTypeSpacing:
+    active: true
+  ParameterListSpacing:
+    active: true
+  SpacingBetweenFunctionNameAndOpeningParenthesis:
+    active: true
+  TypeParameterListSpacing:
+    active: true
   ModifierOrdering:
     active: true
     autoCorrect: true
@@ -500,15 +511,15 @@ formatting:
   NoUnusedImports:
     active: true
     autoCorrect: true
-  NoWildcardImports:
-    active: false
+  WildcardImport:
+    active: true
+    excludeImports: []
   PackageName:
     active: true
     autoCorrect: true
   ParameterListWrapping:
     active: true
     autoCorrect: true
-    indentSize: 4
     maxLineLength: 120
   SpacingAroundAngleBrackets:
     active: false

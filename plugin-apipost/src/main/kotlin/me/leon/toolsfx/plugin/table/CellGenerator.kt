@@ -16,7 +16,7 @@ internal object CellGenerator {
     private val defaultStringConverter: StringConverter<*> =
         object : StringConverter<Any?>() {
             override fun toString(t: Any?): String {
-                return t?.toString() ?: ""
+                return t?.toString().orEmpty()
             }
 
             override fun fromString(string: String): Any? {
@@ -108,6 +108,7 @@ internal object CellGenerator {
             cell.commitEdit(converter.fromString(textField.text))
         }
         textField.addEventFilter(KeyEvent.KEY_PRESSED) { event: KeyEvent ->
+            @Suppress("ElseCaseInsteadOfExhaustiveWhen")
             when (event.code) {
                 KeyCode.ESCAPE -> {
                     cell.cancelEdit()

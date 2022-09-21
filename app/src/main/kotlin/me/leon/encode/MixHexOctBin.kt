@@ -9,11 +9,11 @@ fun String.mixEncode(charset: String = UTF8) =
 
 fun ByteArray.mixEncode() = joinToString("") { it.mixCharEncode() }
 
-val chars = arrayOf('b', 'o', 'x', 'B', 'O', 'X')
+val chars = charArrayOf('b', 'o', 'x', 'B', 'O', 'X')
 
 fun String.mixDecode(): ByteArray {
     if (first() != '0') return byteArrayOf()
-    if (length > 1024 * 1024) error("data too large")
+    require(length <= 1024 * 1024) { "data too large" }
 
     val list = mutableListOf<String>()
     var start = 0

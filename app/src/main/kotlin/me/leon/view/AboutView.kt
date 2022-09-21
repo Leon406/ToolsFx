@@ -14,7 +14,7 @@ import tornadofx.FX.Companion.messages
 class AboutView : Fragment(messages["about"]) {
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isFetching = SimpleBooleanProperty(false)
+    private val fetching = SimpleBooleanProperty(false)
 
     private var txtLatestVersion: Text by singleAssign()
     private lateinit var releaseInfo: ReleaseInfo
@@ -35,14 +35,14 @@ class AboutView : Fragment(messages["about"]) {
         hyperlink(messages["license"]).action { LICENSE.openInBrowser() }
 
         button(messages["checkUpdate"]) {
-            enableWhen(!isFetching)
+            enableWhen(!fetching)
             action {
                 Prefs.isIgnoreUpdate = false
                 checkUpdate()
             }
         }
         button(messages["checkUpdateDev"]) {
-            enableWhen(!isFetching)
+            enableWhen(!fetching)
             action {
                 Prefs.isIgnoreUpdate = false
                 checkUpdateDev()
@@ -58,11 +58,11 @@ class AboutView : Fragment(messages["about"]) {
     private fun checkUpdateDev(isAuto: Boolean = true) {
         if (!isAuto) return
         runAsync {
-            isFetching.value = true
+            fetching.value = true
             DEV_UPDATE_URL.readFromNet(DEV_UPDATE_URL2)
         } ui
             {
-                isFetching.value = false
+                fetching.value = false
                 releaseInfo = it.fromJson(ReleaseInfo::class.java)
                 txtLatestVersion.text =
                     if (it.isEmpty()) messages["unknown"]
@@ -77,11 +77,11 @@ class AboutView : Fragment(messages["about"]) {
     private fun checkUpdate(isAuto: Boolean = true) {
         if (!isAuto) return
         runAsync {
-            isFetching.value = true
+            fetching.value = true
             CHECK_UPDATE_URL.readFromNet(CHECK_UPDATE_URL2)
         } ui
             {
-                isFetching.value = false
+                fetching.value = false
                 releaseInfo = it.fromJson(ReleaseInfo::class.java)
                 txtLatestVersion.text =
                     if (it.isEmpty()) messages["unknown"]

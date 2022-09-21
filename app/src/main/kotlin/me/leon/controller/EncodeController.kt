@@ -14,9 +14,9 @@ class EncodeController : Controller() {
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
         charset: String = "UTF-8",
-        isSingleLine: Boolean = false
+        singleLine: Boolean = false
     ) =
-        if (isSingleLine) {
+        if (singleLine) {
             raw.lineAction2String {
                 encode2String(it.toByteArray(Charset.forName(charset)), type, dic, charset)
             }
@@ -38,9 +38,9 @@ class EncodeController : Controller() {
         type: EncodeType = EncodeType.Base64,
         dic: String = "",
         charset: String = "UTF-8",
-        isSingleLine: Boolean = false
+        singleLine: Boolean = false
     ) =
-        if (isSingleLine) {
+        if (singleLine) {
             encoded.lineAction2String {
                 decode(it, type, dic, charset).toString(Charset.forName(charset))
             }

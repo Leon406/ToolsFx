@@ -11,9 +11,10 @@ const val TIME_OUT = 2_000
 
 /** 小于 1_000_000 时间复杂度 O(sqrt(N)) */
 fun BigInteger.trialDivide(maxDivider: BigInteger = MAX_DIVIDER): MutableList<BigInteger> {
-    val factors = mutableListOf<BigInteger>()
     // optimize, avoid prime loop
-    if (isProbablePrime(100)) return factors.apply { add(this@trialDivide) }
+    if (isProbablePrime(100)) return mutableListOf(this@trialDivide)
+
+    val factors = mutableListOf<BigInteger>()
     println("div: start divide")
     // avoid large number slow computation
     if (bitLength() > 100) return factors.apply { add(this@trialDivide.negate()) }
@@ -71,10 +72,11 @@ fun BigInteger.pollardsRhoFactors(
     timeOut: Int = TIME_OUT,
     funBias: BigInteger = ONE
 ): MutableList<BigInteger> {
-    val factors = mutableListOf<BigInteger>()
-    // optimize, avoid prime loop
-    if (isProbablePrime(100)) return factors.apply { add(this@pollardsRhoFactors) }
 
+    // optimize, avoid prime loop
+    if (isProbablePrime(100)) return mutableListOf(this@pollardsRhoFactors)
+
+    val factors = mutableListOf<BigInteger>()
     var n: BigInteger = this
     var rho: BigInteger
     while (n.pollardsRho(funBias, timeOut = timeOut).also { rho = it } != n) {
@@ -91,6 +93,7 @@ fun BigInteger.pollardsRhoFactors(
 fun BigInteger.pollardsRho(funBias: BigInteger = ONE, timeOut: Int = TIME_OUT): BigInteger {
     // optimize, avoid prime loop
     if (isProbablePrime(100)) return this
+
     println("rho: start factor $this")
     var iteration = 0L
     var x = TWO
@@ -113,10 +116,10 @@ fun BigInteger.pollardsRho(funBias: BigInteger = ONE, timeOut: Int = TIME_OUT): 
 }
 
 fun BigInteger.pollardsPM1Factors(timeOut: Int = TIME_OUT): MutableList<BigInteger> {
-    val factors = mutableListOf<BigInteger>()
     // optimize, avoid prime loop
-    if (isProbablePrime(100)) return factors.apply { add(this@pollardsPM1Factors) }
+    if (isProbablePrime(100)) return mutableListOf(this@pollardsPM1Factors)
 
+    val factors = mutableListOf<BigInteger>()
     var n: BigInteger = this
     var rho: BigInteger
 
@@ -146,7 +149,7 @@ fun BigInteger.pMinus1(timeOut: Int = TIME_OUT): BigInteger {
             println("pm1: found $gcd iteration: $iteration")
             return gcd
         }
-        if (System.currentTimeMillis() - startTime >= timeOut) return this.negate()
+        if (System.currentTimeMillis() - startTime >= timeOut) break
         i += ONE
     }
 

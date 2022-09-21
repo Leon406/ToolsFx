@@ -1,8 +1,8 @@
 package me.leon.hash
 
 import kotlin.system.measureTimeMillis
-import me.leon.encode.base.BASE58_DICT
-import me.leon.encode.base.BASE92_DICT
+import kotlin.test.assertEquals
+import me.leon.encode.base.*
 import me.leon.hash
 import org.junit.Test
 
@@ -29,7 +29,7 @@ class HashCrackTest {
     @Test
     fun dict() {
         val dict = "0123456789"
-        val mask = "86170????????"
+        val mask = "861709??????6"
         println(BASE58_DICT.sliceCount(Runtime.getRuntime().availableProcessors()))
         measureTimeMillis {
                 mask.maskCrack(dict) { it.hash("SHA-256") == hash }.also { println(it) }
@@ -44,14 +44,16 @@ class HashCrackTest {
 
     @Test
     fun passMatch() {
-        val dict = BASE92_DICT
-        val pass = dict.random(5)
+        val dict = BASE64_DICT
+        val pass = dict.random(5) + "1"
 
-        val mask = "?????"
-        measureTimeMillis { mask.maskCrackParallel(dict) { it == pass }.also { println(it) } }
+        println(pass)
+        val mask = "?????1"
+        measureTimeMillis { mask.maskCrack(dict) { it == pass }.also { assertEquals(pass, it) } }
             .also { println(it) }
-
-        measureTimeMillis { mask.maskCrack(dict) { it == pass }.also { println(it) } }
+        measureTimeMillis {
+                mask.maskCrackParallel(dict) { it == pass }.also { assertEquals(pass, it) }
+            }
             .also { println(it) }
     }
 
@@ -81,7 +83,7 @@ class HashCrackTest {
         }
 
         if (sb.isNotEmpty()) {
-            sq?.nextFix(sb.toString())
+            sq = sq?.nextFix(sb.toString())
         }
 
         return sq?.find { condition.invoke(it) }
@@ -131,7 +133,7 @@ class HashCrackTest {
         }
 
         if (sb.isNotEmpty()) {
-            sqs.map { it.nextFix(sb.toString()) }
+            sqs = sqs.map { it.nextFix(sb.toString()) }.toMutableList()
         }
         return sqs.parallelStream()
             .map { it.find { condition.invoke(it) } }

@@ -16,14 +16,14 @@ import javax.imageio.ImageIO
 fun String.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putString(this@copy) })
 
-fun clipboardText(): String = Clipboard.getSystemClipboard().string ?: ""
+fun clipboardText(): String = Clipboard.getSystemClipboard().string.orEmpty()
 
 fun clipboardImage(): Image? = Clipboard.getSystemClipboard().image
 
 fun Image.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putImage(this@copy) })
 
-fun String.openInBrowser() = Desktop.getDesktop().browse(URL(this).toURI())
+fun String.openInBrowser(): Unit = Desktop.getDesktop().browse(URL(this).toURI())
 
 fun Image.toBufferImage(): BufferedImage = SwingFXUtils.fromFXImage(this, null)
 

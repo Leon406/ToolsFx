@@ -2,6 +2,7 @@ apply plugin: 'com.diffplug.spotless'
 apply plugin: 'io.gitlab.arturbosch.detekt'
 detekt {
     allRules = false // activate all available (even unstable) rules.
+    // https://github.com/detekt/detekt/blob/main/config/detekt/detekt.yml
     config = files("$rootProject.projectDir/config/detekt.yml")
     // point to your custom config defining rules to run, overwriting default behavior
     parallel = true

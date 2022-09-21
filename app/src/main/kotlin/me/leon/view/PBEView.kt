@@ -22,8 +22,8 @@ class PBEView : Fragment("PBE") {
     private var saltEncode = "hex"
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isSingleLine = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
+    private val processing = SimpleBooleanProperty(false)
     private val selectedAlg = SimpleStringProperty(algs.first())
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
@@ -153,12 +153,12 @@ class PBEView : Fragment("PBE") {
                 }
             }
 
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
             button("generate salt", imageview(IMG_RUN)) {
                 action { controller.getSalt(saltLength).also { saltByteArray = it } }
             }
             button(messages["run"], imageview(IMG_RUN)) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { doCrypto() }
             }
         }
@@ -191,7 +191,7 @@ class PBEView : Fragment("PBE") {
         runAsync {
             startTime = System.currentTimeMillis()
             if (taInput.text.isEmpty()) return@runAsync ""
-            isProcessing.value = true
+            processing.value = true
             runCatching {
                     if (isEncrypt) {
                         controller.encrypt(
@@ -201,7 +201,7 @@ class PBEView : Fragment("PBE") {
                             cipher,
                             tfIteration.text.toInt(),
                             keyLength,
-                            isSingleLine.get()
+                            singleLine.get()
                         )
                     } else {
                         saltByteArray =
@@ -213,14 +213,14 @@ class PBEView : Fragment("PBE") {
                             cipher,
                             tfIteration.text.toInt(),
                             keyLength,
-                            isSingleLine.get()
+                            singleLine.get()
                         )
                     }
                 }
                 .getOrElse { it.stacktrace() }
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text =
                     it.also {
                         if (it.startsWith("U2FsdGVk")) {

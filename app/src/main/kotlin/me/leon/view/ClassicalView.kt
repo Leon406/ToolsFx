@@ -20,11 +20,11 @@ class ClassicalView : Fragment(messages["classical"]) {
     private var encodeType = ClassicalCryptoType.CAESAR
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isSingleLine = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(encodeType.isIgnoreSpace())
     private val param1Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 0)
     private val param2Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 1)
-    private val isProcessing = SimpleBooleanProperty(false)
+    private val processing = SimpleBooleanProperty(false)
     private val hasCrack = SimpleBooleanProperty(encodeType.hasCrack())
 
     private var taInput: TextArea by singleAssign()
@@ -70,7 +70,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 action { taInput.text = clipboardText() }
             }
 
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
             checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
         }
 
@@ -144,13 +144,13 @@ class ClassicalView : Fragment(messages["classical"]) {
             }
             button(messages["run"], imageview(IMG_RUN)) {
                 action { run() }
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
             }
             button(messages["codeFrequency"]) { action { "https://quipqiup.com/".openInBrowser() } }
 
             button("wiki") { action { WIKI_CTF.openInBrowser() } }
             button("crack", imageview("/img/crack.png")) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 visibleWhen(hasCrack)
                 action { crack() }
             }
@@ -204,7 +204,7 @@ class ClassicalView : Fragment(messages["classical"]) {
     }
 
     private fun run() {
-        isProcessing.value = true
+        processing.value = true
         startTime = System.currentTimeMillis()
         runAsync {
             if (isEncrypt) {
@@ -212,12 +212,12 @@ class ClassicalView : Fragment(messages["classical"]) {
                     inputText,
                     encodeType,
                     cryptoParams,
-                    isSingleLine.get(),
+                    singleLine.get(),
                 )
-            } else controller.decrypt(inputText, encodeType, cryptoParams, isSingleLine.get())
+            } else controller.decrypt(inputText, encodeType, cryptoParams, singleLine.get())
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text = it
                 if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
@@ -228,18 +228,18 @@ class ClassicalView : Fragment(messages["classical"]) {
     }
 
     private fun crack() {
-        isProcessing.value = true
+        processing.value = true
         startTime = System.currentTimeMillis()
         runAsync {
             controller.crack(
                 inputText,
                 encodeType,
                 tfCrackKey.text.takeUnless { it.isNullOrEmpty() } ?: "flag",
-                isSingleLine.get(),
+                singleLine.get(),
             )
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text = it
                 if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }

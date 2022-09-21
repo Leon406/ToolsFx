@@ -269,4 +269,5 @@ fun Int.toHtmlEntityAll(radix: Int = 10) =
 fun Int.toHtmlEntity() = HTML_ENTITY_MAP[this]?.let { "&#$it;" }
 
 fun String.charHtmlEntityDecode() =
-    HTML_ENTITY_DECODE_MAP["(?i)&#(x?[0-9a-z]+)+;".toRegex().find(this)?.groupValues?.get(1) ?: ""]
+    HTML_ENTITY_DECODE_MAP[
+        "(?i)&#(x?[0-9a-z]+)+;".toRegex().find(this)?.groupValues?.get(1).orEmpty()]

@@ -13,11 +13,12 @@ import tornadofx.*
 class ECCurveCalculator : View("ECCurveCalculator") {
 
     private var isMultiply = false
-    private var eccMethod = "multiply"
-    private var radix = 16
+    @Suppress("VarCouldBeVal") private var eccMethod = "multiply"
+
+    private val radix = 16
 
     private val selectedCurve = SimpleStringProperty(allCurves.last())
-    private val isShowY2 = SimpleBooleanProperty(false)
+    private val showY2 = SimpleBooleanProperty(false)
 
     private var tfX1: TextField by singleAssign()
     private var tfY1: TextField by singleAssign()
@@ -36,7 +37,7 @@ class ECCurveCalculator : View("ECCurveCalculator") {
             fPoint2 = field("k:") { tfX2 = textfield() }
             field("y2:") {
                 tfY2 = textfield()
-                visibleWhen(isShowY2)
+                visibleWhen(showY2)
             }
         }
 
@@ -51,7 +52,7 @@ class ECCurveCalculator : View("ECCurveCalculator") {
                     isMultiply =
                         newValue.cast<RadioButton>().text.also { eccMethod = it } == "multiply"
                     fPoint2.text = if (isMultiply) "k:" else "y2:"
-                    isShowY2.value = !isMultiply
+                    showY2.value = !isMultiply
                 }
             }
             combobox(selectedCurve, allCurves)

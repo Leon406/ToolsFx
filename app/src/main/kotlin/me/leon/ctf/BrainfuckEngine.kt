@@ -42,8 +42,7 @@ constructor(
         outWriter = out
         consoleReader = InputStreamReader(inputStream)
     }
-
-    private var lineCount = 0
+    @Suppress("VarCouldBeVal") private var lineCount = 0
     private var columnCount = 0
 
     /**

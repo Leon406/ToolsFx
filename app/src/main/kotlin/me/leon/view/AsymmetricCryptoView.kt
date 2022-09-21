@@ -21,11 +21,11 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val algos = ASYMMETRIC_ALGOS.keys.toMutableList()
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isSingleLine = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
     private val privateKeyEncrypt = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
-    private val isEnablePadding = SimpleBooleanProperty(true)
-    private val isShowDerivedKey = SimpleBooleanProperty(true)
+    private val processing = SimpleBooleanProperty(false)
+    private val enablePadding = SimpleBooleanProperty(true)
+    private val showDerivedKey = SimpleBooleanProperty(true)
     private val selectedAlg = SimpleStringProperty(algos.first())
     private val selectedBits = SimpleIntegerProperty(ASYMMETRIC_ALGOS[selectedAlg.get()]!!.first())
 
@@ -47,12 +47,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             taOutput.text = value
         }
 
+    @Suppress("TrimMultilineRawString")
     private val info
         get() =
             "${selectedAlg.get()}  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) "private key encrypt"
-                else "public key encrypt"
-            }  " +
+                else "public key encrypt"}  " +
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
@@ -152,9 +152,9 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 newValue?.run {
                     cbBits.items = ASYMMETRIC_ALGOS[newValue]!!.asObservable()
                     selectedBits.set(ASYMMETRIC_ALGOS[newValue]!!.first())
-                    cbBits.isDisable = ASYMMETRIC_ALGOS[newValue]!!.size == 1
-                    isEnablePadding.value = newValue == "RSA"
-                    isShowDerivedKey.value = newValue == "RSA"
+                    cbBits.isDisable = ASYMMETRIC_ALGOS[newValue]?.size == 1
+                    enablePadding.value = newValue == "RSA"
+                    showDerivedKey.value = newValue == "RSA"
                 }
             }
             label(messages["bits"])
@@ -164,7 +164,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 }
             label("padding:")
             combobox(selectedPadding, RSA_PADDINGS) {
-                enableWhen(isEnablePadding)
+                enableWhen(enablePadding)
                 cellFormat { text = it }
             }
         }
@@ -180,19 +180,19 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                     if (isEncrypt) tgInput.selectToggle(tgInput.toggles[0])
                 }
             }
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
             checkbox(messages["priEncrypt"], privateKeyEncrypt) {
                 tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
             }
 
             button(messages["run"], imageview(IMG_RUN)) { action { doCrypto() } }
             button(messages["genKeypair"]) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action {
-                    isProcessing.value = true
+                    processing.value = true
                     runAsync { genBase64KeyArray(alg, listOf(selectedBits.value.toInt())) } ui
                         {
-                            isProcessing.value = false
+                            processing.value = false
                             if (isPrivateKey) {
                                 taInput.text = it[0]
                                 taKey.text = it[1]
@@ -204,13 +204,13 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 }
             }
             button(messages["deriveKey"]) {
-                visibleWhen(isShowDerivedKey)
-                enableWhen(!isProcessing)
+                visibleWhen(showDerivedKey)
+                enableWhen(!processing)
                 action {
-                    isProcessing.value = true
+                    processing.value = true
                     runAsync { catch({ it }) { taKey.text.privateKeyDerivedPublicKey(alg) } } ui
                         {
-                            isProcessing.value = false
+                            processing.value = false
                             taOutput.text = it
                         }
                 }
@@ -275,7 +275,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         }
 
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             startTime = System.currentTimeMillis()
             runCatching {
                     if (isEncrypt) {
@@ -284,7 +284,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                                 keyText,
                                 alg,
                                 inputText,
-                                isSingleLine.get(),
+                                singleLine.get(),
                                 inputEncode = inputEncode,
                                 outputEncode = outputEncode
                             )
@@ -293,7 +293,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                                 keyText,
                                 alg,
                                 inputText,
-                                isSingleLine.get(),
+                                singleLine.get(),
                                 inputEncode = inputEncode,
                                 outputEncode = outputEncode
                             )
@@ -303,7 +303,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             keyText,
                             alg,
                             inputText,
-                            isSingleLine.get(),
+                            singleLine.get(),
                             inputEncode,
                             outputEncode
                         )
@@ -312,7 +312,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             keyText,
                             alg,
                             inputText,
-                            isSingleLine.get(),
+                            singleLine.get(),
                             inputEncode,
                             outputEncode
                         )
@@ -321,7 +321,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 .getOrElse { it.stacktrace() }
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 outputText = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info

@@ -5,6 +5,9 @@ plugins {
     application
     kotlin("plugin.serialization") version "1.7.10"
 }
+repositories {
+    mavenCentral()
+}
 
 javafx {
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
@@ -31,8 +34,8 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("org.mockito:mockito-core:4.6.1")
+    testImplementation("org.mockito:mockito-core:4.8.0")
 }

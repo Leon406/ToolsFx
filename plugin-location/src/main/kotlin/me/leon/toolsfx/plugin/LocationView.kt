@@ -27,7 +27,7 @@ class LocationView : PluginFragment("LocationView") {
         get() = taInput.text.trim()
     private val outputText: String
         get() = taOutput.text
-    private val isSingleLine = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
@@ -85,6 +85,7 @@ class LocationView : PluginFragment("LocationView") {
                     selectedToggleProperty().addListener { _, _, new ->
                         locationServiceType = new.cast<RadioButton>().text.locationServiceType()
                         taInput.promptText =
+                            @Suppress("ElseCaseInsteadOfExhaustiveWhen")
                             when (locationServiceType) {
                                 LocationServiceType.DISTANCE -> promptList[1]
                                 LocationServiceType.GEO_BD,
@@ -101,7 +102,7 @@ class LocationView : PluginFragment("LocationView") {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
 
             button(messages["run"], imageview(IMG_RUN)) { action { doProcess() } }
             button("百度坐标拾取") {
@@ -134,9 +135,9 @@ class LocationView : PluginFragment("LocationView") {
 
     private fun doProcess() {
         if (inputText.isEmpty()) return
-        runAsync { controller.process(locationServiceType, inputText, isSingleLine.get()) } ui
-            {
-                taOutput.text = it
-            }
+        runAsync { controller.process(locationServiceType, inputText, singleLine.get()) } ui
+                {
+                    taOutput.text = it
+                }
     }
 }

@@ -41,5 +41,5 @@ fun String.base85Decode(dict: String = BASE85_DICT) =
                 .toByteArray()
                 .take(count)
         }
-        .flatMap { it.map { it } }
+        .flatten()
         .toByteArray()

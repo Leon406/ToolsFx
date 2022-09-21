@@ -14,9 +14,9 @@ class SettingsView : View("Setting") {
 
     private val proxies = listOf("HTTP", "SOCKS4", "SOCKS5")
     private val selectedProxy = SimpleStringProperty(ApiConfig.proxyType)
-    private val isEnableProxy = SimpleBooleanProperty(ApiConfig.isEnableProxy)
-    private val isFollowRedirect = SimpleBooleanProperty(ApiConfig.followRedirect)
-    private val isP12 = SimpleBooleanProperty(false)
+    private val enableProxy = SimpleBooleanProperty(ApiConfig.isEnableProxy)
+    private val followRedirect = SimpleBooleanProperty(ApiConfig.followRedirect)
+    private val p12 = SimpleBooleanProperty(false)
     private lateinit var taHeaders: TextArea
     private lateinit var tfIp: TextField
     private lateinit var tfPort: TextField
@@ -39,21 +39,21 @@ class SettingsView : View("Setting") {
         hbox {
             label("FollowRedirect")
             alignment = Pos.CENTER_LEFT
-            checkbox("", isFollowRedirect)
+            checkbox("", followRedirect)
         }
 
         label("Certification")
         hbox {
             spacing = 8.0
             alignment = Pos.CENTER_LEFT
-            checkbox("p12", isP12)
+            checkbox("p12", p12)
             tfCerPath = textfield {
                 promptText = "file path(drag file here)"
                 onDragEntered = eventHandler
             }
 
             tfCerPass = textfield {
-                enableWhen(isP12)
+                enableWhen(p12)
                 promptText = "pkcs12 password"
             }
         }
@@ -64,15 +64,15 @@ class SettingsView : View("Setting") {
             combobox(selectedProxy, proxies)
             tfIp =
                 textfield(ApiConfig.proxyHost) {
-                    enableWhen(isEnableProxy)
+                    enableWhen(enableProxy)
                     promptText = "ip"
                 }
             tfPort =
                 textfield(ApiConfig.proxyPort) {
-                    enableWhen(isEnableProxy)
+                    enableWhen(enableProxy)
                     promptText = "port"
                 }
-            checkbox("enable", isEnableProxy)
+            checkbox("enable", enableProxy)
         }
         label("Global Headers")
         taHeaders = textarea(ApiConfig.globalHeaders) { promptText = "global header" }
@@ -80,17 +80,17 @@ class SettingsView : View("Setting") {
         button("apply") {
             action {
                 if (tfCerPath.text.isNotEmpty()) {
-                    if (isP12.get()) TrustManager.parseFromPkcs12(tfCerPath.text, tfCerPass.text)
+                    if (p12.get()) TrustManager.parseFromPkcs12(tfCerPath.text, tfCerPass.text)
                     else TrustManager.parseFromCertification(tfCerPath.text)
                 }
                 saveConfig(
-                    isEnableProxy.get(),
+                    enableProxy.get(),
                     taHeaders.text,
                     selectedProxy.get(),
                     tfIp.text,
                     tfPort.text,
                     tfTime.text.toInt(),
-                    isFollowRedirect.get()
+                    followRedirect.get()
                 )
                 close()
             }

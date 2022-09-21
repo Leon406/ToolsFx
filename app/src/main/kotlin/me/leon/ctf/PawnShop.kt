@@ -2,6 +2,7 @@ package me.leon.ctf
 
 import me.leon.ext.splitBySpace
 
+@Suppress("ArrayPrimitive")
 private val map =
     mapOf(
         0 to arrayOf('目', '口', '凹', '凸', '田'),
@@ -19,11 +20,14 @@ private val map =
 private val reverseMap by lazy {
     map.values.zip(map.keys).flatMap { (array, key) -> array.map { it to key } }.toMap()
 }
+
 // ASCII
 fun String.pawnshop() =
     toCharArray()
         .filter { it.code in 0..127 }
-        .joinToString(" ") { it.code.split().joinToString("") { map[it]!!.random().toString() } }
+        .joinToString(" ") {
+            it.code.split().joinToString("") { requireNotNull(map[it]).random().toString() }
+        }
 
 private fun Int.split() = this.toString().toCharArray().map { it - '0' }
 

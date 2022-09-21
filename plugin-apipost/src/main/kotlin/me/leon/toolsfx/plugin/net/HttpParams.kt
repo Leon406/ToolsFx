@@ -7,11 +7,11 @@ class HttpParams {
 
     val keyProperty = SimpleStringProperty("")
     val valueProperty = SimpleStringProperty("")
-    val isFileProperty = SimpleBooleanProperty(false)
+    val fileProperty = SimpleBooleanProperty(false)
     val enableProperty = SimpleBooleanProperty(true)
 
     val isFile: Boolean
-        get() = isFileProperty.get()
+        get() = fileProperty.get()
     val isEnable: Boolean
         get() = enableProperty.get()
 

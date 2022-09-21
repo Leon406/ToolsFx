@@ -10,11 +10,11 @@ class CompressController : Controller() {
         alg: Compression = Compression.GZIP,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
-        isSingleLine: Boolean = false,
+        singleLine: Boolean = false,
     ): String =
         catch({ "encrypt error: $it" }) {
             println("encrypt  $alg")
-            if (isSingleLine) raw.lineAction2String { compress(it, alg, inputEncode, outputEncode) }
+            if (singleLine) raw.lineAction2String { compress(it, alg, inputEncode, outputEncode) }
             else compress(raw, alg, inputEncode, outputEncode)
         }
 
@@ -30,11 +30,11 @@ class CompressController : Controller() {
         alg: Compression = Compression.GZIP,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
-        isSingleLine: Boolean = false,
+        singleLine: Boolean = false,
     ): String =
         catch({ "decrypt error: $it" }) {
             println("decrypt  $alg")
-            if (isSingleLine) {
+            if (singleLine) {
                 raw.lineAction2String { decompress(it, alg, inputEncode, outputEncode) }
             } else decompress(raw, alg, inputEncode, outputEncode)
         }

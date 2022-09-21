@@ -15,14 +15,14 @@ class SymmetricCryptoController : Controller() {
         iv: ByteArray,
         alg: String,
         charset: String = "UTF-8",
-        isSingleLine: Boolean = false,
+        singleLine: Boolean = false,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
         associatedData: ByteArray = byteArrayOf()
     ): String =
         catch({ "encrypt error: $it" }) {
             if (DEBUG) println("encrypt  $alg")
-            if (isSingleLine) {
+            if (singleLine) {
                 data.lineAction2String {
                     encrypt(it, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
                 }
@@ -113,14 +113,14 @@ class SymmetricCryptoController : Controller() {
         iv: ByteArray,
         alg: String,
         charset: String = "UTF-8",
-        isSingleLine: Boolean = false,
+        singleLine: Boolean = false,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
         associatedData: ByteArray = byteArrayOf()
     ): String =
         catch({ "decrypt error: $it" }) {
             if (DEBUG) println("decrypt  $alg")
-            if (isSingleLine) {
+            if (singleLine) {
                 data.lineAction2String {
                     decrypt(it, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
                 }

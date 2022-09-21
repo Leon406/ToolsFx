@@ -15,7 +15,7 @@ abstract class AbsToggleView(
     private val visible: BooleanProperty = SimpleBooleanProperty(true)
 ) : View() {
 
-    private var tg: ToggleGroup = ToggleGroup()
+    private val tg: ToggleGroup = ToggleGroup()
 
     val selectText
         get() = data[selectedIndex]

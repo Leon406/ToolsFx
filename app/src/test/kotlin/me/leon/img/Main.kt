@@ -16,13 +16,13 @@ import me.leon.ext.fx.toFxImg
 
 val QR_MARK =
     arrayOf(
-        arrayOf(1, 1, 1, 1, 1, 1, 1),
-        arrayOf(1, 0, 0, 0, 0, 0, 1),
-        arrayOf(1, 0, 1, 1, 1, 0, 1),
-        arrayOf(1, 0, 1, 1, 1, 0, 1),
-        arrayOf(1, 0, 1, 1, 1, 0, 1),
-        arrayOf(1, 0, 0, 0, 0, 0, 1),
-        arrayOf(1, 1, 1, 1, 1, 1, 1)
+        intArrayOf(1, 1, 1, 1, 1, 1, 1),
+        intArrayOf(1, 0, 0, 0, 0, 0, 1),
+        intArrayOf(1, 0, 1, 1, 1, 0, 1),
+        intArrayOf(1, 0, 1, 1, 1, 0, 1),
+        intArrayOf(1, 0, 1, 1, 1, 0, 1),
+        intArrayOf(1, 0, 0, 0, 0, 0, 1),
+        intArrayOf(1, 1, 1, 1, 1, 1, 1)
     )
 
 fun String.base64Image() = Image(ByteArrayInputStream(base64Decode()))
@@ -42,7 +42,7 @@ fun String.binaryImage(isNormal: Boolean = true) =
         BufferedImage(targetSize, targetSize, BufferedImage.TYPE_INT_RGB)
             .apply {
                 createGraphics().apply {
-                    val bytes = filter { it in arrayOf('0', '1') }
+                    val bytes = filter { it in charArrayOf('0', '1') }
                     for (x in 0 until size) for (y in 0 until size) {
                         for (xBias in 0 until ratio) for (yBias in 0 until ratio) {
                             setRGB(

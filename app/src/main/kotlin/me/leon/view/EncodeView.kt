@@ -46,11 +46,11 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         )
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isSingleLine = SimpleBooleanProperty(false)
-    private val isFileMode = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
+    private val fileMode = SimpleBooleanProperty(false)
     private val decodeIgnoreSpace = SimpleBooleanProperty(true)
-    private val isProcessing = SimpleBooleanProperty(false)
-    private var enableDict = SimpleBooleanProperty(true)
+    private val processing = SimpleBooleanProperty(false)
+    private val enableDict = SimpleBooleanProperty(true)
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
 
     private var taInput: TextArea by singleAssign()
@@ -80,7 +80,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (isFileMode.get()) {
+                if (fileMode.get()) {
                     this.absolutePath
                 } else {
                     if (length() <= 10 * 1024 * 1024) {
@@ -105,13 +105,13 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
-            checkbox(messages["singleLine"], isSingleLine) {
+            checkbox(messages["singleLine"], singleLine) {
                 selectedProperty().addListener { _, _, newValue ->
                     decodeIgnoreSpace.set(!newValue)
                 }
             }
             checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
-            checkbox(messages["fileMode"], isFileMode)
+            checkbox(messages["fileMode"], fileMode)
         }
 
         taInput = textarea {
@@ -203,11 +203,11 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 }
             }
             button(messages["run"], imageview(IMG_RUN)) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { run() }
             }
             button("crack", imageview("/img/crack.png")) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { crack() }
             }
         }
@@ -257,7 +257,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
         var result = inputText
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             startTime = System.currentTimeMillis()
 
             runCatching {
@@ -270,7 +270,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     encodeType,
                                     tfCustomDict.text,
                                     selectedCharset.get(),
-                                    isSingleLine.get()
+                                    singleLine.get()
                                 )
                             } else {
                                 controller.decode2String(
@@ -278,7 +278,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     encodeType,
                                     tfCustomDict.text,
                                     selectedCharset.get(),
-                                    isSingleLine.get()
+                                    singleLine.get()
                                 )
                             }
                     }
@@ -287,7 +287,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 .getOrElse { it.stacktrace() }
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text = it
                 if (Prefs.autoCopy) {
                     outputText.copy().also { primaryStage.showToast(messages["copied"]) }
@@ -300,9 +300,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private fun crack() {
         startTime = System.currentTimeMillis()
         var encoded =
-            if (isFileMode.get()) taInput.text.toFile().readText()
+            if (fileMode.get()) taInput.text.toFile().readText()
             else taInput.text.substringAfter("\t")
-        isProcessing.value = true
+        processing.value = true
         if (DEBUG) println("read ${System.currentTimeMillis() - startTime}")
         val encodeMethods = mutableListOf<String>()
         runAsync {
@@ -343,7 +343,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             encodeMethods.mapIndexed { i, type -> "${i + 1} $type" }.joinToString("-->")
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text =
                     if (encodeMethods.isNotEmpty()) "$it\n$encoded" else "no crack result!!!"
                 timeConsumption = System.currentTimeMillis() - startTime

@@ -11,7 +11,10 @@ import me.leon.ext.parseRsaParams
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.shift26(params[P1]!!.toInt(), params[P2]!!.ifEmpty { params[P1] }!!.toInt())
+            raw.shift26(
+                requireNotNull(params[P1]).toInt(),
+                requireNotNull(params[P2]).ifEmpty { params[P1] }!!.toInt()
+            )
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.shift26(
@@ -594,10 +597,10 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     HILL("hill") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.hillEncrypt(params[P1] ?: "", fromZero = params[P2]?.isEmpty() ?: true)
+            raw.hillEncrypt(params[P1].orEmpty(), fromZero = params[P2]?.isEmpty() ?: true)
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
-            raw.hillDecrypt(params[P1] ?: "", fromZero = params[P2]?.isEmpty() ?: true)
+            raw.hillDecrypt(params[P1].orEmpty(), fromZero = params[P2]?.isEmpty() ?: true)
 
         override fun paramsCount() = 2
 
@@ -626,10 +629,10 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     Rabbit("rabbit") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            JavascriptCipher.rabbitEncrypt(raw, params[P1] ?: "")
+            JavascriptCipher.rabbitEncrypt(raw, params[P1].orEmpty())
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
-            JavascriptCipher.rabbitDecrypt(raw, params[P1] ?: "")
+            JavascriptCipher.rabbitDecrypt(raw, params[P1].orEmpty())
 
         override fun paramsCount() = 1
 

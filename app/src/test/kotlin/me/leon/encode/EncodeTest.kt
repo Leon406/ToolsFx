@@ -415,7 +415,7 @@ class EncodeTest {
         println(data.mixDecode2String())
 
         var msg = "你好leon406"
-        var message = msg.mixEncode()
+        val message = msg.mixEncode()
         assertEquals(msg, message.mixDecode2String())
         msg = "l"
         println("0b110001".mixDecode2String())

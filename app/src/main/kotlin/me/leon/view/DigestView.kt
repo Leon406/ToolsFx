@@ -22,11 +22,11 @@ class DigestView : Fragment(messages["hash"]) {
     private var method = "MD5"
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isFileMode = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
-    private val isSingleLine = SimpleBooleanProperty(false)
-    private val isEnableFileMode = SimpleBooleanProperty(true)
-    private val selectedAlgItem = SimpleStringProperty(ALGOS_HASH.keys.first())
+    private val fileMode = SimpleBooleanProperty(false)
+    private val processing = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
+    private val enableFileMode = SimpleBooleanProperty(true)
+    private val selectedAlg = SimpleStringProperty(ALGOS_HASH.keys.first())
     private val selectedBits = SimpleStringProperty(ALGOS_HASH.values.first().first())
 
     private var taInput: TextArea by singleAssign()
@@ -51,7 +51,7 @@ class DigestView : Fragment(messages["hash"]) {
 
     private val eventHandler = fileDraggedHandler {
         inputText =
-            if (isFileMode.get()) {
+            if (fileMode.get()) {
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             } else {
                 with(it.first()) {
@@ -69,7 +69,7 @@ class DigestView : Fragment(messages["hash"]) {
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "count: $times cost: $timeConsumption ms  " +
-                "file mode: ${isFileMode.get()}"
+                "file mode: ${fileMode.get()}"
 
     private val centerNode = vbox {
         addClass(Styles.group)
@@ -99,7 +99,7 @@ class DigestView : Fragment(messages["hash"]) {
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
-            combobox(selectedAlgItem, ALGOS_HASH.keys.toMutableList()) { cellFormat { text = it } }
+            combobox(selectedAlg, ALGOS_HASH.keys.toMutableList()) { cellFormat { text = it } }
             label(messages["bits"])
             cbBits =
                 combobox(selectedBits, ALGOS_HASH.values.first()) {
@@ -108,7 +108,7 @@ class DigestView : Fragment(messages["hash"]) {
                 }
         }
 
-        selectedAlgItem.addListener { _, _, newValue ->
+        selectedAlg.addListener { _, _, newValue ->
             newValue?.run {
                 cbBits.items = ALGOS_HASH[newValue]!!.asObservable()
                 selectedBits.set(ALGOS_HASH[newValue]!!.first())
@@ -116,19 +116,16 @@ class DigestView : Fragment(messages["hash"]) {
             }
         }
 
-        selectedBits.addListener { _, _, newValue ->
-            println("selectedBits __ $newValue")
-            newValue?.run {
+        selectedBits.addListener { _, _, new ->
+            println("selectedBits __ $new")
+            new?.run {
                 method =
-                    if (selectedAlgItem.get() == "PasswordHashing") {
-                        isEnableFileMode.value = false
-                        newValue
+                    if (selectedAlg.get() == "PasswordHashing") {
+                        enableFileMode.value = false
+                        new
                     } else {
-                        isEnableFileMode.value = true
-                        "${selectedAlgItem.get()}${
-                            newValue
-                                .takeIf { ALGOS_HASH[selectedAlgItem.get()]!!.size > 1 } ?: ""
-                        }"
+                        enableFileMode.value = true
+                        "${selectedAlg.get()}${new.takeIf { ALGOS_HASH[selectedAlg.get()]!!.size > 1 }.orEmpty()}"
                             .replace("SHA2", "SHA-")
                             .replace(
                                 "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
@@ -136,7 +133,7 @@ class DigestView : Fragment(messages["hash"]) {
                             )
                     }
                 println("算法 $method")
-                if (inputText.isNotEmpty() && !isFileMode.get()) {
+                if (inputText.isNotEmpty() && !fileMode.get()) {
                     doHash()
                 }
             }
@@ -144,22 +141,22 @@ class DigestView : Fragment(messages["hash"]) {
         hbox {
             addClass(Styles.left)
             paddingLeft = DEFAULT_SPACING
-            checkbox(messages["fileMode"], isFileMode) { enableWhen(isEnableFileMode) }
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["fileMode"], fileMode) { enableWhen(enableFileMode) }
+            checkbox(messages["singleLine"], singleLine)
 
             label("times:")
             tfCount =
                 textfield("1") {
                     textFormatter = intTextFormatter
                     prefWidth = DEFAULT_SPACING_8X
-                    enableWhen(!isFileMode)
+                    enableWhen(!fileMode)
                 }
             button(messages["run"], imageview(IMG_RUN)) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { doHash() }
             }
             button("crack", imageview("/img/crack.png")) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { crack() }
                 tooltip("default top1000 password, you can add your dict file at /dict") {
                     isWrapText = true
@@ -195,7 +192,7 @@ class DigestView : Fragment(messages["hash"]) {
 
     private fun crack() {
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             startTime = System.currentTimeMillis()
             if (method.startsWith("SpringSecurity")) {
                 controller.passwordHashingCrack(method, inputText)
@@ -209,7 +206,7 @@ class DigestView : Fragment(messages["hash"]) {
             }
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 outputText = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info
@@ -222,19 +219,19 @@ class DigestView : Fragment(messages["hash"]) {
 
     private fun doHash() =
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             startTime = System.currentTimeMillis()
-            if (isFileMode.get()) inputText.lineAction2String { controller.digestFile(method, it) }
+            if (fileMode.get()) inputText.lineAction2String { controller.digestFile(method, it) }
             else {
                 var result: String = inputText
                 repeat(times) {
-                    result = controller.digest(method, result, inputEncode, isSingleLine.get())
+                    result = controller.digest(method, result, inputEncode, singleLine.get())
                 }
                 result
             }
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 outputText = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info

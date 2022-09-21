@@ -112,7 +112,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private var outputEncode = "base64"
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isSingleLine = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
     private val selectedKeyPairAlg = SimpleStringProperty(keyPairAlgs.keys.first())
     private val selectedSigAlg = SimpleStringProperty(keyPairAlgs.values.first().first())
 
@@ -227,7 +227,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
             alignment = Pos.CENTER
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING_4X
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
             button(messages["priSig"]) {
                 action { sign() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
@@ -276,7 +276,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                         msg,
                         inputEncode,
                         outputEncode,
-                        isSingleLine.get()
+                        singleLine.get()
                     )
                 }
                 .getOrElse { it.stacktrace() }
@@ -300,7 +300,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                         inputEncode,
                         outputEncode,
                         signText,
-                        isSingleLine.get()
+                        singleLine.get()
                     )
                 }
                 .getOrElse { it.stacktrace() }

@@ -19,9 +19,9 @@ object HttpUrlUtil {
         clazz.getDeclaredField("delegate").apply { isAccessible = true }
     }
 
-    private var DEFAULT_PRE_ACTION: (Request) -> Unit = {}
-    private var DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
-    private var isDebug = false
+    private val DEFAULT_PRE_ACTION: (Request) -> Unit = {}
+    private val DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
+    private val isDebug = false
     var timeOut = 10_000
     private var proxy: Proxy = Proxy.NO_PROXY
     var followRedirect: Boolean = false

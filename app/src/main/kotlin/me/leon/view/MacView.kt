@@ -27,8 +27,8 @@ class MacView : Fragment("MAC") {
     override val closeable = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)
     private val enableBits = SimpleBooleanProperty(false)
-    private val isSingleLine = SimpleBooleanProperty(false)
-    private val selectedAlgItem = SimpleStringProperty(algorithm.keys.first())
+    private val singleLine = SimpleBooleanProperty(false)
+    private val selectedAlg = SimpleStringProperty(algorithm.keys.first())
     private val selectedBits = SimpleStringProperty(algorithm.values.first().first())
 
     private var taInput: TextArea by singleAssign()
@@ -92,7 +92,7 @@ class MacView : Fragment("MAC") {
         hbox {
             addClass(Styles.left)
             label(messages["alg"])
-            combobox(selectedAlgItem, algorithm.keys.toMutableList())
+            combobox(selectedAlg, algorithm.keys.toMutableList())
             label(messages["bits"]) { paddingAll = DEFAULT_SPACING }
             cbBits =
                 combobox(selectedBits, algorithm.values.first()) {
@@ -101,7 +101,7 @@ class MacView : Fragment("MAC") {
                 }
         }
         add(keyIvInputView)
-        selectedAlgItem.addListener { _, _, newValue ->
+        selectedAlg.addListener { _, _, newValue ->
             newValue?.run {
                 cbBits.items = algorithm[newValue]!!.asObservable()
                 selectedBits.set(algorithm[newValue]!!.first())
@@ -109,19 +109,15 @@ class MacView : Fragment("MAC") {
                 enableIv.value = method.contains("POLY1305|-GMAC|ZUC".toRegex())
             }
         }
-        selectedBits.addListener { _, _, newValue ->
-            println("selectedBits __ $newValue")
-            newValue?.run {
+        selectedBits.addListener { _, _, new ->
+            println("selectedBits __ $new")
+            new?.run {
                 method =
-                    if (selectedAlgItem.get() == "GMAC") "$newValue-GMAC"
-                    else if (selectedAlgItem.get().contains("ZUC-256")) {
-                        "${selectedAlgItem.get()}-$newValue"
+                    if (selectedAlg.get() == "GMAC") "$new-GMAC"
+                    else if (selectedAlg.get().contains("ZUC-256")) {
+                        "${selectedAlg.get()}-$new"
                     } else {
-                        "${selectedAlgItem.get()}${
-                            newValue.takeIf {
-                                algorithm[selectedAlgItem.get()]!!.size > 1
-                            } ?: ""
-                        }"
+                        "${selectedAlg.get()}${new.takeIf { algorithm[selectedAlg.get()]!!.size > 1 }.orEmpty()}"
                             .replace("SHA2(?!=\\d{3})".toRegex(), "SHA")
                             .replace(regAlgReplace, "$1-")
                     }
@@ -135,7 +131,7 @@ class MacView : Fragment("MAC") {
         tilepane {
             alignment = Pos.TOP_LEFT
             hgap = DEFAULT_SPACING
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
             button(messages["run"], imageview(IMG_RUN)) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action {
@@ -186,7 +182,7 @@ class MacView : Fragment("MAC") {
                             method,
                             inputEncode,
                             outputEncode,
-                            isSingleLine.get()
+                            singleLine.get()
                         )
                     } else {
                         controller.mac(
@@ -195,7 +191,7 @@ class MacView : Fragment("MAC") {
                             method,
                             inputEncode,
                             outputEncode,
-                            isSingleLine.get()
+                            singleLine.get()
                         )
                     }
                 }

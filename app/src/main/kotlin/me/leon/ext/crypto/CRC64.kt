@@ -43,6 +43,7 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
             }
             return b
         }
+
     constructor(b: ByteArray, len: Int) : this(0) {
         update(b, len)
     }
@@ -190,7 +191,7 @@ class CRC64 @JvmOverloads constructor(private var value: Long = 0L) : Checksum {
 
             // put operator for four zero bits in odd
             gf2MatrixSquare(odd, even)
-            return Pair(even, odd)
+            return even to odd
         }
 
         /*

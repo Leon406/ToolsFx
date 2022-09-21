@@ -20,11 +20,10 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
     private var startTime = 0L
     private var dstEncodeType = EncodeType.UrlEncode
     private var srcEncodeType = EncodeType.Base64
-    private var isEncode = true
 
     override val closeable = SimpleBooleanProperty(false)
-    private var enableDict = SimpleBooleanProperty(true)
-    private val isSingleLine = SimpleBooleanProperty(false)
+    private val enableDict = SimpleBooleanProperty(true)
+    private val singleLine = SimpleBooleanProperty(false)
     private val selectedSrcCharset = SimpleStringProperty(CHARSETS.first())
     private val selectedDstCharset = SimpleStringProperty(CHARSETS.first())
 
@@ -37,11 +36,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
                 "  ${messages["outputLength"]}: ${outputText.length} cost: $timeConsumption ms"
     private val inputText: String
-        get() =
-            taInput.text.takeIf {
-                isEncode || srcEncodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
-            }
-                ?: taInput.text.stripAllSpace()
+        get() = taInput.text
     private val outputText: String
         get() = taOutput.text
 
@@ -114,7 +109,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             paddingTop = DEFAULT_SPACING
             hgap = DEFAULT_SPACING * 2
             alignment = Pos.CENTER
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
             button(messages["transfer"], imageview(IMG_RUN)) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
@@ -176,7 +171,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
     private fun run() {
         runAsync {
             startTime = System.currentTimeMillis()
-            if (isSingleLine.get()) {
+            if (singleLine.get()) {
                 inputText.lineAction2String {
                     val decode =
                         controller.decode(

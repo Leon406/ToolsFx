@@ -79,7 +79,7 @@ fun String.parseCurl() =
                             }
                     s.startsWith("-H") ->
                         with(s.removeFirstAndEndQuotes(3)) {
-                            acc.headers.put(substringBefore(":"), substringAfter(":").trim())
+                            acc.headers[substringBefore(":")] = substringAfter(":").trim()
                         }
                     else -> ""
                 }

@@ -40,19 +40,19 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
         )
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isFile = SimpleBooleanProperty(false)
-    private val isEnableIv = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
+    private val fileProperty = SimpleBooleanProperty(false)
+    private val enableIv = SimpleBooleanProperty(false)
+    private val processing = SimpleBooleanProperty(false)
     private val selectedAlg = SimpleStringProperty(algs.first())
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
-    private val isSingleLine = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
 
     private lateinit var taInput: TextArea
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
     private lateinit var taOutput: TextArea
     private lateinit var infoLabel: Label
-    private val keyIvInputView = KeyIvInputView(isEnableIv)
+    private val keyIvInputView = KeyIvInputView(enableIv)
 
     private val inputText: String
         get() = taInput.text
@@ -61,14 +61,14 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
 
     private val info
         get() =
-            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${isFile.get()} " +
+            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${fileProperty.get()} " +
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
-            if (isFile.get()) {
+            if (fileProperty.get()) {
                 it.joinToString(System.lineSeparator(), transform = File::getAbsolutePath)
             } else {
                 with(it.first()) {
@@ -111,7 +111,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             addClass(Styles.left)
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
-            selectedAlg.addListener { _, _, newValue -> isEnableIv.value = newValue != "RC4" }
+            selectedAlg.addListener { _, _, newValue -> enableIv.value = newValue != "RC4" }
 
             label("charset:")
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
@@ -131,10 +131,10 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                     doCrypto()
                 }
             }
-            checkbox(messages["fileMode"], isFile)
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["fileMode"], fileProperty)
+            checkbox(messages["singleLine"], singleLine)
             button(messages["run"], imageview(IMG_RUN)) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { doCrypto() }
             }
         }
@@ -177,11 +177,11 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
 
     private fun doCrypto() {
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             startTime = System.currentTimeMillis()
             runCatching {
                     if (isEncrypt) {
-                        if (isFile.get()) {
+                        if (fileProperty.get()) {
                             inputText.lineAction2String {
                                 controller.encryptByFile(
                                     keyIvInputView.keyByteArray,
@@ -197,12 +197,12 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                 keyIvInputView.ivByteArray,
                                 cipher,
                                 selectedCharset.get(),
-                                isSingleLine.get(),
+                                singleLine.get(),
                                 inputEncode,
                                 outputEncode
                             )
                         }
-                    } else if (isFile.get()) {
+                    } else if (fileProperty.get()) {
                         inputText.lineAction2String {
                             controller.decryptByFile(
                                 keyIvInputView.keyByteArray,
@@ -218,7 +218,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                             keyIvInputView.ivByteArray,
                             cipher,
                             selectedCharset.get(),
-                            isSingleLine.get(),
+                            singleLine.get(),
                             inputEncode,
                             outputEncode
                         )
@@ -227,7 +227,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                 .getOrElse { it.stacktrace() }
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text = it
                 timeConsumption = System.currentTimeMillis() - startTime
                 infoLabel.text = info

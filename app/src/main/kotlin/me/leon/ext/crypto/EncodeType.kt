@@ -154,14 +154,14 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
     },
     UrlEncode("urlencode") {
         override fun decode(encoded: String, dict: String, charset: String) =
-            (URLDecoder.decode(encoded, charset.ifEmpty { "UTF-8" }) ?: "").toByteArray(
+            (URLDecoder.decode(encoded, charset.ifEmpty { "UTF-8" }).orEmpty()).toByteArray(
                 Charset.forName(charset)
             )
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             URLEncoder.encode(bytes.toString(Charset.forName(charset)), charset.ifEmpty { "UTF-8" })
                 ?.replace("+", "%20")
-                ?: ""
+                .orEmpty()
     },
     Unicode("unicode") {
         override fun decode(encoded: String, dict: String, charset: String) =

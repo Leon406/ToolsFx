@@ -4,6 +4,9 @@ version = "1.5.0"
 plugins {
     `java-library`
 }
+repositories {
+    mavenCentral()
+}
 
 javafx {
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
@@ -21,9 +24,9 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
 
-    testImplementation("org.xerial:sqlite-jdbc:3.36.0.3")
-    testImplementation("net.java.dev.jna:jna:5.11.0")
-    testImplementation("net.java.dev.jna:jna-platform:5.11.0")
+    testImplementation("org.xerial:sqlite-jdbc:3.39.3.0")
+    testImplementation("net.java.dev.jna:jna:5.12.1")
+    testImplementation("net.java.dev.jna:jna-platform:5.12.1")
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

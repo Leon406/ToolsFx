@@ -148,6 +148,7 @@ object LzString {
         return contextData.joinToString("")
     }
 
+    @Suppress("ReturnCount")
     private fun decompress(
         length: Int,
         resetValue: Int,

@@ -36,7 +36,7 @@ fun String.zwc(plain: String) =
         .joinToString(zeroWidthDict.last().toString()) {
             it.code.toString(5).map { zeroWidthDict[it - '0'] }.joinToString("")
         }
-        .let { "${plain.first()}$it${plain.substring(1)}" }
+        .run { "${plain.first()}$this${plain.substring(1)}" }
 
 fun String.zwcDecode() =
     filter { it in zeroWidthDict }

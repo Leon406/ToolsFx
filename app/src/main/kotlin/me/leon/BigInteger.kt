@@ -28,7 +28,7 @@ fun BigInteger.decrypt2String(d: BigInteger, n: BigInteger): String =
         REG_NON_PRINTABLE.find(this)?.run { modPow(d, n).toString() } ?: run { this }
     }
 
-fun BigInteger.decrypt(d: BigInteger, n: BigInteger) = modPow(d, n)
+fun BigInteger.decrypt(d: BigInteger, n: BigInteger): BigInteger = modPow(d, n)
 
 fun BigInteger.n2s() = toByteArray().decodeToString()
 
@@ -73,7 +73,8 @@ fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
 // ported from
 // https://github.com/ryanInf/python2-libnum/blob/316c378ba268577320a239b2af0d766c1c9bfc6d/libnum/common.py
 fun BigInteger.root(n: Int = 2): Array<BigInteger> {
-    if (this.signum() < 0 && n % 2 == 0) error("n must be even")
+    require(n > 0) { "n must be > 0" }
+    require(signum() >= 0 || (signum() < 0 && n % 2 != 0)) { "n must be even" }
 
     val sig = this.signum()
     val v = this.abs()
@@ -180,5 +181,5 @@ fun BigInteger.wiener(n: BigInteger): Array<BigInteger> {
             return arrayOf(guessD, guessP, guessQ)
         }
     }
-    return arrayOf()
+    return emptyArray()
 }

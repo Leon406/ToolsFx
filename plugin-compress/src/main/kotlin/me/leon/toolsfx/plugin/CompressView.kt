@@ -24,7 +24,7 @@ class CompressView : PluginFragment(messages["compression"]) {
 
     private val controller: CompressController by inject()
     override val closeable = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
+    private val processing = SimpleBooleanProperty(false)
     private lateinit var taInput: TextArea
     private lateinit var tgInput: ToggleGroup
     private lateinit var tgOutput: ToggleGroup
@@ -57,7 +57,7 @@ class CompressView : PluginFragment(messages["compression"]) {
     private val cipher
         get() = selectedAlg.get()
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
-    private val isSingleLine = SimpleBooleanProperty(false)
+    private val singleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {
         title = messages["compression"]
         paddingAll = DEFAULT_SPACING
@@ -124,9 +124,9 @@ class CompressView : PluginFragment(messages["compression"]) {
                     doCrypto()
                 }
             }
-            checkbox(messages["singleLine"], isSingleLine)
+            checkbox(messages["singleLine"], singleLine)
             button(messages["run"], imageview(IMG_RUN)) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { doCrypto() }
             }
         }
@@ -170,14 +170,14 @@ class CompressView : PluginFragment(messages["compression"]) {
 
     private fun doCrypto() {
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             if (isCompress) {
                 controller.compress(
                     inputText,
                     cipher.compressType(),
                     inputEncode,
                     outputEncode,
-                    isSingleLine.get(),
+                    singleLine.get(),
                 )
             } else {
                 controller.decompress(
@@ -185,12 +185,12 @@ class CompressView : PluginFragment(messages["compression"]) {
                     cipher.compressType(),
                     inputEncode,
                     outputEncode,
-                    isSingleLine.get(),
+                    singleLine.get(),
                 )
             }
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text = it
                 infoLabel.text = info
                 if (Prefs.autoCopy) it.copy().also { primaryStage.showToast(messages["copied"]) }

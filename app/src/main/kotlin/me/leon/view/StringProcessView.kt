@@ -7,7 +7,6 @@ import kotlin.collections.set
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
-import me.leon.ext.crypto.EncodeType
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -15,13 +14,10 @@ import tornadofx.FX.Companion.messages
 class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private var timeConsumption = 0L
-    private var encodeType = EncodeType.Base64
-    private var isEncode = true
-
     override val closeable = SimpleBooleanProperty(false)
-    private val isRegexp = SimpleBooleanProperty(false)
-    private val isSplitRegexp = SimpleBooleanProperty(false)
-    private val isFileMode = SimpleBooleanProperty(false)
+    private val regexp = SimpleBooleanProperty(false)
+    private val splitRegexp = SimpleBooleanProperty(false)
+    private val fileMode = SimpleBooleanProperty(false)
 
     private var taInput: TextArea by singleAssign()
     private var taOutput: TextArea by singleAssign()
@@ -32,34 +28,22 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private var labelInfo: Label by singleAssign()
     private var tfExtract: TextField by singleAssign()
 
-    private var replaceFromText
+    private val replaceFromText
         get() = tfReplaceFrom.text.unescape()
-        set(value) {
-            tfReplaceFrom.text = value
-        }
 
-    private var replaceToText
+    private val replaceToText
         get() = tfReplaceTo.text.unescape()
-        set(value) {
-            tfReplaceTo.text = value
-        }
 
-    private var splitLengthText
+    private val splitLengthText
         get() =
             runCatching { tfSplitLength.text.toInt() }
                 .getOrElse {
                     tfSplitLength.text = "8"
                     8
                 }
-        set(value) {
-            tfSplitLength.text = value.toString()
-        }
 
-    private var sepratorText
+    private val sepratorText
         get() = tfSeprator.text.unescape().also { println("__${it}___") }
-        set(value) {
-            tfSeprator.text = value
-        }
 
     private val info: String
         get() =
@@ -68,11 +52,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
                 "cost: $timeConsumption ms"
     private var inputText: String
-        get() =
-            taInput.text.takeIf {
-                isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
-            }
-                ?: taInput.text.stripAllSpace()
+        get() = taInput.text
         set(value) {
             taInput.text = value
         }
@@ -81,16 +61,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         set(value) {
             taOutput.text = value
         }
-    private var extractReg
+    private val extractReg
         get() = tfExtract.text.unescape()
-        set(value) {
-            tfExtract.text = value
-        }
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
             with(it.first()) {
-                if (isFileMode.get()) {
+                if (fileMode.get()) {
                     absolutePath
                 } else if (length() <= 10 * 1024 * 1024) {
                     if (realExtension() in unsupportedExts) "unsupported file extension"
@@ -230,9 +207,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             label(messages["replace"])
             tfReplaceFrom = textfield { promptText = messages["text2Replaced"] }
             tfReplaceTo = textfield { promptText = messages["replaced"] }
-            checkbox(messages["regexp"], isRegexp)
+            checkbox(messages["regexp"], regexp)
             button(messages["run"], imageview(IMG_RUN)) { action { doReplace() } }
-            checkbox(messages["fileMode"], isFileMode)
+            checkbox(messages["fileMode"], fileMode)
         }
         hbox {
             addClass(Styles.left)
@@ -241,7 +218,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             label(messages["split"])
             tfSplitLength = textfield { promptText = messages["splitLength"] }
             tfSeprator = textfield { promptText = messages["delimiter"] }
-            checkbox(messages["regexp"], isSplitRegexp) { isVisible = false }
+            checkbox(messages["regexp"], splitRegexp) { isVisible = false }
             button(messages["run"], imageview(IMG_RUN)) { action { doSplit() } }
         }
 
@@ -256,7 +233,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
             checkbox(messages["regexp"]) { isVisible = false }
             button(messages["run"], imageview(IMG_RUN)) { action { doExtract() } }
-            checkbox(messages["fileMode"], isFileMode)
+            checkbox(messages["fileMode"], fileMode)
         }
 
         hbox {
@@ -291,7 +268,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 outputText =
                     extractReg
                         .toRegex()
-                        .findAll(if (isFileMode.get()) inputText.toFile().readText() else inputText)
+                        .findAll(if (fileMode.get()) inputText.toFile().readText() else inputText)
                         .map { it.value }
                         .joinToString("\n")
             }
@@ -319,7 +296,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         measureTimeMillis {
                 if (replaceFromText.isNotEmpty()) {
                     println(replaceToText)
-                    outputText = if (isFileMode.get()) renameFiles() else replaceStr(inputText)
+                    outputText = if (fileMode.get()) renameFiles() else replaceStr(inputText)
                 }
             }
             .also {
@@ -329,7 +306,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private fun replaceStr(name: String) =
-        if (isRegexp.get()) name.replace(replaceFromText.toRegex(), replaceToText)
+        if (regexp.get()) name.replace(replaceFromText.toRegex(), replaceToText)
         else name.replace(replaceFromText, replaceToText)
 
     private fun renameFiles(): String {

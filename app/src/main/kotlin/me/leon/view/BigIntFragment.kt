@@ -24,7 +24,7 @@ class BigIntFragment : Fragment("BigInt") {
     private var selectedAlgo: String = calculatorType.keys.first()
 
     override val closeable = SimpleBooleanProperty(false)
-    private val isProcessing = SimpleBooleanProperty(false)
+    private val processing = SimpleBooleanProperty(false)
     private val selectedRadix = SimpleStringProperty("10")
 
     private var bottomView: Label by singleAssign()
@@ -35,7 +35,7 @@ class BigIntFragment : Fragment("BigInt") {
     private var ta4: TextArea by singleAssign()
     private var ta5: TextArea by singleAssign()
     private var ta6: TextArea by singleAssign()
-
+    @Suppress("TrimMultilineRawString")
     private val bottomInfo
         get() =
             "Func: $selectedAlgo radix: ${selectedRadix.get()} bits: P=${ta1.bits()}  " +
@@ -100,7 +100,7 @@ class BigIntFragment : Fragment("BigInt") {
                 label("radix:")
                 combobox(selectedRadix, radix) { cellFormat { text = it } }
                 button(messages["run"], imageview(IMG_RUN)) {
-                    enableWhen(!isProcessing)
+                    enableWhen(!processing)
                     action { calculate() }
                 }
                 button("ECC Calc") { action { find<ECCurveCalculator>().openWindow() } }
@@ -259,7 +259,7 @@ class BigIntFragment : Fragment("BigInt") {
             return
         }
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             startTime = System.currentTimeMillis()
             controller.calculate(
                 selectedAlgo,
@@ -275,7 +275,7 @@ class BigIntFragment : Fragment("BigInt") {
             )
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 outputText =
                     runCatching {
                             it.lines().joinToString("\n") {
