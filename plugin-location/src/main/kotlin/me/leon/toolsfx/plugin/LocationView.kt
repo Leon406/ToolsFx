@@ -136,8 +136,8 @@ class LocationView : PluginFragment("LocationView") {
     private fun doProcess() {
         if (inputText.isEmpty()) return
         runAsync { controller.process(locationServiceType, inputText, singleLine.get()) } ui
-                {
-                    taOutput.text = it
-                }
+            {
+                taOutput.text = it
+            }
     }
 }
