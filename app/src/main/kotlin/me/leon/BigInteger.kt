@@ -7,15 +7,9 @@ import me.leon.ext.readFromNet
 // this = p
 fun BigInteger.phi(q: BigInteger) = (this - BigInteger.ONE) * (q - BigInteger.ONE)
 
-// this = p
-fun BigInteger.phi(q: String) = phi(BigInteger(q))
-
 fun BigInteger.lcm(other: BigInteger) = this * other / this.gcd(other)
 
 fun BigInteger.mutualPrime(other: BigInteger) = this.gcd(other) == BigInteger.ZERO
-
-// this 关于 other的逆元
-fun BigInteger.invert(other: String): BigInteger = modInverse(other.toBigInteger())
 
 // this = e
 fun BigInteger.invert(phi: BigInteger): BigInteger = modInverse(phi)
@@ -35,9 +29,6 @@ fun BigInteger.n2s() = toByteArray().decodeToString()
 fun String.s2n() = BigInteger(toByteArray())
 
 fun ByteArray.toBigInteger() = BigInteger(this)
-
-// this = c
-fun BigInteger.decrypt2String(d: String, n: String) = decrypt2String(BigInteger(d), BigInteger(n))
 
 // this = n
 fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
@@ -74,7 +65,7 @@ fun getPrimeFromFactorDb(digit: String): List<BigInteger> {
 // https://github.com/ryanInf/python2-libnum/blob/316c378ba268577320a239b2af0d766c1c9bfc6d/libnum/common.py
 fun BigInteger.root(n: Int = 2): Array<BigInteger> {
     require(n > 0) { "n must be > 0" }
-    require(signum() >= 0 || (signum() < 0 && n % 2 != 0)) { "n must be even" }
+    require(signum() >= 0 || (signum() < 0 && n % 2 != 0)) { "$this  n =$n must be even" }
 
     val sig = this.signum()
     val v = this.abs()
@@ -92,8 +83,60 @@ fun BigInteger.root(n: Int = 2): Array<BigInteger> {
     return with(mid * sig.toBigInteger()) { arrayOf(this, this@root - this.pow(n)) }
 }
 
-/** this is e */
-fun BigInteger.wiener(n: BigInteger): Array<BigInteger> {
+/** 连分数 */
+fun BigInteger.continuedFraction(another: BigInteger): MutableList<BigInteger> {
+    var a = this
+    val list = mutableListOf<BigInteger>()
+    var b = another
+    while (b != BigInteger.ZERO) {
+        list.add(a / b)
+        a = b.also { b = a % b }
+    }
+    return list
+}
+
+/** 渐进分数线 */
+fun List<BigInteger>.convergent(): MutableList<Pair<BigInteger, BigInteger>> {
+    var (pbe, paf) = BigInteger.ZERO to BigInteger.ONE
+    var (qbe, qaf) = BigInteger.ONE to BigInteger.ZERO
+    val convergent = mutableListOf<Pair<BigInteger, BigInteger>>()
+    for (int in this) {
+        pbe = paf.also { paf = int * paf + pbe }
+        qbe = qaf.also { qaf = int * qaf + qbe }
+        convergent.add(paf to qaf)
+    }
+    return convergent
+}
+
+/** this is e, common wiener, but it's too slow */
+@Suppress("ReturnCount")
+fun BigInteger.wiener(n: BigInteger): BigInteger? {
+    println("wiener attack-")
+    val wienerPQ = wienerPQ(n)
+    if (wienerPQ != null) {
+        return wienerPQ
+    }
+    var q0 = BigInteger.ONE
+    val m = BigInteger.TWO
+    val c1 = m.modPow(this, n)
+    val convergent = this.continuedFraction(n).convergent()
+    for ((_, q1) in convergent) {
+        for (r in 0..20) for (s in 0..20) {
+            val d = r.toBigInteger() * q1 + s.toBigInteger() * q0
+            val m1 = c1.modPow(d, n)
+            if (m1 == m) {
+                println("$r $s $d")
+                return d
+            }
+        }
+        q0 = q1
+    }
+    return BigInteger.ONE
+}
+
+/** this is e ,n = p *q */
+fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
+    println("wiener attack pq")
     if (this > n.pow(2).multiply(n.root().first())) {
         println("e > n^(1.5) -> this is not guaranteed to work")
     }
@@ -129,7 +172,8 @@ fun BigInteger.wiener(n: BigInteger): Array<BigInteger> {
     var nI1 = n1
     var nI: BigInteger
     var i = 1
-    while (x.add(-y * qI).signum() != 0) {
+    val startTime = System.currentTimeMillis()
+    while (x.add(-y * qI).signum() != 0 && (System.currentTimeMillis() - startTime) < 500) {
         // uncomment for debug
         //        println("q[$i] = $qI")
         //        println("n[$i] = $nI")
@@ -167,19 +211,21 @@ fun BigInteger.wiener(n: BigInteger): Array<BigInteger> {
         val phiN = this * guessDg / guessK
         // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
         val pPlusQDiv2 = (n - phiN + BigInteger.ONE) / BigInteger.TWO
-        val root = pPlusQDiv2.pow(2).subtract(n).root()
+        val subtract = pPlusQDiv2.pow(2).subtract(n)
+        if (subtract < BigInteger.ZERO) break
+        val root = subtract.root()
         if (root.last() == BigInteger.ZERO) {
             // ((p-q)/2)^2 = ((p+q)/2)^2 - pq
             pMinusQDiv2 = root.first()
             // d = (dg / g) = dg / (edg mod k)
             guessD = guessDg / ((this * guessDg) % guessK)
             // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
-            val guessP = pPlusQDiv2 + pMinusQDiv2
+//            val guessP = pPlusQDiv2 + pMinusQDiv2
             // q = (p+q)/2 - (p-q)/2
-            val guessQ = pPlusQDiv2 - pMinusQDiv2
+//            val guessQ = pPlusQDiv2 - pMinusQDiv2
             println("Success")
-            return arrayOf(guessD, guessP, guessQ)
+            return guessD
         }
     }
-    return emptyArray()
+    return null
 }

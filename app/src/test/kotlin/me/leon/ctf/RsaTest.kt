@@ -155,7 +155,14 @@ class RsaTest {
         assertEquals("flag{20d6e2da95dcc1fa5f5432a436c4be18}", solve(params))
 
         params = "rsa14_wiener2.txt".parseRsaParams()
+        //        println(wiener(params))
         assertEquals("Tr0y{W1eNer_AttaCk_1s_p0werfu1!}", solve(params))
+    }
+
+    @Test
+    fun rsa_wiener3() {
+        val params = "rsa14_wiener_pqr.txt".parseRsaParams()
+        assertEquals("CBCTF{W13ner_4ttack_ca^_d0_m0r3!}", solve(params))
     }
 
     @Test

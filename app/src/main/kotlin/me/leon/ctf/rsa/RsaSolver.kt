@@ -164,7 +164,7 @@ object RsaSolver {
             e.bitLength() > 100 ->
                 with(e.wiener(n)) {
                     println("wiener attack")
-                    if (isEmpty()) "wiener failed" else c.decrypt2String(this.first(), n)
+                    if (this == null) "wiener failed" else c.decrypt2String(this, n)
                 }
             n.gcd(c) != BigInteger.ONE -> {
                 println("n c are not co-prime")
