@@ -77,6 +77,12 @@ class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
                 }
             }
 
+            item("HiDpi (require restart) ${"  √".takeIf { Prefs.hidpi }.orEmpty()}") {
+                action {
+                    Prefs.hidpi = !Prefs.hidpi
+                    text = "HiDpi (require restart) ${"  √".takeIf { Prefs.hidpi }.orEmpty()}"
+                }
+            }
             item("${messages["autoCopy"]}${"  √".takeIf { Prefs.autoCopy }.orEmpty()}") {
                 action {
                     Prefs.autoCopy = !Prefs.autoCopy

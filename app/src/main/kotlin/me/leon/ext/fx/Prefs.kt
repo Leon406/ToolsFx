@@ -7,6 +7,7 @@ object Prefs {
     private const val ALWAYS_ON_TOP = "alwaysOnTop"
     private const val LANGUAGE = "language"
     private const val AUTO_COPY = "autoCopy"
+    private const val HI_DPI = "hidpi"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
     var isIgnoreUpdate
         get() = preference.getBoolean(IGNORE_UPDATE, false)
@@ -17,6 +18,11 @@ object Prefs {
         get() = preference.getBoolean(ALWAYS_ON_TOP, true)
         set(value) {
             preference.putBoolean(ALWAYS_ON_TOP, value)
+        }
+    var hidpi
+        get() = preference.getBoolean(HI_DPI, false)
+        set(value) {
+            preference.putBoolean(HI_DPI, value)
         }
     var language: String
         get() = preference.get(LANGUAGE, "zh")
