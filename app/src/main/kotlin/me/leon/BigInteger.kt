@@ -116,6 +116,7 @@ fun BigInteger.wiener(n: BigInteger): BigInteger? {
     if (wienerPQ != null) {
         return wienerPQ
     }
+    println("wiener attack slow")
     var q0 = BigInteger.ONE
     val m = BigInteger.TWO
     val c1 = m.modPow(this, n)
@@ -131,7 +132,7 @@ fun BigInteger.wiener(n: BigInteger): BigInteger? {
         }
         q0 = q1
     }
-    return BigInteger.ONE
+    return null
 }
 
 /** this is e ,n = p *q */
