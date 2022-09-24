@@ -221,9 +221,9 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
             // d = (dg / g) = dg / (edg mod k)
             guessD = guessDg / ((this * guessDg) % guessK)
             // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
-//            val guessP = pPlusQDiv2 + pMinusQDiv2
+            //            val guessP = pPlusQDiv2 + pMinusQDiv2
             // q = (p+q)/2 - (p-q)/2
-//            val guessQ = pPlusQDiv2 - pMinusQDiv2
+            //            val guessQ = pPlusQDiv2 - pMinusQDiv2
             println("Success")
             return guessD
         }

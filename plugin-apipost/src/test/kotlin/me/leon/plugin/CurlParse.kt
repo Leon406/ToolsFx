@@ -22,7 +22,8 @@ class CurlParse {
   -H "Cookie: JSESSIONID=4C97420C4B8AF8FB680581FF233398E0" ^
   --compressed ^
   --insecure
-        """.trimIndent()
+        """
+                .trimIndent()
 
         println(raw.parseCurl())
     }
@@ -43,7 +44,8 @@ class CurlParse {
   -H "accept-language: zh-CN,zh;q=0.9,en;q=0.8" ^
   --data-binary "^{^\^"client_id^\^":^\^"Xqp0kJBXWhwaTpB6^\^"}" ^
   --compressed
-        """.trimIndent()
+        """
+                .trimIndent()
         println(raw2.parseCurl())
         val r =
             """
@@ -51,7 +53,8 @@ class CurlParse {
             -X POST
             -H "Content-Type: application/json"
             -d "{\"FilePicture\":\"@file\"}" 
-        """.trimIndent()
+        """
+                .trimIndent()
 
         println(r.also { println(it) }.parseCurl())
     }

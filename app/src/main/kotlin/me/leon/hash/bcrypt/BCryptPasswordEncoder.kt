@@ -41,7 +41,9 @@ constructor(
         require(
             !(strength != -1 &&
                 (strength < BCrypt.MIN_LOG_ROUNDS || strength > BCrypt.MAX_LOG_ROUNDS))
-        ) { "Bad strength" }
+        ) {
+            "Bad strength"
+        }
         this.strength = if (strength == -1) 10 else strength
     }
 

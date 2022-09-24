@@ -1722,7 +1722,9 @@ class BCrypt {
                 require(
                     !(minor != 'a' && minor != 'x' && minor != 'y' && minor != 'b' ||
                         salt[3] != '$')
-                ) { "Invalid salt revision" }
+                ) {
+                    "Invalid salt revision"
+                }
                 off = 4
             }
 
@@ -1778,7 +1780,9 @@ class BCrypt {
             require(
                 !(!prefix.startsWith("$2") ||
                     prefix[2] != 'a' && prefix[2] != 'y' && prefix[2] != 'b')
-            ) { "Invalid prefix" }
+            ) {
+                "Invalid prefix"
+            }
             require(!(logRounds < 4 || logRounds > 31)) { "Invalid logRounds" }
             rs.append("$2")
             rs.append(prefix[2])

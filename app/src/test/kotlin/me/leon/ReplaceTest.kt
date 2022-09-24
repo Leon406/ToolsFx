@@ -59,7 +59,8 @@ class ReplaceTest {
 GET /aaa/static/bbb/js/cc.js HTTP/2
 Host: dss0.bd.com
 Sec-Ch-Ua: "(Not(A:Brand";v="8", "Chromium";v="98"
-Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
+Accept-Language: zh-CN,zh;q=0.9"""
+                .trimIndent()
 
         val rsp =
             """
@@ -68,7 +69,8 @@ Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
             Access-Control-Allow-Methods: GET, POST, OPTIONS
             Access-Control-Allow-Origin: *
             Connection: close
-        """.trimIndent()
+        """
+                .trimIndent()
 
         Pattern.compile("[A-Z]{3,} /.*? HTTP/").matcher(req).find().also { println(it) }
         Pattern.compile("HTTP/[\\d.]+ \\d+").matcher(rsp).find().also { println(it) }
@@ -97,7 +99,8 @@ Sec-Fetch-Mode: no-cors
 Sec-Fetch-Dest: script
 Referer: https://www.baidu.com/
 Accept-Encoding: gzip, deflate
-Accept-Language: zh-CN,zh;q=0.9""".trimIndent()
+Accept-Language: zh-CN,zh;q=0.9"""
+                    .trimIndent()
             )
         dataToTranslated.forEach { Translator.translate("cn", it).run { println("$it--->$this ") } }
     }

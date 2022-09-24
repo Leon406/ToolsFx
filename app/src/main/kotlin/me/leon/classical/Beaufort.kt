@@ -11,8 +11,7 @@ fun String.beaufort(key: String = "FORTIFICATION"): String {
             acc.append(
                 TABLE_A_Z[
                     (TABLE_A_Z.indexOf(properKey[index % properKey.length]) -
-                        TABLE_A_Z.indexOf(char) + 26) % 26
-                ]
+                        TABLE_A_Z.indexOf(char) + 26) % 26]
             )
         }
         .toString()

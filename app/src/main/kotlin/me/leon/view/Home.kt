@@ -71,7 +71,9 @@ class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
             menu("Language") {
                 item(
                     "English(require restart)${"  √".takeIf { Prefs.language != "zh" }.orEmpty()}"
-                ) { action { Prefs.language = "en" } }
+                ) {
+                    action { Prefs.language = "en" }
+                }
                 item("中文(需重启)${"  √".takeIf { Prefs.language == "zh" }.orEmpty()}") {
                     action { Prefs.language = "zh" }
                 }

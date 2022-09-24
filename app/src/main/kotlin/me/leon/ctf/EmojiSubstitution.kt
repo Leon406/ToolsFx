@@ -86,7 +86,6 @@ fun String.emojiReplaceDecode(shift: Int = 0) =
             EMOJI_BASE64_DICT[
                 (emojiMap
                     .indexOf(it.toByteArray().toString(Charsets.UTF_32BE))
-                    .circleIndex(emojiMap.size, -shift))
-            ]
+                    .circleIndex(emojiMap.size, -shift))]
         }
         .joinToString("")

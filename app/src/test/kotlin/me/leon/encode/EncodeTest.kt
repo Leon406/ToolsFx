@@ -240,13 +240,15 @@ class EncodeTest {
             """
             "title": "\u7b2c\u4e00\u6a21\u5757 - \u7ecf\u6d4e\u5b66\u6838\u5fc3\u539f\u7406",
             "file_name": "\u+6a21\U5757\u5b8c\u6574\u7248",
-       """.trimIndent()
+       """
+                .trimIndent()
 
         val decoded =
             """
             "title": "第一模块 - 经济学核心原理",
             "file_name": "模块完整版",
-        """.trimIndent()
+        """
+                .trimIndent()
         assertEquals(decoded, raw.unicodeMix2String())
     }
 

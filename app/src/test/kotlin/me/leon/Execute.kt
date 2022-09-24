@@ -51,7 +51,8 @@ class Execute {
                     d += c[a[b]];
                 return d
             }
-        """.trimIndent()
+        """
+                .trimIndent()
         Nashorn.loadString(js)
         Nashorn.invoke("getKey", intArrayOf(2, 0, 3, 12, 6, 1, 14, 3, 5, 0, 6, 8)).also {
             println(it)
