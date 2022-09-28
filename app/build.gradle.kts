@@ -38,4 +38,5 @@ dependencies {
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("org.mockito:mockito-core:4.8.0")
+    testImplementation("org:jaudiotagger:2.0.3")
 }

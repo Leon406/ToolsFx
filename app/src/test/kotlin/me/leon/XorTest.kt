@@ -1,8 +1,6 @@
 package me.leon
 
 import java.io.File
-import kotlin.experimental.xor
-import me.leon.classical.xor
 import me.leon.ext.*
 import org.junit.Test
 
