@@ -15,7 +15,9 @@ import me.leon.music.qmc.qmcDecode
 class UnlockTest {
     @Test
     fun qmcTest() {
-        "E:\\download\\360\\张靓颖 - 春夜喜雨 (Live).qmcflac".toFile().qmcDecode()
+
+        "C:\\Users\\Leon\\Downloads\\Telegram Desktop\\慕容晓晓 - 爱情买卖.qmcogg".toFile().qmcDecode()
+//        "E:\\download\\360\\张靓颖 - 春夜喜雨 (Live).qmcflac".toFile().qmcDecode()
     }
 
     @Test
