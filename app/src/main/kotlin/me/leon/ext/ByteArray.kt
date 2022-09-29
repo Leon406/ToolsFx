@@ -56,3 +56,14 @@ fun ByteArray.encodeTo(encoder: String, charset: String = "UTF-8") =
         "binary" -> toBinaryString()
         else -> error("Unknown encoder: $encoder")
     }
+
+/**
+ * UTF_32LE --> UTF_32BE 再转为 int
+ *
+ * 作用和python的stack.unpack('<1',bytes([1,2,3,4]))方法一致
+ */
+fun ByteArray.unpack(): Int {
+    require(size == 4)
+    reverse()
+    return fold(0) { acc, byte -> acc shl 8 or (byte.toInt() and 0xff) }
+}

@@ -83,6 +83,7 @@ class MyTest {
 
     @Test
     fun updateJsonParse() {
+        println(File.separatorChar)
         File("${TEST_PRJ_DIR.absolutePath}/update.json").readText().fromJson(Map::class.java).also {
             println(it["info"])
         }

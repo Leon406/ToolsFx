@@ -280,8 +280,8 @@ object RsaSolver {
             c.decrypt2String(d, p * q)
         } else {
             val t = e.gcd(phi)
-            println("solve P Q E C e phi not are co-prime!! $t")
             val t1 = e / t
+            println("solve P Q E C e phi not are co-prime!! $t $t1")
             val dt1 = t1.invert(phi)
             c.modPow(dt1, n).root(t.toInt()).first().n2s()
         }

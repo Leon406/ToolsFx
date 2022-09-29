@@ -1,4 +1,4 @@
-package me.leon.music
+package me.leon.music.qmc
 
 import java.io.File
 

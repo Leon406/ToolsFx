@@ -1,4 +1,4 @@
-package me.leon.music
+package me.leon.music.ncm
 
 data class NcmMeta(
     val album: String,

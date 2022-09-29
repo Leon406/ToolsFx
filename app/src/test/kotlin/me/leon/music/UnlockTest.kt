@@ -3,6 +3,8 @@ package me.leon.music
 import java.io.File
 import kotlin.test.Test
 import me.leon.ext.toFile
+import me.leon.music.ncm.NcmDecoder
+import me.leon.music.qmc.qmcDecode
 
 /**
  *
@@ -19,7 +21,6 @@ class UnlockTest {
     @Test
     fun ncmTest() {
         val file = File("C:\\Users\\Leon\\Downloads\\麻雀.ncm")
-        val unpackNcm = UnpackNcm()
-        unpackNcm.ncm2NormalFormat(file)
+        NcmDecoder.ncmDecrypt(file)
     }
 }
