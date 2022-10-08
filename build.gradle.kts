@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.7.20"
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
     id("com.diffplug.spotless") version "6.11.0"
     // https://detekt.dev/changelog/
