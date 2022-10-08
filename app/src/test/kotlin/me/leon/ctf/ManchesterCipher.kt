@@ -46,5 +46,3 @@ fun String.manchesterDiffDecode() =
             }
         }
         .toString()
-
-fun String.manchesterHexDiff() = hex2ByteArray().toBinaryString().manchesterDiffDecode()

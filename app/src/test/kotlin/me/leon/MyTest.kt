@@ -86,7 +86,7 @@ class MyTest {
         println('你'.code)
         println('你'.code / 256)
         println('你'.code % 256)
-        "79, 96"
+        //  "79, 96"
         println("你".toByteArray(Charsets.UTF_16BE).contentToString())
         println("你".toByteArray(Charsets.UTF_16LE).contentToString())
 

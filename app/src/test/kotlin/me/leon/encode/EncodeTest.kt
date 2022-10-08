@@ -422,10 +422,9 @@ class EncodeTest {
         val data = File(TEST_ENCODE_DIR, "mix_bin_oct_hex.txt").readText()
         println(data.mixDecode2String())
 
-        var msg = "你好leon406"
+        val msg = "你好leon406"
         val message = msg.mixEncode()
         assertEquals(msg, message.mixDecode2String())
-        msg = "l"
         println("0b110001".mixDecode2String())
         println("0o61".mixDecode2String())
         println("0x31".mixDecode2String())

@@ -57,7 +57,7 @@ class CtfTest2 {
 
     @Test
     fun manchester() {
-        val data = "你好manchester encode data"
+        //        val data = "你好manchester encode data"
         //        println(data.manchester())
         //        println(data.manchester().manchesterDecode2String())
         // 10110010

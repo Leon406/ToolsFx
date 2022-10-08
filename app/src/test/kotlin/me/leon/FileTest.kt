@@ -36,7 +36,7 @@ class FileTest {
                     }
                 } else {
                     val delete = it.delete()
-                    println("exist: $it ")
+                    println("exist: $it $delete")
                 }
             }
     }
