@@ -12,4 +12,4 @@ fun String.decimalDecode(charset: String = "UTF-8") =
     decimalDecode2String().toByteArray(Charset.forName(charset))
 
 fun String.decimalDecode2String() =
-    split("[^\\d+]".toRegex()).map { Char(it.toInt()) }.joinToString("")
+    split("\\D+".toRegex()).filterNot { it.isEmpty() }.map { Char(it.toInt()) }.joinToString("")

@@ -83,6 +83,13 @@ class MyTest {
 
     @Test
     fun updateJsonParse() {
+        println('你'.code)
+        println('你'.code / 256)
+        println('你'.code % 256)
+        "79, 96"
+        println("你".toByteArray(Charsets.UTF_16BE).contentToString())
+        println("你".toByteArray(Charsets.UTF_16LE).contentToString())
+
         println(File.separatorChar)
         File("${TEST_PRJ_DIR.absolutePath}/update.json").readText().fromJson(Map::class.java).also {
             println(it["info"])

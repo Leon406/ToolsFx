@@ -42,13 +42,15 @@ class QMCDecode {
 
 fun File.qmcDecode() {
     val qmcDecode = QMCDecode()
-    val outputFile = File(
-        parentFile, name
-            .replace("qmc[03]".toRegex(), "mp3")
-            .replace("qmc[2468]".toRegex(), "m4a")
-            // qmcogg qmcflac
-            .replace(".qmc", ".")
-    )
+    val outputFile =
+        File(
+            parentFile,
+            name
+                .replace("qmc[03]".toRegex(), "mp3")
+                .replace("qmc[2468]".toRegex(), "m4a")
+                // qmcogg qmcflac
+                .replace(".qmc", ".")
+        )
     outputFile.outputStream().use { output ->
         output.write(
             inputStream()
