@@ -1,27 +1,30 @@
-package me.leon.ctf
+package me.leon.classical
 
 import me.leon.ext.*
 
 val ENCODE_8023 = arrayOf("10", "01")
 val ENCODE_STANDARD = arrayOf("01", "10")
 
-fun ByteArray.manchester(isStandard: Boolean = false) =
+fun ByteArray.manchester(isStandard: Boolean = false, isReverse: Boolean = false) =
     toBinaryString()
+        .binaryReverse(isReverse)
         .map { if (isStandard) ENCODE_STANDARD[(it - '0')] else ENCODE_8023[(it - '0')] }
         .joinToString("")
 
-fun String.manchester(isStandard: Boolean = false) = autoDecodeToByteArray().manchester(isStandard)
+fun String.manchester(isStandard: Boolean = false, isReverse: Boolean = false) =
+    autoDecodeToByteArray().manchester(isStandard, isReverse)
 
-fun String.manchesterDecode(isStandard: Boolean = false) =
-    chunked(2)
+fun String.manchesterDecode(isStandard: Boolean = false, isReverse: Boolean = false) =
+    autoDecodeToByteArray(true)
+        .toBinaryString()
+        .chunked(2)
         .map { if (isStandard) ENCODE_STANDARD.indexOf(it) else ENCODE_8023.indexOf(it) }
         .joinToString("")
+        .binaryReverse(isReverse)
 
-fun String.manchesterHexDecode(isStandard: Boolean = false) =
-    hex2ByteArray().toBinaryString().manchesterDecode(isStandard)
-
-fun ByteArray.manchesterDiff() =
+fun ByteArray.manchesterDiff(isReverse: Boolean = false) =
     toBinaryString()
+        .binaryReverse(isReverse)
         .foldIndexed(StringBuilder()) { index, acc, c ->
             acc.apply {
                 if (index == 0) append(ENCODE_STANDARD[c - '0'])
@@ -30,10 +33,13 @@ fun ByteArray.manchesterDiff() =
         }
         .toString()
 
-fun String.manchesterDiff() = autoDecodeToByteArray().manchesterDiff()
+fun String.manchesterDiff(isReverse: Boolean = false) =
+    autoDecodeToByteArray().manchesterDiff(isReverse)
 
-fun String.manchesterDiffDecode() =
-    chunked(2)
+fun String.manchesterDiffDecode(isReverse: Boolean = false) =
+    autoDecodeToByteArray(true)
+        .toBinaryString()
+        .chunked(2)
         .map { ENCODE_STANDARD.indexOf(it) }
         .joinToString("")
         .foldIndexed(StringBuilder()) { index, acc, c ->
@@ -46,3 +52,4 @@ fun String.manchesterDiffDecode() =
             }
         }
         .toString()
+        .binaryReverse(isReverse)

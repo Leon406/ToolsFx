@@ -3,6 +3,7 @@ package me.leon.ctf
 import java.io.File
 import kotlin.test.assertEquals
 import me.leon.TEST_CTF_DIR
+import me.leon.classical.*
 import me.leon.ext.*
 import me.leon.ext.crypto.*
 import org.junit.Test
@@ -81,10 +82,10 @@ class CtfTest2 {
         assertEquals("1010011010100101", testDataHex.manchesterDiff())
 
         assertEquals("10110010", testDataHex.manchesterDiff().manchesterDiffDecode())
-        println("10010011011000100001000101101010111111001101".manchesterDecode())
-        "5555555595555A65556AA696AA6666666955".manchesterHexDecode().also {
+
+        "5555555595555A65556AA696AA6666666955".manchesterDecode(isReverse = true).also {
             println(it)
-            assertEquals("fffffed31f645055f9", it.binary2ByteArray(true).toHex())
+            assertEquals("fffffed31f645055f9", it.binary2ByteArray().toHex())
         }
     }
 

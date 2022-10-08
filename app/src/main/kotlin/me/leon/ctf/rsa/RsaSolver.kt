@@ -261,7 +261,7 @@ object RsaSolver {
         return m.n2s()
     }
 
-    /** 知p,q, 即只知 n d e phi互素判断 */
+    /** 知p,q, 即知 n d e phi互素判断 */
     fun solvePQEC(params: MutableMap<String, BigInteger>): String {
         val p = requireNotNull(params["p"])
         val q = params["q"] ?: (params["n"]!! / p)

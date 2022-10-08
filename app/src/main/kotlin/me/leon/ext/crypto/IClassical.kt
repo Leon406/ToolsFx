@@ -9,9 +9,10 @@ interface IClassical {
         return ""
     }
 
-    fun paramsCount(): Int = 0
-
-    fun paramsHints(): List<String> = listOf("", "")
+    fun paramsHints(): Array<out String>
+    fun checkboxHints(): Array<out String>
+    fun paramsCount(): Int = paramsHints().size
+    fun checkboxHintsCount(): Int = checkboxHints().size
 
     fun isIgnoreSpace(): Boolean = true
     fun hasCrack(): Boolean = false

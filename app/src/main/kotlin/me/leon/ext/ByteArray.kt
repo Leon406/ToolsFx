@@ -37,12 +37,12 @@ fun String.decodeToByteArray(encoder: String = "raw", charset: String = "UTF-8")
  *
  * 0b/0B, 按照二进制解码 0x/0X, 按照十六进制解码
  */
-fun String.autoDecodeToByteArray(): ByteArray =
+fun String.autoDecodeToByteArray(isDecode: Boolean = false): ByteArray =
     if (length < 3) toByteArray()
     else {
         when {
             BINARY_REGEX.matches(this) -> binary2ByteArray()
-            HEX_WITH_LEAD_REGEX.matches(this) -> hex2ByteArray()
+            isDecode || HEX_WITH_LEAD_REGEX.matches(this) -> hex2ByteArray()
             else -> toByteArray()
         }
     }

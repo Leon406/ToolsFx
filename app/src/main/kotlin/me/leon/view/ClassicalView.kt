@@ -24,6 +24,8 @@ class ClassicalView : Fragment(messages["classical"]) {
     private val decodeIgnoreSpace = SimpleBooleanProperty(encodeType.isIgnoreSpace())
     private val param1Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 0)
     private val param2Enabled = SimpleBooleanProperty(encodeType.paramsCount() > 1)
+    private val checkbox1Hidden = SimpleBooleanProperty(encodeType.checkboxHintsCount() == 0)
+    private val checkbox2Hidden = SimpleBooleanProperty(encodeType.checkboxHintsCount() < 2)
     private val processing = SimpleBooleanProperty(false)
     private val hasCrack = SimpleBooleanProperty(encodeType.hasCrack())
 
@@ -31,6 +33,8 @@ class ClassicalView : Fragment(messages["classical"]) {
     private var taOutput: TextArea by singleAssign()
     private var tfParam1: TextField by singleAssign()
     private var tfParam2: TextField by singleAssign()
+    private var cb1: CheckBox by singleAssign()
+    private var cb2: CheckBox by singleAssign()
     private var tfCrackKey: TextField by singleAssign()
     private var labelInfo: Label by singleAssign()
 
@@ -44,7 +48,13 @@ class ClassicalView : Fragment(messages["classical"]) {
         get() = taOutput.text
 
     private val cryptoParams
-        get() = mapOf("p1" to tfParam1.text, "p2" to tfParam2.text)
+        get() =
+            mapOf(
+                P1 to tfParam1.text,
+                P2 to tfParam2.text,
+                C1 to cb1.isSelected.toString(),
+                C2 to cb2.isSelected.toString()
+            )
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -103,8 +113,20 @@ class ClassicalView : Fragment(messages["classical"]) {
                         hasCrack.value = encodeType.hasCrack()
                         param1Enabled.set(encodeType.paramsCount() > 0)
                         param2Enabled.set(encodeType.paramsCount() > 1)
-                        tfParam1.promptText = encodeType.paramsHints()[0]
-                        tfParam2.promptText = encodeType.paramsHints()[1]
+                        checkbox1Hidden.set(encodeType.checkboxHintsCount() == 0)
+                        checkbox2Hidden.set(encodeType.checkboxHintsCount() < 2)
+                        if (param1Enabled.get()) {
+                            tfParam1.promptText = encodeType.paramsHints()[0]
+                        }
+                        if (param2Enabled.get()) {
+                            tfParam2.promptText = encodeType.paramsHints()[1]
+                        }
+                        if (!checkbox1Hidden.get()) {
+                            cb1.text = encodeType.checkboxHints()[0]
+                        }
+                        if (!checkbox2Hidden.get()) {
+                            cb2.text = encodeType.checkboxHints()[1]
+                        }
                         decodeIgnoreSpace.set(encodeType.isIgnoreSpace())
 
                         if (isEncrypt) run()
@@ -119,6 +141,19 @@ class ClassicalView : Fragment(messages["classical"]) {
         hbox {
             spacing = DEFAULT_SPACING
             alignment = Pos.BASELINE_CENTER
+
+            cb1 =
+                checkbox(
+                    if (encodeType.checkboxHintsCount() > 0) encodeType.checkboxHints()[0] else ""
+                ) {
+                    removeWhen(checkbox1Hidden)
+                }
+            cb2 =
+                checkbox(
+                    if (encodeType.checkboxHintsCount() > 1) encodeType.checkboxHints()[1] else ""
+                ) {
+                    removeWhen(checkbox2Hidden)
+                }
             tfParam1 = textfield {
                 prefWidth = DEFAULT_SPACING_40X
                 promptText = encodeType.paramsHints()[0]
@@ -184,6 +219,9 @@ class ClassicalView : Fragment(messages["classical"]) {
             contextmenu {
                 item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
                 item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
+                item("binary2hex") {
+                    action { taOutput.text = taOutput.text.binary2ByteArray().toHex() }
+                }
                 item("reverse") {
                     action {
                         taOutput.text =

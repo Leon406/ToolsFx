@@ -51,6 +51,15 @@ fun String.binary2ByteArray(reversed: Boolean = false) =
         .map { it.joinToString("").run { if (reversed) reversed() else this }.toInt(2).toByte() }
         .toByteArray()
 
+fun String.binaryReverse(reversed: Boolean = false) =
+    if (reversed) {
+        replace(BINARY_LEAD_REGEX, "").toList().chunked(BYTE_BITS).joinToString("") {
+            it.joinToString("").reversed()
+        }
+    } else {
+        this
+    }
+
 /** unicode编解码 */
 fun String.toUnicodeString() =
     fold(StringBuilder()) { acc, c ->
