@@ -139,12 +139,12 @@
 0 requests(0 errors)	0个请求(0个错误)
 1 (LSB)	1(最重要的一点)
 1. Click the "Copy Clickbandit to clipboard" button below. This will copy the Clickbandit script to your clipboard.	1.单击下面的“将Clickbandit复制到剪贴板”按钮。 这会将Clickbandit脚本复制到剪贴板。
-1. Using your browser, go to the following URL:	1.使用浏览器，转到以下URL：
-2. Copy the following data into the activation request field in your browser:	2.将以下数据复制到浏览器的激活请求字段：
+1. Using your browser, go to the following URL:	1.使用浏览器，打开以下地址：
+2. Copy the following data into the activation request field in your browser:	2.将以下数据复制到Activation request中：
 2. In your browser, visit the web page that you want to test, in the usual way.	2.在浏览器中，像往常一样访问要测试的网页。
 2xx  [success]	2xx  [成功]
 3. In your browser, open the web developer console. This might also be called "developer tools" or "JavaScript console".	3.在浏览器中，打开Web开发人员控制台。 这也称为“开发人员工具”或“JavaScript控制台”。
-3. Paste below the data from the activation response field in your browser:	3.从浏览器的激活响应字段中，粘贴下一个数据：
+3. Paste below the data from the activation response field in your browser:	3.粘贴浏览器的Activation response中数据到下面：
 3xx  [redirection]	3xx  [重定向]
 3xx status code with Location header	带Location报头的3xx状态码
 4. Paste the Clickbandit script into the web developer console, and press enter.	4.将Clickbandit脚本粘贴到Web开发人员控制台中，然后按Enter键。
@@ -1546,7 +1546,7 @@ Illegal UTF-8 continuation bytes	非法的UTF-8连续字节
 Illegal Unicode	非法Unicode
 Illegal hex characters	非法十六进制字符
 Images	图片
-Immediately	立刻
+Immediately	立即
 Import	导入
 Import / export CA certificate	导入/导出CA证书
 Import completed	导入完成
@@ -2289,7 +2289,7 @@ Please wait	请稍等
 Please wait ...	请稍等...
 Poll Collaborator interactions	轮询协作者沟通
 Poll every	轮询间隔
-Poll now	立刻轮询
+Poll now	立即轮询
 Poll over unencrypted HTTP	使用未加密的HTTP进行轮询
 Polling location (optional):	轮询位置（可选）：
 Popularity(:*)	受欢迎程度$1
@@ -3479,7 +3479,7 @@ Use static analysis techniques	使用静态分析方法
 Use suite scope [defined in Target tab]	使用套件范围[在目标选项卡上定义]
 Use the configuration below to control which URLs this rule applies to.	设置规则适用的URL。
 Use the configuration below to define the items that are included in the macro, and the order they will be issued. You can configure how parameters and cookies are handled for each item. You can also test the macro to confirm it is working correctly.	使用以下设置可以定义要包含在宏中的项目以及它们的发布顺序。您可以为每个项目设置参数和cookie处理方法。您还可以测试宏以查看它们是否正常工作。
-Use the default Collaborator server	使用默认的Collaborator服务器
+Use the default Collaborator server	使用默认Collaborator服务器
 Use the default protocols and ciphers of your Java installation	使用已安装Java的默认协议和密码
 Use the platform default	使用平台默认值
 Use the platform default \((.*)\)	使用平台默认（$1）
@@ -3540,9 +3540,9 @@ WebSockets history	WebSocket历史记录
 WebSockets history is empty	WebSockets历史记录为空
 Weeks	周
 Welcome ...	欢迎...
-Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。 重译版V3.2 by leon406
-Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。 重译版V3.2 by leon406
-Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目。 重译版V3.2 by leon406
+Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。 重译版V4.0 by leon406
+Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。 重译版V4.0 by leon406
+Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目。 重译版V4.0 by leon406
 When following redirections, understand the following types:	跟随重定向时，识别以下类型：
 When items are added to Target scope:	将项目添加到目标范围时：
 When the same insertion point is observed in a large number of requests with no variation in results, perform a more efficient quick scan, for the following insertion point types:	如果在许多请求中存在相同的插入点且结果没有变化，我们将更有效，更快地扫描下一个插入点类型：
@@ -3739,7 +3739,7 @@ Close tabs to the right	关闭右边所有标签
 Reopen closed tab	打开已关闭标签
 Tab view options	标签视图设置
 Scrolling view	滚动视图
-Wrapped view	包裹视图
+Wrapped view	折叠视图
 Enable	启用
 No proxy listeners are currently running	代理监听器未运行
 No proxy listeners are currently running - Site map will not be populated	代理监听器未运行 - 不显示站点地图
@@ -3752,3 +3752,15 @@ Waiting for data...	等待数据...
 Don't show this again	不再显示
 Hide the Learn tab for future use?	隐藏学习标签？
 You can turn this tab on again from User Options > Misc	您可以在用户配置 > 杂项重新启用
+Invalid port number	非法端口
+Get started	开始
+Payloads to generate:	生成的Payload:
+Your interactions will appear here	所有交互结果将会在这里显示
+Polling automatically	自动轮询
+Source IP address	来源IP地址
+Close all tabs	关闭所有页签
+Burp Collaborator is currently disabled. To enable it, go to	Burp Collaborator已禁用,启用请到
+Project options > Misc > Burp Collaborator Server.	项目配置 > 杂项 > Burp Collaborator服务器
+Concurrent requests	并发请求
+Auto backoff	自动补偿
+Automatic backoff	自动补偿
