@@ -20,39 +20,39 @@
 (.*)[Hh]iding ([2-5]xx) responses(.*)	隐藏$1$2响应$3
 (.*)[Hh]iding ([2-5]xx, )?([2-5]xx, )?((, )?[2-5]xx) and ([2-5]xx) responses(.*)	隐藏$1$2$3$4$5, $6响应$7
 (.*)[Hh]iding empty folders(.*)	$1隐藏空文件夹$2
-(.*)[Hh]iding incoming items(.*)	$1隐藏入站项目$2
-(.*)[Hh]iding non-parameterized and not found items(.*)	$1没有参数，不存在的项目$2
+(.*)[Hh]iding incoming items(.*)	$1隐藏入站条目$2
+(.*)[Hh]iding non-parameterized and not found items(.*)	$1无参数，不存在条目$2
 (.*)[Hh]iding non-parameterized items(.*)	$1隐藏无参数条目$2
 (.*)[Hh]iding not found items(.*)	$1隐藏不存在条目$2
-(.*)[Hh]iding out of scope and incoming items(.*)	$1隐藏范围外, 已接收的项目$2
-(.*)[Hh]iding out of scope and non-parameterized items(.*)	$1隐藏在范围外, 没有参数的项目$2
-(.*)[Hh]iding out of scope and not found items(.*)	$1隐藏范围外, 不存在的项目$2
-(.*)[Hh]iding out of scope and outgoing items(.*)	$1隐藏范围外，已发送的项目$2
-(.*)[Hh]iding out of scope and unrequested items(.*)	$1隐藏范围外，无响应的项目$2
-(.*)[Hh]iding out of scope and unresponded items(.*)	$1隐藏范围外，未响应响应项目$2
-(.*)[Hh]iding out of scope items(.*)	$1隐藏范围外的项目$2
-(.*)[Hh]iding out of scope, non-parameterized and not found items(.*)	$1隐藏范围外，没有参数，不存在的项目$2
-(.*)[Hh]iding out of scope, outgoing and incoming items(.*)	$1隐藏范围外，已发送和已接收的项目$2
-(.*)[Hh]iding out of scope, unrequested and non-parameterized items(.*)	$1隐藏范围外，无请求，没有参数的项目$2
-(.*)[Hh]iding out of scope, unrequested and not found items(.*)	$1隐藏范围外，无请求，不存在的项目$2
-(.*)[Hh]iding out of scope, unrequested, non-parameterized and not found items(.*)	$1隐藏范围外，无请求，没有参数，不存在的项目$2
-(.*)[Hh]iding out of scope, unresponded and non-parameterized items(.*)	$1隐藏范围外，未响应，没有参数的项目$2
-(.*)[Hh]iding outgoing and incoming items(.*)	$1隐藏已发送和已接收的项目$2
-(.*)[Hh]iding outgoing items(.*)	$1隐藏已发送的项目$2
+(.*)[Hh]iding out of scope and incoming items(.*)	$1隐藏范围外, 已接收条目$2
+(.*)[Hh]iding out of scope and non-parameterized items(.*)	$1隐藏在范围外, 无参数条目$2
+(.*)[Hh]iding out of scope and not found items(.*)	$1隐藏范围外, 不存在条目$2
+(.*)[Hh]iding out of scope and outgoing items(.*)	$1隐藏范围外，已发送条目$2
+(.*)[Hh]iding out of scope and unrequested items(.*)	$1隐藏范围外，未请求条目$2
+(.*)[Hh]iding out of scope and unresponded items(.*)	$1隐藏范围外，未响应条目$2
+(.*)[Hh]iding out of scope items(.*)	$1隐藏范围外条目$2
+(.*)[Hh]iding out of scope, non-parameterized and not found items(.*)	$1隐藏范围外，没有参数，不存在条目$2
+(.*)[Hh]iding out of scope, outgoing and incoming items(.*)	$1隐藏范围外，已发送和已接收条目$2
+(.*)[Hh]iding out of scope, unrequested and non-parameterized items(.*)	$1隐藏范围外，无请求，无参数条目$2
+(.*)[Hh]iding out of scope, unrequested and not found items(.*)	$1隐藏范围外，无请求，不存在条目$2
+(.*)[Hh]iding out of scope, unrequested, non-parameterized and not found items(.*)	$1隐藏范围外，未请求，无参数，不存在条目$2
+(.*)[Hh]iding out of scope, unresponded and non-parameterized items(.*)	$1隐藏范围外，未响应，无参数条目$2
+(.*)[Hh]iding outgoing and incoming items(.*)	$1隐藏已发送和已接收条目$2
+(.*)[Hh]iding outgoing items(.*)	$1隐藏已发送条目$2
 (.*)[Hh]iding specific extensions(.*)	$1隐藏指定的扩展名$2
-(.*)[Hh]iding unrequested and non-parameterized items(.*)	$1隐藏无请求，没有参数的项目$2
-(.*)[Hh]iding unrequested and not found items(.*)	$1隐藏无请求的,不存在的项目$2
-(.*)[Hh]iding unrequested items(.*)	$1隐藏无请求的项目$2
-(.*)[Hh]iding unrequested, non-parameterized and not found items(.*)	$1隐藏未请求，没有参数的,不存在的项目$2
-(.*)[Hh]iding unresponded and non-parameterized items(.*)	$1隐藏没有响应的,没有参数的项目$2
-(.*)[Hh]iding unresponded items(.*)	$1隐藏未响应的项目$2
+(.*)[Hh]iding unrequested and non-parameterized items(.*)	$1隐藏无请求，无参数条目$2
+(.*)[Hh]iding unrequested and not found items(.*)	$1隐藏未请求,不存在条目$2
+(.*)[Hh]iding unrequested items(.*)	$1隐藏未请求条目$2
+(.*)[Hh]iding unrequested, non-parameterized and not found items(.*)	$1隐藏未请求，无参数,不存在条目$2
+(.*)[Hh]iding unresponded and non-parameterized items(.*)	$1隐藏未响应，无参数条目$2
+(.*)[Hh]iding unresponded items(.*)	$1隐藏未响应条目$2
 (.*)[Mm]atching expression (.*)	$1匹配表达式 $2
 (.*)[Mm]atching regex (.*)	$1匹配正则 $2
 (.*)[Nn]ot matching expression (.*)	$1不匹配表达式$2
 (.*)[Nn]ot matching regex (.*)	$1不匹配正则$2
-(.*)[Ss]howing only commented and highlighted items(.*)	$1仅显示带注释及高亮的项目$2
-(.*)[Ss]howing only commented items(.*)	$1仅显示带注释的项目$2
-(.*)[Ss]howing only highlighted items(.*)	$1仅显示高亮的项目$2
+(.*)[Ss]howing only commented and highlighted items(.*)	$1仅显示带注释及高亮条目$2
+(.*)[Ss]howing only commented items(.*)	$1仅显示带注释条目$2
+(.*)[Ss]howing only highlighted items(.*)	$1仅显示高亮条目$2
 (.*)[Ss]howing only listener (.*)	$1仅显示监听器(listener)$2
 (.*)[Ss]howing specific extensions(.*)	$1显示指定的扩展名$2
 (.*)\[Pro version only\](.*)	$1[仅限专业版]$2
@@ -171,11 +171,6 @@ About	Burp Suite 关于Burp Suite
 About Burp Scanner	关于Burp Scanner
 Accept cookies	接受cookie
 Action	操作
-Action URL	目标 URL
-Action URL and method	目标网址和方法
-Action URL, method and fields	目标网址，方法，字段
-Action URL, method, fields and values	目标网址，方法，字段，值
-Action URL:	目标URL:
 Activate License	激活许可证
 Activation Failed	激活失败
 Active Scanning Areas	主动扫描区域
@@ -202,27 +197,27 @@ Add URL to include in scope	添加要包括在范围中的URL
 Add a new action	添加一个新动作
 Add a new client certificate	添加一个新的客户端证书
 Add a new custom parameter location	添加自定义参数位置
-Add a new extract item	添加新提取的项目
+Add a new extract item	新建提取条目
 Add a new form field completion rule	添加了新表单字段完成规则
 Add a new header	添加新报头
-Add a new interception rule	添加新的拦截规则
-Add a new item	添加新项目
-Add a new item by pasting a URL	粘贴网址并添加新项目
-Add a new listener	添加一个监听器
-Add a new macro	添加一个新的宏
-Add a new match/replace rule	添加一个新的匹配/替换规则
-Add a new parameter	添加一个新参数
-Add a new payload processing rule	添加一个新的payload处理规则
-Add a new proxy listener	添加一个新的代理监听器
-Add a new task	添加新任务
-Add a new upstream proxy rule	添加一条新的上行代理规则
+Add a new interception rule	新建拦截规则
+Add a new item	新建条目
+Add a new item by pasting a URL	通过粘贴网址新建条目
+Add a new listener	新建监听器
+Add a new macro	新建宏
+Add a new match/replace rule	新建匹配/替换规则
+Add a new parameter	新建参数
+Add a new payload processing rule	新建payload处理规则
+Add a new proxy listener	新建代理监听器
+Add a new task	新建任务
+Add a new upstream proxy rule	新建上行代理规则
 Add all items requested through Proxy to site map	将通过代理请求的所有项目添加到站点地图
 Add all links observed in traffic through Proxy to site map	将通过代理在流量中观察到的所有链接添加到站点地图
 Add comment	添加注释
 Add comments	添加注释
 Add cookies received in responses to the session handling cookie jar	添加响应中收到的cookies到会话处理cookie jar中
 Add discovered content to suite site map	将发现的内容添加到Sitemap
-Add entries here to override your computer's DNS resolution.	在此处添加以覆盖计算机的DNS名称解析。
+Add entries here to override your computer's DNS resolution.	在此处添加以覆盖计算机的DNS域名解析。
 Add form field completion rule	添加表单字段完成规则
 Add from list ...	从列表中添加...
 Add from list ... [Pro version only]	从列表中添加... [仅限专业版]
@@ -352,91 +347,91 @@ Are you sure you want to remove this item?	您确定要删除此项吗？
 Are you sure you want to remove this listener?	您确定要删除此监听器吗？
 Are you sure you want to remove this macro?	您确定要删除此宏吗？
 Are you sure you want to remove this rule?	您确定要删除此规则吗？
-Are you sure you want to restore default Burp Collaborator server options?	您确定要将Burp Collaborator服务器选项重置为默认值吗？
-Are you sure you want to restore default Burp Extender options?	您确定要将Burp Extender选项重置为默认值吗？
-Are you sure you want to restore default HTML rendering options?	您确定要将HTML呈现选项重置为默认值吗？
-Are you sure you want to restore default HTTP message display options?	您确定要将HTTP消息显示选项重置为默认值吗？
-Are you sure you want to restore default Java environment options?	您确定要将Java环境选项重置为默认值吗？
-Are you sure you want to restore default Python environment options?	您确定要将Python环境选项重置为默认值吗？
-Are you sure you want to restore default Ruby environment options?	您确定要将Ruby环境选项重置为默认值吗？
+Are you sure you want to restore default Burp Collaborator server options?	您确定要重置Burp Collaborator服务器选项吗？
+Are you sure you want to restore default Burp Extender options?	您确定要重置Burp Extender选项吗？
+Are you sure you want to restore default HTML rendering options?	您确定要重置HTML渲染选项吗？
+Are you sure you want to restore default HTTP message display options?	您确定要重置HTTP消息显示选项吗？
+Are you sure you want to restore default Java environment options?	您确定要重置Java环境选项吗？
+Are you sure you want to restore default Python environment options?	您确定要重置Python环境选项吗？
+Are you sure you want to restore default Ruby environment options?	您确定要重置Ruby环境选项吗？
 Are you sure you want to restore default SOCKS proxy options?	您确定要恢复默认的SOCKS代理选项吗？
-Are you sure you want to restore default SSL negotiation options?	您确定要将SSL协商选项重置为默认值吗？
-Are you sure you want to restore default SSL negotiation workarounds options?	SSL协商解决方法您确定要将选项重置为默认值吗？
-Are you sure you want to restore default SSL passthrough options?	您确定要将SSL 穿透选项重置为默认值吗？
-Are you sure you want to restore default active scanning areas options?	您确定要将活动扫描目标选项重置为默认值吗？
-Are you sure you want to restore default active scanning engine options?	您确定要将活动扫描引擎选项重置为默认值吗？
-Are you sure you want to restore default active scanning optimization options?	您确定要将活动扫描优化选项重置为默认值吗？
-Are you sure you want to restore default application login options?	您确定要将应用程序登录选项重置为默认值吗？
-Are you sure you want to restore default attack insertion points options?	您确定要将攻击插入点选项重置为默认值吗？
-Are you sure you want to restore default attack results options?	您确定要将攻击结果选项重置为默认值吗？
-Are you sure you want to restore default automatic project backup options?	您确定要将自动项目备份选项重置为默认值吗？
-Are you sure you want to restore default character set options?	您确定要将字符集选项重置为默认值吗？
-Are you sure you want to restore default client SSL certificates options?	您确定要将客户端SSL证书选项重置为默认值吗？
-Are you sure you want to restore default cookie jar options?	您确定要将cookie jar选项重置为默认值吗？
-Are you sure you want to restore default crawler options?	您确定要将爬取工具选项重置为默认值吗？
-Are you sure you want to restore default extract grep options?	您确定要将提取的grep选项重置为默认值吗？
-Are you sure you want to restore default form submission options?	您确定要将表单提交选项重置为默认值吗？
-Are you sure you want to restore default hostname resolution options?	您确定要将主机名解析选项重置为默认值吗？
-Are you sure you want to restore default hotkey options?	您确定要将热键选项重置为默认值吗？
-Are you sure you want to restore default intercept WebSockets messages options?	您确定要将WebSocket消息的拦截选项重置为默认值吗？
-Are you sure you want to restore default intercept client requests options?	您确定要将客户端请求的拦截选项重置为默认值吗？
-Are you sure you want to restore default intercept server responses options?	您确定要将服务器响应拦截选项重置为默认值吗？
-Are you sure you want to restore default live active scanning options?	您确定要将实时活动扫描选项重置为默认值吗？
-Are you sure you want to restore default live capture options?	您确定要将实时捕捉选项重置为默认值吗？
-Are you sure you want to restore default live passive scanning options?	您确定要将实时被动扫描选项重置为默认值吗？
-Are you sure you want to restore default logging options?	您确定要将日志记录选项重置为默认值吗？
-Are you sure you want to restore default macros options?	您确定要将宏选项重置为默认值吗？
-Are you sure you want to restore default match and replace options?	您确定要将搜索和替换选项重置为默认值吗？
-Are you sure you want to restore default match grep options?	您确定要将match grep选项重置为默认值吗？
-Are you sure you want to restore default miscellaneous proxy options?	您确定要将其他代理选项重置为默认值吗？
+Are you sure you want to restore default SSL negotiation options?	您确定要重置SSL协商选项吗？
+Are you sure you want to restore default SSL negotiation workarounds options?	SSL协商解决方法您确定要重置选项吗？
+Are you sure you want to restore default SSL passthrough options?	您确定要重置SSL 穿透选项吗？
+Are you sure you want to restore default active scanning areas options?	您确定要重置活动扫描目标选项吗？
+Are you sure you want to restore default active scanning engine options?	您确定要重置活动扫描引擎选项吗？
+Are you sure you want to restore default active scanning optimization options?	您确定要重置活动扫描优化选项吗？
+Are you sure you want to restore default application login options?	您确定要重置应用程序登录选项吗？
+Are you sure you want to restore default attack insertion points options?	您确定要重置攻击插入点选项吗？
+Are you sure you want to restore default attack results options?	您确定要重置攻击结果选项吗？
+Are you sure you want to restore default automatic project backup options?	您确定要重置项目自动备份选项吗？
+Are you sure you want to restore default character set options?	您确定要重置字符集选项吗？
+Are you sure you want to restore default client SSL certificates options?	您确定要重置客户端SSL证书选项吗？
+Are you sure you want to restore default cookie jar options?	您确定要重置cookie jar选项吗？
+Are you sure you want to restore default crawler options?	您确定要重置爬取工具选项吗？
+Are you sure you want to restore default extract grep options?	您确定要重置提取的grep选项吗？
+Are you sure you want to restore default form submission options?	您确定要重置表单提交选项吗？
+Are you sure you want to restore default hostname resolution options?	您确定要重置主机名解析选项吗？
+Are you sure you want to restore default hotkey options?	您确定要重置热键选项吗？
+Are you sure you want to restore default intercept WebSockets messages options?	您确定要重置WebSocket消息的拦截选项吗？
+Are you sure you want to restore default intercept client requests options?	您确定要重置客户端请求的拦截选项吗？
+Are you sure you want to restore default intercept server responses options?	您确定要重置服务器响应拦截选项吗？
+Are you sure you want to restore default live active scanning options?	您确定要重置实时活动扫描选项吗？
+Are you sure you want to restore default live capture options?	您确定要重置实时捕捉选项吗？
+Are you sure you want to restore default live passive scanning options?	您确定要重置实时被动扫描选项吗？
+Are you sure you want to restore default logging options?	您确定要重置日志记录选项吗？
+Are you sure you want to restore default macros options?	您确定要重置宏选项吗？
+Are you sure you want to restore default match and replace options?	您确定要重置搜索和替换选项吗？
+Are you sure you want to restore default match grep options?	您确定要重置match grep选项吗？
+Are you sure you want to restore default miscellaneous proxy options?	您确定要重置其他代理选项吗？
 Are you sure you want to restore default miscellaneous proxy settings options?	您确定要重置默认代理配置选项吗？
-Are you sure you want to restore default out-of-scope requests options?	您确定要将范围外请求选项重置为默认值吗？
-Are you sure you want to restore default passive scanning areas options?	您确定要将被动扫描目标选项重置为默认值吗？
-Are you sure you want to restore default passive spidering options?	您确定要将被动拼接选项重置为默认值吗？
-Are you sure you want to restore default payloads grep options?	您确定要将payload grep选项重置为默认值吗？
-Are you sure you want to restore default performance feedback options?	您确定要将性能反馈选项重置为默认值吗？
-Are you sure you want to restore default platform authentication options?	您确定要将平台身份验证选项重置为默认值吗？
-Are you sure you want to restore default proxy history logging options?	您确定要将代理历史记录日志选项恢复为默认值吗？
-Are you sure you want to restore default proxy interception options?	您确定要将代理拦截选项恢复为默认值吗？
-Are you sure you want to restore default proxy listeners options?	您确定要将代理监听器选项重置为默认值吗？
-Are you sure you want to restore default redirections options?	您确定要将重定向选项重置为默认值吗？
-Are you sure you want to restore default request engine options?	您确定要将请求引擎选项重置为默认值吗？
-Are you sure you want to restore default request headers options?	您确定要将请求头选项重置为默认值吗？
-Are you sure you want to restore default response modification options?	您确定要将响应操作选项重置为默认值吗？
-Are you sure you want to restore default rest api options?	您确定要将REST API选项重置为默认值吗？
-Are you sure you want to restore default scan issues options?	您确定要将扫描项目选项重置为默认值吗？
-Are you sure you want to restore default scheduled tasks options?	您确定要将计划任务选项重置为默认值吗？
-Are you sure you want to restore default server SSL certificates options?	您确定要将服务器SSL证书选项重置为默认值吗？
-Are you sure you want to restore default session handling rules options?	您确定要将会话处理规则选项重置为默认值吗？
-Are you sure you want to restore default spider engine options?	您确定要将Spider引擎选项重置为默认值吗？
-Are you sure you want to restore default spider scope options?	您确定要将Spider范围选项重置为默认值吗？
-Are you sure you want to restore default static code analysis options?	您确定要将静态代码分析选项重置为默认值吗？
-Are you sure you want to restore default status 100 responses options?	状态100响应您确定要将选项重置为默认值吗？
-Are you sure you want to restore default streaming responses options?	您确定要将流式响应选项重置为默认值吗？
-Are you sure you want to restore default target scope options?	您确定要将目标范围选项重置为默认值吗？
-Are you sure you want to restore default temporary files location options?	您确定要将临时文件位置选项重置为默认值吗？
-Are you sure you want to restore default timeouts options?	您确定要将超时选项重置为默认值吗？
-Are you sure you want to restore default token analysis options?	您确定要将令牌分析选项重置为默认值吗？
-Are you sure you want to restore default token handling options?	您确定要将令牌处理选项重置为默认值吗？
+Are you sure you want to restore default out-of-scope requests options?	您确定要重置范围外请求选项吗？
+Are you sure you want to restore default passive scanning areas options?	您确定要重置被动扫描目标选项吗？
+Are you sure you want to restore default passive spidering options?	您确定要重置被动拼接选项吗？
+Are you sure you want to restore default payloads grep options?	您确定要重置payload grep选项吗？
+Are you sure you want to restore default performance feedback options?	您确定要重置性能反馈选项吗？
+Are you sure you want to restore default platform authentication options?	您确定要重置平台身份验证选项吗？
+Are you sure you want to restore default proxy history logging options?	您确定要将代理历史记录日志选项恢复吗？
+Are you sure you want to restore default proxy interception options?	您确定要将代理拦截选项恢复吗？
+Are you sure you want to restore default proxy listeners options?	您确定要重置代理监听器选项吗？
+Are you sure you want to restore default redirections options?	您确定要重置重定向选项吗？
+Are you sure you want to restore default request engine options?	您确定要重置请求引擎选项吗？
+Are you sure you want to restore default request headers options?	您确定要重置请求头选项吗？
+Are you sure you want to restore default response modification options?	您确定要重置响应操作选项吗？
+Are you sure you want to restore default rest api options?	您确定要重置REST API选项吗？
+Are you sure you want to restore default scan issues options?	您确定要重置扫描项目选项吗？
+Are you sure you want to restore default scheduled tasks options?	您确定要重置计划任务选项吗？
+Are you sure you want to restore default server SSL certificates options?	您确定要重置服务器SSL证书选项吗？
+Are you sure you want to restore default session handling rules options?	您确定要重置会话处理规则选项吗？
+Are you sure you want to restore default spider engine options?	您确定要重置Spider引擎选项吗？
+Are you sure you want to restore default spider scope options?	您确定要重置Spider范围选项吗？
+Are you sure you want to restore default static code analysis options?	您确定要重置静态代码分析选项吗？
+Are you sure you want to restore default status 100 responses options?	状态100响应您确定要重置选项吗？
+Are you sure you want to restore default streaming responses options?	您确定要重置流式响应选项吗？
+Are you sure you want to restore default target scope options?	您确定要重置目标范围选项吗？
+Are you sure you want to restore default temporary files location options?	您确定要重置临时文件位置选项吗？
+Are you sure you want to restore default timeouts options?	您确定要重置超时选项吗？
+Are you sure you want to restore default token analysis options?	您确定要重置令牌分析选项吗？
+Are you sure you want to restore default token handling options?	您确定要重置令牌处理选项吗？
 Are you sure you want to restore default upstream proxy servers options?	您确定要重置为默认代理服务器选项吗？
-Are you sure you want to restore default user interface options?	您确定要将用户界面选项重置为默认值吗？
-Are you sure you want to restore defaults for Project options?	您确定要恢复为项目选项的默认值吗？
-Are you sure you want to restore defaults for Proxy?	您确定要将代理选项重置为默认值吗？
-Are you sure you want to restore defaults for Repeater?	您确定要将重放器选项恢复为默认值吗？
-Are you sure you want to restore defaults for Scanner?	您确定要将扫描器选项重置为默认值吗？
-Are you sure you want to restore defaults for Sequencer?	您确定要将定序器选项重置为默认值吗？
-Are you sure you want to restore defaults for Spider?	您确定要将Spider的选项重置为默认值吗？
-Are you sure you want to restore defaults for Target?	您确定要将目标选项重置为默认值吗？
-Are you sure you want to restore defaults for all project options?	您确定要将所有项目选项重置为默认值吗？
-Are you sure you want to restore defaults for user options?	您确定要将用户选项重置为默认值吗？
-Are you sure you want to restore default Tasks options?	您确定要将任务选项重置为默认值吗？
-Are you sure you want to restore default HTTP message search options?	您确定要将HTTP消息搜索选项重置为默认值吗？
-Are you sure you want to restore default Learn tab options?	您确定要将学习标签选项重置为默认值吗？
-Are you sure you want to restore default Burp's browser options?	您确定要将Burp浏览器选项重置为默认值吗？
-Are you sure you want to restore default client TLS certificates options?	您确定要将客户端TLS证书选项重置为默认值吗？
-Are you sure you want to restore default TLS negotiation workarounds options?	您确定要将TLS协商选项重置为默认值吗？
-Are you sure you want to restore default message editor request views options?	您确定要将消息编辑器请求视图选项重置为默认值吗？
-Are you sure you want to restore default message editor response views options?	您确定要将消息编辑器响应视图选项重置为默认值吗？
+Are you sure you want to restore default user interface options?	您确定要重置用户界面选项吗？
+Are you sure you want to restore defaults for Project options?	您确定要重置项目选项吗？
+Are you sure you want to restore defaults for Proxy?	您确定要重置代理选项吗？
+Are you sure you want to restore defaults for Repeater?	您确定要将重放器选项恢复吗？
+Are you sure you want to restore defaults for Scanner?	您确定要重置扫描器选项吗？
+Are you sure you want to restore defaults for Sequencer?	您确定要重置定序器选项吗？
+Are you sure you want to restore defaults for Spider?	您确定要重置Spider的选项吗？
+Are you sure you want to restore defaults for Target?	您确定要重置目标选项吗？
+Are you sure you want to restore defaults for all project options?	您确定要重置所有项目选项吗？
+Are you sure you want to restore defaults for user options?	您确定要重置用户选项吗？
+Are you sure you want to restore default Tasks options?	您确定要重置任务选项吗？
+Are you sure you want to restore default HTTP message search options?	您确定要重置HTTP消息搜索选项吗？
+Are you sure you want to restore default Learn tab options?	您确定要重置学习标签选项吗？
+Are you sure you want to restore default Burp's browser options?	您确定要重置Burp浏览器选项吗？
+Are you sure you want to restore default client TLS certificates options?	您确定要重置客户端TLS证书选项吗？
+Are you sure you want to restore default TLS negotiation workarounds options?	您确定要重置TLS协商选项吗？
+Are you sure you want to restore default message editor request views options?	您确定要重置消息编辑器请求视图选项吗？
+Are you sure you want to restore default message editor response views options?	您确定要重置消息编辑器响应视图选项吗？
 Are you sure you want to retest the macro?	您确定要重新测试宏吗？
 Are you sure you want to shut down Burp and launch the downloaded file?	关闭Burp并启动下载的文件？
 Are you sure you want to shut down Burp and run the new version?	您确定要关闭Burp并开始新版本吗？
@@ -485,7 +480,7 @@ Auto-expanded when there is enough space	有空间时自动展开
 Auto-modified message	自动更改消息
 Auto-modified request	自动更改请求
 Auto-modified response	自动更改响应
-Auto-scroll to match when text changes	在文本更改时自动滚动到匹配的位置
+Auto-scroll to match when text changes	文本变更时,自动滚到匹配位置
 Auto-select based on request features	从请求功能中自动选择
 Automatic BApp updates	自动更新BApp
 Automatic Project Backup [disk projects only]	项目自动备份[仅限磁盘项目]
@@ -557,7 +552,7 @@ Breadth-first hop limit:	广度优先跳跃限制：
 Browser cross-site scripting filter disabled(\s+\[\d+\])?	浏览器XSS过滤器无效$1
 Brute forcer	爆破(Brute forcer)
 Building GUI	构建GUI
-Builds:	建设：
+Builds:	构建：
 Built-in	内置
 Built-in long directory list	长内置目录名称列表
 Built-in long file list	内置长文件名列表
@@ -593,7 +588,7 @@ Burp Suite Professional	Burp Suite专业版
 Burp Suite Professional([^-]+) - ([^-]+)	Burp Suite专业版 $1 -$2
 Burp Suite Professional([^-]+) - Temporary Project +-([^-]+)	Burp Suite专业版 $1 - 临时项目 -$2
 Burp Suite Support Center	Burp Suite支持中心
-Burp Suite diagnostics	Burp Suite审计
+Burp Suite diagnostics	Burp Suite诊断
 Burp Suite documentation	Burp Suite文档
 Burp Suite on Twitter	Burp Suite Twitter
 Burp Suite search	Burp Suite搜索
@@ -633,17 +628,17 @@ Capture by tool	按工具捕获
 Capture filter:	捕获过滤：
 Capture filter: Please wait ...	捕获过滤：请稍后...
 Capture limit	捕获限制
-Capture only in-scope items (Suite scope)	仅捕获范围内的条目（套件范围）
+Capture only in-scope items (Suite scope)	仅捕获范围内条目（套件范围）
 Capture only parameterized requests	仅捕获参数化请求
 Capture requests up to:	捕获请求最大:
 Capture responses up to:	捕获响应最大:
 Capturing:	捕获中
 Case modification	大小写修改
 Case modifications	大小写修改
-Case sensitive	区分大小写字母
+Case sensitive	区分大小写
 Case sensitive match	区分大小写匹配
-Case sensitivity:	区分大小：
-Case-sensitivity:	区分大小：
+Case sensitivity:	区分大小写：
+Case-sensitivity:	区分大小写：
 Certain	Certain
 Certificate	证书
 Certificate and private key from PKCS#12 keystore	来自PKCS＃12密钥库的证书和密钥
@@ -708,16 +703,16 @@ Chunked coding converter config	分块编码转换配置
 Clean Burp from computer	删除计算机中Burp
 Clear	清空
 Clear Logs	清空日志
-Clear all	清除所有
+Clear all	清空所有
 Clear all items and separators from all positions	从所有位置清除项目和分隔符
 Clear all payload markers	清除所有payload标记
 Clear all text and payload markers	清除所有文本和payload标记
-Clear event log	清除事件日志
-Clear histories	清除历史
-Clear history	清除历史
+Clear event log	清空事件日志
+Clear histories	清空历史
+Clear history	清空历史
 Clear log	清空日志
-Clear queues	清除队列
-Clear the contents of the viewer	清除查看器内容
+Clear queues	清空队列
+Clear the contents of the viewer	清空查看器内容
 Clear §	清除payload位置 §
 Cleartext submission of password(\s+\[\d+\])?	明文密码传输$1
 Click "Copy to clipboard" to generate Burp Collaborator payloads that you can use in your own testing. Any interactions that result from using the payloads will appear below.	单击“复制到剪贴板”以生成可以在自己的测试中使用的Burp协作器payload。使用payload产生的任何交互都将显示在下面。
@@ -752,7 +747,7 @@ Colorize	彩色化(Colorize)
 Columns	列
 Combined view	合并视图
 Comment	注释
-Comment this item	注释这个条目
+Comment this item	注释此条目
 Comment:	注释:
 Comments search \| (https?://.*)	评论搜索| $1
 Comments?	注释
@@ -836,7 +831,7 @@ Cookie name	Cookie键
 Cookie parameter values	Cookie参数值
 Cookie scoped to parent domain	父域范围Cookie
 Cookie value	Cookie值
-Cookie without HttpOnly flag set	Cookie未设置HttpOnly标志
+Cookie without HttpOnly flag set	未设置HttpOnly标志的Cookie
 Cookies received	已接收Cookie
 Copy	复制
 Copy ...	复制...
@@ -930,7 +925,7 @@ Download Extension	下载扩展
 View Documentation	查看文档
 New Recorded Login	新建记录登录
 How it works	如何工作
-Vulnerable JavaScript dependency	JavaScript依赖漏洞
+Vulnerable JavaScript dependency	有安全漏洞JavaScript依赖
 DNS query	DNS查询
 DOM data manipulation \(DOM-based\)(\s+\[\d+\])?	DOM数据操作（基于DOM）$1
 DOM data manipulation \(reflected DOM-based\)(\s+\[\d+\])?	DOM数据操作（基于DOM反射型）$1
@@ -952,7 +947,7 @@ Deduplicate	去重
 Deduplication	去重
 Default configuration	默认设置
 Default to HTTP/2 if the server supports it	如果服务器支持则使用HTTP/2
-Default to the above in future	下次将其设置为默认值
+Default to the above in future	下次将其设置
 Default to this option in future	下次之后将此选项设为默认选项
 Define Custom Parameter	自定义参数定义
 Define behavior dependent on session validity:	依赖于会话有效性的行为定义：
@@ -973,7 +968,7 @@ Delay between requests(.*)	请求间隔$1
 Delay increment	延迟增量
 Delete	删除
 Delete All	删除全部
-Delete backup file on clean shutdown of Burp	当Burp正常完成时删除备份文件
+Delete backup file on clean shutdown of Burp	当Burp正常关闭时删除备份文件
 Delete branch	删除分支
 Delete byte	删除字节
 Delete bytes ...	删除多个字节...
@@ -1177,7 +1172,7 @@ Empty cookie jar	清空Cookie jar
 Enable HTTP/2 connection reuse	允许HTTP/2连接复用
 Enable algorithms blocked by Java security policy (requires restart)	启用Java安全策略阻止算法（需重启）
 Enable auto-updates (requires restart)	启用自动更新(需重启)
-Enable automatic project backup	激活自动项目备份
+Enable automatic project backup	启用项目自动备份
 Enable disabled form fields	启用被禁用的表单字段
 Enable embedded browser sandbox	启用内置浏览器沙箱
 Enable embedded browser sandbox (Windows only)	启用内置浏览器沙箱（仅限Windows）
@@ -1213,7 +1208,7 @@ Enter the details of the payload processing rule.	输入payload处理规则的�
 Enter the details of the upstream proxy rule. You can use wildcards to specify destination hosts (* matches zero or more characters, ? matches any character except a dot). Leave the proxy host blank to connect directly for the specified destination host.	请输入上层代理的详细信息。您可以使用通配符（*表示零个或多个字母，？对于除点之外的任何字符）以指定目标主机。将代理主机留空以直接连接到指定的主机。
 Enter the details of when the task should run. The task can be scheduled to run once at a specific time, or to repeat at a defined interval.	输入执行任务计划的详细时间。任务只能在指定时间执行一次，或者以指定的时间间隔重复执行。
 Enter the full string to be submitted as the custom request header.	请输入要作为自定义请求头发送的所有字符串。
-Enter the hostname and IP address. Burp will use this setting instead of the DNS resolution provided by your computer.	请输入主机名和IP地址。使用此设置而不是计算机的DNS名称解析。
+Enter the hostname and IP address. Burp will use this setting instead of the DNS resolution provided by your computer.	请输入主机名和IP地址。使用此设置而不是计算机的DNS域名解析。
 Enter the master password that was used to encrypt stored passwords.	输入用于加密密码存储区的主密码。
 Enter the master password to encrypt stored passwords. A strong password is recommended.	输入主密码以加密密码存储区。建议使用强密码。
 Enter the platform credentials for the specified destination host.	输入目标主机平台凭据。
@@ -1246,7 +1241,7 @@ Exit Burp	退出Burp
 Expand	展开
 Expand all	展开所有
 Expand branch	展开分支
-Expand requested items	展开请求的条目
+Expand requested items	展开请求条目
 Expand the areas that you want to define in this configuration.	展开此配置中定义的范围。
 Expires	有效期限
 Export	导出
@@ -1560,11 +1555,11 @@ Importing (.*) data: (\d+)% complete	$1数据导入中: $2% 完成
 In	在
 In current browser session	在当前浏览器会话
 In current session	在当前会话中
-In future, just copy the URL and don't show this dialog	从现在开始，自动复制URL，不显示此对话框。
+In future, just copy the URL and don't show this dialog	以后不显示此对话框，自动复制URL。
 In original session	在原始会话
 In request does not match	与请求不匹配
 In request matches	根据请求匹配
-In response does not match	它与响应中的一个不匹配
+In response does not match	不匹配响应
 In response matches	匹配响应
 In-band	带内
 In-scope items only	仅范围内的项目
@@ -1581,7 +1576,7 @@ Include full requests	包括完整的请求
 Include full responses	包括完整的响应
 Include headers	包括报头
 Include in scope	包括以下内容在范围内
-Include in-scope items only	仅包括在范围内的条目
+Include in-scope items only	仅包括在范围内条目
 Include relevant extract	提取相关部分(Include relevant extract)
 Included URL prefixes	包含URL前缀
 Included URLs	包含的网址
@@ -1703,7 +1698,7 @@ JavaScript analysis	JavaScript解析
 JavaScript injection \(DOM-based\)(\s+\[\d+\])?	JavaScript注入（基于DOM）$1
 JavaScript injection \(reflected DOM-based\)(\s+\[\d+\])?	JavaScript注入（基于DOM反射型）$1
 JavaScript injection \(stored DOM-based\)(\s+\[\d+\])?	JavaScript注入（基于DOM存储型）$1
-JavaScript phases	JavaScript阶段(JavaScript phases)
+JavaScript phases	JavaScript阶段
 JavaScript-driven	JavaScript驱动
 Javascript dynamic analysis	Javascript动态解析
 Javascript static analysis	Javascript静态解析
@@ -1788,7 +1783,7 @@ Load application login options	加载应用程序登录选项
 Load attack config	加载攻击配置
 Load attack insertion points options	加载攻击插入点选项
 Load attack results options	加载攻击结果选项
-Load automatic project backup options	加载自动项目备份选项
+Load automatic project backup options	加载项目自动备份选项
 Load character set options	读取字符集选项
 Load client SSL certificates options	加载客户端SSL证书选项
 Load cookie jar options	阅读cookie jar选项
@@ -1856,7 +1851,7 @@ Loading project file ...	加载项目文件...
 Loading project...	加载项目...
 Loading state file: (\d+)% complete	加载状态文件: $1% 完成
 Loading tokens	加载令牌
-Loadingg...	加载中...
+Loading...	加载中...
 Local file path manipulation \(DOM-based\)(\s+\[\d+\])?	本地文件路径操作（基于DOM）$1
 Local file path manipulation \(reflected DOM-based\)(\s+\[\d+\])?	本地文件路径操作（基于DOM反射型）$1
 Local file path manipulation \(stored DOM-based\)(\s+\[\d+\])?	本地文件路径操作（基于DOM存储型）$1
@@ -2010,8 +2005,8 @@ Name or value:	名称或值：
 Name validation error	名称校验错误
 Name:	名称:
 Names observed in use on target site	目标站点中使用的名称
-Negative match	不匹配的项目
-Negative search	搜索不匹配的项目
+Negative match	不匹配条目
+Negative search	搜索不匹配条目
 Nested insertion points are used when an insertion point's base value contains data in a recognized format (for example, XML data within a URL parameter):	如果插入点的源值是可识别的形式（例如，URL参数中的XML数据），则使用嵌套的插入点：
 Never	从不
 New	新建
@@ -2033,8 +2028,8 @@ New scan	新建扫描
 New scanning configuration	新建扫描配置
 New tab behavior	新建标签行为
 New...	新建...
-Newer project file detected	检测新项目文件
-Next	下一步
+Newer project file detected	检测到新项目文件
+Next	下一个
 No	取消
 No actions defined	没有定义动作
 No anomalies were identified in this test.	在该测试中未发现异常。
@@ -2057,9 +2052,9 @@ None	无
 Normal(.*)	正常$1
 Not a valid Burp project file: (.*)	它不是有效的Burp项目文件： $1
 Not a valid PKCS#11 library	不是有效的PKCS＃11库
-Not available in Community Edition	在社区版本中无法使用
+Not available in Community Edition	在社区版中无法使用
 Not available in demo version	在演示版中无法使用
-Not available in free edition	在免费版本中无法使用
+Not available in free edition	在免费版中无法使用
 Not defined	未定义
 Note that statistical tests provide only an indicative guide to the randomness of the sampled data. Results obtained may contain false positives and negatives, and may not correspond to the practical predictability of the tokens sampled.	请注意，统计测试仅提供样本数据随机性的指南。获得的结果包括假阳性和假阴性，并且可能不对应于采样令牌的实际预测。
 Note that the FIPS specification for this test only records a fail if the longest run of bits is overly long.	请注意，在此测试的FIPS规范中，仅当最长的位序列太长时才会失败。
@@ -2153,7 +2148,7 @@ Override user options	覆盖用户配置
 PHP code injection(\s+\[\d+\])?	PHP代码注入$1
 PIN code is required	需要PIN码
 PIN code:	PIN 码：
-Pad short tokens at:	在以下位置填充短令牌(Pad short tokens at):
+Pad short tokens at:	填充短令牌位置:
 Pad with (single character or 2-digit ASCII hex code):	填充字符（1或2位ASCII十六进制代码）：
 Page title	页面标题
 Param count	参数数量
@@ -2174,6 +2169,7 @@ Passive Scanning Areas	被动扫描区域
 Passive Spidering	被动爬虫
 Passive checks	被动检查
 Passive phases	被动阶段
+Active phases	主动阶段
 Passive spidering monitors traffic through Burp Proxy to update the site map without making any new requests.	被动爬虫爬取不会生成新请求，并通过监视Burp代理流量来更新站点地图。
 Passively scan all traffic through Proxy	被动扫描通过代理的所有流量
 Passively scan selected items	被动扫描所选项目
@@ -2287,7 +2283,7 @@ Please visit https://portswigger.net for more details about Burp Suite Professio
 Please visit https://portswigger.net/burp/freedownload/ to download the latest version.	转到https://portswigger.net/burp/freedownload/并下载最新版本。
 Please wait	请稍等
 Please wait ...	请稍等...
-Poll Collaborator interactions	轮询协作者沟通
+Poll Collaborator interactions	轮询协作者交互
 Poll every	轮询间隔
 Poll now	立即轮询
 Poll over unencrypted HTTP	使用未加密的HTTP进行轮询
@@ -2306,7 +2302,7 @@ Prettified view	美化视图
 Prettified view not available for this content	该内容美化视图不可用
 Pretty	美化
 Pretty print by default	默认美化输出
-Previous	前
+Previous	上一个
 Private IP addresses disclosed(\s+\[\d+\])?	私有IP地址泄露$1
 Private key disclosed(\s+\[\d+\])?	私钥漏泄$1
 Private key in DER format	DER格式的密钥
@@ -2326,13 +2322,13 @@ Protocol settings	协议设置
 Protocol(:*)	协议$1
 Proxy (all traffic)	代理（所有流量）
 Proxy (use with caution)	代理(使用注意)
-Proxy History Logging	代理历史记录
+Proxy History Logging	代理历史记录日志
 Proxy Interception	代理拦截
 Proxy Listener Interface	代理监听接口
 Proxy Listeners	代理监听器
-Proxy history documentation	代理历史记录文档
+Proxy history documentation	代理历史记录帮助文档
 Proxy history help	代理历史帮助
-Proxy history logging	代理历史记录
+Proxy history logging	代理历史记录日志
 Proxy host	代理主机
 Proxy host, leave blank to connect directly	代理主机，如果是直接连接则留空
 Proxy interception documentation	代理拦截文档
@@ -2416,7 +2412,6 @@ Remove duplicate items \(same URL and parameters\) \[all (\d+) items?\]	排除�
 Remove duplicate items \(same URL and parameters\)( \[([,0-9]+) items\])?	排除重复项（相同的URL和参数）项 [$2 项目]
 Remove duplicates	删除重复项
 Remove duplicates from the list	移除列表重复项
-Remove dupulicate comments	删除重复的评论
 Remove from scope	从范围中删除
 Remove input field length limits	删除输入字段长度限制
 Remove item	删除项目
@@ -2455,7 +2450,7 @@ Render view	渲染视图
 Render view not available for this content	该内容渲染视图不可用
 Repair project	修复项目
 Repairing project, please wait ...	我们正在修理这个项目，请稍等...
-Reparse	重解析
+Reparse	重新解析
 Repeat	重复
 Repeat every:	以指定的间隔重复：
 Repeat request in browser	用浏览器重新发送请求
@@ -2618,7 +2613,7 @@ Save attack config	保存攻击配置
 Save attack insertion points options	保存攻击插入点配置
 Save attack results options	保存攻击结果选项
 Save attack to project file	保存攻击到项目文件
-Save automatic project backup options	保存自动项目备份配置
+Save automatic project backup options	保存项目自动备份配置
 Save cancelled	保存已取消
 Save character set options	保存字符集选项
 Save client SSL certificates options	保存客户端SSL证书配置
@@ -2880,7 +2875,7 @@ Short words	短文本
 Shortest:	最短:
 Show	显示
 Show all	显示全部
-Show all differences between the two responses	2显示响应中的所有差异
+Show all differences between the two responses	显示两个响应中的所有差异
 Show details	显示详情
 Show full documentation	查看完整文档
 Show full help	显示所有帮助
@@ -2892,18 +2887,18 @@ Show non-printable chars	显示不可打印字符
 Show only commented items	仅显示已注释条目
 Show only highlighted items	仅显示高亮条目
 Show only in-scope items	仅显示在范围内显示条目
-Show only in-scope items	仅显示范围内的条目
-Show only in-scope items (Suite scope)	仅显示范围内的条目（套件范围）
+Show only in-scope items	仅显示范围内条目
+Show only in-scope items (Suite scope)	仅显示范围内条目（套件范围）
 Show only parameterized requests	仅显示带参数的请求
-Show only requested items	仅显示已请求的条目
+Show only requested items	仅显示已请求条目
 Show only:	显示:
 Show or hide the Learn tab	显示或隐藏学习标签
 Show progress dialog during backups	备份时显示进度条
 Show response in browser	在浏览器中显示响应
 Show the Learn tab	显示学习标签
 Show this dialog during backups	备份时显示此进度条
-Showing all items	显示所有项目
-Showing selected items	显示所选项目
+Showing all items	显示所有条目
+Showing selected items	显示所选条目
 Shut down Burp and launch downloaded file	关闭Burp并启动已下载文件
 Shut down Burp and run new version	关闭Burp并启动新版本
 Significance Levels	重要性级别
@@ -2912,8 +2907,8 @@ Simple list	简单列表
 Simple string	简单字符串
 Simulate manual testing	模拟手动测试
 Simulation running	模拟执行
-Site Map (\d+)	网站地图$1
-Site map	网站地图
+Site Map (\d+)	站点地图$1
+Site map	站点地图
 Site map documentation	site maps文档
 Site map help	站点地图帮助
 Site map is empty	站点地图为空
@@ -3131,9 +3126,9 @@ The rule is not in-scope for any URLs.	此规则超出了所有URL的范围。
 The selected file does not appear to be a Burp project file and cannot be opened.	我无法打开它，因为看起来所选文件不是Burp项目文件。
 The selected file is the current Burp project. Please select another file.	所选文件是当前的Burp项目。请选择其他文件。
 The selected file is the current project file	所选文件是当前项目
-The selected item is not a directory	所选项目不是目录
+The selected item is not a directory	所选条目不是目录
 The selected project file appears to be corrupt and cannot be opened.	所选项目已损坏，无法打开。
-The supplied license key was not recognized. Please try re-entering your license key.	我们无法识别许可证密钥。请重新输入许可证密钥。
+The supplied license key was not recognized. Please try re-entering your license key.	无法识别许可证密钥。请重新输入许可证密钥。
 Theme:	主题:
 There appears to be a copy of Burp Infiltrator in the selected folder. Do you want to overwrite it?	所选文件夹中有一个Burp Infiltrator的副本。您想覆盖它吗？
 There's no need to configure your proxy settings manually. Use Burp's embedded Chromium browser to start testing right away. 	无需手动配置代理,使用Burp的嵌入式Chromium浏览器就可以开始测试。
@@ -3151,23 +3146,23 @@ These settings can be used to enable certain TLS features that might be needed t
 These settings can be used to extract useful information from responses into the attack results table.	我们从响应包中提取有用信息并将其显示在攻击结果列表中。
 These settings can be used to flag result items containing reflections of the submitted payload.	这些设置可用于标记(flag)包含已提交payload的结果项。
 These settings can be used to flag result items containing specified expressions.	这些设置可用于flag包含指定表达式的结果项。
-These settings control behaviour of the embedded browser.	这些设置用于控制内嵌浏览器的行为
-These settings control behaviour of Burp's browser.	这些设置用于控制Burp浏览器的行为
-These settings control how Burp binds the REST API.	这些设置控制Burp如何绑定REST API
+These settings control behaviour of the embedded browser.	控制内嵌浏览器行为
+These settings control behaviour of Burp's browser.	控制Burp内嵌浏览器行为
+These settings control how Burp binds the REST API.	控制Burp如何绑定REST API
 These settings control how Burp binds the proxy listener.	控制绑定代理监听器的方式。
 These settings control how Burp handles application errors (connection failures and transmission timeouts) that arise during the audit phase of the scan.	控制如何处理扫描审计阶段发生的应用程序错误（如连接错误和传输超时）。
 These settings control how Burp handles application errors (connection failures and transmission timeouts) that arise during the crawl phase of the scan.	它控制在扫描爬虫阶段如何处理应用程序错误（例如连接错误和传输超时）。
 These settings control how Burp handles different character sets when displaying raw HTTP messages. Note that some glyphs are not supported by all fonts. If you need to use an extended or unusual character set, you should first try a system font such as Courier New or Dialog.	控制在显示HTTP消息raw时Burp如何处理各种字符集。请注意，所有字体都不支持某些字形。如果要使用扩展或异常字符集，请首先尝试使用Courier New和Dialog等系统字体。
-These settings control how Burp handles extensions on startup.	这些设置控制Burp在启动时如何处理扩展。
+These settings control how Burp handles extensions on startup.	此设置控制Burp在启动时如何处理扩展。
 These settings control how Burp handles in-tool rendering of HTML content.	在工具中设置HTML内容的呈现。
 These settings control how Burp handles redirections when performing attacks.	控制执行攻击时如何处理重定向。
-These settings control how Intruder handles network errors during the attack.	这些设置用于控制攻击器如何处理网络异常
+These settings control how Intruder handles network errors during the attack.	控制攻击器如何处理网络异常
 These settings control how the Spider submits login forms.	设置Spider如何发送登录表单。
 These settings control how the crawler will interact with any login functionality, aside from any application logins that are explicitly configured for the crawl.	除了为爬取显式设置的应用程序登录之外，您还可以控制使用登录功能执行的处理类型。
 These settings control how the discovery session adds file extensions to file stems that are being tested.	在搜索会话中，控制如何将文件扩展名添加到文件名主体并进行测试。
-These settings control how tokens are handled during analysis.	这些设置控制令牌在分析期间的处理。
+These settings control how tokens are handled during analysis.	控制令牌在分析期间的处理。
 These settings control logging of HTTP requests and responses.	控制HTTP请求和响应的日志记录。
-These settings control some specific details of Burp Proxy's behavior. You can change the default settings here to deal with particular problems or situations.	这是一个控制Burp Proxy详细操作的设置。您可以更改默认设置以解决特定问题和情况。
+These settings control some specific details of Burp Proxy's behavior. You can change the default settings here to deal with particular problems or situations.	此设置控制某些特定Burp代理行为的细节。您可以更改默认设置以解决特定问题和情况。
 These settings control the SSL protocols and ciphers that Burp will use when performing SSL negotiation with upstream servers. If you are experiencing problems with SSL negotiation, you can use these settings to request use of specific protocols or ciphers. Use these options with caution as misconfiguration may break all your outgoing SSL connections.	控制Burp用于与更高级别服务器执行SSL协商的SSL协议和密码。如果您遇到SSL协商问题，可以将其配置为使用特定协议和密码。配置错误可能会导致所有传出的SSL连接中断，因此请谨慎使用。
 These settings control the TLS protocols and ciphers that Burp will use when performing TLS negotiation with upstream servers. If you are experiencing problems with TLS negotiation, you can use these settings to request use of specific protocols or ciphers. Use these options with caution as misconfiguration may break all your outgoing TLS connections.	控制Burp用于与更高级别服务器执行TLS协商的TLS协议和密码。如果您遇到TLS协商问题，可以将其配置为使用特定协议和密码。配置错误可能会导致所有传出的TLS连接中断，因此请谨慎使用。
 These settings control the TLS protocols that this proxy listener will use when performing TLS negotiation with the browser. If you are experiencing problems with TLS negotiation, you can use these settings to request use of specific protocols.	设置控制此代理监听器在与浏览器执行TLS协商时将使用的TLS协议。如果您遇到TLS协商问题，可以使用这些设置请求使用特定协议。
@@ -3184,16 +3179,16 @@ These settings control the types of checks performed during active scanning.	设
 These settings control the types of checks performed during passive scanning.	设置被动扫描期间要检查的类型。
 These settings control the types of redirections that Burp will understand in situations where it is configured to follow redirections.	将Burp识别的重定向类型设置为跟随重定向的情况。
 These settings control the types of scanning that will include static analysis of executable code. Note that static analysis can consume large amounts of memory and processing, and so it may be desirable to restrict static analysis to key targets of interest.	这是一种扫描类型设置，可执行可执行代码的静态分析。请注意，静态分析使用大量内存和处理器，因此需要执行仅限于有趣的主题。
-These settings control the way Burp handles HTTP responses with status 100.	这些设置是控制Burp如何处理状态为100的HTTP响应。
-These settings control the way the Spider crawls for basic web content.	控制Web内容的基本爬虫方法。
-These settings control what information is captured in attack results.	设置要在攻击结果中捕获的信息。
+These settings control the way Burp handles HTTP responses with status 100.	控制Burp如何处理状态为100的HTTP响应。
+These settings control the way the Spider crawls for basic web content.	控制基本Web内容的爬虫方法。
+These settings control what information is captured in attack results.	控制要在攻击结果中捕获的信息。
 These settings control whether Burp redirects requests received by this listener.	控制监听器如何重定向收到的请求。
 These settings control whether Intruder updates the configured request headers during attacks.	控制Intruder是否在攻击期间更新已配置的请求头。
-These settings control whether and how the Spider submits HTML forms.	这些设置控制Spider如何发送HTML表单。
+These settings control whether and how the Spider submits HTML forms.	控制Spider如何提交HTML表单。
 These settings control whether insertion points are created within nested data structures, and the maximum number of insertion points to create per request that is audited.	控制是否在嵌套数据结构中创建插入点，以及为每个要审计的请求创建的最大插入点数。
 These settings control which issues Burp will check for. You can select issues by scan type or individually. If you select individual issues, you can also select the detection methods that are used for some types of issues.	设置要由Burp检查的项目。您可以选择扫描项目类型，也可以单独选择。选择单个项目时，某些项目也可以选择要使用的检测方法。
 These settings determine whether Burp sends each outgoing request to a proxy server, or directly to the destination web server. The first rule that matches each destination host will be used. To send all traffic to a single proxy server, create a rule with * as the destination host.	设置是通过代理服务器还是直接向Web服务器发送传出请求。使用目标主机首次匹配的规则。要将所有流量发送到单个代理服务器，请使用目标主机*创建规则。
-These settings let you adjust the display position for the Inspector panel, and customize which information is shown.	调整Inspector面板的显示位置，并自定义显示信息。
+These settings let you adjust the display position for the Inspector panel, and customize which information is shown.	调整Inspector面板显示位置，并自定义显示信息。
 These settings let you configure Burp to automatically carry out platform authentication to destination web servers.	这些设置允许您将Burp配置为自动对目标web服务器执行平台身份验证。
 These settings let you configure Burp to use a SOCKS proxy. This setting is applied at the TCP level, and all outbound requests will be sent via this proxy. If you have configured rules for upstream HTTP proxy servers, then requests to upstream proxies will be sent via the SOCKS proxy configured here.	配置为使用SOCKS代理。此设置应用于TCP级别，所有传出请求都通过此代理发送。如果已设置更高级别的HTTP代理服务器，则将通过此处的SOCKS代理集发送对上层代理的请求。
 These settings let you configure hotkeys for common actions. These include item-specific actions such as "Send to Repeater", global actions such as "Switch to Proxy", and in-editor actions such as "Cut" and "Undo".	您可以设置热键以执行常见操作。您可以为特定于项目的操作设置热键，例如“发送到转发器”，诸如“切换到代理”之类的全局操作，编辑器中的操作，如“剪切”和“撤消”。
@@ -3204,13 +3199,13 @@ These settings let you configure the environment for executing extensions that a
 These settings let you configure the environment for executing extensions that are written in Ruby. To use Ruby extensions, you will need to download JRuby, which is a Ruby interpreter implemented in Java. Note that you can either configure the location of the JRuby JAR file here, or you can load the JAR file on startup via the Java classpath.	您可以设置环境以执行Ruby扩展。要使用Ruby的扩展，您需要下载JRuby，一个用Java实现的Ruby解释器。您可以在此处设置JRuby JAR文件的位置，也可以在启动时从Java类路径加载JAR文件。
 These settings let you configure where Burp stores its temporary files. Changes will take effect the next time Burp starts up.	这些设置允许您配置Burp存储其临时文件的位置。更改将在下次启动Burp时生效。
 These settings let you control how HTTP messages are displayed within the raw HTTP viewer/editor.	控制HTTP消息在原始HTTP查看器/编辑器中的显示方式。
-These settings let you control the appearance of Burp's user interface.	这些设置是控制Burp用户界面的外观。
+These settings let you control the appearance of Burp's user interface.	控制Burp用户界面的外观。
 These settings let you control the behavior of the active audit logic to reflect the objectives of the audit and the nature of the target application. See the detailed help for more information about each option.	根据审计的目的和目标应用程序的性质，您可以控制主动审计逻辑的行为。有关每个选项的详细信息，请参阅帮助。
 These settings let you control the behavior of the active scanning logic to reflect the objectives of the scan and the nature of the target application. See the detailed help for more information about each option.	根据扫描的目的和目标应用程序的性质，您可以控制主动扫描逻辑的行为。有关每个选项的详细信息，请参阅帮助。
 These settings let you control the behavior of the audit logic to reflect the objectives of the audit and the nature of the target application. See the detailed help for more information about each option.	根据审计目的和目标应用程序的性质，您可以控制审计逻辑的行为。有关每个选项的详细信息，请参阅帮助。
 These settings let you control the behavior of the crawl logic to reflect the objectives of the crawl and the nature of the application. See the detailed documentation for more information about each option.	根据审计目的和应用程序的性质，您可以控制爬虫逻辑的行为。有关每个选项的详细信息，请参阅详细文档。
 These settings let you control the default search settings within the raw HTTP viewer/editor.	控制原始 HTTP 查看器/编辑器中的默认搜索设置。
-These settings let you customize the layout of the Inspector panel.	这些设置可让您自定义检查器(Inspector)面板的布局。
+These settings let you customize the layout of the Inspector panel.	这些设置可让您自定义检查器(Inspector)面板布局。
 These settings let you specify tasks that Burp will perform automatically at defined times or intervals.	设置Burp在定义的时间或间隔自动执行的任务。
 These settings specify the timeouts to be used for various network tasks. Values are in seconds. Set an option to zero or leave it blank to never timeout that task.	指定用于各种网络任务的超时。该值以秒为单位。如果您不希望任务超时，请将其设置为0或将其留空。
 This URL is outside the current target scope. Are you sure you want to discover content?	此URL超出了当前范围的范围。您确定要搜索内容吗？
@@ -3232,8 +3227,8 @@ This file already exists. Are you sure?	文件已存在。确定替换吗？
 This function allows you to load Sequencer with a sample of tokens that you have already obtained, and then perform the statistical analysis on the sample.	您可以将已获取的标记的样本加载到Sequencer中，然后执行样本的统计分析。
 This function lets you do a word- or byte-level comparison between different data. You can load, paste, or send data here from other tools and then select the comparison you want to perform.	此功能允许您在不同数据之间进行字或者字节级比较，您可以从其他工具加载粘贴或者发送数据，然后选择要执行的配置。
 This function sends common test payloads to random URLs and parameters at irregular intervals, to generate traffic similar to that caused by manual penetration testing. Its only real use is to let you take a break from testing while still looking busy according to the server's logs. Only items which you selected in the site map will be requested.	此功能以不规则的间隔将通用测试payload发送到随机URL和参数，以生成通过手动渗透测试发生的流量。使用此功能的唯一实用方法是在服务器上留下似乎正在测试的日志时休息一下。只会针对站点地图中选择的项目发送请求。
-This is the timeout after which failed DNS lookups are repeated	重复失败的DNS名称解析是超时
-This is the timeout after which successful DNS lookups expire	成功解析DNS名称的超时时间
+This is the timeout after which failed DNS lookups are repeated	DNS查询失败重复解析的超时时间
+This is the timeout after which successful DNS lookups expire	成功DNS查询过期的超时时间
 This item is outside the current spidering scope. Would you like to modify the scope to include the item?	此项目超出当前访问范围。是否要修改范围以包含此项？
 This item is outside the current target scope. Are you sure you want to perform an active scan?	此项目超出了当前范围。您确定要执行主动扫描吗？
 This listing contains the definitions of all issues that can be detected by Burp Scanner.	Burp Scanner可以检测到的所有问题的定义列表。
@@ -3263,11 +3258,11 @@ This project file has been accessed by a more recent version of Burp. Some data 
 This project file was created by a different installation of Burp. You need to decide whether to take full ownership of the project.	这个项目文件是由另一个Burp创建的。您需要决定是否选择项目的完整所有权。
 This setting allows you to save your attack to the current project file. The attack will then be available from the Dashboard whenever you open this project.	此设置允许您将攻击保存到当前项目文件。下次打开此项目，可以从仪表板中恢复。
 This setting can be used to URL-encode selected characters within the final payload, for safe transmission within HTTP requests.	为了安全地发送HTTP请求，最终的payload将会对框框内容进行URL编码，如果不需要，可以取消勾勾。
-This setting controls Burp's update behavior.	此设置控制 Burp 的更新行为。
-This setting controls Burp's use of the HTTP/2 protocol for outbound connections over TLS.	此设置控制 Burp 使用 HTTP/2 协议通过 TLS 进行出站连接
-This setting controls how Burp handles extensions on startup.	Burp控制启动时如何处理扩展。
-This setting controls the default state of the "Pause automated tasks" option on the startup wizard.	此设置控制启动向导上“暂停自动任务”选项的默认状态。
-This setting controls the state of proxy interception at startup.	此设置控制启动时代理监听的状态。
+This setting controls Burp's update behavior.	控制 Burp 的更新行为。
+This setting controls Burp's use of the HTTP/2 protocol for outbound connections over TLS.	控制 Burp 使用 HTTP/2 协议通过 TLS 进行出站连接
+This setting controls how Burp handles extensions on startup.	控制Burp启动时如何处理扩展。
+This setting controls the default state of the "Pause automated tasks" option on the startup wizard.	控制启动向导上“暂停自动任务”选项的默认状态。
+This setting controls the state of proxy interception at startup.	控制启动时代理监听的状态。
 This setting controls whether adding items to Target scope will automatically set the Proxy option to stop sending out-of-scope items to the history or other Burp tools.	设置是否自动添加“代理”选项，以防止在向目标范围添加项目时将超出范围的项目发送到历史记录或其他Burp工具。
 This strategy applies some optimizations to the coverage of the crawl, with some loss of speed in some applications. It is appropriate for applications with volatile or overloaded URLs, or more complex stateful functionality than normal.	此策略对爬虫的覆盖范围应用了一些优化，但在某些应用程序中，速度会丢失。它适用于具有易失性或重载URL的应用程序或具有比平常更复杂的有状态功能的应用程序。
 This strategy applies some optimizations to the speed of the crawl, with some loss of coverage in some applications. It is appropriate for applications that use mostly stable and unique URLs, and only limited or simple stateful functionality.	此策略对爬虫速度应用了一些优化，但在某些应用程序中丢失了穷举。它适用于大多数都是独特且稳定的情况，并且只有有限或简单的有状态功能。
@@ -3333,7 +3328,7 @@ To lower case	转换为小写
 To monitor or troubleshoot the behavior of your session handling rules, you can use the sessions tracer to view in detail the results of processing each rule.	要监视会话处理规则的操作并进行故障排除，可以使用会话跟踪器显示每个规则的处理结果的详细信息。
 To new tab	到新标签
 To re-enable automatic updates, rename the application back to "Burp Suite Professional". If you have more than one installation of Burp Suite on the same machine, the installations need to be in different folders.	要重新启用自动更新，请将应用程序重命名为“Burp Suite Professional”。 如果您在机器上安装了多个Burp Suite，则需要安装在不同文件夹。
-To repeat this request in your browser, copy the URL below and paste into a browser that is configured to use Burp as its proxy.	要在浏览器中重新传输此请求，请将以下URL复制并粘贴到设置为使用Burp作为代理的浏览器中。
+To repeat this request in your browser, copy the URL below and paste into a browser that is configured to use Burp as its proxy.	要在浏览器中重放此请求，请将以下URL复制并粘贴到已配置Burp作为代理的浏览器中。
 To run Python extensions, you must download the Jython standalone JAR, and configure its location in Burp Extender options.	要运行Python扩展，您需要下载Jython独立JAR文件并使用Burp Extender选项设置位置。
 To run Ruby extensions, you must download the JRuby JAR file, and either configure its location in Burp Extender options, or load it on startup via the Java classpath.	要运行Ruby扩展，您需要下载JRuby的JAR文件并使用Burp Extender选项设置位置，或者在启动时通过Java类路径读取它。
 To show this response in your browser, copy the URL below and paste into a browser that is configured to use Burp as its proxy.	要在浏览器中显示此响应，请将以下URL复制并粘贴到设置为使用Burp作为代理的浏览器中。
@@ -3364,10 +3359,10 @@ Transitions	转换
 Trigger login failures (using invalid username)	登录失败（使用非法用户名）
 Try to decode automatically	尝试自动解码
 Two updates are available. Please select the version and build that you want to download.	有两个更新。请选择您要下载的版本和版本。
-Two-digit hex	2位十六进制数
+Two-digit hex	2位十六进制
 Type	类型
 Type a search term	输入搜索词
-Type character to insert (ASCII or hex code)	请输入要插入的字符（ASCII或十六进制代码）
+Type character to insert (ASCII or hex code)	请输入要插入的字符（ASCII或十六进制）
 Type index	漏洞索引
 Type string to insert	请输入要插入的字符串
 Type:	类型:
@@ -3376,9 +3371,9 @@ Typical severity	漏洞等级
 URL Scope	URL范围
 URL file path (required)	URL文件路径（必填）
 URL of redirection target	要重定向的URL
-URL parameter	网址参数
+URL parameter	URL参数
 URL parameter values	URL的参数值
-URL parameter( .+)?	网址参数$1
+URL parameter( .+)?	URL参数$1
 URL path filename	URL路径的文件名
 URL path folder	URL路径文件夹
 URL path folders	URL路径文件夹
@@ -3392,13 +3387,13 @@ URL-encode these characters:	URL编码字符：
 URL-encoded form	URL编码表单
 URLs in scope	在范围URL中
 URLs to Scan	扫描的URL
-URLs to add:	要添加的网址：
+URLs to add:	要添加URL：
 Unable to load help - please email support@portswigger.net with details, including the location of this help button.	我无法加载帮助 - 请发送电子邮件至support@portswigger.net以获取此帮助按钮的位置等详细信息。
 Unable to load library - check file is correct and device is installed	无法加载库 - 请检查文件是否正确并且设备是否已安装
 Unauthenticated crawl. Estimating time remaining...	爬取未经身份验证的状态。预计剩余时间...
 Unauthenticated crawl. Estimating time remaining...	未经过验证的爬虫爬取网站信息。预计剩余时间...
-Unauthorized Response	未经授权的响应
-Uncheck all	全部解锁
+Unauthorized Response	未授权响应
+Uncheck all	取消选中全部
 Understand 100 Continue responses	了解100继续响应
 Undock	分离
 Unencrypted communications(\s+\[\d+\])?	未加密的通信$1
@@ -3406,7 +3401,7 @@ Unhide hidden form fields	显示隐藏表单字段
 Unidentified code injection(\s+\[\d+\])?	未知的代码注入$1
 Union query-based (U)	联合注入(Union query-based)
 Unlimited	无限制
-Unpack gzip / deflate	gzip/deflate解压
+Unpack gzip / deflate	解压gzip/deflate
 Unpack gzip / deflate in requests	解压请求中的gzip/deflate
 Unpack gzip / deflate in responses	解压响应中的gzip/deflate
 Up	上移
@@ -3514,6 +3509,7 @@ View details	查看详细信息
 View documentation	查看文档
 View filter settings	视图过滤设置
 Capture filter settings	捕获过滤设置
+Filter settings	过滤设置
 View filter:	视图过滤：
 View filter: Please wait ...	视图过滤：请稍后...
 View release notes	显示版本说明
@@ -3558,7 +3554,7 @@ With this response code	此响应码
 Without payload positions	不含payload位置
 Word compare	单词比较
 Word compare of #(\d+) and #(\d+)  \((\d+) differences\)	#$1的#$2单词比较  ($3位置差异)
-Word compare of responses from (.*)	$1 响应词比较
+Word compare of responses from (.*)	$1 响应单词比较
 Words	文字(Words)
 Wrap text	自动换行
 X-Forwarded-For dependent response(\s+\[\d+\])?	X-Forwarded-For-dependent响应$1
@@ -3667,16 +3663,16 @@ Customize User-Agent	自定义User-Agent
 Request site map	请求站点地图
 Request robots.txt	请求robots.txt
 If my hardware appears to support it	如果硬件支持
-Session handling tracer documentation	会话处理跟踪器文档
+Session handling tracer documentation	会话处理跟踪器帮助文档
 These settings let you customize some details of the crawl.	自定义爬虫的详细信息
 HTML encoding	HTML编码
 URL encoding	URL编码
 Decoded from:	解码:
 User agents - short	用户代理-短
 User agents - long	用户代理-长
-Are you sure you want to restore default error handling options?	您确认要将错误处理重置为默认值吗?
-Are you sure you want to restore default widget options?	您确认要将widget重置为默认值吗?
-Are you sure you want to restore default position & display options?	您确认要将位置&显示重置为默认值吗?
+Are you sure you want to restore default error handling options?	您确认要将错误处理重置吗?
+Are you sure you want to restore default widget options?	您确认要将widget重置吗?
+Are you sure you want to restore default position & display options?	您确认要将位置&显示重置吗?
 Show Hidden Tabs	显示隐藏标签
 On connection failure, retry for	连接失败时，重试
 Use Burp's browser for Crawl and Audit	使用Burp内置浏览器进行爬虫和审计
@@ -3764,3 +3760,7 @@ Project options > Misc > Burp Collaborator Server.	项目配置 > 杂项 > Burp 
 Concurrent requests	并发请求
 Auto backoff	自动补偿
 Automatic backoff	自动补偿
+Burp Proxy HTTP History	Burp代理HTTP历史记录
+Start response timer	开始响应计时器(timer)
+End response timer	结束响应计时器(timer)
+Not started	未启动
