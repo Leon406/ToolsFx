@@ -137,7 +137,6 @@
 0 matches	0匹配
 0 positions	0位置
 0 requests(0 errors)	0个请求(0个错误)
-1 (LSB)	1(最重要的一点)
 1. Click the "Copy Clickbandit to clipboard" button below. This will copy the Clickbandit script to your clipboard.	1.单击下面的“将Clickbandit复制到剪贴板”按钮。 这会将Clickbandit脚本复制到剪贴板。
 1. Using your browser, go to the following URL:	1.使用浏览器，打开以下地址：
 2. Copy the following data into the activation request field in your browser:	2.将以下数据复制到Activation request中：
@@ -150,7 +149,6 @@
 4. Paste the Clickbandit script into the web developer console, and press enter.	4.将Clickbandit脚本粘贴到Web开发人员控制台中，然后按Enter键。
 4xx  [request error]	4xx  [请求错误]
 5xx  [server error]	5xx  [服务器错误]
-8 (MSB)	8(最重要的一点)
 A backup of the project has been found, please indicate whether you would like to attempt a repair of the project or open the backup.	找到了一个项目的备份。 请指定是修复项目还是打开备份文件。
 A built-in configuration has the same name	已经有一个内置的设置使用了相同的名字。
 A communications error occurred. Please review your connection settings and retry, or attempt to perform manual activation.	发生了一个通信错误。 请检查连接设置并重试，或执行手动激活。
@@ -419,7 +417,7 @@ Are you sure you want to restore defaults for Project options?	您确定要重�
 Are you sure you want to restore defaults for Proxy?	您确定要重置代理选项吗？
 Are you sure you want to restore defaults for Repeater?	您确定要将重放器选项恢复吗？
 Are you sure you want to restore defaults for Scanner?	您确定要重置扫描器选项吗？
-Are you sure you want to restore defaults for Sequencer?	您确定要重置定序器选项吗？
+Are you sure you want to restore defaults for Sequencer?	您确定要重置Sequencer选项吗？
 Are you sure you want to restore defaults for Spider?	您确定要重置Spider的选项吗？
 Are you sure you want to restore defaults for Target?	您确定要重置目标选项吗？
 Are you sure you want to restore defaults for all project options?	您确定要重置所有项目选项吗？
@@ -447,7 +445,7 @@ Attack Insertion Points	攻击插入点
 Attack Results	攻击结果
 Attack Target	攻击目标
 Attack configuration	攻击配置
-Attack type:	攻击类型:
+Attack type:	攻击类型：
 Attempt data recovery	尝试数据恢复
 Attempt to self-register a user	尝试自行注册用户
 Audit Optimization	审计优化
@@ -596,10 +594,10 @@ Burp Suite video tutorials	Burp Suite视频教程
 Burp has not been fully tested on this platform and you may experience problems.	Burp还未在此平台上进行完整的测试，可能会遇到问题。
 Burp is up to date.	Burp是最新的。
 Burp license key	Burp许可证密钥
-Burp maintains a cookie jar that stores all of the cookies issued by visited web sites. Session handling rules can use and update these cookies to maintain valid sessions with applications that are being tested. You can use the settings below to control how Burp automatically updates the cookie jar based on traffic from particular tools.	我们将访问过的网站发布的所有cookie保存在cookie jar中。会话处理规则可以使用和更新这些cookie，以保持您正在测试的应用程序的有效会话。以下设置控制如何根据特定工具的流量自动更新Cookie jar。
+Burp maintains a cookie jar that stores all of the cookies issued by visited web sites. Session handling rules can use and update these cookies to maintain valid sessions with applications that are being tested. You can use the settings below to control how Burp automatically updates the cookie jar based on traffic from particular tools.	将访问过网站所有Cookie保存在Cookie jar中。会话处理规则可以使用和更新这些Cookie，以保持您正在测试的应用程序的有效会话。以下设置控制如何根据特定工具的流量自动更新Cookie jar。
 Burp program executable	Burp执行程序
 Burp will attempt to repair the project file. This will create a new project file that can be opened safely, and will preserve as much data as possible from the original file.	Burp将尝试修复项目文件。这将创建一个可以安全打开的新项目文件，并从原始文件中存储尽可能多的数据。
-Burp will now attempt to contact the license server and activate your license. This will require Internet access. If you access the Internet via a web proxy server, please enter the details below.	我将连接到许可证服务器并尝试许可证身份验证。这需要互联网访问。要通过代理服务器访问Internet，请在下面输入详细信息。
+Burp will now attempt to contact the license server and activate your license. This will require Internet access. If you access the Internet via a web proxy server, please enter the details below.	Burp将连接到许可证服务器并尝试激活。这需要互联网访问。要通过代理服务器访问Internet，请在下面输入详细信息。
 By URL	按URL
 By severity	按严重程度
 By type	按类型
@@ -788,7 +786,7 @@ Configure predefined payload lists	编辑预定义的payload列表
 Configure target details	配置目标详情
 Configure the details of the custom parameter location. You need to specify the name that is used for this parameter in subsequent macro requests, and the location within this response from which the parameter's value should be derived.	设置自定义参数位置的详细信息在后续宏请求中使用此参数时，必须指定名称，并将要提取的响应中的位置指定为参数值。
 Configure the details of the target for the attack.	请设置攻击目标的详细信息。(Configure the details of the target for the attack.)
-Configure the location of the items that Burp Intruder should use for its predefined payload lists.	请设置Burp 攻击器使用的预定义payload列表的位置
+Configure the location of the items that Burp Intruder should use for its predefined payload lists.	请设置Burp Intruder使用的预定义payload列表的位置
 Configure the options below to determine how Burp handles certain features of responses when performing comparisons.	执行比较时，请设置以下选项，以了解Burp如何处理响应的每个功能。
 Configure the positions where payloads will be inserted into the base request. The attack type determines the way in which payloads are assigned to payload positions - see help for full details.	配置将payloads插入基本请求的位置。攻击类型决定了payloads分配到哪个位置的方式-如果需要有关的详细信息，请参阅帮助。(Configure the positions where payloads will be inserted into the base request. The attack type determines the way in which payloads are assigned to payload positions - see help for full details.)
 Configure the positions where payloads will be inserted, they can be added into the target as well as the base request.	配置payload插入位置，它们可以添加到目标以及基本请求中。
@@ -1204,7 +1202,7 @@ Enter regex or leave blank	输入正则表达式或将其留空
 Enter regex, IP range or leave blank	输入正则表达式、IP范围、或将其留空
 Enter the PIN code for your hardware token or smart card.	输入硬件令牌或智能卡PIN码。
 Enter the details of the parameter.	输入参数的详细信息。
-Enter the details of the payload processing rule.	输入payload处理规则的详细信息(Enter the details of the payload processing rule.)
+Enter the details of the payload processing rule.	输入payload处理规则的详细信息。
 Enter the details of the upstream proxy rule. You can use wildcards to specify destination hosts (* matches zero or more characters, ? matches any character except a dot). Leave the proxy host blank to connect directly for the specified destination host.	请输入上层代理的详细信息。您可以使用通配符（*表示零个或多个字母，？对于除点之外的任何字符）以指定目标主机。将代理主机留空以直接连接到指定的主机。
 Enter the details of when the task should run. The task can be scheduled to run once at a specific time, or to repeat at a defined interval.	输入执行任务计划的详细时间。任务只能在指定时间执行一次，或者以指定的时间间隔重复执行。
 Enter the full string to be submitted as the custom request header.	请输入要作为自定义请求头发送的所有字符串。
@@ -1212,8 +1210,6 @@ Enter the hostname and IP address. Burp will use this setting instead of the DNS
 Enter the master password that was used to encrypt stored passwords.	输入用于加密密码存储区的主密码。
 Enter the master password to encrypt stored passwords. A strong password is recommended.	输入主密码以加密密码存储区。建议使用强密码。
 Enter the platform credentials for the specified destination host.	输入目标主机平台凭据。
-Entire body	全部主体
-Entire body (for relevant content types)	全部主体（如果是相关内容类型）
 Enumeration	枚举
 Error	错误
 Error Handling	错误处理
@@ -1389,7 +1385,7 @@ Forms	表单
 Forms queued:	表单队列：
 Forward	放行
 Invalid value - limit (\d+)	非法值-限制$1
-On connection failure, retry for	
+On connection failure, retry for	连接失败时，重试
 Make requests for missing site resources	请求缺少的站点资源
 Load previously undiscovered resources from out-of-scope hosts	从范围外的主机加载之前未发现的资源
 Frameable response \(potential Clickjacking\)(\s+\[\d+\])?	可响应的响应（潜在的点击劫持）$1
@@ -1428,8 +1424,9 @@ Go back	返回
 Go forward	前进
 Go to the next item in the history	移至历史记录中的下一个项目
 Go to the previous item in the history	移至历史记录中的上一项
-Grep - Match	提取 - 匹配
-Grep - Payloads	提取 - Payloads
+Grep - Match	检索 - 匹配
+Grep - Extract	检索 - 提取
+Grep - Payloads	检索 - Payloads
 HTML Rendering	HTML渲染
 HTML does not specify charset	HTML未指定字符集
 HTML uses unrecognized charset	HTML使用无法识别的字符集
@@ -1575,7 +1572,7 @@ Include form field values	包含表单字段值
 Include full requests	包括完整的请求
 Include full responses	包括完整的响应
 Include headers	包括报头
-Include in scope	包括以下内容在范围内
+Include in scope	包括到范围内
 Include in-scope items only	仅包括在范围内条目
 Include relevant extract	提取相关部分(Include relevant extract)
 Included URL prefixes	包含URL前缀
@@ -1621,9 +1618,8 @@ Intercept responses based on the following rules:	根据以下规则拦截响应
 Intercept server-to-client messages	拦截从服务器到客户端的消息
 Interesting files and directories	感兴趣的文件和目录
 Interface	接口
-Intruder	攻击器(Intruder)
-Intruder Attack Configuration	攻击器攻击设置
-Intruder results help	攻击器结果帮助
+Intruder	Intruder
+Intruder Attack Configuration	Intruder攻击设置
 Intrusive	攻击
 Intrusive active	主动扫描（攻击）
 Invalid IP address:(.*)	无效的IP地址：$1
@@ -1974,7 +1970,7 @@ Missing help	缺少帮助
 Mixed content(\s+\[\d+\])?	混合内容$1
 Modified	修改时间
 Modified value:	修改值：
-Modify case	Modify case
+Modify case	大小写修改
 Modifying Parameter Locations	修改参数位置
 Monitor the following tools' traffic to update the cookie jar:	监视以下工具并更新cookie jar：
 Months	月
@@ -2496,7 +2492,7 @@ Request map 1 again in a different session context (configured in Options / Sess
 Request param name	请求参数名
 Request param value	请求参数值
 Request the root of all directories	请求所有目录的root
-Request to ([a-z].*)	请求$1 
+Request to ([a-z].*)	请求$1
 Request to Collaborator	发送至Collaborator请求包
 Request to:	请求：
 Requests	请求
@@ -2833,7 +2829,7 @@ Send to Comparer (response)	发送到Comparer（响应）
 Send to Comparer (responses)	发送到Comparer（响应）
 Sensitive	敏感
 Separator for position (\d+)	定位$1分隔符
-Sequencer	定序器(Sequencer)
+Sequencer	Sequencer
 Serialized object in HTTP message(\s+\[\d+\])?	HTTP消息中的序列化对象$1
 Server SSL Certificates	服务器SSL证书
 Server TLS Certificates	服务器TLS证书
@@ -3074,7 +3070,7 @@ Test these extensions:	测试以下扩展名：
 Test these variant extensions on discovered files:	在找到的文件上测试这些扩展名：
 Testing macro:	正在测试的宏：
 The BApp Store contains Burp extensions that have been written by users of Burp Suite, to extend Burp's capabilities.	BApp商店扩展了扩展Burp功能，由Burp Suite用户编写。
-The Community Edition of Burp Suite contains a demo version of Burp Intruder. Some functionality is disabled, and attacks are time throttled.	Burp Suite的社区版本包含Burp 攻击器的演示版本。某些功能已被禁用，攻击会定时。
+The Community Edition of Burp Suite contains a demo version of Burp Intruder. Some functionality is disabled, and attacks are time throttled.	Burp Suite的社区版本包含Burp Intruder的演示版本。某些功能已被禁用，攻击会定时。
 The REST API can be used by other tools to integrate with Burp Suite. This function exposes sensitive functionality and data, and you should read the full documentation before enabling the service.	您可以使用REST API将Burp Suite与其他工具集成。此功能公开高度机密的功能和数据，因此您需要在启用服务之前阅读所有手册。
 The Web Security Academy	网络安全学院
 The actions below will be performed in sequence when this rule is applied to a request.	此规则按顺序执行并应用于请求。
@@ -3106,7 +3102,7 @@ The final response from the macro	宏的最后响应
 The following configurations could not be exported due to an error:	由于错误，我们无法导出以下设置：
 The following items will be removed:	删除以下项目：
 The following rules determine whether Burp sends each outgoing request to a proxy server, or directly to the destination web server. The first rule that matches each destination host will be used. To send all traffic to a single proxy server, create a rule with * as the destination host.	每个传出请求是发送到代理服务器还是直接发送到目标web服务器由以下规则确定。使用目标主机首次匹配的规则。要将所有流量发送到单个代理服务器，请使用目标主机*创建规则。
-The free edition of Burp contains a demo version of Burp Intruder. Some functionality is disabled, and attacks are time throttled.	Burp的免费版本包含Burp 攻击器的演示版本。某些功能已被禁用，攻击会定时。
+The free edition of Burp contains a demo version of Burp Intruder. Some functionality is disabled, and attacks are time throttled.	Burp的免费版本包含Burp Intruder的演示版本。某些功能已被禁用，攻击会定时。
 The item itself	条目本身
 No group defined	未定义组
 The macro contains no items. Are you sure you want to proceed?	宏中没有条目。您确定要继续吗？
@@ -3144,8 +3140,8 @@ These settings are used to specify destination web servers for which Burp will d
 These settings can be used to enable certain SSL features that might be needed to successfully connect to some servers.	它是一个设置，用于启用与某些服务器的正常连接所需的各种SSL功能。
 These settings can be used to enable certain TLS features that might be needed to successfully connect to some servers.	它是一个设置，用于启用与某些服务器的正常连接所需的各种TLS功能。
 These settings can be used to extract useful information from responses into the attack results table.	我们从响应包中提取有用信息并将其显示在攻击结果列表中。
-These settings can be used to flag result items containing reflections of the submitted payload.	这些设置可用于标记(flag)包含已提交payload的结果项。
-These settings can be used to flag result items containing specified expressions.	这些设置可用于flag包含指定表达式的结果项。
+These settings can be used to flag result items containing reflections of the submitted payload.	用于标记包含已提交payload的结果项。
+These settings can be used to flag result items containing specified expressions.	用于标记包含指定表达式的结果项。
 These settings control behaviour of the embedded browser.	控制内嵌浏览器行为
 These settings control behaviour of Burp's browser.	控制Burp内嵌浏览器行为
 These settings control how Burp binds the REST API.	控制Burp如何绑定REST API
@@ -3156,7 +3152,7 @@ These settings control how Burp handles different character sets when displaying
 These settings control how Burp handles extensions on startup.	此设置控制Burp在启动时如何处理扩展。
 These settings control how Burp handles in-tool rendering of HTML content.	在工具中设置HTML内容的呈现。
 These settings control how Burp handles redirections when performing attacks.	控制执行攻击时如何处理重定向。
-These settings control how Intruder handles network errors during the attack.	控制攻击器如何处理网络异常
+These settings control how Intruder handles network errors during the attack.	控制Intruder如何处理网络异常
 These settings control how the Spider submits login forms.	设置Spider如何发送登录表单。
 These settings control how the crawler will interact with any login functionality, aside from any application logins that are explicitly configured for the crawl.	除了为爬取显式设置的应用程序登录之外，您还可以控制使用登录功能执行的处理类型。
 These settings control how the discovery session adds file extensions to file stems that are being tested.	在搜索会话中，控制如何将文件扩展名添加到文件名主体并进行测试。
@@ -3764,3 +3760,13 @@ Burp Proxy HTTP History	Burp代理HTTP历史记录
 Start response timer	开始响应计时器(timer)
 End response timer	结束响应计时器(timer)
 Not started	未启动
+Unknown Hash Algorithm	未知Hash算法
+Keep in memory	保存在内存
+Ask me what to do each time	每次询问
+Save my attack to the project file	保存到项目文件
+When closing finished attacks:	关闭已完成攻击时：
+When closing attacks that are in progress:	关闭正在运行的攻击时：
+Delete my attack	删除我的攻击
+Continue my attack in the background	在后台继续运行
+Attack window behavior	攻击窗口行为
+Connect:	连接：
