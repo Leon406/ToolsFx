@@ -53,8 +53,8 @@ class AsymmetricTest {
     }
 
     /**
-     * OAEP MGF1 bouncy castle MGF1 算法默认 SHA256 Oracle MGF1 算法默认 SHA1 python pycryptodome 算法默认
-     * 与hash算法一致
+     * OAEP MGF1<br/> bouncy castle MGF1 算法默认 SHA256<br/> Oracle MGF1 算法默认 SHA1<br/> python
+     * pycryptodome 算法默认与hash算法一致
      */
     @Test
     fun rsaOaepTest() {
@@ -110,12 +110,12 @@ class AsymmetricTest {
         var alg = "SM2"
         genBase64KeyArray(alg, emptyList()).also {
             println(it.joinToString("\n"))
-            checkKeyPair(it[0], it[1], alg)
+            assertTrue { checkKeyPair(it[0], it[1], alg) }
         }
         alg = "ElGamal"
-        genBase64KeyArray(alg, listOf(1024)).also {
+        genBase64KeyArray(alg, listOf(512)).also {
             println(it.joinToString("\n"))
-            checkKeyPair(it[0], it[1], alg)
+            assertTrue { checkKeyPair(it[0], it[1], alg) }
         }
     }
 
@@ -150,17 +150,16 @@ class AsymmetricTest {
             println(it.base64())
             it.asymmetricDecrypt(priKey, "SM2").also { println(it.decodeToString()) }
         }
-
-        //        "".toByteArray().rsaEncrypt()
     }
 
     @Test
     fun deriveAndMatch() {
-        println(checkKeyPair(pub, pri))
-        // todo
-        pri.privateKeyDerivedPublicKey().run {
-            assertTrue { checkKeyPair(this, pri) }
+        genBase64KeyArray("RSA", 2048).also {
+            println(it.joinToString("\n"))
+            assertTrue { checkKeyPair(it[0], it[1]) }
         }
+
+        pri.privateKeyDerivedPublicKey().run { assertTrue { checkKeyPair(this, pri) } }
     }
 
     @Test

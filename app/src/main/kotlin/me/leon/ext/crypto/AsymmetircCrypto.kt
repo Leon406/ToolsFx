@@ -165,7 +165,7 @@ fun ByteArray.asymmetricDecrypt(
     key: Key?,
     alg: String,
 ): ByteArray =
-    Cipher.getInstance(alg.properOAEPAlg(), BouncyCastleProvider.PROVIDER_NAME).run {
+    Cipher.getInstance(alg.properOAEPAlg()).run {
         println("alg $alg")
         if (alg.isOAEP()) {
             init(Cipher.DECRYPT_MODE, key, OAEP_PARAM_SPEC_SHA1)
@@ -297,9 +297,12 @@ fun genKeyPair(alg: String, params: List<Any> = emptyList()): KeyPair =
     }
 
 fun checkKeyPair(pub: String, pri: String, alg: String = "RSA"): Boolean {
-    val testData = byteArrayOf(67)
+    val testData = "123".toByteArray()
+    println(testData.base64())
     return testData.asymmetricEncrypt(pub.toPublicKey(alg), alg).run {
-        asymmetricDecrypt(pri.toPrivateKey(alg), alg).contentEquals(testData)
+        asymmetricDecrypt(pri.toPrivateKey(alg), alg)
+            .also { println(it.decodeToString()) }
+            .contentEquals(testData)
     }
 }
 

@@ -3,15 +3,9 @@ package me.leon
 import java.io.File
 import me.leon.ext.ocr.BaiduOcr
 import me.leon.ext.toBase64
-import org.junit.Before
 import org.junit.Test
 
 class Ocr {
-
-    @Before
-    fun setUp() {
-        BaiduOcr.accessToken()
-    }
 
     @Test
     fun urlOcr() {
@@ -27,5 +21,11 @@ class Ocr {
     @Test
     fun fileOcr() {
         println(BaiduOcr.ocrBase64(File(TEST_OCR_DIR, "ocr.jpg").toBase64()))
+    }
+
+    companion object {
+        init {
+            BaiduOcr.accessToken()
+        }
     }
 }

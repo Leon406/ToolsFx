@@ -36,7 +36,6 @@ object RsaSolver {
                 params["c"]!!
                     .decrypt2String(params["e"]!!.invert(params["phi"]!!), params["n"]!!)
                     .also { println("solve N E C Phi ") }
-
             params.containKeys(modeBroadcastN3C3) -> solveBroadCast(params)
             params.containKeys(modeDp) && params["dq"] == null -> dpLeak(params)
             params.containKeys(modeN2EC) ->
@@ -46,7 +45,6 @@ object RsaSolver {
                         this["c2"] = this["c"]!!
                     }
                 )
-
             params.containKeys(modeDpDq) -> solveDpDq(params)
             params.containKeys(modePQREC) || params.containKeys(modePQRnEC) -> solvePQREC(params)
             params.containKeys(modeNCD) -> solveNCD(params)
@@ -58,7 +56,6 @@ object RsaSolver {
                         put("n2", params["p2"]!! * params["q2"]!!)
                     }
                 )
-
             params.containKeys(modeNE2C2) -> solveNE2C2(params)
             params.containKeys(modeN2EC2) -> solveN2EC2(params)
             params.containKeys(modePQEC) -> solvePQEC(params)
@@ -164,14 +161,12 @@ object RsaSolver {
                 val phi = n - BigInteger.ONE
                 c.modPow(e.invert(phi), n).n2s()
             }
-
             e < 6.toBigInteger() -> smallE(n, c, e)
             e.bitLength() > 100 ->
                 with(e.wiener(n)) {
                     println("wiener attack")
                     if (this == null) "wiener failed" else c.decrypt2String(this, n)
                 }
-
             n.gcd(c) != BigInteger.ONE -> {
                 println("n c are not co-prime")
                 val p = n.gcd(c)
@@ -179,7 +174,6 @@ object RsaSolver {
                 val phi = p.phi(q)
                 (c.modPow(e.invert(phi), n) / p).n2s()
             }
-
             else -> {
                 println("factor: start")
                 val factors = n.factor()

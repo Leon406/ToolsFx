@@ -1,8 +1,8 @@
 package me.leon.img
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 import tornadofx.*
-import kotlin.test.Ignore
 
 /**
  *

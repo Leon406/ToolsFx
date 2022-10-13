@@ -1,6 +1,7 @@
 package me.leon.music
 
 import java.io.File
+import kotlin.test.Ignore
 import kotlin.test.Test
 import me.leon.ext.toFile
 import me.leon.music.ncm.NcmDecoder
@@ -12,6 +13,7 @@ import me.leon.music.qmc.qmcDecode
  * @since 2022-09-28 14:17
  * @email: deadogone@gmail.com
  */
+@Ignore
 class UnlockTest {
     @Test
     fun qmcTest() {
