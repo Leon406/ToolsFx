@@ -2,11 +2,11 @@ package me.leon.encode
 
 import java.io.File
 import kotlin.system.measureNanoTime
-import kotlin.test.assertContentEquals
-import kotlin.test.assertEquals
+import kotlin.test.*
 import me.leon.TEST_ENCODE_DIR
 import me.leon.controller.EncodeController
-import me.leon.ctf.*
+import me.leon.ctf.bubbleBabble
+import me.leon.ctf.bubbleBabbleDecode2String
 import me.leon.encode.base.*
 import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
@@ -32,16 +32,16 @@ class EncodeTest {
 
         val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
         assertEquals(base32, controller.encode2String(raw, EncodeType.Base32))
-        assertEquals(base32, raw.radixNEncode(32, BASE32_DICT))
+        assertEquals(base32, raw.radixNEncode(BASE32_DICT))
         assertEquals(raw, controller.decode2String(base32, EncodeType.Base32))
-        assertEquals(raw, base32.radixNDecode2String(32, BASE32_DICT))
+        assertEquals(raw, base32.radixNDecode2String(BASE32_DICT))
 
         val base16 =
             "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
         assertEquals(base16, controller.encode2String(raw, EncodeType.Base16))
-        assertEquals(base16, raw.radixNEncode(16, BASE16_DICT))
+        assertEquals(base16, raw.radixNEncode(BASE16_DICT))
         assertEquals(raw, controller.decode2String(base16, EncodeType.Base16))
-        assertEquals(raw, base16.radixNDecode2String(16, BASE16_DICT))
+        assertEquals(raw, base16.radixNDecode2String(BASE16_DICT))
 
         val binary =
             "1110010110111100100000001110010110001111100100011110010110110111101001011110010110000" +
@@ -56,8 +56,8 @@ class EncodeTest {
         assertEquals(raw, controller.decode2String(hex, EncodeType.Hex))
 
         val unicode =
-            "\\u5f00\\u53d1\\u5de5\\u5177\\u96c6\\u5408\\u20\\u62\\u79\\u20\\u6c\\u65\\u6f\\u6e\\u34" +
-                "\\u30\\u36\\u40\\u35\\u32\\u70\\u6f\\u6a\\u69\\u65\\u2e\\u63\\u6e"
+            "\\u5f00\\u53d1\\u5de5\\u5177\\u96c6\\u5408\\u0020\\u0062\\u0079\\u0020\\u006c\\u0065\\u006f\\u006e" +
+                "\\u0034\\u0030\\u0036\\u0040\\u0035\\u0032\\u0070\\u006f\\u006a\\u0069\\u0065\\u002e\\u0063\\u006e"
         assertEquals(unicode, controller.encode2String(raw, EncodeType.Unicode))
         assertEquals(raw, controller.decode2String(unicode, EncodeType.Unicode))
 
@@ -81,26 +81,26 @@ class EncodeTest {
         // test url https://www.better-converter.com/Encoders-Decoders/Base62-Encode
         val base62Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         val base62 = "JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju"
-        assertEquals(base62, raw.radixNEncode(62, base62Map))
+        assertEquals(base62, raw.radixNEncode(base62Map))
         assertEquals(base62, raw.base62())
-        assertEquals(raw, base62.radixNDecode2String(62, base62Map))
+        assertEquals(raw, base62.radixNDecode2String(base62Map))
         assertEquals(raw, base62.base62Decode2String())
 
         val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         val base36 = "MAHJV1X5YMIHRRDJ0HQLTZ0WNFLYDP0W01ME2E8MTAT3QNDXRXGNH7HJYAYY5Q"
-        assertEquals(base36, raw.radixNEncode(36, base36Map))
+        assertEquals(base36, raw.radixNEncode(base36Map))
         assertEquals(base36, raw.base36())
-        assertEquals(raw, base36.radixNDecode2String(36, base36Map))
+        assertEquals(raw, base36.radixNDecode2String(base36Map))
         assertEquals(raw, base36.base36Decode2String())
     }
 
     @Test
     fun baseNTest() {
-        val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        val base36Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         val encoded = "MAHJV1X5YMIHRRDJ0HQLTZ0WNFLYDP0W01ME2E8MTAT3QNDXRXGNH7HJYAYY5Q"
 
-        assertEquals(encoded, raw.radixNEncode(36, base36Map))
-        assertEquals(raw, encoded.radixNDecode2String(36, base36Map))
+        assertEquals(encoded, raw.radixNEncode(base36Map))
+        assertEquals(raw, encoded.radixNDecode2String(base36Map))
     }
 
     @Test
@@ -110,8 +110,8 @@ class EncodeTest {
         assertEquals("C-SEFK*.KRT9-3E+Q691", "你好Leon406".base45())
 
         assertEquals("你好Leon406", "C-SEFK*.KRT9-3E+Q691".base45Decode2String())
-        assertEquals("Hello!!", "%69 VD92EX0".base45Decode2String())
         assertEquals("ietf!", "QED8WEX0".base45Decode2String())
+        assertEquals("Hello!!", "%69 VD92EX0".base45Decode2String())
     }
 
     @Test
@@ -370,8 +370,7 @@ class EncodeTest {
 
     @Test
     fun utf7() {
-        //        println("£†".toByteArray(Charsets.UTF_16BE).base64(UTF7_Base64, false))
-        //        println("£1".toByteArray(Charsets.UTF_16BE).base64(UTF7_Base64, false))
+        println("&VMhUyFTIdoSQ/WYv-".uft7ExtDecode())
         println("Hello, World!".utf7())
         println("1 + 1 = 2".utf7())
         println("x';xss:expression(alert(1));font-family:'".utf7())
@@ -381,7 +380,7 @@ class EncodeTest {
         val all = "+VMhUyFTIdoSQ/WYv-"
         println("哈哈哈的都是".utf7())
         println("哈哈哈&12的都是".utf7Ext())
-        println("&VMhUyFTIdoSQ/WYv-".uft7ExtDecode())
+        //
         println(
             ("+AHgAJwA7AHgAcwBzADoAZQB4AHAAcgBlAHMAcwBpAG8AbgAoAGEAbABlAHIAdAAoADEAKQApADsAZgBvA" +
                     "G4AdAAtAGYAYQBtAGkAbAB5ADoAJw-")
@@ -427,13 +426,5 @@ class EncodeTest {
         println("0b110001".mixDecode2String())
         println("0o61".mixDecode2String())
         println("0x31".mixDecode2String())
-    }
-
-    @Test
-    fun eight() {
-        val raw = "abcefghijklmoqrsttuvwxyzhelloo12"
-        val encode = "升困艮益蛊困蛊无妄井萃噬嗑既济井兑损离巽履晋节恒履蒙归妹鼎讼蛊履大过否噬嗑需井萃未济丰巽萃大有同人小过涣谦"
-        assertEquals(encode, raw.eightDiagram())
-        assertEquals(raw, encode.eightDiagramDecode())
     }
 }

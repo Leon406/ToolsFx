@@ -26,9 +26,9 @@ class CtfTest {
         val d = "HelloWorldab"
         val d2 = "gesfcinphodtmwuqouryzejrehbxvalookT"
         val d3 = "The quick brown fox jumps over the lazy dog".replace(" ", "")
-        assertEquals("lrbaoleWdloH", d.curveCipher(3, 4))
         assertEquals(d, "lrbaoleWdloH".curveCipherDecode(3, 4))
         assertEquals("Thequickbrownfoxjumpsoverthelazydog", d2.curveCipherDecode(5, 7))
+        assertEquals("lrbaoleWdloH", d.curveCipher(3, 4))
         assertEquals(d2, d3.curveCipher(5, 7))
     }
 

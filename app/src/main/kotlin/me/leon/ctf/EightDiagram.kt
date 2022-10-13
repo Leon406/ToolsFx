@@ -1,7 +1,6 @@
 package me.leon.ctf
 
 import me.leon.encode.base.*
-import me.leon.ext.stripAllSpace
 
 /**
  *
@@ -10,7 +9,7 @@ import me.leon.ext.stripAllSpace
  * @email: deadogone@gmail.com
  */
 val EIGHT_MAP =
-    arrayOf(
+    listOf(
         "坤",
         "剥",
         "比",
@@ -88,10 +87,10 @@ fun String.eightDiagramDecode(delimiter: String = "") =
         .joinToString("")
         .base64Decode2String()
 
-fun String.dictValueParse(map: Array<String> = EIGHT_MAP, delimiter: String = " "): List<String> {
+fun String.dictValueParse(map: List<String> = EIGHT_MAP, delimiter: String = ""): List<String> {
     if (delimiter.isNotEmpty() && contains(delimiter)) return split(delimiter)
     val tmp: StringBuilder = StringBuilder()
-    return stripAllSpace().fold(mutableListOf()) { acc, c ->
+    return fold(mutableListOf()) { acc, c ->
         acc.apply {
             if (map.contains(tmp.toString() + c)) {
                 add(tmp.toString() + c)

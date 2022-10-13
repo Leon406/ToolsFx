@@ -620,12 +620,17 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.manchesterDiffDecode(requireNotNull(params[C1]).toBoolean())
     },
-    EIGHT_DIAGRAM("八卦六十四象") {
+    EIGHT_DIAGRAM("六十四卦") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.eightDiagram(requireNotNull(params[P1].also { println(it) }))
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.eightDiagramDecode(requireNotNull(params[P1]))
+    },
+    STEM_BRANCH("天干地支(base60)") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.stemBranch()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.stemBranchDecode()
     };
 
     override fun paramsHints(): Array<out String> {

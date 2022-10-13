@@ -1,7 +1,7 @@
 package me.leon.encode.base
 
 const val BASE85_DICT =
-    """!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"""
+    """!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstu"""
 
 const val Z85_DICT =
     """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#"""
@@ -16,7 +16,7 @@ fun ByteArray.base85(dict: String = BASE85_DICT): String =
             if (it.size < 4) ArrayList(it).apply { repeat(4 - it.size) { add(0.toByte()) } } else it
         }
         .fold(StringBuilder()) { acc, list ->
-            acc.append(list.toByteArray().radixNEncode(85, dict.ifEmpty { BASE85_DICT }))
+            acc.append(list.toByteArray().radixNEncode(dict.ifEmpty { BASE85_DICT }))
         }
         .toString()
         .run { substring(0, length - (4 - size % 4) % 4) }

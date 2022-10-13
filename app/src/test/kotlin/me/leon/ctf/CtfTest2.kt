@@ -4,6 +4,7 @@ import java.io.File
 import kotlin.test.assertEquals
 import me.leon.TEST_CTF_DIR
 import me.leon.classical.*
+import me.leon.encode.base.*
 import me.leon.ext.*
 import me.leon.ext.crypto.*
 import org.junit.Test
@@ -121,5 +122,22 @@ class CtfTest2 {
             println(it.autoDecodeToByteArray().toHex())
             println(format.format(it, BINARY_REGEX.matches(it), HEX_REGEX.matches(it)))
         }
+    }
+
+    @Test
+    fun eight() {
+        val raw = "abcefghijklmoqrsttuvwxyzhelloo12"
+        val encode = "升困艮益蛊困蛊无妄井萃噬嗑既济井兑损离巽履晋节恒履蒙归妹鼎讼蛊履大过否噬嗑需井萃未济丰巽萃大有同人小过涣谦"
+        assertEquals(encode, raw.eightDiagram())
+        assertEquals(raw, encode.eightDiagramDecode())
+    }
+
+    @Test
+    fun sexagesimal() {
+
+        val plain = "你好"
+        val encode = "乙丑癸巳甲寅己亥丁卯甲申丁未甲午己巳"
+        assertEquals(encode, plain.stemBranch())
+        assertEquals(plain, encode.stemBranchDecode())
     }
 }

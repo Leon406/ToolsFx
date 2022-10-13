@@ -46,5 +46,7 @@ fun String.uft7Decode() =
 fun String.uft7ExtDecode() =
     StringBuilder(this).replace(DECODE_EXT) {
         val s = it.groupValues[1]
-        if (s == "") "&" else s.base64Decode(UTF7_RFC3501_BASE64).toString(Charsets.UTF_16BE)
+        println(s)
+        if (s == "") "&"
+        else s.replace("/", ",").base64Decode(UTF7_RFC3501_BASE64).toString(Charsets.UTF_16BE)
     }
