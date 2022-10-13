@@ -17,7 +17,6 @@ class HashCrackTest {
 
     @Test
     fun hash() {
-
         for (p in 8_617_090_000_000L..8_617_099_999_999L) {
             if (p.toString().hash("SHA-256") == hash) {
                 println(p)
@@ -45,7 +44,7 @@ class HashCrackTest {
     @Test
     fun passMatch() {
         val dict = BASE64_DICT
-        val pass = dict.random(5) + "1"
+        val pass = dict.random(3) + "1"
 
         println(pass)
         val mask = "???1"

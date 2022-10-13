@@ -156,9 +156,9 @@ class AsymmetricTest {
 
     @Test
     fun deriveAndMatch() {
+        println(checkKeyPair(pub, pri))
         // todo
         pri.privateKeyDerivedPublicKey().run {
-            println(this)
             assertTrue { checkKeyPair(this, pri) }
         }
     }
