@@ -3,17 +3,15 @@ package me.leon.ctf
 fun String.curveCipher(row: Int, col: Int) =
     chunked(col).run {
         var reverseFlag = false
-        foldIndexed(StringBuilder()) { index, acc, _ ->
-                acc.apply {
-                    if (index % row == 0) {
-                        reverseFlag = !reverseFlag
-                    }
-                    val listIndex = if (reverseFlag) index % row else row - index % row - 1
-                    append(this@run[listIndex][index / row])
-                }
+        val sb = StringBuilder()
+        for (i in this@curveCipher.indices) {
+            if (i % row == 0) {
+                reverseFlag = !reverseFlag
             }
-            .reverse()
-            .toString()
+            val listIndex = if (reverseFlag) i % row else row - i % row - 1
+            sb.append(this[listIndex][i / row])
+        }
+        sb.reverse().toString()
     }
 
 fun String.curveCipherDecode(row: Int, col: Int): String {
