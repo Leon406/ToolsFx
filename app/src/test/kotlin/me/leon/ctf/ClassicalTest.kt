@@ -219,9 +219,9 @@ class ClassicalTest {
     fun playFair() {
         val key = "playfair example".replace(" ", "")
         val msg = "Hide the gold in the tree stump"
-        val encrypted = "BM OD ZB XD NA BE KU DM UI MX MO VU IF"
-        val encrypted2 = "Bm od zb xd na be ku dm ui mX mo vu if"
-        println(msg.playFair(key).playFairDecrypt(key))
+        val encrypted = "BM OD ZB XD NA BE KU DM UI XM MO UV IF"
+        val encrypted2 = "Bm od zb xd na be ku dm ui Xm mo uv if"
+
         assertEquals(encrypted, msg.playFair(key).uppercase())
         assertEquals(encrypted2, msg.playFair(key))
         assertEquals(msg.uppercase().stripAllSpace(), encrypted.playFairDecrypt(key))
