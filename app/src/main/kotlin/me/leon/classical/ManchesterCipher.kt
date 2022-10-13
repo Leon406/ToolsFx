@@ -19,6 +19,7 @@ fun String.manchesterDecode(isStandard: Boolean = false, isReverse: Boolean = fa
         .toBinaryString()
         .chunked(2)
         .map { if (isStandard) ENCODE_STANDARD.indexOf(it) else ENCODE_8023.indexOf(it) }
+        .map { it.coerceAtLeast(0) }
         .joinToString("")
         .binaryReverse(isReverse)
 

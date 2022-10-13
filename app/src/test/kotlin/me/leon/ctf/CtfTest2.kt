@@ -72,6 +72,7 @@ class CtfTest2 {
         val testDataBinary = "0b10110010" // 10110010
         val encoded = "0110010110100110" // 10110010
         val encodedStandard = "1001101001011001" // 10110010
+
         assertEquals(encoded, testData.hex2ByteArray().manchester())
         assertEquals(encoded, testDataHex.manchester())
         assertEquals(encoded, testDataBinary.manchester())
@@ -87,6 +88,15 @@ class CtfTest2 {
             println(it)
             assertEquals("fffffed31f645055f9", it.binary2ByteArray().toHex())
         }
+    }
+
+    // https://shawroot.hatenablog.com/entry/2020/02/03/BJDCTF2020/BUUCTF-CRYPTO:%E7%BC%96%E7%A0%81%E4%B8%8E%E8%B0%83%E5%88%B6
+    @Test
+    fun manchester2() {
+        val encode =
+            "0x2559659965656A9A65656996696965A6695669A9695A699569666A5A6A6569666A59695A69AA696569666AA6" // 10110010
+        val plain = "424a447b4469664d616e63686573746572636f64657d"
+        assertEquals(plain, encode.manchesterDecode(true).binary2ByteArray().toHex())
     }
 
     @Test
