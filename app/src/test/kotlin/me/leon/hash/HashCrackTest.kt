@@ -48,7 +48,7 @@ class HashCrackTest {
         val pass = dict.random(5) + "1"
 
         println(pass)
-        val mask = "?????1"
+        val mask = "???1"
         measureTimeMillis { mask.maskCrack(dict) { it == pass }.also { assertEquals(pass, it) } }
             .also { println(it) }
         measureTimeMillis {

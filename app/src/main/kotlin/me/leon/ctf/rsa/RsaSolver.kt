@@ -126,7 +126,8 @@ object RsaSolver {
         val c = c2.modPow(d2, n2)
         val d1 = e.invert(p.phi(q1))
         val decrypt = c.decrypt2String(d1, n1)
-        return REG_NON_PRINTABLE.find(decrypt)?.run { decrypt } ?: run { c1.decrypt2String(d1, n1) }
+        val matches = REG_NUMBER.matches(decrypt)
+        return if (matches) c1.decrypt2String(d1, n1) else decrypt
     }
 
     private fun solveNE2C2(params: MutableMap<String, BigInteger>): String {

@@ -2,9 +2,11 @@ package me.leon
 
 import me.leon.ext.toFile
 import org.junit.Test
+import kotlin.test.Ignore
 
 class FileTest {
     @Test
+    @Ignore
     fun gradleCacheJarToM2() {
         val home = System.getenv("USERPROFILE")
         println(home)
