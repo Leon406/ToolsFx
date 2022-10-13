@@ -2,6 +2,7 @@ package me.leon.img
 
 import kotlin.test.Test
 import tornadofx.*
+import kotlin.test.Ignore
 
 /**
  *
@@ -12,6 +13,7 @@ import tornadofx.*
 class ImageTest {
 
     @Test
+    @Ignore
     fun base64() {
         launch<Main>()
     }
