@@ -10,8 +10,11 @@ const val BASE64_BLOCK_SIZE = 6
 const val BASE64_PADDING_SIZE = 4
 const val BYTE_MASK = 0xFF
 
-fun String.base64(dict: String = BASE64_DICT, charset: Charset = Charsets.UTF_8) =
-    toByteArray(charset).base64(dict)
+fun String.base64(
+    dict: String = BASE64_DICT,
+    charset: Charset = Charsets.UTF_8,
+    needPadding: Boolean = true
+) = toByteArray(charset).base64(dict, needPadding)
 
 fun ByteArray.base64(dict: String = BASE64_DICT, needPadding: Boolean = true) =
     toBinaryString()

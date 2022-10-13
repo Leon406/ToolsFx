@@ -382,6 +382,15 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun isIgnoreSpace() = false
     },
+    Vowel("vowel") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.tableEncode(TABLE_VOWEL)
+
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            raw.tableDecode(TABLE_VOWEL).lowercase()
+
+        override fun isIgnoreSpace() = false
+    },
     Porta("porta") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.porta(params[P1].takeUnless { it.isNullOrEmpty() } ?: "porta")
@@ -610,6 +619,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.manchesterDiffDecode(requireNotNull(params[C1]).toBoolean())
+    },
+    EIGHT_DIAGRAM("八卦六十四象") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.eightDiagram(requireNotNull(params[P1].also { println(it) }))
+
+        override fun decrypt(raw: String, params: Map<String, String>) =
+            raw.eightDiagramDecode(requireNotNull(params[P1]))
     };
 
     override fun paramsHints(): Array<out String> {

@@ -6,8 +6,7 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import me.leon.TEST_ENCODE_DIR
 import me.leon.controller.EncodeController
-import me.leon.ctf.bubbleBabble
-import me.leon.ctf.bubbleBabbleDecode2String
+import me.leon.ctf.*
 import me.leon.encode.base.*
 import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
@@ -428,5 +427,13 @@ class EncodeTest {
         println("0b110001".mixDecode2String())
         println("0o61".mixDecode2String())
         println("0x31".mixDecode2String())
+    }
+
+    @Test
+    fun eight() {
+        val raw = "abcefghijklmoqrsttuvwxyzhelloo12"
+        val encode = "升困艮益蛊困蛊无妄井萃噬嗑既济井兑损离巽履晋节恒履蒙归妹鼎讼蛊履大过否噬嗑需井萃未济丰巽萃大有同人小过涣谦"
+        assertEquals(encode, raw.eightDiagram())
+        assertEquals(raw, encode.eightDiagramDecode())
     }
 }

@@ -140,6 +140,8 @@ val CLASSIC_CONFIG =
                     ),
             ),
         ClassicalCryptoType.CAESAR_BOX.type to mapOf(HINT to arrayOf("height")),
+        ClassicalCryptoType.EIGHT_DIAGRAM.type to
+            mapOf(HINT to arrayOf("delimiter(none as default)")),
         ClassicalCryptoType.MANCHESTER.type to mapOf(CHECK to arrayOf("standard", "reverse 8bit")),
         ClassicalCryptoType.MANCHESTER_DIFF.type to mapOf(CHECK to arrayOf("reverse 8bit"))
     )
