@@ -30,6 +30,14 @@ jobs:
       - uses: actions/checkout@v2
       # Runs a single command using the runners shell
       - run: chmod  777 ./gradlew
+      - name: gradle Cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            .gradle
+          key:
+            ${{ hashFiles('gradle/*', 'bin/lib/core/*', 'libcore_status')
       - name: execute app gradle test
         run: ./gradlew  :app:test
 
