@@ -6,6 +6,7 @@ import me.leon.ctf.rsa.RsaSolver.solve
 import me.leon.ctf.rsa.RsaSolver.solveN2E2C2
 import me.leon.ctf.rsa.RsaSolver.solvePQEC
 import org.junit.Test
+import kotlin.test.Ignore
 
 /**
  * p q 两个素数 dp dq 两个指数
@@ -189,6 +190,7 @@ class RsaTest {
     }
 
     @Test
+    @Ignore
     fun rsa_n2ec() {
         val params = "rsa_20_n2ec.txt".parseRsaParams()
         solve(params).also { assertEquals("SangFor{qSccmm1WrgvIg2Uq_cZhmqNfEGTz2GV8}", it) }
