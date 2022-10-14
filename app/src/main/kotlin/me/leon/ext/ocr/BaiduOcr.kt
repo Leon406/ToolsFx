@@ -17,31 +17,26 @@ object BaiduOcr {
             ?.also { token = it as String }
 
     fun ocr(url: String): String {
-        token ?: accessToken()
-        return "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=$token"
-            .readBytesFromNet(
-                "POST",
-                headers = mutableMapOf("Content-Type" to "application/x-www-form-urlencoded"),
-                data = "url=$url"
-            )
-            .decodeToString()
-            .fromJson(BaiduOcrBean::class.java)
-            .results
-            .joinToString(System.lineSeparator()) { it.words }
+        return ocrData("url=$url")
     }
 
     fun ocrBase64(base64: String): String {
+        return ocrData("image=${base64.urlEncoded}")
+    }
+
+    private fun ocrData(data: String): String {
         token ?: accessToken()
         return "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=$token"
             .readBytesFromNet(
                 "POST",
                 headers = mutableMapOf("Content-Type" to "application/x-www-form-urlencoded"),
-                data = "image=${base64.urlEncoded}"
+                data = data
             )
             .decodeToString()
             .also { println(it) }
             .fromJson(BaiduOcrBean::class.java)
             .results
-            .joinToString(System.lineSeparator()) { it.words }
+            ?.joinToString(System.lineSeparator()) { it.words }
+            ?: kotlin.error("request failed")
     }
 }

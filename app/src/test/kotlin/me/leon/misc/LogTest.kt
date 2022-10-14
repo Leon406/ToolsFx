@@ -1,9 +1,11 @@
 package me.leon.misc
 
 import java.text.SimpleDateFormat
+import kotlin.test.Ignore
 import me.leon.ext.toFile
 import org.junit.Test
 
+@Ignore
 class LogTest {
     private val logFormat =
         """(?<ip>\d+\.\d+\.\d+\.\d+) - - \[(?<time>[^]]+)] "(?<reqLine>[^"]+)\" (?<code>\d+) 
