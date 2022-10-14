@@ -46,6 +46,12 @@ jobs:
            ~/.m2
          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
          restore-keys: ${{ runner.os }}-gradle
-      - name: execute app gradle test
+      - name: run app test
         run: ./gradlew  :app:test
+      - name: make app jar
+        run: ./gradlew  :app:jar
+      - uses: actions/upload-artifact@v3
+        with:
+          path: |
+            app/build/libs
 
