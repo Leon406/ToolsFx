@@ -3,6 +3,7 @@ package me.leon.hash
 import java.io.File
 import java.security.Security
 import java.util.zip.CRC32
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import me.leon.*
 import me.leon.controller.DigestController
@@ -10,6 +11,7 @@ import me.leon.ext.crypto.*
 import me.leon.ext.toHex
 import org.junit.Test
 
+@Ignore
 class HashTest {
     private val expectedMap =
         mapOf(
