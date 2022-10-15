@@ -126,6 +126,8 @@ class HashTest {
             "md5(SHA256)" to "a4de7c17e0f46ed5adee6ed4750d6eb3",
             "md5(SHA384)" to "ed264ab723f452972cc9acdf993712fb",
             "md5(SHA512)" to "32d938bec236b8d25ac5af4404f3f916",
+            "LM" to "0182BD0BD4444BF836077A718CCDF409",
+            "NTLM" to "259745CB123A52AA2E693AAACCA2DB52",
         )
 
     init {
@@ -205,6 +207,13 @@ class HashTest {
                                     )
                                 )
                             }
+                        } else if (it.contains("Windows")) {
+                            if (it.contains("LM")) {
+                                assertEquals(
+                                    expectedMap[it.replace("Windows", "")],
+                                    digestController.digest(it.replace("Windows", ""), testData)
+                                )
+                            }
                         } else if (it.contains("512")) {
                             assertEquals(expectedMap[it], testData.repeat(8).hash(it))
                         } else if (it.contains("256") && !it.contains("(SHA256)")) {
@@ -274,5 +283,12 @@ class HashTest {
             "bb16e8d698bb2a61668c1eee494a777e",
             PasswordHashingType.Md5Sha512.hash(data2.toByteArray())
         )
+    }
+
+    @Test
+    fun windowsHash() {
+        val plain = "123456"
+        plain.lmHash().also { assertEquals("44EFCE164AB921CAAAD3B435B51404EE", it) }
+        plain.ntlmHash().also { assertEquals("32ED87BDB5FDC5E9CBA88547376818D4", it) }
     }
 }

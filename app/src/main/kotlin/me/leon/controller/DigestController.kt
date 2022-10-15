@@ -26,6 +26,10 @@ class DigestController : Controller() {
             else data.decodeToByteArray(inputEncode).crc64()
         } else if (method == "Adler32") {
             data.decodeToByteArray(inputEncode).adler32()
+        } else if (method == "NTLM") {
+            data.decodeToByteArray(inputEncode).ntlmHash()
+        } else if (method == "LM") {
+            data.decodeToByteArray(inputEncode).lmHash()
         } else if (method.passwordHashingType() != null) {
             method.passwordHashingType()!!.hash(data.decodeToByteArray(inputEncode))
         } else data.decodeToByteArray(inputEncode).hash2String(method)

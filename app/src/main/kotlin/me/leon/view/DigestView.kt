@@ -120,7 +120,7 @@ class DigestView : Fragment(messages["hash"]) {
             println("selectedBits __ $new")
             new?.run {
                 method =
-                    if (selectedAlg.get() == "PasswordHashing") {
+                    if (selectedAlg.get() in arrayOf("PasswordHashing", "Windows")) {
                         enableFileMode.value = false
                         new
                     } else {

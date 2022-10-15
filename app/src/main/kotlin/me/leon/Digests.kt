@@ -74,6 +74,7 @@ val ALGOS_HASH =
         "ParallelHash" to listOf("128", "256"),
         "CRC" to listOf("32", "64"),
         "Adler32" to listOf("32"),
+        "Windows" to listOf("LM", "NTLM"),
         "PasswordHashing" to passwordHashingTypes,
     )
 
