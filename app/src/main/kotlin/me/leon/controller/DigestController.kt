@@ -56,7 +56,8 @@ class DigestController : Controller() {
     // 1400w parallelStream 3s-6s md5  dd2978f9ae7014cd2d1884c5a1bbbca2
     fun crack(method: String, data: String): String =
         catch({ "digest crack error: $it" }) {
+            val lower = data.lowercase()
             require(digest(method, "", "raw").length == data.length) { "Wrong Method!!!" }
-            dicts.findParallel("") { digest(method, it, "raw") == data }
+            dicts.findParallel("") { digest(method, it, "raw") == lower }
         }
 }
