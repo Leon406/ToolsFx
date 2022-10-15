@@ -128,8 +128,8 @@ class HashTest {
             "md5(SHA256)" to "a4de7c17e0f46ed5adee6ed4750d6eb3",
             "md5(SHA384)" to "ed264ab723f452972cc9acdf993712fb",
             "md5(SHA512)" to "32d938bec236b8d25ac5af4404f3f916",
-            "LM" to "0182BD0BD4444BF836077A718CCDF409",
-            "NTLM" to "259745CB123A52AA2E693AAACCA2DB52",
+            "LM" to "0182bd0bd4444bf836077a718ccdf409",
+            "NTLM" to "259745cb123a52aa2e693aaacca2db52",
         )
 
     init {
@@ -290,7 +290,7 @@ class HashTest {
     @Test
     fun windowsHash() {
         val plain = "123456"
-        plain.lmHash().also { assertEquals("44EFCE164AB921CAAAD3B435B51404EE", it) }
-        plain.ntlmHash().also { assertEquals("32ED87BDB5FDC5E9CBA88547376818D4", it) }
+        plain.lmHash().also { assertEquals("44efce164ab921caaad3b435b51404ee", it) }
+        plain.ntlmHash().also { assertEquals("32ed87bdb5fdc5e9cba88547376818d4", it) }
     }
 }

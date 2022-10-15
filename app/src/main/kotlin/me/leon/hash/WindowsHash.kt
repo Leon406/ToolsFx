@@ -1,9 +1,12 @@
-package me.leon
+package me.leon.hash
 
+import me.leon.UTF8
 import me.leon.ext.*
 import me.leon.ext.crypto.encrypt
+import me.leon.hash
 
 private const val LM_DATA = "KGS!@#$%"
+private const val DES_ALG = "DES/ECB/PKCS5Padding"
 
 fun String.lmHash(): String {
     require(length < 15) { "password length needs less than  15" }
@@ -14,10 +17,9 @@ fun String.lmHash(): String {
             }
 
         LM_DATA.toByteArray()
-            .encrypt(key.hex2ByteArray(), byteArrayOf(), "DES/ECB/PKCS5Padding")
+            .encrypt(key.hex2ByteArray(), byteArrayOf(), DES_ALG)
             .toHex()
             .substring(0, 16)
-            .uppercase()
     }
 }
 
@@ -25,7 +27,7 @@ fun ByteArray.lmHash(): String {
     return decodeToString().lmHash()
 }
 
-fun String.ntlmHash() = toByteArray(Charsets.UTF_16LE).hash("MD4").toHex().uppercase()
+fun String.ntlmHash() = toByteArray(Charsets.UTF_16LE).hash("MD4").toHex()
 
 fun ByteArray.ntlmHash(charset: String = UTF8) =
-    toString(charset.toCharset()).toByteArray(Charsets.UTF_16LE).hash("MD4").toHex().uppercase()
+    toString(charset.toCharset()).toByteArray(Charsets.UTF_16LE).hash("MD4").toHex()
