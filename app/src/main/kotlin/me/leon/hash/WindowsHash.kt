@@ -9,7 +9,7 @@ private const val LM_DATA = "KGS!@#$%"
 private const val DES_ALG = "DES/ECB/PKCS5Padding"
 
 fun String.lmHash(): String {
-    require(length < 15) { "password length needs less than  15" }
+    if (length > 14) return ""
     return uppercase().toHex().padEnd(28, '0').chunked(14).joinToString("") {
         val key =
             it.hex2ByteArray().toBinaryString().chunked(7).joinToString("") {
