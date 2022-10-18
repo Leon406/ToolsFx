@@ -27,6 +27,21 @@ class HashCrackTest {
 
     @Test
     fun dict() {
+        val hash = "0175501585710a89f5a60dc9ed2f88d7"
+        val dict = "0123456789"
+        val mask = "1997????"
+        println(BASE58_DICT.sliceCount(Runtime.getRuntime().availableProcessors()))
+        measureTimeMillis { mask.maskCrack(dict) { it.hash() == hash }.also { println(it) } }
+            .also { println(it) }
+
+        measureTimeMillis {
+                mask.maskCrackParallel(dict) { it.hash() == hash }.also { println(it) }
+            }
+            .also { println(it) }
+    }
+
+    @Test
+    fun dict2() {
         val dict = "0123456789"
         val mask = "861709??????6"
         println(BASE58_DICT.sliceCount(Runtime.getRuntime().availableProcessors()))

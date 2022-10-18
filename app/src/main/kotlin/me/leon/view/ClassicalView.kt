@@ -79,6 +79,9 @@ class ClassicalView : Fragment(messages["classical"]) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
+            button(graphic = imageview("/img/more.png")) {
+                action { find<CtfImageEncoderFragment>().openWindow() }
+            }
 
             checkbox(messages["singleLine"], singleLine)
             checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
