@@ -1,13 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: automated-test
+name: Run test case and build app
 
 # Controls when the action will run. 
 on:
-#  push:
-#    branches: [ main ]
-#  pull_request:
-#    branches: [ main ]
+  push:
+    paths:
+      - 'app/**'
   # Triggers the workflow on push or pull request events but only for the master branch
   #  schedule:
   #    # 定时任务
