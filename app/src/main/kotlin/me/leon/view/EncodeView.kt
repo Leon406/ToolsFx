@@ -18,31 +18,32 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
 
     private var timeConsumption = 0L
     private var startTime = 0L
-    private var encodeType = EncodeType.Base64
+    private var encodeType = EncodeType.BASE64
     private var isEncode = true
     private val excludeEncode =
         arrayOf(
-            EncodeType.Radix8,
-            EncodeType.Base16,
-            EncodeType.Octal,
+            EncodeType.RADIX8,
+            EncodeType.BASE16,
+            EncodeType.OCTAL,
             //            EncodeType.Decimal,
-            EncodeType.Radix10,
-            EncodeType.Radix32,
-            EncodeType.Radix64,
+            EncodeType.RADIX9,
+            EncodeType.RADIX10,
+            EncodeType.RADIX32,
+            EncodeType.RADIX64,
             EncodeType.UTF7,
             EncodeType.UTF7_ALL,
             EncodeType.UTF7_EXT,
-            EncodeType.Base69,
-            EncodeType.Base65536,
+            EncodeType.BASE69,
+            EncodeType.BASE65536,
         )
     private val encodeTypeWithSpace =
         arrayOf(
-            EncodeType.UuEncode,
-            EncodeType.XxEncode,
-            EncodeType.QuotePrintable,
-            EncodeType.PunyCode,
-            EncodeType.Base69,
-            EncodeType.Base65536,
+            EncodeType.UUENCODE,
+            EncodeType.XXENCODE,
+            EncodeType.QUOTE_PRINTABLE,
+            EncodeType.PUNY_CODE,
+            EncodeType.BASE69,
+            EncodeType.BASE65536,
         )
 
     override val closeable = SimpleBooleanProperty(false)
@@ -70,7 +71,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val inputText: String
         get() =
             taInput.text.takeIf {
-                isEncode || encodeType in arrayOf(EncodeType.Decimal, EncodeType.Octal)
+                isEncode || encodeType in arrayOf(EncodeType.DECIMAL, EncodeType.OCTAL)
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
                     ?: taInput.text.stripAllSpace()
@@ -150,7 +151,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
                             setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == EncodeType.Base64) isSelected = true
+                            if (it.value == EncodeType.BASE64) isSelected = true
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
@@ -329,7 +330,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         (it.second.isEmpty() ||
                                 it.second.contains(encoded, true) ||
                                 it.second.contains(REG_NON_PRINTABLE) ||
-                                it.first == EncodeType.UrlEncode.type &&
+                                it.first == EncodeType.URL_ENCODE.type &&
                                     encoded.length == it.second.length ||
                                 it.second.length < times)
                             .not()

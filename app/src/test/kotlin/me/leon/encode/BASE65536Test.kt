@@ -10,7 +10,7 @@ import me.leon.encode.base.*
  * @since 2022-09-06 15:47
  * @email: deadogone@gmail.com
  */
-class Base65536Test {
+class BASE65536Test {
 
     @Test
     fun base65536() {

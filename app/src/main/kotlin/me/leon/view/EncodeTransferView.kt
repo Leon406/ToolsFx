@@ -18,8 +18,8 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
 
     private var timeConsumption = 0L
     private var startTime = 0L
-    private var dstEncodeType = EncodeType.UrlEncode
-    private var srcEncodeType = EncodeType.Base64
+    private var dstEncodeType = EncodeType.URL_ENCODE
+    private var srcEncodeType = EncodeType.BASE64
 
     override val closeable = SimpleBooleanProperty(false)
     private val enableDict = SimpleBooleanProperty(true)
@@ -76,7 +76,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
                             setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == EncodeType.Base64) isSelected = true
+                            if (it.value == EncodeType.BASE64) isSelected = true
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
@@ -145,7 +145,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                     encodeTypeMap.forEach {
                         radiobutton(it.key) {
                             setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == EncodeType.UrlEncode) isSelected = true
+                            if (it.value == EncodeType.URL_ENCODE) isSelected = true
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->

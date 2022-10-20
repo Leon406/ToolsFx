@@ -27,20 +27,20 @@ class EncodeTest {
     @Test
     fun encode() {
         val base64 = "5byA5Y+R5bel5YW36ZuG5ZCIIGJ5IGxlb240MDZANTJwb2ppZS5jbg=="
-        assertEquals(base64, controller.encode2String(raw, EncodeType.Base64))
-        assertEquals(raw, controller.decode2String(base64, EncodeType.Base64))
+        assertEquals(base64, controller.encode2String(raw, EncodeType.BASE64))
+        assertEquals(raw, controller.decode2String(base64, EncodeType.BASE64))
 
         val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
-        assertEquals(base32, controller.encode2String(raw, EncodeType.Base32))
+        assertEquals(base32, controller.encode2String(raw, EncodeType.BASE32))
         assertEquals(base32, raw.radixNEncode(BASE32_DICT))
-        assertEquals(raw, controller.decode2String(base32, EncodeType.Base32))
+        assertEquals(raw, controller.decode2String(base32, EncodeType.BASE32))
         assertEquals(raw, base32.radixNDecode2String(BASE32_DICT))
 
         val base16 =
             "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
-        assertEquals(base16, controller.encode2String(raw, EncodeType.Base16))
+        assertEquals(base16, controller.encode2String(raw, EncodeType.BASE16))
         assertEquals(base16, raw.radixNEncode(BASE16_DICT))
-        assertEquals(raw, controller.decode2String(base16, EncodeType.Base16))
+        assertEquals(raw, controller.decode2String(base16, EncodeType.BASE16))
         assertEquals(raw, base16.radixNDecode2String(BASE16_DICT))
 
         val binary =
@@ -48,35 +48,35 @@ class EncodeTest {
                 "101101101111110100110011011100001101110010110010000100010000010000001100010011110010010000" +
                 "001101100011001010110111101101110001101000011000000110110010000000011010100110010011100000" +
                 "1101111011010100110100101100101001011100110001101101110"
-        assertEquals(binary, controller.encode2String(raw, EncodeType.Binary))
-        assertEquals(raw, controller.decode2String(binary, EncodeType.Binary))
+        assertEquals(binary, controller.encode2String(raw, EncodeType.BINARY))
+        assertEquals(raw, controller.decode2String(binary, EncodeType.BINARY))
 
         val hex = "e5bc80e58f91e5b7a5e585b7e99b86e59088206279206c656f6e343036403532706f6a69652e636e"
-        assertEquals(hex, controller.encode2String(raw, EncodeType.Hex))
-        assertEquals(raw, controller.decode2String(hex, EncodeType.Hex))
+        assertEquals(hex, controller.encode2String(raw, EncodeType.HEX))
+        assertEquals(raw, controller.decode2String(hex, EncodeType.HEX))
 
         val unicode =
             "\\u5f00\\u53d1\\u5de5\\u5177\\u96c6\\u5408\\u0020\\u0062\\u0079\\u0020\\u006c\\u0065\\u006f\\u006e" +
                 "\\u0034\\u0030\\u0036\\u0040\\u0035\\u0032\\u0070\\u006f\\u006a\\u0069\\u0065\\u002e\\u0063\\u006e"
-        assertEquals(unicode, controller.encode2String(raw, EncodeType.Unicode))
-        assertEquals(raw, controller.decode2String(unicode, EncodeType.Unicode))
+        assertEquals(unicode, controller.encode2String(raw, EncodeType.UNICODE))
+        assertEquals(raw, controller.decode2String(unicode, EncodeType.UNICODE))
 
         val urlEncode =
             "%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E9%9B%86%E5%90%88%20by%20leon406%4052pojie.cn"
-        assertEquals(urlEncode, controller.encode2String(raw, EncodeType.UrlEncode))
-        assertEquals(raw, controller.decode2String(urlEncode, EncodeType.UrlEncode))
+        assertEquals(urlEncode, controller.encode2String(raw, EncodeType.URL_ENCODE))
+        assertEquals(raw, controller.decode2String(urlEncode, EncodeType.URL_ENCODE))
 
         val urlBase64 = "5byA5Y-R5bel5YW36ZuG5ZCIIGJ5IGxlb240MDZANTJwb2ppZS5jbg"
-        assertEquals(urlBase64, controller.encode2String(raw, EncodeType.Base64Url))
-        assertEquals(raw, controller.decode2String(urlBase64, EncodeType.Base64Url))
+        assertEquals(urlBase64, controller.encode2String(raw, EncodeType.BASE64_URL))
+        assertEquals(raw, controller.decode2String(urlBase64, EncodeType.BASE64_URL))
 
         val base58 = "CR58UvatBfMNr917q5LwvMbAtrpuA5s3iCQe5eDivFqEz8LN1Ytu6aH"
-        assertEquals(base58, controller.encode2String(raw, EncodeType.Base58))
-        assertEquals(raw, controller.decode2String(base58, EncodeType.Base58))
+        assertEquals(base58, controller.encode2String(raw, EncodeType.BASE58))
+        assertEquals(raw, controller.decode2String(base58, EncodeType.BASE58))
 
         val base58Check = "2HhMuaDzQFGwDdVBD7S8MJRYAspzUi9zUGCLeQ1hsAdBGXBnq7FnKXsTc2iFp"
-        assertEquals(base58Check, controller.encode2String(raw, EncodeType.Base58Check))
-        assertEquals(raw, controller.decode2String(base58Check, EncodeType.Base58Check))
+        assertEquals(base58Check, controller.encode2String(raw, EncodeType.BASE58_CHECK))
+        assertEquals(raw, controller.decode2String(base58Check, EncodeType.BASE58_CHECK))
 
         // test url https://www.better-converter.com/Encoders-Decoders/Base62-Encode
         val base62Map = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -301,9 +301,9 @@ class EncodeTest {
                 "LQTHDFH9YOIZJVKZY0IRVXDMOFI7LAXB2P50RAP6H33UHGMDR4TV0TN3H2YBXM11Z8FONNAOEGL31AN42OTX7LZX61" +
                 "F98G32KJFGPP6WD1ZFWMUKBH7FMT"
 
-        EncodeType.Base36.decode(raw, "", "UTF-8").also {
+        EncodeType.BASE36.decode(raw, "", "UTF-8").also {
             println(it)
-            EncodeType.Radix10.encode2String(it, "", "UTF-8").also { println(it) }
+            EncodeType.RADIX10.encode2String(it, "", "UTF-8").also { println(it) }
         }
     }
 
@@ -400,7 +400,7 @@ class EncodeTest {
                 "5649564B464E4E494543504A35"
         val propInput = inputText.split(".+ :\\s*".toRegex()).filterNot(String::isBlank).first()
         println("$inputText \n $propInput")
-        println(controller.decode2String(propInput, EncodeType.Base16, ""))
+        println(controller.decode2String(propInput, EncodeType.BASE16, ""))
         EncodeType.values()
             .map { it.type to controller.decode2String(propInput, it, "") }
             .filterNot {

@@ -11,7 +11,7 @@ class EncodeController : Controller() {
 
     fun encode2String(
         raw: String,
-        type: EncodeType = EncodeType.Base64,
+        type: EncodeType = EncodeType.BASE64,
         dic: String = "",
         charset: String = "UTF-8",
         singleLine: Boolean = false
@@ -24,7 +24,7 @@ class EncodeController : Controller() {
 
     fun encode2String(
         raw: ByteArray,
-        type: EncodeType = EncodeType.Base64,
+        type: EncodeType = EncodeType.BASE64,
         dic: String = "",
         charset: String = "UTF-8"
     ): String =
@@ -35,7 +35,7 @@ class EncodeController : Controller() {
 
     fun decode2String(
         encoded: String,
-        type: EncodeType = EncodeType.Base64,
+        type: EncodeType = EncodeType.BASE64,
         dic: String = "",
         charset: String = "UTF-8",
         singleLine: Boolean = false
@@ -50,7 +50,7 @@ class EncodeController : Controller() {
 
     fun decode(
         encoded: String,
-        type: EncodeType = EncodeType.Base64,
+        type: EncodeType = EncodeType.BASE64,
         dic: String = "",
         charset: String = "UTF-8"
     ): ByteArray =
