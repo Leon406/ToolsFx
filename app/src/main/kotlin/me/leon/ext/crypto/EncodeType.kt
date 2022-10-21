@@ -143,6 +143,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) = bytes.radix9()
     },
+    RADIX_N("radixN") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.radixNDecode(dict)
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.radixNEncode(dict)
+    },
     RADIX10("radix10") {
         override fun decode(encoded: String, dict: String, charset: String) =
             encoded.radix10Decode()

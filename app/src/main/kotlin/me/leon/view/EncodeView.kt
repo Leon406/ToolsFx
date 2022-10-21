@@ -27,6 +27,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             EncodeType.OCTAL,
             //            EncodeType.Decimal,
             EncodeType.RADIX9,
+            EncodeType.RADIX_N,
             EncodeType.RADIX10,
             EncodeType.RADIX32,
             EncodeType.RADIX64,
@@ -158,8 +159,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         encodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value =
                             encodeType.type.contains("base") &&
-                                encodeType.type != "base100" &&
-                                encodeType.type != "base65536"
+                                encodeType != EncodeType.BASE100 &&
+                                encodeType != EncodeType.BASE65536 ||
+                                encodeType == EncodeType.RADIX_N
                         tfCustomDict.text = encodeType.defaultDict
                         val isIgnore = encodeType !in encodeTypeWithSpace
                         decodeIgnoreSpace.set(isIgnore)

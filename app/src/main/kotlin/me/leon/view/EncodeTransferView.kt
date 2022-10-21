@@ -82,7 +82,10 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                     selectedToggleProperty().addListener { _, _, new ->
                         srcEncodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value =
-                            srcEncodeType.type.contains("base") && srcEncodeType.type != "base100"
+                            srcEncodeType.type.contains("base") &&
+                                srcEncodeType != EncodeType.BASE100 &&
+                                srcEncodeType != EncodeType.BASE65536 ||
+                                srcEncodeType == EncodeType.RADIX_N
                         tfCustomDict.text = srcEncodeType.defaultDict
                     }
                 }
@@ -142,12 +145,14 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 alignment = Pos.TOP_LEFT
                 prefColumns = 7
                 togglegroup {
-                    encodeTypeMap.forEach {
-                        radiobutton(it.key) {
-                            setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == EncodeType.URL_ENCODE) isSelected = true
+                    encodeTypeMap
+                        .filterNot { it.value == EncodeType.RADIX_N }
+                        .forEach {
+                            radiobutton(it.key) {
+                                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                                if (it.value == EncodeType.URL_ENCODE) isSelected = true
+                            }
                         }
-                    }
                     selectedToggleProperty().addListener { _, _, new ->
                         dstEncodeType = new.cast<RadioButton>().text.encodeType()
                         run()
