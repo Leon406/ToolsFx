@@ -29,6 +29,25 @@ object CoordinatorTransform {
     private val PATTERN_DEGREE_LOCATION =
         Pattern.compile("(\\d{1,3})° *(\\d{1,2})′ *(\\d{1,2}\\.\\d+)″")
 
+    private val map: Map<String, Map<String, Double>> =
+        mapOf(
+            "wgs" to
+                    mapOf(
+                        "a" to 6_378_137.0,
+                        "b" to 6_356_752.3142,
+                        "e1Square" to 0.00669437999013,
+                        "e2Square" to 0.006739496742227,
+                        "ratio" to 1.0 / 298.257223563,
+                    ),
+            "cgcs2000" to
+                    mapOf(
+                        "a" to 6_378_137.0,
+                        "b" to 66_356_752.314,
+                        "e1Square" to 0.00669438002290,
+                        "ratio" to 1.0 / 298.257222101,
+                    ),
+        )
+
     // GCJ-02=>BD09 火星坐标系=>百度坐标系  10位小数 跟百度api一样
     fun gcj2BD09(glat: Double, glng: Double): DoubleArray {
         val latlng = DoubleArray(2)
@@ -208,5 +227,44 @@ object CoordinatorTransform {
             }
         }
         return degree
+    }
+
+    /** 经纬度转地心 */
+    fun lbh2xyz(l: Double, b: Double, h: Double, type: String = "wgs"): Array<Double> {
+        val lRadian = Math.toRadians(l)
+        val bRadian = Math.toRadians(b)
+        // 地球长半径
+
+        val r = requireNotNull(map[type]!!["a"])
+        val e2 = requireNotNull(map[type]!!["e1Square"])
+        val tmp = 1.0 - e2
+
+        val n = r / sqrt(1 - tmp * sin(bRadian).pow(2))
+        val x = (n + h) * cos(bRadian) * cos(lRadian)
+        val y = (n + h) * cos(bRadian) * sin(lRadian)
+        val z = (n * tmp + h) * sin(bRadian)
+        return arrayOf(x, y, z)
+    }
+
+    fun xyz2lbh(x: Double, y: Double, z: Double, type: String = "wgs"): Array<Double> {
+        val l = Math.toDegrees(atan(y / x))
+        requireNotNull(map[type])
+        val r = requireNotNull(map[type]!!["a"])
+        val e2 = requireNotNull(map[type]!!["e1Square"])
+        val tmp = 1.0 - e2
+
+        var tB = 0.0
+        var n = r / sqrt(1 - tmp * sin(tB).pow(2))
+        var b = atan((z + n * e2 * sin(tB)) / sqrt(x.pow(2) + y.pow(2)))
+        while (b - tB > 0.00000001) {
+            tB = b
+            n = r / sqrt(1 - tmp * sin(tB).pow(2))
+            b = atan((z + n * e2 * sin(tB)) / sqrt(x.pow(2) + y.pow(2)))
+        }
+
+        val h = z / sin(b) - n * tmp
+        b = Math.toDegrees(b)
+
+        return arrayOf(l, b, h)
     }
 }
