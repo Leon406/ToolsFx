@@ -2,6 +2,7 @@ package me.leon
 
 import java.math.BigInteger
 import java.security.Security
+import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import me.leon.ext.crypto.EncodeType
@@ -12,7 +13,6 @@ import me.leon.hash.scrypt.SCryptPasswordEncoder
 import org.bouncycastle.crypto.params.Argon2Parameters
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
-import kotlin.system.measureTimeMillis
 
 class Tmp {
 
@@ -105,17 +105,11 @@ class Tmp {
 
             strength = 12
             println(encode("123"))
-            measureTimeMillis {
-                assertTrue { matches("123", encode("123")) }
-            }.also { println(it) }
+            measureTimeMillis { assertTrue { matches("123", encode("123")) } }.also { println(it) }
             strength = 14
-            measureTimeMillis {
-                assertTrue { matches("123", encode("123")) }
-            }.also { println(it) }
+            measureTimeMillis { assertTrue { matches("123", encode("123")) } }.also { println(it) }
             strength = 16
-            measureTimeMillis {
-                assertTrue { matches("123", encode("123")) }
-            }.also { println(it) }
+            measureTimeMillis { assertTrue { matches("123", encode("123")) } }.also { println(it) }
             version = BCryptPasswordEncoder.BCryptVersion.`$2Y`
 
             println(encode("123"))
@@ -172,14 +166,14 @@ class Tmp {
     fun phi() {
         val list =
             mutableListOf(
-                "2",
-                "9857",
-                "80990192745708230644342256236014173435685606613945005625896333595456890957431",
-                "80990192745708230644342256236014173435685606613945005625896333595456890957431",
-                "80990192745708230644342256236014173435685606613945005625896333595456890957431",
-                "107843756547496736191228190917322558471918750590609940965721119253640998815543",
-                "107843756547496736191228190917322558471918750590609940965721119253640998815543"
-            )
+                    "2",
+                    "9857",
+                    "80990192745708230644342256236014173435685606613945005625896333595456890957431",
+                    "80990192745708230644342256236014173435685606613945005625896333595456890957431",
+                    "80990192745708230644342256236014173435685606613945005625896333595456890957431",
+                    "107843756547496736191228190917322558471918750590609940965721119253640998815543",
+                    "107843756547496736191228190917322558471918750590609940965721119253640998815543"
+                )
                 .map { it.toBigInteger() }
 
         //        list.fold(list.product()) { acc, bigInteger ->

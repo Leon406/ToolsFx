@@ -134,10 +134,28 @@ class CtfTest2 {
 
     @Test
     fun sexagesimal() {
-
         val plain = "你好"
         val encode = "乙丑癸巳甲寅己亥丁卯甲申丁未甲午己巳"
         assertEquals(encode, plain.stemBranch())
         assertEquals(plain, encode.stemBranchDecode())
+    }
+
+    @Test
+    fun fenhamTest() {
+        val key = "crude"
+        val plain = "hello"
+        val encoded = "00010110010111001100100010000001010"
+        assertEquals(encoded, plain.fenham(key))
+        assertEquals(plain, encoded.fenhamDecrypt(key))
+    }
+
+    @Test
+    fun fracMorseTest() {
+        val key = "ROUNDTABLECFGHIJKMPQSVWXYZ"
+        val plain = "hello"
+        val encoded = "RAQUNBI"
+
+        assertEquals(encoded, plain.fracMorse(key))
+        assertEquals(plain, encoded.fracMorseDecrypt(key))
     }
 }

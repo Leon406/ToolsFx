@@ -140,6 +140,8 @@ val CLASSIC_CONFIG =
                     ),
             ),
         ClassicalCryptoType.CAESAR_BOX.type to mapOf(HINT to arrayOf("height")),
+        ClassicalCryptoType.FENHAM.type to mapOf(HINT to arrayOf("key,as long as raw data")),
+        ClassicalCryptoType.FRAC_MORSE.type to mapOf(HINT to arrayOf("key,length must be 26")),
         ClassicalCryptoType.EIGHT_DIAGRAM.type to
             mapOf(HINT to arrayOf("delimiter(none as default)")),
         ClassicalCryptoType.MANCHESTER.type to mapOf(CHECK to arrayOf("standard", "reverse 8bit")),

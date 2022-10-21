@@ -631,6 +631,20 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.stemBranch()
 
         override fun decrypt(raw: String, params: Map<String, String>) = raw.stemBranchDecode()
+    },
+    FRAC_MORSE("fracMorse") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.fracMorse(requireNotNull(params[P1]))
+
+        override fun decrypt(raw: String, params: Map<String, String>) =
+            raw.fracMorseDecrypt(requireNotNull(params[P1]))
+    },
+    FENHAM("Fenham") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.fenham(requireNotNull(params[P1]))
+
+        override fun decrypt(raw: String, params: Map<String, String>) =
+            raw.fenhamDecrypt(requireNotNull(params[P1]))
     };
 
     override fun paramsHints(): Array<out String> {
