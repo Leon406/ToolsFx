@@ -32,20 +32,20 @@ object CoordinatorTransform {
     private val map: Map<String, Map<String, Double>> =
         mapOf(
             "wgs" to
-                    mapOf(
-                        "a" to 6_378_137.0,
-                        "b" to 6_356_752.3142,
-                        "e1Square" to 0.00669437999013,
-                        "e2Square" to 0.006739496742227,
-                        "ratio" to 1.0 / 298.257223563,
-                    ),
+                mapOf(
+                    "a" to 6_378_137.0,
+                    "b" to 6_356_752.3142,
+                    "e1Square" to 0.00669437999013,
+                    "e2Square" to 0.006739496742227,
+                    "ratio" to 1.0 / 298.257223563,
+                ),
             "cgcs2000" to
-                    mapOf(
-                        "a" to 6_378_137.0,
-                        "b" to 66_356_752.314,
-                        "e1Square" to 0.00669438002290,
-                        "ratio" to 1.0 / 298.257222101,
-                    ),
+                mapOf(
+                    "a" to 6_378_137.0,
+                    "b" to 66_356_752.314,
+                    "e1Square" to 0.00669438002290,
+                    "ratio" to 1.0 / 298.257222101,
+                ),
         )
 
     // GCJ-02=>BD09 火星坐标系=>百度坐标系  10位小数 跟百度api一样

@@ -8,6 +8,7 @@ import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
+import javafx.scene.paint.Color
 import javafx.stage.Stage
 import kotlin.math.sqrt
 import me.leon.TEST_DATA_DIR
@@ -26,6 +27,24 @@ val QR_MARK =
     )
 
 fun String.base64Image() = Image(ByteArrayInputStream(base64Decode()))
+
+fun List<Int>.fxImage(width: Int, height: Int) =
+    BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+        .apply {
+            createGraphics().apply {
+                for (x in 0 until width) for (y in 0 until height) setRGB(
+                    x,
+                    y,
+                    this@fxImage[x * height + y]
+                )
+            }
+        }
+        .toFxImg()
+
+fun String.rgbParse(): Int {
+    val (r, g, b) = split("\\D".toRegex()).map { it.toInt() }
+    return Color.rgb(r, g, b).hashCode()
+}
 
 fun Int.toColorInt(isBlackOne: Boolean = true) =
     when {
@@ -82,9 +101,14 @@ class Main : Application() {
     private fun genImage(): Image {
 
         //        val image = File(IMG_DIR,"qr01").readText().binaryImage(false)
-        //        val image = File(IMG_DIR,"bin").readText().binaryImage()
-        val image = File(IMG_DIR, "base64").readText().base64Image()
+        val image = File(IMG_DIR, "bin").readText().binaryImage()
+        //        val image = File(IMG_DIR, "base64").readText().base64Image()
 
+        //        val text = File(IMG_DIR, "rgb.txt").readText()
+        //        val colors = text.lines().filter { it.isNotEmpty() }.map { it.rgbParse() }
+        //        val width = 1296
+        //        val height = 154
+        //        val image = colors.fxImage(width, height)
         return image
     }
 
