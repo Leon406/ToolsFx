@@ -105,12 +105,14 @@ class ClassicalView : Fragment(messages["classical"]) {
                 alignment = Pos.TOP_LEFT
                 prefColumns = 7
                 togglegroup {
-                    classicalTypeMap.forEach {
-                        radiobutton(it.key) {
-                            setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == ClassicalCryptoType.CAESAR) isSelected = true
+                    classicalTypeMap
+                        .filter { if (ToolsApp.offlineMode) !it.key.contains("online") else true }
+                        .forEach {
+                            radiobutton(it.key) {
+                                setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                                if (it.value == ClassicalCryptoType.CAESAR) isSelected = true
+                            }
                         }
-                    }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.classicalType()
                         hasCrack.value = encodeType.hasCrack()
