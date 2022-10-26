@@ -84,35 +84,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             } else if (firstFile.extension in listOf("cer", "crt")) {
                 firstFile.parsePublicKeyFromCerFile()
             } else {
-                with(firstFile) {
-                    if (length() <= 128 * 1024) {
-                        if (realExtension() in unsupportedExts) {
-                            "unsupported file extension"
-                        } else {
-                            readText()
-                        }
-                    } else {
-                        "not support file larger than 128KB"
-                    }
-                }
+                firstFile.properText()
             }
         updateKeySize()
     }
 
-    private val inputEventHandler = fileDraggedHandler {
-        taInput.text =
-            with(it.first()) {
-                if (length() <= 128 * 1024) {
-                    if (realExtension() in unsupportedExts) {
-                        "unsupported file extension"
-                    } else {
-                        readText()
-                    }
-                } else {
-                    "not support file larger than 128KB"
-                }
-            }
-    }
+    private val inputEventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
 
     private val centerNode = vbox {
         paddingAll = DEFAULT_SPACING

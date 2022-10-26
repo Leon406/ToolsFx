@@ -70,20 +70,7 @@ class PBEView : Fragment("PBE") {
             tfSalt.text = value.encodeTo(saltEncode)
         }
 
-    private val eventHandler = fileDraggedHandler {
-        taInput.text =
-            with(it.first()) {
-                if (length() <= 128 * 1024) {
-                    if (realExtension() in unsupportedExts) {
-                        "unsupported file extension"
-                    } else {
-                        readText()
-                    }
-                } else {
-                    "not support file larger than 128KB"
-                }
-            }
-    }
+    private val eventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
 
     private val centerNode = vbox {
         addClass(Styles.group)

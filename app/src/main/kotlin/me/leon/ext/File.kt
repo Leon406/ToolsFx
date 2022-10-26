@@ -77,34 +77,45 @@ val magics =
 
 val multiExts = listOf("zip", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "jar", "apk", "exe")
 
-val unsupportedExts = magics.values
+val unsupportedExts = (magics.values + multiExts).toSet()
 
 fun File.realExtension() =
     if (isFile) {
         if (extension.lowercase() == "txt") {
             "txt"
         } else {
-            inputStream().use {
-                it.readNBytes(10).toHex().let { hex ->
-                    //            println(name)
-                    magics.keys
-                        .firstOrNull { hex.startsWith(it, true) }
-                        ?.let { key ->
-                            //                    println(name + " " + key + " " + magics[key])
-                            (if (magics[key] in multiExts) {
-                                extension.takeIf { it != name } ?: magics[key]
-                            } else {
-                                magics[key]
-                            })
-                        }
-                        ?: extension.also { println("unknown magic number $hex $name") }
-                }
+            magicNumber().run {
+                magics.keys
+                    .firstOrNull { this.startsWith(it, true) }
+                    ?.let { key ->
+                        //                    println(name + " " + key + " " + magics[key])
+                        (if (magics[key] in multiExts) {
+                            extension.takeIf { it != name } ?: magics[key]
+                        } else {
+                            magics[key]
+                        })
+                    }
+                    ?: extension.also { println("unknown magic number $this $name") }
             }
         }
     } else {
         "dir"
     }
 
+fun File.magicNumber(bytes: Int = 10) = inputStream().use { it.readNBytes(bytes).toHex() }
+
 fun File.toBase64() = readBytes().base64()
+
+/** 读取文件内容,限制大小 */
+fun File.properText(limit: Int = 128 * 1024, hints: String = "") =
+    if (length() <= limit) {
+        if (realExtension() in unsupportedExts) {
+            "unsupported file extension"
+        } else {
+            readText()
+        }
+    } else {
+        "not support file larger than ${hints.ifEmpty { "128KB" }}"
+    }
 
 fun String.toFile() = File(this)

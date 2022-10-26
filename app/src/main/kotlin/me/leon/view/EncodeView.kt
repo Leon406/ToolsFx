@@ -85,15 +85,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 if (fileMode.get()) {
                     this.absolutePath
                 } else {
-                    if (length() <= 10 * 1024 * 1024) {
-                        if (realExtension() in unsupportedExts) {
-                            "unsupported file extension"
-                        } else {
-                            readText()
-                        }
-                    } else {
-                        "not support file larger than 10M"
-                    }
+                    properText()
                 }
             }
     }

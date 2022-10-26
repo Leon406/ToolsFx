@@ -69,14 +69,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             with(it.first()) {
                 if (fileMode.get()) {
                     absolutePath
-                } else if (length() <= 10 * 1024 * 1024) {
-                    if (realExtension() in unsupportedExts) {
-                        "unsupported file extension"
-                    } else {
-                        readText()
-                    }
                 } else {
-                    "not support file larger than 10M"
+                    it.first().properText()
                 }
             }
     }

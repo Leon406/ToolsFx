@@ -233,7 +233,6 @@ object CoordinatorTransform {
     fun lbh2xyz(l: Double, b: Double, h: Double, type: String = "wgs"): DoubleArray {
         val lRadian = Math.toRadians(l)
         val bRadian = Math.toRadians(b)
-        // 地球长半径
 
         val r = requireNotNull(map[type]!!["a"])
         val e2 = requireNotNull(map[type]!!["e1Square"])
