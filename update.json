@@ -1,19 +1,21 @@
-{"version":"1.14.4.beta","info":"1.14.4.beta 2022-10-08
+{"version":"1.14.5.beta","info":"1.14.5.beta 2022-10-26
 
 新功能
 
-  🔥 ctf 新增manchester及差分相关功能
-  🔥 CTF rsa-crack wiener支持n超过2个因子
-  🔥 禁用hidpi自动缩放
-  🔥 插件apipost: follow redirect默认false，可在设置配置
-  🔥 CTF 佛曰 支持魔曰翻转解密
-  🔥 CTF rsa-crack 解密结果不正常，不进行转字符串
+  🔥 字符处理模块,统计结果按照数量从高到低排序
+  🔥 CTF 新增 FracMorse & Fenham Cipher
+  🔥 Encoding add radix9, radinxN
+  🔥 CTF新增图片加密算法查看
+  🔥 hash crack hash结果转小写
+  🔥 HASH新增 windows LM, NTLM
+  🔥 CTF新增 base60 (天干地支编码),简化radixN方法
+  🔥 CTF新增元音vowel 和 八卦加解密
 
 Bug修复
 
-  🐛 rail fence crack范围错误，只取第一个结果的问题
-  🐛 ascii解码分割正则错误
-  🐛 unicodeMix2String识别错误
+  🐛 RsaSolver#solveN2EC2 解密错误
+  🐛 curve cipher编码错误
+  🐛 CTF manchester 解码 00为 -1,改为 0
 
 
 使用前请看README和wiki
