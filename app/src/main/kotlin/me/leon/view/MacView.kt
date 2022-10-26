@@ -52,9 +52,14 @@ class MacView : Fragment("MAC") {
         taInput.text =
             with(it.first()) {
                 if (length() <= 10 * 1024 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 10M"
+                    if (realExtension() in unsupportedExts) {
+                        "unsupported file extension"
+                    } else {
+                        readText()
+                    }
+                } else {
+                    "not support file larger than 10M"
+                }
             }
     }
 
@@ -113,8 +118,9 @@ class MacView : Fragment("MAC") {
             println("selectedBits __ $new")
             new?.run {
                 method =
-                    if (selectedAlg.get() == "GMAC") "$new-GMAC"
-                    else if (selectedAlg.get().contains("ZUC-256")) {
+                    if (selectedAlg.get() == "GMAC") {
+                        "$new-GMAC"
+                    } else if (selectedAlg.get().contains("ZUC-256")) {
                         "${selectedAlg.get()}-$new"
                     } else {
                         "${selectedAlg.get()}${new.takeIf { algorithm[selectedAlg.get()]!!.size > 1 }.orEmpty()}"
@@ -135,8 +141,9 @@ class MacView : Fragment("MAC") {
             button(messages["run"], imageview(IMG_RUN)) {
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                 action {
-                    if (inputText.isNotEmpty()) doMac()
-                    else {
+                    if (inputText.isNotEmpty()) {
+                        doMac()
+                    } else {
                         outputText = ""
                     }
                 }

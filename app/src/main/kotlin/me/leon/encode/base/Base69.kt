@@ -39,8 +39,11 @@ fun String.base69(dict: String = BASE69_DICT) = toByteArray().base69(dict)
 fun String.base69Decode(dict: String = BASE69_DICT) =
     with(
             chunked(2).joinToString("") {
-                if (it.contains("=")) ""
-                else it.base69Char2Byte(dict).toString(2).padStart(CHUNK_SIZE, '0')
+                if (it.contains("=")) {
+                    ""
+                } else {
+                    it.base69Char2Byte(dict).toString(2).padStart(CHUNK_SIZE, '0')
+                }
             }
         ) {
             val replace = replace("(?:00000000)*$".toRegex(), "")

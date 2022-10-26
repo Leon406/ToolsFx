@@ -7,8 +7,9 @@ fun String.prettyJson(): String {
     val s = "  "
     var quoteCount = 0
     return foldIndexed(StringBuilder()) { index, acc, c ->
-            if (quoteCount % 2 == 1 && c != '"') acc.append(c)
-            else {
+            if (quoteCount % 2 == 1 && c != '"') {
+                acc.append(c)
+            } else {
                 acc.apply {
                     when (c) {
                         '{',
@@ -18,20 +19,26 @@ fun String.prettyJson(): String {
                                     this@prettyJson[index + 1] == ']'
                             ) {
                                 append(c)
-                            } else append(c).appendLine().append(s.repeat(++indentNumber))
+                            } else {
+                                append(c).appendLine().append(s.repeat(++indentNumber))
+                            }
                         ',' ->
                             if (
                                 this@prettyJson.substring(index + 1).matches("^\\s*\\w.*".toRegex())
                             ) {
                                 append(c)
-                            } else append(c).appendLine().append(s.repeat(indentNumber))
+                            } else {
+                                append(c).appendLine().append(s.repeat(indentNumber))
+                            }
                         ':' ->
                             if (
                                 this@prettyJson[index - 1] == '"' &&
                                     this@prettyJson[index + 1] != ' '
                             ) {
                                 append(c).append(" ")
-                            } else append(c)
+                            } else {
+                                append(c)
+                            }
                         '}',
                         ']' ->
                             if (
@@ -39,9 +46,15 @@ fun String.prettyJson(): String {
                                     this@prettyJson[index - 1] == '['
                             ) {
                                 append(c)
-                            } else appendLine().append(s.repeat(--indentNumber)).append(c)
+                            } else {
+                                appendLine().append(s.repeat(--indentNumber)).append(c)
+                            }
                         '"' ->
-                            append(c).also { if (this@prettyJson[index - 1] != '\\') quoteCount++ }
+                            append(c).also {
+                                if (this@prettyJson[index - 1] != '\\') {
+                                    quoteCount++
+                                }
+                            }
                         else -> append(c)
                     }
                 }

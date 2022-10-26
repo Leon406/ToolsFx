@@ -6,8 +6,11 @@ private val wordList = arrayOf("就 这 ¿ ", "不 会 吧 ？ ")
 
 fun String.yygq() =
     fold(StringBuilder()) { acc, i ->
-            if (i.code < 127) acc.append('0').append(i.code.toString(2).padStart(8, '0'))
-            else acc.append('1').append(i.code.toString(2).padStart(16, '0'))
+            if (i.code < 127) {
+                acc.append('0').append(i.code.toString(2).padStart(8, '0'))
+            } else {
+                acc.append('1').append(i.code.toString(2).padStart(16, '0'))
+            }
         }
         .toString()
         .map { wordList[it.toString().toInt()] }

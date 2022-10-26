@@ -4,8 +4,8 @@ import me.leon.ext.stripAllSpace
 
 fun String.cetacean() =
     map {
-            if (it == ' ') it
-            else it.code.toString(2).padStart(16, '0').replace("1", "e").replace("0", "E")
+            it.takeIf { it == ' ' }
+                ?: it.code.toString(2).padStart(16, '0').replace("1", "e").replace("0", "E")
         }
         .joinToString("")
         .also { println(it) }

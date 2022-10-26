@@ -28,8 +28,11 @@ fun ByteArray.manchesterDiff(isReverse: Boolean = false) =
         .binaryReverse(isReverse)
         .foldIndexed(StringBuilder()) { index, acc, c ->
             acc.apply {
-                if (index == 0) append(ENCODE_STANDARD[c - '0'])
-                else append(if (acc.last() == c) ENCODE_STANDARD[1] else ENCODE_STANDARD[0])
+                if (index == 0) {
+                    append(ENCODE_STANDARD[c - '0'])
+                } else {
+                    append(if (acc.last() == c) ENCODE_STANDARD[1] else ENCODE_STANDARD[0])
+                }
             }
         }
         .toString()
@@ -45,8 +48,9 @@ fun String.manchesterDiffDecode(isReverse: Boolean = false) =
         .joinToString("")
         .foldIndexed(StringBuilder()) { index, acc, c ->
             acc.apply {
-                if (index == 0) append(c)
-                else {
+                if (index == 0) {
+                    append(c)
+                } else {
                     val last = this@manchesterDiffDecode[2 * index - 1] - '0'
                     append(if (c == '1') last else (last + 1) % 2)
                 }

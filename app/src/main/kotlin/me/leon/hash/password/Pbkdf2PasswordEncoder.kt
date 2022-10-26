@@ -82,7 +82,9 @@ constructor(
     private fun encode(bytes: ByteArray): String {
         return if (encodeHashAsBase64) {
             bytes.base64()
-        } else bytes.toHex()
+        } else {
+            bytes.toHex()
+        }
     }
 
     override fun matches(password: CharSequence, encodedPassword: String): Boolean {
@@ -103,7 +105,9 @@ constructor(
     private fun decode(encodedBytes: String): ByteArray {
         return if (encodeHashAsBase64) {
             Base64.getDecoder().decode(encodedBytes)
-        } else encodedBytes.hex2ByteArray()
+        } else {
+            encodedBytes.hex2ByteArray()
+        }
     }
 
     fun encode(rawPassword: CharSequence, salt: ByteArray): ByteArray {

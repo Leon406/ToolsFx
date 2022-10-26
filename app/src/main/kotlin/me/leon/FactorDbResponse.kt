@@ -27,8 +27,11 @@ data class FactorDbResponse(val id: String, val status: String, val factors: Lis
                             isPrime || canFullFactor -> BigInteger.ONE
                             composeNotFactor -> BigInteger.ONE.negate()
                             partialFactor ->
-                                if (bigInt.isProbablePrime(100)) BigInteger.ONE
-                                else BigInteger.ONE.negate()
+                                if (bigInt.isProbablePrime(100)) {
+                                    BigInteger.ONE
+                                } else {
+                                    BigInteger.ONE.negate()
+                                }
                             else -> error("what happened")
                         }
                     bigInt *= ff

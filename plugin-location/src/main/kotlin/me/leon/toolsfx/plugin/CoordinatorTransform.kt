@@ -230,7 +230,7 @@ object CoordinatorTransform {
     }
 
     /** 经纬度转地心 */
-    fun lbh2xyz(l: Double, b: Double, h: Double, type: String = "wgs"): Array<Double> {
+    fun lbh2xyz(l: Double, b: Double, h: Double, type: String = "wgs"): DoubleArray {
         val lRadian = Math.toRadians(l)
         val bRadian = Math.toRadians(b)
         // 地球长半径
@@ -243,10 +243,10 @@ object CoordinatorTransform {
         val x = (n + h) * cos(bRadian) * cos(lRadian)
         val y = (n + h) * cos(bRadian) * sin(lRadian)
         val z = (n * tmp + h) * sin(bRadian)
-        return arrayOf(x, y, z)
+        return doubleArrayOf(x, y, z)
     }
 
-    fun xyz2lbh(x: Double, y: Double, z: Double, type: String = "wgs"): Array<Double> {
+    fun xyz2lbh(x: Double, y: Double, z: Double, type: String = "wgs"): DoubleArray {
         val l = Math.toDegrees(atan(y / x))
         requireNotNull(map[type])
         val r = requireNotNull(map[type]!!["a"])
@@ -265,6 +265,6 @@ object CoordinatorTransform {
         val h = z / sin(b) - n * tmp
         b = Math.toDegrees(b)
 
-        return arrayOf(l, b, h)
+        return doubleArrayOf(l, b, h)
     }
 }

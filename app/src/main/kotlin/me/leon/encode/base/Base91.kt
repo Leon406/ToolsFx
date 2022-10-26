@@ -54,9 +54,12 @@ object Base91 {
         val estimatedSize = (data.size / AVERAGE_ENCODING_RATIO).roundToInt()
         val output = ByteArrayOutputStream(estimatedSize)
         for (i in data.indices) {
-            if (dict.indexOf(data[i]) == -1) continue
-            if (dv == -1) dv = dict.indexOf(data[i])
-            else {
+            if (dict.indexOf(data[i]) == -1) {
+                continue
+            }
+            if (dv == -1) {
+                dv = dict.indexOf(data[i])
+            } else {
                 dv += dict.indexOf(data[i]) * BASE
                 dbq = dbq or (dv shl dn)
                 dn += if (dv and 8191 > 88) 13 else 14

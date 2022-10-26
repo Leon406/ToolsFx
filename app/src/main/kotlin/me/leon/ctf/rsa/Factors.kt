@@ -60,7 +60,9 @@ fun BigInteger.fermat(timeOut: Int = TIME_OUT): MutableList<BigInteger> {
                 if (b * b == b1) {
                     println("solved iteration $count \n\tp = ${a + b} \n\tq= ${a - b}\n")
                     return mutableListOf(a + b, a - b)
-                } else a++
+                } else {
+                    a++
+                }
             }
         }
     }

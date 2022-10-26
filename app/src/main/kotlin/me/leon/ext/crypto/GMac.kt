@@ -29,8 +29,11 @@ object GMac {
                 else -> throw IllegalArgumentException("illegal alg")
             }
 
-        return if (alg.contains("DSTU7624", true)) KGMac(KGCMBlockCipher(blockCipher))
-        else GMac(GCMBlockCipher(blockCipher))
+        return if (alg.contains("DSTU7624", true)) {
+            KGMac(KGCMBlockCipher(blockCipher))
+        } else {
+            GMac(GCMBlockCipher(blockCipher))
+        }
     }
 }
 

@@ -74,7 +74,9 @@ object ApiConfig {
         isEnableProxy = isEnablePro
         if (isEnableProxy) {
             HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
-        } else HttpUrlUtil.setupProxy()
+        } else {
+            HttpUrlUtil.setupProxy()
+        }
         val previousHeaders: MutableMap<String, String> =
             parseHeaderString(globalHeaders) as MutableMap<String, String>
         HttpUrlUtil.globalHeaders - previousHeaders.keys

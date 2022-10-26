@@ -42,6 +42,7 @@ constructor(
         outWriter = out
         consoleReader = InputStreamReader(inputStream)
     }
+
     @Suppress("VarCouldBeVal") private var lineCount = 0
     private var columnCount = 0
 
@@ -113,8 +114,11 @@ constructor(
                         var i = 1
                         while (i > 0) {
                             val c2 = chars[++charPointer]
-                            if (c2 == Token.BRACKET_LEFT) i++
-                            else if (c2 == Token.BRACKET_RIGHT) i--
+                            if (c2 == Token.BRACKET_LEFT) {
+                                i++
+                            } else if (c2 == Token.BRACKET_RIGHT) {
+                                i--
+                            }
                         }
                     }
                 Token.BRACKET_RIGHT -> {

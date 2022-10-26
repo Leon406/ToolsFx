@@ -108,7 +108,9 @@ fun String.toPrivateKey(alg: String): PrivateKey? =
                 KeyFactory.getInstance(alg.properKeyPairAlg())
                     .generatePrivate(RSAPrivateKeySpec(this["n"], this["d"]))
             }
-        } else null
+        } else {
+            null
+        }
     }
 
 fun ByteArray.pubDecrypt(key: String, alg: String) = pubDecrypt(key.toPublicKey(alg), alg)
@@ -155,11 +157,18 @@ private fun String.properOAEPAlg() = if (isOAEP()) this.replace("OAEP", RSA_PADD
 private fun String.isOAEP() = endsWith("OAEP")
 
 fun ByteArray.pubEncrypt(key: String, alg: String, reserved: Int = 11) =
-    if (alg == "SM2") sm2(true, key.removePemInfo().keyAutoDecode().toECPublicKeyParams())
-    else pubEncrypt(key.toPublicKey(alg), alg, reserved)
+    if (alg == "SM2") {
+        sm2(true, key.removePemInfo().keyAutoDecode().toECPublicKeyParams())
+    } else {
+        pubEncrypt(key.toPublicKey(alg), alg, reserved)
+    }
 
 fun String.keyAutoDecode(): ByteArray =
-    if (HEX_REGEX.matches(this)) hex2ByteArray() else base64Decode()
+    if (HEX_REGEX.matches(this)) {
+        hex2ByteArray()
+    } else {
+        base64Decode()
+    }
 
 fun ByteArray.asymmetricDecrypt(
     key: Key?,
@@ -197,8 +206,11 @@ fun ByteArray.privateDecrypt(
     key: String,
     alg: String,
 ): ByteArray =
-    if (alg == "SM2") sm2(false, key.keyAutoDecode().toECPrivateKeyParams())
-    else asymmetricDecrypt(key.toPrivateKey(alg), alg)
+    if (alg == "SM2") {
+        sm2(false, key.keyAutoDecode().toECPrivateKeyParams())
+    } else {
+        asymmetricDecrypt(key.toPrivateKey(alg), alg)
+    }
 
 fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray =
     Cipher.getInstance(alg.properOAEPAlg()).run {

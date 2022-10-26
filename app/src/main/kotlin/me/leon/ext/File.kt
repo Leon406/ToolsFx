@@ -81,8 +81,9 @@ val unsupportedExts = magics.values
 
 fun File.realExtension() =
     if (isFile) {
-        if (extension.lowercase() == "txt") "txt"
-        else {
+        if (extension.lowercase() == "txt") {
+            "txt"
+        } else {
             inputStream().use {
                 it.readNBytes(10).toHex().let { hex ->
                     //            println(name)
@@ -92,13 +93,17 @@ fun File.realExtension() =
                             //                    println(name + " " + key + " " + magics[key])
                             (if (magics[key] in multiExts) {
                                 extension.takeIf { it != name } ?: magics[key]
-                            } else magics[key])
+                            } else {
+                                magics[key]
+                            })
                         }
                         ?: extension.also { println("unknown magic number $hex $name") }
                 }
             }
         }
-    } else "dir"
+    } else {
+        "dir"
+    }
 
 fun File.toBase64() = readBytes().base64()
 

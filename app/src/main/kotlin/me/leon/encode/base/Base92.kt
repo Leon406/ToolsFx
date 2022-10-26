@@ -18,8 +18,9 @@ fun String.base92Encode2String(dict: String = BASE92_DICT, charset: String = UTF
         .toBinaryString()
         .chunked(BASE92_BLOCK_SIZE)
         .joinToString("") {
-            if (it.length < 7) dic[it.padding("0", BASE92_BLOCK_SIZE_HALF).toInt(2)].toString()
-            else {
+            if (it.length < 7) {
+                dic[it.padding("0", BASE92_BLOCK_SIZE_HALF).toInt(2)].toString()
+            } else {
                 with(it.padding("0", BASE92_BLOCK_SIZE).toInt(2)) {
                     dic[this / 91] + dic[this % 91].toString()
                 }
@@ -40,7 +41,9 @@ fun String.base92Decode(dict: String = BASE92_DICT, charset: String = "UTF-8"): 
                 (dic.indexOf(it.first()) * 91 + dic.indexOf(it[1]))
                     .toString(2)
                     .padding("0", BASE92_BLOCK_SIZE, false)
-            } else dic.indexOf(it.first()).toString(2)
+            } else {
+                dic.indexOf(it.first()).toString(2)
+            }
         }
         .chunked(BYTE_BITS)
         .filter { it.length == BYTE_BITS }

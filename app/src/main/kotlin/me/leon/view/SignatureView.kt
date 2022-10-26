@@ -133,21 +133,33 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private val eventHandler = fileDraggedHandler {
         taKey.text =
             with(it.first()) {
-                if (extension in listOf("pk8", "key", "der")) readBytes().base64()
-                else if (extension in listOf("cer", "crt")) parsePublicKeyFromCerFile()
-                else if (length() <= 10 * 1024 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 10M"
+                if (extension in listOf("pk8", "key", "der")) {
+                    readBytes().base64()
+                } else if (extension in listOf("cer", "crt")) {
+                    parsePublicKeyFromCerFile()
+                } else if (length() <= 10 * 1024 * 1024) {
+                    if (realExtension() in unsupportedExts) {
+                        "unsupported file extension"
+                    } else {
+                        readText()
+                    }
+                } else {
+                    "not support file larger than 10M"
+                }
             }
     }
     private val inputEventHandler = fileDraggedHandler {
         taRaw.text =
             with(it.first()) {
                 if (length() <= 128 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 128KB"
+                    if (realExtension() in unsupportedExts) {
+                        "unsupported file extension"
+                    } else {
+                        readText()
+                    }
+                } else {
+                    "not support file larger than 128KB"
+                }
             }
     }
 

@@ -80,8 +80,11 @@ class SettingsView : View("Setting") {
         button("apply") {
             action {
                 if (tfCerPath.text.isNotEmpty()) {
-                    if (p12.get()) TrustManager.parseFromPkcs12(tfCerPath.text, tfCerPass.text)
-                    else TrustManager.parseFromCertification(tfCerPath.text)
+                    if (p12.get()) {
+                        TrustManager.parseFromPkcs12(tfCerPath.text, tfCerPass.text)
+                    } else {
+                        TrustManager.parseFromCertification(tfCerPath.text)
+                    }
                 }
                 saveConfig(
                     enableProxy.get(),

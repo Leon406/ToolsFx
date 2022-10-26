@@ -26,7 +26,9 @@ class SymmetricCryptoController : Controller() {
                 data.lineAction2String {
                     encrypt(it, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
                 }
-            } else encrypt(data, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
+            } else {
+                encrypt(data, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
+            }
         }
 
     private fun encrypt(
@@ -73,7 +75,9 @@ class SymmetricCryptoController : Controller() {
                 outFileName.toFile().outputStream().use { out ->
                     path.toFile().inputStream().use { out.write(it.readBytes().xor(key)) }
                 }
-            } else path.encryptFile(key, iv, alg, outFileName, associatedData)
+            } else {
+                path.encryptFile(key, iv, alg, outFileName, associatedData)
+            }
             "加密文件路径(同选择文件目录): ${File(outFileName).absolutePath} \n" +
                 "alg: $alg\n" +
                 "key(base64): ${key.base64()}\n" +
@@ -103,7 +107,9 @@ class SymmetricCryptoController : Controller() {
                 outFileName.toFile().outputStream().use { out ->
                     path.toFile().inputStream().use { out.write(it.readBytes().xor(key)) }
                 }
-            } else path.decryptFile(key, iv, alg, outFileName, associatedData)
+            } else {
+                path.decryptFile(key, iv, alg, outFileName, associatedData)
+            }
             "解密文件路径(同选择文件目录): $outFileName"
         }
 
@@ -124,7 +130,9 @@ class SymmetricCryptoController : Controller() {
                 data.lineAction2String {
                     decrypt(it, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
                 }
-            } else decrypt(data, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
+            } else {
+                decrypt(data, inputEncode, charset, key, iv, alg, outputEncode, associatedData)
+            }
         }
 
     private fun decrypt(

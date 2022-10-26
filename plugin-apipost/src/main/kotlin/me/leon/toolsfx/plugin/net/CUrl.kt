@@ -55,7 +55,9 @@ fun String.parseCurl() =
                                     this@parseCurl.contains("Content-Type: application/json", true)
                                 ) {
                                     acc.rawBody = value
-                                } else acc.params.putAll(value.paramsParse())
+                                } else {
+                                    acc.params.putAll(value.paramsParse())
+                                }
                             }
                     s.startsWith("--data-binary") ->
                         acc.method =
@@ -75,7 +77,9 @@ fun String.parseCurl() =
                                     this@parseCurl.contains("Content-Type: application/json", true)
                                 ) {
                                     acc.rawBody = value
-                                } else acc.params.putAll(value.paramsParse())
+                                } else {
+                                    acc.params.putAll(value.paramsParse())
+                                }
                             }
                     s.startsWith("-H") ->
                         with(s.removeFirstAndEndQuotes(3)) {
@@ -103,8 +107,11 @@ fun Request.toCurl(): String =
             if (fileParamName.isNotEmpty()) params[fileParamName] = "@file"
             val data =
                 if (isJson) params.toJson() else if (method != "GET") params.toParams() else ""
-            if (rawBody.isNotEmpty()) it.append("--data-raw $rawBody")
-            else if (data.isNotEmpty()) it.append("-d \"${data.replace("\"", "\\\"")}\"")
+            if (rawBody.isNotEmpty()) {
+                it.append("--data-raw $rawBody")
+            } else if (data.isNotEmpty()) {
+                it.append("-d \"${data.replace("\"", "\\\"")}\"")
+            }
         }
         .toString()
 

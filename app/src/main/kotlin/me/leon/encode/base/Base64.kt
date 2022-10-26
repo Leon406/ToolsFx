@@ -23,8 +23,12 @@ fun ByteArray.base64(dict: String = BASE64_DICT, needPadding: Boolean = true) =
             dict.ifEmpty { BASE64_DICT }[it.padding("0", BASE64_BLOCK_SIZE).toInt(2)].toString()
         }
         .run {
-            if (needPadding) padding("=", BASE64_PADDING_SIZE) // lcm (6, 8) /6 = 4
-            else this
+            // lcm (6, 8) /6 = 4
+            if (needPadding) {
+                padding("=", BASE64_PADDING_SIZE)
+            } else {
+                this
+            }
         }
 
 fun String.base64Decode(dict: String = BASE64_DICT) =
@@ -61,6 +65,9 @@ fun String.base64UrlDecode2String(dict: String = BASE64_URL_DICT) = String(base6
 fun String.padding(char: String, block: Int, isAfter: Boolean = true) =
     chunked(block).joinToString("") {
         it.takeIf { it.length == block }
-            ?: if (isAfter) it + char.repeat(block - it.length)
-            else char.repeat(block - it.length) + it
+            ?: if (isAfter) {
+                it + char.repeat(block - it.length)
+            } else {
+                char.repeat(block - it.length) + it
+            }
     }

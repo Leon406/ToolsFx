@@ -44,9 +44,14 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
         taInput.text =
             with(it.first()) {
                 if (length() <= 128 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 128KB"
+                    if (realExtension() in unsupportedExts) {
+                        "unsupported file extension"
+                    } else {
+                        readText()
+                    }
+                } else {
+                    "not support file larger than 128KB"
+                }
             }
     }
 

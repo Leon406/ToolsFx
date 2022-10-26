@@ -95,6 +95,8 @@ class AsymmetricCryptoController : Controller() {
                 data.lineAction2String {
                     it.decodeToByteArray(inputEncode).pubDecrypt(key, alg).encodeTo(outputEncode)
                 }
-            } else data.decodeToByteArray(inputEncode).pubDecrypt(key, alg).encodeTo(outputEncode)
+            } else {
+                data.decodeToByteArray(inputEncode).pubDecrypt(key, alg).encodeTo(outputEncode)
+            }
         }
 }

@@ -45,8 +45,11 @@ object HttpUrlUtil {
 
     fun setupProxy(type: Proxy.Type, host: String, port: Int) {
         proxy =
-            if (type == Proxy.Type.DIRECT) Proxy.NO_PROXY
-            else Proxy(type, InetSocketAddress(host, port))
+            if (type == Proxy.Type.DIRECT) {
+                Proxy.NO_PROXY
+            } else {
+                Proxy(type, InetSocketAddress(host, port))
+            }
     }
 
     fun setupProxy(proxy: Proxy = Proxy.NO_PROXY) {
@@ -130,8 +133,11 @@ object HttpUrlUtil {
         var rsp: String
         val header = makeHeaders(req.headers)
         val time = measureTimeMillis {
-            if (method == "PATCH" || method == "CONNECT") patchConnection(conn, method)
-            else conn.requestMethod = req.method
+            if (method == "PATCH" || method == "CONNECT") {
+                patchConnection(conn, method)
+            } else {
+                conn.requestMethod = req.method
+            }
             for ((k, v) in header) conn.setRequestProperty(k, v.toString())
             httpConfig(conn)
             conn.connect()

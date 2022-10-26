@@ -16,7 +16,9 @@ object XXTEA {
     fun encrypt(data: ByteArray, key: ByteArray): ByteArray {
         return if (data.isEmpty()) {
             data
-        } else toByteArray(encrypt(toIntArray(data, true), toIntArray(fixKey(key), false)), false)
+        } else {
+            toByteArray(encrypt(toIntArray(data, true), toIntArray(fixKey(key), false)), false)
+        }
     }
 
     @JvmStatic
@@ -26,7 +28,9 @@ object XXTEA {
     fun decrypt(data: ByteArray, key: ByteArray): ByteArray {
         return if (data.isEmpty()) {
             data
-        } else toByteArray(decrypt(toIntArray(data, false), toIntArray(fixKey(key), false)), true)
+        } else {
+            toByteArray(decrypt(toIntArray(data, false), toIntArray(fixKey(key), false)), true)
+        }
     }
 
     fun decrypt(data: ByteArray, key: String): ByteArray = decrypt(data, key.toByteArray())

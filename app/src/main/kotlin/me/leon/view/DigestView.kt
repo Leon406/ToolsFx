@@ -56,9 +56,14 @@ class DigestView : Fragment(messages["hash"]) {
             } else {
                 with(it.first()) {
                     if (length() <= 10 * 1024 * 1024) {
-                        if (realExtension() in unsupportedExts) "unsupported file extension"
-                        else readText()
-                    } else "not support file larger than 10M"
+                        if (realExtension() in unsupportedExts) {
+                            "unsupported file extension"
+                        } else {
+                            readText()
+                        }
+                    } else {
+                        "not support file larger than 10M"
+                    }
                 }
             }
     }
@@ -221,8 +226,9 @@ class DigestView : Fragment(messages["hash"]) {
         runAsync {
             processing.value = true
             startTime = System.currentTimeMillis()
-            if (fileMode.get()) inputText.lineAction2String { controller.digestFile(method, it) }
-            else {
+            if (fileMode.get()) {
+                inputText.lineAction2String { controller.digestFile(method, it) }
+            } else {
                 var result: String = inputText
                 repeat(times) {
                     result = controller.digest(method, result, inputEncode, singleLine.get())

@@ -340,10 +340,6 @@ style:
 
   ForbiddenVoid:
     active: true
-  LibraryCodeMustSpecifyReturnType:
-    active: true
-    excludes: ['**/*.kt']
-    includes: ['**/detekt-api/src/main/**/api/*.kt']
   MagicNumber:
     excludes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
     ignorePropertyDeclaration: true

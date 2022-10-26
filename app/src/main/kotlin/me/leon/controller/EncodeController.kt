@@ -20,7 +20,9 @@ class EncodeController : Controller() {
             raw.lineAction2String {
                 encode2String(it.toByteArray(Charset.forName(charset)), type, dic, charset)
             }
-        } else encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
+        } else {
+            encode2String(raw.toByteArray(Charset.forName(charset)), type, dic, charset)
+        }
 
     fun encode2String(
         raw: ByteArray,
@@ -29,8 +31,14 @@ class EncodeController : Controller() {
         charset: String = "UTF-8"
     ): String =
         catch({ "编码错误: $it" }) {
-            if (DEBUG) println("encode2String $type $dic $charset")
-            if (raw.isEmpty()) "" else type.encode2String(raw, dic, charset)
+            if (DEBUG) {
+                println("encode2String $type $dic $charset")
+            }
+            if (raw.isEmpty()) {
+                ""
+            } else {
+                type.encode2String(raw, dic, charset)
+            }
         }
 
     fun decode2String(
@@ -55,7 +63,13 @@ class EncodeController : Controller() {
         charset: String = "UTF-8"
     ): ByteArray =
         catch({ "解码错误: ${it.lines().first()}".toByteArray() }) {
-            if (DEBUG) println("decode $type $dic $charset ${encoded.length}")
-            if (encoded.isEmpty()) byteArrayOf() else type.decode(encoded, dic, charset)
+            if (DEBUG) {
+                println("decode $type $dic $charset ${encoded.length}")
+            }
+            if (encoded.isEmpty()) {
+                byteArrayOf()
+            } else {
+                type.decode(encoded, dic, charset)
+            }
         }
 }

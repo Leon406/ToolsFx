@@ -279,8 +279,11 @@ class QrcodeView : Fragment("Qrcode") {
         iv.image = bufferedImage
         runAsync {
             runCatching {
-                    if (isOcr) BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
-                    else screenCapture.qrReader()
+                    if (isOcr) {
+                        BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
+                    } else {
+                        screenCapture.qrReader()
+                    }
                 }
                 .getOrElse { it.stacktrace() }
         } ui { ta.text = it }

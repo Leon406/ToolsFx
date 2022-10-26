@@ -22,7 +22,9 @@ class MacController : Controller() {
                 msg.lineAction2String {
                     it.decodeToByteArray(inputEncode).mac(keyByteArray, alg).encodeTo(outputEncode)
                 }
-            } else msg.decodeToByteArray(inputEncode).mac(keyByteArray, alg).encodeTo(outputEncode)
+            } else {
+                msg.decodeToByteArray(inputEncode).mac(keyByteArray, alg).encodeTo(outputEncode)
+            }
         }
 
     fun macWithIv(

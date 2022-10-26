@@ -76,8 +76,9 @@ fun BigInteger.root(n: Int = 2): Array<BigInteger> {
     var midCount = 0
     while (low < high) {
         mid = (low + high).shiftRight(1)
-        if (low < mid && mid.pow(n) <= v) low = mid
-        else if (high > mid && mid.pow(n) >= v) high = mid else mid.also { midCount++ }
+        if (low < mid && mid.pow(n) <= v) {
+            low = mid
+        } else if (high > mid && mid.pow(n) >= v) high = mid else mid.also { midCount++ }
         if (midCount > 1) break
     }
     return with(mid * sig.toBigInteger()) { arrayOf(this, this@root - this.pow(n)) }

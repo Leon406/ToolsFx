@@ -103,7 +103,13 @@ fun String.baudotDecode(): String {
             if (it == LETTER || it == FIGURE) {
                 isLetter = it == LETTER
                 ""
-            } else (if (isLetter) letterDecodeDict[it] else figureDecodeDict[it])
+            } else {
+                if (isLetter) {
+                    letterDecodeDict[it]
+                } else {
+                    figureDecodeDict[it]
+                }
+            }
         }
         .joinToString("")
         .lowercase()

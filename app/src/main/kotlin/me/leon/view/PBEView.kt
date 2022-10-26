@@ -63,7 +63,9 @@ class PBEView : Fragment("PBE") {
                         tgGroup.toggles.first { it.cast<RadioButton>().text == "hex" }
                     )
                 }
-            } else tfSalt.text.decodeToByteArray(saltEncode)
+            } else {
+                tfSalt.text.decodeToByteArray(saltEncode)
+            }
         set(value) {
             tfSalt.text = value.encodeTo(saltEncode)
         }
@@ -72,9 +74,14 @@ class PBEView : Fragment("PBE") {
         taInput.text =
             with(it.first()) {
                 if (length() <= 128 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 128KB"
+                    if (realExtension() in unsupportedExts) {
+                        "unsupported file extension"
+                    } else {
+                        readText()
+                    }
+                } else {
+                    "not support file larger than 128KB"
+                }
             }
     }
 

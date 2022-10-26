@@ -5,8 +5,9 @@ import kotlin.math.sqrt
 
 fun Array<IntArray>.determinant(n: Int): Int {
     var res: Int
-    if (n == 1) res = this[0][0]
-    else if (n == 2) {
+    if (n == 1) {
+        res = this[0][0]
+    } else if (n == 2) {
         res = this[0][0] * this[1][1] - this[1][0] * this[0][1]
     } else {
         res = 0
@@ -95,8 +96,9 @@ fun Array<IntArray>.invertModMatrix(modular: Int = 26): Array<IntArray> {
                     b[i][j] = 0
                     if (i != q && j != p) {
                         b[m][n] = this[i][j]
-                        if (n < size - 2) n++
-                        else {
+                        if (n < size - 2) {
+                            n++
+                        } else {
                             n = 0
                             m++
                         }

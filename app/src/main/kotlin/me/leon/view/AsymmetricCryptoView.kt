@@ -51,8 +51,11 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val info
         get() =
             "${selectedAlg.get()}  bits: ${selectedBits.get()}  mode: ${
-                if (privateKeyEncrypt.get()) "private key encrypt"
-                else "public key encrypt"}  " +
+                if (privateKeyEncrypt.get()) {
+                    "private key encrypt"
+                }else {
+                    "public key encrypt"
+                }}  " +
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
@@ -76,15 +79,21 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val keyEventHandler = fileDraggedHandler {
         val firstFile = it.first()
         keyText =
-            if (firstFile.extension in listOf("pk8", "key", "der")) firstFile.readBytes().base64()
-            else if (firstFile.extension in listOf("cer", "crt")) {
+            if (firstFile.extension in listOf("pk8", "key", "der")) {
+                firstFile.readBytes().base64()
+            } else if (firstFile.extension in listOf("cer", "crt")) {
                 firstFile.parsePublicKeyFromCerFile()
             } else {
                 with(firstFile) {
                     if (length() <= 128 * 1024) {
-                        if (realExtension() in unsupportedExts) "unsupported file extension"
-                        else readText()
-                    } else "not support file larger than 128KB"
+                        if (realExtension() in unsupportedExts) {
+                            "unsupported file extension"
+                        } else {
+                            readText()
+                        }
+                    } else {
+                        "not support file larger than 128KB"
+                    }
                 }
             }
         updateKeySize()
@@ -94,9 +103,14 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         taInput.text =
             with(it.first()) {
                 if (length() <= 128 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 128KB"
+                    if (realExtension() in unsupportedExts) {
+                        "unsupported file extension"
+                    } else {
+                        readText()
+                    }
+                } else {
+                    "not support file larger than 128KB"
+                }
             }
     }
 

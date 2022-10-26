@@ -14,8 +14,11 @@ class CompressController : Controller() {
     ): String =
         catch({ "encrypt error: $it" }) {
             println("encrypt  $alg")
-            if (singleLine) raw.lineAction2String { compress(it, alg, inputEncode, outputEncode) }
-            else compress(raw, alg, inputEncode, outputEncode)
+            if (singleLine) {
+                raw.lineAction2String { compress(it, alg, inputEncode, outputEncode) }
+            } else {
+                compress(raw, alg, inputEncode, outputEncode)
+            }
         }
 
     private fun compress(
@@ -36,7 +39,9 @@ class CompressController : Controller() {
             println("decrypt  $alg")
             if (singleLine) {
                 raw.lineAction2String { decompress(it, alg, inputEncode, outputEncode) }
-            } else decompress(raw, alg, inputEncode, outputEncode)
+            } else {
+                decompress(raw, alg, inputEncode, outputEncode)
+            }
         }
 
     private fun decompress(

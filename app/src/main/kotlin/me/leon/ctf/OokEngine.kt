@@ -45,7 +45,9 @@ constructor(
             val token =
                 if (charPointer + defaultTokenLength <= str.length) {
                     str.substring(charPointer, charPointer + defaultTokenLength)
-                } else str.substring(charPointer, charPointer + (str.length - charPointer))
+                } else {
+                    str.substring(charPointer, charPointer + (str.length - charPointer))
+                }
             var b = false
             for (tokenCheck in Token.values()) {
                 if (tokenCheck.value == token) {
@@ -59,7 +61,9 @@ constructor(
             if (!b) {
                 if (charPointer + defaultTokenLength > str.length) {
                     charPointer += str.length - charPointer
-                } else charPointer++
+                } else {
+                    charPointer++
+                }
             }
         }
 
@@ -87,8 +91,11 @@ constructor(
                         var level = 1
                         while (level > 0) {
                             tokenPointer++
-                            if (tokens[tokenPointer] == Token.BRACKET_LEFT) level++
-                            else if (tokens[tokenPointer] == Token.BRACKET_RIGHT) level--
+                            if (tokens[tokenPointer] == Token.BRACKET_LEFT) {
+                                level++
+                            } else if (tokens[tokenPointer] == Token.BRACKET_RIGHT) {
+                                level--
+                            }
                         }
                     }
                 Token.BRACKET_RIGHT ->
@@ -96,8 +103,11 @@ constructor(
                         var level = 1
                         while (level > 0) {
                             tokenPointer--
-                            if (tokens[tokenPointer] == Token.BRACKET_LEFT) level--
-                            else if (tokens[tokenPointer] == Token.BRACKET_RIGHT) level++
+                            if (tokens[tokenPointer] == Token.BRACKET_LEFT) {
+                                level--
+                            } else if (tokens[tokenPointer] == Token.BRACKET_RIGHT) {
+                                level++
+                            }
                         }
                     }
             }

@@ -36,7 +36,9 @@ class QMCDecode {
         x += dx
         return if (index == 0x8000 || (index > 0x8000 && (index + 1) % 0x8000 == 0)) {
             nextMask()
-        } else ret
+        } else {
+            ret
+        }
     }
 }
 

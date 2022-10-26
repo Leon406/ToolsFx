@@ -19,4 +19,6 @@ private fun String.propTapCode() =
             val split = it.split("\\s+".toRegex())
             "${split[0].length}${split[1].length}"
         }
-    } else this
+    } else {
+        this
+    }

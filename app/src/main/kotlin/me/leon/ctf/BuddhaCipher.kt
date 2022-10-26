@@ -21,8 +21,9 @@ fun String.buddhaSays(): String {
         .run {
             fold(StringBuilder(BUDDHA_HEADER)) { acc, b ->
                     acc.apply {
-                        if (b >= 0) append(BYTE_MAP[b.toInt()])
-                        else {
+                        if (b >= 0) {
+                            append(BYTE_MAP[b.toInt()])
+                        } else {
                             append(BYTE128MAP.random())
                                 .append(BYTE_MAP[b.toInt() and BYTE_MASK - 128])
                         }

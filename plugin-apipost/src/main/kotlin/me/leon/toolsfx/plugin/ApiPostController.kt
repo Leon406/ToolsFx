@@ -35,9 +35,11 @@ class ApiPostController : Controller() {
         headers: MutableMap<String, Any> = mutableMapOf(),
         bodyType: BodyType = BodyType.RAW,
     ) =
-        if (method != "POST") request(url, method, params, headers)
-        else if (bodyType == BodyType.RAW) kotlin.error("call postRaw")
-        else {
+        if (method != "POST") {
+            request(url, method, params, headers)
+        } else if (bodyType == BodyType.RAW) {
+            kotlin.error("call postRaw")
+        } else {
             HttpUrlUtil.post(
                 url.replacePlaceHolders(),
                 replacePlaceHolder(params),

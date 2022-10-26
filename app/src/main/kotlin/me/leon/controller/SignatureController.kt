@@ -21,7 +21,9 @@ class SignatureController : Controller() {
                 msg.lineAction2String {
                     it.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).encodeTo(outEncode)
                 }
-            } else msg.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).encodeTo(outEncode)
+            } else {
+                msg.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).encodeTo(outEncode)
+            }
         }
 
     fun verify(

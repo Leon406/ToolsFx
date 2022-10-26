@@ -1567,7 +1567,9 @@ class BCrypt {
         private fun char64(x: Char): Byte {
             return if (x.code < 0 || x.code >= index_64.size) {
                 -1
-            } else index_64[x.code]
+            } else {
+                index_64[x.code]
+            }
         }
 
         /**

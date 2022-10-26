@@ -80,9 +80,14 @@ class ApiPostView : PluginFragment("ApiPost") {
         with(it.first()) {
             println(absolutePath)
             if (length() <= 128 * 1024) {
-                if (realExtension() in unsupportedExts) println("unsupported file extension")
-                else resetUi(readText())
-            } else println("not support file larger than 128KB")
+                if (realExtension() in unsupportedExts) {
+                    println("unsupported file extension")
+                } else {
+                    resetUi(readText())
+                }
+            } else {
+                println("not support file larger than 128KB")
+            }
         }
     }
     override val root = vbox {
@@ -171,7 +176,9 @@ class ApiPostView : PluginFragment("ApiPost") {
                                 taRspContent.text =
                                     if (prettyProperty.get()) {
                                         it.data.unicodeMix2String().prettyJson()
-                                    } else it.data
+                                    } else {
+                                        it.data
+                                    }
                                 this@ApiPostView.running.value = false
                             }
                             .onFailure {

@@ -143,7 +143,9 @@ object LzString {
             if (contextDataPosition == bitsPerChar - 1) {
                 contextData.add(getCharFromInt(contextDataVal))
                 break
-            } else contextDataPosition++
+            } else {
+                contextDataPosition++
+            }
         }
         return contextData.joinToString("")
     }

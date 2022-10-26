@@ -188,8 +188,9 @@ class HashTest {
 
         for ((k, v) in ALGOS_HASH) {
             for (alg in v) {
-                (if (k == "PasswordHashing") "PasswordHashing$alg"
-                    else {
+                (if (k == "PasswordHashing") {
+                        "PasswordHashing$alg"
+                    } else {
                         "${k}${alg.takeIf { requireNotNull(ALGOS_HASH[k]).size > 1 }.orEmpty()}"
                             .replace("SHA2", "SHA-")
                             .replace(

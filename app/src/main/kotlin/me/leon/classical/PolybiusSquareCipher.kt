@@ -43,7 +43,9 @@ fun String.polybiusDecrypt(
                     tmp.append(c)
                     sb.append(map[tmp.toString()] ?: tmp.toString())
                     tmp.clear()
-                } else tmp.append(c)
+                } else {
+                    tmp.append(c)
+                }
             else -> sb.append(c)
         }
     }

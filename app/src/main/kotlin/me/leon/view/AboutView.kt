@@ -51,8 +51,11 @@ class AboutView : Fragment(messages["about"]) {
         txtLatestVersion = text()
         hyperlink("蓝奏云下载 密码52pj").action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() }
         hyperlink("插件下载 密码ax63").action { LAN_ZOU_PLUGIN_DOWNLOAD_URL.openInBrowser() }
-        if (VERSION.contains("beta")) checkUpdateDev(!Prefs.isIgnoreUpdate)
-        else checkUpdate(!Prefs.isIgnoreUpdate)
+        if (VERSION.contains("beta")) {
+            checkUpdateDev(!Prefs.isIgnoreUpdate)
+        } else {
+            checkUpdate(!Prefs.isIgnoreUpdate)
+        }
     }
 
     private fun checkUpdateDev(isAuto: Boolean = true) {
@@ -65,12 +68,15 @@ class AboutView : Fragment(messages["about"]) {
                 fetching.value = false
                 releaseInfo = it.fromJson(ReleaseInfo::class.java)
                 txtLatestVersion.text =
-                    if (it.isEmpty()) messages["unknown"]
-                    else if (VERSION != releaseInfo.version) {
+                    if (it.isEmpty()) {
+                        messages["unknown"]
+                    } else if (VERSION != releaseInfo.version) {
                         "${messages["latestVer"]} v${releaseInfo.version}".also {
                             find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
                         }
-                    } else messages["alreadyLatest"]
+                    } else {
+                        messages["alreadyLatest"]
+                    }
             }
     }
 
@@ -84,12 +90,15 @@ class AboutView : Fragment(messages["about"]) {
                 fetching.value = false
                 releaseInfo = it.fromJson(ReleaseInfo::class.java)
                 txtLatestVersion.text =
-                    if (it.isEmpty()) messages["unknown"]
-                    else if (!VERSION.contains("beta") && VERSION != releaseInfo.version) {
+                    if (it.isEmpty()) {
+                        messages["unknown"]
+                    } else if (!VERSION.contains("beta") && VERSION != releaseInfo.version) {
                         "${messages["latestVer"]} v${releaseInfo.version}".also {
                             find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
                         }
-                    } else messages["alreadyLatest"]
+                    } else {
+                        messages["alreadyLatest"]
+                    }
             }
     }
 }

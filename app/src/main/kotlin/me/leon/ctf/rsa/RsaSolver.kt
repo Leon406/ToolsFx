@@ -209,7 +209,9 @@ object RsaSolver {
                             }
                             result
                         }
-                    } else "no solution"
+                    } else {
+                        "no solution"
+                    }
                 }
             }
         }

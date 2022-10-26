@@ -60,9 +60,14 @@ class ClassicalView : Fragment(messages["classical"]) {
         taInput.text =
             with(it.first()) {
                 if (length() <= 128 * 1024) {
-                    if (realExtension() in unsupportedExts) "unsupported file extension"
-                    else readText()
-                } else "not support file larger than 128KB"
+                    if (realExtension() in unsupportedExts) {
+                        "unsupported file extension"
+                    } else {
+                        readText()
+                    }
+                } else {
+                    "not support file larger than 128KB"
+                }
             }
     }
     private val centerNode = vbox {
@@ -134,8 +139,9 @@ class ClassicalView : Fragment(messages["classical"]) {
                         }
                         decodeIgnoreSpace.set(encodeType.isIgnoreSpace())
 
-                        if (isEncrypt) run()
-                        else {
+                        if (isEncrypt) {
+                            run()
+                        } else {
                             timeConsumption = 0
                             labelInfo.text = info
                         }
@@ -257,7 +263,9 @@ class ClassicalView : Fragment(messages["classical"]) {
                     cryptoParams,
                     singleLine.get(),
                 )
-            } else controller.decrypt(inputText, encodeType, cryptoParams, singleLine.get())
+            } else {
+                controller.decrypt(inputText, encodeType, cryptoParams, singleLine.get())
+            }
         } ui
             {
                 processing.value = false

@@ -82,7 +82,9 @@ fun String.jsHexDecodeString(): String =
             .map { it.toInt(HEX_RADIX).toByte() }
             .toByteArray()
             .toString(Charsets.UTF_8)
-    } else kotlin.error("wrong format")
+    } else {
+        kotlin.error("wrong format")
+    }
 
 /** js octal 编解码 \141 */
 fun String.jsOctalDecodeString() =
@@ -92,7 +94,9 @@ fun String.jsOctalDecodeString() =
             .map { it.toInt(OCTAL_RADIX).toByte() }
             .toByteArray()
             .toString(Charsets.UTF_8)
-    } else kotlin.error("wrong format")
+    } else {
+        kotlin.error("wrong format")
+    }
 
 /** js octal 编码 \141 */
 fun String.toJsOctalEncodeString() =
@@ -131,13 +135,18 @@ fun String.htmlEntity2String() =
                     it.groupValues[1].toInt().toUnicodeChar()
                 }
         }
-    } else this
+    } else {
+        this
+    }
 
 /** htmlEntity编解码 */
 fun String.toHtmlEntity(radix: Int = 10, isAll: Boolean = true) =
     fold(StringBuilder()) { acc, c ->
-            if (isAll) acc.append(c.code.toHtmlEntityAll(radix))
-            else acc.append(c.code.toHtmlEntity() ?: c)
+            if (isAll) {
+                acc.append(c.code.toHtmlEntityAll(radix))
+            } else {
+                acc.append(c.code.toHtmlEntity() ?: c)
+            }
         }
         .toString()
 

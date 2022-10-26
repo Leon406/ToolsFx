@@ -29,8 +29,15 @@ internal object CellGenerator {
     }
 
     private fun <T> getItemText(cell: Cell<T>, converter: StringConverter<T>?): String {
-        return if (converter == null) if (cell.item == null) "" else cell.item.toString()
-        else converter.toString(cell.item)
+        return if (converter == null) {
+            if (cell.item == null) {
+                ""
+            } else {
+                cell.item.toString()
+            }
+        } else {
+            converter.toString(cell.item)
+        }
     }
 
     fun <T> updateItem(cell: Cell<T>, converter: StringConverter<T>?, textField: TextField?) {

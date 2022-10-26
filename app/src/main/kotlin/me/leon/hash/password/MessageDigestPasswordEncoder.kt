@@ -89,7 +89,9 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
     private fun encode(digest: ByteArray): String {
         return if (encodeHashAsBase64) {
             digest.base64()
-        } else digest.toHex()
+        } else {
+            digest.toHex()
+        }
     }
 
     /**
@@ -125,7 +127,9 @@ class MessageDigestPasswordEncoder(algorithm: String) : PasswordEncoder {
         val end = prefixEncodedPassword.indexOf(SUFFIX, start)
         return if (end < 0) {
             ""
-        } else prefixEncodedPassword.substring(start, end + 1)
+        } else {
+            prefixEncodedPassword.substring(start, end + 1)
+        }
     }
 
     companion object {

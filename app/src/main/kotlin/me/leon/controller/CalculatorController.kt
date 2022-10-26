@@ -18,8 +18,11 @@ class CalculatorController : Controller() {
                 .calculatorType()!!
                 .calculate(
                     params.map {
-                        if (it.isNotEmpty()) it.stripAllSpace().toBigInteger(radix)
-                        else BigInteger.ZERO
+                        if (it.isNotEmpty()) {
+                            it.stripAllSpace().toBigInteger(radix)
+                        } else {
+                            BigInteger.ZERO
+                        }
                     }
                 )
         }

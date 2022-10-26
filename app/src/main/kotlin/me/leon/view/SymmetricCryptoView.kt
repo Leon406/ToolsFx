@@ -109,9 +109,14 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             } else {
                 with(it.first()) {
                     if (length() <= 128 * 1024) {
-                        if (realExtension() in unsupportedExts) "unsupported file extension"
-                        else readText()
-                    } else "not support file larger than 128K,plz use file mode!!!"
+                        if (realExtension() in unsupportedExts) {
+                            "unsupported file extension"
+                        } else {
+                            readText()
+                        }
+                    } else {
+                        "not support file larger than 128K,plz use file mode!!!"
+                    }
                 }
             }
     }
@@ -119,8 +124,11 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val cipher
         get() =
             with(selectedAlg.get()) {
-                if (this in customAlg) selectedAlg.get()
-                else "$this/${selectedMod.get()}/${selectedPadding.get()}"
+                if (this in customAlg) {
+                    selectedAlg.get()
+                } else {
+                    "$this/${selectedMod.get()}/${selectedPadding.get()}"
+                }
             }
 
     private val centerNode = vbox {

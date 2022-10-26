@@ -48,11 +48,17 @@ constructor(
             val token =
                 if (charPointer + defaultTokenLength <= str.length) {
                     str.substring(charPointer, charPointer + defaultTokenLength)
-                } else str.substring(charPointer, charPointer + (str.length - charPointer))
+                } else {
+                    str.substring(charPointer, charPointer + (str.length - charPointer))
+                }
             if (isValidToken(token)) {
-                if (token.equals(Token.START, ignoreCase = true)) started = true
-                else if (token.equals(Token.END, ignoreCase = true)) break
-                else if (started) tokens.add(token)
+                if (token.equals(Token.START, ignoreCase = true)) {
+                    started = true
+                } else if (token.equals(Token.END, ignoreCase = true)) {
+                    break
+                } else if (started) {
+                    tokens.add(token)
+                }
                 charPointer += defaultTokenLength
             } else if (charPointer + defaultTokenLength > str.length) {
                 charPointer += str.length - charPointer
