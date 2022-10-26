@@ -157,6 +157,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                                         acc.apply { acc[c] = (acc[c] ?: 0) + 1 }
                                     }
                                     .toList()
+                                    .sortedByDescending { it.second }
                                     .joinToString(System.lineSeparator()) {
                                         "${it.first}: ${it.second}"
                                     }
