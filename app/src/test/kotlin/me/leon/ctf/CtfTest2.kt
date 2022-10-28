@@ -1,13 +1,13 @@
 package me.leon.ctf
 
-import java.io.File
-import kotlin.test.assertEquals
 import me.leon.TEST_CTF_DIR
 import me.leon.classical.*
-import me.leon.encode.base.*
 import me.leon.ext.*
-import me.leon.ext.crypto.*
-import org.junit.Test
+import me.leon.ext.crypto.BINARY_REGEX
+import me.leon.ext.crypto.HEX_REGEX
+import java.io.File
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class CtfTest2 {
     @Test
@@ -157,5 +157,18 @@ class CtfTest2 {
 
         assertEquals(encoded, plain.fracMorse(key))
         assertEquals(plain, encoded.fracMorseDecrypt(key))
+    }
+
+    @Test
+    fun twinHexTest() {
+        // a 4tc  a1 4tt  a12 4tt1c0
+
+        assertEquals("4tc", "a".twinHex())
+        assertEquals("4tt", "a1".twinHex())
+        assertEquals("4tt1c0", "a12".twinHex())
+
+        assertEquals("a", "4tc".twinHexDecrypt())
+        assertEquals("a1", "4tt".twinHexDecrypt())
+        assertEquals("a12", "4tt1c0".twinHexDecrypt())
     }
 }

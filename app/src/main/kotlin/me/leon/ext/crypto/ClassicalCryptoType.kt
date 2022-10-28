@@ -645,6 +645,11 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.fenhamDecrypt(requireNotNull(params[P1]))
+    },
+    TWIN_HEX("twin-hex") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.twinHex()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.twinHexDecrypt()
     };
 
     override fun paramsHints(): Array<out String> {
