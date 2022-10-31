@@ -36,6 +36,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             EncodeType.UTF7_EXT,
             EncodeType.BASE69,
             EncodeType.BASE65536,
+            EncodeType.ECOJI,
+            EncodeType.BASE2048,
+            EncodeType.BASE32768,
         )
     private val encodeTypeWithSpace =
         arrayOf(
@@ -156,8 +159,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                         encodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value =
                             encodeType.type.contains("base") &&
-                                encodeType != EncodeType.BASE100 &&
-                                encodeType != EncodeType.BASE65536 ||
+                                !BASE_ENCODE_EXCLUDED_DICT_LIST.contains(encodeType) ||
                                 encodeType == EncodeType.RADIX_N
                         tfCustomDict.text = encodeType.defaultDict
                         val isIgnore = encodeType !in encodeTypeWithSpace

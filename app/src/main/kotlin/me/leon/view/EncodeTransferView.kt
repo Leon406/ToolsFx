@@ -75,8 +75,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                         srcEncodeType = new.cast<RadioButton>().text.encodeType()
                         enableDict.value =
                             srcEncodeType.type.contains("base") &&
-                                srcEncodeType != EncodeType.BASE100 &&
-                                srcEncodeType != EncodeType.BASE65536 ||
+                                !BASE_ENCODE_EXCLUDED_DICT_LIST.contains(srcEncodeType) ||
                                 srcEncodeType == EncodeType.RADIX_N
                         tfCustomDict.text = srcEncodeType.defaultDict
                     }

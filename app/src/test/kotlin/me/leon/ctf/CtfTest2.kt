@@ -1,13 +1,13 @@
 package me.leon.ctf
 
+import java.io.File
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import me.leon.TEST_CTF_DIR
 import me.leon.classical.*
 import me.leon.ext.*
 import me.leon.ext.crypto.BINARY_REGEX
 import me.leon.ext.crypto.HEX_REGEX
-import java.io.File
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class CtfTest2 {
     @Test

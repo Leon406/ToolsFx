@@ -301,4 +301,23 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.mixEncode()
     },
+    ECOJI("ecoji") {
+        override fun decode(encoded: String, dict: String, charset: String) = encoded.ecojiDecode()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) = bytes.ecoji()
+    },
+    BASE2048("base2048") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base2048Decode()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base2048()
+    },
+    BASE32768("basa32768") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.base32768Decode()
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.base32768()
+    },
 }

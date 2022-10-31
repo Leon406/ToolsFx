@@ -76,6 +76,12 @@ class HashCrackTest {
         repeat(10) { println(BASE92_DICT.random(5)) }
     }
 
+    /**
+     * hashcat 掩码
+     *
+     * l abcdefghijklmnopqrstuvwxyz u ABCDEFGHIJKLMNOPQRSTUVWXYZ d 0123456789 h 0123456789abcdef H
+     * 0123456789ABCDEF s !"#$%&'()*+,-./:;<=>?@[]^_`{|}~ a 键盘上所有可见的字符
+     */
     fun String.maskCrack(dict: String, condition: (String) -> Boolean): String? {
         val sb = StringBuilder()
         var sq: Sequence<String>? = null

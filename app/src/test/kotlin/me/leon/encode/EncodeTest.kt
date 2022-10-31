@@ -2,7 +2,8 @@ package me.leon.encode
 
 import java.io.File
 import kotlin.system.measureNanoTime
-import kotlin.test.*
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 import me.leon.TEST_ENCODE_DIR
 import me.leon.controller.EncodeController
 import me.leon.ctf.bubbleBabble
