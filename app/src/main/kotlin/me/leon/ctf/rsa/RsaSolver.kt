@@ -70,10 +70,33 @@ object RsaSolver {
         val e = requireNotNull(params["e"])
         val c = requireNotNull(params["c"])
         val factors =
-            params.keys.filter { it.startsWith("r") || it == "p" || it == "q" }.map { params[it]!! }
-        val n = params["n"] ?: factors.product()
+            params.keys
+                .filter { it.startsWith("r") || it == "p" || it == "q" }
+                .map { params[it]!! }
+                .filter { it.isProbablePrime(100) }
+        val n = factors.product()
         val phi = factors.phi()
-        return c.decrypt2String(e.invert(phi), n)
+        val gcd = e.gcd(phi)
+
+        return if (gcd == BigInteger.ONE) {
+            println("e phi are co-prime $phi")
+            val d = e.invert(phi)
+            c.decrypt2String(d, n).also { println(it) }
+        } else {
+            println("e phi are not are co-prime  $gcd")
+            val d = (e / gcd).invert(phi)
+            val m = c.modPow(d, n)
+            var result = ""
+            for (i in 0..1_000_000) {
+                val root = (m + n * i.toBigInteger()).root(gcd.toInt())
+                if (root.last() == BigInteger.ZERO) {
+                    result = root.first().n2s()
+                    println("times $i ${root.first()} $result")
+                    break
+                }
+            }
+            result
+        }
     }
 
     private fun solveNCD(params: MutableMap<String, BigInteger>): String {

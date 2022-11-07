@@ -3532,9 +3532,9 @@ WebSockets history	WebSocket历史记录
 WebSockets history is empty	WebSockets历史记录为空
 Weeks	周
 Welcome ...	欢迎...
-Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。 重译版V4.0 by leon406
-Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。 重译版V4.0 by leon406
-Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目。 重译版V4.0 by leon406
+Welcome to Burp Suite Community Edition. Use the options below to create or open a project.	欢迎使用Burp Suite社区版。选择是使用以下选项创建还是打开项目。 重译版V4.1 by leon406
+Welcome to Burp Suite Free Edition. Use the options below to create or open a project.	欢迎来到Burp Suite免费版。选择是使用以下选项创建还是打开项目。 重译版V4.1 by leon406
+Welcome to Burp Suite Professional. Use the options below to create or open a project.	欢迎使用Burp Suite专业版.使用下面的选项创建或者打开项目。 重译版V4.1 by leon406
 When following redirections, understand the following types:	跟随重定向时，识别以下类型：
 When items are added to Target scope:	将项目添加到目标范围时：
 When the same insertion point is observed in a large number of requests with no variation in results, perform a more efficient quick scan, for the following insertion point types:	如果在许多请求中存在相同的插入点且结果没有变化，我们将更有效，更快地扫描下一个插入点类型：
@@ -3690,7 +3690,7 @@ System impact	系统影响
 (?i)Consider unloading some extensions?	考虑卸载一些扩展
 Overall:	总体上:
 Enable HTTP/1 connection reuse	启用HTTP/1连接复用
-Use keep-alive for HTTP/1 if the server supports it	如果HTTP/1支持,使用keep-alive
+Use keep-alive for HTTP/1 if the server supports it	如果支持HTTP/1,使用keep-alive
 Set Connection header	设置Connection报头
 Search tabs	搜索选项卡
 This setting controls Burp's use of HTTP/1 keep-alive for outbound connections.	控制Burp对HTTP/1 keep-alive的出站连接的

@@ -187,6 +187,9 @@ class RsaTest {
         // 四个因子
         params = "rsa_19_pqrec2.txt".parseRsaParams()
         solve(params).also { assertEquals("flag{077f0bed-c7dc-46e1-800a-bb2dc27a218f}", it) }
+        // e phi不互素
+        params = "rsa_19_pqrec3_e_phi_not_coprime.txt".parseRsaParams()
+        solve(params).also { assertEquals("HECTF{Congratulation!!you_find_flag}", it) }
     }
 
     @Test
