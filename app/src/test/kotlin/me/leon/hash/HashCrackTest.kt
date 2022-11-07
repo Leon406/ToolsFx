@@ -41,18 +41,27 @@ class HashCrackTest {
     }
 
     @Test
+    fun dict22() {
+        val hash = "04402679e7f2933b60a30113cbb32e39b31eb437a8350813cfe6abb063dd78de"
+        val dict = "0123456789"
+        val mask = "flag?????"
+
+        val cond = { s: String -> s.hash("SHA-256") == hash }
+
+        measureTimeMillis { mask.maskCrack(dict, cond).also { println(it) } }.also { println(it) }
+
+        measureTimeMillis { mask.maskCrackParallel(dict, cond).also { println(it) } }
+            .also { println(it) }
+    }
+
+    @Test
     fun dict2() {
         val dict = "0123456789"
         val mask = "861709??????6"
-        println(BASE58_DICT.sliceCount(Runtime.getRuntime().availableProcessors()))
-        measureTimeMillis {
-                mask.maskCrack(dict) { it.hash("SHA-256") == hash }.also { println(it) }
-            }
-            .also { println(it) }
+        val cond = { s: String -> s.hash("SHA-256") == hash }
+        measureTimeMillis { mask.maskCrack(dict, cond).also { println(it) } }.also { println(it) }
 
-        measureTimeMillis {
-                mask.maskCrackParallel(dict) { it.hash("SHA-256") == hash }.also { println(it) }
-            }
+        measureTimeMillis { mask.maskCrackParallel(dict, cond).also { println(it) } }
             .also { println(it) }
     }
 
@@ -75,99 +84,4 @@ class HashCrackTest {
     fun randomPassword() {
         repeat(10) { println(BASE92_DICT.random(5)) }
     }
-
-    /**
-     * hashcat 掩码
-     *
-     * l abcdefghijklmnopqrstuvwxyz u ABCDEFGHIJKLMNOPQRSTUVWXYZ d 0123456789 h 0123456789abcdef H
-     * 0123456789ABCDEF s !"#$%&'()*+,-./:;<=>?@[]^_`{|}~ a 键盘上所有可见的字符
-     */
-    fun String.maskCrack(dict: String, condition: (String) -> Boolean): String? {
-        val sb = StringBuilder()
-        var sq: Sequence<String>? = null
-        for (c in this) {
-            if (c == '?') {
-                sq =
-                    sq?.run {
-                        if (sb.isEmpty()) {
-                            sq!!.next(dict)
-                        } else {
-                            sq!!.nextFix(sb.toString()).next(dict)
-                        }
-                    }
-                        ?: sb.toString().next(dict)
-                sb.clear()
-            } else {
-                sb.append(c)
-            }
-        }
-
-        if (sb.isNotEmpty()) {
-            sq = sq?.nextFix(sb.toString())
-        }
-
-        return sq?.find { condition.invoke(it) }
-    }
-
-    fun String.sliceCount(count: Int) =
-        with(length / count) {
-            if (this == 0) {
-                toList().map { it.toString() }
-            } else {
-                chunked(this)
-            }
-        }
-
-    fun String.random(count: Int): String {
-        val sb = StringBuilder()
-        repeat(count) { sb.append(random()) }
-        return sb.toString()
-    }
-
-    fun String.maskCrackParallel(dict: String, condition: (String) -> Boolean): String? {
-
-        val sb = StringBuilder()
-        val d = dict.sliceCount(Runtime.getRuntime().availableProcessors())
-        var sqs = mutableListOf<Sequence<String>>()
-        for (c in this) {
-            if (c == '?') {
-                if (sqs.isEmpty()) {
-                    sqs.addAll(d.map { sb.toString().next(it) })
-                } else {
-                    sqs =
-                        sqs.map {
-                                it.run {
-                                    if (sb.isEmpty()) {
-                                        it.next(dict)
-                                    } else {
-                                        it.nextFix(sb.toString()).next(dict)
-                                    }
-                                }
-                            }
-                            .toMutableList()
-                }
-                sb.clear()
-            } else {
-                sb.append(c)
-            }
-        }
-
-        if (sb.isNotEmpty()) {
-            sqs = sqs.map { it.nextFix(sb.toString()) }.toMutableList()
-        }
-        return sqs.parallelStream()
-            .map { it.find { condition.invoke(it) } }
-            .filter { it != null }
-            .findFirst()
-            .orElseGet { null }
-    }
-
-    fun String.next(dict: String, count: Int = 1): Sequence<String> =
-        with(dict.asSequence().map { this + it }) { if (count > 1) next(dict, count - 1) else this }
-
-    fun Sequence<String>.next(dict: String) = this.flatMap { it.next(dict) }
-    fun Sequence<String>.next(dict: String, count: Int) =
-        (1..count).fold(this) { acc, _ -> acc.next(dict) }
-
-    fun Sequence<String>.nextFix(fix: String) = fix.fold(this) { acc, c -> acc.next(c.toString()) }
 }
