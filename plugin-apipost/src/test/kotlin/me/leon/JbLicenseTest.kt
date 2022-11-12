@@ -2,7 +2,6 @@ package me.leon
 
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
-import kotlin.test.Ignore
 import kotlin.test.Test
 import me.leon.ext.toFile
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
@@ -16,7 +15,7 @@ import me.leon.toolsfx.plugin.net.HttpUrlUtil
 class JbLicenseTest {
 
     @Test
-    @Ignore
+    //    @Ignore
     fun licenseServerValidate() {
         val file = "C:\\Users\\Leon\\Desktop\\jblicense.txt".toFile()
         HttpUrlUtil.followRedirect = true
@@ -52,8 +51,8 @@ class JbLicenseTest {
             // 设置followRedirect会自动会重定向到 /login
             validate =
                 runCatching {
-                    HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
-                }
+                        HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
+                    }
                     .getOrDefault(false)
         }
         return validate

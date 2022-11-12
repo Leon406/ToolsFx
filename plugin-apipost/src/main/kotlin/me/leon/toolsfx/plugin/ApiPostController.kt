@@ -21,7 +21,7 @@ class ApiPostController : Controller() {
     ): Response {
         println("req: $url")
         return HttpUrlUtil.request(
-            url.replacePlaceHolders(),
+            url.addHttp().replacePlaceHolders(),
             method,
             replacePlaceHolder(params),
             replacePlaceHolder(headers)
@@ -36,12 +36,12 @@ class ApiPostController : Controller() {
         bodyType: BodyType = BodyType.RAW,
     ) =
         if (method != "POST") {
-            request(url, method, params, headers)
+            request(url.addHttp(), method, params, headers)
         } else if (bodyType == BodyType.RAW) {
             kotlin.error("call postRaw")
         } else {
             HttpUrlUtil.post(
-                url.replacePlaceHolders(),
+                url.addHttp().replacePlaceHolders(),
                 replacePlaceHolder(params),
                 replacePlaceHolder(headers),
                 bodyType == BodyType.JSON
@@ -54,7 +54,7 @@ class ApiPostController : Controller() {
         headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
         return HttpUrlUtil.postData(
-            url.replacePlaceHolders(),
+            url.addHttp().replacePlaceHolders(),
             data.replacePlaceHolders(),
             replacePlaceHolder(headers)
         )
@@ -67,7 +67,7 @@ class ApiPostController : Controller() {
         isJson: Boolean = false
     ): Response {
         return HttpUrlUtil.post(
-            url.replacePlaceHolders(),
+            url.addHttp().replacePlaceHolders(),
             replacePlaceHolder(params),
             replacePlaceHolder(headers),
             isJson
@@ -82,7 +82,7 @@ class ApiPostController : Controller() {
         headers: MutableMap<String, Any> = mutableMapOf()
     ): Response {
         return HttpUrlUtil.postFile(
-            url.replacePlaceHolders(),
+            url.addHttp().replacePlaceHolders(),
             files,
             fileParamName,
             replacePlaceHolder(params),

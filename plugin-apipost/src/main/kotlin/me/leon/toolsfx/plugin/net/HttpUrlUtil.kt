@@ -127,8 +127,10 @@ object HttpUrlUtil {
     ): Response {
         val req = Request(url, method, params, headers)
         preAction(req)
+        val paramConcatChar = "&".takeIf { url.contains("?") } ?: "?"
         val realUrl =
-            req.url.takeIf { req.params.isEmpty() } ?: "${req.url}?${req.params.toParams()}"
+            req.url.takeIf { req.params.isEmpty() }
+                ?: "${req.url}$paramConcatChar${req.params.toParams()}"
         val conn = URL(realUrl).openConnection(proxy) as HttpURLConnection
         var rsp: String
         val header = makeHeaders(req.headers)
