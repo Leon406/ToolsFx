@@ -85,7 +85,7 @@ fun String.parseCurl() =
                         with(s.removeFirstAndEndQuotes(3)) {
                             acc.headers[substringBefore(":")] = substringAfter(":").trim()
                         }
-                    else -> ""
+                    else -> {}
                 }
             }
         }

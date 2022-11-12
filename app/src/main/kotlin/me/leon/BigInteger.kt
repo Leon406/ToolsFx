@@ -147,7 +147,7 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
     var guessK: BigInteger
     var guessDg: BigInteger
     val guessD: BigInteger
-    val pMinusQDiv2: BigInteger
+    // val pMinusQDiv2: BigInteger
     // i = 0
     // q[0] = [e/n]
     // n[0] = q[0]
@@ -218,7 +218,7 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
         val root = subtract.root()
         if (root.last() == BigInteger.ZERO) {
             // ((p-q)/2)^2 = ((p+q)/2)^2 - pq
-            pMinusQDiv2 = root.first()
+            // pMinusQDiv2 = root.first()
             // d = (dg / g) = dg / (edg mod k)
             guessD = guessDg / ((this * guessDg) % guessK)
             // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2

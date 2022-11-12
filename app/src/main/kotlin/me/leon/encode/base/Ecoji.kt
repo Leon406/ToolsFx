@@ -1,6 +1,5 @@
 package me.leon.encode.base
 
-import java.lang.Byte
 import me.leon.ext.toUnicodeChar
 import me.leon.toBigInteger
 
@@ -1061,28 +1060,28 @@ fun ByteArray.ecoji(): String {
         var b4 = 0
         when (it.size) {
             5 -> {
-                b4 = Byte.toUnsignedInt(it[4])
-                b3 = Byte.toUnsignedInt(it[3])
-                b2 = Byte.toUnsignedInt(it[2])
-                b1 = Byte.toUnsignedInt(it[1])
-                b0 = Byte.toUnsignedInt(it[0])
+                b4 = it[4].toUInt().toInt()
+                b3 = it[3].toUInt().toInt()
+                b2 = it[2].toUInt().toInt()
+                b1 = it[1].toUInt().toInt()
+                b0 = it[0].toUInt().toInt()
             }
             4 -> {
-                b3 = Byte.toUnsignedInt(it[3])
-                b2 = Byte.toUnsignedInt(it[2])
-                b1 = Byte.toUnsignedInt(it[1])
-                b0 = Byte.toUnsignedInt(it[0])
+                b3 = it[3].toUInt().toInt()
+                b2 = it[2].toUInt().toInt()
+                b1 = it[1].toUInt().toInt()
+                b0 = it[0].toUInt().toInt()
             }
             3 -> {
-                b2 = Byte.toUnsignedInt(it[2])
-                b1 = Byte.toUnsignedInt(it[1])
-                b0 = Byte.toUnsignedInt(it[0])
+                b2 = it[2].toUInt().toInt()
+                b1 = it[1].toUInt().toInt()
+                b0 = it[0].toUInt().toInt()
             }
             2 -> {
-                b1 = Byte.toUnsignedInt(it[1])
-                b0 = Byte.toUnsignedInt(it[0])
+                b1 = it[1].toUInt().toInt()
+                b0 = it[0].toUInt().toInt()
             }
-            1 -> b0 = Byte.toUnsignedInt(it[0])
+            1 -> b0 = it[0].toUInt().toInt()
             else -> {}
         }
         val chars = intArrayOf(MAPPING[b0 shl 2 or (b1 shr 6)], PADDING, PADDING, PADDING)

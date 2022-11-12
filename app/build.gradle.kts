@@ -3,7 +3,7 @@ version = "1.14.5.beta"
 
 plugins {
     application
-    kotlin("plugin.serialization") version "1.7.20"
+    kotlin("plugin.serialization") version "1.7.21"
 }
 repositories {
     mavenCentral()
@@ -30,11 +30,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
-    api("com.google.code.gson:gson:2.9.1")
+    api("com.google.code.gson:gson:2.10")
     implementation(project(":plugin-lib"))
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("org.mockito:mockito-core:4.8.0")

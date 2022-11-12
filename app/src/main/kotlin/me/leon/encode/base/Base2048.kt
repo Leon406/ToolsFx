@@ -38,7 +38,7 @@ private val points =
                 }
                 val numZBits = BITS_PER_CHAR - BITS_PER_BYTE * index
                 lookupE[numZBits] = encodeRepertoire
-                encodeRepertoire.forEachIndexed { index, s -> lookupD[s] = listOf(numZBits, index) }
+                encodeRepertoire.forEachIndexed { i, char -> lookupD[char] = listOf(numZBits, i) }
             }
         }
 
