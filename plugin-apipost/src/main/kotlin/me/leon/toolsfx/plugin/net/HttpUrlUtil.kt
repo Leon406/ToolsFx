@@ -5,8 +5,11 @@ package me.leon.toolsfx.plugin.net
 import java.io.DataOutputStream
 import java.io.File
 import java.net.*
+import java.security.cert.X509Certificate
 import java.util.UUID
 import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -25,6 +28,7 @@ object HttpUrlUtil {
     var timeOut = 10_000
     private var proxy: Proxy = Proxy.NO_PROXY
     var followRedirect: Boolean = false
+    var verifyCert: Boolean = true
     var downloadFolder = File(File("").absoluteFile, "downloads")
     private var preAction: (Request) -> Unit = DEFAULT_PRE_ACTION
     private var postAction: (ByteArray) -> String = DEFAULT_POST_ACTION
@@ -32,6 +36,27 @@ object HttpUrlUtil {
     private const val PREFIX = "--"
     private const val LINE_END = "\r\n"
     private const val CONTENT_TYPE_FORM_DATA = "multipart/form-data"
+
+    private val ALL_TRUST_MANAGER =
+        object : X509TrustManager {
+            override fun checkClientTrusted(
+                paramArrayOfX509Certificate: Array<X509Certificate?>?,
+                paramString: String?
+            ) {
+                // nop
+            }
+
+            override fun checkServerTrusted(
+                paramArrayOfX509Certificate: Array<X509Certificate?>?,
+                paramString: String?
+            ) {
+                // nop
+            }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate>? {
+                return null
+            }
+        }
 
     val globalHeaders =
         mutableMapOf(
@@ -62,6 +87,13 @@ object HttpUrlUtil {
 
     fun addPostHandle(action: (ByteArray) -> String) {
         postAction = action
+    }
+
+    fun verifySSL(enable: Boolean = true) {
+        val sc = SSLContext.getInstance("TLS")
+        HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
+        sc.init(null, if (enable) arrayOf() else arrayOf(ALL_TRUST_MANAGER), null)
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
     }
 
     fun get(

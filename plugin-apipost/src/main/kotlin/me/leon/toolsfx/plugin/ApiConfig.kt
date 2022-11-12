@@ -13,10 +13,16 @@ object ApiConfig {
     private const val PROXY_PORT = "proxyPort"
     private const val TIME_OUT = "timeout"
     private const val FOLLOW_REDIRECT = "followRedirect"
+    private const val IGNORE_CERT = "ignoreCert"
     var isEnableProxy
         get() = Prefs.preference().getBoolean(IS_ENABLE_PROXY, false)
         set(value) {
             Prefs.preference().putBoolean(IS_ENABLE_PROXY, value)
+        }
+    var isIgnoreCert
+        get() = Prefs.preference().getBoolean(IGNORE_CERT, false)
+        set(value) {
+            Prefs.preference().putBoolean(IGNORE_CERT, value)
         }
 
     var globalHeaders: String
@@ -60,6 +66,7 @@ object ApiConfig {
         )
         HttpUrlUtil.timeOut = timeOut
         HttpUrlUtil.followRedirect = followRedirect
+        HttpUrlUtil.verifySSL(!isIgnoreCert)
     }
 
     fun saveConfig(
@@ -70,6 +77,7 @@ object ApiConfig {
         pPort: String,
         tOut: Int,
         redirect: Boolean,
+        ignoreCert: Boolean = false
     ) {
         isEnableProxy = isEnablePro
         if (isEnableProxy) {
@@ -77,6 +85,8 @@ object ApiConfig {
         } else {
             HttpUrlUtil.setupProxy()
         }
+        isIgnoreCert = ignoreCert
+        HttpUrlUtil.verifySSL(!ignoreCert)
         val previousHeaders: MutableMap<String, String> =
             parseHeaderString(globalHeaders) as MutableMap<String, String>
         HttpUrlUtil.globalHeaders - previousHeaders.keys

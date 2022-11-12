@@ -1,10 +1,9 @@
 package me.leon
 
-import java.security.cert.X509Certificate
-import javax.net.ssl.*
 import kotlin.test.Test
 import me.leon.ext.toFile
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
+import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
 
 /**
  *
@@ -19,7 +18,7 @@ class JbLicenseTest {
     fun licenseServerValidate() {
         val file = "C:\\Users\\Leon\\Desktop\\jblicense.txt".toFile()
         HttpUrlUtil.followRedirect = true
-        ignoreVerifySSL()
+        verifySSL(false)
         val raw = mutableListOf<String>()
         file
             .readLines()
@@ -60,35 +59,12 @@ class JbLicenseTest {
 
     @Test
     fun check() {
-        ignoreVerifySSL()
-        checkUrl("https://jetbrains.uberinternal.com").also { println(it) }
         checkUrl("https://35.188.104.230").also { println(it) }
-    }
-
-    private fun ignoreVerifySSL() {
-        val sc = SSLContext.getInstance("TLS")
-        val trustManager =
-            object : X509TrustManager {
-                override fun checkClientTrusted(
-                    paramArrayOfX509Certificate: Array<X509Certificate?>?,
-                    paramString: String?
-                ) {
-                    // nop
-                }
-
-                override fun checkServerTrusted(
-                    paramArrayOfX509Certificate: Array<X509Certificate?>?,
-                    paramString: String?
-                ) {
-                    // nop
-                }
-
-                override fun getAcceptedIssuers(): Array<X509Certificate>? {
-                    return null
-                }
-            }
-        sc.init(null, arrayOf<TrustManager>(trustManager), null)
-        HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
+        verifySSL(false)
+        checkUrl("https://35.188.104.230").also { println(it) }
+        verifySSL(true)
+        checkUrl("https://35.188.104.230").also { println(it) }
+        verifySSL(false)
+        checkUrl("https://35.188.104.230").also { println(it) }
     }
 }

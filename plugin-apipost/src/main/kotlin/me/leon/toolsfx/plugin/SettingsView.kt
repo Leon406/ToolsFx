@@ -16,7 +16,9 @@ class SettingsView : View("Setting") {
     private val selectedProxy = SimpleStringProperty(ApiConfig.proxyType)
     private val enableProxy = SimpleBooleanProperty(ApiConfig.isEnableProxy)
     private val followRedirect = SimpleBooleanProperty(ApiConfig.followRedirect)
+    private val ignoreCert = SimpleBooleanProperty(ApiConfig.isIgnoreCert)
     private val p12 = SimpleBooleanProperty(false)
+
     private lateinit var taHeaders: TextArea
     private lateinit var tfIp: TextField
     private lateinit var tfPort: TextField
@@ -38,6 +40,7 @@ class SettingsView : View("Setting") {
 
         hbox {
             label("FollowRedirect")
+            spacing = 8.0
             alignment = Pos.CENTER_LEFT
             checkbox("", followRedirect)
         }
@@ -56,6 +59,7 @@ class SettingsView : View("Setting") {
                 enableWhen(p12)
                 promptText = "pkcs12 password"
             }
+            checkbox("ignoreSSL", ignoreCert)
         }
         label("Proxy")
         hbox {
@@ -93,7 +97,8 @@ class SettingsView : View("Setting") {
                     tfIp.text,
                     tfPort.text,
                     tfTime.text.toInt(),
-                    followRedirect.get()
+                    followRedirect.get(),
+                    ignoreCert.get()
                 )
                 close()
             }
