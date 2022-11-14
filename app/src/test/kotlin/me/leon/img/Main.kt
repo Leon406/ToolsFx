@@ -14,6 +14,7 @@ import kotlin.math.sqrt
 import me.leon.TEST_DATA_DIR
 import me.leon.encode.base.base64Decode
 import me.leon.ext.fx.toFxImg
+import me.leon.ext.stripAllSpace
 
 val QR_MARK =
     arrayOf(
@@ -54,7 +55,7 @@ fun Int.toColorInt(isBlackOne: Boolean = true) =
     }
 
 fun String.binaryImage(isNormal: Boolean = true) =
-    with(sqrt(length.toDouble())) {
+    with(sqrt(stripAllSpace().length.toDouble())) {
         val size = this.toInt()
         val ratio = (360 / size).coerceAtLeast(1)
         val targetSize = size * ratio
@@ -101,7 +102,7 @@ class Main : Application() {
     private fun genImage(): Image {
 
         //        val image = File(IMG_DIR,"qr01").readText().binaryImage(false)
-        val image = File(IMG_DIR, "bin").readText().binaryImage()
+        val image = File(IMG_DIR, "bin2").readText().binaryImage()
         //        val image = File(IMG_DIR, "base64").readText().base64Image()
 
         //        val text = File(IMG_DIR, "rgb.txt").readText()
