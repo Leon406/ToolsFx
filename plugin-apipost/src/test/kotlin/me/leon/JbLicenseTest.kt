@@ -5,6 +5,7 @@ import java.net.Proxy
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlinx.coroutines.*
+import me.leon.ext.stacktrace
 import me.leon.ext.toFile
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
@@ -55,14 +56,20 @@ class JbLicenseTest {
                 }
         }
     }
+
     private fun crawlFromNet(): MutableSet<String> {
         val response = HttpUrlUtil.get(RUSHB_URL)
         val servers = mutableSetOf<String>()
         REG_HTML_CODE.findAll(response.data).forEach { servers.addAll(it.groupValues[1].lines()) }
-        val response2 = HttpUrlUtil.get(SHODAN_URL)
-        REG_SHODAN_CODE.findAll(response2.data).forEach {
-            servers.addAll(it.groupValues[1].lines())
+        runCatching {
+            val response2 = HttpUrlUtil.get(SHODAN_URL)
+            REG_SHODAN_CODE.findAll(response2.data).forEach {
+                servers.addAll(it.groupValues[1].lines())
+            }
+        }.getOrElse {
+            println("error fetch  shoda ${it.stacktrace()}")
         }
+
         return servers
     }
 
@@ -93,8 +100,8 @@ class JbLicenseTest {
             // 设置followRedirect会自动会重定向到 /login
             validate =
                 runCatching {
-                        HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
-                    }
+                    HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
+                }
                     .getOrDefault(false)
         }
         return validate
