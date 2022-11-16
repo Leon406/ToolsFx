@@ -4,9 +4,7 @@ import kotlin.test.assertEquals
 import me.leon.classical.*
 import me.leon.ext.crypto.TABLE_A_Z
 import me.leon.ext.crypto.TABLE_A_Z_LOWER
-import me.leon.ext.math.circleIndex
 import me.leon.ext.stripAllSpace
-import me.leon.gcdExt
 import org.junit.Test
 
 class ClassicalTest {
@@ -55,23 +53,6 @@ class ClassicalTest {
 
     @Test
     fun affine() {
-        (1..26)
-            .map {
-                "oelb{6d332l0-22ck-2b1n-a35i-125f3qe125l1}".affineDecrypt(
-                    146_442,
-                    428_428,
-                    module = it
-                )
-            }
-            .filter { it.contains("flag") }
-            .also { println(it) }
-
-        println("~~~~~~~~~~~~~")
-        "AffineCipher".affineEncrypt(4, 8).also {
-            println(it)
-            println(4.toBigInteger().gcdExt(26.toBigInteger())[1].toInt().circleIndex(26))
-            println(it.affineDecrypt(4, 8))
-        }
         "AffineCipher".affineEncrypt(5, 8).also {
             assertEquals("IhhwvcSwfrcp", it)
             assertEquals("AffineCipher", it.affineDecrypt(5, 8))
