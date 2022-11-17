@@ -178,6 +178,24 @@ class CtfTest {
     }
 
     @Test
+    fun bf() {
+        val engine = BrainfuckEngine()
+
+        // for test
+        //        (0..126).forEach {
+        //            val loops = it.pointerLoopCalculate().translate()
+        //            println("$it = " + engine.interpret(loops))
+        //        }
+
+        val message = "HelloWorld!"
+
+        assertEquals(message, engine.interpret(message.encode()))
+
+        val encodeShort = message.brainFuckShortEncode()
+        assertEquals(message, engine.interpret(encodeShort))
+    }
+
+    @Test
     fun b100() {
         val s = "hello开发工具箱".toByteArray()
         val encoded = s.base100()

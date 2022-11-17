@@ -15,7 +15,7 @@ fun BigInteger.trialDivide(maxDivider: BigInteger = MAX_DIVIDER): MutableList<Bi
     if (isProbablePrime(100)) return mutableListOf(this@trialDivide)
 
     val factors = mutableListOf<BigInteger>()
-    println("div: start divide")
+    //    println("div: start divide")
     // avoid large number slow computation
     if (bitLength() > 100) return factors.apply { add(this@trialDivide.negate()) }
     var n = this
@@ -40,7 +40,7 @@ fun BigInteger.trialDivide(maxDivider: BigInteger = MAX_DIVIDER): MutableList<Bi
         if (f > maxDivider) break
     }
     if (n != ONE) factors.add(if (n.isProbablePrime(100)) n else n.negate())
-    println("div: end divide. found ${factors.size} factors")
+    //    println("div: end divide. found ${factors.size} factors")
     return factors
 }
 

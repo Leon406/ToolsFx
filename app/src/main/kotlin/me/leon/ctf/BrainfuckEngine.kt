@@ -1,6 +1,8 @@
 package me.leon.ctf
 
 import java.io.*
+import kotlin.math.absoluteValue
+import kotlin.math.sqrt
 
 /**
  * The [BrainfuckEngine] class is an implementation of the original brainfuck language.
@@ -51,7 +53,7 @@ constructor(
      *
      * @author Fabian M.
      */
-    protected object Token {
+    object Token {
         const val NEXT = '>'
         const val PREVIOUS = '<'
         const val PLUS = '+'
@@ -134,3 +136,99 @@ constructor(
         }
     }
 }
+
+fun Int.pointerLoopCalculate(): IntArray {
+    val int = sqrt(toDouble()).toInt()
+    val t = (this / 32 + 1)
+    val loops = intArrayOf(0, 0, 0)
+    if (this < 10) {
+        loops[0] = this
+        //                println("<10 $it = $it ")
+    } else if (((int - 1) * (int + 3) - this).absoluteValue <= t) {
+        loops[0] = int - 1
+        loops[1] = int + 3
+        loops[2] = this - loops[0] * loops[1]
+    } else if (((int + 1) * (int - 1) - this).absoluteValue <= t) {
+        loops[0] = int - 1
+        loops[1] = int + 1
+    } else if (((int + 1) * (int - 2) - this).absoluteValue <= t) {
+        loops[0] = int - 2
+        loops[1] = int + 1
+    } else if (((int - 1) * (int + 2) - this).absoluteValue <= t) {
+        loops[0] = int - 1
+        loops[1] = int + 2
+    } else if ((int * (int + 2) - this).absoluteValue <= t) {
+        loops[0] = int
+        loops[1] = int + 2
+    } else if (((int + 1) * (int + 1) - this).absoluteValue <= t) {
+        loops[0] = int + 1
+        loops[1] = int + 1
+    } else if ((int * (int + 1) - this).absoluteValue <= t) {
+        loops[0] = int
+        loops[1] = int + 1
+    } else // if ((int * int - it).absoluteValue <= t)
+    {
+        loops[0] = int
+        loops[1] = int
+    }
+    if (loops[1] != 0) {
+        loops[2] = this - loops[0] * loops[1]
+    }
+    return loops
+}
+
+fun IntArray.translate(): String {
+    require(size == 3) { "size must be 3" }
+    return if (this[1] == 0) {
+        BrainfuckEngine.Token.PLUS.toString().repeat(this[0])
+    } else {
+        StringBuilder()
+            .append(BrainfuckEngine.Token.PLUS.toString().repeat(this[0]))
+            .append(BrainfuckEngine.Token.BRACKET_LEFT)
+            .append(BrainfuckEngine.Token.NEXT)
+            .append(BrainfuckEngine.Token.PLUS.toString().repeat(this[1]))
+            .append(BrainfuckEngine.Token.PREVIOUS)
+            .append(BrainfuckEngine.Token.MINUS)
+            .append(BrainfuckEngine.Token.BRACKET_RIGHT)
+            .append(BrainfuckEngine.Token.NEXT)
+            .also {
+                if (this[2] < 0) {
+                    it.append((BrainfuckEngine.Token.MINUS.toString().repeat(-this[2])))
+                } else if (this[2] > 0) {
+                    it.append((BrainfuckEngine.Token.PLUS.toString().repeat(this[2])))
+                }
+            }
+            .append(BrainfuckEngine.Token.OUTPUT)
+            .toString()
+    }
+}
+
+fun String.encode(next: String = BrainfuckEngine.Token.NEXT.toString()) =
+    map { it.code.pointerLoopCalculate().translate() }.joinToString(next)
+
+fun String.brainFuckShortEncode(next: String = BrainfuckEngine.Token.NEXT.toString()) =
+    mapIndexed { index, c ->
+            when (index) {
+                0 -> c.code.pointerLoopCalculate().translate()
+                else ->
+                    with(c.code - this[index - 1].code) {
+                        if (this.absoluteValue < 10) {
+                            this.repeatMinusPlusAndOutput()
+                        } else {
+                            next + c.code.pointerLoopCalculate().translate()
+                        }
+                    }
+            }
+        }
+        .joinToString("")
+
+fun Int.repeatMinusPlusAndOutput(
+    minus: String = BrainfuckEngine.Token.MINUS.toString(),
+    plus: String = BrainfuckEngine.Token.PLUS.toString(),
+    output: String = BrainfuckEngine.Token.OUTPUT.toString()
+) =
+    if (this > 0) {
+        plus.repeat(this)
+    } else {
+        minus.repeat(-this)
+    } + output
