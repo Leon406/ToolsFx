@@ -17,15 +17,17 @@ constructor(
     /** The default length of a token. */
     override var defaultTokenLength = 9
 
-    enum class Token(var value: String) {
-        NEXT("Ook. Ook?"),
-        PREVIOUS("Ook? Ook."),
-        PLUS("Ook. Ook."),
-        MINUS("Ook! Ook!"),
-        OUTPUT("Ook! Ook."),
-        INPUT("Ook. Ook!"),
-        BRACKET_LEFT("Ook! Ook?"),
-        BRACKET_RIGHT("Ook? Ook!")
+    object Token : BrainFuckToken {
+        override val start = ""
+        override val next = "Ook. Ook?"
+        override val pre = "Ook? Ook."
+        override val plus = "Ook. Ook."
+        override val minus = "Ook! Ook!"
+        override val output = "Ook! Ook."
+        override val input = "Ook. Ook!"
+        override val bracketLeft = "Ook! Ook?"
+        override val bracketRight = "Ook? Ook!"
+        override val end = ""
     }
 
     /** Interprets the given string. */
@@ -34,7 +36,7 @@ constructor(
         (outWriter as ByteArrayOutputStream).reset()
 
         // List with tokens.defaultTokenLenght
-        val tokens: MutableList<Token> = ArrayList()
+        val tokens: MutableList<String> = ArrayList()
         // It fine that all Ook! tokens are 9 characters long :)
         // So we aren't going to loop through all characters..
         while (charPointer < str.length) {
@@ -49,13 +51,10 @@ constructor(
                     str.substring(charPointer, charPointer + (str.length - charPointer))
                 }
             var b = false
-            for (tokenCheck in Token.values()) {
-                if (tokenCheck.value == token) {
-                    tokens.add(tokenCheck)
-                    charPointer += defaultTokenLength
-                    b = true
-                    break
-                }
+            if (isValidToken(token, Token)) {
+                tokens.add(token)
+                charPointer += defaultTokenLength
+                b = true
             }
             // If the token was invalid, b is false.
             if (!b) {
@@ -73,39 +72,39 @@ constructor(
         return outWriter.toString()
     }
 
-    private fun loopAllTokens(tokens: MutableList<Token>) {
+    private fun loopAllTokens(tokens: MutableList<String>) {
         // Loop through all tokens.
         var tokenPointer = 0
         while (tokenPointer < tokens.size) {
             when (tokens[tokenPointer]) {
-                Token.NEXT ->
+                Token.next ->
                     dataPointer = (if (dataPointer == data!!.size - 1) 0 else dataPointer + 1)
-                Token.PREVIOUS ->
+                Token.pre ->
                     dataPointer = (if (dataPointer == 0) data!!.size - 1 else dataPointer - 1)
-                Token.PLUS -> data!![dataPointer]++
-                Token.MINUS -> data!![dataPointer]--
-                Token.OUTPUT -> outWriter.write(data!![dataPointer].toInt())
-                Token.INPUT -> data!![dataPointer] = consoleReader.read().toByte()
-                Token.BRACKET_LEFT ->
+                Token.plus -> data!![dataPointer]++
+                Token.minus -> data!![dataPointer]--
+                Token.output -> outWriter.write(data!![dataPointer].toInt())
+                Token.input -> data!![dataPointer] = consoleReader.read().toByte()
+                Token.bracketLeft ->
                     if (data!![dataPointer].toInt() == 0) {
                         var level = 1
                         while (level > 0) {
                             tokenPointer++
-                            if (tokens[tokenPointer] == Token.BRACKET_LEFT) {
+                            if (tokens[tokenPointer] == Token.bracketLeft) {
                                 level++
-                            } else if (tokens[tokenPointer] == Token.BRACKET_RIGHT) {
+                            } else if (tokens[tokenPointer] == Token.bracketRight) {
                                 level--
                             }
                         }
                     }
-                Token.BRACKET_RIGHT ->
+                Token.bracketRight ->
                     if (data!![dataPointer].toInt() != 0) {
                         var level = 1
                         while (level > 0) {
                             tokenPointer--
-                            if (tokens[tokenPointer] == Token.BRACKET_LEFT) {
+                            if (tokens[tokenPointer] == Token.bracketLeft) {
                                 level--
-                            } else if (tokens[tokenPointer] == Token.BRACKET_RIGHT) {
+                            } else if (tokens[tokenPointer] == Token.bracketRight) {
                                 level++
                             }
                         }

@@ -17,17 +17,17 @@ constructor(
     /** The default length of a token. */
     open var defaultTokenLength = 3
 
-    protected object Token {
-        const val START = "tro"
-        const val NEXT = "ooo"
-        const val PREVIOUS = "ool"
-        const val PLUS = "olo"
-        const val MINUS = "oll"
-        const val OUTPUT = "loo"
-        const val INPUT = "lol"
-        const val BRACKET_LEFT = "llo"
-        const val BRACKET_RIGHT = "lll"
-        const val END = "ll."
+    object Token : BrainFuckToken {
+        override val start = "tro"
+        override val next = "ooo"
+        override val pre = "ool"
+        override val plus = "olo"
+        override val minus = "oll"
+        override val output = "loo"
+        override val input = "lol"
+        override val bracketLeft = "llo"
+        override val bracketRight = "lll"
+        override val end = "ll."
     }
 
     /**
@@ -51,10 +51,10 @@ constructor(
                 } else {
                     str.substring(charPointer, charPointer + (str.length - charPointer))
                 }
-            if (isValidToken(token)) {
-                if (token.equals(Token.START, ignoreCase = true)) {
+            if (isValidToken(token, Token)) {
+                if (token.equals(Token.start, ignoreCase = true)) {
                     started = true
-                } else if (token.equals(Token.END, ignoreCase = true)) {
+                } else if (token.equals(Token.end, ignoreCase = true)) {
                     break
                 } else if (started) {
                     tokens.add(token)
@@ -76,41 +76,37 @@ constructor(
         var tokenPointer = 0
         while (tokenPointer < tokens.size) {
             when (tokens[tokenPointer].lowercase()) {
-                Token.NEXT ->
+                Token.next ->
                     dataPointer = if (dataPointer == data!!.size - 1) 0 else dataPointer + 1
-                Token.PREVIOUS ->
+                Token.pre ->
                     dataPointer = if (dataPointer == 0) data!!.size - 1 else dataPointer - 1
-                Token.PLUS -> data!![dataPointer]++
-                Token.MINUS -> data!![dataPointer]--
-                Token.OUTPUT -> outWriter.write(data!![dataPointer].toInt())
-                Token.INPUT -> data!![dataPointer] = consoleReader.read().toByte()
-                Token.BRACKET_LEFT ->
+                Token.plus -> data!![dataPointer]++
+                Token.minus -> data!![dataPointer]--
+                Token.output -> outWriter.write(data!![dataPointer].toInt())
+                Token.input -> data!![dataPointer] = consoleReader.read().toByte()
+                Token.bracketLeft ->
                     if (data!![dataPointer].toInt() == 0) {
                         var level = 1
                         while (level > 0) {
                             tokenPointer++
-                            if (
-                                tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
-                            ) {
+                            if (tokens[tokenPointer].equals(Token.bracketLeft, ignoreCase = true)) {
                                 level++
                             } else if (
-                                tokens[tokenPointer].equals(Token.BRACKET_RIGHT, ignoreCase = true)
+                                tokens[tokenPointer].equals(Token.bracketRight, ignoreCase = true)
                             ) {
                                 level--
                             }
                         }
                     }
-                Token.BRACKET_RIGHT -> {
+                Token.bracketRight -> {
                     if (data!![dataPointer].toInt() != 0) {
                         var level = 1
                         while (level > 0) {
                             tokenPointer--
-                            if (
-                                tokens[tokenPointer].equals(Token.BRACKET_LEFT, ignoreCase = true)
-                            ) {
+                            if (tokens[tokenPointer].equals(Token.bracketLeft, ignoreCase = true)) {
                                 level--
                             } else if (
-                                tokens[tokenPointer].equals(Token.BRACKET_RIGHT, ignoreCase = true)
+                                tokens[tokenPointer].equals(Token.bracketRight, ignoreCase = true)
                             ) {
                                 level++
                             }
@@ -120,24 +116,5 @@ constructor(
             }
             tokenPointer++
         }
-    }
-
-    /**
-     * Is the given token a valid TrollScript token.
-     *
-     * @param token The token to check.
-     * @return `true` if the given token is a valid `TrollScript` token, `false` otherwise.
-     */
-    private fun isValidToken(token: String): Boolean {
-        return (token.equals(Token.START, ignoreCase = true) ||
-            token.equals(Token.NEXT, ignoreCase = true) ||
-            token.equals(Token.PREVIOUS, ignoreCase = true) ||
-            token.equals(Token.PLUS, ignoreCase = true) ||
-            token.equals(Token.MINUS, ignoreCase = true) ||
-            token.equals(Token.OUTPUT, ignoreCase = true) ||
-            token.equals(Token.INPUT, ignoreCase = true) ||
-            token.equals(Token.BRACKET_LEFT, ignoreCase = true) ||
-            token.equals(Token.BRACKET_RIGHT, ignoreCase = true) ||
-            token.equals(Token.END, ignoreCase = true))
     }
 }

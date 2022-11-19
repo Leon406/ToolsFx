@@ -39,7 +39,7 @@ class JbLicenseTest {
     @Test
     //    @Ignore
     fun licenseServerValidate() {
-//        HttpUrlUtil.setupProxy(Proxy.Type.SOCKS,"127.0.0.1",7890)
+        //        HttpUrlUtil.setupProxy(Proxy.Type.SOCKS,"127.0.0.1",7890)
         val servers = crawlFromNet()
         println("success from net ${servers.size}")
         val localServers = parseFromFile()

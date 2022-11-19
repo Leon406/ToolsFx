@@ -53,15 +53,17 @@ constructor(
      *
      * @author Fabian M.
      */
-    object Token {
-        const val NEXT = '>'
-        const val PREVIOUS = '<'
-        const val PLUS = '+'
-        const val MINUS = '-'
-        const val OUTPUT = '.'
-        const val INPUT = ','
-        const val BRACKET_LEFT = '['
-        const val BRACKET_RIGHT = ']'
+    object Token : BrainFuckToken {
+        override val next = ">"
+        override val pre = "<"
+        override val plus = "+"
+        override val minus = "-"
+        override val output = "."
+        override val input = ","
+        override val bracketLeft = "["
+        override val bracketRight = "]"
+        override val start = ""
+        override val end = ""
     }
 
     /** Initiate this instance. */
@@ -87,8 +89,8 @@ constructor(
     @Throws(IndexOutOfBoundsException::class)
     protected fun interpret(c: Char, chars: CharArray) {
         data?.let {
-            when (c) {
-                Token.NEXT -> {
+            when (c.toString()) {
+                Token.next -> {
                     if (dataPointer + 1 > it.size) {
                         throw IndexOutOfBoundsException(
                             "Error on line $lineCount, column $columnCount:data pointer ($dataPointer ) " +
@@ -97,7 +99,7 @@ constructor(
                     }
                     dataPointer++
                 }
-                Token.PREVIOUS -> {
+                Token.pre -> {
                     // Decrement the data pointer (to point to the next cell to the left).
                     if (dataPointer - 1 < 0) {
                         throw IndexOutOfBoundsException(
@@ -107,33 +109,50 @@ constructor(
                     }
                     dataPointer--
                 }
-                Token.PLUS -> it[dataPointer]++
-                Token.MINUS -> it[dataPointer]--
-                Token.OUTPUT -> outWriter.write(it[dataPointer].toInt())
-                Token.INPUT -> it[dataPointer] = consoleReader.read().toByte()
-                Token.BRACKET_LEFT ->
+                Token.plus -> it[dataPointer]++
+                Token.minus -> it[dataPointer]--
+                Token.output -> outWriter.write(it[dataPointer].toInt())
+                Token.input -> it[dataPointer] = consoleReader.read().toByte()
+                Token.bracketLeft ->
                     if (it[dataPointer].toInt() == 0) {
                         var i = 1
                         while (i > 0) {
                             val c2 = chars[++charPointer]
-                            if (c2 == Token.BRACKET_LEFT) {
+                            if (c2.toString() == Token.bracketLeft) {
                                 i++
-                            } else if (c2 == Token.BRACKET_RIGHT) {
+                            } else if (c2.toString() == Token.bracketRight) {
                                 i--
                             }
                         }
                     }
-                Token.BRACKET_RIGHT -> {
+                Token.bracketRight -> {
                     var i = 1
                     while (i > 0) {
                         val c2 = chars[--charPointer]
-                        if (c2 == Token.BRACKET_LEFT) i-- else if (c2 == Token.BRACKET_RIGHT) i++
+                        if (c2.toString() == Token.bracketLeft) {
+                            i--
+                        } else if (c2.toString() == Token.bracketRight) {
+                            i++
+                        }
                     }
                     charPointer--
                 }
             }
             columnCount++
         }
+    }
+
+    fun isValidToken(token: String, tokens: BrainFuckToken = Token): Boolean {
+        return (token.equals(tokens.start, ignoreCase = true) ||
+            token.equals(tokens.next, ignoreCase = true) ||
+            token.equals(tokens.pre, ignoreCase = true) ||
+            token.equals(tokens.plus, ignoreCase = true) ||
+            token.equals(tokens.minus, ignoreCase = true) ||
+            token.equals(tokens.output, ignoreCase = true) ||
+            token.equals(tokens.input, ignoreCase = true) ||
+            token.equals(tokens.bracketLeft, ignoreCase = true) ||
+            token.equals(tokens.bracketRight, ignoreCase = true) ||
+            token.equals(tokens.end, ignoreCase = true))
     }
 }
 
@@ -177,58 +196,61 @@ fun Int.pointerLoopCalculate(): IntArray {
     return loops
 }
 
-fun IntArray.translate(): String {
+fun IntArray.translate(token: BrainFuckToken = BrainfuckEngine.Token): String {
     require(size == 3) { "size must be 3" }
     return if (this[1] == 0) {
-        BrainfuckEngine.Token.PLUS.toString().repeat(this[0])
+        token.plus.repeat(this[0])
     } else {
         StringBuilder()
-            .append(BrainfuckEngine.Token.PLUS.toString().repeat(this[0]))
-            .append(BrainfuckEngine.Token.BRACKET_LEFT)
-            .append(BrainfuckEngine.Token.NEXT)
-            .append(BrainfuckEngine.Token.PLUS.toString().repeat(this[1]))
-            .append(BrainfuckEngine.Token.PREVIOUS)
-            .append(BrainfuckEngine.Token.MINUS)
-            .append(BrainfuckEngine.Token.BRACKET_RIGHT)
-            .append(BrainfuckEngine.Token.NEXT)
+            .append(token.plus.repeat(this[0]))
+            .append(token.bracketLeft)
+            .append(token.next)
+            .append(token.plus.repeat(this[1]))
+            .append(token.pre)
+            .append(token.minus)
+            .append(token.bracketRight)
+            .append(token.next)
             .also {
                 if (this[2] < 0) {
-                    it.append((BrainfuckEngine.Token.MINUS.toString().repeat(-this[2])))
+                    it.append((token.minus.repeat(-this[2])))
                 } else if (this[2] > 0) {
-                    it.append((BrainfuckEngine.Token.PLUS.toString().repeat(this[2])))
+                    it.append((token.plus.repeat(this[2])))
                 }
             }
-            .append(BrainfuckEngine.Token.OUTPUT)
+            .append(token.output)
             .toString()
     }
 }
 
-fun String.encode(next: String = BrainfuckEngine.Token.NEXT.toString()) =
-    map { it.code.pointerLoopCalculate().translate() }.joinToString(next)
+fun String.encode(token: BrainFuckToken = BrainfuckEngine.Token) =
+    map { it.code.pointerLoopCalculate().translate() }.joinToString(token.next)
 
-fun String.brainFuckShortEncode(next: String = BrainfuckEngine.Token.NEXT.toString()) =
+fun String.brainFuckShortEncode(token: BrainFuckToken = BrainfuckEngine.Token) =
     mapIndexed { index, c ->
             when (index) {
-                0 -> c.code.pointerLoopCalculate().translate()
+                0 -> c.code.pointerLoopCalculate().translate(token)
                 else ->
                     with(c.code - this[index - 1].code) {
                         if (this.absoluteValue < 10) {
-                            this.repeatMinusPlusAndOutput()
+                            this.repeatMinusPlusAndOutput(token)
                         } else {
-                            next + c.code.pointerLoopCalculate().translate()
+                            token.next + c.code.pointerLoopCalculate().translate(token)
                         }
                     }
             }
         }
         .joinToString("")
+        .run {
+            if (token.start.isEmpty()) {
+                this
+            } else {
+                "${token.start}$this${token.end}"
+            }
+        }
 
-fun Int.repeatMinusPlusAndOutput(
-    minus: String = BrainfuckEngine.Token.MINUS.toString(),
-    plus: String = BrainfuckEngine.Token.PLUS.toString(),
-    output: String = BrainfuckEngine.Token.OUTPUT.toString()
-) =
+fun Int.repeatMinusPlusAndOutput(token: BrainFuckToken = BrainfuckEngine.Token) =
     if (this > 0) {
-        plus.repeat(this)
+        token.plus.repeat(this)
     } else {
-        minus.repeat(-this)
-    } + output
+        token.minus.repeat(-this)
+    } + token.output

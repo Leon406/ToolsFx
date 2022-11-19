@@ -178,7 +178,7 @@ class CtfTest {
     }
 
     @Test
-    fun bf() {
+    fun brainFuckEncode() {
         val engine = BrainfuckEngine()
 
         // for test
@@ -189,10 +189,16 @@ class CtfTest {
 
         val message = "HelloWorld!"
 
-        assertEquals(message, engine.interpret(message.encode()))
+        assertEquals(message, message.encode().brainFuckDecrypt())
+        assertEquals(message, message.brainFuckShortEncode().brainFuckDecrypt())
 
         val encodeShort = message.brainFuckShortEncode()
         assertEquals(message, engine.interpret(encodeShort))
+
+        val troll = message.brainFuckShortEncode(TrollScriptEngine.Token)
+        assertEquals(message, troll.trollScriptDecrypt())
+        val ook = message.brainFuckShortEncode(OokEngine.Token)
+        assertEquals(message, ook.ookDecrypt())
     }
 
     @Test

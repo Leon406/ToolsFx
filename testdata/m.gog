@@ -109,7 +109,7 @@ func generate(key, salt []byte) (string, error) {
 
 func Base64Encoding(src []byte) (hash []byte) {
 	if len(src) == 0 {
-		return []byte{} // TODO: return nil
+		return []byte{}
 	}
 
 	hashSize := (len(src) * 8) / 6
