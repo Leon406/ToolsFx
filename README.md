@@ -209,7 +209,7 @@ support file, big file which is larger than 8Gi
 - [x] Auto Key
 - [x] rail-fence normal /rail-fence w-type
 - [x] playfair
-- [x] brainfuck/troll/ook (decryption only)
+- [x] brainfuck/troll/ook
 - [x] Braille
 - [x] alphabet index
 - [x] 01248

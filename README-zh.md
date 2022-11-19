@@ -218,7 +218,7 @@
 - [x] Auto Key
 - [x] 栅栏密码 / 栅栏密码 w
 - [x] playfair
-- [x] brainfuck/troll/ook(仅解密)
+- [x] brainfuck/troll/ook
 - [x] 盲文 (braille)
 - [x] 字母位置
 - [x] 01248(云影)
