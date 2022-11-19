@@ -12,7 +12,7 @@ const val C2 = "c2"
 const val DEBUG = true
 val REG_NON_PRINTABLE = "[\u0000-\u0009\u000B\u000C\u000E-\u001F]|解码错误:|�".toRegex()
 val REG_NUMBER = "\\d+".toRegex()
-val REG_CRACK_HEADER = "-->\\d+ ".toRegex()
+val REG_CRACK_HEADER = "\\d+ [\\w)]+(-->\\d+ )?".toRegex()
 
 val BASE_ENCODE_EXCLUDED_DICT_LIST =
     arrayOf(
