@@ -41,17 +41,21 @@ fun ByteArray.radixNEncode(dict: List<String>): String {
 }
 
 fun String.radixNDecode(dict: String = BASE58_DICT): ByteArray {
-    return radixNDecode(dict.toCharArray().map { it.toString() }.toList())
+    return if (matches("^[$dict]+$".toRegex())) {
+        radixNDecode(dict.toCharArray().map { it.toString() }.toList())
+    } else {
+        error("Wrong data format!")
+    }
 }
 
 fun String.radixNDecode(dict: List<String>): ByteArray {
-    if (this.isEmpty()) return ByteArray(0)
+    if (isEmpty()) return ByteArray(0)
     val radix = dict.size
     val leadingZero = dict.first()
     var intData = BigInteger.ZERO
     var leadingZeros = 0
     val base = radix.toBigInteger()
-    val values = this.dictValueParse(dict)
+    val values = dictValueParse(dict)
     for (s in values) {
         val digit = dict.indexOf(s)
         require(digit != -1) { String.format("Invalid  character `%s` at position", s) }

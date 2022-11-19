@@ -226,6 +226,11 @@ class EncodeTest {
 
         val base58 = "CR58UvatBfMNr917q5LwvMbAtrpuA5s3iCQe5eDivFqEz8LN1Ytu6aH"
         assertEquals(base58, raw.base58())
+        assertEquals(raw, base58.base58Decode2String())
+        assertEquals(
+            "flag{8ea44e39c914c5ddfbb9808c10033421}",
+            "G9mzcaHeFrtWbmbyVxTUN1NeWS1kNJiYRU41cZcaYq9Hsor7QnA8".base58Decode2String()
+        )
 
         measureNanoTime {
                 raw.toByteArray().baseCheck().also {

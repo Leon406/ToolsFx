@@ -19,8 +19,10 @@ object Prefs {
         set(value) {
             preference.putBoolean(ALWAYS_ON_TOP, value)
         }
+
+    /** 默认是自适应 */
     var hidpi
-        get() = preference.getBoolean(HI_DPI, false)
+        get() = preference.getBoolean(HI_DPI, true)
         set(value) {
             preference.putBoolean(HI_DPI, value)
         }
