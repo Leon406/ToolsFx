@@ -279,6 +279,7 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj plugin download ht
     - 32/64bit Windows  ----   jdk8-withjre-windows-x86  (if have no idea, choose this)
 - beta (jar file, for geeker)
   copy jar file to lib directory and delete ToolsFx-xxx.jar or app-xx.jar
+- [github action nightly(same as beta,build when code change)](https://github.com/Leon406/ToolsFx/actions/workflows/app-test.yml)
 
 ## How to Run
 

@@ -312,6 +312,8 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
    需要复制到lib目录,同时删除ToolsFx-xxx.jar(旧文件名)和 app-xxx.jar
 
+- [github action nightly版本(同beta版本,实时构建)](https://github.com/Leon406/ToolsFx/actions/workflows/app-test.yml)
+
 ## 如何运行
 
 - Linux/Mac OSX系统双击运行 根目录下 ToolsFx
