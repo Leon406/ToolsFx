@@ -77,14 +77,14 @@ fun File.parsePublicKeyFromCerFile(): String {
     }
 }
 
-fun String.toPublicKey(alg: String): PublicKey? {
+fun String.toPublicKey(alg: String): PublicKey? =
     try {
         val keySpec = X509EncodedKeySpec(getPropPublicKey(this))
-        return KeyFactory.getInstance(alg.properKeyPairAlg()).generatePublic(keySpec)
+        KeyFactory.getInstance(alg.properKeyPairAlg()).generatePublic(keySpec)
     } catch (ignore: Exception) {
         if (alg.contains("RSA")) {
             // rsa n e d p 参数解析
-            return with(parseRsaParams()) {
+            with(parseRsaParams()) {
                 KeyFactory.getInstance(alg.properKeyPairAlg())
                     .generatePublic(
                         RSAPublicKeySpec(
@@ -93,10 +93,10 @@ fun String.toPublicKey(alg: String): PublicKey? {
                         )
                     )
             }
+        } else {
+            null
         }
-        return null
     }
-}
 
 fun String.toPrivateKey(alg: String): PrivateKey? =
     try {

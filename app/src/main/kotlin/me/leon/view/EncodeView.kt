@@ -122,7 +122,6 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             onDragEntered = eventHandler
             prefRowCount = TEXT_AREA_LINES
             contextmenu {
-
                 item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
 
                 item(messages["loadFromNet"]) {
