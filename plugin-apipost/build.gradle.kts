@@ -28,6 +28,5 @@ dependencies {
     testImplementation("net.java.dev.jna:jna:5.12.1")
     testImplementation("net.java.dev.jna:jna-platform:5.12.1")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

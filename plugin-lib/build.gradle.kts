@@ -19,6 +19,6 @@ javafx {
 
 dependencies {
     api("no.tornado:tornadofx:${rootProject.extra["tornadofx_version"]}")
-    api("org.jetbrains.kotlin:kotlin-reflect")
+    api("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin_version"]}")
     api("org.glassfish:javax.json:${rootProject.extra["javax_json_version"]}")
 }
