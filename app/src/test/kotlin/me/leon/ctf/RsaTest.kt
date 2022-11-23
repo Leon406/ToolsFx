@@ -198,4 +198,10 @@ class RsaTest {
         val params = "rsa_20_n2ec.txt".parseRsaParams()
         solve(params).also { assertEquals("SangFor{qSccmm1WrgvIg2Uq_cZhmqNfEGTz2GV8}", it) }
     }
+
+    @Test
+    fun amm() {
+        val params = "rsa_amm.txt".parseRsaParams()
+        assertEquals("flag{Enj01_m1sc_A0d_cr0}", solve(params))
+    }
 }

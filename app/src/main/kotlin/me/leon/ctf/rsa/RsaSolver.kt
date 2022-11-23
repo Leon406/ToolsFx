@@ -1,6 +1,7 @@
 package me.leon.ctf.rsa
 
 import java.math.BigInteger
+import kotlin.math.ln
 import me.leon.*
 
 object RsaSolver {
@@ -182,7 +183,11 @@ object RsaSolver {
             n.isProbablePrime(100) -> {
                 println("nec n is prime")
                 val phi = n - BigInteger.ONE
-                c.modPow(e.invert(phi), n).n2s()
+                if (e.gcd(phi) == e) {
+                    ammAlg(c, e, n) ?: ""
+                } else {
+                    c.modPow(e.invert(phi), n).n2s()
+                }
             }
             e < 6.toBigInteger() -> smallE(n, c, e)
             e.bitLength() > 100 ->
@@ -239,7 +244,55 @@ object RsaSolver {
             }
         }
     }
+    /** ported from https://www.anquanke.com/post/id/262634 */
+    fun ammAlg(x: BigInteger, e: BigInteger, p: BigInteger): String? {
+        var y = (p - BigInteger.ONE).random()
 
+        while (y.modPow((p - BigInteger.ONE) / e, p) == BigInteger.ONE) {
+            y = (p - BigInteger.ONE).random()
+        }
+        // p-1 = e^t*s
+        var t = 1
+        while (p % e == BigInteger.ZERO) {
+            t++
+        }
+        val s = p / e.pow(t)
+        var k = BigInteger.ONE
+        while ((s * k + BigInteger.ONE) % e != BigInteger.ZERO) {
+            k += BigInteger.ONE
+        }
+
+        val alpha = (s * k + BigInteger.ONE) / e
+        val bigInteger = e.pow(t - 1) * s
+        val a = y.modPow(bigInteger, p)
+        var b = x.modPow(e * alpha - BigInteger.ONE, p)
+        var c = y.modPow(s, p)
+        var h = BigInteger.ONE
+
+        for (i in 1 until t) {
+            val d = b.modPow(e.pow(t - 1 - i), p)
+            val j =
+                if (d == BigInteger.ONE) {
+                    BigInteger.ZERO
+                } else {
+                    (-ln(d.toDouble()) / ln(a.toDouble())).toBigDecimal().toBigInteger()
+                }
+            b *= (c.modPow(e, p)).modPow(j, p)
+            h *= c.modPow(j, p)
+            c = c.modPow(e, p)
+        }
+
+        val root = x.modPow(alpha * h, p) % p
+        val roots = mutableSetOf<BigInteger>()
+        for (i in 1..e.toInt()) {
+            val mp2 = root * a.modPow(i.toBigInteger(), p) % p
+            if (mp2.modPow(e, p) == x) {
+                roots.add(mp2)
+            }
+        }
+
+        return roots.firstOrNull { it.n2s().matches("[\\w}{-]+".toRegex()) }?.n2s()
+    }
     private fun smallE(n: BigInteger, c: BigInteger, e: BigInteger): String {
         val exp = e.toInt()
         println("small e= $exp")

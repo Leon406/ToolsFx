@@ -1,8 +1,7 @@
 package me.leon.math
 
 import kotlin.test.assertContentEquals
-import me.leon.continuedFraction
-import me.leon.convergent
+import me.leon.*
 import org.junit.Test
 
 /**
@@ -23,5 +22,13 @@ class ContinuedFraction {
             },
             fraction.convergent()
         )
+    }
+
+    @Test
+    fun mulInverse() {
+        val n = 9.toBigInteger()
+        val p = 23.toBigInteger()
+
+        println(n.multiplyInverse(p))
     }
 }

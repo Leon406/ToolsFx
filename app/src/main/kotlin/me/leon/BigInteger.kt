@@ -1,15 +1,16 @@
 package me.leon
 
 import java.math.BigInteger
+import java.util.Random
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 
 // this = p
 fun BigInteger.phi(q: BigInteger) = (this - BigInteger.ONE) * (q - BigInteger.ONE)
 
-fun BigInteger.lcm(other: BigInteger) = this * other / this.gcd(other)
+fun BigInteger.lcm(other: BigInteger) = this * other / gcd(other)
 
-fun BigInteger.mutualPrime(other: BigInteger) = this.gcd(other) == BigInteger.ZERO
+fun BigInteger.mutualPrime(other: BigInteger) = gcd(other) == BigInteger.ONE
 
 // this = e
 fun BigInteger.invert(phi: BigInteger): BigInteger = modInverse(phi)
@@ -19,7 +20,7 @@ fun BigInteger.gcdExt(other: BigInteger) = Kgcd.gcdext(this, other)
 // this = c
 fun BigInteger.decrypt2String(d: BigInteger, n: BigInteger): String =
     with(modPow(d, n).n2s()) {
-        REG_NON_PRINTABLE.find(this)?.run { modPow(d, n).toString() } ?: run { this }
+        REG_NON_PRINTABLE.find(this)?.run { modPow(d, n).toString() } ?: this
     }
 
 fun BigInteger.decrypt(d: BigInteger, n: BigInteger): BigInteger = modPow(d, n)
@@ -40,8 +41,6 @@ fun List<BigInteger>.phi(): BigInteger =
         .fold(BigInteger.ONE) { acc, pair -> acc * pair.first.eulerPhi(pair.second) }
 
 fun List<BigInteger>.product(): BigInteger = fold(BigInteger.ONE) { acc, int -> acc * int }
-
-fun BigInteger.isMutualPrime(other: BigInteger) = gcd(other) == BigInteger.ONE
 
 fun List<BigInteger>.propN(n: BigInteger) =
     filter { it < BigInteger.ZERO }.fold(n) { acc, bigInteger -> acc / bigInteger.abs() }
@@ -230,4 +229,22 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
         }
     }
     return null
+}
+
+/** 乘法逆元 (n * m) % p == 1. m = n^-1 =n % p */
+fun BigInteger.multiplyInverse(modular: BigInteger): BigInteger {
+    val (gcd, x, _) = gcdExt(modular)
+    require(gcd == BigInteger.ONE) { "has no multiplicative inverse" }
+    return x.mod(modular)
+}
+
+private val RANDOM = Random()
+
+fun BigInteger.random(from: BigInteger = BigInteger.ONE): BigInteger {
+    val bits = bitLength()
+    var r = BigInteger(bits, RANDOM)
+    while (r < from || r > this) {
+        r = BigInteger(bits, RANDOM)
+    }
+    return r
 }
