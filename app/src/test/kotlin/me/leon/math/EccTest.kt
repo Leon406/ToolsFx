@@ -7,6 +7,7 @@ import kotlin.test.assertTrue
 
 /**
  * https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc
+ * https://andrea.corbellini.name/
  * @author Leon
  * @since 2022-11-22 17:22
  * @email: deadogone@gmail.com
@@ -72,9 +73,8 @@ class EccTest {
                 "15424654874903".toBigInteger()
             )
         eccCurve.g = EccPoint("6478678675".toBigInteger(), "5636379357093".toBigInteger(), eccCurve)
-        eccCurve.n = "546768".toBigInteger()
 
-        eccCurve.makeKeyPair()
+        eccCurve.makeKeyPair("546768".toBigInteger())
     }
 
     @Test
@@ -94,16 +94,23 @@ open class EccPoint(
 ) {
     private val _curve: EccCurve
         get() = requireNotNull(curve)
+
+    val isInfinity: Boolean
+        get() = x == null || y == null
     val isOnCurve: Boolean
         get() =
             (requireNotNull(y) * y - requireNotNull(x) * x * x - _curve.a * x - _curve.b) %
                 _curve.p == BigInteger.ZERO
 
     operator fun plus(p2: EccPoint): EccPoint {
-        if (x == null || y == null) return p2
-        if (p2.x == null || p2.y == null) return this
+        if (isInfinity) return p2
+        if (p2.isInfinity) return this
         if (x == p2.x && y != p2.y) return INFINITY
 
+        requireNotNull(x)
+        requireNotNull(y)
+        requireNotNull(p2.x)
+        requireNotNull(p2.y)
         require(isOnCurve)
         require(p2.isOnCurve)
 
@@ -114,13 +121,7 @@ open class EccPoint(
                 (y - p2.y) * (x - p2.x).modInverse(_curve.p)
             }
         val x3 = k * k - x - p2.x
-        return EccPoint(
-            x3 % _curve.p,
-            with((k * (x - x3) - y) % _curve.p) {
-                if (this >= BigInteger.ZERO) this else (this + _curve.p) % _curve.p
-            },
-            _curve
-        )
+        return EccPoint(x3 % _curve.p, (k * (x - x3) - y).mod(_curve.p), _curve)
     }
 
     fun negativePoint() = EccPoint(x, requireNotNull(y).negate() % _curve.p, _curve)
@@ -165,18 +166,16 @@ data class EccCurve(val a: BigInteger, val b: BigInteger, val p: BigInteger) {
     /** base point G ( P = kG) */
     var g: EccPoint? = null
 
-    /** order, depends on g */
+    /** order, depends on g,如果不是素数,可以拆分成子群 计算阶算法 Schoof算法 特例, 如果 p素数, n = p + 1 */
     var n: BigInteger? = null
 
-    /** cofactor */
+    /** cofactor, depends on g, 曲线的阶/子群阶 */
     var h = 1
 
-    fun makeKeyPair() {
-
-        val k = requireNotNull(n)
-        val public = requireNotNull(g).scalar(k)
-        println("private: $k public: $public")
-        println("private: $k public: ${public.toString(16)}")
+    fun makeKeyPair(private: BigInteger) {
+        val public = requireNotNull(g).scalar(private)
+        println("private: $private public: $public")
+        println("private: $private public: ${public.toString(16)}")
     }
 
     fun toString(radix: Int): String =
