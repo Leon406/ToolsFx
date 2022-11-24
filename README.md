@@ -4,7 +4,7 @@
 <p align="center">
 <a href="https://github.com/Leon406/ToolsFx/releases/latest"><img src="https://img.shields.io/github/release/Leon406/ToolsFx.svg"/></a>
 <a href="https://github.com/Leon406/ToolsFx/actions/workflows/app-test.yml"><img src="https://github.com/Leon406/ToolsFx/actions/workflows/app-test.yml/badge.svg"/></a>
-<a href="https://github.com/Leon406/ToolsFx/actions/workflows/detekt-analysis.yml"><img src="https://github.com/Leon406/ToolsFx/actions/workflows/detekt-analysis.yml/badge.svg"/></a>
+<a href="https://github.com/Leon406/ToolsFx/actions/workflows/detekt.yml"><img src="https://github.com/Leon406/ToolsFx/actions/workflows/detekt.yml/badge.svg"/></a>
 <img src="https://img.shields.io/badge/language-kotlin-orange.svg"/>
 <a href="changelog.md"><img src="https://img.shields.io/badge/updates-%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-brightgreen"/></a>
 <img src="https://img.shields.io/badge/license-ISC-green"/>
