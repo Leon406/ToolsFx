@@ -204,4 +204,12 @@ class RsaTest {
         val params = "rsa_amm.txt".parseRsaParams()
         assertEquals("flag{Enj01_m1sc_A0d_cr0}", solve(params))
     }
+
+    /** It takes 10min+, depends on your cpu */
+    @Test
+    @Ignore
+    fun amm2() {
+        val params = "rsa_amm2.txt".parseRsaParams()
+        println(solve(params))
+    }
 }

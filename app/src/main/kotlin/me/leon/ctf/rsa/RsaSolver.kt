@@ -3,6 +3,7 @@ package me.leon.ctf.rsa
 import java.math.BigInteger
 import kotlin.math.ln
 import me.leon.*
+import me.leon.ext.findParallel
 
 object RsaSolver {
 
@@ -22,6 +23,9 @@ object RsaSolver {
     private val modeDpDq = listOf("dp", "dq", "p", "q", "c")
     private val modeDp = listOf("dp", "e", "c", "n")
     private val modeBroadcastN3C3 = listOf("n1", "c1", "n2", "c2", "n3", "c3")
+
+    /** 字母数字 {} -_ */
+    val FLAG_REG = "CTF".toRegex()
 
     /**
      * 1. dp泄露
@@ -184,7 +188,10 @@ object RsaSolver {
                 println("nec n is prime")
                 val phi = n - BigInteger.ONE
                 if (e.gcd(phi) == e) {
-                    ammAlg(c, e, n) ?: ""
+                    ammAlg(c, e, n)
+                        .firstOrNull { it.n2s().contains(REG_NON_PRINTABLE).not() }
+                        ?.n2s()
+                        .orEmpty()
                 } else {
                     c.modPow(e.invert(phi), n).n2s()
                 }
@@ -244,8 +251,9 @@ object RsaSolver {
             }
         }
     }
+
     /** ported from https://www.anquanke.com/post/id/262634 */
-    fun ammAlg(x: BigInteger, e: BigInteger, p: BigInteger): String? {
+    fun ammAlg(x: BigInteger, e: BigInteger, p: BigInteger): MutableSet<BigInteger> {
         var y = (p - BigInteger.ONE).random()
 
         while (y.modPow((p - BigInteger.ONE) / e, p) == BigInteger.ONE) {
@@ -291,8 +299,9 @@ object RsaSolver {
             }
         }
 
-        return roots.firstOrNull { it.n2s().matches("[\\w}{-]+".toRegex()) }?.n2s()
+        return roots
     }
+
     private fun smallE(n: BigInteger, c: BigInteger, e: BigInteger): String {
         val exp = e.toInt()
         println("small e= $exp")
@@ -361,8 +370,35 @@ object RsaSolver {
             val t = e.gcd(phi)
             val t1 = e / t
             println("solve P Q E C e phi not are co-prime!! $t $t1")
-            val dt1 = t1.invert(phi)
-            c.modPow(dt1, n).root(t.toInt()).first().n2s()
+            if (t1 == BigInteger.ONE) {
+                val mps = ammAlg(c % p, e, p)
+                val mqs = ammAlg(c % q, e, q)
+                val modulusList = listOf(p, q)
+                var qq: BigInteger? = null
+                val r =
+                    mps.findParallel(BigInteger.ZERO) { mpp ->
+                        mqs.find { mqq ->
+                                crt(listOf(mpp, mqq), modulusList)
+                                    .n2s()
+                                    .contains(REG_NON_PRINTABLE)
+                                    .not()
+                            }
+                            .also {
+                                if (it != null) {
+                                    qq = it
+                                    println(
+                                        "got $mpp \n$qq\n${crt(listOf(mpp, it), modulusList).n2s()}\n\n"
+                                    )
+                                    return@findParallel true
+                                }
+                            }
+                        false
+                    }
+                crt(listOf(r!!, qq!!), modulusList).n2s()
+            } else {
+                val dt1 = t1.invert(phi)
+                c.modPow(dt1, n).root(t.toInt()).first().n2s()
+            }
         }
     }
 }

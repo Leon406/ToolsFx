@@ -38,5 +38,13 @@ class BigIntTest {
                 DivideResult("65", "187"),
             )
         assertEquals(1000, crt(data).toInt())
+
+        data =
+            listOf(
+                DivideResult("13", "100"),
+                DivideResult("20", "301"),
+            )
+
+        println(crt(data))
     }
 }
