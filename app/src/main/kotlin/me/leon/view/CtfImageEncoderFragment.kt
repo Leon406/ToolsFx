@@ -5,36 +5,10 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import me.leon.*
 import me.leon.ext.math.circleIndex
+import me.leon.ext.toFile
 import tornadofx.*
 
 class CtfImageEncoderFragment : View("CTF Image Encoder") {
-    private val imageList =
-        listOf(
-            "alien",
-            "alien2",
-            "cligon",
-            "covenant",
-            "dancing_man",
-            "dothraki",
-            "dual_flag",
-            "egypt",
-            "egypt2",
-            "fanfan",
-            "galaxy",
-            "hexahue",
-            "international_signal_flag",
-            "musical",
-            "musical2",
-            "pigpen",
-            "pigpen2",
-            "pigpen3",
-            "shaduo",
-            "shenqibaobei",
-            "sierda",
-            "simulation_life",
-            "templarsCipher",
-            "unknown"
-        )
 
     private val selectedItem = SimpleStringProperty(imageList.first())
     private var iv: ImageView by singleAssign()
@@ -60,17 +34,30 @@ class CtfImageEncoderFragment : View("CTF Image Encoder") {
                     )
                 }
             }
-
             selectedItem.addListener { _, _, newValue ->
                 println("selectedUrl $newValue")
-                iv.image = Image("/img/ctf/$newValue.jpg")
+                iv.image = Image("$CTF_IMG_DIR/$newValue")
             }
         }
         center =
-            imageview("/img/ctf/${selectedItem.get()}.jpg") {
+            imageview("$CTF_IMG_DIR/${selectedItem.get()}") {
                 this.fitWidth = 560.0
                 maxHeight = 800.0
                 iv = this
             }
+    }
+
+    companion object {
+        private const val CTF_IMG_DIR = "/img/ctf"
+        private val imageList = mutableListOf<String>()
+
+        init {
+            javaClass.getResource(CTF_IMG_DIR)?.toURI()?.toURL()?.file?.run {
+                val dir = toFile()
+                if (dir.exists()) {
+                    dir.listFiles()?.let { imageList.addAll(it.map { it.name }) }
+                }
+            }
+        }
     }
 }
