@@ -249,7 +249,31 @@ class CtfTest {
     @Test
     fun zwc() {
         val d = "w\u200D\uFEFF\u200C\u200B\u200D\uFEFF\u200D\u200B\u200D\uFEFF\uFEFFhat"
-        assertEquals(d, "abc".zwc("what"))
-        assertEquals("abc", d.zwcDecode())
+        assertEquals(d, "abc".zwcBinary("what"))
+        assertEquals("abc", d.zwcBinaryDecode())
+
+        println(
+            ("春风再美也比上你的笑，\u200C\u200D\u200C\u200B\u200D\u200D\u200D\u200B\u200C\u200C\u200C\u200D\u200B" +
+                    "\u200C\u200B\u200C\u200D\u200C\u200C\u200B\u200C\u200D\u200B\u200C\u200C\u200C\u200B" +
+                    "\u200D没见过你的人不会明了")
+                .zwcMorseDecode()
+        )
+
+        val encrypt =
+            "a\u200C\u200C\u200C\u200C\u200B\u200C\u200B\u200C\u200D\u200C\u200C\u200B\u200C" +
+                "\u200D\u200C\u200C\u200B\u200D\u200D\u200Dbce"
+        assertEquals(encrypt, "hello".zwcMorse("abce"))
+        assertEquals("hello", encrypt.zwcMorseDecode())
+
+        val raw = "隐藏hide数据"
+        val hide =
+            "w\u200D\u200C\u200C\u200D\u200C\u200D\u200D\u200C\u200D\u200C\u200C\u200D\u200C\u200C\u200C\u200C\u200B" +
+                "\u200D\u200C\u200C\u200C\u200C\u200D\u200C\u200D\u200D\u200D\u200C\u200C\u200D\u200D\u200D\u200D" +
+                "\u200B\u200C\u200C\u200C\u200C\u200B\u200C\u200C\u200B\u200D\u200C\u200C\u200B\u200C\u200B\u200D" +
+                "\u200D\u200C\u200C\u200D\u200C\u200D\u200C\u200D\u200D\u200D\u200C\u200C\u200C\u200C\u200B\u200D" +
+                "\u200D\u200C\u200C\u200C\u200D\u200D\u200C\u200D\u200D\u200C\u200D\u200D\u200D\u200Chere is flag"
+
+        assertEquals(hide, raw.zwcMorse("where is flag"))
+        assertEquals(raw, hide.zwcMorseDecode())
     }
 }

@@ -329,11 +329,19 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun isIgnoreSpace() = false
     },
-    ZWC("zeroWidthChar") {
+    ZWC("zeroWidthBinary") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.zwc(params[P1]?.ifEmpty { "hide" } ?: "hide")
+            raw.zwcBinary(params[P1]?.ifEmpty { "hide" } ?: "hide")
 
-        override fun decrypt(raw: String, params: Map<String, String>): String = raw.zwcDecode()
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            raw.zwcBinaryDecode()
+    },
+    ZWC_MORSE("zeroWidthMorse") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.zwcMorse(params[P1]?.ifEmpty { "hide" } ?: "hide")
+
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            raw.zwcMorseDecode()
     },
     PeriodicTable("periodicTable") {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.elementPeriodEncode()

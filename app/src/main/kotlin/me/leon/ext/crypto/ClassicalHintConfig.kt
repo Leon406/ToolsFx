@@ -75,6 +75,10 @@ val CLASSIC_CONFIG =
             mapOf(
                 HINT to arrayOf("show plain text"),
             ),
+        ClassicalCryptoType.ZWC_MORSE.type to
+            mapOf(
+                HINT to arrayOf("show plain text"),
+            ),
         ClassicalCryptoType.CurveCipher.type to
             mapOf(
                 HINT to arrayOf("row", "column"),
