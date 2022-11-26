@@ -1,5 +1,7 @@
 package me.leon.ext.crypto
 
+import me.leon.ctf.ZWC_UNICODE_DICT
+
 /**
  *
  * @author Leon
@@ -78,6 +80,10 @@ val CLASSIC_CONFIG =
         ClassicalCryptoType.ZWC_MORSE.type to
             mapOf(
                 HINT to arrayOf("show plain text"),
+            ),
+        ClassicalCryptoType.ZWC_UNICODE.type to
+            mapOf(
+                HINT to arrayOf("show plain text", "encode dict,default $ZWC_UNICODE_DICT"),
             ),
         ClassicalCryptoType.CurveCipher.type to
             mapOf(

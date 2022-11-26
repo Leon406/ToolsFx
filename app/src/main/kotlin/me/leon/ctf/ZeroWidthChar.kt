@@ -1,7 +1,10 @@
 package me.leon.ctf
 
+import kotlin.math.ceil
+import kotlin.math.log
 import me.leon.classical.morseDecrypt
 import me.leon.classical.morseEncrypt
+import me.leon.ext.unicode2String
 
 // ported from https://github.com/yuanfux/zero-width-lib
 // ported from https://github.com/rover95/morse-encrypt
@@ -74,3 +77,31 @@ fun String.zwcMorse(plain: String) =
         .replace("-", ZERO_WIDTH_JOINER.toString())
         .replace(" ", ZERO_WIDTH_SPACE.toString())
         .run { "${plain.first()}$this${plain.substring(1)}" }
+
+const val ZWC_UNICODE_DICT = "\\u200c\\u200d\\u202c\\ufeff"
+
+fun String.zwcUnicode(show: String, dict: String = ZWC_UNICODE_DICT): String {
+    val encodeMap = dict.unicode2String()
+    val radix = encodeMap.length
+    val encodeLength = ceil(log(65_536.0, radix.toDouble())).toInt()
+    return map {
+            it.code
+                .toString(radix)
+                .padStart(encodeLength, '0')
+                .map { encodeMap[it - '0'] }
+                .joinToString("")
+        }
+        .joinToString("")
+        .run { "${show.first()}$this${show.substring(1)}" }
+}
+
+fun String.zwcUnicodeDecode(dict: String = ZWC_UNICODE_DICT): String {
+    val encodeMap = dict.unicode2String()
+    val radix = encodeMap.length
+    val encodeLength = ceil(log(65_536.0, radix.toDouble())).toInt()
+
+    return filter { it in encodeMap }
+        .chunked(encodeLength)
+        .map { it.map { encodeMap.indexOf(it) }.joinToString("").toInt(radix).toChar() }
+        .joinToString("")
+}

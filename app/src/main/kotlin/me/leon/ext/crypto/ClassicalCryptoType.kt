@@ -1,6 +1,9 @@
 package me.leon.ext.crypto
 
-import me.leon.*
+import me.leon.C1
+import me.leon.C2
+import me.leon.P1
+import me.leon.P2
 import me.leon.classical.*
 import me.leon.ctf.*
 import me.leon.ctf.rsa.RsaSolver
@@ -331,17 +334,27 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     ZWC("zeroWidthBinary") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.zwcBinary(params[P1]?.ifEmpty { "hide" } ?: "hide")
+            raw.zwcBinary(params[P1]?.ifEmpty { "show" } ?: "show")
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.zwcBinaryDecode()
     },
     ZWC_MORSE("zeroWidthMorse") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.zwcMorse(params[P1]?.ifEmpty { "hide" } ?: "hide")
+            raw.zwcMorse(params[P1]?.ifEmpty { "show" } ?: "show")
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.zwcMorseDecode()
+    },
+    ZWC_UNICODE("zeroWidthUnicode") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.zwcUnicode(
+                params[P1]?.ifEmpty { "show" } ?: "show",
+                params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+            )
+
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            raw.zwcUnicodeDecode(params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT)
     },
     PeriodicTable("periodicTable") {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.elementPeriodEncode()
