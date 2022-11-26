@@ -5,9 +5,6 @@ plugins {
     application
     kotlin("plugin.serialization") version "1.7.21"
 }
-repositories {
-    mavenCentral()
-}
 
 javafx {
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls

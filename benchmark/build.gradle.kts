@@ -5,9 +5,6 @@ plugins {
     `java-library`
     id("kotlin-kapt")
 }
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation("androidx.collection:collection-ktx:1.2.0")

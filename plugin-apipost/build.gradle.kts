@@ -4,9 +4,6 @@ version = "1.5.1"
 plugins {
     `java-library`
 }
-repositories {
-    mavenCentral()
-}
 
 javafx {
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls

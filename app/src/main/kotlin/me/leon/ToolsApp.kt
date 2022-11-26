@@ -6,7 +6,6 @@ import java.security.cert.X509Certificate
 import java.util.Locale
 import java.util.Properties
 import javafx.scene.image.Image
-import javafx.stage.Screen
 import javax.net.ssl.*
 import me.leon.ext.fx.Prefs
 import me.leon.view.Home
@@ -15,9 +14,6 @@ import tornadofx.*
 class ToolsApp : App(Home::class, Styles::class) {
 
     init {
-        println(
-            "scale x: ${Screen.getPrimary().outputScaleX} y: ${Screen.getPrimary().outputScaleY}"
-        )
         // for text i18n
         FX.locale = if (Prefs.language == "zh") Locale.CHINESE else Locale.ENGLISH
         addStageIcon(Image(resources.stream("/img/tb.png")))
