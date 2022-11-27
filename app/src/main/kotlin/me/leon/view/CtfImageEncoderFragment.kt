@@ -1,11 +1,14 @@
 package me.leon.view
 
+import java.nio.file.FileSystemNotFoundException
+import java.nio.file.FileSystems
+import java.nio.file.Paths
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import kotlin.io.path.listDirectoryEntries
 import me.leon.*
 import me.leon.ext.math.circleIndex
-import me.leon.ext.toFile
 import tornadofx.*
 
 class CtfImageEncoderFragment : View("CTF Image Encoder") {
@@ -52,12 +55,18 @@ class CtfImageEncoderFragment : View("CTF Image Encoder") {
         private val imageList = mutableListOf<String>()
 
         init {
-            javaClass.getResource(CTF_IMG_DIR)?.toURI()?.toURL()?.file?.run {
-                val dir = toFile()
-                if (dir.exists()) {
-                    dir.listFiles()?.let { imageList.addAll(it.map { it.name }) }
+            val uri = CtfImageEncoderFragment::class.java.getResource(CTF_IMG_DIR).toURI()
+            val dirPath =
+                try {
+                    Paths.get(uri)
+                } catch (ignore: FileSystemNotFoundException) {
+                    // If this is thrown, then it means that we are running the JAR directly
+                    // (example: not from an IDE)
+                    println("read resource from jar file")
+                    val env = mutableMapOf<String, String>()
+                    FileSystems.newFileSystem(uri, env).getPath(CTF_IMG_DIR)
                 }
-            }
+            imageList.addAll(dirPath.listDirectoryEntries().map { it.fileName.toString() }.sorted())
         }
     }
 }
