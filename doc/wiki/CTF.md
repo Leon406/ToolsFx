@@ -298,6 +298,18 @@ emojiAES 替换算法
 
 提示: 解密结果搭配 PBE模块AES-256解密再次解密
 
+## [FenHam费娜姆密码](https://blog.csdn.net/sinat_38235368/article/details/78262148)
+
+**特征**: 01组成,见提示
+
+**测试数据**:
+
+key: crude
+
+```
+00010110010111001100100010000001010
+```
+
 ## [fourSquare](http://practicalcryptography.com/ciphers/four-square-cipher/)
 
 四方密码
@@ -313,6 +325,20 @@ key2: mfnbdcrhsaxyogvituewlqzkp
 ```
 TIYBFHTIZBSY
 ```
+
+## [FracMorse](https://programtalk.com/vs2/?source=python/5968/pycipher/pycipher/fracmorse.py)
+
+**特征**: key长度未26,见提示
+
+**测试数据**:
+
+key: ROUNDTABLECFGHIJKMPQSVWXYZ
+
+```
+OAFTCBKHJFRSDIRPFOV
+```
+
+## 
 
 ## [grayCode](https://zh.m.wikipedia.org/zh/%E6%A0%BC%E9%9B%B7%E7%A0%81)
 
@@ -339,6 +365,8 @@ key: 45329
 ```
 HJIGWHYKGNEXWYJPQRHCLJFCBXQH
 ```
+
+
 
 ## handyCode
 
@@ -379,6 +407,42 @@ dloguszijluswogany
 ```
 $=~[];$={___:++$,$$$$:(![]+"")[$],__$:++$,$_$_:(![]+"")[$],_$_:++$,$_$$:({}+"")[$],$$_$:($[$]+"")[$],_$$:++$,$$$_:(!""+"")[$],$__:++$,$_$:++$,$$__:({}+"")[$],$$_:++$,$$$:++$,$___:++$,$__$:++$};$.$_=($.$_=$+"")[$.$_$]+($._$=$.$_[$.__$])+($.$$=($.$+"")[$.__$])+((!$)+"")[$._$$]+($.__=$.$_[$.$$_])+($.$=(!""+"")[$.__$])+($._=(!""+"")[$._$_])+$.$_[$.$_$]+$.__+$._$+$.$;$.$$=$.$+(!""+"")[$._$$]+$.__+$._+$.$+$.$$;$.$=($.___)[$.$_][$.$_];$.$($.$($.$$+"\""+"\\"+$.__$+$.__$+$.___+$.$$$_+(![]+"")[$._$_]+(![]+"")[$._$_]+$._$+"\\"+$.__$+$._$_+"\\"+$.__$+$.__$+"\\"+$.__$+$.__$+"\\"+$.__$+$.__$+"\"")())();
 ```
+
+## [Manchester](https://upload-images.jianshu.io/upload_images/7648905-6c4a8341a9f08b3e.png?imageMogr2/auto-orient/strip|imageView2/2/w/1007/format/webp)
+
+通信编码,曼切斯特编码
+
+**特征**: 01组成,见提示
+
+**测试数据**:
+
+非标准,8位反转
+
+```
+5555555595555A65556AA696AA6666666955
+```
+
+标准
+
+```
+0x2559659965656A9A65656996696965A6695669A9695A699569666A5A6A6569666A59695A69AA696569666AA6
+```
+
+
+
+## [Manchester-diff](https://upload-images.jianshu.io/upload_images/7648905-6c4a8341a9f08b3e.png?imageMogr2/auto-orient/strip|imageView2/2/w/1007/format/webp)
+
+通信编码,差分曼切斯特编码
+
+**特征**: 01组成,见提示
+
+**测试数据**:
+
+```
+1010011010100101
+```
+
+结果为: 10110010
 
 ## [morse](https://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81)
 
@@ -648,7 +712,7 @@ ROT0/68/63/92 is the easiest and yet powerful cipher!
 籝籱籮 籚籾籲籬籴 籋类籸粀籷 籏籸粁 籓籾籶籹籮籭 籘籿籮类 籝籱籮 籕籪粃粂 籍籸籰簷
 ```
 
-## 
+
 
 ## RSA-crack
 
@@ -714,6 +778,16 @@ brain fuck 变种
 Trooloolooloolooloolooloolooloolollooooolooloolooloolooloolooooolooloolooloolooloolooloolooloooooloolooloooooloooloolooloololllllooooloololoooooololooolooloolooloolooloololoolooolooloololooooooloololooooloololooloolooloolooloolooloolooloolooloolooloololooooolooolooloololooollollollollollolllooollollollollollollollollloooooololooooolool
 ```
 
+## [Twin Hex](https://www.calcresult.com/misc/cyphers/twin-hex.html)
+
+**特征**: 见提示
+
+**测试数据**:
+
+```
+6af5gu10o56g5gz5915s0
+```
+
 ## [virgenene](https://zh.m.wikipedia.org/zh/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81)
 
 维吉尼亚密码
@@ -728,17 +802,71 @@ Trooloolooloolooloolooloolooloolollooooolooloolooloolooloolooooolooloolooloolool
 LXFOPVEFRNHR
 ```
 
-## zeroWidthChar
+## [vowel]()
 
-零宽字符, [zero-width-lib ](https://github.com/yuanfux/zero-width-lib)
+元音, 单表替换密码,替换表如下
 
-**特征**: 无,见提示
+```
+1 11 12 13 2 21 22 23 3 31 32 33 34 35 4 41 42 43 44 45 5 51 52 53 54 55
+```
+
+**特征**: 数字 + 分隔符,且第一个数字不大于5
+
+**测试数据**:
+
+```
+51 4 52 33 2 3 44 21 5 35
+```
+
+## 
+
+## zeroWidthBinary
+
+零宽字符, 基于[zero-width-lib ](https://github.com/yuanfux/zero-width-lib)实现
+
+**特征**: 长度与看到的不符合,包含零宽字符
 
 **测试数据**:
 
 ```
 信‏‏‌‍‌﻿﻿​‌‍‎‍‎﻿​‌‍‎‍‏‌​‌‍‎‍‏‎​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‎​‌‍‎‍‏‏​‌‍‎‍‏‏​‌‍‎‍‎‍​‌‍‎‍‏‌​‌‍‎‍‏‎​‌‍‎‍‏‌​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‌​‌‍‎‍‏‌​﻿‎﻿‌‏‎﻿​‌‍‎‍‎‍​‌‍‎‍‎﻿​‌‍‎‍‎﻿​‌‍‎‍‏‌​‌‍‎‍‏‎​‌‍‎‍‏‌​‌‍‎‍‏‎​﻿‎﻿‌‏‎﻿​‌‍‎‍‎‍​‌‍‎‍‎﻿​‌‍‎‍‏‏​﻿‎﻿‌‏‎﻿​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‏​‌‍‎‍‏‌​‌‍‎‍‏‏​‌‍‎‍‎‍​‌‍‎‍‏‌​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‎​‌‍‎‍‎﻿​‌‍‎‍‏‎​‌‍‎‍‏‎​‌‍‎‍‏‏​‌‍‎‍‎‍​‌‍‎‍‏‌​‌‍‎‍‏‌​‌‍‎‍‎﻿​‌‍‎‍‏‎​‌‍‎‍‎﻿​﻿‎﻿‌‏‎﻿​﻿‎﻿‌‏‎﻿​‌‍‎‍‎‍​‌‍‎‍‏‌​‌‍‎‍‎﻿​﻿‎﻿‌‏‎﻿​‌‍‎‍‎﻿​‌‍‎‍‎﻿​‌‍‎‍‎﻿​‌‍‎‍‎﻿​‌‍‎‍‎‍​‌‍‎‍‏‎​‌‍‎‍‏‌​﻿‎﻿‌‏‎﻿​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‏​﻿‎﻿‌‏‎﻿​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‌​‌‍‎‍‏‏​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‎​‌‍‎‍‏‏​‌‍‎‍‎‍​‌‍‎‍‏‌​‌‍‎‍‎﻿​﻿‎﻿‌‏‎﻿​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‎​‌‍‎‍‏‏​‌‍‎‍‎‍​‌‍‎‍‏‌​‌‍‎‍‏‌​‌‍‎‍‎﻿​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‏​﻿‎﻿‌‏‎﻿​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‌​‌‍‎‍‏‏​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‏​‌‍‎‍‏‏​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‏​‌‍‎‍‏‌​‌‍‎‍‎‍​‌‍‎‍‏‌​‌‍‎‍‏‌​‌‍‎‍‎﻿​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‌​‌‍‎‍‏‏​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‎﻿​‌‍‎‍‏‏​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‏‏​‌‍‎‍‎﻿​‌‍‎‍‎‍​﻿‎﻿‌‏‎﻿​‌‍‎‍‎﻿​‌‍‎‍‏‌​‏‌﻿‌‌‌‌​‏‌‎‍‌‌‌​‏‏﻿‍﻿‌‍​‌‏﻿‍‌﻿﻿​‏‏﻿‌﻿‎‌​﻿‎﻿‌‌‌‏息不在这里哦！
 ```
+
+## zeroWidthMorse
+
+零宽字符, 基于[morse-encrypt ](https://github.com/rover95/morse-encrypt)实现
+
+**特征**:  长度与看到的不符合,包含零宽字符
+
+**测试数据**:
+
+```
+春风再美也比上你的笑，‌‍‌​‍‍‍​‌‌‌‍​‌​‌‍‌‌​‌‍​‌‌‌​‍没见过你的人不会明了
+```
+
+## zeroWidthUnicode
+
+零宽字符, 基于[unicode_steganography ](https://330k.github.io/misc_tools/unicode_steganography.html)实现
+
+**特征**:  长度与看到的不符合,包含零宽字符
+
+**测试数据**:
+
+默认字典
+
+```
+​​​​​​​Lorem ipsum​​​​​​​ dolor ‌‌‌‌‍﻿‍‍sit​​​​​​​​ amet​​​​​​​​​‌‌‌‌‍﻿‍‌, consectetur ​​​​​​​adipiscing​​​​​​​‌‌‌‌‍‬‍‬ elit​​​​​​​.‌‌‌‌‍‬﻿‌​​​​​​​‌‌‌‌‍‬‌‍ Phasellus quis​​​​​​​ tempus​​​​​​ ante, ​​​​​​​​nec vehicula​​​​​​​​​​​​​​​​ mi​​​​​​​​. ​​​​​​​‌‌‌‌‍‬‍﻿Aliquam nec​​​​​​​​​‌‌‌‌‍﻿‬﻿ nisi ut neque​​​​​​​ interdum auctor​​​​​​​.‌‌‌‌‍﻿‍﻿ Aliquam felis ‌‌‌‌‍‬‬‌orci​​​​​​​, vestibulum ‌‌‌‌‍﻿‬‍sit ​​​​​​​amet​​​​​​​​​ ante‌‌‌‌‍‌﻿‬ at​​​​​​​, consectetur‌‌‌‌‍‌﻿﻿ lobortis eros​​​​​​​​​.‌‌‌‌‍‍‍‌ ‌‌‌‌‍‌‌‌​​​​​​​Orci varius​​​​​​​ ​​​​​​​natoque ‌‌‌‌‍﻿‌﻿penatibus et ‌‌‌‌‍‬‌﻿​​​​​​​magnis‌‌‌‌‌﻿‌‍‌‌‌‌‌﻿‌‍ dis ​​​​​​​‌‌‌‌‍‍﻿﻿parturient montes, ​​​​​​​nascetur ridiculus ‌‌‌‌‌﻿‍‌​​​​​​​​​​​​​​‌‌‌‌‌﻿‬‍mus. In finibus‌‌‌‌‌﻿‌‬ magna​​​​​​‌‌‌‌‌﻿‍﻿ mauris, quis‌‌‌‌‍‬‌‍ auctor ‌‌‌‌‍‬‌‍libero congue quis. ‌‌‌‌‍‬‬‬Duis‌‌‌‌‍‬‌‬ sagittis consequat urna non tristique. Pellentesque eu lorem ‌‌‌‌‍﻿‌‍id‌‌‌‌‍‬‬﻿ quam vestibulum ultricies vel ac purus‌‌‌‌‌﻿‌‍.‌‌‌‌‌
+```
+
+
+
+[自定义字典](https://c.p2hp.com/hidetext/) \\u200b\\u200c\\u200d\\u200e\\u200f
+
+```
+你‍‍‌‎‌‎‏‍​‏‏​‌​‌‌‍‎‍‏‏‌‍‏‍‍‍‍好ad
+```
+
+
 
 ## [佛曰](https://www.keyfc.net/bbs/tools/tudoucode.aspx)
 
@@ -752,6 +880,20 @@ LXFOPVEFRNHR
 佛曰：麼奢道梵呼舍舍等密爍皤集怯一梵殿缽離罰喝不耶苦
 ```
 
+## [六十四卦](https://blog.csdn.net/weixin_44110537/article/details/107494966)
+
+base64编码,字典为64卦
+
+**特征**: 64卦组成
+
+**测试数据**:
+
+```
+升困艮益蛊困蛊无妄井萃噬嗑既济井兑损离巽履晋节恒履蒙归妹鼎讼蛊履大过否噬嗑需井萃未济丰巽萃大有同人小过涣谦
+```
+
+## 
+
 ## [兽音](http://hi.pcmoe.net/roar.html)
 
 **特征**:  由 ~呜嗷啊组成
@@ -761,6 +903,26 @@ LXFOPVEFRNHR
 ```
 ~呜嗷嗷嗷嗷呜啊嗷啊~呜嗷呜呜~呜啊~啊嗷啊呜嗷呜~~~嗷~呜呜呜~~嗷嗷嗷呜啊呜呜啊呜嗷呜呜啊呜嗷呜啊嗷啊呜~嗷啊啊~嗷~呜嗷嗷~啊嗷嗷嗷呜啊嗷啊啊呜嗷呜呜~嗷嗷嗷啊嗷啊呜嗷呜~~~嗷~呜呜嗷呜~嗷嗷嗷呜啊呜啊嗷呜嗷呜呜~嗷啊呜啊嗷啊呜~嗷啊呜~嗷~呜呜嗷嗷啊嗷嗷嗷呜啊嗷嗷啊呜嗷呜呜~嗷呜嗷啊嗷啊呜~嗷啊啊~嗷~呜嗷啊啊~嗷嗷嗷呜啊嗷啊嗷呜嗷呜呜~嗷呜啊啊嗷啊呜嗷嗷啊呜~嗷~呜嗷呜嗷~嗷嗷嗷呜呜呜嗷~呜嗷呜呜啊呜~呜啊嗷啊呜~嗷啊啊~嗷~呜嗷~嗷啊嗷嗷嗷呜啊呜啊嗷呜嗷呜呜~嗷啊呜啊嗷啊呜~啊~啊~嗷~呜呜呜嗷呜嗷嗷嗷呜啊嗷呜嗷呜嗷呜呜~呜~啊啊嗷啊呜嗷嗷呜~~嗷~呜呜嗷呜嗷嗷嗷嗷呜啊呜呜呜啊
 ```
+
+## [天干地支](https://github.com/chai2010/base60)
+
+```
+天干: 甲乙丙丁戊己庚辛壬癸
+```
+
+```
+地支: 子丑寅卯辰巳午未申酉戌亥
+```
+
+**特征**: 天干+地支编码
+
+**测试数据**:
+
+```
+乙丑癸巳甲寅己亥丁卯甲申丁未甲午己巳
+```
+
+## 
 
 ## [新佛曰](http://hi.pcmoe.net/buddha.html)
 
@@ -785,6 +947,20 @@ LXFOPVEFRNHR
 ```
 
 PS. 结果是油猴脚本链接
+
+
+
+## [阴阳怪气](https://github.com/mmdjiji/yygq.js)
+
+**特征**:  由`就 这 ¿ ` `不 会 吧 ？ `组成
+
+**测试数据**:
+
+```
+不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 就 这 ¿ 就 这 ¿ 不 会 吧 ？ 不 会 吧 ？ 不 会 吧 ？ 不 会 吧 ？ 不 会 吧 ？ 就 这 ¿ 就 这 ¿ 就 这 ¿ 不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 不 会 吧 ？ 不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 就 这 ¿ 就 这 ¿ 就 这 ¿ 就 这 ¿ 就 这 ¿ 就 这 ¿ 就 这 ¿ 不 会 吧 ？ 就 这 ¿ 不 会 吧 ？ 不 会 吧 ？ 不 会 吧 ？ 就 这 ¿ 
+```
+
+## 
 
 ## 参考
 
