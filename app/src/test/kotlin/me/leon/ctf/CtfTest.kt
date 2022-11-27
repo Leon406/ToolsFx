@@ -300,6 +300,6 @@ class CtfTest {
         encode =
             "你\u200D\u200D\u200C\u200E\u200C\u200E\u200F\u200D\u200B\u200F\u200F\u200B\u200C\u200B\u200C\u200C" +
                 "\u200D\u200E\u200D\u200F\u200F\u200C\u200D\u200F\u200D\u200D\u200D\u200D好ad"
-        assertEquals("hello", encode.zwcUnicodeDecode(dict))
+        assertEquals("隐藏信息", encode.zwcUnicodeDecode(dict))
     }
 }
