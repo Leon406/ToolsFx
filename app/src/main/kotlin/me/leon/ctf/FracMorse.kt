@@ -1,6 +1,7 @@
 package me.leon.ctf
 
 import me.leon.classical.DEFAULT_MORSE
+import me.leon.classical.DEFAULT_MORSE_DECODE
 
 /**
  *
@@ -9,9 +10,6 @@ import me.leon.classical.DEFAULT_MORSE
  * @since 2022-10-21 15:07
  * @email: deadogone@gmail.com
  */
-val DEFAULT_MORSE_DECODE =
-    mutableMapOf<String, Char>().apply { putAll(DEFAULT_MORSE.values.zip(DEFAULT_MORSE.keys)) }
-
 val FRAC_DICT =
     listOf(
         "...",
