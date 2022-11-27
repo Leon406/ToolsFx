@@ -88,6 +88,12 @@ class FactorTest {
 
         params = "n3.txt".parseRsaParams()
         requireNotNull(params["n"]).fermat()
+
+        params = "n4.txt".parseRsaParams()
+        requireNotNull(params["n"]).fullFermat().also {
+            println("____${it.size}")
+            println(it.joinToString("\n"))
+        }
     }
 
     @Test

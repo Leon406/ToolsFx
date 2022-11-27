@@ -70,6 +70,13 @@ fun BigInteger.fermat(timeOut: Int = TIME_OUT): MutableList<BigInteger> {
     return mutableListOf(this.negate())
 }
 
+fun BigInteger.fullFermat(timeOut: Int = TIME_OUT): List<BigInteger> {
+    if (isProbablePrime(100)) return listOf(this)
+    return fermat(timeOut)
+        .map { it.fullFermat(timeOut).takeIf { it.size > 1 } ?: listOf(it) }
+        .flatten()
+}
+
 fun BigInteger.pollardsRhoFactors(
     timeOut: Int = TIME_OUT,
     funBias: BigInteger = ONE
@@ -173,7 +180,7 @@ fun BigInteger.factor(): MutableList<BigInteger> {
             },
             {
                 println("---fermat---")
-                it.fermat(TIME_OUT)
+                it.fullFermat(TIME_OUT)
             },
             {
                 println("---rho: x^2 + 3---")
