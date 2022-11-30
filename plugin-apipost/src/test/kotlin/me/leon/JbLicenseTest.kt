@@ -69,11 +69,11 @@ class JbLicenseTest {
         REG_HTML_CODE.findAll(response.data).forEach { servers.addAll(it.groupValues[1].lines()) }
         println("success from RUSHUB ${servers.size}")
         runCatching {
-            val response2 = HttpUrlUtil.get(SHODAN_URL)
-            REG_SHODAN_CODE.findAll(response2.data).forEach {
-                servers.addAll(it.groupValues[1].lines())
+                val response2 = HttpUrlUtil.get(SHODAN_URL)
+                REG_SHODAN_CODE.findAll(response2.data).forEach {
+                    servers.addAll(it.groupValues[1].lines())
+                }
             }
-        }
             .getOrElse { println("error fetch  shoda ${it.stacktrace()}") }
 
         return servers
@@ -106,8 +106,8 @@ class JbLicenseTest {
             // 设置followRedirect会自动会重定向到 /login
             validate =
                 runCatching {
-                    HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
-                }
+                        HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
+                    }
                     .getOrDefault(false)
         }
         return validate

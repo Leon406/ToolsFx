@@ -259,7 +259,7 @@ class CtfTest {
                 .zwcMorseDecode()
         )
 
-       val encrypt =
+        val encrypt =
             "a\u200C\u200C\u200C\u200C\u200B\u200C\u200B\u200C\u200D\u200C\u200C\u200B\u200C" +
                 "\u200D\u200C\u200C\u200B\u200D\u200D\u200Dbce"
         assertEquals(encrypt, "hello".zwcMorse("abce"))
