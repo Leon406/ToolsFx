@@ -32,7 +32,7 @@
 
 ## 主要功能
 
-### 编解码
+### 编解码  [wiki](https://github.com/Leon406/ToolsFx/wiki/%E7%BC%96%E8%A7%A3%E7%A0%81(Encoding))
 
 - [x] base64
 - [x] urlBase64
