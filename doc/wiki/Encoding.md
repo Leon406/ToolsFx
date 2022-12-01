@@ -1,5 +1,21 @@
 编解码
 
+
+
+## [base32786](https://github.com/qntm/base32768/blob/main/src/index.js)
+
+`Binary-to-text encoding highly optimised for UTF-16`
+
+**特征**:  中文字符,见提示
+
+**测试数据:** 
+
+```
+媒腻㐤┖ꈳ埳
+```
+
+
+
 ## [base100](http://www.atoolbox.net/Tool.php?Id=936)
 
 又叫Emoji表情符号编码/解码
@@ -23,6 +39,20 @@
 ```
 E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E
 ```
+
+## [base2048](https://github.com/qntm/base2048/blob/main/src/index.js)
+
+`Binary encoding optimised for Twitter`
+
+**特征**:  见提示
+
+**测试数据:** 
+
+```
+څƏൻڕ
+```
+
+
 
 ## [base32](https://cryptowikis.com/EncodeDecode/base32/)
 
@@ -140,7 +170,7 @@ JJLamodrHXspZr5qUcfZYO3u0Gdw3fhzQqxO834pCgRbqcvOn3Vkju
 tBqBQAOAsA+AjAgBWBkB8ATBtAaBOBbA>A5AyAIA*ABA|A0BQAbAMARB2B4AjBwAbAQAGAOBTA*AZBlB0AUBlAhBbA4AAA2=
 ```
 
-## 
+
 
 ## [base85](https://en.wikipedia.org/wiki/Ascii85)
 
@@ -214,6 +244,19 @@ sjT_Vni^B1<]D9f:XapY99'b/v8l*vMG4B$E!<Ws$JmoAFJMHa
 24320 21457 24037 20855 38598 21512 32 98 121 32 108 101 111 110 52 48 54 64 53 50 112 111 106 105 101 46 99 110
 ```
 
+## [ecoj](https://github.com/keith-turner/ecoji)
+
+> Ecoji encodes data using 1024 [emojis](https://unicode.org/emoji/). T
+>
+
+**特征**: 表情符号,见提示
+
+**测试数据**:
+
+```
+👦🔉🦐🔼🍉🖍🎐🌮💦😫☕☕
+```
+
 ## escape
 
 转义非ASCII和特殊字符
@@ -249,6 +292,20 @@ escape所有的字符
 ```
 e5bc80e58f91e5b7a5e585b7e99b86e59088206279206c656f6e343036403532706f6a69652e636e
 ```
+
+## hexOctBin
+
+16进制8进制二进制混合编码
+
+**特征**: 包含 `0b` `0x` `0o` , 0-9a-z
+
+**测试数据**:
+
+```
+0b1101000b10000010x350b1101010o650o710b1101000x350o640x440x350b1100100o640b10000100b1101000o1050b1101000x420b1100110o650b1101000o640b1101000o700b1101000b1101010b1101010b10000010b1101000b1100100x350x330b1101000x380b1101000x360x340o1030o650o660o650x330x350b1101100b1101000b1100110o640x420x350b1100000x340b10000010o640o1030o640x350o640x390b1101010b1101110x350o620x350x350x340o1020b1101000b1101100x350b1101100x340x360x340o630b1100110b1101100b1101000o630x350o640x340b1101110x340o1010x350x350x340x360o640x330x350o660b1101000o640x340o1060o640o1010x340x410b1100110x340x340b1101110x340o650b1101000x440b1100110x330b1101000b10001000x340b10000110b1101000x360b1101000b10000110o640b1101010x340o1060o650o650x350o640x340o1020o640b10000100x340o650b1101010b10000010b1101000x340b1101000o1020x330b1100110o650o640o640x340x340o1020b1101010b1101100b1101010b1101010b1101000o670o630b1101100o650b1101000x330x320o650b1101100o640x430b1101000x410o640b1100100x340x350x330b1101000b1101010x330o640b1100110x340b1100110x340o710b1101000b10001010b1101010o620b1101010o670x330x320o640x460b1101000o1010o650x350x340o1040o650x320o640o630o640b1101110b1101010b1100010o650o640x350o640b1101000b1100100x340x410b1101000b1100100b1101000b1110010o650b1101000o640o1020x330x440o630o1040o630x44
+```
+
+## 
 
 ## hexReverse
 
@@ -381,6 +438,34 @@ smu81pcfi7irf9f5gmruj6s6sm88g832f4g6opbfdoq30di06kp70rrad5iisore
 34557100345437107455572274541333751467033454410404030474440330625573343206015440065144701573246454513461556
 ```
 
+## radix9
+
+9进制数字
+
+**特征**: 大整数,9进制表示,见提示
+
+**测试数据**:
+
+```
+256686600358460680312315208536503
+```
+
+## radixN
+
+n进制数字,需要自定义字典
+
+**特征**: 大整数,n进制表示,见提示
+
+**测试数据**:
+
+字典 ABCDEFGHIJLKML
+
+```
+CMHMEBHBDDMLBKG
+```
+
+
+
 ## [unicode](http://cryptowikis.com/EncodeDecode/Unicode/)
 
 统一编码
@@ -440,8 +525,6 @@ smu81pcfi7irf9f5gmruj6s6sm88g832f4g6opbfdoq30di06kp70rrad5iisore
 ```
 &XwBT0V3lUXeWxlQI-byleon406@52pojie.cn
 ```
-
-## 
 
 ## [uuEncode](http://cryptowikis.com/EncodeDecode/UUencode/)
 

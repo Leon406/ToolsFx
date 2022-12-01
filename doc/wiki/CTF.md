@@ -328,7 +328,7 @@ TIYBFHTIZBSY
 
 ## [FracMorse](https://programtalk.com/vs2/?source=python/5968/pycipher/pycipher/fracmorse.py)
 
-**特征**: key长度未26,见提示
+**特征**: key长度为26,见提示
 
 **测试数据**:
 
@@ -616,7 +616,7 @@ ITSSGSTGF
 
 兔子流密码
 
-**特征**: U2FsdGVkX1开头
+**特征**: U2FsdGVkX1开头,此为openssl加密的格式,见提示
 
 **测试数据**:
 
@@ -704,7 +704,7 @@ ROT0/68/63/92 is the easiest and yet powerful cipher!
 
 位移密码, 0-65535中所有可见字符偏移一半
 
-**特征**: 有汉字生僻字组成,见提示
+**特征**: 由汉字生僻字组成,见提示
 
 **测试数据**:
 
