@@ -5,6 +5,6 @@ build/
 out/
 /ToolsFx.properties
 /local.properties
-/tools/toMerged/
+/tools/*/
 dict/
 *.json
