@@ -74,7 +74,7 @@ val emojiMap =
 const val EMOJI_BASE64_DICT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/="
 
 fun String.emojiReplace(shift: Int = 0) =
-    toCharArray().joinToString("") {
+    asIterable().joinToString("") {
         emojiMap[EMOJI_BASE64_DICT.indexOf(it).circleIndex(emojiMap.size, shift)]
     }
 

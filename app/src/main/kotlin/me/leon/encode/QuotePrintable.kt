@@ -9,7 +9,7 @@ object QuotePrintable {
 
     fun encode(src: String, charset: String = UTF8) =
         src.also { println("encode $src $charset") }
-            .toCharArray()
+            .asIterable()
             .map {
                 when (it.code) {
                     in 33..60 -> it

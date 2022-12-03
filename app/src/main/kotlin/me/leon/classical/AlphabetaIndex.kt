@@ -8,14 +8,14 @@ fun String.alphabetIndex(
     fromZero: Boolean = false
 ) =
     uppercase()
-        .toCharArray()
+        .asIterable()
         .filter { it in table }
         .map { table.indexOf(it) + (1.takeUnless { fromZero } ?: 0) }
         .joinToString(delimiter)
 
 fun String.alphabetIndexNum(table: String = TABLE_A_Z, fromZero: Boolean = true) =
     uppercase()
-        .toCharArray()
+        .asIterable()
         .filter { it in table }
         .map { table.indexOf(it) + (1.takeUnless { fromZero } ?: 0) }
 

@@ -140,4 +140,4 @@ fun String.elementPeriodDecode() =
         .map { (PERIOD_LIST.indexOf(it.takeIf { it.length <= 2 } ?: umap[it]) + 1).toChar() }
         .joinToString("")
 
-fun String.elementPeriodEncode() = toCharArray().joinToString(" ") { PERIOD_LIST[it.code - 1] }
+fun String.elementPeriodEncode() = asIterable().joinToString(" ") { PERIOD_LIST[it.code - 1] }

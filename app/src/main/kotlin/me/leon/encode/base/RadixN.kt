@@ -14,7 +14,7 @@ fun String.radixNEncode(dict: List<String>): String {
 }
 
 fun ByteArray.radixNEncode(dict: String = BASE58_DICT): String {
-    return radixNEncode(dict.toCharArray().map { it.toString() }.toList())
+    return radixNEncode(dict.asIterable().map { it.toString() }.toList())
 }
 
 fun ByteArray.radixNEncode(dict: List<String>): String {

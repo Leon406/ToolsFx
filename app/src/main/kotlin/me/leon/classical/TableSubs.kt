@@ -12,6 +12,6 @@ fun String.tableEncode(table: String, delimiter: String = " ", startCode: Char =
     with(table.split("\\s+|$delimiter".toRegex())) {
         uppercase()
             .filter { it.isUpperCase() }
-            .toCharArray()
+            .asIterable()
             .joinToString(delimiter) { this[it - startCode] }
     }

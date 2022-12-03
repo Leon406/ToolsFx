@@ -23,15 +23,15 @@ private val reverseMap by lazy {
 
 // ASCII
 fun String.pawnshop() =
-    toCharArray()
+    asIterable()
         .filter { it.code in 0..127 }
         .joinToString(" ") {
             it.code.split().joinToString("") { requireNotNull(map[it]).random().toString() }
         }
 
-private fun Int.split() = this.toString().toCharArray().map { it - '0' }
+private fun Int.split() = toString().asIterable().map { it - '0' }
 
 fun String.pawnshopDecode() =
     splitBySpace()
-        .map { it.toCharArray().map { reverseMap[it] }.joinToString("").toInt().toChar() }
+        .map { it.asIterable().map { reverseMap[it] }.joinToString("").toInt().toChar() }
         .joinToString("")

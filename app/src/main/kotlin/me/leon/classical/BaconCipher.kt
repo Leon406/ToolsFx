@@ -62,7 +62,7 @@ val BACON24 =
 
 fun String.baconEncrypt24() =
     uppercase()
-        .toCharArray()
+        .asIterable()
         .map {
             when {
                 it.isUpperCase() -> BACON24[it.code - 65]
@@ -73,7 +73,7 @@ fun String.baconEncrypt24() =
 
 fun String.baconEncrypt26() =
     uppercase()
-        .toCharArray()
+        .asIterable()
         .map {
             when {
                 it.isUpperCase() -> BACON26[it.code - 65]

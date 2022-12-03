@@ -77,7 +77,7 @@ val EIGHT_MAP =
     )
 
 fun String.eightDiagram(delimiter: String = "") =
-    base64(needPadding = false).toCharArray().joinToString(delimiter) {
+    base64(needPadding = false).asIterable().joinToString(delimiter) {
         EIGHT_MAP[BASE64_DICT.indexOf(it)]
     }
 

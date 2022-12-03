@@ -1,10 +1,10 @@
 package me.leon
 
-import java.util.concurrent.TimeUnit
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
 import org.openjdk.jmh.runner.Runner
 import org.openjdk.jmh.runner.options.OptionsBuilder
+import java.util.concurrent.TimeUnit
 
 val s = "abecefeg".repeat(200)
 
@@ -28,6 +28,11 @@ open class IterableBench {
     @Benchmark
     fun iterable(bl: Blackhole) {
         bl.consume(s.asIterable().distinct())
+    }
+
+    @Benchmark
+    fun charArray(bl: Blackhole) {
+        bl.consume(s.toCharArray().distinct())
     }
 }
 

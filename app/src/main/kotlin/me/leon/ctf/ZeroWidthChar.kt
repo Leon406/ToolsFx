@@ -50,7 +50,7 @@ val zeroWidthThreeDict =
 val indexDict = zeroWidthDict.mapIndexed { index, c -> c to index }.toMap()
 
 fun String.zwcBinary(plain: String) =
-    toCharArray()
+    asIterable()
         .joinToString(zeroWidthDict.last().toString()) {
             it.code.toString(5).map { zeroWidthDict[it - '0'] }.joinToString("")
         }

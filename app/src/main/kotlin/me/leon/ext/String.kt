@@ -1,6 +1,6 @@
 package me.leon.ext
 
-fun String.distinct() = toCharArray().distinct().joinToString("")
+fun String.distinct() = asIterable().distinct().joinToString("")
 
 // [ \f\n\r\t\v]
 fun String.stripAllSpace() = replace("\\s+".toRegex(), "")
@@ -9,7 +9,7 @@ fun String.splitBySpace() = split("\\s+".toRegex())
 
 fun String.splitByNonDigit() = split("\\D+".toRegex()).filter { it.isNotEmpty() }
 
-fun String.sorted() = toCharArray().sorted().joinToString("")
+fun String.sorted() = asIterable().sorted().joinToString("")
 
 fun String.letters() = replace("[^a-zA-Z]".toRegex(), "")
 

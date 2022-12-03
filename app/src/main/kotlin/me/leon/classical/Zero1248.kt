@@ -2,7 +2,7 @@ package me.leon.classical
 
 fun String.zero1248() =
     uppercase()
-        .toCharArray()
+        .asIterable()
         .filter { it in 'A'..'Z' }
         .joinToString("0") { (it - 'A' + 1).zero1248() }
 

@@ -5,7 +5,7 @@ import java.nio.charset.Charset
 object EscapeUtils {
 
     fun escape(src: String) =
-        src.toCharArray()
+        src.asIterable()
             .map {
                 when {
                     it.isDigit() || it.isLowerCase() || it.isUpperCase() -> it
@@ -17,7 +17,7 @@ object EscapeUtils {
             .joinToString("")
 
     fun escapeAll(src: String) =
-        src.toCharArray().joinToString("") {
+        src.asIterable().joinToString("") {
             when {
                 it.code < 16 -> "%0${it.code.toString(16)}"
                 it.code < 256 -> "%${it.code.toString(16)}"

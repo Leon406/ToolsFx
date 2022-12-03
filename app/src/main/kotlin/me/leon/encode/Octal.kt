@@ -6,7 +6,7 @@ import me.leon.encode.base.BYTE_MASK
 fun String.octal(charset: String = "UTF-8") = toByteArray().octal(charset)
 
 fun ByteArray.octal(charset: String = "UTF-8") =
-    toString(Charset.forName(charset)).toCharArray().joinToString(" ") { (it.code).toString(8) }
+    toString(Charset.forName(charset)).asIterable().joinToString(" ") { (it.code).toString(8) }
 
 fun Byte.octal() = (this.toInt() and BYTE_MASK).toString(8)
 

@@ -12,7 +12,7 @@ fun ByteArray.base16(dict: String = BASE16_DICT) =
     }
 
 fun String.base16Decode(dict: String = BASE16_DICT) =
-    toCharArray()
+    asIterable()
         .joinToString("") {
             dict
                 .ifEmpty { BASE16_DICT }

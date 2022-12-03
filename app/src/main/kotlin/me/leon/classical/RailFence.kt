@@ -4,7 +4,7 @@ import kotlin.math.ceil
 import me.leon.encode.base.padding
 
 /**
- * normal \rlink https://ctf.bugku.com/tool/railfence type w \rlink
+ * normal @link https://ctf.bugku.com/tool/railfence type w @link
  * https://en.wikipedia.org/wiki/Rail_fence_cipher https://ctf.bugku.com/tool/railfence
  */
 
