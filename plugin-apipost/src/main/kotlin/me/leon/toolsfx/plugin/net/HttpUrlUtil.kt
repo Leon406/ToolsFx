@@ -92,7 +92,7 @@ object HttpUrlUtil {
     fun verifySSL(enable: Boolean = true) {
         val sc = SSLContext.getInstance("TLS")
         HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
-        sc.init(null, if (enable) arrayOf() else arrayOf(ALL_TRUST_MANAGER), null)
+        sc.init(null, if (enable) emptyArray() else arrayOf(ALL_TRUST_MANAGER), null)
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
     }
 

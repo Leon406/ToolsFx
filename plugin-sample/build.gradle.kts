@@ -21,5 +21,4 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation(project(":app"))
 }

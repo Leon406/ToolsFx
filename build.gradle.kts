@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.7.21"
+    kotlin("jvm") version "1.7.22"
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
     id("com.diffplug.spotless") version "6.12.0"
     // https://detekt.dev/changelog/
@@ -16,6 +16,9 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     dependencies {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+    }
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
     }
 }
 
