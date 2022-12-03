@@ -42,7 +42,7 @@ fun ByteArray.radixNEncode(dict: List<String>): String {
 
 fun String.radixNDecode(dict: String = BASE58_DICT): ByteArray {
     return if (matches("^[$dict]+$".toRegex())) {
-        radixNDecode(dict.toCharArray().map { it.toString() }.toList())
+        radixNDecode(dict.asIterable().map { it.toString() }.toList())
     } else {
         error("Wrong data format!")
     }

@@ -274,7 +274,7 @@ val BLOCK_START =
 val B2 = mutableMapOf<Int, Int>().apply { putAll(BLOCK_START.values.zip(BLOCK_START.keys)) }
 
 fun ByteArray.base65536() =
-    toList()
+    asIterable()
         .chunked(2) {
             val b1 = it.first().toInt() and 0xff
             val b2 = if (it.size > 1) it.last().toInt() and 0xff else -1
@@ -289,7 +289,7 @@ fun String.base65536Decode2String() = base65536Decode().decodeToString()
 
 fun String.base65536Decode() =
     toByteArray(Charsets.UTF_32BE)
-        .toList()
+        .asIterable()
         .chunked(4)
         .map {
             val code = BigInteger(it.toByteArray()).toInt()

@@ -1,32 +1,33 @@
 package me.leon
 
-import java.time.*
-import java.util.Date
 import java.util.concurrent.TimeUnit
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
 import org.openjdk.jmh.runner.Runner
 import org.openjdk.jmh.runner.options.OptionsBuilder
 
+val s = "abecefeg".repeat(200)
+
 @Warmup(iterations = 0)
 @Measurement(iterations = 2)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @Fork(1)
-open class DateBench {
+open class IterableBench {
+
     @Benchmark
     fun baseline() {
         // do nothing
     }
 
     @Benchmark
-    fun date(bl: Blackhole) {
-        bl.consume(Date())
+    fun toList(bl: Blackhole) {
+        bl.consume(s.toList().distinct())
     }
 
     @Benchmark
-    fun localDate(bl: Blackhole) {
-        bl.consume(Date.from(Instant.from(LocalDateTime.now().atZone(ZoneId.systemDefault()))))
+    fun iterable(bl: Blackhole) {
+        bl.consume(s.asIterable().distinct())
     }
 }
 

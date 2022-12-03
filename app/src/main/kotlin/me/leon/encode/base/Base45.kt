@@ -10,7 +10,7 @@ fun String.base45(dict: String = BASE45_DICT, charset: String = "UTF-8") =
     toByteArray(charset.toCharset()).base45(dict)
 
 fun ByteArray.base45(dict: String = BASE45_DICT) =
-    toList().chunked(2).joinToString("") {
+    asIterable().chunked(2).joinToString("") {
         with(it.toByteArray().radixNEncode(dict).reversed()) {
             if (length == 1) "${this[0]}0" else this
         }
@@ -22,7 +22,7 @@ fun String.base45Decode(dict: String = BASE45_DICT) =
             val prop = if (it.length == 2 && it[1] == '0') it[0].toString() else it
             prop.reversed().radixNDecode(dict)
         }
-        .flatMap { it.toList() }
+        .flatMap { it.asIterable() }
         .toByteArray()
 
 fun String.base45Decode2String(dict: String = BASE45_DICT, charset: String = "UTF-8") =

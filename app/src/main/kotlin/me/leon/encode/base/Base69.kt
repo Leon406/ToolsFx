@@ -22,7 +22,7 @@ fun String.base69Char2Byte(dict: String = BASE69_DICT) =
         dict.ifEmpty { BASE69_DICT }.indexOf(first())
 
 fun ByteArray.base69(dict: String = BASE69_DICT) =
-    toList().chunked(CHUNK_SIZE).joinToString("") {
+    asIterable().chunked(CHUNK_SIZE).joinToString("") {
         it.toByteArray()
             .toBinaryString()
             .chunked(CHUNK_SIZE) {

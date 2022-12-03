@@ -10,7 +10,7 @@ fun String.nihilist(
     replacePair: Pair<String, String> = "J" to "I"
 ): String {
     val maps = TABLE_A_Z_WO_J.toMutableList()
-    keyword.stripAllSpace().uppercase().toList().distinct().also {
+    keyword.stripAllSpace().uppercase().asIterable().distinct().also {
         maps.removeAll(it.toSet())
         maps.addAll(0, it)
     }
@@ -22,7 +22,7 @@ fun String.nihilistDecrypt(
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
 ): String {
     val maps = TABLE_A_Z_WO_J.toMutableList()
-    keyword.stripAllSpace().uppercase().toList().distinct().also {
+    keyword.stripAllSpace().uppercase().asIterable().distinct().also {
         maps.removeAll(it.toSet())
         maps.addAll(0, it)
     }

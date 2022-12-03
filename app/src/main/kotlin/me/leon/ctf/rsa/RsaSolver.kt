@@ -117,7 +117,8 @@ object RsaSolver {
         val modular =
             params.keys
                 .filter { it.startsWith("n") }
-                .fold(BigInteger.ONE) { acc, s -> acc * params[s]!! }
+                .mapNotNull { params[it] }
+                .reduce { acc, s -> acc * s }
         val e = params.keys.count { it.startsWith("n") }
         val divides =
             params.keys

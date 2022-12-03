@@ -29,7 +29,7 @@ private val points =
         .also {
             it.mapIndexed { index, s ->
                 val encodeRepertoire = mutableListOf<String>()
-                s.toByteArray(Charsets.UTF_32BE).toList().chunked(8).map {
+                s.toByteArray(Charsets.UTF_32BE).asIterable().chunked(8).map {
                     val start = it.take(4).toByteArray().toBigInteger().toInt()
                     val end = it.takeLast(4).toByteArray().toBigInteger().toInt()
                     for (i in start..end) {

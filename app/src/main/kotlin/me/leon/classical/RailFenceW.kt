@@ -8,7 +8,7 @@ import kotlin.math.abs
  */
 fun String.railFenceWEncrypt(key: Int, offset: Int = 0): String {
     val cycle = 2 * (key - 1)
-    return toList()
+    return asIterable()
         .foldIndexed(mutableMapOf<Int, MutableList<Char>>()) { pos, acc, c ->
             acc.apply {
                 val propIndex = key - 1 - abs(cycle / 2 - (pos + offset) % cycle)

@@ -17,7 +17,7 @@ fun ByteArray.base100() =
 
 fun String.base100Decode() =
     with(toByteArray()) {
-        toList()
+        asIterable()
             .chunked(4)
             .filter { it.first() == BASE100_BYTE1 && it[1] == BASE100_BYTE2 }
             .foldIndexed(ByteArray(this.size / 4)) { index, acc, list ->

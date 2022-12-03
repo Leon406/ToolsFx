@@ -10,7 +10,7 @@ const val BASE85_IPV6_DICT =
     """0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~"""
 
 fun ByteArray.base85(dict: String = BASE85_DICT): String =
-    toList()
+    asIterable()
         .chunked(4)
         .map {
             if (it.size < 4) ArrayList(it).apply { repeat(4 - it.size) { add(0.toByte()) } } else it

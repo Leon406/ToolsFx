@@ -34,7 +34,7 @@ fun ByteArray.base92Encode(dict: String = BASE92_DICT, charset: String = "UTF-8"
 fun String.base92Decode(dict: String = BASE92_DICT, charset: String = "UTF-8"): ByteArray {
     if (this == "~") return "".toByteArray()
     val dic = dict.ifEmpty { BASE92_DICT }
-    return toList()
+    return asIterable()
         .chunked(2)
         .joinToString("") {
             if (it.size > 1) {

@@ -46,9 +46,8 @@ fun crt(divideResults: List<DivideResult>): BigInteger {
 }
 
 fun crt(remainders: List<BigInteger>, modulusList: List<BigInteger>): BigInteger {
-    val m = modulusList.fold(BigInteger.ONE) { acc, s -> acc * s }
-    val lcmOfModulus =
-        modulusList.fold(modulusList.first()) { acc, bigInteger -> acc.lcm(bigInteger) }
+    val m = modulusList.reduce { acc, s -> acc * s }
+    val lcmOfModulus = modulusList.reduce { acc, bigInteger -> acc.lcm(bigInteger) }
     return modulusList
         .map { m / it }
         .mapIndexed { index, mi -> remainders[index] * mi * mi.modInverse(modulusList[index]) }

@@ -11,7 +11,7 @@ import me.leon.encode.base.padding
 /** count必须为长度的公约数 */
 fun String.railFenceEncrypt(count: Int) =
     padding("\r", count)
-        .toList()
+        .asIterable()
         .mapIndexed { index, c -> index to c }
         .groupBy { it.first % count }
         .values
@@ -36,7 +36,7 @@ private fun String.railFenceWithPadding(count: Int): String {
 /** count必须为长度的公约数 */
 fun String.railFenceDecrypt(count: Int) =
     with(railFenceWithPadding(count)) {
-        toList().chunked(this.length / count).toList().run {
+        asIterable().chunked(this.length / count).asIterable().run {
             val sb = StringBuilder()
             for (i in (0 until first().size)) {
                 sb.append(map { it[i] }.joinToString(""))

@@ -167,7 +167,8 @@ enum class Calculator(val algo: String) : ICalculator {
             val intNum = ints[0].toInt()
             if (intNum <= 1 || intNum > 120_000) error("range: 1<=P<=120000")
             return (1..intNum)
-                .fold(BigInteger.ONE) { acc, i -> acc.multiply(i.toBigInteger()) }
+                .map { it.toBigInteger() }
+                .reduce { acc, i -> acc.multiply(i) }
                 .toString()
         }
     },
@@ -178,7 +179,7 @@ enum class Calculator(val algo: String) : ICalculator {
             return (1..intNum)
                 .map { it.toBigInteger() }
                 .filter { it.isProbablePrime(100) }
-                .fold(BigInteger.ONE) { acc, i -> acc.multiply(i) }
+                .reduce { acc, i -> acc.multiply(i) }
                 .toString()
         }
     },

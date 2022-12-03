@@ -123,7 +123,7 @@ fun ByteArray.pubDecrypt(publicKey: PublicKey?, alg: String): ByteArray =
         } else {
             init(Cipher.DECRYPT_MODE, publicKey)
         }
-        toList()
+        asIterable()
             .chunked(publicKey!!.bitLength() / BYTE_BITS) { this.doFinal(it.toByteArray()) }
             .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
             .toByteArray()
@@ -139,7 +139,7 @@ fun ByteArray.pubEncrypt(publicKey: PublicKey?, alg: String, reserved: Int = 11)
             init(Cipher.ENCRYPT_MODE, publicKey)
         }
         println("_______ ${publicKey!!.bitLength()} ${if (alg.contains("RSA")) reserved else 0}")
-        toList()
+        asIterable()
             .chunked(
                 (publicKey.bitLength() / BYTE_BITS - if (alg.contains("RSA")) reserved else 0)
                     .also { println("chunk size $it") }
@@ -196,7 +196,7 @@ fun ByteArray.asymmetricDecrypt(
             }
 
         println(bitLen)
-        toList()
+        asIterable()
             .chunked(bitLen / BYTE_BITS) { this.doFinal(it.toByteArray()) }
             .fold(ByteArrayOutputStream()) { acc, bytes -> acc.also { acc.write(bytes) } }
             .toByteArray()
@@ -231,7 +231,7 @@ fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): Byt
                     1024
                 }
             }
-        toList()
+        asIterable()
             .chunked(bitLen / BYTE_BITS - if (alg.contains("RSA")) reserved else 0) {
                 this.doFinal(it.toByteArray())
             }

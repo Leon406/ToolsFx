@@ -1,7 +1,7 @@
 package me.leon
 
 import java.math.BigInteger
-import java.util.Random
+import java.util.*
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 
@@ -37,10 +37,10 @@ fun BigInteger.factorDb() = getPrimeFromFactorDb(this)
 fun List<BigInteger>.phi(): BigInteger =
     filter { it > BigInteger.ZERO }
         .groupBy { it }
-        .map { it.key to it.value.size }
-        .fold(BigInteger.ONE) { acc, pair -> acc * pair.first.eulerPhi(pair.second) }
+        .map { it.key.eulerPhi(it.value.size) }
+        .reduce { acc, phi -> acc * phi }
 
-fun List<BigInteger>.product(): BigInteger = fold(BigInteger.ONE) { acc, int -> acc * int }
+fun List<BigInteger>.product(): BigInteger = reduce { acc, int -> acc * int }
 
 fun List<BigInteger>.propN(n: BigInteger) =
     filter { it < BigInteger.ZERO }.fold(n) { acc, bigInteger -> acc / bigInteger.abs() }

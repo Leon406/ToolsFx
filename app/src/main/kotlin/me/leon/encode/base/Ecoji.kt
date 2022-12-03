@@ -1052,7 +1052,7 @@ fun revMapGetOrZero(k: Int): Int {
 fun String.ecoji(): String = toByteArray().ecoji()
 
 fun ByteArray.ecoji(): String {
-    return toList().chunked(5).joinToString("") {
+    return asIterable().chunked(5).joinToString("") {
         var b0 = 0
         var b1 = 0
         var b2 = 0
@@ -1112,7 +1112,7 @@ fun ByteArray.ecoji(): String {
 
 fun String.ecojiDecode(): ByteArray {
     return toByteArray(Charsets.UTF_32BE)
-        .toList()
+        .asIterable()
         .chunked(16)
         .map {
             val chars = it.chunked(4).map { it.toByteArray().toBigInteger().toInt() }

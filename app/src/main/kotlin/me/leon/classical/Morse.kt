@@ -66,7 +66,7 @@ val DEFAULT_MORSE_DECODE =
     mutableMapOf<String, Char>().apply { putAll(DEFAULT_MORSE.values.zip(DEFAULT_MORSE.keys)) }
 
 fun String.morseEncrypt() =
-    uppercase().stripAllSpace().toList().joinToString(" ") {
+    uppercase().stripAllSpace().asIterable().joinToString(" ") {
         DEFAULT_MORSE[it] ?: it.code.toString(2).replace("1", "-").replace("0", ".")
     }
 

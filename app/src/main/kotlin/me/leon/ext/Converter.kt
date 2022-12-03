@@ -46,14 +46,14 @@ fun String.binary2Ascii() = String(binary2ByteArray(), Charsets.UTF_8)
 
 fun String.binary2ByteArray(reversed: Boolean = false) =
     replace(BINARY_LEAD_REGEX, "")
-        .toList()
+        .asIterable()
         .chunked(BYTE_BITS)
         .map { it.joinToString("").run { if (reversed) reversed() else this }.toInt(2).toByte() }
         .toByteArray()
 
 fun String.binaryReverse(reversed: Boolean = false) =
     if (reversed) {
-        replace(BINARY_LEAD_REGEX, "").toList().chunked(BYTE_BITS).joinToString("") {
+        replace(BINARY_LEAD_REGEX, "").asIterable().chunked(BYTE_BITS).joinToString("") {
             it.joinToString("").reversed()
         }
     } else {

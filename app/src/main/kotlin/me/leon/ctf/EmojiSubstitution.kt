@@ -80,7 +80,7 @@ fun String.emojiReplace(shift: Int = 0) =
 
 fun String.emojiReplaceDecode(shift: Int = 0) =
     toByteArray(Charsets.UTF_32BE)
-        .toList()
+        .asIterable()
         .chunked(4)
         .map {
             EMOJI_BASE64_DICT[

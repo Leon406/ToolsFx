@@ -282,7 +282,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
         measureTimeMillis {
                 outputText =
-                    inputText.toList().chunked(splitLengthText).joinToString(sepratorText) {
+                    inputText.asIterable().chunked(splitLengthText).joinToString(sepratorText) {
                         it.joinToString("")
                     }
             }

@@ -46,7 +46,7 @@ val MORSE_END_SPACE_REG = " *\$".toRegex()
 // hello ROUNDTABLECFGHIJKMPQSVWXYZ RAQUNBI
 fun String.fracMorse(key: String): String {
     require(key.length == 26) { "key length must be 26" }
-    val mapping = FRAC_DICT.zip(key.toList()).toMap()
+    val mapping = FRAC_DICT.zip(key.asIterable()).toMap()
     println(this)
     return uppercase()
         .replace(MORSE_REG, "")
@@ -69,7 +69,7 @@ fun String.fracMorse(key: String): String {
 
 fun String.fracMorseDecrypt(key: String): String {
     require(key.length == 26) { "key length must be 26" }
-    val reverseMapping = key.toList().zip(FRAC_DICT).toMap()
+    val reverseMapping = key.asIterable().zip(FRAC_DICT).toMap()
     return map { reverseMapping[it] }
         .joinToString("")
         .split("x")

@@ -47,7 +47,7 @@ fun String.maskCrack(dict: String, condition: (String) -> Boolean): String? {
 fun String.sliceCount(count: Int) =
     with(length / count) {
         if (this == 0) {
-            toList().map { it.toString() }
+            map { it.toString() }
         } else {
             chunked(this)
         }

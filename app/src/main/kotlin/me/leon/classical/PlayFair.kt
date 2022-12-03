@@ -8,7 +8,7 @@ fun String.playFair(keyword: String): String {
     val alphabet = TABLE_A_Z_WO_J.toMutableList()
     val key = keyword.replace(" ", "")
 
-    key.uppercase().toList().distinct().also {
+    key.uppercase().asIterable().distinct().also {
         alphabet.removeAll(it)
         alphabet.addAll(0, it)
     }
@@ -46,7 +46,7 @@ fun Char.propCase(char: Char) = if (char.isLowerCase()) lowercaseChar() else upp
 
 fun String.playFairDecrypt(keyword: String): String {
     val alphabet = TABLE_A_Z_WO_J.toMutableList()
-    keyword.replace(" ", "").uppercase().toList().distinct().also {
+    keyword.replace(" ", "").uppercase().asIterable().distinct().also {
         alphabet.removeAll(it.toSet())
         alphabet.addAll(0, it)
     }
