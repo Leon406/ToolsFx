@@ -1,3 +1,0 @@
-curl https://fzserver.cloudglab.com/api/fz_sdk/suspect_app_dim/getList
--H Authorization: 90d5a9b6c93efdd47aa69e3229ef6ad0
---data-raw '{"al":["com.alicloud.databox","com.shiduai.videochat2.tongxiang"],"pkgs":[{"pkgId":"com.alicloud.databox","pkgName":"阿里云盘"},{"pkgId":"com.shiduai.videochat2.tongxiang","pkgName":"律e通"}]}

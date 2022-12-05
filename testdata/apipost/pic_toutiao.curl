@@ -1,5 +1,0 @@
-curl https://www.hualigs.cn/api/upload
--X POST
--H "accept:application/json, text/javascript, */*; q=0.01"
--H "user-agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
--d "apiType=toutiao&token=5c483f653d928ef0c83d3547efb12792&image=@file"

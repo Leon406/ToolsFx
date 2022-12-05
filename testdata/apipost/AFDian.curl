@@ -1,3 +1,0 @@
-curl https://api.kinh.cc/Picture/AFDian.php
--X POST
--d "{\"FilePicture\":\"@file\"}"
