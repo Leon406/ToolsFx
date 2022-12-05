@@ -74,7 +74,7 @@ class DigestController : Controller() {
     fun crack(method: String, data: String): String =
         catch({ "digest crack error: $it" }) {
             val lower = data.lowercase()
-            require(digest(method, "", "raw").length == data.length) { "Wrong Method!!!" }
+            require(digest(method, "", "raw").length == data.length) { "Wrong Method!!! " }
             dicts.findParallel("") { digest(method, it, "raw") == lower }
         }
 }

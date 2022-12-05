@@ -3,14 +3,16 @@ package me.leon.ext.crypto
 import java.io.File
 import java.util.zip.*
 
-fun String.crc32() = CRC32().apply { update(this@crc32.toByteArray()) }.value.toULong().toString(16)
+fun String.crc32() = toByteArray().crc32()
 
-fun ByteArray.crc32() = CRC32().apply { update(this@crc32) }.value.toULong().toString(16)
+fun ByteArray.crc32() =
+    CRC32().apply { update(this@crc32) }.value.toULong().toString(16).padStart(8, '0')
 
 fun ByteArray.adler32() =
     with(Adler32().apply { update(this@adler32) }.value.toULong().toString(16)) {
-        if (length % 2 == 0) this else "0$this"
-    }
+            if (length % 2 == 0) this else "0$this"
+        }
+        .padStart(8, '0')
 
 fun String.crc32File() =
     File(this).inputStream().use {
@@ -34,9 +36,10 @@ fun String.adler32File() =
         with(crc.value.toULong().toString(16)) { if (length % 2 == 0) this else "0$this" }
     }
 
-fun String.crc64() = CRC64().apply { update(this@crc64.toByteArray()) }.value.toULong().toString(16)
+fun String.crc64() = toByteArray().crc64()
 
-fun ByteArray.crc64() = CRC64().apply { update(this@crc64) }.value.toULong().toString(16)
+fun ByteArray.crc64() =
+    CRC64().apply { update(this@crc64) }.value.toULong().toString(16).padStart(16, '0')
 
 fun String.crc64File() =
     File(this).inputStream().use {
