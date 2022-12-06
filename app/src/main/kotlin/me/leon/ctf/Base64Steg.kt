@@ -54,10 +54,10 @@ private fun String.propBinaryString() =
             if (endsWith("00")) {
                 substring(0, length - 2)
             } else {
-                replace("00(?:(\\d\\d)|(\\d{4}))$".toRegex(), "$1$2")
+                replace("00(?:(\\d\\d)?|(\\d{4}))$".toRegex(), "$1$2")
             }
-        4 -> replace("0000(\\d\\d)$".toRegex(), "$1")
-        6 -> replace("000000(\\d\\d)$".toRegex(), "$1")
+        4 -> replace("0000(\\d\\d)?$".toRegex(), "$1")
+        6 -> replace("000000(\\d\\d)?$".toRegex(), "$1")
         else -> error("")
     }
 
