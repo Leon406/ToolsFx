@@ -27,3 +27,9 @@ fun String.lineActionIndex(action: (String, Int) -> String) =
 
 fun String.sliceList(split: List<Int>, delimiter: String = " ") =
     toList().sliceList(split).joinToString(delimiter) { it.joinToString("") }
+
+fun String.random(count: Int): String {
+    val sb = StringBuilder()
+    repeat(count) { sb.append(random()) }
+    return sb.toString()
+}

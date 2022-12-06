@@ -7,8 +7,7 @@ import me.leon.P2
 import me.leon.classical.*
 import me.leon.ctf.*
 import me.leon.ctf.rsa.RsaSolver
-import me.leon.ext.containsRegexIgnoreCase
-import me.leon.ext.parseRsaParams
+import me.leon.ext.*
 
 enum class ClassicalCryptoType(val type: String) : IClassical {
     CAESAR("caesar") {
@@ -678,9 +677,10 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: Map<String, String>) = raw.baiJiaXingDecode()
     },
     STEG_BASE64("steg base64") {
-        override fun encrypt(raw: String, params: Map<String, String>) = raw.base64Steg()
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.base64StegEncrypt(requireNotNull(params[P1]).toFile().readText())
 
-        override fun decrypt(raw: String, params: Map<String, String>) = raw.base64Steg()
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.base64StegDecrypt()
 
         override fun isIgnoreSpace() = false
     };

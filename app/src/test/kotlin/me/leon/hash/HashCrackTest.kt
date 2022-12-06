@@ -3,6 +3,7 @@ package me.leon.hash
 import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
 import me.leon.encode.base.*
+import me.leon.ext.random
 import me.leon.hash
 import org.junit.Test
 
@@ -69,7 +70,6 @@ class HashCrackTest {
     fun passMatch() {
         val dict = BASE64_DICT
         val pass = dict.random(3) + "1"
-
         println(pass)
         val mask = "???1"
         measureTimeMillis { mask.maskCrack(dict) { it == pass }.also { assertEquals(pass, it) } }

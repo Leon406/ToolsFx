@@ -150,6 +150,8 @@ val CLASSIC_CONFIG =
                     ),
             ),
         ClassicalCryptoType.CAESAR_BOX.type to mapOf(HINT to arrayOf("height")),
+        ClassicalCryptoType.STEG_BASE64.type to
+            mapOf(HINT to arrayOf("show data file path(encrypt)")),
         ClassicalCryptoType.FENHAM.type to mapOf(HINT to arrayOf("key,as long as raw data")),
         ClassicalCryptoType.FRAC_MORSE.type to mapOf(HINT to arrayOf("key,length must be 26")),
         ClassicalCryptoType.EIGHT_DIAGRAM.type to

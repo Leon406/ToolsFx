@@ -53,12 +53,6 @@ fun String.sliceCount(count: Int) =
         }
     }
 
-fun String.random(count: Int): String {
-    val sb = StringBuilder()
-    repeat(count) { sb.append(random()) }
-    return sb.toString()
-}
-
 fun String.maskCrackParallel(dict: String, condition: (String) -> Boolean): String? {
 
     val sb = StringBuilder()

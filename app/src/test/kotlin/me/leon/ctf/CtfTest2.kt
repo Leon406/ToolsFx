@@ -5,6 +5,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import me.leon.TEST_CTF_DIR
 import me.leon.classical.*
+import me.leon.encode.base.BASE64_DICT
+import me.leon.encode.random
 import me.leon.ext.*
 import me.leon.ext.crypto.BINARY_REGEX
 import me.leon.ext.crypto.HEX_REGEX
@@ -182,12 +184,23 @@ class CtfTest2 {
 
     @Test
     fun base64Steg() {
-        File(TEST_CTF_DIR, "base64steg.txt").readText().base64Steg().also {
+
+        File(TEST_CTF_DIR, "base64steg.txt").readText().base64StegDecrypt().also {
             assertEquals("Base_sixty_four_point_five", it)
         }
 
-        File(TEST_CTF_DIR, "base64steg2.txt").readText().base64Steg().also {
+        File(TEST_CTF_DIR, "base64steg2.txt").readText().base64StegDecrypt().also {
             assertEquals("GXY{fazhazhenhaoting}", it)
+        }
+    }
+
+    @Test
+    fun base64StegEncode() {
+
+        (1..20).forEach {
+            val r = BASE64_DICT.random(it)
+            val encrypt = r.base64StegEncrypt(File(TEST_CTF_DIR, "raw.txt").readText())
+            assertEquals(r, encrypt.base64StegDecrypt())
         }
     }
 }
