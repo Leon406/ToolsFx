@@ -171,4 +171,23 @@ class CtfTest2 {
         assertEquals("a1", "4tt".twinHexDecrypt())
         assertEquals("a12", "4tt1c0".twinHexDecrypt())
     }
+
+    @Test
+    fun baiJiaXing() {
+        val data = "baijiaxing"
+        val encode = "卫褚尤许尤褚谢尤张朱"
+        assertEquals(encode, data.baiJiaXing())
+        assertEquals(data, encode.baiJiaXingDecode())
+    }
+
+    @Test
+    fun base64Steg() {
+        File(TEST_CTF_DIR, "base64steg.txt").readText().base64Steg().also {
+            assertEquals("Base_sixty_four_point_five", it)
+        }
+
+        File(TEST_CTF_DIR, "base64steg2.txt").readText().base64Steg().also {
+            assertEquals("GXY{fazhazhenhaoting}", it)
+        }
+    }
 }

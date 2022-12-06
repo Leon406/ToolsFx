@@ -671,6 +671,18 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.twinHex()
 
         override fun decrypt(raw: String, params: Map<String, String>) = raw.twinHexDecrypt()
+    },
+    BAI_JIA_XING("百家姓") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.baiJiaXing()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.baiJiaXingDecode()
+    },
+    STEG_BASE64("steg base64") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.base64Steg()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.base64Steg()
+
+        override fun isIgnoreSpace() = false
     };
 
     override fun paramsHints(): Array<out String> {
