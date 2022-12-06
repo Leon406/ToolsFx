@@ -1,26 +1,14 @@
-{"version":"1.15.0","info":"1.15.0 2022-11-26
+{"version":"1.15.1.beta","info":"1.15.1.beta 2022-12-06,
 
 新功能
 
-  🔥 CTF新增零宽morse
-  🔥 CTF RSA-crack支持AMM
-  🔥 CTF brainfuck,ook,troll支持加密
-  🔥 CTF新增图片加密算法查看
-  🔥 编码新增base2048, base32768, ecoji,Radix9,RadixN
-  🔥 编码新增base69, base65536,UTF-7,hex_octal_binary
-  🔥 CTF新增twin-hex,天干地支编码,八卦,元音加密
-  🔥 CTF新增manchester及差分相关功能
-  🔥 HASH新增 windows LM, NTLM
-  🔥 CTF新增 base60 (天干地支编码),简化radixN方法
-  🔥 CTF新增元音vowel 和 八卦加解密
-  🔥 hidpi支持配置
+  🔥 CTF 新增百家姓, base64隐写
+  🔥 crc add padding
+  🔥 CTF RSA fermat分解支持完全分解
+  🔥 CTF新增zwc unicode
 
 Bug修复
-
-  🐛 RsaSolver部分模式无法解密
-  🐛 unicode编码错误
-  🐛 base91 base92 crack问题
-  🐛 curve cipher编码错误
+  🐛 CTF图片编码 jar资源文件夹遍历错误
 
 使用前请看README和wiki
 
