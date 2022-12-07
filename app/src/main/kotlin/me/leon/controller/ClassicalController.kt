@@ -50,13 +50,14 @@ class ClassicalController : Controller() {
         encoded: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
         keyword: String,
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
+        params: Map<String, String>
     ) =
         catch({ "解密错误: $it" }) {
             if (singleLine) {
-                encoded.lineAction2String { type.crack(it, keyword) }
+                encoded.lineAction2String { type.crack(it, keyword, params) }
             } else {
-                type.crack(encoded, keyword)
+                type.crack(encoded, keyword, params)
             }
         }
 }

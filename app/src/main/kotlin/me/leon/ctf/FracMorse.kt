@@ -47,7 +47,6 @@ val MORSE_END_SPACE_REG = " *\$".toRegex()
 fun String.fracMorse(key: String): String {
     require(key.length == 26) { "key length must be 26" }
     val mapping = FRAC_DICT.zip(key.asIterable()).toMap()
-    println(this)
     return uppercase()
         .replace(MORSE_REG, "")
         .replace(MORSE_SPACE_REG, " ")

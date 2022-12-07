@@ -8,7 +8,6 @@ fun String.cetacean() =
                 ?: it.code.toString(2).padStart(16, '0').replace("1", "e").replace("0", "E")
         }
         .joinToString("")
-        .also { println(it) }
 
 fun String.cetaceanDecrypt() =
     stripAllSpace().chunked(16).joinToString("") {

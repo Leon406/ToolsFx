@@ -22,11 +22,8 @@ val CLASSIC_CONFIG =
             ),
         ClassicalCryptoType.RAILFENCE.type to
             mapOf(
-                HINT to arrayOf("fence number"),
-            ),
-        ClassicalCryptoType.RAILFENCEW.type to
-            mapOf(
-                HINT to arrayOf("fence number", "offset,default is 0"),
+                HINT to arrayOf("fence number", "offset,default is 0 (w-type)"),
+                CHECK to arrayOf("W-type")
             ),
         ClassicalCryptoType.VIRGENENE.type to
             mapOf(
@@ -46,13 +43,7 @@ val CLASSIC_CONFIG =
                 HINT to arrayOf("keyword", "encodeMap 12345 is as default"),
             ),
         ClassicalCryptoType.ADFGX.type to
-            mapOf(
-                HINT to arrayOf("table $TABLE_A_Z_WO_J", "keyword"),
-            ),
-        ClassicalCryptoType.ADFGVX.type to
-            mapOf(
-                HINT to arrayOf("table $TABLE_A_Z_WO_J", "keyword"),
-            ),
+            mapOf(HINT to arrayOf("table $TABLE_A_Z_WO_J", "keyword"), CHECK to arrayOf("ADFGVX")),
         ClassicalCryptoType.PLAYFAIR.type to
             mapOf(
                 HINT to arrayOf("key"),
@@ -74,13 +65,7 @@ val CLASSIC_CONFIG =
                     ),
             ),
         ClassicalCryptoType.ZWC.type to
-            mapOf(
-                HINT to arrayOf("show plain text"),
-            ),
-        ClassicalCryptoType.ZWC_MORSE.type to
-            mapOf(
-                HINT to arrayOf("show plain text"),
-            ),
+            mapOf(HINT to arrayOf("show plain text"), CHECK to arrayOf("morse")),
         ClassicalCryptoType.ZWC_UNICODE.type to
             mapOf(
                 HINT to arrayOf("show plain text", "encode dict,default $ZWC_UNICODE_DICT"),
@@ -151,11 +136,12 @@ val CLASSIC_CONFIG =
             ),
         ClassicalCryptoType.CAESAR_BOX.type to mapOf(HINT to arrayOf("height")),
         ClassicalCryptoType.STEG_BASE64.type to
-            mapOf(HINT to arrayOf("show data file path(encrypt)")),
+            mapOf(HINT to arrayOf("show data file path(encrypt)"), CHECK to arrayOf("base32")),
         ClassicalCryptoType.FENHAM.type to mapOf(HINT to arrayOf("key,as long as raw data")),
         ClassicalCryptoType.FRAC_MORSE.type to mapOf(HINT to arrayOf("key,length must be 26")),
         ClassicalCryptoType.EIGHT_DIAGRAM.type to
             mapOf(HINT to arrayOf("delimiter(none as default)")),
         ClassicalCryptoType.MANCHESTER.type to mapOf(CHECK to arrayOf("standard", "reverse 8bit")),
-        ClassicalCryptoType.MANCHESTER_DIFF.type to mapOf(CHECK to arrayOf("reverse 8bit"))
+        ClassicalCryptoType.MANCHESTER_DIFF.type to mapOf(CHECK to arrayOf("reverse 8bit")),
+        ClassicalCryptoType.BACON24.type to mapOf(CHECK to arrayOf("bacon26"))
     )

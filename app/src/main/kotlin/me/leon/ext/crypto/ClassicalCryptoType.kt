@@ -7,6 +7,8 @@ import me.leon.P2
 import me.leon.classical.*
 import me.leon.ctf.*
 import me.leon.ctf.rsa.RsaSolver
+import me.leon.encode.base.BASE32_DICT
+import me.leon.encode.base.BASE64_DICT
 import me.leon.ext.*
 
 enum class ClassicalCryptoType(val type: String) : IClassical {
@@ -28,12 +30,19 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun hasCrack() = true
 
         override fun crack(raw: String, keyword: String): String {
+            val lowerCount = raw.count { it.isLowerCase() }
+            val upperCount = raw.count { it.isUpperCase() }
+            val isOneCase = lowerCount == 0 || upperCount == 0
             val sb = StringBuilder()
             for (i in (1..25)) {
                 for (j in (1..25)) {
-                    val decrypted = raw.shift26(26 - i, 26 - j)
+                    if (isOneCase && j > 1) break
+                    val biasLower = j.takeUnless { isOneCase } ?: i
+                    val decrypted = raw.shift26(26 - i, 26 - biasLower)
                     if (decrypted.containsRegexIgnoreCase(keyword)) {
-                        sb.append("shift: $i shift(lower): $j${System.lineSeparator()}\t$decrypted")
+                        sb.append(
+                                "shift: $i shift(lower): $biasLower${System.lineSeparator()}\t$decrypted"
+                            )
                             .appendLine()
                     }
                 }
@@ -93,43 +102,35 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     RAILFENCE("railFence") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.railFenceEncrypt(params[P1]!!.toInt())
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.railFenceWEncrypt(params[P1]!!.toInt(), params[P2]?.toIntOrNull() ?: 0)
+            } else {
+                raw.railFenceEncrypt(params[P1]!!.toInt())
+            }
 
         override fun decrypt(raw: String, params: Map<String, String>) =
-            raw.railFenceDecrypt(params[P1]!!.toInt())
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.railFenceWDecrypt(params[P1]!!.toInt(), params[P2]?.toIntOrNull() ?: 0)
+            } else {
+                raw.railFenceDecrypt(params[P1]!!.toInt())
+            }
 
         override fun hasCrack() = true
 
-        override fun crack(raw: String, keyword: String): String {
+        override fun crack(raw: String, keyword: String, params: Map<String, String>): String {
             val sb = StringBuilder()
-            for (i in 2 until raw.length) {
-                runCatching {
-                    val decrypted = raw.railFenceDecrypt(i)
-                    if (decrypted.containsRegexIgnoreCase(keyword)) {
-                        sb.append("railFence $i: ${System.lineSeparator()}\t$decrypted")
-                            .appendLine()
-                    }
+            val func = { s: String, i: Int ->
+                if (requireNotNull(params[C1]).toBoolean()) {
+                    s.railFenceWDecrypt(i)
+                } else {
+                    s.railFenceDecrypt(i)
                 }
             }
-            return sb.toString()
-        }
-    },
-    RAILFENCEW("railFenceW") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.railFenceWEncrypt(params[P1]!!.toInt(), params[P2]?.toIntOrNull() ?: 0)
-
-        override fun decrypt(raw: String, params: Map<String, String>) =
-            raw.railFenceWDecrypt(params[P1]!!.toInt(), params[P2]?.toIntOrNull() ?: 0)
-
-        override fun hasCrack() = true
-
-        override fun crack(raw: String, keyword: String): String {
-            val sb = StringBuilder()
             for (i in 2 until raw.length) {
                 runCatching {
-                    val decrypted = raw.railFenceWDecrypt(i)
+                    val decrypted = func(raw, i)
                     if (decrypted.containsRegexIgnoreCase(keyword)) {
-                        sb.append("railFenceW $i: ${System.lineSeparator()}\t$decrypted")
+                        sb.append("railFence $i: ${System.lineSeparator()}\t$decrypted")
                             .appendLine()
                     }
                 }
@@ -203,29 +204,30 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     ADFGX("ADFGX") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.adfgx(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
-            )
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.adfgvx(
+                    params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                )
+            } else {
+                raw.adfgx(
+                    params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                )
+            }
 
         override fun decrypt(raw: String, params: Map<String, String>) =
-            raw.adfgxDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
-            )
-    },
-    ADFGVX("ADFGVX") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.adfgvx(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
-            )
-
-        override fun decrypt(raw: String, params: Map<String, String>) =
-            raw.adfgvxDecrypt(
-                params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
-            )
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.adfgvxDecrypt(
+                    params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                )
+            } else {
+                raw.adfgxDecrypt(
+                    params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                )
+            }
     },
     PLAYFAIR("playFair") {
         override fun encrypt(raw: String, params: Map<String, String>) =
@@ -244,16 +246,19 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun isIgnoreSpace() = false
     },
     BACON24("bacon24") {
-        override fun encrypt(raw: String, params: Map<String, String>) = raw.baconEncrypt24()
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.baconEncrypt26()
+            } else {
+                raw.baconEncrypt24()
+            }
 
-        override fun decrypt(raw: String, params: Map<String, String>) = raw.baconDecrypt24()
-
-        override fun isIgnoreSpace() = false
-    },
-    BACON26("bacon26") {
-        override fun encrypt(raw: String, params: Map<String, String>) = raw.baconEncrypt26()
-
-        override fun decrypt(raw: String, params: Map<String, String>) = raw.baconDecrypt26()
+        override fun decrypt(raw: String, params: Map<String, String>) =
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.baconDecrypt26()
+            } else {
+                raw.baconDecrypt24()
+            }
 
         override fun isIgnoreSpace() = false
     },
@@ -333,17 +338,18 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     ZWC("zeroWidthBinary") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.zwcBinary(params[P1]?.ifEmpty { "show" } ?: "show")
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.zwcMorse(params[P1]?.ifEmpty { "show" } ?: "show")
+            } else {
+                raw.zwcBinary(params[P1]?.ifEmpty { "show" } ?: "show")
+            }
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
-            raw.zwcBinaryDecode()
-    },
-    ZWC_MORSE("zeroWidthMorse") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.zwcMorse(params[P1]?.ifEmpty { "show" } ?: "show")
-
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            raw.zwcMorseDecode()
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.zwcMorseDecode()
+            } else {
+                raw.zwcBinaryDecode()
+            }
     },
     ZWC_UNICODE("zeroWidthUnicode") {
         override fun encrypt(raw: String, params: Map<String, String>) =
@@ -678,9 +684,23 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     STEG_BASE64("steg base64") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.base64StegEncrypt(requireNotNull(params[P1]).toFile().readText())
+            raw.baseStegEncrypt(
+                requireNotNull(params[P1]).toFile().readText(),
+                if (requireNotNull(params[C1]).toBoolean()) {
+                    BASE32_DICT
+                } else {
+                    BASE64_DICT
+                }
+            )
 
-        override fun decrypt(raw: String, params: Map<String, String>) = raw.base64StegDecrypt()
+        override fun decrypt(raw: String, params: Map<String, String>) =
+            raw.baseStegDecrypt(
+                if (requireNotNull(params[C1]).toBoolean()) {
+                    BASE32_DICT
+                } else {
+                    BASE64_DICT
+                }
+            )
 
         override fun isIgnoreSpace() = false
     };

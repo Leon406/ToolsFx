@@ -57,6 +57,7 @@ class ClassicalView : Fragment(messages["classical"]) {
             )
 
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
+    private val eventHandlerParam1 = fileDraggedHandler { tfParam1.text = it.first().absolutePath }
     private val centerNode = vbox {
         addClass(Styles.group)
         hbox {
@@ -155,6 +156,7 @@ class ClassicalView : Fragment(messages["classical"]) {
             tfParam1 = textfield {
                 prefWidth = DEFAULT_SPACING_40X
                 promptText = encodeType.paramsHints()[0]
+                onDragEntered = eventHandlerParam1
                 visibleWhen(param1Enabled)
             }
             tfParam2 = textfield {
@@ -274,6 +276,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 encodeType,
                 tfCrackKey.text.takeUnless { it.isNullOrEmpty() } ?: "flag",
                 singleLine.get(),
+                cryptoParams
             )
         } ui
             {
