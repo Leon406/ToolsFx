@@ -1,12 +1,11 @@
 package me.leon.ctf
 
 import java.io.File
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 import me.leon.TEST_CTF_DIR
 import me.leon.classical.*
+import me.leon.encode.base.BASE32_DICT
 import me.leon.encode.base.BASE64_DICT
-import me.leon.encode.random
 import me.leon.ext.*
 import me.leon.ext.crypto.BINARY_REGEX
 import me.leon.ext.crypto.HEX_REGEX
@@ -15,10 +14,8 @@ class CtfTest2 {
     @Test
     fun dnaDecode() {
         File(TEST_CTF_DIR, "dna.txt").readText().dnaDecode().also {
-            println(it)
-            println(it.dna())
+            assertTrue { it.startsWith("DNA is essentially") && it.endsWith("the blueprint.") }
         }
-        println(dnaMap)
     }
 
     @Test
@@ -51,12 +48,7 @@ class CtfTest2 {
 
     @Test
     fun yygqTest() {
-        //        println("好sdf手动蝶阀".yygq()
-        //            .also {
-        //                println(it.yygqDecode())
-        //            })
-
-        println(File(TEST_CTF_DIR, "yygq.txt").readText().yygqDecode())
+        assertEquals("先套娃，alp只在最后一步用，注意数字哦", File(TEST_CTF_DIR, "yygq.txt").readText().yygqDecode())
     }
 
     @Test
@@ -88,7 +80,7 @@ class CtfTest2 {
         assertEquals("10110010", testDataHex.manchesterDiff().manchesterDiffDecode())
 
         "5555555595555A65556AA696AA6666666955".manchesterDecode(isReverse = true).also {
-            println(it)
+            //            println(it)
             assertEquals("fffffed31f645055f9", it.binary2ByteArray().toHex())
         }
     }
@@ -185,22 +177,37 @@ class CtfTest2 {
     @Test
     fun base64Steg() {
 
-        File(TEST_CTF_DIR, "base64steg.txt").readText().base64StegDecrypt().also {
+        File(TEST_CTF_DIR, "base64steg.txt").readText().baseStegDecrypt().also {
             assertEquals("Base_sixty_four_point_five", it)
         }
 
-        File(TEST_CTF_DIR, "base64steg2.txt").readText().base64StegDecrypt().also {
+        File(TEST_CTF_DIR, "base64steg2.txt").readText().baseStegDecrypt().also {
             assertEquals("GXY{fazhazhenhaoting}", it)
         }
     }
 
     @Test
-    fun base64StegEncode() {
+    fun base32Steg() {
 
+        File(TEST_CTF_DIR, "base32steg.txt").readText().baseStegDecrypt(BASE32_DICT).also {
+            assertEquals("flag{afd0e09383751ac6e81bbf71925dfaf8}", it)
+        }
+    }
+
+    @Test
+    fun base64StegEncode() {
         (1..20).forEach {
             val r = BASE64_DICT.random(it)
-            val encrypt = r.base64StegEncrypt(File(TEST_CTF_DIR, "raw.txt").readText())
-            assertEquals(r, encrypt.base64StegDecrypt())
+            val encrypt = r.baseStegEncrypt(File(TEST_CTF_DIR, "raw.txt").readText())
+            assertEquals(r, encrypt.baseStegDecrypt())
+        }
+    }
+    @Test
+    fun base32StegEncode() {
+        (1..20).forEach {
+            val r = BASE64_DICT.random(it)
+            val encrypt = r.baseStegEncrypt(File(TEST_CTF_DIR, "raw.txt").readText(), BASE32_DICT)
+            assertEquals(r, encrypt.baseStegDecrypt(BASE32_DICT))
         }
     }
 }
