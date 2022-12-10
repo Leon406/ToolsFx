@@ -24,9 +24,6 @@ object RsaSolver {
     private val modeDp = listOf("dp", "e", "c", "n")
     private val modeBroadcastN3C3 = listOf("n1", "c1", "n2", "c2", "n3", "c3")
 
-    /** 字母数字 {} -_ */
-    val FLAG_REG = "CTF".toRegex()
-
     /**
      * 1. dp泄露
      * 2. e = 1
