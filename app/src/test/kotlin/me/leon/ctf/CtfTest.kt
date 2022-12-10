@@ -1,6 +1,8 @@
 package me.leon.ctf
 
+import java.io.File
 import kotlin.test.assertEquals
+import me.leon.TEST_CTF_DIR
 import me.leon.classical.*
 import me.leon.encode.base.base100
 import me.leon.encode.base.base100Decode2String
@@ -301,5 +303,8 @@ class CtfTest {
             "你\u200D\u200D\u200C\u200E\u200C\u200E\u200F\u200D\u200B\u200F\u200F\u200B\u200C\u200B\u200C\u200C" +
                 "\u200D\u200E\u200D\u200F\u200F\u200C\u200D\u200F\u200D\u200D\u200D\u200D好ad"
         assertEquals("隐藏信息", encode.zwcUnicodeDecode(dict))
+
+        val data = File(TEST_CTF_DIR, "zwc_unicode2.txt").readText()
+        assertEquals(data.zwcUnicodeDecode(), data.zwcUnicodeDecode("\\u200f\\u202a\\u202c"))
     }
 }
