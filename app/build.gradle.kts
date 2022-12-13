@@ -53,15 +53,27 @@ tasks.register("jarLatest") {
         var versionField = ctClass.getDeclaredField("VERSION")
         var dateField = ctClass.getDeclaredField("BUILD_DATE")
         println("old: version= ${versionField.constantValue} date= ${dateField.constantValue}")
-        modifyField(
-            dateField,
-            "public static final java.lang.String BUILD_DATE =\"${LocalDate.now()}\";"
-        )
-        modifyField(versionField, "public static final java.lang.String VERSION =\"$version\";")
-        dateField = ctClass.getDeclaredField("BUILD_DATE")
-        versionField = ctClass.getDeclaredField("VERSION")
-        println("new: version= ${versionField.constantValue} date= ${dateField.constantValue}")
-        ctClass.writeFile(file.absolutePath)
+        val currentDate = LocalDate.now().toString()
+        var isModified = false
+
+        if (currentDate != dateField.constantValue) {
+            isModified = true
+            modifyField(
+                dateField,
+                "public static final java.lang.String BUILD_DATE =\"$currentDate\";"
+            )
+            dateField = ctClass.getDeclaredField("BUILD_DATE")
+        }
+        if (version != versionField.constantValue) {
+            isModified = true
+            modifyField(versionField, "public static final java.lang.String VERSION =\"$version\";")
+            versionField = ctClass.getDeclaredField("VERSION")
+        }
+
+        println("new: isModify = $isModified version= ${versionField.constantValue} date= ${dateField.constantValue}")
+        if (isModified) {
+            ctClass.writeFile(file.absolutePath)
+        }
     }
 }
 

@@ -20,12 +20,8 @@ const val WIKI = "https://github.com/Leon406/ToolsFx/wiki/Home"
 val APP_ROOT: String = File("").absolutePath
 val DICT_DIR: String = "$APP_ROOT/dict"
 
-/**
- *  auto modified by jar task
- */
+/** auto modified by jar task */
 const val VERSION = "1.15.1.beta"
 
-/**
- *  auto modified by jar task
- */
+/** auto modified by jar task */
 const val BUILD_DATE = "2022-12-06"
