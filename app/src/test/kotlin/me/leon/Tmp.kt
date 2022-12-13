@@ -15,6 +15,7 @@ import me.leon.hash.password.*
 import me.leon.hash.scrypt.SCryptPasswordEncoder
 import org.bouncycastle.crypto.params.Argon2Parameters
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.junit.Ignore
 import org.junit.Test
 
 class Tmp {
@@ -45,6 +46,7 @@ class Tmp {
     }
 
     @Test
+    @Ignore
     fun digest() {
         val salt = "12345678".toByteArray()
         // salt在前面
@@ -92,6 +94,7 @@ class Tmp {
     }
 
     @Test
+    @Ignore
     fun bcrypt() {
         val salt = "123456123456123456123456".toByteArray()
         BCryptPasswordEncoder().apply {
@@ -208,6 +211,7 @@ class Tmp {
     }
 
     @Test
+    @Ignore
     fun assistModify() {
         val buildDir = "build"
         val file = File(buildDir, "classes/kotlin/main")
