@@ -4,6 +4,9 @@ import kotlin.math.ceil
 import kotlin.math.log
 import me.leon.classical.morseDecrypt
 import me.leon.classical.morseEncrypt
+import me.leon.ext.distinct
+import me.leon.ext.sorted
+import me.leon.ext.toUnicodeString
 import me.leon.ext.unicode2String
 
 // ported from https://github.com/yuanfux/zero-width-lib
@@ -96,7 +99,18 @@ fun String.zwcUnicode(show: String, dict: String = ZWC_UNICODE_DICT): String {
 }
 
 fun String.zwcUnicodeDecode(dict: String = ZWC_UNICODE_DICT): String {
-    val encodeMap = dict.unicode2String()
+    var encodeMap = dict.unicode2String()
+    val zwcMapInData =
+        distinct().sorted().filter {
+            val unicode = it.toString().toUnicodeString()
+            unicode.startsWith("\\u20") || unicode == "\\ufeff"
+        }
+
+    println(zwcMapInData.toUnicodeString())
+
+    if (dict == ZWC_UNICODE_DICT && zwcMapInData.any { !encodeMap.contains(it) }) {
+        encodeMap = zwcMapInData
+    }
     val radix = encodeMap.length
     val encodeLength = ceil(log(65_536.0, radix.toDouble())).toInt()
 

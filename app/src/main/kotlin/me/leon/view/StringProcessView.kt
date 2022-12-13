@@ -2,12 +2,16 @@ package me.leon.view
 
 import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.TextArea
+import javafx.scene.control.TextField
 import kotlin.collections.set
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
-import me.leon.ext.fx.*
+import me.leon.ext.fx.clipboardText
+import me.leon.ext.fx.copy
+import me.leon.ext.fx.fileDraggedHandler
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -43,7 +47,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
 
     private val sepratorText
-        get() = tfSeprator.text.unescape().also { println("__${it}___") }
+        get() = tfSeprator.text.unescape()
 
     private val info: String
         get() =
@@ -218,7 +222,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             label(messages["split"])
             tfSplitLength = textfield { promptText = messages["splitLength"] }
             tfSeprator = textfield { promptText = messages["delimiter"] }
-            checkbox(messages["regexp"], splitRegexp) { isVisible = false }
+            checkbox(messages["regexp"], splitRegexp)
             button(messages["run"], imageview(IMG_RUN)) { action { doSplit() } }
         }
 
@@ -282,8 +286,14 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
         measureTimeMillis {
                 outputText =
-                    inputText.asIterable().chunked(splitLengthText).joinToString(sepratorText) {
-                        it.joinToString("")
+                    if (splitRegexp.get()) {
+                        inputText
+                            .split(tfSplitLength.text.unescape().toRegex())
+                            .joinToString(sepratorText)
+                    } else {
+                        inputText.asIterable().chunked(splitLengthText).joinToString(sepratorText) {
+                            it.joinToString("")
+                        }
                     }
             }
             .also {
