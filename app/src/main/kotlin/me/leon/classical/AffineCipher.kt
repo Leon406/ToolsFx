@@ -4,10 +4,7 @@ import me.leon.ext.crypto.TABLE_A_Z
 import me.leon.ext.crypto.TABLE_A_Z_LOWER
 import me.leon.ext.math.circleIndex
 
-/**
- *
- * y = ax + b x = (y- b) / a
- */
+/** y = ax + b x = (y- b) / a */
 fun String.affineEncrypt(factor: Int, bias: Int, table: String = TABLE_A_Z) =
     map {
             when (it) {

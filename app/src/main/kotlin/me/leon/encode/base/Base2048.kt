@@ -4,11 +4,10 @@ import me.leon.ext.toUnicodeChar
 import me.leon.toBigInteger
 
 /**
- *
  * ported from https://github.com/qntm/base2048/blob/main/src/index.js
+ *
  * @author Leon
  * @since 2022-10-31 15:10
- * @email: deadogone@gmail.com
  */
 private const val BITS_PER_CHAR = 11
 private const val BITS_PER_BYTE = 8

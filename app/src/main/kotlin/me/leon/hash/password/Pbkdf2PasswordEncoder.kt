@@ -28,7 +28,6 @@ import me.leon.hash.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm
 
 /**
  * A [PasswordEncoder] implementation that uses PBKDF2 with :
- *
  * * a configurable random salt value length (default is {@value #DEFAULT_SALT_LENGTH} bytes)
  * * a configurable number of iterations (default is {@value #DEFAULT_ITERATIONS})
  * * a configurable output hash width (default is {@value #DEFAULT_HASH_WIDTH} bits)

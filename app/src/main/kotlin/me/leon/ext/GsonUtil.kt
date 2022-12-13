@@ -4,10 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 
-/**
- * <p>description： gson 工具</p> <p>author：Leon</p> <p>date：2019/3/28 0028</p>
- * <p>e-mail：deadogone@gmail.com</p>
- */
 object GsonUtil {
     private val gson = Gson()
 

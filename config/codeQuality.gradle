@@ -28,6 +28,6 @@ spotless {
     kotlin {
         target "src/**/*.kt"
         // https://github.com/facebookincubator/ktfmt/releases
-        ktfmt('0.41').kotlinlangStyle()
+        ktfmt('0.42').kotlinlangStyle()
     }
 }

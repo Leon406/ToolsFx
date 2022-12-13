@@ -8,10 +8,8 @@ import me.leon.music.ncm.NcmDecoder
 import me.leon.music.qmc.qmcDecode
 
 /**
- *
  * @author Leon
  * @since 2022-09-28 14:17
- * @email: deadogone@gmail.com
  */
 @Ignore
 class UnlockTest {

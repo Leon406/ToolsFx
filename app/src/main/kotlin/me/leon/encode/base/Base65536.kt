@@ -6,6 +6,7 @@ import me.leon.ext.toUnicodeChar
 /**
  * ported from https to //github.com/Parkayun/base65536/blob/master/base65536/core.py
  * https://base65536.penclub.club/
+ *
  * @author Leon
  * @since 2022-09-06 16 to 09
  * @email to deadogone@gmail.com

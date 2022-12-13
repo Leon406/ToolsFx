@@ -126,7 +126,6 @@ class RsaTest {
     }
 
     /**
-     *
      * dp dq
      *
      * p q c dp ,dq dp = d % (p-1) dq = d % (q-1)

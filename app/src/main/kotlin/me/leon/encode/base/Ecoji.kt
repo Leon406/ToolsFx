@@ -4,10 +4,8 @@ import me.leon.ext.toUnicodeChar
 import me.leon.toBigInteger
 
 /**
- *
  * @author Leon
  * @since 2022-10-31 10:49
- * @email: deadogone@gmail.com
  */
 private const val PADDING = 9_749
 private const val PADDING_40 = 9_884

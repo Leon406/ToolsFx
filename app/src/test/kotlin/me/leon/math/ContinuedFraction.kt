@@ -5,10 +5,8 @@ import me.leon.*
 import org.junit.Test
 
 /**
- *
  * @author Leon
  * @since 2022-09-21 16:12
- * @email: deadogone@gmail.com
  */
 class ContinuedFraction {
 

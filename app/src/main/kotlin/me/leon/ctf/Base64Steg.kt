@@ -8,9 +8,9 @@ import me.leon.lcm
 
 /**
  * https://blog.csdn.net/Sanctuary1307/article/details/113836907
+ *
  * @author Leon
  * @since 2022-12-06 10:14
- * @email: deadogone@gmail.com
  */
 fun String.baseStegDecrypt(dict: String = BASE64_DICT) =
     lines()

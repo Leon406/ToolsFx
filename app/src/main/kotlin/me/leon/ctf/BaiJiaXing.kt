@@ -1,10 +1,8 @@
 package me.leon.ctf
 
 /**
- *
  * @author Leon
  * @since 2022-12-06 8:49
- * @email: deadogone@gmail.com
  */
 val DICT_BAI_JIA_XING =
     mapOf(

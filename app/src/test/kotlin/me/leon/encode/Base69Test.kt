@@ -6,10 +6,8 @@ import me.leon.encode.base.base69
 import me.leon.encode.base.base69Decode2String
 
 /**
- *
  * @author Leon
  * @since 2022-09-06 15:47
- * @email: deadogone@gmail.com
  */
 class Base69Test {
 

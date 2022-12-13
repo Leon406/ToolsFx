@@ -4,7 +4,6 @@ import java.math.BigInteger
 
 object Kgcd {
     /**
-     *
      * @param a 第一个参数
      * @param b 第二个参数
      * @param x x的值，前两个组成的数组

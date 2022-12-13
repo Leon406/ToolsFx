@@ -5,9 +5,9 @@ import java.io.RandomAccessFile
 
 /**
  * 随机读取流
+ *
  * @author Leon
  * @since 2022-09-29 9:54
- * @email: deadogone@gmail.com
  */
 class RandomAccessStream(val file: File, mode: String = "r") {
 

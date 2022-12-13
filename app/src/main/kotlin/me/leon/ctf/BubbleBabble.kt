@@ -5,8 +5,8 @@ import kotlin.math.ceil
 
 /**
  * @link
- * http://wiki.yak.net/589/Bubble_Babble_Encoding.txthttp://wiki.yak.net/589/Bubble_Babble_Encoding.txt
- * 仅支持 ascii
+ *   http://wiki.yak.net/589/Bubble_Babble_Encoding.txthttp://wiki.yak.net/589/Bubble_Babble_Encoding.txt
+ *   仅支持 ascii
  */
 object BubbleBabble {
     private const val vowels = "aeiouy" // 元音表
@@ -14,6 +14,7 @@ object BubbleBabble {
 
     /**
      * 对原文进行bubble bubble编码
+     *
      * @param str 原文字符串
      * @return 编码字符串
      */
@@ -67,6 +68,7 @@ object BubbleBabble {
 
     /**
      * 对bubble bubble 编码的字符串进行解码
+     *
      * @param str 编码字符串
      * @return 原始数据
      */

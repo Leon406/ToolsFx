@@ -5,9 +5,9 @@ import me.leon.ext.toBinaryString
 
 /**
  * https://pshihn.github.io/base69/
+ *
  * @author Leon
  * @since 2022-09-06 14:09
- * @email: deadogone@gmail.com
  */
 const val BASE69_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/-*<>|"
 

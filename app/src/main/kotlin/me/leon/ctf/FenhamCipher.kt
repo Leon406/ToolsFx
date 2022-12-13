@@ -1,10 +1,8 @@
 package me.leon.ctf
 
 /**
- *
  * @author Leon
  * @since 2022-10-21 14:08
- * @email: deadogone@gmail.com
  */
 
 /** A-Z */

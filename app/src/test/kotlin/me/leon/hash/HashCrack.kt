@@ -1,10 +1,8 @@
 package me.leon.hash
 
 /**
- *
  * @author Leon
  * @since 2022-11-07 13:46
- * @email: deadogone@gmail.com
  */
 const val D_DIGIT_DICT = "0123456789"
 const val L_LOWER_LETTER_DICT = "abcdefghijklmnopqrstuvwxyz"

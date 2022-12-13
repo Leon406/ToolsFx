@@ -174,11 +174,7 @@ class AsymmetricTest {
         println(changeC1C3C2ToC1C2C3(c1c3c2.hex2ByteArray()).toHex())
     }
 
-    /**
-     * bc加解密使用旧标c1||c2||c3，此方法在加密后调用，将结果转化为c1||c3||c2
-     * @param c1c2c3
-     * @return
-     */
+    /** bc加解密使用旧标c1||c2||c3，此方法在加密后调用，将结果转化为c1||c3||c2 */
     private fun changeC1C2C3ToC1C3C2(c1c2c3: ByteArray): ByteArray {
         val c1Len = 65
         val c3Len = 32
@@ -189,11 +185,7 @@ class AsymmetricTest {
         return result
     }
 
-    /**
-     * bc加解密使用旧标c1||c3||c2，此方法在解密前调用，将密文转化为c1||c2||c3再去解密
-     * @param c1c3c2
-     * @return
-     */
+    /** bc加解密使用旧标c1||c3||c2，此方法在解密前调用，将密文转化为c1||c2||c3再去解密 */
     private fun changeC1C3C2ToC1C2C3(c1c3c2: ByteArray): ByteArray {
         val c1Len = 65
         val c3Len = 32

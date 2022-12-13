@@ -4,10 +4,8 @@ import kotlin.test.*
 import me.leon.encode.base.*
 
 /**
- *
  * @author Leon
  * @since 2022-10-31 10:35
- * @email: deadogone@gmail.com
  */
 class NewDecoderTest {
 

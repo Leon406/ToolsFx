@@ -4,11 +4,10 @@ import me.leon.classical.DEFAULT_MORSE
 import me.leon.classical.DEFAULT_MORSE_DECODE
 
 /**
- *
  * ported from https://programtalk.com/vs2/?source=python/5968/pycipher/pycipher/fracmorse.py
+ *
  * @author Leon
  * @since 2022-10-21 15:07
- * @email: deadogone@gmail.com
  */
 val FRAC_DICT =
     listOf(

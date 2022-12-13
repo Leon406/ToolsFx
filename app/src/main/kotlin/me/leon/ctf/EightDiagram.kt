@@ -3,10 +3,8 @@ package me.leon.ctf
 import me.leon.encode.base.*
 
 /**
- *
  * @author Leon
  * @since 2022-10-13 10:07
- * @email: deadogone@gmail.com
  */
 val EIGHT_MAP =
     listOf(

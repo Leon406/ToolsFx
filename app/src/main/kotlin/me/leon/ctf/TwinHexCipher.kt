@@ -7,7 +7,6 @@ import me.leon.toBigInteger
  * @see { https://www.calcresult.com/misc/cyphers/twin-hex.html }
  * @author Leon
  * @since 2022-10-28 16:32
- * @email: deadogone@gmail.com
  */
 val cypherBase: List<String> = run {
     val list = mutableListOf<String>()

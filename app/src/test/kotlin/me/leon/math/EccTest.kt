@@ -8,9 +8,9 @@ import kotlin.test.assertTrue
 /**
  * https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc
  * https://andrea.corbellini.name/
+ *
  * @author Leon
  * @since 2022-11-22 17:22
- * @email: deadogone@gmail.com
  */
 class EccTest {
     // y2 ≡ x3 + 7 (mod 17)

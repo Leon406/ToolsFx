@@ -1636,7 +1636,7 @@ class BCrypt {
          * @param data the string to extract the data from
          * @param offp a "pointer" (as a one-entry array) to the current offset into data
          * @param signp a "pointer" (as a one-entry array) to the cumulative flag for non-benign
-         * sign extension
+         *   sign extension
          * @return correct and buggy next word of material from data as int[2]
          */
         private fun streamtowords(data: ByteArray, offp: IntArray, signp: IntArray): IntArray {

@@ -3,10 +3,8 @@ package me.leon.ext.crypto
 import me.leon.ctf.ZWC_UNICODE_DICT
 
 /**
- *
  * @author Leon
  * @since 2022-10-08 15:23
- * @email: deadogone@gmail.com
  */
 const val HINT = "hint"
 const val CHECK = "check"

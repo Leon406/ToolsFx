@@ -4,10 +4,8 @@ import kotlin.test.Test
 import me.leon.toolsfx.plugin.CoordinatorTransform
 
 /**
- *
  * @author Leon
  * @since 2022-10-21 17:22
- * @email: deadogone@gmail.com
  */
 class TransformTest {
     @Test

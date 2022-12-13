@@ -8,10 +8,8 @@ import me.leon.hash
 import org.junit.Test
 
 /**
- *
  * @author Leon
  * @since 2022-08-26 9:33
- * @email: deadogone@gmail.com
  */
 class HashCrackTest {
     val hash = "c22a563acc2a587afbfaaaa6d67bc6e628872b00bd7e998873881f7c6fdc62fc"
