@@ -38,25 +38,21 @@ fun modifyField(field: javassist.CtField, src: String) {
     ctClass.addField(javassist.CtField.make(src, ctClass))
 }
 
-task("jarLatest") {
+tasks.register("jarLatest") {
     dependsOn(tasks.withType<KotlinCompile>())
     doLast {
         val file = File(buildDir, "classes/kotlin/main")
-        val clazz = File(file.absolutePath, "me/leon/ConfigKt.class")
-
-        println("file $clazz  ${clazz.exists()}")
-
         val pool = ClassPool.getDefault()
         pool.insertClassPath(file.absolutePath)
+
         val ctClass = pool.get("me.leon.ConfigKt")
         if (ctClass.isFrozen) {
             ctClass.defrost()
         }
 
         var versionField = ctClass.getDeclaredField("VERSION")
-        println(versionField.constantValue)
         var dateField = ctClass.getDeclaredField("BUILD_DATE")
-        println(dateField.constantValue)
+        println("old: version= ${versionField.constantValue} date= ${dateField.constantValue}")
         modifyField(
             dateField,
             "public static final java.lang.String BUILD_DATE =\"${LocalDate.now()}\";"
@@ -64,8 +60,7 @@ task("jarLatest") {
         modifyField(versionField, "public static final java.lang.String VERSION =\"$version\";")
         dateField = ctClass.getDeclaredField("BUILD_DATE")
         versionField = ctClass.getDeclaredField("VERSION")
-        println(dateField.constantValue)
-        println(versionField.constantValue)
+        println("new: version= ${versionField.constantValue} date= ${dateField.constantValue}")
         ctClass.writeFile(file.absolutePath)
     }
 }
