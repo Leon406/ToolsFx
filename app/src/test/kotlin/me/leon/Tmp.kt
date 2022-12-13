@@ -1,7 +1,10 @@
 package me.leon
 
+import java.io.File
 import java.math.BigInteger
 import java.security.Security
+import javassist.ClassPool
+import javassist.CtField
 import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -185,5 +188,57 @@ class Tmp {
             .map { it.key to it.value.size }
             .fold(BigInteger.ONE) { acc, pair -> acc * pair.first.eulerPhi(pair.second) }
             .also { println(it) }
+    }
+
+    @Test
+    fun assist() {
+        val buildDir = "build"
+        val file = File(buildDir, "classes/kotlin/main")
+        println(file.absolutePath)
+        val clazz = File(file.absolutePath, "me/leon/BuildConfig.class")
+        clazz.parentFile.mkdirs()
+
+        println("file $clazz  ${clazz.exists()}")
+        val pool = ClassPool.getDefault()
+
+        val ctClass = pool.makeClass("me.leon.BuildConfig")
+        ctClass.addField(CtField.make("int HEIGHT = 6;", ctClass))
+        ctClass.addField(CtField.make("public static int HEIGHT2 = 6;", ctClass))
+        ctClass.writeFile(file.absolutePath)
+    }
+
+    @Test
+    fun assistModify() {
+        val buildDir = "build"
+        val file = File(buildDir, "classes/kotlin/main")
+        val clazz = File(file.absolutePath, "me/leon/ConfigKt.class")
+
+        println("file $clazz  ${clazz.exists()}")
+        val pool = ClassPool.getDefault()
+        val ctClass = pool.get("me.leon.ConfigKt")
+        var versionField = ctClass.getDeclaredField("VERSION")
+        println(versionField.constantValue)
+        var dateField = ctClass.getDeclaredField("BUILD_DATE")
+        println(dateField.constantValue)
+        modifyField(
+            dateField,
+            "public static final java.lang.String BUILD_DATE =\"" + "2022" + "\";"
+        )
+        modifyField(
+            versionField,
+            "public static final java.lang.String VERSION =\"" + "1.15.6" + "\";"
+        )
+        dateField = ctClass.getDeclaredField("BUILD_DATE")
+        versionField = ctClass.getDeclaredField("VERSION")
+        println(dateField.constantValue)
+        println(versionField.constantValue)
+        ctClass.writeFile(file.absolutePath)
+    }
+
+    private fun modifyField(field: CtField, src: String) {
+        println(src)
+        val ctClass = field.declaringClass
+        ctClass.removeField(field)
+        ctClass.addField(CtField.make(src, ctClass))
     }
 }

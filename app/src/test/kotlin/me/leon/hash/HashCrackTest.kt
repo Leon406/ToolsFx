@@ -93,9 +93,9 @@ class HashCrackTest {
     @Test
     fun parseMask() {
         val customDict = "leon"
+
         var dicts = "?d?uabc?*?q".parseMask(customDict)
         println(dicts)
-
         dicts = "abc?d?uabc?*?q".parseMask(customDict)
         println(dicts)
     }
