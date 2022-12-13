@@ -1,18 +1,20 @@
 package me.leon.hash
 
 import kotlin.system.measureTimeMillis
+import kotlin.test.Test
 import kotlin.test.assertEquals
-import me.leon.encode.base.*
+import me.leon.encode.base.BASE58_DICT
+import me.leon.encode.base.BASE92_DICT
+import me.leon.ext.crypto.*
 import me.leon.ext.random
 import me.leon.hash
-import org.junit.Test
 
 /**
  * @author Leon
  * @since 2022-08-26 9:33
  */
 class HashCrackTest {
-    val hash = "c22a563acc2a587afbfaaaa6d67bc6e628872b00bd7e998873881f7c6fdc62fc"
+    private val hash = "c22a563acc2a587afbfaaaa6d67bc6e628872b00bd7e998873881f7c6fdc62fc"
 
     @Test
     fun hash() {
@@ -28,13 +30,17 @@ class HashCrackTest {
     fun dict() {
         val hash = "0175501585710a89f5a60dc9ed2f88d7"
         val dict = "0123456789"
-        val mask = "1997????"
+        val mask = "?*?*?*?*0727"
+        val r = "19970727"
         println(BASE58_DICT.sliceCount(Runtime.getRuntime().availableProcessors()))
-        measureTimeMillis { mask.maskCrack(dict) { it.hash() == hash }.also { println(it) } }
+        measureTimeMillis { "?d?d?d?d0727".mask { it.hash() == hash }.also { assertEquals(r, it) } }
+            .also { println(it) }
+
+        measureTimeMillis { "1997?d?d?d?d".mask { it.hash() == hash }.also { assertEquals(r, it) } }
             .also { println(it) }
 
         measureTimeMillis {
-                mask.maskCrackParallel(dict) { it.hash() == hash }.also { println(it) }
+                mask.maskParallel(dict) { it.hash() == hash }.also { assertEquals(r, it) }
             }
             .also { println(it) }
     }
@@ -43,39 +49,55 @@ class HashCrackTest {
     fun dict22() {
         val hash = "04402679e7f2933b60a30113cbb32e39b31eb437a8350813cfe6abb063dd78de"
         val dict = "0123456789"
-        val mask = "flag?????"
+        val mask = "flag?*?*?*?*?*"
+        val r = "flag34651"
 
         val cond = { s: String -> s.hash("SHA-256") == hash }
 
-        measureTimeMillis { mask.maskCrack(dict, cond).also { println(it) } }.also { println(it) }
-
-        measureTimeMillis { mask.maskCrackParallel(dict, cond).also { println(it) } }
+        measureTimeMillis { "flag?d?d?d?d?d".mask(condition = cond).also { assertEquals(r, it) } }
+            .also { println(it) }
+        measureTimeMillis { mask.mask(dict, cond).also { assertEquals(r, it) } }
+            .also { println(it) }
+        measureTimeMillis { mask.maskParallel(dict, cond).also { assertEquals(r, it) } }
             .also { println(it) }
     }
 
     @Test
     fun dict2() {
         val dict = "0123456789"
-        val mask = "861709??????6"
+        val mask = "861709?*?*?*?*?*?*6"
         val cond = { s: String -> s.hash("SHA-256") == hash }
-        measureTimeMillis { mask.maskCrack(dict, cond).also { println(it) } }.also { println(it) }
+        measureTimeMillis { "861709?d?d?d?d?d?d6".mask(condition = cond).also { println(it) } }
+            .also { println(it) }
+        measureTimeMillis { mask.mask(dict, cond).also { println(it) } }.also { println(it) }
 
-        measureTimeMillis { mask.maskCrackParallel(dict, cond).also { println(it) } }
+        measureTimeMillis { mask.maskParallel(dict, cond).also { println(it) } }
             .also { println(it) }
     }
 
     @Test
     fun passMatch() {
-        val dict = BASE64_DICT
-        val pass = dict.random(3) + "1"
+        val dict = "leonshi"
+        val pass = "b" + dict.random(3) + "4"
         println(pass)
-        val mask = "???1"
-        measureTimeMillis { mask.maskCrack(dict) { it == pass }.also { assertEquals(pass, it) } }
+        val mask = "b?*?*?*?d"
+        measureTimeMillis { mask.mask(dict) { it == pass }.also { assertEquals(pass, it) } }
             .also { println(it) }
-        measureTimeMillis {
-                mask.maskCrackParallel(dict) { it == pass }.also { assertEquals(pass, it) }
-            }
+        measureTimeMillis { mask.maskParallel(dict) { it == pass }.also { assertEquals(pass, it) } }
             .also { println(it) }
+
+        measureTimeMillis { mask.mask(dict) { it == pass }.also { assertEquals(pass, it) } }
+            .also { println(it) }
+    }
+
+    @Test
+    fun parseMask() {
+        val customDict = "leon"
+        var dicts = "?d?uabc?*?q".parseMask(customDict)
+        println(dicts)
+
+        dicts = "abc?d?uabc?*?q".parseMask(customDict)
+        println(dicts)
     }
 
     @Test

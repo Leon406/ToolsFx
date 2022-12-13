@@ -46,6 +46,9 @@ class DigestController : Controller() {
 
     fun passwordHashingCrack(method: String, hashed: String) =
         catch({ "digest crack error: $it" }) {
+            require(method.passwordHashingType()!!.hash(byteArrayOf()).length == hashed.length) {
+                "Wrong Method!!! "
+            }
             dicts.find { pw -> method.passwordHashingType()!!.check(pw, hashed) }.orEmpty()
         }
 
@@ -76,5 +79,18 @@ class DigestController : Controller() {
             val lower = data.lowercase()
             require(digest(method, "", "raw").length == data.length) { "Wrong Method!!! " }
             dicts.findParallel("") { digest(method, it, "raw") == lower }
+        }
+
+    fun maskCrack(method: String, hashed: String, mask: String, dict: String): String =
+        catch({ "digest crack error: $it" }) {
+            val lower = hashed.lowercase()
+            require(digest(method, "", "raw").length == hashed.length) { "Wrong Method!!! " }
+            val cond =
+                if (method.startsWith("SpringSecurity")) {
+                    { pw: String -> method.passwordHashingType()!!.check(pw, lower) }
+                } else {
+                    { pw: String -> digest(method, pw, "raw") == lower }
+                }
+            mask.maskParallel(dict, cond).orEmpty()
         }
 }

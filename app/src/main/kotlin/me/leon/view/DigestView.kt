@@ -25,6 +25,7 @@ class DigestView : Fragment(messages["hash"]) {
     private val fileMode = SimpleBooleanProperty(false)
     private val processing = SimpleBooleanProperty(false)
     private val singleLine = SimpleBooleanProperty(false)
+    private val maskMode = SimpleBooleanProperty(false)
     private val enableFileMode = SimpleBooleanProperty(true)
     private val selectedAlg = SimpleStringProperty(ALGOS_HASH.keys.first())
     private val selectedBits = SimpleStringProperty(ALGOS_HASH.values.first().first())
@@ -33,6 +34,8 @@ class DigestView : Fragment(messages["hash"]) {
     private var labelInfo: Label by singleAssign()
     private var taOutput: TextArea by singleAssign()
     private var tfCount: TextField by singleAssign()
+    private var tfMask: TextField by singleAssign()
+    private var tfCustomDict: TextField by singleAssign()
     private var cbBits: ComboBox<String> by singleAssign()
 
     private var inputText: String
@@ -160,6 +163,27 @@ class DigestView : Fragment(messages["hash"]) {
             button("cmd5", imageview("/img/browser.png")) {
                 action { "https://www.cmd5.com/".openInBrowser() }
             }
+            checkbox("mask", maskMode)
+        }
+        hbox {
+            visibleWhen(maskMode)
+            addClass(Styles.left)
+            paddingLeft = DEFAULT_SPACING
+            label("mask:")
+            tfMask =
+                textfield("?d?l?u?c??") {
+                    prefWidth = DEFAULT_SPACING_32X
+                    tooltip(
+                        "like hash-cat,?d ?l ?u ?a ?s, and more: ?? for ?, ?* for custom dict,?c for letter"
+                    )
+                }
+
+            label("custom dict:")
+            tfCustomDict =
+                textfield("0123456789") {
+                    prefWidth = DEFAULT_SPACING_32X
+                    tooltip("for mask ?*")
+                }
         }
         hbox {
             label(messages["output"])
@@ -189,15 +213,26 @@ class DigestView : Fragment(messages["hash"]) {
         runAsync {
             processing.value = true
             startTime = System.currentTimeMillis()
-            if (method.startsWith("SpringSecurity")) {
-                controller.passwordHashingCrack(method, inputText)
-            } else {
-                controller.crack(
+            if (maskMode.get()) {
+                controller.maskCrack(
                     method,
                     inputText
                         .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
-                        .encodeTo("hex")
+                        .encodeTo("hex"),
+                    tfMask.text,
+                    tfCustomDict.text
                 )
+            } else {
+                if (method.startsWith("SpringSecurity")) {
+                    controller.passwordHashingCrack(method, inputText)
+                } else {
+                    controller.crack(
+                        method,
+                        inputText
+                            .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
+                            .encodeTo("hex")
+                    )
+                }
             }
         } ui
             {
