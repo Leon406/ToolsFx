@@ -21,3 +21,8 @@ val BASE_ENCODE_EXCLUDED_DICT_LIST =
         EncodeType.BASE32768,
         EncodeType.BASE65536,
     )
+val build: String
+    get() = "2022/12/06"
+
+val appVersion: String
+    get() = "1.15.1.beta"

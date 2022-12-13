@@ -32,12 +32,6 @@ application {
     mainClass.set("me.leon.MainKt")
 }
 
-fun modifyField(field: javassist.CtField, src: String) {
-    val ctClass = field.declaringClass
-    ctClass.removeField(field)
-    ctClass.addField(javassist.CtField.make(src, ctClass))
-}
-
 tasks.register("jarLatest") {
     dependsOn(tasks.withType<KotlinCompile>())
     doLast {
@@ -45,35 +39,18 @@ tasks.register("jarLatest") {
         val pool = ClassPool.getDefault()
         pool.insertClassPath(file.absolutePath)
 
-        val ctClass = pool.get("me.leon.ConfigKt")
+        val ctClass = pool.get("me.leon.ConstantsKt")
         if (ctClass.isFrozen) {
             ctClass.defrost()
         }
 
-        var versionField = ctClass.getDeclaredField("VERSION")
-        var dateField = ctClass.getDeclaredField("BUILD_DATE")
-        println("old: version= ${versionField.constantValue} date= ${dateField.constantValue}")
         val currentDate = LocalDate.now().toString()
-        var isModified = false
+        val dateField = ctClass.getDeclaredMethod("getBuild")
+        val versionField = ctClass.getDeclaredMethod("getAppVersion")
+        versionField.setBody("{ return \"$version\";}")
+        dateField.setBody("{ return \"$currentDate \";}")
 
-        if (currentDate != dateField.constantValue) {
-            isModified = true
-            modifyField(
-                dateField,
-                "public static final java.lang.String BUILD_DATE =\"$currentDate\";"
-            )
-            dateField = ctClass.getDeclaredField("BUILD_DATE")
-        }
-        if (version != versionField.constantValue) {
-            isModified = true
-            modifyField(versionField, "public static final java.lang.String VERSION =\"$version\";")
-            versionField = ctClass.getDeclaredField("VERSION")
-        }
-
-        println("new: isModify = $isModified version= ${versionField.constantValue} date= ${dateField.constantValue}")
-        if (isModified) {
-            ctClass.writeFile(file.absolutePath)
-        }
+        ctClass.writeFile(file.absolutePath)
     }
 }
 

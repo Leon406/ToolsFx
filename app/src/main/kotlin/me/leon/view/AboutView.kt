@@ -24,8 +24,9 @@ class AboutView : Fragment(messages["about"]) {
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
         imageview("/img/tb.png")
-        text("${messages["ver"]}: v$VERSION") { font = Font.font(18.0) }
-        text("Build: $BUILD_DATE")
+        // 避免字符串模板编译优化成常量,导致无法动态修改
+        text("${messages["ver"]}: v$appVersion") { font = Font.font(18.0) }
+        text("Build: $build")
         text("JRE: ${System.getProperty("java.runtime.version")}")
         text("VM: ${System.getProperty("java.vm.name")}")
 
@@ -51,7 +52,7 @@ class AboutView : Fragment(messages["about"]) {
         txtLatestVersion = text()
         hyperlink("蓝奏云下载 密码52pj").action { LAN_ZOU_DOWNLOAD_URL.openInBrowser() }
         hyperlink("插件下载 密码ax63").action { LAN_ZOU_PLUGIN_DOWNLOAD_URL.openInBrowser() }
-        if (VERSION.contains("beta")) {
+        if (appVersion.contains("beta")) {
             checkUpdateDev(!Prefs.isIgnoreUpdate)
         } else {
             checkUpdate(!Prefs.isIgnoreUpdate)
@@ -70,7 +71,7 @@ class AboutView : Fragment(messages["about"]) {
                 txtLatestVersion.text =
                     if (it.isEmpty()) {
                         messages["unknown"]
-                    } else if (VERSION != releaseInfo.version) {
+                    } else if (appVersion != releaseInfo.version) {
                         "${messages["latestVer"]} v${releaseInfo.version}".also {
                             find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
                         }
@@ -92,7 +93,7 @@ class AboutView : Fragment(messages["about"]) {
                 txtLatestVersion.text =
                     if (it.isEmpty()) {
                         messages["unknown"]
-                    } else if (!VERSION.contains("beta") && VERSION != releaseInfo.version) {
+                    } else if (!appVersion.contains("beta") && appVersion != releaseInfo.version) {
                         "${messages["latestVer"]} v${releaseInfo.version}".also {
                             find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
                         }

@@ -3,7 +3,7 @@ package me.leon.view
 import java.security.Security
 import java.util.ServiceLoader
 import kotlin.reflect.KClass
-import me.leon.BUILD_DATE
+import me.leon.*
 import me.leon.ToolsApp.Companion.isEnableBigInt
 import me.leon.ToolsApp.Companion.isEnableClassical
 import me.leon.ToolsApp.Companion.isEnableInternalWebview
@@ -12,7 +12,6 @@ import me.leon.ToolsApp.Companion.isEnablePBE
 import me.leon.ToolsApp.Companion.isEnableQrcode
 import me.leon.ToolsApp.Companion.isEnableSignature
 import me.leon.ToolsApp.Companion.isEnableSymmetricStream
-import me.leon.VERSION
 import me.leon.ext.fx.Prefs
 import me.leon.toolsfx.plugin.PluginFragment
 import me.leon.toolsfx.plugin.PluginView
@@ -20,7 +19,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class Home : View("${messages["appName"]} v$VERSION build $BUILD_DATE") {
+class Home : View("${messages["appName"]} v$appVersion build $build") {
     private val views: MutableList<KClass<out Fragment>> = mutableListOf()
 
     init {
