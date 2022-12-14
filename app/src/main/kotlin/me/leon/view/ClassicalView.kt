@@ -73,7 +73,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 action { taInput.text = clipboardText() }
             }
             button(graphic = imageview("/img/more.png")) {
-                action { find<CtfImageEncoderFragment>().openWindow() }
+                action { find<SymbolSubstitutionFragment>().openWindow() }
             }
 
             checkbox(messages["singleLine"], singleLine)

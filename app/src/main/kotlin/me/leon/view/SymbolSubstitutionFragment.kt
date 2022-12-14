@@ -11,7 +11,7 @@ import me.leon.*
 import me.leon.ext.math.circleIndex
 import tornadofx.*
 
-class CtfImageEncoderFragment : View("CTF Image Encoder") {
+class SymbolSubstitutionFragment : View("Symbol Substitution") {
 
     private val selectedItem = SimpleStringProperty(imageList.first())
     private var iv: ImageView by singleAssign()
@@ -55,7 +55,7 @@ class CtfImageEncoderFragment : View("CTF Image Encoder") {
         private val imageList = mutableListOf<String>()
 
         init {
-            val uri = CtfImageEncoderFragment::class.java.getResource(CTF_IMG_DIR).toURI()
+            val uri = SymbolSubstitutionFragment::class.java.getResource(CTF_IMG_DIR).toURI()
             val dirPath =
                 try {
                     Paths.get(uri)
