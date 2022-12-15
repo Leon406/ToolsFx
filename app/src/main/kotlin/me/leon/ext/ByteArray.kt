@@ -68,3 +68,18 @@ fun ByteArray.unpack(): Int {
     reverse()
     return fold(0) { acc, byte -> acc shl 8 or (byte.toInt() and 0xff) }
 }
+
+fun Int.pack(size: Int = 4): ByteArray {
+    val bytes = ByteArray(size)
+    for (index in bytes.indices) {
+        bytes[index] = ((this shr 8 * (bytes.lastIndex - index)) and 0xff).toByte()
+    }
+    return bytes
+}
+
+fun ByteArray.setByteArray(start: Int, bytes: ByteArray) {
+    val end = (start + bytes.size).coerceAtMost(size)
+    for (i in start until end) {
+        this[i] = bytes[i - start]
+    }
+}

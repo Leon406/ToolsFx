@@ -28,3 +28,4 @@ include(
 "plugin-location",
 )
 include("benchmark")
+include("plugin-image")

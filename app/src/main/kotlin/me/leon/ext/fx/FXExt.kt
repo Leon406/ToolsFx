@@ -12,6 +12,7 @@ import javafx.scene.input.*
 import javafx.stage.FileChooser
 import javafx.stage.Window
 import javax.imageio.ImageIO
+import me.leon.encode.base.base64Decode
 
 fun String.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putString(this@copy) })
@@ -49,3 +50,7 @@ fun fileDraggedHandler(block: (List<File>) -> Unit) =
             block.invoke(it.dragboard.files)
         }
     }
+
+fun String.base64Image() = Image(base64Decode().inputStream())
+
+fun ByteArray.toImage() = Image(inputStream())
