@@ -16,7 +16,7 @@ class ToolsApp : App(Home::class, Styles::class) {
     init {
         // for text i18n
         FX.locale = if (Prefs.language == "zh") Locale.CHINESE else Locale.ENGLISH
-        addStageIcon(Image(resources.stream("/img/tb.png")))
+        addStageIcon(Image(resources.stream(IMG_ICON)))
         initConfig()
         fixSsl()
     }

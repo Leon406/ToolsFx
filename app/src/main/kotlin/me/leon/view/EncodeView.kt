@@ -99,11 +99,11 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             label(messages["input"])
             addClass(Styles.left)
             spacing = DEFAULT_SPACING
-            button(graphic = imageview("/img/openwindow.png")) {
+            button(graphic = imageview(IMG_NEW_WINDOW)) {
                 tooltip(messages["newWindow"])
                 action { find<EncodeView>().openWindow() }
             }
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
@@ -210,7 +210,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 enableWhen(!processing)
                 action { run() }
             }
-            button("crack", imageview("/img/crack.png")) {
+            button("crack", imageview(IMG_CRACK)) {
                 enableWhen(!processing)
                 action { crack() }
             }

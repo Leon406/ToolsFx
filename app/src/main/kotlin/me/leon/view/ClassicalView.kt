@@ -64,11 +64,11 @@ class ClassicalView : Fragment(messages["classical"]) {
             spacing = DEFAULT_SPACING
             label(messages["input"])
             addClass(Styles.left)
-            button(graphic = imageview("/img/openwindow.png")) {
+            button(graphic = imageview(IMG_NEW_WINDOW)) {
                 tooltip(messages["newWindow"])
                 action { find<ClassicalView>().openWindow() }
             }
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
@@ -184,7 +184,7 @@ class ClassicalView : Fragment(messages["classical"]) {
             button(messages["codeFrequency"]) { action { "https://quipqiup.com/".openInBrowser() } }
 
             button("wiki") { action { WIKI_CTF.openInBrowser() } }
-            button("crack", imageview("/img/crack.png")) {
+            button("crack", imageview(IMG_CRACK)) {
                 enableWhen(!processing)
                 visibleWhen(hasCrack)
                 action { crack() }

@@ -106,7 +106,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                     inputEncode = newValue.cast<RadioButton>().text
                 }
             }
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { inputText = clipboardText() }
             }
@@ -121,7 +121,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
 
         hbox {
             label(messages["key"])
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action {
                     keyText = clipboardText()

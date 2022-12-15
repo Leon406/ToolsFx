@@ -84,7 +84,7 @@ class DigestView : Fragment(messages["hash"]) {
                 }
             }
 
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { inputText = clipboardText() }
             }
@@ -153,7 +153,7 @@ class DigestView : Fragment(messages["hash"]) {
                 enableWhen(!processing)
                 action { doHash() }
             }
-            button("crack", imageview("/img/crack.png")) {
+            button("crack", imageview(IMG_CRACK)) {
                 enableWhen(!processing)
                 action { crack() }
                 tooltip("default top1000 password, you can add your dict file at /dict") {

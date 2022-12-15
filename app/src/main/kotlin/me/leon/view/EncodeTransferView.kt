@@ -51,7 +51,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                 label(messages["input"])
                 combobox(selectedSrcCharset, CHARSETS) { cellFormat { text = it } }
                 spacing = DEFAULT_SPACING
-                button(graphic = imageview("/img/openwindow.png")) {
+                button(graphic = imageview(IMG_NEW_WINDOW)) {
                     tooltip(messages["newWindow"])
                     action { find<EncodeTransferView>().openWindow() }
                 }

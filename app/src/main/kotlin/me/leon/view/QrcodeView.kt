@@ -105,7 +105,7 @@ class QrcodeView : Fragment("Qrcode") {
                 tooltip(messages["copy"])
                 action { ta.text.copy().also { if (it) primaryStage.showToast("复制成功") } }
             }
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { ta.text = clipboardText() }
             }

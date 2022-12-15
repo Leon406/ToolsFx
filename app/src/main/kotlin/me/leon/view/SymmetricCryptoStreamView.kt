@@ -92,7 +92,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                 }
             }
 
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }

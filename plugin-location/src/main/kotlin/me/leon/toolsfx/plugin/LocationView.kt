@@ -46,7 +46,7 @@ class LocationView : PluginFragment("LocationView") {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             label(messages["input"])
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }

@@ -83,7 +83,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         hbox {
             label(messages["input"])
             spacing = DEFAULT_SPACING
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action {
                     inputText = clipboardText()

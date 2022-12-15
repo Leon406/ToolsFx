@@ -23,7 +23,7 @@ class AboutView : Fragment(messages["about"]) {
         alignment = Pos.CENTER
         spacing = DEFAULT_SPACING
         paddingAll = DEFAULT_SPACING
-        imageview("/img/tb.png")
+        imageview(IMG_ICON)
         // 避免字符串模板编译优化成常量,导致无法动态修改
         text("${messages["ver"]}: v$appVersion") { font = Font.font(18.0) }
         text("Build: $build")

@@ -106,7 +106,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                     promptText = "input your url"
                     onDragEntered = curlFileHandler
                 }
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { resetUi(clipboardText()) }
             }

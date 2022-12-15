@@ -135,7 +135,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                 }
             }
 
-            button(graphic = imageview("/img/import.png")) {
+            button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }

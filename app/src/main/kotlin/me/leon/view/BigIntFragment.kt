@@ -1,5 +1,6 @@
 package me.leon.view
 
+import java.math.BigInteger
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
@@ -201,7 +202,7 @@ class BigIntFragment : Fragment("BigInt") {
     private fun base64ToNumber() {
         outputText =
             outputText.lineAction2String {
-                it.base64Decode().toBigInteger().toString(selectedRadix.get().toInt())
+                BigInteger(1, it.base64Decode()).toString(selectedRadix.get().toInt())
             }
     }
 
