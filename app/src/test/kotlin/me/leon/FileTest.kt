@@ -28,9 +28,8 @@ class FileTest {
                 if (dstFile.exists().not()) {
                     println("copy: ${dstFile.absolutePath}")
                     //                it.copyTo(dstFile)
-                    if (dstFile.parentFile.exists().not()) {
-                        dstFile.parentFile.mkdirs()
-                    }
+                    dstFile.parentFile.mkdirs()
+
                     val renameState = it.renameTo(dstFile)
                     if (!renameState) {
                         println("rename failed: ${dstFile.absolutePath}")

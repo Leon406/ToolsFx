@@ -291,17 +291,18 @@ download boost https://leon.lanzoui.com/b0d9av2kb code：52pj plugin download ht
 When Application is running ,it will generate ToolsFx.properties automatically , just modify the value. Below are the
 details.
 
-| key                     | value                                                      |
-| ----------------------- |------------------------------------------------------------|
-| isEnableClassical       | Classical module switch,default is false                   |
-| isEnablePBE             | PBE module switch,default is false                         |
-| isEnableSignature       | Signature module switch,default is  true                   |
-| isEnableMac             | MAC module switch,default is  true                         |
-| isEnableSymmetricStream | Symmetric( Stream) module switch,default is  true          |
-| isEnableQrcode          | Qrcode module switch,default is  true                      |
-| isEnableInternalWebview | Internal Browser switch,default is false                   |
+| key                     | value                                                |
+| ----------------------- |------------------------------------------------------|
+| isEnableClassical       | Classical module switch,default is false             |
+| isEnablePBE             | PBE module switch,default is false                   |
+| isEnableSignature       | Signature module switch,default is  true             |
+| isEnableMac             | MAC module switch,default is  true                   |
+| isEnableSymmetricStream | Symmetric( Stream) module switch,default is  true    |
+| isEnableQrcode          | Qrcode module switch,default is  true                |
+| isEnableInternalWebview | Internal Browser switch,default is false             |
 | offlineMode             | offline mode, hide online functions,default is false |
-| extUrls                 | Internal Browser favourite urls, spit with comma           |
+| uiScale                 | Application UI scale rate, default is -1             |
+| extUrls                 | Internal Browser favourite urls, spit with comma     |
 
 ## [PLUGIN](README-plugin.md)
 

@@ -323,17 +323,18 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 启动时,默认会生成配置文件ToolsFx.properties, 修改对应的值即可
 
-| key                     | value                   |
-|-------------------------|-------------------------|
-| isEnableClassical       | 古典密码学启用开关,默认false       |
-| isEnablePBE             | PBE启用开关,默认false         |
-| isEnableSignature       | 签名启用开关,默认true           |
-| isEnableMac             | MAC启用开关,默认true          |
-| isEnableSymmetricStream | 对称加密(stream)启用开关,默认true |
-| isEnableQrcode          | 二维码启用开关,默认true          |
-| isEnableInternalWebview | 内置浏览器启用开关,默认false       |
-| offlineMode             | 离线模式,不显示联网的功能,默认false   |
-| extUrls                 | 内置浏览器默认收藏链接,多个用英文逗号分隔   |
+| key                     | value                                     |
+| ----------------------- | ----------------------------------------- |
+| isEnableClassical       | 古典密码学启用开关,默认false              |
+| isEnablePBE             | PBE启用开关,默认false                     |
+| isEnableSignature       | 签名启用开关,默认true                     |
+| isEnableMac             | MAC启用开关,默认true                      |
+| isEnableSymmetricStream | 对称加密(stream)启用开关,默认true         |
+| isEnableQrcode          | 二维码启用开关,默认true                   |
+| isEnableInternalWebview | 内置浏览器启用开关,默认false              |
+| offlineMode             | 离线模式,不显示联网的功能,默认false       |
+| uiScale                 | 页面缩放比例,默认-1 不缩放                |
+| extUrls                 | 内置浏览器默认收藏链接,多个用英文逗号分隔 |
 
 ## [插件](README-plugin-zh.md)
 
