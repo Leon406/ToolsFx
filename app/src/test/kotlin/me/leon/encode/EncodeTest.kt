@@ -31,19 +31,6 @@ class EncodeTest {
         assertEquals(base64, controller.encode2String(raw, EncodeType.BASE64))
         assertEquals(raw, controller.decode2String(base64, EncodeType.BASE64))
 
-        val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
-        assertEquals(base32, controller.encode2String(raw, EncodeType.BASE32))
-        assertEquals(base32, raw.radixNEncode(BASE32_DICT))
-        assertEquals(raw, controller.decode2String(base32, EncodeType.BASE32))
-        assertEquals(raw, base32.radixNDecode2String(BASE32_DICT))
-
-        val base16 =
-            "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
-        assertEquals(base16, controller.encode2String(raw, EncodeType.BASE16))
-        assertEquals(base16, raw.radixNEncode(BASE16_DICT))
-        assertEquals(raw, controller.decode2String(base16, EncodeType.BASE16))
-        assertEquals(raw, base16.radixNDecode2String(BASE16_DICT))
-
         val binary =
             "1110010110111100100000001110010110001111100100011110010110110111101001011110010110000" +
                 "101101101111110100110011011100001101110010110010000100010000010000001100010011110010010000" +
@@ -432,5 +419,26 @@ class EncodeTest {
         println("0b110001".mixDecode2String())
         println("0o61".mixDecode2String())
         println("0x31".mixDecode2String())
+    }
+
+    @Test
+    fun radixNTest() {
+        val base32 = "4W6IBZMPSHS3PJPFQW36TG4G4WIIQIDCPEQGYZLPNY2DANSAGUZHA33KNFSS4Y3O"
+        assertEquals(base32, controller.encode2String(raw, EncodeType.BASE32))
+        assertEquals(base32, raw.radixNEncode(BASE32_DICT))
+        assertEquals(raw, controller.decode2String(base32, EncodeType.BASE32))
+        assertEquals(raw, base32.radixNDecode2String(BASE32_DICT))
+
+        val base16 =
+            "E5BC80E58F91E5B7A5E585B7E99B86E59088206279206C656F6E343036403532706F6A69652E636E"
+        assertEquals(base16, controller.encode2String(raw, EncodeType.BASE16))
+        assertEquals(base16, raw.radixNEncode(BASE16_DICT))
+        assertEquals(raw, controller.decode2String(base16, EncodeType.BASE16))
+        assertEquals(raw, base16.radixNDecode2String(BASE16_DICT))
+        val base37 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
+
+        println(controller.encode2String("37123123", EncodeType.DECIMAL_RADIX_N, base37))
+        assertEquals("JTWZO", "37123123".toBigInteger().radixNEncode(base37))
+        assertEquals("37123123", "JTWZO".radixNDecode2DecimalString(base37.map { it.toString() }))
     }
 }

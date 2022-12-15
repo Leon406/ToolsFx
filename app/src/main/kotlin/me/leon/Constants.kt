@@ -1,7 +1,5 @@
 package me.leon
 
-import me.leon.ext.crypto.EncodeType
-
 const val UTF8 = "UTF-8"
 val CHARSETS = listOf("UTF-8", "ISO8859-1", "GBK", "GB2312", "GB18030")
 
@@ -14,13 +12,6 @@ val REG_NON_PRINTABLE = "[\u0000-\u0009\u000B\u000C\u000E-\u001F]|解码错误:|
 val REG_NUMBER = "\\d+".toRegex()
 val REG_CRACK_HEADER = "\\d+ [\\w)]+(-->\\d+ )?".toRegex()
 
-val BASE_ENCODE_EXCLUDED_DICT_LIST =
-    arrayOf(
-        EncodeType.BASE100,
-        EncodeType.BASE2048,
-        EncodeType.BASE32768,
-        EncodeType.BASE65536,
-    )
 val build: String
     get() = "2022/12/06"
 

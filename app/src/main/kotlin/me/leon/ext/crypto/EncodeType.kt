@@ -6,6 +6,7 @@ import java.nio.charset.Charset
 import me.leon.encode.*
 import me.leon.encode.base.*
 import me.leon.ext.*
+import me.leon.toBigInteger
 
 enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode {
     HEX("hex") {
@@ -319,5 +320,12 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.base32768()
+    },
+    DECIMAL_RADIX_N("radix") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.radixNDecode2Decimal(dict.map { it.toString() })
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.decodeToString().toBigInteger().radixNEncode(dict)
     },
 }

@@ -73,10 +73,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         srcEncodeType = new.cast<RadioButton>().text.encodeType()
-                        enableDict.value =
-                            srcEncodeType.type.contains("base") &&
-                                !BASE_ENCODE_EXCLUDED_DICT_LIST.contains(srcEncodeType) ||
-                                srcEncodeType == EncodeType.RADIX_N
+                        enableDict.value = srcEncodeType.showDict()
                         tfCustomDict.text = srcEncodeType.defaultDict
                     }
                 }

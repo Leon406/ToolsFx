@@ -20,35 +20,6 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private var startTime = 0L
     private var encodeType = EncodeType.BASE64
     private var isEncode = true
-    private val excludeEncode =
-        arrayOf(
-            EncodeType.RADIX8,
-            EncodeType.BASE16,
-            EncodeType.OCTAL,
-            //            EncodeType.Decimal,
-            EncodeType.RADIX9,
-            EncodeType.RADIX_N,
-            EncodeType.RADIX10,
-            EncodeType.RADIX32,
-            EncodeType.RADIX64,
-            EncodeType.UTF7,
-            EncodeType.UTF7_ALL,
-            EncodeType.UTF7_EXT,
-            EncodeType.BASE69,
-            EncodeType.BASE65536,
-            EncodeType.ECOJI,
-            EncodeType.BASE2048,
-            EncodeType.BASE32768,
-        )
-    private val encodeTypeWithSpace =
-        arrayOf(
-            EncodeType.UUENCODE,
-            EncodeType.XXENCODE,
-            EncodeType.QUOTE_PRINTABLE,
-            EncodeType.PUNY_CODE,
-            EncodeType.BASE69,
-            EncodeType.BASE65536,
-        )
 
     override val closeable = SimpleBooleanProperty(false)
     private val singleLine = SimpleBooleanProperty(false)
@@ -159,12 +130,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         encodeType = new.cast<RadioButton>().text.encodeType()
-                        enableDict.value =
-                            encodeType.type.contains("base") &&
-                                !BASE_ENCODE_EXCLUDED_DICT_LIST.contains(encodeType) ||
-                                encodeType == EncodeType.RADIX_N
+                        enableDict.value = encodeType.showDict()
                         tfCustomDict.text = encodeType.defaultDict
-                        val isIgnore = encodeType !in encodeTypeWithSpace
+                        val isIgnore = encodeType !in ENCODE_TYPE_WITH_SPACE
                         decodeIgnoreSpace.set(isIgnore)
                         println("${decodeIgnoreSpace.get()} $isIgnore")
                         if (isEncode) run()
@@ -315,7 +283,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         runAsync {
             while (true) {
                 EncodeType.values()
-                    .filterNot { it in excludeEncode }
+                    .filterNot { it in CRACK_EXCLUDE_ENCODE }
                     .asSequence()
                     .map { encode ->
                         if (DEBUG) println("map $encode ${System.currentTimeMillis() - startTime}")

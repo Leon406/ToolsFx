@@ -40,6 +40,8 @@ fun ByteArray.radixNEncode(dict: List<String>): String {
     return result
 }
 
+fun BigInteger.radixNEncode(dict: String) = toByteArray().radixNEncode(dict)
+
 fun String.radixNDecode(dict: String = BASE58_DICT): ByteArray {
     return if (matches("^[$dict]+$".toRegex())) {
         radixNDecode(dict.asIterable().map { it.toString() }.toList())
@@ -78,6 +80,24 @@ fun String.radixNDecode(dict: List<String>): ByteArray {
         decoded.size - leadingZeros
     )
     return decoded
+}
+
+fun String.radixNDecode2Decimal(dict: List<String>): ByteArray {
+    return radixNDecode2DecimalString(dict).toByteArray()
+}
+
+fun String.radixNDecode2DecimalString(dict: List<String>): String {
+    if (isEmpty()) return ""
+    val radix = dict.size
+    var intData = BigInteger.ZERO
+    val base = radix.toBigInteger()
+    val values = dictValueParse(dict)
+    for (s in values) {
+        val digit = dict.indexOf(s)
+        require(digit != -1) { String.format("Invalid  character `%s` at position", s) }
+        intData = intData.multiply(base).add(BigInteger.valueOf(digit.toLong()))
+    }
+    return intData.toString()
 }
 
 fun String.radixNDecode2String(dict: String = BASE58_DICT) = String(radixNDecode(dict))
