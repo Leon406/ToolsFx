@@ -2,6 +2,7 @@ package me.leon.toolsfx.plugin.ext
 
 import me.leon.encode.base.base64
 import me.leon.ext.fx.base64Image
+import me.leon.ext.toFile
 
 enum class ImageServiceType(val type: String) : ImageService {
     FIX_PNG("fix png") {
@@ -27,6 +28,10 @@ enum class ImageServiceType(val type: String) : ImageService {
     RGB_IMAGE("rgb image") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
             raw.properString(isFile).rgb()
+    },
+    GIF_SPLIT("gif split") {
+        override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
+            raw.toFile().splitGif()
     },
 }
 

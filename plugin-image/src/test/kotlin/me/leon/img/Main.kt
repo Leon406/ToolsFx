@@ -33,7 +33,7 @@ class Main : Application() {
 
         //        val image = File(IMG_DIR,"qr01").readText().binaryImage(false)
         //        val image = File(IMG_DIR, "bin2").readText().binaryImage()
-        val image = File("E:\\download\\360\\1-raw.png").fixPng().toImage()
+        val image = File("E:\\download\\360\\1-raw.png").readBytes().fixPng().toImage()
         //        val image = File(IMG_DIR, "base64").readText().base64Image()
 
         //        val text = File(IMG_DIR, "rgb.txt").readText()
