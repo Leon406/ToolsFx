@@ -2,6 +2,7 @@ package me.leon.ctf.rsa
 
 import java.math.BigInteger
 import kotlin.math.ln
+import kotlin.math.pow
 import me.leon.*
 import me.leon.ext.findParallel
 
@@ -9,6 +10,7 @@ object RsaSolver {
 
     private val modeNECP = listOf("n", "e", "c", "p")
     private val modeNEC = listOf("n", "e", "c")
+    private val modeDEC_P_NEXT_Q = listOf("d", "e", "c", "nbits")
     private val modeN2EC = listOf("n1", "n2", "e", "c")
     private val modeNCD = listOf("n", "c", "d")
     private val modePQREC = listOf("p", "q", "r", "e", "c")
@@ -48,6 +50,7 @@ object RsaSolver {
                     }
                 )
             params.containKeys(modeDpDq) -> solveDpDq(params)
+            params.containKeys(modeDEC_P_NEXT_Q) -> solveDEC(params)
             params.containKeys(modePQREC) || params.containKeys(modePQRnEC) -> solvePQREC(params)
             params.containKeys(modeNCD) -> solveNCD(params)
             params.containKeys(modeN2E2C2) -> solveN2E2C2(params)
@@ -66,6 +69,32 @@ object RsaSolver {
             params.containKeys(modeEC) && params["e"] == BigInteger.ONE -> params["c"]!!.n2s()
             else -> error("wrong parameters!!!")
         }
+
+    private fun solveDEC(params: MutableMap<String, BigInteger>): String {
+        println("solve D E C nbits")
+        val d = requireNotNull(params["d"])
+        val e = requireNotNull(params["e"])
+        val nLen = requireNotNull(params["nbits"]).toInt()
+        val kPhi = e * d - BigInteger.ONE
+        val kBits = kPhi.bitLength() - nLen
+
+        val kStart = 2.0.pow(kBits.toDouble() - 1.0).toInt()
+        val kEnd = 2.0.pow(kBits.toDouble()).toInt()
+        for (k in kEnd downTo kStart) {
+            if (kPhi % k.toBigInteger() == BigInteger.ZERO) {
+                val phi = kPhi / k.toBigInteger()
+                val p = phi.root(2).first().preProbablePrime()
+                val q = p.nextProbablePrime()
+                if (p.phi(q) == phi) {
+                    println("got p=$p q =$q")
+                    params["p"] = p
+                    params["q"] = q
+                    return solvePQEC(params)
+                }
+            }
+        }
+        return ""
+    }
 
     private fun solvePQREC(params: MutableMap<String, BigInteger>): String {
         println("solve P Q R E C")

@@ -1,16 +1,19 @@
 package me.leon
 
 import java.math.BigInteger
+import java.math.BigInteger.ONE
+import java.math.BigInteger.TWO
 import java.util.*
+import me.leon.ctf.rsa.THREE
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 
 // this = p
-fun BigInteger.phi(q: BigInteger) = (this - BigInteger.ONE) * (q - BigInteger.ONE)
+fun BigInteger.phi(q: BigInteger) = (this - ONE) * (q - ONE)
 
 fun BigInteger.lcm(other: BigInteger) = this * other / gcd(other)
 
-fun BigInteger.mutualPrime(other: BigInteger) = gcd(other) == BigInteger.ONE
+fun BigInteger.mutualPrime(other: BigInteger) = gcd(other) == ONE
 
 // this = e
 fun BigInteger.invert(phi: BigInteger): BigInteger = modInverse(phi)
@@ -45,8 +48,7 @@ fun List<BigInteger>.product(): BigInteger = reduce { acc, int -> acc * int }
 fun List<BigInteger>.propN(n: BigInteger) =
     filter { it < BigInteger.ZERO }.fold(n) { acc, bigInteger -> acc / bigInteger.abs() }
 
-fun BigInteger.eulerPhi(n: Int) =
-    if (n == 1) minus(BigInteger.ONE) else minus(BigInteger.ONE) * pow(n - 1)
+fun BigInteger.eulerPhi(n: Int) = if (n == 1) minus(ONE) else minus(ONE) * pow(n - 1)
 
 fun getPrimeFromFactorDb(digit: BigInteger) = getPrimeFromFactorDb(digit.toString())
 
@@ -68,10 +70,10 @@ fun BigInteger.root(n: Int = 2): Array<BigInteger> {
 
     val sig = this.signum()
     val v = this.abs()
-    var high = BigInteger.ONE
+    var high = ONE
     while (high.pow(n) <= v) high = high.shiftLeft(1)
     var low = high.shiftRight(1)
-    var mid = BigInteger.ONE
+    var mid = ONE
     var midCount = 0
     while (low < high) {
         mid = (low + high).shiftRight(1)
@@ -97,8 +99,8 @@ fun BigInteger.continuedFraction(another: BigInteger): MutableList<BigInteger> {
 
 /** 渐进分数线 */
 fun List<BigInteger>.convergent(): MutableList<Pair<BigInteger, BigInteger>> {
-    var (pbe, paf) = BigInteger.ZERO to BigInteger.ONE
-    var (qbe, qaf) = BigInteger.ONE to BigInteger.ZERO
+    var (pbe, paf) = BigInteger.ZERO to ONE
+    var (qbe, qaf) = ONE to BigInteger.ZERO
     val convergent = mutableListOf<Pair<BigInteger, BigInteger>>()
     for (int in this) {
         pbe = paf.also { paf = int * paf + pbe }
@@ -117,8 +119,8 @@ fun BigInteger.wiener(n: BigInteger): BigInteger? {
         return wienerPQ
     }
     println("wiener attack slow")
-    var q0 = BigInteger.ONE
-    val m = BigInteger.TWO
+    var q0 = ONE
+    val m = TWO
     val c1 = m.modPow(this, n)
     val convergent = this.continuedFraction(n).convergent()
     for ((_, q1) in convergent) {
@@ -153,7 +155,7 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
     // d[0] = 1
     val q0 = x / y
     val n0 = q0
-    val d0 = BigInteger.ONE
+    val d0 = ONE
     var temp = x
     x = y
     y = temp.add(y.multiply(q0).negate())
@@ -163,7 +165,7 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
     // n[1] = q[0] * q[1] + 1
     // d[1] = q[1]
     var qI = x / y
-    val n1 = q0 * qI + BigInteger.ONE
+    val n1 = q0 * qI + ONE
     val d1 = qI
     // i = 2
     var dI2 = d0
@@ -211,7 +213,7 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
         // phi(n) = (edg) / k
         val phiN = this * guessDg / guessK
         // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
-        val pPlusQDiv2 = (n - phiN + BigInteger.ONE) / BigInteger.TWO
+        val pPlusQDiv2 = (n - phiN + ONE) / TWO
         val subtract = pPlusQDiv2.pow(2).subtract(n)
         if (subtract < BigInteger.ZERO) break
         val root = subtract.root()
@@ -234,17 +236,55 @@ fun BigInteger.wienerPQ(n: BigInteger): BigInteger? {
 /** 乘法逆元 (n * m) % p == 1. m = n^-1 =n % p */
 fun BigInteger.multiplyInverse(modular: BigInteger): BigInteger {
     val (gcd, x, _) = gcdExt(modular)
-    require(gcd == BigInteger.ONE) { "has no multiplicative inverse" }
+    require(gcd == ONE) { "has no multiplicative inverse" }
     return x.mod(modular)
 }
 
 private val RANDOM = Random()
 
-fun BigInteger.random(from: BigInteger = BigInteger.ONE): BigInteger {
+fun BigInteger.random(from: BigInteger = ONE): BigInteger {
     val bits = bitLength()
     var r = BigInteger(bits, RANDOM)
     while (r < from || r > this) {
         r = BigInteger(bits, RANDOM)
     }
     return r
+}
+
+val FOUR = 4.toBigInteger()
+val FIVE = 5.toBigInteger()
+val SIX = 6.toBigInteger()
+val SEVEN = 7.toBigInteger()
+val EIGHT = 8.toBigInteger()
+val MAP =
+    mapOf(
+        THREE to TWO,
+        FOUR to THREE,
+        FIVE to THREE,
+        SIX to FIVE,
+        SEVEN to FIVE,
+    )
+
+/** todo performance */
+fun BigInteger.preProbablePrime(): BigInteger {
+    if (this < EIGHT) return MAP[this]!!
+    var pre: BigInteger
+    val nn = (this / SIX) * SIX
+    if (this - nn <= ONE) {
+        pre = nn - ONE
+        if (pre.isProbablePrime(100)) {
+            return pre
+        }
+        pre -= FOUR
+    } else {
+        pre = nn + ONE
+    }
+    while (true) {
+        if (pre.isProbablePrime(100)) break
+        pre -= TWO
+        if (pre.isProbablePrime(100)) break
+        pre -= FOUR
+    }
+
+    return pre
 }
