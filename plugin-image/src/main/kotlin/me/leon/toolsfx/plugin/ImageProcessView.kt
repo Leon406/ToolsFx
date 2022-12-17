@@ -1,5 +1,6 @@
 package me.leon.toolsfx.plugin
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.RadioButton
@@ -7,14 +8,21 @@ import javafx.scene.control.TextArea
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import me.leon.*
-import me.leon.ext.*
-import me.leon.ext.fx.*
-import me.leon.toolsfx.plugin.ext.*
+import me.leon.ext.DEFAULT_SPACING
+import me.leon.ext.cast
+import me.leon.ext.fx.clipboardText
+import me.leon.ext.fx.copy
+import me.leon.ext.fx.fileDraggedHandler
+import me.leon.ext.properText
+import me.leon.ext.toFile
+import me.leon.toolsfx.plugin.ext.ImageServiceType
+import me.leon.toolsfx.plugin.ext.locationServiceType
+import me.leon.toolsfx.plugin.ext.serviceTypeMap
 import tornadofx.*
 
 class ImageProcessView : PluginFragment("ImageProcessView") {
-    override val version = "v1.0.0"
-    override val date: String = "2022-12-15"
+    override val version = "v1.1.0"
+    override val date: String = "2022-12-17"
     override val author = "Leon406"
     override val description = "图片模块"
     private var taInput: TextArea by singleAssign()
@@ -113,6 +121,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                     taOutput.text = ""
                 }
             }
+            button("stegSolve") { action { startStegSolve() } }
         }
 
         stackpane {
@@ -140,5 +149,29 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                     is Image -> img.image = it
                 }
             }
+    }
+
+    companion object {
+        private val javaHome = System.getProperty("java.home")
+        private val userDir = System.getProperty("user.dir")
+        private var command: Array<String>? = null
+
+        init {
+            userDir
+                .toFile()
+                .walk()
+                .find { it.extension == "jar" && it.name.startsWith("StegSolve") }
+                ?.run {
+                    command =
+                        arrayOf(
+                            "$javaHome${File.separator}bin${File.separator}java",
+                            "-jar",
+                            "-Dsun.java2d.uiScale=${ToolsApp.scale}",
+                            absolutePath
+                        )
+                }
+        }
+
+        private fun startStegSolve() = Runtime.getRuntime().exec(command)
     }
 }

@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.0.0"
+version = "1.1.0"
 
 plugins {
     `java-library`
@@ -18,6 +18,7 @@ javafx {
 }
 
 dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to arrayOf("*.jar"))))
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
