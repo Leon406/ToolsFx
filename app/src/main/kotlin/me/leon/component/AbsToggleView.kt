@@ -7,7 +7,10 @@ import javafx.scene.control.RadioButton
 import javafx.scene.control.ToggleGroup
 import me.leon.Styles
 import me.leon.ext.cast
-import tornadofx.*
+import tornadofx.View
+import tornadofx.addClass
+import tornadofx.radiobutton
+import tornadofx.visibleWhen
 
 abstract class AbsToggleView(
     val data: List<String> = listOf("raw", "hex", "base64"),
@@ -15,7 +18,9 @@ abstract class AbsToggleView(
     private val visible: BooleanProperty = SimpleBooleanProperty(true)
 ) : View() {
 
-    private val tg: ToggleGroup = ToggleGroup()
+    val tg: ToggleGroup = ToggleGroup()
+
+    var selectCallback: SelectCallback? = null
 
     val selectText
         get() = data[selectedIndex]
@@ -30,8 +35,16 @@ abstract class AbsToggleView(
         data.forEachIndexed { index, s ->
             radiobutton(s, tg) { isSelected = index == selectedIndex }
         }
-        tg.selectedToggleProperty().addListener { _, _, new ->
+        tg.selectedToggleProperty().addListener { _, old, new ->
             selectedIndex = data.indexOf(new.cast<RadioButton>().text)
+            selectCallback?.onChange(old.cast<RadioButton>().text, new.cast<RadioButton>().text)
         }
+    }
+    fun callback(callback: SelectCallback) {
+        selectCallback = callback
+    }
+
+    fun interface SelectCallback {
+        fun onChange(old: String, new: String)
     }
 }

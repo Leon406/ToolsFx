@@ -77,6 +77,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private val processing = SimpleBooleanProperty(false)
     private val singleLine = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(true)
+    private val autoKeyIv = SimpleBooleanProperty(false)
     private val enableAEAD = SimpleBooleanProperty(false)
     private val enableModAndPadding = SimpleBooleanProperty(true)
     private val selectedAlg = SimpleStringProperty(algs[2])
@@ -89,7 +90,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
     private var tgOutput: ToggleGroup by singleAssign()
     private var taOutput: TextArea by singleAssign()
     private var labelInfo: Label by singleAssign()
-    private val keyIvInputView = KeyIvInputView(enableIv, enableAEAD)
+    private val keyIvInputView = KeyIvInputView(enableIv, enableAEAD, autoKeyIv)
 
     private val inputText: String
         get() = taInput.text
@@ -203,6 +204,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             }
             checkbox(messages["fileMode"], fileProperty)
             checkbox(messages["singleLine"], singleLine)
+            checkbox("auto", autoKeyIv)
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doCrypto() }

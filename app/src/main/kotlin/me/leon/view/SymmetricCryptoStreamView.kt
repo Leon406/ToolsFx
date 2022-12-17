@@ -42,6 +42,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     override val closeable = SimpleBooleanProperty(false)
     private val fileProperty = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)
+    private val autoKeyIv = SimpleBooleanProperty(false)
     private val processing = SimpleBooleanProperty(false)
     private val selectedAlg = SimpleStringProperty(algs.first())
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
@@ -52,7 +53,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private lateinit var tgOutput: ToggleGroup
     private lateinit var taOutput: TextArea
     private lateinit var infoLabel: Label
-    private val keyIvInputView = KeyIvInputView(enableIv)
+    private val keyIvInputView = KeyIvInputView(enableIv, autoConvert = autoKeyIv)
 
     private val inputText: String
         get() = taInput.text
@@ -128,6 +129,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             }
             checkbox(messages["fileMode"], fileProperty)
             checkbox(messages["singleLine"], singleLine)
+            checkbox("auto", autoKeyIv)
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doCrypto() }
