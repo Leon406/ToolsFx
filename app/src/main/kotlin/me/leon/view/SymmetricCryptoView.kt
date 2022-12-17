@@ -43,6 +43,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             "CAST6",
             "ARIA",
             "Skipjack",
+            "Tnepres",
             "Serpent",
             "DSTU7624",
             "Shacal2",
