@@ -5,6 +5,8 @@ import java.security.SecureRandom
 import me.leon.*
 import me.leon.ctf.rsa.factor
 
+private const val FACTOR_UPPER = 120_000
+
 enum class Calculator(val algo: String) : ICalculator {
     PLUS("P+Q") {
         override fun calculate(ints: List<BigInteger>): String {
@@ -165,17 +167,14 @@ enum class Calculator(val algo: String) : ICalculator {
     FACTORIAL("P!") {
         override fun calculate(ints: List<BigInteger>): String {
             val intNum = ints[0].toInt()
-            if (intNum <= 1 || intNum > 120_000) error("range: 1<=P<=120000")
-            return (1..intNum)
-                .map { it.toBigInteger() }
-                .reduce { acc, i -> acc.multiply(i) }
-                .toString()
+            require(intNum in 1..FACTOR_UPPER) { "range: 1<=P<=120000" }
+            return intNum.product().toString()
         }
     },
     FACTORIAL_PRIME("P#") {
         override fun calculate(ints: List<BigInteger>): String {
             val intNum = ints[0].toInt()
-            if (intNum <= 1 || intNum > 120_000) error("range: 1<=P<=120000")
+            require(intNum in 1..FACTOR_UPPER) { "range: 1<=P<=120000" }
             return (1..intNum)
                 .map { it.toBigInteger() }
                 .filter { it.isProbablePrime(100) }
@@ -183,4 +182,26 @@ enum class Calculator(val algo: String) : ICalculator {
                 .toString()
         }
     },
+    PERMUTATION("A(P,Q)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            val p = ints[0].toInt()
+            val q = ints[1].toInt()
+            require(p in 1..FACTOR_UPPER) { "range: 1<=P<=120000" }
+            require(q <= p) { "q must <= p" }
+            val proper = if (p == q) BigInteger.ONE else (p - q).product()
+            return (p.product() / proper).toString()
+        }
+    },
+    COMBINATION("C(P,Q)") {
+        override fun calculate(ints: List<BigInteger>): String {
+            val p = ints[0].toInt()
+            val q = ints[1].toInt()
+            require(p in 1..FACTOR_UPPER) { "range: 1<=P<=120000" }
+            require(q <= p) { "q must <= p" }
+            val proper = if (p == q) BigInteger.ONE else (p - q).product()
+            return (p.product() / (q.product() * proper)).toString()
+        }
+    },
 }
+
+fun Int.product() = (1..this).map { it.toBigInteger() }.reduce { acc, i -> acc.multiply(i) }
