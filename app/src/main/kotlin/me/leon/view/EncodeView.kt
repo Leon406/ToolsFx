@@ -8,7 +8,9 @@ import me.leon.*
 import me.leon.controller.EncodeController
 import me.leon.encode.base.base64
 import me.leon.ext.*
-import me.leon.ext.crypto.*
+import me.leon.ext.crypto.EncodeType
+import me.leon.ext.crypto.encodeType
+import me.leon.ext.crypto.encodeTypeMap
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -46,7 +48,9 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
     private val inputText: String
         get() =
             taInput.text.takeIf {
-                isEncode || encodeType in arrayOf(EncodeType.DECIMAL, EncodeType.OCTAL)
+                isEncode ||
+                    encodeType in arrayOf(EncodeType.DECIMAL, EncodeType.OCTAL) ||
+                    fileMode.get()
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
                     ?: taInput.text.stripAllSpace()
@@ -233,7 +237,10 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             startTime = System.currentTimeMillis()
 
             runCatching {
-                    if (times > 40) kotlin.error("times should be not large than 40")
+                    require(times < 40) { "times should be not large than 40" }
+                    if (fileMode.get()) {
+                        require(times == 1) { "file mode only support 1 time" }
+                    }
                     repeat(times) {
                         result =
                             if (isEncode) {
@@ -242,7 +249,8 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     encodeType,
                                     tfCustomDict.text,
                                     selectedCharset.get(),
-                                    singleLine.get()
+                                    singleLine.get(),
+                                    fileMode.get()
                                 )
                             } else {
                                 controller.decode2String(
@@ -250,7 +258,8 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     encodeType,
                                     tfCustomDict.text,
                                     selectedCharset.get(),
-                                    singleLine.get()
+                                    singleLine.get(),
+                                    fileMode.get()
                                 )
                             }
                     }
