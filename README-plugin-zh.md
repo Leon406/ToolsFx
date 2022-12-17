@@ -144,4 +144,14 @@ classloader目前遇到插件resource资源无法加载的问题,临时只能将
 
 ### Compression (压缩)
 
+### 图片模块
+
+- png 宽高修复
+- 二进制01转图片
+- 二进制01转二维码
+- rgb色值 转图片
+- base64转图片
+- 图片转base64
+- gif 拆分
+
 插件下载 https://leon.lanzoub.com/b0d9w4cof 提取码：ax63

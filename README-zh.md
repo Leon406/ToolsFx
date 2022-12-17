@@ -271,14 +271,7 @@
 bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 
-
 ## TODO
-
-### 图片模块
-
-- 二进制01转图片
-- 二进制01转二维码
-- base64转图片
 
 ### misc模块
 

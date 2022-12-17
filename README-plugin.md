@@ -61,6 +61,16 @@ see **plugin-sample**  or  *plugin-apipost*
 
 ### Compression (压缩)
 
+### Image Process
+
+- png fix
+- binary 01 to image
+- binary 01 to qrcode
+- rgb to image
+- base64 to image
+- image to base64
+- gif split
+
 plugin download https://leon.lanzoub.com/b0d9w4cof 提取码：ax63
 
   
