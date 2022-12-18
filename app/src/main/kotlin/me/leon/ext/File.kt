@@ -109,13 +109,14 @@ fun File.toBase64() = readBytes().base64()
 /** 读取文件内容,限制大小 */
 fun File.properText(limit: Int = 128 * 1024, hints: String = "") =
     if (length() <= limit) {
-        if (realExtension() in unsupportedExts) {
-            "unsupported file extension"
+        val ext = realExtension()
+        if (ext in unsupportedExts) {
+            "unsupported extension $ext"
         } else {
             readText()
         }
     } else {
-        "not support file larger than ${hints.ifEmpty { "128KB" }}"
+        "not support file larger than ${hints.ifEmpty { "128KB" }}, extension ${realExtension()}"
     }
 
 fun String.toFile() = File(this)
