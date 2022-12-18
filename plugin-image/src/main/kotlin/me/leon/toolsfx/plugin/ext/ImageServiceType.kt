@@ -33,6 +33,10 @@ enum class ImageServiceType(val type: String) : ImageService {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
             raw.toFile().splitGif()
     },
+    WECHAT("wechat image") {
+        override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
+            raw.toFile().weChatDecrypt()
+    },
 }
 
 val serviceTypeMap = ImageServiceType.values().associateBy { it.type }
