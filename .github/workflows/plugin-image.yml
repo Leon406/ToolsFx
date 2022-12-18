@@ -1,0 +1,54 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build plugin-image
+
+# Controls when the action will run. 
+on:
+  push:
+    paths:
+      - 'plugin-image/**'
+  # Triggers the workflow on push or pull request events but only for the master branch
+  #  schedule:
+  #    # 定时任务
+  #    - cron: '0 0-16/8 */7 * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - run: sudo timedatectl set-timezone Asia/Shanghai
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      # 运行 JDK 配置  https://github.com/marketplace/actions/setup-java-jdk
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+      # Runs a single command using the runners shell
+      - run: chmod  777 ./gradlew
+      # Gradle 缓存配置 https://docs.github.com/cn/actions/using-workflows/caching-dependencies-to-speed-up-workflows
+      # GitHub 将删除 7 天内未被访问的任何缓存条目。 可以存储的缓存数没有限制，但大小10 GB
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+         path: |
+           ~/.gradle
+           ~/.m2
+         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+         restore-keys: ${{ runner.os }}-gradle
+      - name: Run plugin-image jar
+        run: ./gradlew  :plugin-image:jar
+      - uses: actions/upload-artifact@v3
+        with:
+          path: |
+            plugin-image/build/libs
+
