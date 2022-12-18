@@ -62,10 +62,12 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
 
     private val info
         get() =
-            "Cipher: $cipher   charset: ${selectedCharset.get()}  file mode: ${fileProperty.get()} " +
-                "${messages["inputLength"]}: ${inputText.length}  " +
-                "${messages["outputLength"]}: ${outputText.length}  " +
-                "cost: $timeConsumption ms"
+            "Cipher: $cipher " +
+                "Key: ${keyIvInputView.keyByteArray.size} B  " +
+                "Charset: ${selectedCharset.get()} " +
+                "File: ${fileProperty.get()} " +
+                "${messages["inputLength"]}/${messages["outputLength"]}: ${inputText.length}/${outputText.length}  " +
+                "Cost: $timeConsumption ms"
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -97,6 +99,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
+            checkbox(messages["fileMode"], fileProperty)
         }
         taInput = textarea {
             promptText = messages["inputHint"]
@@ -127,9 +130,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                     doCrypto()
                 }
             }
-            checkbox(messages["fileMode"], fileProperty)
             checkbox(messages["singleLine"], singleLine)
-            checkbox("auto", autoKeyIv)
+            checkbox("autoKeyIv", autoKeyIv)
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doCrypto() }
