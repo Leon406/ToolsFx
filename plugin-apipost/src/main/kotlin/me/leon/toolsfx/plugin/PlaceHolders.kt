@@ -5,6 +5,7 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import me.leon.encode.base.base64
 import me.leon.ext.toBinaryString
+import me.leon.ext.toFile
 import me.leon.hash
 
 const val TIMESTAMP = "{{timestamp}}"
@@ -36,6 +37,7 @@ fun String.methodCall(args: String): String {
         "md5" -> args.hash(this)
         "digest" -> args.substringAfter(",").hash(args.substringBefore(","))
         "base64" -> args.base64()
+        "base64File" -> args.toFile().readBytes().base64()
         "binary" -> args.toBinaryString()
         "uppercase" -> args.uppercase()
         "lowercase" -> args.lowercase()
