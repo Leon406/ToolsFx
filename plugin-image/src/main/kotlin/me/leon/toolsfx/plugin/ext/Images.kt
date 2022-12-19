@@ -19,16 +19,17 @@ import me.leon.ext.fx.toFxImg
 /** ihdr width height crc 12-29 ihdr 16-20 width 20-24 height 29-33 crc */
 private fun ByteArray.parsePngIhdr() = arrayOf(copyOfRange(12, 29), copyOfRange(29, 33))
 
-fun ByteArray.fixPng(): ByteArray {
+fun ByteArray.fixPng(maxPixel: Int = 2048, minPixel: Int = 5): ByteArray {
     val bytes = this
     val (ihdr, crc) = bytes.parsePngIhdr()
-    var copy = ihdr.copyOf()
+
     if (crc.toHex() == ihdr.crc32()) {
         println("图片未修改")
         return bytes
     }
 
-    for (w in 1..2048) {
+    val copy = ihdr.copyOf()
+    outer@ for (w in minPixel..maxPixel) {
         val tmpWidth = w.pack()
         copy.setByteArray(4, tmpWidth)
         if (crc.toHex() == copy.crc32()) {
@@ -36,15 +37,15 @@ fun ByteArray.fixPng(): ByteArray {
             bytes.setByteArray(16, tmpWidth)
             break
         }
-    }
-    copy = ihdr.copyOf()
-    for (h in 1..2048) {
-        val tmpHeight = h.pack()
-        copy.setByteArray(8, tmpHeight)
-        if (crc.toHex() == copy.crc32()) {
-            println("height= $h ${tmpHeight.toHex()}")
-            bytes.setByteArray(20, tmpHeight)
-            break
+        for (h in minPixel..maxPixel) {
+            val tmpHeight = h.pack()
+            copy.setByteArray(8, tmpHeight)
+            if (crc.toHex() == copy.crc32()) {
+                println("width= $w height= $h ${tmpHeight.toHex()}")
+                bytes.setByteArray(16, tmpWidth)
+                bytes.setByteArray(20, tmpHeight)
+                break@outer
+            }
         }
     }
     return bytes
