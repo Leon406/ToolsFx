@@ -64,10 +64,15 @@ class JbLicenseTest {
     }
 
     private fun crawlFromNet(): MutableSet<String> {
-        val response = HttpUrlUtil.get(RUSHB_URL)
         val servers = mutableSetOf<String>()
-        REG_HTML_CODE.findAll(response.data).forEach { servers.addAll(it.groupValues[1].lines()) }
-        println("success from RUSHUB ${servers.size}")
+        runCatching {
+            val response = HttpUrlUtil.get(RUSHB_URL)
+            REG_HTML_CODE.findAll(response.data).forEach {
+                servers.addAll(it.groupValues[1].lines())
+            }
+            println("success from RUSHUB ${servers.size}")
+        }
+
         runCatching {
                 val response2 = HttpUrlUtil.get(SHODAN_URL)
                 REG_SHODAN_CODE.findAll(response2.data).forEach {
