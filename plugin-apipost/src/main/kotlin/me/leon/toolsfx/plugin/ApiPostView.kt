@@ -18,8 +18,8 @@ import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.5.1"
-    override val date: String = "2022-11-12"
+    override val version = "v1.6.0"
+    override val date: String = "2022-12-19"
     override val author = "Leon406"
     override val description = "ApiPost"
 

@@ -7,9 +7,7 @@ import java.io.File
 import java.net.*
 import java.security.cert.X509Certificate
 import java.util.UUID
-import javax.net.ssl.HttpsURLConnection
-import javax.net.ssl.SSLContext
-import javax.net.ssl.X509TrustManager
+import javax.net.ssl.*
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -28,7 +26,6 @@ object HttpUrlUtil {
     var timeOut = 10_000
     private var proxy: Proxy = Proxy.NO_PROXY
     var followRedirect: Boolean = false
-    var verifyCert: Boolean = true
     var downloadFolder = File(File("").absoluteFile, "downloads")
     private var preAction: (Request) -> Unit = DEFAULT_PRE_ACTION
     private var postAction: (ByteArray) -> String = DEFAULT_POST_ACTION
@@ -209,7 +206,9 @@ object HttpUrlUtil {
     ): Response {
         val req = Request(url, "POST", params, headers)
         preAction(req)
-        val data = if (isJson) req.params.toJson() else req.params.toParams()
+        val urlEncode =
+            headers.values.any { (it as String).contains("application/x-www-form-urlencoded") }
+        val data = if (isJson) req.params.toJson() else req.params.toParams(urlEncode)
         return postData(url, data, headers)
     }
 
@@ -411,7 +410,13 @@ object HttpUrlUtil {
         println(sb.toString())
     }
 
-    fun Map<String, Any>.toParams() = entries.joinToString("&") { it.key + "=" + it.value }
+    fun Map<String, Any>.toParams(isEncode: Boolean = false) =
+        entries.joinToString("&") {
+            (it.key.takeUnless { isEncode }
+                ?: it.key.urlEncoded) +
+                "=" +
+                (it.value.takeUnless { isEncode } ?: it.value.toString().urlEncoded)
+        }
 
     private fun Map<String, Any>.toJson(): String =
         entries
