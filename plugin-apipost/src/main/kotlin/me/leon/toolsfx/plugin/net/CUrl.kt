@@ -28,7 +28,7 @@ fun String.cookieParse() =
 fun String.parseCurl() =
     trim()
         // 去掉浏览器多余的分割符
-        .replace("""[\^\\]$""".toRegex(), "")
+        .replace("""[\^\\]""".toRegex(), "")
         .split("""\n|\r\n""".toRegex())
         .map { it.trim() }
         .fold(Request(this)) { acc, s ->
