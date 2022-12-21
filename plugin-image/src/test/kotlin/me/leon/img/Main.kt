@@ -3,17 +3,22 @@ package me.leon.img
 import java.io.File
 import javafx.application.Application
 import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
+import javax.imageio.ImageIO
+import me.leon.ext.fx.toFxImg
 import me.leon.ext.fx.toImage
 import me.leon.toolsfx.plugin.ext.fixPng
+import tornadofx.*
 
 val TEST_PRJ_DIR: File = File("").absoluteFile.parentFile
-val TEST_DATA_DIR = File(TEST_PRJ_DIR, "testdata")
+val TEST_DATA_DIR = File(TEST_PRJ_DIR, "testdata/plugin")
 
 class Main : Application() {
+    var index = 0
     override fun start(primaryStage: Stage) {
         try {
             val root = BorderPane()
@@ -21,6 +26,22 @@ class Main : Application() {
 
             val imageview = ImageView(image)
             root.center = imageview
+            val img = ImageIO.read(File(IMG_DIR, "capcha2.jpg"))
+            root.bottom =
+                Button().button {
+                    text = "next"
+                    action {
+                        imageview.image =
+                            when (index++ % 5) {
+                                0 -> img.cleanBinary().toFxImg()
+                                1 -> img.sharpen().toFxImg()
+                                2 -> img.denoise().toFxImg()
+                                3 -> img.gray().toFxImg()
+                                4 -> img.binary().toFxImg()
+                                else -> img.mirrorWidth().toFxImg()
+                            }
+                    }
+                }
             val scene = Scene(root, 480.0, 480.0)
             primaryStage.scene = scene
             primaryStage.show()
@@ -30,10 +51,11 @@ class Main : Application() {
     }
 
     private fun genImage(): Image {
-
+        val input = ImageIO.read(File(IMG_DIR, "capcha2.jpg"))
         //        val image = File(IMG_DIR,"qr01").readText().binaryImage(false)
         //        val image = File(IMG_DIR, "bin2").readText().binaryImage()
-        val image = File("E:\\download\\360\\1-raw.png").readBytes().fixPng().toImage()
+
+        val image = File(IMG_DIR, "fix.png").readBytes().fixPng().toImage()
         //        val image = File(IMG_DIR, "base64").readText().base64Image()
 
         //        val text = File(IMG_DIR, "rgb.txt").readText()
@@ -41,8 +63,9 @@ class Main : Application() {
         //        val width = 1296
         //        val height = 154
         //        val image = colors.fxImage(width, height)
-        return image
+        return input.cleanBinary().toFxImg()
     }
+
     companion object {
         val IMG_DIR = File(TEST_DATA_DIR, "image")
     }
