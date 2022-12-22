@@ -76,9 +76,7 @@ private fun BufferedImage.removeLines() {
                 val rightTop = getRGB(x + 1, y - 1)
                 val rightBottom = getRGB(x + 1, y + 1)
 
-                if (
-                    isLine(left, right, bottom, top, leftBottom, rightTop, leftTop, rightBottom)
-                ) {
+                if (isLine(left, right, bottom, top, leftBottom, rightTop, leftTop, rightBottom)) {
                     setRGB(x, y, Color.WHITE.rgb)
                 }
                 //                else {
@@ -112,16 +110,14 @@ private fun isLine(
     rightTop: Int,
     leftTop: Int,
     rightBottom: Int
-) = left.isWhite &&
+) =
+    left.isWhite &&
         right.isWhite &&
         bottom.isWhite &&
         top.isWhite &&
         leftBottom.isWhite &&
         rightTop.isWhite ||
-        leftTop.isWhite &&
-        rightBottom.isWhite &&
-        leftBottom.isWhite &&
-        rightTop.isWhite
+        leftTop.isWhite && rightBottom.isWhite && leftBottom.isWhite && rightTop.isWhite
 
 fun BufferedImage.sharpen(kernel: Kernel = DEFAULT_KERNEL_3x3) =
     BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR).apply {
@@ -131,6 +127,11 @@ fun BufferedImage.sharpen(kernel: Kernel = DEFAULT_KERNEL_3x3) =
 fun BufferedImage.denoise(kernel: Kernel = DENOISE_KERNEL_GAUSSIAN) =
     BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR).apply {
         ConvolveOp(kernel).filter(this@denoise, this)
+    }
+
+fun BufferedImage.convolve(kernel: Kernel = EDGE_SOBEL_KERNEL) =
+    BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR).apply {
+        ConvolveOp(kernel).filter(this@convolve, this)
     }
 
 fun BufferedImage.inverse() =
@@ -286,12 +287,96 @@ fun BufferedImage.oilPaint(size: Int = 5) =
         g.drawImage(this, 0, 0, null)
     }
 
-fun Color.invert() = Color(255 - red, 255 - green, 255 - blue)
+/** 仅适用二值图 求局部最小值(暗的区域变大) */
+private fun BufferedImage.erode(kernelSize: Int = 2) =
+    BufferedImage(width, height, type).apply {
+        println("image $width $height")
+        repeat(width) { x ->
+            repeat(height) { y ->
+                var min = 255
+                for (i in x until x + kernelSize) {
+                    for (j in y until y + kernelSize) {
+                        if (i in 0 until width && j in 0 until height) {
+                            min = (this@erode.getRGB(i, j) and 0xFF).coerceAtMost(min)
+                        }
+                    }
+                }
+                this@apply.setRGB(x, y, (Color.WHITE.takeIf { min == 255 } ?: Color.BLACK).rgb)
+            }
+        }
+    }
 
-fun Int.toColor() = Color(this)
+fun BufferedImage.erode(kernelSize: Int = 3, iteration: Int = 1): BufferedImage {
+    var bufferedImage = erode(kernelSize)
+    repeat(iteration - 1) { bufferedImage = bufferedImage.erode(kernelSize) }
+    return bufferedImage
+}
 
-val Int.isBlack
-    get() = with(Color(this)) { red + blue + green <= 300 }
+/** 仅适用二值图 膨胀 求局部最大值(亮的区域变大) */
+private fun BufferedImage.dilate(kernelSize: Int = 2) =
+    BufferedImage(width, height, type).apply {
+        repeat(width) { x ->
+            repeat(height) { y ->
+                var max = 0
+                for (i in x until x + kernelSize) {
+                    for (j in y until y + kernelSize) {
+                        if (i in 0 until width && j in 0 until height) {
+                            max = (this@dilate.getRGB(i, j) and 0xFF).coerceAtLeast(max)
+                        }
+                    }
+                }
+                this@apply.setRGB(x, y, (Color.WHITE.takeIf { max == 255 } ?: Color.BLACK).rgb)
+            }
+        }
+    }
 
-val Int.isWhite
-    get() = with(Color(this)) { red + blue + green > 300 }
+fun BufferedImage.dilate(kernelSize: Int = 2, iteration: Int = 1): BufferedImage {
+    var bufferedImage = dilate(kernelSize)
+    repeat(iteration - 1) { bufferedImage = bufferedImage.dilate(kernelSize) }
+    return bufferedImage
+}
+
+/**
+ * 仅适用二值图 先腐蚀后膨胀
+ *
+ * 用于消除小物体在纤细点处分离物体、平滑较大物体的边界的同时并不明显改变其面积。
+ */
+fun BufferedImage.openOp(kernelSize: Int = 3) = erode(kernelSize).dilate(kernelSize)
+
+/**
+ * 仅适用二值图 先膨胀后腐蚀
+ *
+ * 用来填充物体内细小空洞、连接邻近物体、平滑其边界的同时并不明显改变其面积。
+ */
+fun BufferedImage.closeOp(kernelSize: Int = 3) = dilate(kernelSize).erode(kernelSize)
+
+/**
+ * 梯度 dilate - erode
+ *
+ * 保留物体的边缘轮廓。
+ */
+fun BufferedImage.gradient(kernelSize: Int = 3) = dilate(kernelSize) - erode(kernelSize)
+
+/**
+ * 黑帽 close -src  获取轮廓图
+ *
+ * 突出了比原图轮廓周围的区域更暗的区域 分离比邻近点暗一些的斑块
+ */
+fun BufferedImage.blackHat(kernelSize: Int = 3) = closeOp(kernelSize) - this
+
+/**
+ * 顶帽 src - open  背景提取
+ *
+ * 突出了比原图轮廓周围的区域更明亮的区域 分离比邻近点亮的斑块, 背景提取
+ */
+fun BufferedImage.topHat(kernelSize: Int = 3) = this - openOp(kernelSize)
+
+operator fun BufferedImage.minus(other: BufferedImage): BufferedImage =
+    BufferedImage(width, height, type).apply {
+        repeat(width) { x ->
+            repeat(height) { y ->
+                val color = this@minus.getRGB(x, y).toColor() - other.getRGB(x, y).toColor()
+                setRGB(x, y, color.rgb)
+            }
+        }
+    }

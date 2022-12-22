@@ -15,7 +15,6 @@ import tornadofx.launch
 class ImageTest {
 
     @Test
-    @Ignore
     fun base64() {
         launch<Main>()
     }

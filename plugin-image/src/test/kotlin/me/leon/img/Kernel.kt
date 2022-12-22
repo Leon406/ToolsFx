@@ -53,6 +53,8 @@ val SHARPEN_KERNEL = Kernel(3, 3, floatArrayOf(-1F, -1F, -1F, -1F, 9F, -1F, -1F,
 
 /** 总和为 0 */
 val EDGE_KERNEL = Kernel(3, 3, floatArrayOf(-1F, -1F, -1F, -1F, 8F, -1F, -1F, -1F, -1F))
+val EDGE_SOBEL_KERNEL = Kernel(3, 3, floatArrayOf(1F, 0F, -1F, 2F, 0F, -2F, 1F, 0F, -1F))
+val EDGE_SOBEL_Y_KERNEL = Kernel(3, 3, floatArrayOf(1F, 2F, 1F, 0F, 0F, 0F, -1F, -2F, -1F))
 
 /** 总和为1, 周围加权和 */
 val DENOISE_KERNEL_AVG = Kernel(3, 3, FloatArray(9) { 1F / 9F })

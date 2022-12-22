@@ -10,8 +10,6 @@ import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import javax.imageio.ImageIO
 import me.leon.ext.fx.toFxImg
-import me.leon.ext.fx.toImage
-import me.leon.toolsfx.plugin.ext.fixPng
 import tornadofx.*
 
 val TEST_PRJ_DIR: File = File("").absoluteFile.parentFile
@@ -32,12 +30,16 @@ class Main : Application() {
                     text = "next"
                     action {
                         imageview.image =
-                            when (index++ % 5) {
-                                0 -> img.cleanBinary().toFxImg()
-                                1 -> img.sharpen().toFxImg()
-                                2 -> img.denoise().toFxImg()
-                                3 -> img.gray().toFxImg()
-                                4 -> img.binary().toFxImg()
+                            when (index++ % 10) {
+                                0 -> img.binary().erode(kernelSize = 2, iteration = 2).toFxImg()
+                                1 -> img.binary().erode(kernelSize = 2, iteration = 3).toFxImg()
+                                2 -> img.binary().dilate(kernelSize = 2, iteration = 1).toFxImg()
+                                3 -> img.binary().dilate(kernelSize = 2, iteration = 2).toFxImg()
+                                4 -> img.binary().dilate(kernelSize = 2, iteration = 3).toFxImg()
+                                5 -> img.binary().openOp(2).toFxImg()
+                                6 -> img.binary().openOp(3).toFxImg()
+                                7 -> img.binary().closeOp(2).toFxImg()
+                                8 -> img.binary().closeOp(3).toFxImg()
                                 else -> img.mirrorWidth().toFxImg()
                             }
                     }
@@ -55,7 +57,7 @@ class Main : Application() {
         //        val image = File(IMG_DIR,"qr01").readText().binaryImage(false)
         //        val image = File(IMG_DIR, "bin2").readText().binaryImage()
 
-        val image = File(IMG_DIR, "fix.png").readBytes().fixPng().toImage()
+        //        val image = File(IMG_DIR, "fix.png").readBytes().fixPng().toImage()
         //        val image = File(IMG_DIR, "base64").readText().base64Image()
 
         //        val text = File(IMG_DIR, "rgb.txt").readText()
@@ -63,7 +65,7 @@ class Main : Application() {
         //        val width = 1296
         //        val height = 154
         //        val image = colors.fxImage(width, height)
-        return input.cleanBinary().toFxImg()
+        return input.binary().topHat().toFxImg()
     }
 
     companion object {
