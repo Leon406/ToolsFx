@@ -706,10 +706,10 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     };
 
     override fun paramsHints(): Array<out String> {
-        return CLASSIC_CONFIG[type]?.get(HINT).orEmpty()
+        return CLASSIC_CONFIG[this]?.get(HINT).orEmpty()
     }
 
     override fun checkboxHints(): Array<out String> {
-        return CLASSIC_CONFIG[type]?.get(CHECK).orEmpty()
+        return CLASSIC_CONFIG[this]?.get(CHECK).orEmpty()
     }
 }
