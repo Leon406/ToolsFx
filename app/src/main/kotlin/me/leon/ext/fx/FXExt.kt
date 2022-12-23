@@ -54,3 +54,5 @@ fun fileDraggedHandler(block: (List<File>) -> Unit) =
 fun String.base64Image() = Image(base64Decode().inputStream())
 
 fun ByteArray.toImage() = Image(inputStream())
+
+fun File.toImage() = Image(inputStream())
