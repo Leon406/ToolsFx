@@ -24,13 +24,14 @@ class Main : Application() {
 
             val imageview = ImageView(image)
             root.center = imageview
-            val img = ImageIO.read(File(IMG_DIR, "capcha2.jpg"))
+            val img = ImageIO.read(File(IMG_DIR, "hand.png"))
             root.bottom =
                 Button().button {
                     text = "next"
                     action {
+                        println(index % 12)
                         imageview.image =
-                            when (index++ % 10) {
+                            when (index++ % 12) {
                                 0 -> img.binary().erode(kernelSize = 2, iteration = 2).toFxImg()
                                 1 -> img.binary().erode(kernelSize = 2, iteration = 3).toFxImg()
                                 2 -> img.binary().dilate(kernelSize = 2, iteration = 1).toFxImg()
@@ -38,8 +39,11 @@ class Main : Application() {
                                 4 -> img.binary().dilate(kernelSize = 2, iteration = 3).toFxImg()
                                 5 -> img.binary().openOp(2).toFxImg()
                                 6 -> img.binary().openOp(3).toFxImg()
-                                7 -> img.binary().closeOp(2).toFxImg()
-                                8 -> img.binary().closeOp(3).toFxImg()
+                                7 -> img.binary().gradient(3).toFxImg()
+                                8 -> img.binary().closeOp(2).toFxImg()
+                                9 -> img.binary().closeOp(3).toFxImg()
+                                10 -> img.binary().blackHat(3).toFxImg()
+                                11 -> img.binary().topHat(3).toFxImg()
                                 else -> img.mirrorWidth().toFxImg()
                             }
                     }

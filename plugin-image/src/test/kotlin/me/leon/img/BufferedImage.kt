@@ -288,9 +288,8 @@ fun BufferedImage.oilPaint(size: Int = 5) =
     }
 
 /** 仅适用二值图 求局部最小值(暗的区域变大) */
-private fun BufferedImage.erode(kernelSize: Int = 2) =
+private fun BufferedImage.erode(kernelSize: Int = 3) =
     BufferedImage(width, height, type).apply {
-        println("image $width $height")
         repeat(width) { x ->
             repeat(height) { y ->
                 var min = 255
@@ -313,7 +312,7 @@ fun BufferedImage.erode(kernelSize: Int = 3, iteration: Int = 1): BufferedImage 
 }
 
 /** 仅适用二值图 膨胀 求局部最大值(亮的区域变大) */
-private fun BufferedImage.dilate(kernelSize: Int = 2) =
+private fun BufferedImage.dilate(kernelSize: Int = 3) =
     BufferedImage(width, height, type).apply {
         repeat(width) { x ->
             repeat(height) { y ->
@@ -330,21 +329,21 @@ private fun BufferedImage.dilate(kernelSize: Int = 2) =
         }
     }
 
-fun BufferedImage.dilate(kernelSize: Int = 2, iteration: Int = 1): BufferedImage {
+fun BufferedImage.dilate(kernelSize: Int = 3, iteration: Int = 1): BufferedImage {
     var bufferedImage = dilate(kernelSize)
     repeat(iteration - 1) { bufferedImage = bufferedImage.dilate(kernelSize) }
     return bufferedImage
 }
 
 /**
- * 仅适用二值图 先腐蚀后膨胀
+ * 仅适用二值图 先腐蚀后膨胀, 去孤立白点,孔,块
  *
  * 用于消除小物体在纤细点处分离物体、平滑较大物体的边界的同时并不明显改变其面积。
  */
 fun BufferedImage.openOp(kernelSize: Int = 3) = erode(kernelSize).dilate(kernelSize)
 
 /**
- * 仅适用二值图 先膨胀后腐蚀
+ * 仅适用二值图 先膨胀后腐蚀, 去孤立黑点,孔,块
  *
  * 用来填充物体内细小空洞、连接邻近物体、平滑其边界的同时并不明显改变其面积。
  */
@@ -358,14 +357,14 @@ fun BufferedImage.closeOp(kernelSize: Int = 3) = dilate(kernelSize).erode(kernel
 fun BufferedImage.gradient(kernelSize: Int = 3) = dilate(kernelSize) - erode(kernelSize)
 
 /**
- * 黑帽 close -src  获取轮廓图
+ * 黑帽 close -src 获取轮廓图
  *
  * 突出了比原图轮廓周围的区域更暗的区域 分离比邻近点暗一些的斑块
  */
 fun BufferedImage.blackHat(kernelSize: Int = 3) = closeOp(kernelSize) - this
 
 /**
- * 顶帽 src - open  背景提取
+ * 顶帽 src - open 背景提取
  *
  * 突出了比原图轮廓周围的区域更明亮的区域 分离比邻近点亮的斑块, 背景提取
  */
