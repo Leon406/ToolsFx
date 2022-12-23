@@ -47,6 +47,8 @@ jobs:
          restore-keys: ${{ runner.os }}-gradle
       - name: Run plugin-image jar
         run: ./gradlew  :plugin-image:jar
+      - name: Copy libs jar for package
+        run:  cp -r plugin-image/libs/  plugin-image/build/libs
       - uses: actions/upload-artifact@v3
         with:
           path: |
