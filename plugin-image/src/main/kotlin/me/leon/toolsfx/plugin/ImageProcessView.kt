@@ -1,36 +1,40 @@
 package me.leon.toolsfx.plugin
 
+import java.awt.image.BufferedImage
 import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import me.leon.*
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.cast
-import me.leon.ext.fx.clipboardText
-import me.leon.ext.fx.copy
-import me.leon.ext.fx.fileDraggedHandler
-import me.leon.ext.properText
-import me.leon.ext.toFile
-import me.leon.toolsfx.plugin.ext.ImageServiceType
-import me.leon.toolsfx.plugin.ext.locationServiceType
-import me.leon.toolsfx.plugin.ext.serviceTypeMap
+import me.leon.ext.*
+import me.leon.ext.fx.*
+import me.leon.toolsfx.plugin.ext.*
 import tornadofx.*
 
 class ImageProcessView : PluginFragment("ImageProcessView") {
-    override val version = "v1.1.0"
-    override val date: String = "2022-12-17"
+    override val version = "v1.2.0"
+    override val date: String = "2022-12-23"
     override val author = "Leon406"
     override val description = "图片模块"
     private var taInput: TextArea by singleAssign()
+    private var ivInput: ImageView by singleAssign()
     private var taOutput: TextArea by singleAssign()
-    private var img: ImageView by singleAssign()
+    private var ivOutput: ImageView by singleAssign()
+    private var param1: TextField by singleAssign()
+    private var cbParam: ComboBox<String> by singleAssign()
 
     private val fileMode = SimpleBooleanProperty(true)
+    private val showInputImage = SimpleBooleanProperty(false)
     private val showImage = SimpleBooleanProperty(false)
+    private val showParams = SimpleBooleanProperty(false)
+    private val showComboParam = SimpleBooleanProperty(false)
+    private val selectedParam = SimpleStringProperty("")
+
+    private val paramsMap: Map<String, String>
+        get() = mutableMapOf(P1 to param1.text, C1 to selectedParam.get())
 
     private val eventHandler = fileDraggedHandler {
         taInput.text =
@@ -57,16 +61,39 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             spacing = DEFAULT_SPACING
             label(messages["input"])
             checkbox("文件模式", fileMode)
+            checkbox("显示图片", showInputImage) {
+                selectedProperty().addListener { _, _, newValue ->
+                    if (newValue) {
+                        val file = taInput.text.toFile()
+                        if (file.exists() && EXTENSION_IMAGE.contains(file.realExtension())) {
+                            ivInput.image = file.toImage()
+                        } else {
+                            ivInput.image = null
+                        }
+                    } else {
+                        ivInput.image = null
+                    }
+                }
+            }
             button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action { taInput.text = clipboardText() }
             }
         }
 
-        taInput = textarea {
-            isWrapText = true
-            onDragEntered = eventHandler
+        stackpane {
+            taInput = textarea {
+                isWrapText = true
+                onDragEntered = eventHandler
+                visibleWhen(!showInputImage)
+            }
+            ivInput = imageview()
+            scrollpane(true) {
+                visibleWhen(showInputImage)
+                content = ivInput
+            }
         }
+
         hbox {
             alignment = Pos.CENTER_LEFT
             paddingTop = DEFAULT_SPACING
@@ -77,7 +104,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                 hgap = 8.0
                 vgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns = 4
+                prefColumns = 5
                 togglegroup {
                     serviceTypeMap.forEach {
                         radiobutton(it.key) {
@@ -87,17 +114,36 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                     }
                     selectedToggleProperty().addListener { _, _, new ->
                         imageServiceType = new.cast<RadioButton>().text.locationServiceType()
+                        val paramHints = imageServiceType.paramsHints()
+                        showParams.value = paramHints.isNotEmpty()
+                        param1.promptText = "".takeIf { paramHints.isEmpty() } ?: paramHints.first()
+
+                        val options = imageServiceType.options()
+                        if (options.isNotEmpty()) {
+                            showComboParam.value = options.isNotEmpty()
+                            cbParam.items = options.toMutableList().asObservable()
+                            selectedParam.set(if (options.isEmpty()) "" else options.first())
+                            cbParam.bind(selectedParam)
+                        }
+
                         println(imageServiceType)
+                        println(
+                            "params ${paramHints.contentToString()} options ${options.contentToString()}"
+                        )
                     }
                 }
             }
         }
 
         hbox {
+            addClass(Styles.group, Styles.left)
+            cbParam = combobox(selectedParam) { visibleWhen(showComboParam) }
+            param1 = textfield { visibleWhen(showParams) }
+        }
+        hbox {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
-
             button(messages["run"], imageview(IMG_RUN)) { action { doProcess() } }
         }
         hbox {
@@ -108,7 +154,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                 tooltip(messages["copy"])
                 action {
                     if (showImage.get()) {
-                        img.image.copy()
+                        ivOutput.image.copy()
                     } else {
                         outputText.copy()
                     }
@@ -130,23 +176,24 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                 isWrapText = true
                 visibleWhen(!showImage)
             }
-            img = imageview()
+            ivOutput = imageview()
             scrollpane(true) {
                 visibleWhen(showImage)
-                content = img
+                content = ivOutput
             }
         }
     }
 
     private fun doProcess() {
         if (inputText.isEmpty()) return
-        runAsync { controller.process(imageServiceType, inputText, fileMode.get()) } ui
+        runAsync { controller.process(imageServiceType, inputText, fileMode.get(), paramsMap) } ui
             {
                 showImage.value = it !is String
                 when (it) {
                     is String -> taOutput.text = it
-                    is ByteArray -> img.image = Image(it.inputStream())
-                    is Image -> img.image = it
+                    is ByteArray -> ivOutput.image = Image(it.inputStream())
+                    is BufferedImage -> ivOutput.image = it.toFxImg()
+                    is Image -> ivOutput.image = it
                 }
             }
     }

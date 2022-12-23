@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import javax.imageio.ImageIO
 import me.leon.ext.fx.toFxImg
+import me.leon.toolsfx.plugin.ext.*
 import tornadofx.*
 
 val TEST_PRJ_DIR: File = File("").absoluteFile.parentFile

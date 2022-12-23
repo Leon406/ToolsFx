@@ -1,8 +1,10 @@
-package me.leon.img
+package me.leon.toolsfx.plugin.ext
 
 import java.awt.Color
 import java.awt.image.*
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
+import java.io.File
+import javax.imageio.ImageIO
 import kotlin.math.pow
 import kotlin.random.Random
 
@@ -24,7 +26,7 @@ fun BufferedImage.gray() =
         }
     }
 
-fun BufferedImage.binary(threshold: Int = 172, isGray: Boolean = true) =
+fun BufferedImage.binary(threshold: Int = 159, isGray: Boolean = true) =
     BufferedImage(width, height, type).apply {
         repeat(width) { x ->
             repeat(height) { y ->
@@ -379,3 +381,18 @@ operator fun BufferedImage.minus(other: BufferedImage): BufferedImage =
             }
         }
     }
+
+fun BufferedImage.toBinaryString(isBlackOne: Boolean): String =
+    StringBuilder()
+        .apply {
+            repeat(width) { x ->
+                repeat(height) { y ->
+                    append(
+                        1.takeIf { this@toBinaryString.getRGB(x, y).isWhite xor isBlackOne } ?: 0
+                    )
+                }
+            }
+        }
+        .toString()
+
+fun File.toBufferImage(): BufferedImage = ImageIO.read(this)

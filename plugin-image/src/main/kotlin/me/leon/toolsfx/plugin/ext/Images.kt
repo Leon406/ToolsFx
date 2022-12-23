@@ -15,6 +15,7 @@ import me.leon.ext.fx.toFxImg
  * @since 2022-12-15 16:17
  * @email deadogone@gmail.com
  */
+val EXTENSION_IMAGE = arrayOf("jpg", "png", "gif", "bmp")
 
 /** ihdr width height crc 12-29 ihdr 16-20 width 20-24 height 29-33 crc */
 private fun ByteArray.parsePngIhdr() = arrayOf(copyOfRange(12, 29), copyOfRange(29, 33))
@@ -106,7 +107,7 @@ fun Int.toColorInt(isBlackOne: Boolean = true) =
         else -> 0
     }
 
-fun String.binaryImage(isNormal: Boolean = true) =
+fun String.zeroOneImage(isNormal: Boolean = true, isBlackOne: Boolean = true) =
     with(sqrt(stripAllSpace().length.toDouble())) {
         val size = this.toInt()
         val ratio = (360 / size).coerceAtLeast(1)
@@ -121,11 +122,21 @@ fun String.binaryImage(isNormal: Boolean = true) =
                                 x * ratio + xBias,
                                 y * ratio + yBias,
                                 when {
-                                    isNormal -> bytes[y * size + x].toString().toInt().toColorInt()
+                                    isNormal ->
+                                        bytes[y * size + x]
+                                            .toString()
+                                            .toInt()
+                                            .toColorInt(isBlackOne)
                                     x < 7 && y < 7 -> QR_MARK[x][y].toColorInt()
-                                    x > size - 8 && y < 7 -> QR_MARK[x - (size - 7)][y].toColorInt()
-                                    x < 7 && y > size - 8 -> QR_MARK[x][y - (size - 7)].toColorInt()
-                                    else -> bytes[y * size + x].toString().toInt().toColorInt()
+                                    x > size - 8 && y < 7 ->
+                                        QR_MARK[x - (size - 7)][y].toColorInt(isBlackOne)
+                                    x < 7 && y > size - 8 ->
+                                        QR_MARK[x][y - (size - 7)].toColorInt(isBlackOne)
+                                    else ->
+                                        bytes[y * size + x]
+                                            .toString()
+                                            .toInt()
+                                            .toColorInt(isBlackOne)
                                 }
                             )
                         }
