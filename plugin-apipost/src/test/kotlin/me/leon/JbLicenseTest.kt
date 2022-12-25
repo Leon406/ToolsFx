@@ -121,11 +121,15 @@ class JbLicenseTest {
     @Test
     fun check() {
         checkUrl("https://35.188.104.230").also { println(it) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
         verifySSL(false)
         checkUrl("https://35.188.104.230").also { println(it) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
         verifySSL(true)
         checkUrl("https://35.188.104.230").also { println(it) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
         verifySSL(false)
         checkUrl("https://35.188.104.230").also { println(it) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
     }
 }

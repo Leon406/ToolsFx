@@ -3,8 +3,8 @@
 build/
 /.idea
 out/
-/ToolsFx.properties
-/local.properties
+ToolsFx.properties
+local.properties
 /tools/*/
 dict/
 *.json

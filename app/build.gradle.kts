@@ -60,7 +60,7 @@ tasks.withType<Jar>().forEach {
 
 dependencies {
     implementation(project(":plugin-lib"))
-    implementation("org.bouncycastle:bcprov-jdk18on:${rootProject.extra["bouncycastle_version"]}")
+    api("org.bouncycastle:bcprov-jdk18on:${rootProject.extra["bouncycastle_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
     api("com.google.code.gson:gson:2.10")
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
