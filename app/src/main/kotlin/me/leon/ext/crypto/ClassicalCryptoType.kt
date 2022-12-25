@@ -336,7 +336,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun isIgnoreSpace() = false
     },
-    ZWC("zeroWidthBinary") {
+    ZWC("zwBinary") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             if (requireNotNull(params[C1]).toBoolean()) {
                 raw.zwcMorse(params[P1]?.ifEmpty { "show" } ?: "show")
@@ -351,7 +351,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
                 raw.zwcBinaryDecode()
             }
     },
-    ZWC_UNICODE("zeroWidthUnicode") {
+    ZWC_UNICODE("zwUnicode") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.zwcUnicode(
                 params[P1]?.ifEmpty { "show" } ?: "show",
