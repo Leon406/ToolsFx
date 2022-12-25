@@ -1,14 +1,25 @@
-{"version":"1.15.1.beta","info":"1.15.1.beta 2022-12-06,
+{"version":"1.15.2.beta","info":"1.15.2.beta 2022-12-25,
 
 新功能
 
-  🔥 CTF 新增百家姓, base64隐写
-  🔥 crc add padding
-  🔥 CTF RSA fermat分解支持完全分解
-  🔥 CTF新增zwc unicode
+  🔥 文件模式 显示非文本文件扩展
+  🔥 SymmetricCrypto新增 Tnepres,key iv编码支持自动转换
+  🔥 编码支持文件加解密
+  🔥 BigInt新增排列和组合
+  🔥 CTF RSA-crack 支持d c e nbits参数
+  🔥 新增图片模块 (默认不内置,请单独下载)
+  🔥 Encode add 十进制转其他进制,需自定义字典
+  🔥 CTF add Symbol Cipher and rename
+  🔥 support custom scale
+  🔥 CTF add Symbol Cipher and rename
+  🔥 Digest crack 支持 mask
+  🔥 字符处理 分割支持正则
+  🔥 CTF zwcUnicode不设置字典可以自动解析
+  🔥 合并CTF类似功能算法
+  🔥 CTF新增 base64 base32 steg加解密
 
 Bug修复
-  🐛 CTF图片编码 jar资源文件夹遍历错误
+  🐛 https请求证书错误
 
 使用前请看README和wiki
 
