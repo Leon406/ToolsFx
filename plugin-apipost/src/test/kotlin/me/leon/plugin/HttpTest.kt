@@ -4,7 +4,6 @@ import java.io.File
 import java.util.Base64
 import me.leon.toolsfx.plugin.net.*
 import org.junit.Test
-import java.security.Security
 
 class HttpTest {
 
