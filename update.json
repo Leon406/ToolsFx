@@ -10,8 +10,7 @@
   🔥 新增图片模块 (默认不内置,请单独下载)
   🔥 Encode add 十进制转其他进制,需自定义字典
   🔥 CTF add Symbol Cipher and rename
-  🔥 support custom scale
-  🔥 CTF add Symbol Cipher and rename
+  🔥 支持应用自定义缩放比例
   🔥 Digest crack 支持 mask
   🔥 字符处理 分割支持正则
   🔥 CTF zwcUnicode不设置字典可以自动解析
