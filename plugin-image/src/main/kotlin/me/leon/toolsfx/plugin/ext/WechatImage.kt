@@ -31,5 +31,5 @@ fun weChatXorKey(file: File): Pair<Byte, String> {
             }
         }
     }
-    kotlin.error("unMatch")
+    error("unMatch")
 }

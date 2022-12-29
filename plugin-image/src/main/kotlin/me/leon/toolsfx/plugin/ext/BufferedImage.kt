@@ -1,12 +1,17 @@
 package me.leon.toolsfx.plugin.ext
 
 import java.awt.Color
+import java.awt.geom.AffineTransform
 import java.awt.image.*
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
 import java.io.File
 import javax.imageio.ImageIO
 import kotlin.math.pow
 import kotlin.random.Random
+import me.leon.ext.fx.base64Image
+import me.leon.ext.fx.toBufferImage
+import me.leon.ext.realExtension
+import me.leon.ext.toFile
 
 /**
  * @author Leon
@@ -396,3 +401,38 @@ fun BufferedImage.toBinaryString(isBlackOne: Boolean): String =
         .toString()
 
 fun File.toBufferImage(): BufferedImage = ImageIO.read(this)
+
+/**
+ * AffineTransformOp.TYPE_BILINEAR 1 AffineTransformOp.TYPE_BICUBIC 2
+ * AffineTransformOp.TYPE_NEAREST_NEIGHBOR 3
+ */
+fun BufferedImage.scale(
+    scale: Double,
+    interpolationType: Int = AffineTransformOp.TYPE_BILINEAR
+): BufferedImage {
+    val w2 = (width * scale).toInt()
+    val h2 = (height * scale).toInt()
+    require(w2 in 1..4096) { "scaled width must in [1,4096]" }
+    require(h2 in 1..4096) { "scaled height must in [1,4096]" }
+    // BufferedImage#getScaledInstance 性能差,不推荐
+
+    val after = BufferedImage(w2, h2, type)
+    val scaleInstance = AffineTransform.getScaleInstance(scale, scale)
+    val scaleOp = AffineTransformOp(scaleInstance, interpolationType)
+    scaleOp.filter(this, after)
+    return after
+}
+
+/** 系统 文件长度 路径长度 linux 255 4096 mac 255 1024 win 254 260 win-l 255 32767 */
+const val FILE_PATH_MAX_LENGTH = 1024
+var FILE_PATH = """[:\\/]""".toRegex()
+
+fun String.autoConvertToBufferImage(): BufferedImage? {
+    if (length <= FILE_PATH_MAX_LENGTH && (contains(FILE_PATH))) {
+        val file = toFile()
+        if (file.exists() && EXTENSION_IMAGE.contains(file.realExtension())) {
+            return file.toBufferImage()
+        }
+    }
+    return runCatching { substringAfter(',').base64Image().toBufferImage() }.getOrNull()
+}

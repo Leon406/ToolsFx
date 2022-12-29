@@ -9,14 +9,15 @@ import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import me.leon.*
+import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.ext.*
 import tornadofx.*
 
 class ImageProcessView : PluginFragment("ImageProcessView") {
-    override val version = "v1.2.0"
-    override val date: String = "2022-12-23"
+    override val version = "v1.2.1"
+    override val date: String = "2022-12-29"
     override val author = "Leon406"
     override val description = "图片模块"
     private var taInput: TextArea by singleAssign()
@@ -28,7 +29,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
 
     private val fileMode = SimpleBooleanProperty(true)
     private val showInputImage = SimpleBooleanProperty(false)
-    private val showImage = SimpleBooleanProperty(false)
+    private val showOutputImage = SimpleBooleanProperty(false)
     private val showParams = SimpleBooleanProperty(false)
     private val showComboParam = SimpleBooleanProperty(false)
     private val selectedParam = SimpleStringProperty("")
@@ -64,12 +65,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             checkbox("显示图片", showInputImage) {
                 selectedProperty().addListener { _, _, newValue ->
                     if (newValue) {
-                        val file = taInput.text.toFile()
-                        if (file.exists() && EXTENSION_IMAGE.contains(file.realExtension())) {
-                            ivInput.image = file.toImage()
-                        } else {
-                            ivInput.image = null
-                        }
+                        ivInput.image = taInput.text.autoConvertToBufferImage()?.toFxImg()
                     } else {
                         ivInput.image = null
                     }
@@ -153,7 +149,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action {
-                    if (showImage.get()) {
+                    if (showOutputImage.get()) {
                         ivOutput.image.copy()
                     } else {
                         outputText.copy()
@@ -163,8 +159,13 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
-                    taInput.text = outputText
-                    taOutput.text = ""
+                    if (showOutputImage.value) {
+                        ivInput.image = ivOutput.image
+                        taInput.text = ivOutput.image.toBufferImage().toByteArray().base64()
+                    } else {
+                        taInput.text = outputText
+                        taOutput.text = ""
+                    }
                 }
             }
             button("stegSolve") { action { startStegSolve() } }
@@ -174,11 +175,11 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             taOutput = textarea {
                 promptText = messages["outputHint"]
                 isWrapText = true
-                visibleWhen(!showImage)
+                visibleWhen(!showOutputImage)
             }
             ivOutput = imageview()
             scrollpane(true) {
-                visibleWhen(showImage)
+                visibleWhen(showOutputImage)
                 content = ivOutput
             }
         }
@@ -188,7 +189,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
         if (inputText.isEmpty()) return
         runAsync { controller.process(imageServiceType, inputText, fileMode.get(), paramsMap) } ui
             {
-                showImage.value = it !is String
+                showOutputImage.value = it !is String
                 when (it) {
                     is String -> taOutput.text = it
                     is ByteArray -> ivOutput.image = Image(it.inputStream())

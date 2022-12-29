@@ -1,6 +1,7 @@
 package me.leon.toolsfx.plugin.ext
 
 import me.leon.C1
+import me.leon.P1
 import me.leon.encode.base.base64
 import me.leon.ext.fx.base64Image
 import me.leon.ext.toFile
@@ -57,6 +58,11 @@ enum class ImageServiceType(val type: String) : ImageService {
     MORPHOLOGY("morphology") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
             ImageMorphology.valueOf(requireNotNull(params[C1])).process(raw, params)
+    },
+    SCALE("scale") {
+        override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
+            raw.autoConvertToBufferImage()?.scale(requireNotNull(params[P1]).toDouble())
+                ?: error("wrong parameter!!")
     };
 
     override fun options(): Array<out String> = IMAGE_CONFIG[this]?.get(OPTIONS).orEmpty()
