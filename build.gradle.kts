@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "1.8.0"
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
     id("com.diffplug.spotless") version "6.12.0"
     // https://detekt.dev/changelog/
@@ -8,6 +8,7 @@ plugins {
 }
 
 apply(from = "${rootProject.projectDir}/config/Versions.gradle.kts")
+val jvmTarget = "1.8"
 
 subprojects {
     apply(from = "${rootProject.projectDir}/config/codeQuality.gradle")
@@ -19,6 +20,11 @@ subprojects {
     }
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
+        targetCompatibility = jvmTarget
+        sourceCompatibility = jvmTarget
+    }
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = jvmTarget
     }
 }
 
