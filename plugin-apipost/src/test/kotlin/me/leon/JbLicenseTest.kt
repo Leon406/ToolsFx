@@ -11,7 +11,7 @@ import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
 
 private const val RUSHB_URL = "https://rushb.pro/article/JetBrains-license-server.html"
-private val REG_HTML_CODE = "(?s)<code class=\"lang-url\">(.+)</code>".toRegex()
+private val REG_HTML_CODE = "(?s)<code class=\"lang-\\w+\">(.+)</code>".toRegex()
 private val REG_SHODAN_CODE =
     "https://account\\.jetbrains\\.com/fls-auth</strong>\\?.*?url=(.*?)/auth".toRegex()
 private const val SHODAN_URL =
