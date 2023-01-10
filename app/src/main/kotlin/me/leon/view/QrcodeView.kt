@@ -1,8 +1,6 @@
 package me.leon.view
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import java.awt.Rectangle
-import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
@@ -17,13 +15,15 @@ import javafx.scene.paint.Paint
 import javafx.scene.text.Text
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import kotlin.math.abs
 import me.leon.*
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
 import tornadofx.*
+import java.awt.Rectangle
+import java.awt.Robot
+import kotlin.math.abs
 
 class QrcodeView : Fragment("Qrcode") {
     private var startX = 0.0
@@ -67,34 +67,32 @@ class QrcodeView : Fragment("Qrcode") {
                     shortcut(KeyCombination.valueOf("Ctrl+Q"))
                     tooltip("快捷键Ctrl+Q")
                 }
-            button("OCR") {
-                action {
-                    isOcr = true
-                    this@QrcodeView.show()
-                }
-                shortcut(KeyCombination.valueOf("Ctrl+Q"))
-            }
 
             button(messages["clipboardReco"]) {
                 action { clipboardImage()?.toBufferImage()?.qrReader()?.let { ta.text = it } }
             }
             button(messages["fileReco"]) {
                 shortcut(KeyCombination.valueOf("Ctrl+F"))
-                tooltip("快捷键Ctrl+F")
+                tooltip("快捷键Ctrl+F，也可以手动拖动多个文件到输入输入框")
                 action {
-                    primaryStage.fileChooser(messages["chooseFile"])?.let {
-                        iv.image = Image(it.inputStream())
-                        ta.text = it.qrReader()
+                    primaryStage.multiFileChooser(messages["chooseFile"])?.let {
+                        if (it.size == 1) {
+                            iv.image = Image(it.first().inputStream())
+                            ta.text = it.first().qrReader()
+                        } else {
+                            ta.text = runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }
+                                .getOrElse { it.stacktrace() }
+                        }
                     }
                 }
             }
-            button(messages["multiFileReco"]) {
+
+            button("Screen OCR") {
                 action {
-                    primaryStage.multiFileChooser(messages["chooseFile"])?.let {
-                        runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }
-                            .getOrElse { it.stacktrace() }
-                    }
+                    isOcr = true
+                    this@QrcodeView.show()
                 }
+                shortcut(KeyCombination.valueOf("Ctrl+Q"))
             }
         }
 
@@ -279,12 +277,12 @@ class QrcodeView : Fragment("Qrcode") {
         iv.image = bufferedImage
         runAsync {
             runCatching {
-                    if (isOcr) {
-                        BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
-                    } else {
-                        screenCapture.qrReader()
-                    }
+                if (isOcr) {
+                    BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
+                } else {
+                    screenCapture.qrReader()
                 }
+            }
                 .getOrElse { it.stacktrace() }
         } ui { ta.text = it }
     }
