@@ -16,6 +16,9 @@ buildscript {
         classpath("org.javassist:javassist:3.29.2-GA")
     }
 }
+repositories {
+    mavenCentral()
+}
 
 javafx {
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
@@ -68,7 +71,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("org.mockito:mockito-core:4.8.0")
+    testImplementation("org.mockito:mockito-core:4.11.0")
     testImplementation("org:jaudiotagger:2.0.3")
     testImplementation("org.javassist:javassist:3.29.2-GA")
 }

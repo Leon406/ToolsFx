@@ -63,6 +63,8 @@ class OnlineWebView : Fragment("Browser") {
         center = vbox {
             web = webview {
                 engine.load(ToolsApp.extUrls.first())
+                engine.userStyleSheetLocation =
+                    (OnlineWebView::class.java).getResource("/css/webview.css")?.toExternalForm()
                 engine.loadWorker.stateProperty().addListener { _, _, newState ->
                     println("loading $newState")
 
@@ -78,7 +80,7 @@ class OnlineWebView : Fragment("Browser") {
         bottom = hbox {
             addClass(Styles.group, Styles.left)
             val tf =
-                textfield("document.body.style.fontFamily=\"SimSun\"") {
+                textfield("document.body.style.fontFamily='\"Microsoft YaHei\",Arial'") {
                     prefWidth = DEFAULT_SPACING_40X
                 }
             button("inject js") { action { web.engine.executeScript(tf.text) } }
