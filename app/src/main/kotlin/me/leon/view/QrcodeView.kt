@@ -1,6 +1,8 @@
 package me.leon.view
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import java.awt.Rectangle
+import java.awt.Robot
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
@@ -15,15 +17,13 @@ import javafx.scene.paint.Paint
 import javafx.scene.text.Text
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import kotlin.math.abs
 import me.leon.*
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
 import tornadofx.*
-import java.awt.Rectangle
-import java.awt.Robot
-import kotlin.math.abs
 
 class QrcodeView : Fragment("Qrcode") {
     private var startX = 0.0
@@ -80,8 +80,11 @@ class QrcodeView : Fragment("Qrcode") {
                             iv.image = Image(it.first().inputStream())
                             ta.text = it.first().qrReader()
                         } else {
-                            ta.text = runCatching { it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" } }
-                                .getOrElse { it.stacktrace() }
+                            ta.text =
+                                runCatching {
+                                        it.joinToString("\n") { "${it.name}:    ${it.qrReader()}" }
+                                    }
+                                    .getOrElse { it.stacktrace() }
                         }
                     }
                 }
@@ -277,12 +280,12 @@ class QrcodeView : Fragment("Qrcode") {
         iv.image = bufferedImage
         runAsync {
             runCatching {
-                if (isOcr) {
-                    BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
-                } else {
-                    screenCapture.qrReader()
+                    if (isOcr) {
+                        BaiduOcr.ocrBase64(screenCapture.toByteArray().base64())
+                    } else {
+                        screenCapture.qrReader()
+                    }
                 }
-            }
                 .getOrElse { it.stacktrace() }
         } ui { ta.text = it }
     }

@@ -71,7 +71,9 @@ fun String.toUnicodeString() =
 fun String.toJsHexEncodeString() =
     toByteArray()
         .map { it.toUByte() }
-        .fold(StringBuilder()) { acc, c -> acc.append("\\x").append(c.toInt().toString(HEX_RADIX).padStart(2,'0')) }
+        .fold(StringBuilder()) { acc, c ->
+            acc.append("\\x").append(c.toInt().toString(HEX_RADIX).padStart(2, '0'))
+        }
         .toString()
 
 /** js hex 解码 \x61 */
