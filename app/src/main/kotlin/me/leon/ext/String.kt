@@ -20,7 +20,10 @@ inline fun <T> String.lineAction(action: (String) -> T) = lines().map { action.i
 
 fun String.lineCount() = lines().size
 
-fun String.unescape() = replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")
+fun String.unescape() =
+    replace("""(?!\\)\\n""".toRegex(), "\n")
+        .replace("""(?!\\)\\r""".toRegex(), "\r")
+        .replace("""(?!\\)\\t""".toRegex(), "\t")
 
 fun String.lineActionIndex(action: (String, Int) -> String) =
     lines().mapIndexed { index, s -> action.invoke(s, index) }.joinToString("\n")
