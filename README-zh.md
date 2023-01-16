@@ -307,6 +307,9 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 - [github action nightly版本(同beta版本,实时构建)](https://github.com/Leon406/ToolsFx/actions/workflows/app-test.yml)
 
+   [nightly.link](https://nightly.link/Leon406/ToolsFx/workflows/app-test/dev/artifact.zip)
+
+
 ## 如何运行
 
 - Linux/Mac OSX系统双击运行 根目录下 ToolsFx
