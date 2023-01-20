@@ -1,7 +1,11 @@
 package me.leon.hash
 
+import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import me.leon.ext.binary2ByteArray
+import me.leon.ext.toBinaryString
+import me.leon.ext.toHex
 
 /**
  * @author Leon
@@ -15,6 +19,17 @@ class CrcTest {
     @Test
     fun reflected() {
         assertEquals("a001", 0x8005.reflected(16).toString(16))
+        val toByteArray = BigInteger(0x8005.toString()).toByteArray()
+        println(
+            toByteArray
+                .toBinaryString()
+                .takeLast(16)
+                .also { println(it) }
+                .reversed()
+                .binary2ByteArray()
+                .toHex()
+        )
+        println(toByteArray.toHex())
         assertEquals(128, 1.reflected())
         assertEquals(64, 2.reflected())
     }
@@ -305,12 +320,140 @@ class CrcTest {
     @Test
     fun crc32() {
         // CRC-32 (CRC_32/ADCCP) WinRAR  x32+x26+x23+x22+x16+x12+x11+x10+x8+x7+x5+x4+x2+x+1
-        // D65A1577
+        // CRC-32/ISO-HDLC, CRC-32/V-42, CRC-32/XZ, PKZIP
         assertEquals(
             "d65a1577",
             data.crc(32, 0x04C11DB7L, 0xFFFFFFFFL, 0xFFFFFFFFL, refIn = true, refOut = true)
         )
         // CRC-32/MPEG-2  x32+x26+x23+x22+x16+x12+x11+x10+x8+x7+x5+x4+x2+x+1  32AF78B3
         assertEquals("32af78b3", data.crc(32, 0x04C11DB7L, 0xFFFFFFFFL, 0x00000000L))
+    }
+
+    @Test
+    fun crc32Ext() {
+        // CRC-32Q (CRC-32/AIXM)
+        assertEquals("3010bf7f", checkData.crc(32, 0x814141abL, 0, 0))
+        // CRC-32/AUTOSAR
+        assertEquals(
+            "1697d06a",
+            checkData.crc(32, 0xf4acfb13L, 0xffffffffL, 0xffffffffL, refIn = true, refOut = true)
+        )
+        assertEquals("1697d06a", checkData.crcReverse(32, 0xf4acfb13L, 0xffffffffL, 0xffffffffL))
+        // CRC-32D (CRC-32/BASE91-D)
+        assertEquals(
+            "87315576",
+            checkData.crc(32, 0xa833982bL, 0xffffffffL, 0xffffffffL, refIn = true, refOut = true)
+        )
+        assertEquals("87315576", checkData.crcReverse(32, 0xa833982bL, 0xffffffffL, 0xffffffffL))
+        // CRC-32/BZIP2 ( CRC-32/AAL5, CRC-32/DECT-B, B-CRC-32)
+        assertEquals("fc891918", checkData.crc(32, 0x04c11db7L, 0xffffffffL, 0xffffffffL))
+        // CRC-32/CD-ROM-EDC
+        assertEquals("6ec2edc4", checkData.crc(32, 0x8001801bL, 0, 0, refIn = true, refOut = true))
+        // CRC-32/CKSUM (CKSUM, CRC-32/POSIX)
+        assertEquals("765e7680", checkData.crc(32, 0x04c11db7L, 0, 0xffffffffL))
+        // CRC-32C (CRC-32/ISCSI,CRC-32/BASE91-C, CRC-32/CASTAGNOLI, CRC-32/INTERLAKEN)
+        assertEquals(
+            "e3069283",
+            checkData.crc(32, 0x1edc6f41L, 0xffffffffL, 0xffffffffL, refIn = true, refOut = true)
+        )
+        // CRC-32/JAMCRC (JAMCRC)
+        assertEquals(
+            "340bc6d9",
+            checkData.crc(32, 0x04c11db7L, 0xffffffffL, 0, refIn = true, refOut = true)
+        )
+        assertEquals("340bc6d9", checkData.crcReverse(32, 0x04c11db7L, 0xffffffffL, 0))
+        // CRC-32/MEF
+        assertEquals(
+            "d2c22f51",
+            checkData.crc(32, 0x741b8cd7L, 0xffffffffL, 0, refIn = true, refOut = true)
+        )
+        assertEquals("d2c22f51", checkData.crcReverse(32, 0x741b8cd7L, 0xffffffffL, 0))
+        // XFER (CRC-32/XFER)
+        assertEquals(
+            "bd0be338",
+            checkData.crc(32, 0x000000afL, 0, 0, refIn = false, refOut = false)
+        )
+    }
+
+    @Test
+    fun crc32Plus() {
+        // CRC-40/GSM
+        assertEquals(
+            "d4164fc646",
+            checkData.crc(40, 0x0004820009L, 0, 0xffffffffff, refIn = false, refOut = false)
+        )
+        // CRC-64/ECMA-182
+        assertEquals(
+            "6c40df5f0b497347",
+            checkData.crc(64, 0x42f0e1eba9ea3693L, 0, 0, refIn = false, refOut = false)
+        )
+        // CRC-64/GO-ISO
+        assertEquals(
+            "b90956c775a41001",
+            checkData.crc(
+                64,
+                0x000000000000001bL,
+                0xffffffffffffffffUL.toLong(),
+                0xffffffffffffffffUL.toLong(),
+                refIn = true,
+                refOut = true
+            )
+        )
+        // CRC-64/MS
+        assertEquals(
+            "75d4b74f024eceea",
+            checkData.crc(
+                64,
+                0x259c84cba6426349,
+                0xffffffffffffffffUL.toLong(),
+                0,
+                refIn = true,
+                refOut = true
+            )
+        )
+
+        // CRC-64/REDIS
+        assertEquals(
+            "e9c6d914c4b8d9ca",
+            checkData.crc(64, 0xad93d23594c935a9UL.toLong(), 0, 0, refIn = true, refOut = true)
+        )
+        assertEquals(
+            "e9c6d914c4b8d9ca",
+            checkData.crcReverse(64, 0xad93d23594c935a9UL.toLong(), 0, 0)
+        )
+        // CRC-64/WE
+        assertEquals(
+            "62ec59e3f1a4f00a",
+            checkData.crc(
+                64,
+                0x42f0e1eba9ea3693L,
+                0xffffffffffffffffUL.toLong(),
+                0xffffffffffffffffUL.toLong(),
+                refIn = false,
+                refOut = false
+            )
+        )
+        // CRC-64/XZ (CRC-64/GO-ECMA)
+        assertEquals(
+            "995dc9bbdf1939fa",
+            checkData.crc(
+                64,
+                0x42f0e1eba9ea3693L,
+                0xffffffffffffffffUL.toLong(),
+                0xffffffffffffffffUL.toLong(),
+                refIn = true,
+                refOut = true
+            )
+        )
+
+        assertEquals(
+            "995dc9bbdf1939fa",
+            checkData.crcReverse(
+                64,
+                0x42f0e1eba9ea3693L,
+                0xffffffffffffffffUL.toLong(),
+                0xffffffffffffffffUL.toLong()
+            )
+        )
     }
 }
