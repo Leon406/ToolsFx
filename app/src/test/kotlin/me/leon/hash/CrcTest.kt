@@ -206,53 +206,100 @@ class CrcTest {
         // CRC-16/DDS-110
         assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
 
-        // todo 完成用例
         // CRC-16/DECT-R (R-CRC-16)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("007e", checkData.crc(16, 0x0589, xorOut = 0x0001))
 
         // CRC-16/DECT-X(X-CRC-16)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("007f", checkData.crc(16, 0x0589))
 
         // CRC-16/EN-13757
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("c2b7", checkData.crc(16, 0x3d65, xorOut = 0xffff))
 
         // CRC-16/GENIBUS (CRC-16/DARC, CRC-16/EPC, CRC-16/EPC-C1G2, CRC-16/I-CODE)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("d64e", checkData.crc(16, 0x1021, 0xffff, 0xffff))
 
         // CRC-16/GSM
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("ce3c", checkData.crc(16, 0x1021, xorOut = 0xffff))
 
         // CRC-16/IBM-3740 (CRC-16/AUTOSAR, CRC-16/CCITT-FALSE)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("29b1", checkData.crc(16, 0x1021, 0xffff))
 
         // CRC-16/ISO-IEC-14443-3-A (CRC-A)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("bf05", checkData.crc(16, 0x1021, 0xc6c6, 0, true, true))
         // CRC-16/LJ1200
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("bdf4", checkData.crc(16, 0x6f63))
         // CRC-16/M17
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("772b", checkData.crc(16, 0x5935, 0xffff))
         // CRC-16/MCRF4XX
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("6f91", checkData.crcReverse(16, 0x1021, 0xffff))
         // CRC-16/NRSC-5
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("a066", checkData.crcReverse(16, 0x080b, 0xffff))
         // CRC-16/OPENSAFETY-A
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("5d38", checkData.crc(16, 0x5935))
         // CRC-16/OPENSAFETY-B
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("20fe", checkData.crc(16, 0x755b))
         // CRC-16/PROFIBUS ( CRC-16/IEC-61158-2)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("a819", checkData.crc(16, 0x1dcf, 0xffff, 0xffff))
         // CRC-16/RIELLO
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("63d0", checkData.crc(16, 0x1021, 0xb2aa, 0, true, true))
         // CRC-16/SPI-FUJITSU ( CRC-16/AUG-CCITT)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("e5cc", checkData.crc(16, 0x1021, 0x1d0f))
         // CRC-16/T10-DIF
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("d0db", checkData.crc(16, 0x8bb7))
         // CRC-16/TELEDISK
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("0fb3", checkData.crc(16, 0xa097))
         // CRC-16/TMS37157
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("26b1", checkData.crc(16, 0x1021, 0x89ec, 0, true, true))
         // CRC-16/UMTS (CRC-16/BUYPASS, CRC-16/VERIFONE)
-        assertEquals("9ecf", checkData.crc(16, 0x8005, 0x800d))
+        assertEquals("fee8", checkData.crc(16, 0x8005))
+    }
+
+    @Test
+    fun crc17_crc31() {
+        // CRC-17/CAN-FD
+        assertEquals("04f03", checkData.crc(17, 0x1685b))
+        // CRC-21/CAN-FD
+        assertEquals("0ed841", checkData.crc(21, 0x102899))
+        // CRC-24/BLE
+        assertEquals(
+            "c25a56",
+            checkData.crc(24, 0x00065b, 0x555555, 0, refIn = true, refOut = true)
+        )
+        // CRC-24/FLEXRAY-A
+        assertEquals("7979bd", checkData.crc(24, 0x5d6dcb, 0xfedcba, 0))
+        // CRC-24/FLEXRAY-B
+        assertEquals("1f23b8", checkData.crc(24, 0x5d6dcb, 0xabcdef))
+
+        // CRC-24/INTERLAKEN
+        assertEquals(
+            "b4f3e6",
+            checkData.crc(24, 0x328b63, 0xffffff, 0xffffff, refIn = false, refOut = false)
+        )
+        // CRC-24/LTE-A
+        assertEquals("cde703", checkData.crc(24, 0x864cfb, 0, 0, refIn = false, refOut = false))
+        // CRC-24/LTE-B
+        assertEquals("23ef52", checkData.crc(24, 0x800063, 0, 0, refIn = false, refOut = false))
+
+        // CRC-24 (CRC-24/OPENPGP)
+        assertEquals(
+            "21cf02",
+            checkData.crc(24, 0x864cfb, 0xb704ce, 0, refIn = false, refOut = false)
+        )
+        // CRC-24/OS-9
+        assertEquals(
+            "200fa5",
+            checkData.crc(24, 0x800063, 0xffffff, 0xffffff, refIn = false, refOut = false)
+        )
+        // CRC-30/CDMA
+        assertEquals(
+            "04c34abf",
+            checkData.crc(30, 0x2030b9c7, 0x3fffffff, 0x3fffffff, refIn = false, refOut = false)
+        )
+        // CRC-31/PHILIPS
+        assertEquals(
+            "0ce9e46c",
+            checkData.crc(31, 0x04c11db7, 0x7fffffff, 0x7fffffff, refIn = false, refOut = false)
+        )
     }
 
     @Test
