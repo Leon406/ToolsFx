@@ -84,11 +84,35 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             }
             checkbox(messages["singleLine"], singleLine) {
                 selectedProperty().addListener { _, _, newValue ->
-                    decodeIgnoreSpace.set(!newValue)
+                    if (newValue && fileMode.get()) {
+                        fileMode.set(false)
+                    }
+                    if (newValue && decodeIgnoreSpace.get()) {
+                        decodeIgnoreSpace.set(false)
+                    }
                 }
             }
-            checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace)
-            checkbox(messages["fileMode"], fileMode)
+            checkbox(messages["decodeIgnoreSpace"], decodeIgnoreSpace) {
+                selectedProperty().addListener { _, _, newValue ->
+                    if (newValue && singleLine.get()) {
+                        singleLine.set(false)
+                    }
+                    if (newValue && fileMode.get()) {
+                        fileMode.set(false)
+                    }
+                }
+            }
+
+            checkbox(messages["fileMode"], fileMode) {
+                selectedProperty().addListener { _, _, newValue ->
+                    if (newValue && singleLine.get()) {
+                        singleLine.set(false)
+                    }
+                    if (newValue && decodeIgnoreSpace.get()) {
+                        decodeIgnoreSpace.set(false)
+                    }
+                }
+            }
         }
 
         taInput = textarea {
