@@ -41,7 +41,7 @@ class EncodeController : Controller() {
         dic: String = "",
         charset: String = UTF8,
         singleLine: Boolean = false
-    ) =
+    ): String =
         if (singleLine) {
             raw.lineAction2String {
                 encode2String(it.toByteArray(Charset.forName(charset)), type, dic, charset)
@@ -73,7 +73,7 @@ class EncodeController : Controller() {
         dic: String = "",
         charset: String = UTF8,
         singleLine: Boolean = false
-    ) =
+    ): String =
         if (singleLine) {
             encoded.lineAction2String {
                 decode(it, type, dic, charset).toString(Charset.forName(charset))
@@ -94,7 +94,10 @@ class EncodeController : Controller() {
             val file = encoded.toFile()
             val name = file.name.replace(".enc", "")
             val out =
-                File(file.parentFile, name.takeIf { file.extension.isNotEmpty() } ?: "$name.dec")
+                File(
+                    file.parentFile,
+                    name.takeIf { file.extension.isNotEmpty() && file.name != name } ?: "$name.dec"
+                )
             out.outputStream().use {
                 it.write(decode(encoded.toFile().readText(), type, dic, charset))
             }
