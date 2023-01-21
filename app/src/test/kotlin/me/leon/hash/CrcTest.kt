@@ -392,9 +392,9 @@ class CrcTest {
             "b90956c775a41001",
             checkData.crc(
                 64,
-                0x000000000000001bL,
-                0xffffffffffffffffUL.toLong(),
-                0xffffffffffffffffUL.toLong(),
+                0x000000000000001bUL,
+                0xffffffffffffffffUL,
+                0xffffffffffffffffUL,
                 refIn = true,
                 refOut = true
             )
@@ -404,9 +404,8 @@ class CrcTest {
             "75d4b74f024eceea",
             checkData.crc(
                 64,
-                0x259c84cba6426349,
-                0xffffffffffffffffUL.toLong(),
-                0,
+                0x259c84cba6426349UL,
+                0xffffffffffffffffUL,
                 refIn = true,
                 refOut = true
             )
@@ -415,20 +414,17 @@ class CrcTest {
         // CRC-64/REDIS
         assertEquals(
             "e9c6d914c4b8d9ca",
-            checkData.crc(64, 0xad93d23594c935a9UL.toLong(), 0, 0, refIn = true, refOut = true)
+            checkData.crc(64, 0xad93d23594c935a9UL, refIn = true, refOut = true)
         )
-        assertEquals(
-            "e9c6d914c4b8d9ca",
-            checkData.crcReverse(64, 0xad93d23594c935a9UL.toLong(), 0, 0)
-        )
+        assertEquals("e9c6d914c4b8d9ca", checkData.crcReverse(64, 0xad93d23594c935a9UL))
         // CRC-64/WE
         assertEquals(
             "62ec59e3f1a4f00a",
             checkData.crc(
                 64,
-                0x42f0e1eba9ea3693L,
-                0xffffffffffffffffUL.toLong(),
-                0xffffffffffffffffUL.toLong(),
+                0x42f0e1eba9ea3693UL,
+                0xffffffffffffffffUL,
+                0xffffffffffffffffUL,
                 refIn = false,
                 refOut = false
             )
@@ -438,9 +434,9 @@ class CrcTest {
             "995dc9bbdf1939fa",
             checkData.crc(
                 64,
-                0x42f0e1eba9ea3693L,
-                0xffffffffffffffffUL.toLong(),
-                0xffffffffffffffffUL.toLong(),
+                0x42f0e1eba9ea3693UL,
+                0xffffffffffffffffUL,
+                0xffffffffffffffffUL,
                 refIn = true,
                 refOut = true
             )
@@ -450,9 +446,9 @@ class CrcTest {
             "995dc9bbdf1939fa",
             checkData.crcReverse(
                 64,
-                0x42f0e1eba9ea3693L,
-                0xffffffffffffffffUL.toLong(),
-                0xffffffffffffffffUL.toLong()
+                0x42f0e1eba9ea3693UL,
+                0xffffffffffffffffUL,
+                0xffffffffffffffffUL
             )
         )
     }

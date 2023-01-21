@@ -24,6 +24,15 @@ fun ByteArray.crc(
     xorOut: Long = 0L,
     refIn: Boolean = false,
     refOut: Boolean = false
+): String = crc(width, poly.toULong(), initial.toULong(), xorOut.toULong(), refIn, refOut)
+
+fun ByteArray.crc(
+    width: Int,
+    poly: ULong = 0UL,
+    initial: ULong = 0UL,
+    xorOut: ULong = 0UL,
+    refIn: Boolean = false,
+    refOut: Boolean = false
 ): String {
     val mask = if (width == 64) 0xFFFFFFFFFFFFFFFFUL else (1UL shl width) - 1UL
     val half = (1UL shl (width - 1)).coerceAtLeast(0x80UL)
@@ -39,7 +48,7 @@ fun ByteArray.crc(
         .map { if (diff < 0) it shl -diff else it }
         .forEach { byte ->
             crc = crc xor byte
-            if (poly != 0L) {
+            if (poly != 0UL) {
                 repeat(8) {
                     crc =
                         if (crc and half != 0UL) {
@@ -58,19 +67,26 @@ fun ByteArray.crc(
         crc = crc.reflected(width)
     }
 
-    return (crc xor xorOut.toULong() and mask).toString(16).properHex(width)
+    return (crc xor xorOut and mask).toString(16).properHex(width)
 }
 
 private fun String.properHex(width: Int) =
     if (width > 4) padding("0", ceil(width / 4.0).toInt(), false) else this
 
-fun ByteArray.crcReverse(width: Int, poly: Long = 0, initial: Long = 0, xorOut: Long = 0): String {
+fun ByteArray.crcReverse(width: Int, poly: Long = 0, initial: Long = 0, xorOut: Long = 0) =
+    crcReverse(width, poly.toULong(), initial.toULong(), xorOut.toULong())
+
+fun ByteArray.crcReverse(
+    width: Int,
+    poly: ULong = 0UL,
+    initial: ULong = 0UL,
+    xorOut: ULong = 0UL
+): String {
     val mask = if (width == 64) 0xFFFFFFFFFFFFFFFFUL else (1UL shl width) - 1UL
-    var crc = initial.toULong()
+    var crc = initial
 
     val diff = 8 - width
-    val reversePoly =
-        if (diff > 0) poly.toULong().reflected() shr diff else poly.toULong().reflected(width)
+    val reversePoly = if (diff > 0) poly.reflected() shr diff else poly.reflected(width)
 
     println(
         "crc ${crc.toString(16)} mask ${mask.toString(16)} reversePoly ${reversePoly.toString(16)}"
@@ -78,19 +94,17 @@ fun ByteArray.crcReverse(width: Int, poly: Long = 0, initial: Long = 0, xorOut: 
     map { it.toULong() }
         .forEach { byte ->
             crc = crc xor byte
-            if (poly != 0L) {
-                repeat(8) {
-                    crc =
-                        if (crc and 1UL == 1UL) {
-                            (crc shr 1) xor reversePoly
-                        } else {
-                            crc shr 1
-                        }
-                }
+            repeat(8) {
+                crc =
+                    if (crc and 1UL == 1UL) {
+                        (crc shr 1) xor reversePoly
+                    } else {
+                        crc shr 1
+                    }
             }
         }
 
-    return (crc xor xorOut.toULong() and mask).toString(16).properHex(width)
+    return (crc xor xorOut and mask).toString(16).properHex(width)
 }
 
 fun Int.reflected(bits: Int = 8): Int {
