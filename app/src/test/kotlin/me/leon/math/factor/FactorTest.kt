@@ -94,6 +94,10 @@ class FactorTest {
             println("____${it.size}")
             println(it.joinToString("\n"))
         }
+
+        params = "rsa_nec_fermat_4.txt".parseRsaParams()
+        val fermatMore = requireNotNull(params["n"]).factor()
+        assertEquals(4, fermatMore.size)
     }
 
     @Test

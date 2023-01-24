@@ -70,11 +70,61 @@ fun BigInteger.fermat(timeOut: Int = TIME_OUT): MutableList<BigInteger> {
     return mutableListOf(this.negate())
 }
 
+/** 适用因子相差较小 时间复杂度 O(|p-q|) */
+fun BigInteger.fermatMore(
+    num: Int = 2,
+    timeOut: Int = TIME_OUT
+): MutableSet<Pair<BigInteger, BigInteger>> {
+    val result = mutableSetOf<Pair<BigInteger, BigInteger>>()
+    with(sqrtAndRemainder()) {
+        if (this.last() != ZERO) {
+            var a = first() + ONE
+            var count = 0
+            var b: BigInteger
+            val startTime = System.currentTimeMillis()
+
+            while (System.currentTimeMillis() - startTime < timeOut) {
+                val b1 = a.pow(2) - this@fermatMore
+                b = b1.sqrt()
+                count++
+                if (b * b == b1) {
+                    println("solved iteration $count \n\tp = ${a + b} \n\tq= ${a - b}\n")
+                    result.add((a + b) to (a - b))
+                    if (result.size == num) {
+                        return result
+                    }
+                }
+                a++
+            }
+        }
+    }
+    if (result.size == 0) {
+        println("no fermat solution")
+    }
+    return result
+}
+
 fun BigInteger.fullFermat(timeOut: Int = TIME_OUT): List<BigInteger> {
     if (isProbablePrime(100)) return listOf(this)
-    return fermat(timeOut)
-        .map { it.fullFermat(timeOut).takeIf { it.size > 1 } ?: listOf(it) }
-        .flatten()
+    return runCatching {
+            fermat(timeOut)
+                .map { it.fullFermat(timeOut).takeIf { it.size > 1 } ?: listOf(it) }
+                .flatten()
+        }
+        .getOrDefault(listOf(this.negate()))
+}
+
+fun BigInteger.fullFermat2(timeOut: Int = TIME_OUT): List<BigInteger> {
+    println("full $this")
+    if (isProbablePrime(100)) return listOf(this)
+    val fermatMore = fermatMore(timeOut)
+    return if (fermatMore.size >= 2) {
+        val (p1q1, p2q2) = fermatMore.toList()[0]
+        val (p1q2, p2q1) = fermatMore.toList()[1]
+        mutableListOf(p1q1.gcd(p1q2), p2q2.gcd(p2q1), p1q1.gcd(p2q1), p2q2.gcd(p1q2))
+    } else {
+        listOf(this.negate())
+    }
 }
 
 fun BigInteger.pollardsRhoFactors(
@@ -173,6 +223,10 @@ fun BigInteger.factor(): MutableList<BigInteger> {
             {
                 println("---div--- $it")
                 it.trialDivide()
+            },
+            {
+                println("---fermat2---")
+                it.fullFermat2(TIME_OUT)
             },
             {
                 println("---factorDb---")
