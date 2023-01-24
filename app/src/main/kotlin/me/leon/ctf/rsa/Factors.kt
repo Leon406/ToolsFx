@@ -3,9 +3,11 @@ package me.leon.ctf.rsa
 import java.math.BigInteger
 import java.math.BigInteger.*
 import me.leon.factorDb
+import me.leon.root
 
 /** 时间复杂度 O(sqrt(N)) 优化 加入试除后 素数判断 */
 val THREE = 3.toBigInteger()
+val TWO = 2.toBigInteger()
 val MAX_DIVIDER = 10_000.toBigInteger()
 const val TIME_OUT = 2_000
 
@@ -46,7 +48,7 @@ fun BigInteger.trialDivide(maxDivider: BigInteger = MAX_DIVIDER): MutableList<Bi
 
 /** 适用因子相差较小 时间复杂度 O(|p-q|) */
 fun BigInteger.fermat(timeOut: Int = TIME_OUT): MutableList<BigInteger> {
-    with(sqrtAndRemainder()) {
+    with(root()) {
         if (this.last() != ZERO) {
             var a = first() + ONE
             var count = 0
@@ -55,7 +57,7 @@ fun BigInteger.fermat(timeOut: Int = TIME_OUT): MutableList<BigInteger> {
 
             while (System.currentTimeMillis() - startTime < timeOut) {
                 val b1 = a.pow(2) - this@fermat
-                b = b1.sqrt()
+                b = b1.root()[0]
                 count++
                 if (b * b == b1) {
                     println("solved iteration $count \n\tp = ${a + b} \n\tq= ${a - b}\n")
@@ -76,7 +78,7 @@ fun BigInteger.fermatMore(
     timeOut: Int = TIME_OUT
 ): MutableSet<Pair<BigInteger, BigInteger>> {
     val result = mutableSetOf<Pair<BigInteger, BigInteger>>()
-    with(sqrtAndRemainder()) {
+    with(root()) {
         if (this.last() != ZERO) {
             var a = first() + ONE
             var count = 0
@@ -85,7 +87,7 @@ fun BigInteger.fermatMore(
 
             while (System.currentTimeMillis() - startTime < timeOut) {
                 val b1 = a.pow(2) - this@fermatMore
-                b = b1.sqrt()
+                b = b1.root()[0]
                 count++
                 if (b * b == b1) {
                     println("solved iteration $count \n\tp = ${a + b} \n\tq= ${a - b}\n")
