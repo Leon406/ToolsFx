@@ -39,6 +39,7 @@ class Home : View("${messages["appName"]} v$appVersion build $build") {
             runCatching { Class.forName("javafx.scene.web.WebView") }
                 .onSuccess { views.add(OnlineWebView::class) }
         }
+        views.add(MiscFragment::class)
     }
 
     override val root = tabpane {

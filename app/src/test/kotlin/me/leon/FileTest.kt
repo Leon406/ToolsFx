@@ -1,8 +1,9 @@
 package me.leon
 
-import kotlin.test.Ignore
 import me.leon.ext.toFile
 import org.junit.Test
+import java.io.File
+import kotlin.test.Ignore
 
 class FileTest {
     @Test
@@ -40,5 +41,26 @@ class FileTest {
                     println("exist: $it $delete")
                 }
             }
+    }
+
+    @Test
+    fun deleteEmptyDir() {
+        "E:\\ttt".toFile().deleteEmptyDirs()
+    }
+
+    fun File.deleteEmptyDirs() {
+        if (!exists() || !isDirectory) {
+            return
+        }
+
+        val files = listFiles()
+        if (files != null && files.isNotEmpty()) {
+            for (file in files) {
+                file.deleteEmptyDirs()
+            }
+        }
+        if (listFiles()?.isEmpty() == true) {
+            delete()
+        }
     }
 }
