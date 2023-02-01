@@ -12,8 +12,8 @@ val magics =
         "aced" to "Serialized Java Data",
         "0000000c6a5020200d0a" to "jp2",
         "89504e47" to "png",
-        "474946383761" to "gif",
-        "474946383961" to "gif",
+        "474946383761" to "gif(87a)",
+        "474946383961" to "gif(89a)",
         "0001000000" to "ttf",
         "49492a00227105008037" to "tif",
         "424d" to "bmp",
@@ -34,12 +34,13 @@ val magics =
         "000001ba210001000180" to "mpg",
         "3026b2758e66cf11a6d9" to "wmv",
         "52494646e27807005741" to "wav",
+        "664c6143" to "flac",
         "52494646d07d60074156" to "avi",
         "4d546864000000060001" to "mid",
         "526172211a07" to "rar",
         "235468697320636f6e66" to "ini",
         "504b03040a0000080800" to "jar",
-        "504b03040a0000000000" to "jar",
+        "504b03040a0000000000" to "xlsx",
         "504b03040a0000080000" to "jar",
         "504b0304140008000800" to "jar",
         "504b0304140008080800" to "jar",
@@ -54,7 +55,21 @@ val magics =
         "7061636b616765207765" to "java",
         "406563686f206f66660d" to "bat",
         "1f8b" to "gz",
-        "cafebabe000000" to "class",
+        "cafebabe00000031" to "class(49,jdk1.5)",
+        "cafebabe00000032" to "class(50,jdk1.6)",
+        "cafebabe00000033" to "class(51,jdk1.7)",
+        "cafebabe00000034" to "class(52,jdk1.8)",
+        "cafebabe00000035" to "class(53,jdk9)",
+        "cafebabe00000036" to "class(54,jdk10)",
+        "cafebabe00000037" to "class(55,jdk11)",
+        "cafebabe00000038" to "class(56,jdk12)",
+        "cafebabe00000039" to "class(57,jdk13)",
+        "cafebabe0000003a" to "class(58,jdk14)",
+        "cafebabe0000003b" to "class(59,jdk15)",
+        "cafebabe0000003c" to "class(60,jdk16)",
+        "cafebabe0000003d" to "class(61,jdk17)",
+        "cafebabe0000003e" to "class(62,jdk18)",
+        "cafebabe0000003f" to "class(63,jdk19)",
         "49545346030000006000" to "chm",
         "04000000010000001300" to "mxp",
         "6431303a637265617465" to "torrent",
@@ -68,14 +83,28 @@ val magics =
         "00000100" to "ico",
         "6465780a30333500" to "dex",
         "377abcaf271c" to "7z",
+        "04224d18" to "lz4",
+        "4c5a4950" to "lz",
         "3c3f786d6c20" to "xml",
         "4c0000000" to "lnk",
         "feedfeed" to "jks",
         "52494646" to "webp",
         "1b4c7561" to "luac",
+        "d4c3b2a1" to "pcap",
+        "a1b2c3d4" to "pcap",
+        "4d3cb2a1" to "pcap",
+        "a1b23c4d" to "pcap",
+        "0a0d0d0a" to "pcapng",
+        "2321" to "#! shell",
+        "774f4646" to "woff",
+        "774f4632" to "woff2",
+        "0061736d" to "wasm",
+        "4f54544f" to "otf",
+        "2321414d52" to "amr",
+        "2e736e64" to "snd"
     )
 
-val multiExts = listOf("zip", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "jar", "apk", "exe")
+val multiExts = listOf("zip", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "jar", "apk")
 
 val unsupportedExts = (magics.values + multiExts).toSet()
 
@@ -88,21 +117,25 @@ fun File.realExtension() =
                 magics.keys
                     .firstOrNull { this.startsWith(it, true) }
                     ?.let { key ->
-                        //                    println(name + " " + key + " " + magics[key])
+                          println(name + " magic: $this " + key + " " + magics[key])
                         (if (magics[key] in multiExts) {
-                            extension.takeIf { it != name } ?: magics[key]
+                            "$extension(probably)".takeIf { extension != name } ?: magics[key]
                         } else {
                             magics[key]
                         })
                     }
-                    ?: extension.also { println("unknown magic number $this $name") }
+                    ?: "$extension(probably)".also { println("unknown magic number $this $name") }
             }
         }
     } else {
         "dir"
     }
 
-fun File.magicNumber(bytes: Int = 10) = inputStream().use { it.readNBytes(bytes).toHex() }
+fun File.magicNumber(bytes: Int = 10) = inputStream().use {
+    val b = ByteArray(bytes)
+    it.read(b)
+    b.toHex()
+}
 
 fun File.toBase64() = readBytes().base64()
 
