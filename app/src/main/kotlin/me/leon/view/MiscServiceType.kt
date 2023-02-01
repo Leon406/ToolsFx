@@ -62,8 +62,33 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             raw.lanScan().joinToString(System.lineSeparator())
     },
+    BATCH_PING("ping") {
+        override fun process(raw: String, params: MutableMap<String, String>) = raw.batchPing()
+    },
+    BATCH_TCPING("tcping") {
+        override fun process(raw: String, params: MutableMap<String, String>) = raw.batchTcPing()
+    };
+
+    override fun hint(): String {
+        return HINTS[this].orEmpty()
+    }
 }
 
-val serviceTypeMap = MiscServiceType.values().associateBy { it.type }
+val HINTS =
+    mapOf(
+        MiscServiceType.UUID to "generate count",
+        MiscServiceType.TIME_STAMP to "timestamp in milliseconds,separate by line",
+        MiscServiceType.TIME_STAMP_SECOND to "timestamp in seconds,separate by line",
+        MiscServiceType.DATE2STAMP to
+            "date, support format " +
+                "like 2023-02-01 12:00:00, 2023-02-01, 2023/02/01, 20230201,separate by line",
+        MiscServiceType.PORT_SCAN to "ip or domain (port from 1 to 10000)",
+        MiscServiceType.PORT_SCAN_FULL to "ip or domain ( port from 1 to 65535)",
+        MiscServiceType.IP_SCAN to "ip w/o last dot,like 192.168.0",
+        MiscServiceType.BATCH_PING to "ping ip or domains,separate by line",
+        MiscServiceType.BATCH_TCPING to "tcp ping ip or domains,separate by line",
+    )
 
-fun String.locationServiceType() = serviceTypeMap[this] ?: MiscServiceType.UUID
+val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }
+
+fun String.miscServiceType() = miscServiceTypeMap[this] ?: MiscServiceType.UUID

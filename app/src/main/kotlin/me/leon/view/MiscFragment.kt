@@ -47,6 +47,7 @@ class MiscFragment : PluginFragment("Misc") {
         taInput = textarea {
             isWrapText = true
             onDragEntered = eventHandler
+            promptText = serviceType.hint()
         }
         hbox {
             alignment = Pos.CENTER_LEFT
@@ -58,16 +59,17 @@ class MiscFragment : PluginFragment("Misc") {
                 vgap = 8.0
                 hgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns = 4
+                prefColumns = 5
                 togglegroup {
-                    serviceTypeMap.forEach {
+                    miscServiceTypeMap.forEach {
                         radiobutton(it.key) {
                             setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
                             if (it.value == MiscServiceType.UUID) isSelected = true
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
-                        serviceType = new.cast<RadioButton>().text.locationServiceType()
+                        serviceType = new.cast<RadioButton>().text.miscServiceType()
+                        taInput.promptText = serviceType.hint()
                         println(serviceType)
                     }
                 }

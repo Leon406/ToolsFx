@@ -69,3 +69,26 @@ fun String.lanScan(): List<Int> {
             .map { it.first }
     }
 }
+
+fun String.batchPing() = runBlocking {
+    lines()
+        .filter { it.isNotEmpty() }
+        .map { it to async(DISPATCHER) { it.substringBeforeLast(":").ping() } }
+        .map { it.first to it.second.await() }
+        .sortedByDescending { it.second }
+        .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+}
+
+fun String.batchTcPing() = runBlocking {
+    lines()
+        .filter { it.contains(":") }
+        .map {
+            it to
+                async(DISPATCHER) {
+                    it.substringBeforeLast(":").connect(it.substringAfterLast(":").toInt())
+                }
+        }
+        .map { it.first to it.second.await() }
+        .sortedByDescending { it.second }
+        .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+}
