@@ -1,25 +1,26 @@
-{"version":"1.15.2.beta","info":"1.15.2.beta 2022-12-25,
+{"version":"1.15.3.beta","info":"1.15.3.beta 2023-02-01,
 
 新功能
 
-  🔥 文件模式 显示非文本文件扩展
-  🔥 SymmetricCrypto新增 Tnepres,key iv编码支持自动转换
-  🔥 编码支持文件加解密
-  🔥 BigInt新增排列和组合
-  🔥 CTF RSA-crack 支持d c e nbits参数
-  🔥 新增图片模块 (默认不内置,请单独下载)
-  🔥 Encode add 十进制转其他进制,需自定义字典
-  🔥 CTF add Symbol Cipher and rename
-  🔥 支持应用自定义缩放比例
-  🔥 Digest crack 支持 mask
-  🔥 字符处理 分割支持正则
-  🔥 CTF zwcUnicode不设置字典可以自动解析
-  🔥 合并CTF类似功能算法
-  🔥 CTF新增 base64 base32 steg加解密
+  🔥 新增misc模块
+  🔥 CTF RSA-crack支持 多因子费马分解, 修复fullFermat错误后停止分解
+  🔥 编码加入输入选项限制,只能选一个
+  🔥 字符处理,支持转义
+  🔥 QrcodeView多文件识别修复及简化交互
 
 Bug修复
-  🐛 https请求证书错误
+  🐛 Factors 兼容 jdk8
+  🐛 编码文件解密同名覆盖问题
+  🐛 js hex编码缺少补零
+
+插件
+  🔥 plugin-image 新增图片处理插件(不默认内置)
+  🐛 plugin-apipost 忽略证书验证功能错误
+
 
 使用前请看README和wiki
+
+已开通打赏渠道,入口不会嵌入软件中
+想支持作者,可在README或者个人github主页打赏
 
   "}
