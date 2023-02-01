@@ -4,11 +4,12 @@ import java.awt.image.BufferedImage
 import java.math.BigInteger
 import javafx.scene.image.Image
 import javafx.scene.paint.Color
+import javafx.stage.FileChooser
 import kotlin.math.sqrt
 import me.leon.ctf.rsa.factor
 import me.leon.ext.*
 import me.leon.ext.crypto.crc32
-import me.leon.ext.fx.toFxImg
+import me.leon.ext.fx.*
 
 /**
  * @author Leon
@@ -164,4 +165,18 @@ fun String.rgb(): Image {
 
     val height = colors.size / width
     return colors.fxImage(width, height)
+}
+
+fun Image.save() {
+    val fileChooser = FileChooser()
+    fileChooser.extensionFilters.addAll(
+        FileChooser.ExtensionFilter("JPG", "*.jpg"),
+        FileChooser.ExtensionFilter("JPEG", "*.jpeg"),
+        FileChooser.ExtensionFilter("PNG", "*.png"),
+        FileChooser.ExtensionFilter("ALL", "*.*")
+    )
+
+    fileChooser.showSaveDialog(null)?.outputStream()?.use {
+        it.write(toBufferImage().toByteArray())
+    }
 }

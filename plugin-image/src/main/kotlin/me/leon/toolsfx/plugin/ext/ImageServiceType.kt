@@ -1,9 +1,11 @@
 package me.leon.toolsfx.plugin.ext
 
+import javafx.scene.image.Image
 import me.leon.C1
 import me.leon.P1
 import me.leon.encode.base.base64
 import me.leon.ext.fx.base64Image
+import me.leon.ext.hex2ByteArray
 import me.leon.ext.toFile
 
 enum class ImageServiceType(val type: String) : ImageService {
@@ -14,6 +16,10 @@ enum class ImageServiceType(val type: String) : ImageService {
     BASE64_IMG("base64ToImg") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
             raw.properString(isFile).base64Image()
+    },
+    HEX_IMG("hexToImg") {
+        override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
+            Image(raw.properString(isFile).hex2ByteArray().inputStream())
     },
     IMAGE_TO_BASE64("ImgToBase64") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =

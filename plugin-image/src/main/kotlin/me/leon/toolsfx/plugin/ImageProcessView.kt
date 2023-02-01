@@ -156,6 +156,14 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                     }
                 }
             }
+            button(graphic = imageview(IMG_SAVE)) {
+                tooltip(messages["save"])
+                action {
+                    if (showOutputImage.get()) {
+                        ivOutput.image.save()
+                    }
+                }
+            }
             button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
                 action {
