@@ -346,6 +346,10 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 [tornadofx](https://github.com/edvin/tornadofx)
 
+## DONATE
+
+[赞赏作者](https://afdian.net/a/leon406)
+
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/Leon406/ToolsFx.svg)](https://starchart.cc/Leon406/ToolsFx)

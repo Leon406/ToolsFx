@@ -325,6 +325,10 @@ see [changelog.md](changelog.md)
 
 [badge maker](https://shields.io/)
 
+## DONATE
+
+[donate](https://afdian.net/a/leon406) (now only support alipay and wechat pay)
+
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/Leon406/ToolsFx.svg)](https://starchart.cc/Leon406/ToolsFx)
