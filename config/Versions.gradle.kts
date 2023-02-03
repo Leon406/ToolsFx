@@ -1,4 +1,4 @@
-extra.set("kotlin_version", "1.8.0")
+extra.set("kotlin_version", "1.8.10")
 extra.set("tornadofx_version", "1.7.20")
 // openjfx LTS version needs Subscription https://mvnrepository.com/artifact/org.openjfx/javafx-controls
 extra.set("jfx_version", "19.0.2.1")

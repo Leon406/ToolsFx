@@ -8,7 +8,7 @@ version = "1.15.3.beta"
 
 plugins {
     application
-    kotlin("plugin.serialization") version "1.7.21"
+    kotlin("plugin.serialization") version "1.8.10"
 }
 
 buildscript {
