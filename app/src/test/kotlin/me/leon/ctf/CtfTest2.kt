@@ -202,6 +202,7 @@ class CtfTest2 {
             assertEquals(r, encrypt.baseStegDecrypt())
         }
     }
+
     @Test
     fun base32StegEncode() {
         (1..20).forEach {
@@ -209,5 +210,13 @@ class CtfTest2 {
             val encrypt = r.baseStegEncrypt(File(TEST_CTF_DIR, "raw.txt").readText(), BASE32_DICT)
             assertEquals(r, encrypt.baseStegDecrypt(BASE32_DICT))
         }
+    }
+
+    @Test
+    fun type7() {
+        val data = "flag{type7}"
+        val encoded = data.type7(2)
+        assertEquals("0200085a0c1d1b385c4b5e04", encoded)
+        assertEquals(data, encoded.type7Decode())
     }
 }

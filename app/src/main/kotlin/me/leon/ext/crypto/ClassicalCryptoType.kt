@@ -1,9 +1,6 @@
 package me.leon.ext.crypto
 
-import me.leon.C1
-import me.leon.C2
-import me.leon.P1
-import me.leon.P2
+import me.leon.*
 import me.leon.classical.*
 import me.leon.ctf.*
 import me.leon.ctf.rsa.RsaSolver
@@ -681,6 +678,12 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.baiJiaXing()
 
         override fun decrypt(raw: String, params: Map<String, String>) = raw.baiJiaXingDecode()
+    },
+    TYPE7("type7") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.type7(params[P1]?.takeIf { it.isNotEmpty() }?.toInt() ?: 0)
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.type7Decode()
     },
     STEG_BASE64("steg base64") {
         override fun encrypt(raw: String, params: Map<String, String>) =

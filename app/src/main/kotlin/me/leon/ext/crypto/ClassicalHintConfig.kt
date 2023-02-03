@@ -140,5 +140,6 @@ val CLASSIC_CONFIG =
         ClassicalCryptoType.EIGHT_DIAGRAM to mapOf(HINT to arrayOf("delimiter(none as default)")),
         ClassicalCryptoType.MANCHESTER to mapOf(CHECK to arrayOf("standard", "reverse 8bit")),
         ClassicalCryptoType.MANCHESTER_DIFF to mapOf(CHECK to arrayOf("reverse 8bit")),
-        ClassicalCryptoType.BACON24 to mapOf(CHECK to arrayOf("bacon26"))
+        ClassicalCryptoType.BACON24 to mapOf(CHECK to arrayOf("bacon26")),
+        ClassicalCryptoType.TYPE7 to mapOf(HINT to arrayOf("seed(need in encrypt), from 0 to 52")),
     )

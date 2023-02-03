@@ -117,7 +117,7 @@ fun File.realExtension() =
                 magics.keys
                     .firstOrNull { this.startsWith(it, true) }
                     ?.let { key ->
-                          println(name + " magic: $this " + key + " " + magics[key])
+                        println(name + " magic: $this " + key + " " + magics[key])
                         (if (magics[key] in multiExts) {
                             "$extension(probably)".takeIf { extension != name } ?: magics[key]
                         } else {
@@ -131,11 +131,12 @@ fun File.realExtension() =
         "dir"
     }
 
-fun File.magicNumber(bytes: Int = 10) = inputStream().use {
-    val b = ByteArray(bytes)
-    it.read(b)
-    b.toHex()
-}
+fun File.magicNumber(bytes: Int = 10) =
+    inputStream().use {
+        val b = ByteArray(bytes)
+        it.read(b)
+        b.toHex()
+    }
 
 fun File.toBase64() = readBytes().base64()
 
