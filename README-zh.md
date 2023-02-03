@@ -250,6 +250,16 @@
 
 ![pbe](./art/pbe.gif)
 
+### misc模块
+
+- 时间戳转换
+- 日志转时间戳
+- 生成uuid （支持多组）
+- 端口扫描
+- 局域网ip扫描
+- ping
+- tcping
+
 ### 其他功能
 
 - [x] 二维码功能/OCR
@@ -270,14 +280,6 @@
 
 bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
-
-## TODO
-
-### misc模块
-
-- 时间戳转换
-- 生成uuid （支持多组）
-- 端口扫描
 
 ## 下载地址
 

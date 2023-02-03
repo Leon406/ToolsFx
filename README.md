@@ -239,6 +239,16 @@ support file, big file which is larger than 8Gi
 
 ![pbe](./art/pbe.gif)
 
+### misc模块
+
+- timestamp to date
+- date to timestamp
+- uuid
+- port scan
+- ip scan
+- ping
+- tcping
+
 ### Others
 
 - [x] Qrcode/OCR
