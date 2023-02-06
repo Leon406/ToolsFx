@@ -115,8 +115,8 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                         param1.promptText = "".takeIf { paramHints.isEmpty() } ?: paramHints.first()
 
                         val options = imageServiceType.options()
+                        showComboParam.value = options.isNotEmpty()
                         if (options.isNotEmpty()) {
-                            showComboParam.value = options.isNotEmpty()
                             cbParam.items = options.toMutableList().asObservable()
                             selectedParam.set(if (options.isEmpty()) "" else options.first())
                             cbParam.bind(selectedParam)
