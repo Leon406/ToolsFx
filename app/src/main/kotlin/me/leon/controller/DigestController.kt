@@ -36,6 +36,8 @@ class DigestController : Controller() {
             data.decodeToByteArray(inputEncode).adler32()
         } else if (method == "NTLM") {
             data.decodeToByteArray(inputEncode).ntlmHash()
+        } else if (method == "MD5_MIDDLE") {
+            data.decodeToByteArray(inputEncode).hash2String().substring(8, 24)
         } else if (method == "LM") {
             data.decodeToByteArray(inputEncode).lmHash()
         } else if (method.passwordHashingType() != null) {
@@ -66,6 +68,8 @@ class DigestController : Controller() {
                 path.adler32File()
             } else if (method.passwordHashingType() != null) {
                 kotlin.error("not support")
+            } else if (method == "MD5_MIDDLE") {
+                path.fileHash().substring(8, 24)
             } else {
                 path.fileHash(method)
             }
@@ -78,6 +82,7 @@ class DigestController : Controller() {
         catch({ "digest crack error: $it" }) {
             val lower = data.lowercase()
             require(digest(method, "", "raw").length == data.length) { "Wrong Method!!! " }
+            println("crack $method $data")
             dicts.findParallel("") { digest(method, it, "raw") == lower }
         }
 

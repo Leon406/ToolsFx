@@ -37,6 +37,7 @@ object Digests {
 val ALGOS_HASH =
     linkedMapOf(
         "MD5" to listOf("128"),
+        "MD5_MIDDLE" to listOf("128"),
         "MD4" to listOf("128"),
         "MD2" to listOf("128"),
         "SM3" to listOf("256"),

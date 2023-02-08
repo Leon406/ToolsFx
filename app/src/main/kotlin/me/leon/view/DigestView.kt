@@ -228,9 +228,13 @@ class DigestView : Fragment(messages["hash"]) {
                 } else {
                     controller.crack(
                         method,
-                        inputText
-                            .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
-                            .encodeTo("hex")
+                        if (method == "mysql5") {
+                            inputText
+                        } else {
+                            inputText
+                                .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
+                                .encodeTo("hex")
+                        }
                     )
                 }
             }

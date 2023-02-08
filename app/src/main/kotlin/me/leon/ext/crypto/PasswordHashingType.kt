@@ -57,6 +57,16 @@ enum class PasswordHashingType(val alg: String) {
             return data.decodeToString().hash("SHA512").uppercase().hash()
         }
     },
+    MySql("mysql") {
+        override fun hash(data: ByteArray): String {
+            return data.mysqlOld()
+        }
+    },
+    MySql5("mysql5") {
+        override fun hash(data: ByteArray): String {
+            return data.mysql()
+        }
+    },
     SpringSecurityMD4("SpringSecurity-MD4") {
         override fun hash(data: ByteArray): String {
             return PH_MD4.encode(data.decodeToString())

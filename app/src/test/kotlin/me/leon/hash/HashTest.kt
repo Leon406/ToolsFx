@@ -3,7 +3,6 @@ package me.leon.hash
 import java.io.File
 import java.security.Security
 import java.util.zip.CRC32
-import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import me.leon.*
 import me.leon.controller.DigestController
@@ -11,7 +10,7 @@ import me.leon.ext.crypto.*
 import me.leon.ext.toHex
 import org.junit.Test
 
-@Ignore
+// @Ignore
 class HashTest {
     private val expectedMap =
         mapOf(
@@ -293,5 +292,15 @@ class HashTest {
         val plain = "123456"
         plain.lmHash().also { assertEquals("44efce164ab921caaad3b435b51404ee", it) }
         plain.ntlmHash().also { assertEquals("32ed87bdb5fdc5e9cba88547376818d4", it) }
+    }
+
+    @Test
+    fun mysqlHash() {
+        val plain = "leon"
+        assertEquals("*5F37A995E3A38A5807DEEA99D2CD1002BAC3DE5B", plain.mysql().uppercase())
+
+        println(plain.mysqlOld())
+
+        assertEquals("3d7bfc705698e189", plain.mysqlOld())
     }
 }
