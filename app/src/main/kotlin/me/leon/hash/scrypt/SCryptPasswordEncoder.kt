@@ -37,8 +37,8 @@ import org.bouncycastle.crypto.generators.SCrypt
  *   defender.
  * * Scrypt is based on Salsa20 which performs poorly in Java (on par with AES) but performs awesome
  *   (~4-5x faster) on SIMD capable platforms
- * * While there are some that would disagree, consider reading -
- *   [Why I Don't Recommend Scrypt](https://blog.ircmaxell.com/2014/03/why-i-dont-recommend-scrypt.html)
+ * * While there are some that would disagree, consider
+ *   reading - [Why I Don't Recommend Scrypt](https://blog.ircmaxell.com/2014/03/why-i-dont-recommend-scrypt.html)
  *   (for password storage)
  *
  * @author Shazin Sadakath

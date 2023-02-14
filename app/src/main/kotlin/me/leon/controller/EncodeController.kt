@@ -25,7 +25,7 @@ class EncodeController : Controller() {
             with(encode2String(file.readBytes(), type, dic, charset)) {
                 if (length > 1024 * 1024) {
                     val out = File(file.parentFile, file.name + ".enc")
-                    out.writer().use { out -> out.write(this) }
+                    out.writer().use { output -> output.write(this) }
                     "Output is larger than 1M, saved to ${out.absolutePath}"
                 } else {
                     this

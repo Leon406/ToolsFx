@@ -47,7 +47,7 @@ class ToolsApp : App(Home::class, Styles::class) {
 
             var file = File(APP_ROOT, "ToolsFx.properties")
             if (!file.exists()) {
-                javaClass.getResourceAsStream("/ToolsFx.properties")?.use {
+                ToolsApp::class.java.getResourceAsStream("/ToolsFx.properties")?.use {
                     it.copyTo(file.outputStream())
                 }
             }
@@ -56,7 +56,9 @@ class ToolsApp : App(Home::class, Styles::class) {
 
             file.parentFile.mkdirs()
 
-            javaClass.getResourceAsStream("/top1000.txt")?.use { it.copyTo(file.outputStream()) }
+            ToolsApp::class.java.getResourceAsStream("/top1000.txt")?.use {
+                it.copyTo(file.outputStream())
+            }
         }
     }
 }

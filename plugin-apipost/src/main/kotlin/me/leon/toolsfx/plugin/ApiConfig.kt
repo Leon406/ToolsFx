@@ -61,9 +61,7 @@ object ApiConfig {
         if (isEnableProxy) {
             HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
         }
-        HttpUrlUtil.globalHeaders.putAll(
-            parseHeaderString(globalHeaders) as MutableMap<String, String>
-        )
+        HttpUrlUtil.globalHeaders.putAll(parseHeaderString(globalHeaders))
         HttpUrlUtil.timeOut = timeOut
         HttpUrlUtil.followRedirect = followRedirect
         HttpUrlUtil.verifySSL(!isIgnoreCert)
@@ -87,13 +85,10 @@ object ApiConfig {
         }
         isIgnoreCert = ignoreCert
         HttpUrlUtil.verifySSL(!ignoreCert)
-        val previousHeaders: MutableMap<String, String> =
-            parseHeaderString(globalHeaders) as MutableMap<String, String>
+        val previousHeaders: MutableMap<String, Any> = parseHeaderString(globalHeaders)
         HttpUrlUtil.globalHeaders - previousHeaders.keys
         globalHeaders = headers
-        HttpUrlUtil.globalHeaders.putAll(
-            parseHeaderString(globalHeaders) as MutableMap<String, String>
-        )
+        HttpUrlUtil.globalHeaders.putAll(parseHeaderString(globalHeaders))
         proxyType = pType
         proxyHost = pHost
         proxyPort = pPort

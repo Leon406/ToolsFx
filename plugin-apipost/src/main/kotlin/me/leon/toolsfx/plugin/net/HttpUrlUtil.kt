@@ -55,7 +55,7 @@ object HttpUrlUtil {
             }
         }
 
-    val globalHeaders =
+    val globalHeaders: MutableMap<String, Any> =
         mutableMapOf(
             "Accept" to "*/*",
             "Connection" to "Keep-Alive",

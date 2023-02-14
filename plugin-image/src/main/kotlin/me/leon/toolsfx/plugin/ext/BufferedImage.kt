@@ -178,7 +178,7 @@ fun BufferedImage.grayOstu(): Pair<Int, BufferedImage> {
     for (t in 0..255) sum += (t * histData[t]).toFloat()
     var sumB = 0f
     var wB = 0
-    var wF = 0
+    var wF: Int
     var varMax = 0f
     var threshold = 0
     for (t in 0..255) {
