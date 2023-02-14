@@ -685,6 +685,11 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun decrypt(raw: String, params: Map<String, String>) = raw.type7Decode()
     },
+    CITRIX_CTX1("Citrix CTX1") {
+        override fun encrypt(raw: String, params: Map<String, String>) = raw.citrixCtx1()
+
+        override fun decrypt(raw: String, params: Map<String, String>) = raw.citrixCtx1Decode()
+    },
     STEG_BASE64("steg base64") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.baseStegEncrypt(

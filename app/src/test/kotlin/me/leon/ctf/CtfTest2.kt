@@ -219,4 +219,13 @@ class CtfTest2 {
         assertEquals("0200085a0c1d1b385c4b5e04", encoded)
         assertEquals(data, encoded.type7Decode())
     }
+
+    @Test
+    fun citrixCtx1() {
+        // JEDB
+        val data = "1"
+        val encoded = "JEDB"
+        assertEquals(encoded, data.citrixCtx1())
+        assertEquals(data, encoded.citrixCtx1Decode())
+    }
 }
