@@ -122,8 +122,11 @@ fun String.unicode2String() =
             .toString()
     } else {
         split("(?i)\\\\u\\+?".toRegex())
-            .filterIndexed { index, _ -> index != 0 }
-            .fold(StringBuilder()) { acc, c -> acc.append(c.toInt(HEX_RADIX).toChar()) }
+            .drop(1)
+            .fold(StringBuilder()) { acc, c ->
+                val properChar = c.replace("{", "").replace("}", "")
+                acc.append(properChar.toInt(HEX_RADIX).toChar())
+            }
             .toString()
     }
 
@@ -154,7 +157,7 @@ fun String.toHtmlEntity(radix: Int = 10, isAll: Boolean = true) =
 
 fun String.unicodeMix2String() =
     StringBuilder(this).replace(
-        "(?i:\\\\u\\+?[0-9a-f]{1,4}|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
+        "(?i:\\\\u(\\+?[0-9a-f]{1,4}|\\{[0-9a-f]{1,4}})|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
     ) {
         it.value.unicode2String()
     }

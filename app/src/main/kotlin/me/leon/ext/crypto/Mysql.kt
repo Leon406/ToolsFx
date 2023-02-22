@@ -10,7 +10,7 @@ import me.leon.hash2String
  * @since 2023-02-08 10:03
  * @email deadogone@gmail.com
  */
-private val bypass = arrayOf(' ', '\t')
+private val bypass = charArrayOf(' ', '\t')
 
 fun String.mysqlOld(): String {
     var nr = 1_345_345_333L

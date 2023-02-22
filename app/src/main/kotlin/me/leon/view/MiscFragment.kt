@@ -22,7 +22,7 @@ class MiscFragment : PluginFragment("Misc") {
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
     private var serviceType: MiscServiceType = MiscServiceType.UUID
     private val controller: MiscController by inject()
-    private val isProcessing: BooleanProperty = SimpleBooleanProperty(false)
+    private val processing: BooleanProperty = SimpleBooleanProperty(false)
 
     private val inputText: String
         get() = taInput.text.trim()
@@ -82,7 +82,7 @@ class MiscFragment : PluginFragment("Misc") {
             paddingLeft = DEFAULT_SPACING
 
             button(messages["run"], imageview(IMG_RUN)) {
-                enableWhen(!isProcessing)
+                enableWhen(!processing)
                 action { doProcess() }
             }
         }
@@ -111,11 +111,11 @@ class MiscFragment : PluginFragment("Misc") {
     private fun doProcess() {
         if (inputText.isEmpty()) return
         runAsync {
-            isProcessing.value = true
+            processing.value = true
             controller.process(serviceType, inputText)
         } ui
             {
-                isProcessing.value = false
+                processing.value = false
                 taOutput.text = it
             }
     }
