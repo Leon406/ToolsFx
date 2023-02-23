@@ -9,6 +9,7 @@ import me.leon.*
 import me.leon.controller.MiscController
 import me.leon.ext.*
 import me.leon.ext.fx.*
+import me.leon.misc.*
 import me.leon.toolsfx.plugin.PluginFragment
 import tornadofx.*
 

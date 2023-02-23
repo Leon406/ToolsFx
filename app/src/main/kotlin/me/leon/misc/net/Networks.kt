@@ -1,4 +1,4 @@
-package me.leon.ext
+package me.leon.misc.net
 
 import java.net.*
 import kotlin.system.measureTimeMillis

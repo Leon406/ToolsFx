@@ -2,7 +2,7 @@ package me.leon.misc
 
 import kotlin.test.Ignore
 import kotlin.test.Test
-import me.leon.ext.*
+import me.leon.misc.net.*
 
 /**
  * @author Leon

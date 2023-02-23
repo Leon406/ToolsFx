@@ -3,6 +3,7 @@ package me.leon
 import kotlin.test.assertEquals
 import me.leon.encode.base.base64
 import me.leon.ext.*
+import me.leon.misc.net.*
 import org.junit.Test
 
 class NetTest {
@@ -39,5 +40,29 @@ class NetTest {
     @Test
     fun fileType() {
         TEST_PRJ_DIR.listFiles()?.forEach { println(it.realExtension()) }
+    }
+
+    @Test
+    fun miit() {
+        val url = "baidu.com"
+        println(MiitInfo.domainInfo(url).showInfo)
+        println(MiitInfo.domainInfo(url).showInfo)
+        println(MiitInfo.domainInfo(url).showInfo)
+    }
+
+    @Test
+    fun whois() {
+
+        Whois.parse("taobao.com").also { println(it?.showInfo) }
+
+        Whois.parse("www.52pojie.cn").also { println(it?.showInfo) }
+    }
+
+    @Test
+    fun whoisSocket() {
+        //        flushSquid()
+//        println("52pojie.cn".whoisSocket())
+//        println("taobao.com".whoisSocket())
+        println("taobao.新闻".whoisSocket())
     }
 }

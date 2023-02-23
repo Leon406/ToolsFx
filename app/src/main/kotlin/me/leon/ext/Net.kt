@@ -5,6 +5,7 @@ import java.net.URL
 
 private const val DEFAULT_TIME_OUT = 10_000
 const val RESPONSE_OK = 200
+const val RESPONSE_NOT_FOUND = 404
 
 fun String.readBytesFromNet(
     method: String = "GET",
@@ -42,8 +43,8 @@ fun String.readBytesFromNet(
                         outputStream.close()
                     }
                 }
-                .takeIf { it.responseCode == RESPONSE_OK }
-                ?.inputStream
+                .takeIf { it.responseCode == RESPONSE_OK || it.responseCode == RESPONSE_NOT_FOUND }
+                ?.stream()
                 ?.readBytes()
                 ?: byteArrayOf()
         }
@@ -51,6 +52,20 @@ fun String.readBytesFromNet(
             println("read bytes err ${it.stacktrace()} ")
             byteArrayOf()
         }
+
+fun HttpURLConnection.stream() =
+    if (responseCode == RESPONSE_OK) {
+        inputStream
+    } else {
+        errorStream
+    }
+
+fun String.readFromNet(
+    method: String = "GET",
+    timeout: Int = DEFAULT_TIME_OUT,
+    data: String = "",
+    headers: Map<String, Any> = emptyMap()
+) = readBytesFromNet(method, timeout, data, headers).decodeToString()
 
 fun String.readStreamFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME_OUT) =
     runCatching {

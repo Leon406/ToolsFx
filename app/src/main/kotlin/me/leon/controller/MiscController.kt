@@ -1,7 +1,7 @@
 package me.leon.controller
 
 import me.leon.ext.stacktrace
-import me.leon.view.MiscServiceType
+import me.leon.misc.MiscServiceType
 import tornadofx.*
 
 class MiscController : Controller() {

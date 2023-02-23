@@ -1,8 +1,9 @@
-package me.leon.view
+package me.leon.misc
 
 import java.text.SimpleDateFormat
 import java.util.Date
 import me.leon.ext.*
+import me.leon.misc.net.*
 
 val SDF_TIME = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 val SDF_DATE = SimpleDateFormat("yyyy-MM-dd")
@@ -67,6 +68,19 @@ enum class MiscServiceType(val type: String) : MiscService {
     },
     BATCH_TCPING("tcping") {
         override fun process(raw: String, params: MutableMap<String, String>) = raw.batchTcPing()
+    },
+    WHOIS("whois") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            runCatching { Whois.parse(raw)?.showInfo ?: raw.whoisSocket() }
+                .getOrElse { it.stacktrace() }
+    },
+    ICP("ICP备案") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.lineAction2String {
+                "$it:\n\n" +
+                    runCatching { MiitInfo.domainInfo(it).showInfo }.getOrElse { it.stacktrace() } +
+                    "\n"
+            }
     };
 
     override fun hint(): String {
@@ -87,6 +101,8 @@ val HINTS =
         MiscServiceType.IP_SCAN to "ip w/o last dot,like 192.168.0",
         MiscServiceType.BATCH_PING to "ping ip or domains,separate by line",
         MiscServiceType.BATCH_TCPING to "tcp ping ip or domains,separate by line",
+        MiscServiceType.WHOIS to "domain,separate by line",
+        MiscServiceType.ICP to "domain, 工信部备案信息",
     )
 
 val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }

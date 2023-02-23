@@ -1,4 +1,4 @@
-package me.leon.view
+package me.leon.misc
 
 interface MiscService {
 
