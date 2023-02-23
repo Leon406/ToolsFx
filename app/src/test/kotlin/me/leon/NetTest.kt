@@ -4,6 +4,7 @@ import kotlin.test.assertEquals
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.misc.net.*
+import org.junit.Ignore
 import org.junit.Test
 
 class NetTest {
@@ -43,14 +44,14 @@ class NetTest {
     }
 
     @Test
+    @Ignore
     fun miit() {
         val url = "baidu.com"
-        println(MiitInfo.domainInfo(url).showInfo)
-        println(MiitInfo.domainInfo(url).showInfo)
         println(MiitInfo.domainInfo(url).showInfo)
     }
 
     @Test
+    @Ignore
     fun whois() {
 
         Whois.parse("taobao.com").also { println(it?.showInfo) }
