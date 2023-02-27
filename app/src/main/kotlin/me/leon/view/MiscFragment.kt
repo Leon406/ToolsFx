@@ -110,7 +110,7 @@ class MiscFragment : PluginFragment("Misc") {
     }
 
     private fun doProcess() {
-        if (inputText.isEmpty()) return
+        if (inputText.isEmpty() && serviceType != MiscServiceType.IP_LOCATION) return
         runAsync {
             processing.value = true
             controller.process(serviceType, inputText)

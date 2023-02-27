@@ -1,9 +1,9 @@
 package me.leon.misc.net
 
+import java.net.Socket
 import me.leon.encode.punyCode
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
-import java.net.Socket
 
 /**
  * @author Leon

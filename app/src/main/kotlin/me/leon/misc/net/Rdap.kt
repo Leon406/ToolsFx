@@ -40,7 +40,6 @@ data class Rdap(
             StringBuilder()
                 .apply {
                     append("Name: $ldhName").appendLine()
-                    append("Internationalized Domain Name: $unicodeName").appendLine()
                     append("Registry Domain ID: $handle").appendLine()
                     append("Domain Status: ${status.joinToString(",")}").appendLine()
                     append("Nameservers: \n\t${nameservers.joinToString("\n\t") { it.ldhName }}")

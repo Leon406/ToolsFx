@@ -69,18 +69,38 @@ enum class MiscServiceType(val type: String) : MiscService {
     BATCH_TCPING("tcping") {
         override fun process(raw: String, params: MutableMap<String, String>) = raw.batchTcPing()
     },
-    WHOIS("whois") {
+    WHOIS("whois(online)") {
         override fun process(raw: String, params: MutableMap<String, String>) =
             runCatching { Whois.parse(raw)?.showInfo ?: raw.whoisSocket() }
                 .getOrElse { it.stacktrace() }
     },
-    ICP("ICP备案") {
+    ICP("ICP备案(online)") {
         override fun process(raw: String, params: MutableMap<String, String>) =
             raw.lineAction2String {
                 "$it:\n\n" +
                     runCatching { MiitInfo.domainInfo(it).showInfo }.getOrElse { it.stacktrace() } +
                     "\n"
             }
+    },
+    IP2INT("ip2Int") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.lineAction { runCatching { it.ip2Uint().toString() }.getOrElse { it.stacktrace() } }
+                .joinToString(System.lineSeparator())
+    },
+    INT2IP("int2Ip") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.lineAction { runCatching { it.toUInt().toIp() }.getOrElse { it.stacktrace() } }
+                .joinToString(System.lineSeparator())
+    },
+    CIDR("CIDR") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.lineAction { runCatching { it.cidr() }.getOrElse { it.stacktrace() } }
+                .joinToString(System.lineSeparator())
+    },
+    IP_LOCATION("ip location(online)") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.lineAction { runCatching { it.ipLocation() }.getOrElse { it.stacktrace() } }
+                .joinToString(System.lineSeparator())
     };
 
     override fun hint(): String {
@@ -102,7 +122,11 @@ val HINTS =
         MiscServiceType.BATCH_PING to "ping ip or domains,separate by line",
         MiscServiceType.BATCH_TCPING to "tcp ping ip or domains,separate by line",
         MiscServiceType.WHOIS to "domain,separate by line",
-        MiscServiceType.ICP to "domain, 工信部备案信息",
+        MiscServiceType.ICP to "domain, 工信部备案信息,separate by line",
+        MiscServiceType.IP2INT to "ip, transform ip to integer, eg. 192.168.0.1,separate by line",
+        MiscServiceType.INT2IP to "int, transform integer to ip,  eg. 3232235521,separate by line",
+        MiscServiceType.CIDR to "ip, format 192.168.0.1/25,separate by line",
+        MiscServiceType.IP_LOCATION to "ip/url",
     )
 
 val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }

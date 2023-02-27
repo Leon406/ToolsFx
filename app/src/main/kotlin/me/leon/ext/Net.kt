@@ -1,5 +1,6 @@
 package me.leon.ext
 
+import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -53,7 +54,7 @@ fun String.readBytesFromNet(
             byteArrayOf()
         }
 
-fun HttpURLConnection.stream() =
+fun HttpURLConnection.stream(): InputStream =
     if (responseCode == RESPONSE_OK) {
         inputStream
     } else {

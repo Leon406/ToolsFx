@@ -51,7 +51,7 @@ class NetTest {
     }
 
     @Test
-    @Ignore
+    //    @Ignore
     fun whois() {
 
         Whois.parse("taobao.com").also { println(it?.showInfo) }
@@ -62,8 +62,9 @@ class NetTest {
     @Test
     fun whoisSocket() {
         //        flushSquid()
-//        println("52pojie.cn".whoisSocket())
-//        println("taobao.com".whoisSocket())
+        //        println("52pojie.cn".whoisSocket())
+        //        println("taobao.com".whoisSocket())
         println("taobao.新闻".whoisSocket())
+        println("ctf.mzy0.com".whoisSocket())
     }
 }
