@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.*
-import me.leon.Styles
 import me.leon.controller.SignatureController
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -104,7 +103,22 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     "SHA256withECNR",
                     "SHA384withECNR",
                     "SHA512withECNR"
-                )
+                ),
+            "JWT" to
+                listOf(
+                    "HS256",
+                    "HS384",
+                    "HS512",
+                    "RS256",
+                    "RS384",
+                    "RS512",
+                    "ES256",
+                    "ES384",
+                    "ES512",
+                    "PS256",
+                    "PS384",
+                    "PS512"
+                ),
         )
     private var timeConsumption = 0L
     private var startTime = 0L
@@ -299,6 +313,11 @@ class SignatureView : Fragment(messages["signVerify"]) {
                 .getOrElse { it.stacktrace() }
         } ui
             { state ->
+                if (selectedKeyPairAlg.get() == "JWT") {
+                    val (alg, payload) = signText.jwtParse()
+                    selectedSigAlg.set(alg)
+                    taRaw.text = payload
+                }
                 primaryStage.showToast("result: \n$state")
                 timeConsumption = System.currentTimeMillis() - startTime
                 labelInfo.text = info

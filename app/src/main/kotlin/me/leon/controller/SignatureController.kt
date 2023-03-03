@@ -19,10 +19,20 @@ class SignatureController : Controller() {
         catch({ it }) {
             if (singleLine) {
                 msg.lineAction2String {
-                    it.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).encodeTo(outEncode)
+                    if (kpAlg == JWT) {
+                        it.jwt(sigAlg, pri)
+                    } else {
+                        it.decodeToByteArray(inputEncode)
+                            .sign(kpAlg, sigAlg, pri)
+                            .encodeTo(outEncode)
+                    }
                 }
             } else {
-                msg.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).encodeTo(outEncode)
+                if (kpAlg == JWT) {
+                    msg.jwt(sigAlg, pri)
+                } else {
+                    msg.decodeToByteArray(inputEncode).sign(kpAlg, sigAlg, pri).encodeTo(outEncode)
+                }
             }
         }
 
@@ -39,14 +49,27 @@ class SignatureController : Controller() {
         catch({ it }) {
             if (singleLine) {
                 msg.lineActionIndex { s, i ->
-                    s.decodeToByteArray(inputEncode)
-                        .verify(kpAlg, sigAlg, pub, signed.lines()[i].decodeToByteArray(outEncode))
-                        .toString()
+                    if (kpAlg == JWT) {
+                        signed.jwtVerify(pub).toString()
+                    } else {
+                        s.decodeToByteArray(inputEncode)
+                            .verify(
+                                kpAlg,
+                                sigAlg,
+                                pub,
+                                signed.lines()[i].decodeToByteArray(outEncode)
+                            )
+                            .toString()
+                    }
                 }
             } else {
-                msg.decodeToByteArray(inputEncode)
-                    .verify(kpAlg, sigAlg, pub, signed.decodeToByteArray(outEncode))
-                    .toString()
+                if (kpAlg == JWT) {
+                    signed.jwtVerify(pub).toString()
+                } else {
+                    msg.decodeToByteArray(inputEncode)
+                        .verify(kpAlg, sigAlg, pub, signed.decodeToByteArray(outEncode))
+                        .toString()
+                }
             }
         }
 }

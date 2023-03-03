@@ -5,7 +5,6 @@ package me.leon.misc.net
  * @since 2023-02-27 16:58
  * @email deadogone@gmail.com
  */
-
 @Suppress("ALL")
 data class IpApi(
     val status: String,

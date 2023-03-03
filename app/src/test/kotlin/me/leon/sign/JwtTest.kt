@@ -1,6 +1,7 @@
 package me.leon.sign
 
 import kotlin.test.assertTrue
+import me.leon.ext.*
 import org.junit.Test
 
 class JwtTest {
@@ -12,9 +13,9 @@ class JwtTest {
     @Test
     fun jwtToken() {
         val data = """{"sub":"1234567890","name":"John Doe","iat":1516239022}"""
-        val token = data.jwt(JWT_ALGS.keys.last(), key)
+        val token = data.jwt(JWT_HMAC_ALGS.keys.last(), key)
         println(token)
-        assertTrue(token.jwtVerify(key).second)
+        assertTrue(token.jwtVerify(key))
     }
 
     @Test
