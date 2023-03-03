@@ -17,10 +17,10 @@ val JWT_SIGNATURE_ALGS =
         "RS256" to "RSA/SHA256withRSA",
         "RS384" to "RSA/SHA384withRSA",
         "RS512" to "RSA/SHA512withRSA",
-        // fixme
-        //        "ES256" to "ECDSA/SHA256withECDSA",
-        //        "ES384" to "ECDSA/SHA384withECDSA",
-        //        "ES512" to "ECDSA/SHA512withECDSA",
+        // @refer https://stackoverflow.com/questions/59228957/es256-jwt-validation-signatureexception-invalid-encoding-for-signature-java
+        "ES256" to "ECDSA/SHA256withPLAIN-ECDSA",
+        "ES384" to "ECDSA/SHA384withPLAIN-ECDSA",
+        "ES512" to "ECDSA/SHA512withPLAIN-ECDSA",
         "PS256" to "RSA/SHA256withRSAandMGF1",
         "PS384" to "RSA/SHA384withRSAandMGF1",
         "PS512" to "RSA/SHA512withRSAandMGF1",
@@ -54,7 +54,6 @@ fun String.jwtVerify(key: String): Boolean {
     val jwtParts = split(".")
     val header = jwtParts[0].base64UrlDecode2String()
     val alg = header.fromJson(LinkedHashMap::class.java)["alg"].safeAs<String>() ?: ""
-    val payload = jwtParts[1].base64UrlDecode2String()
 
     val sig = jwtParts[2]
     return if (alg.startsWith("HS")) {
