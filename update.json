@@ -9,14 +9,9 @@
   🔥 Hash 新增 mysql(oldpassword)  mysql5(password), md5-middle
   🔥 CTF add Type7
 
-Bug修复
-  🐛 Factors 兼容 jdk8
-  🐛 编码文件解密同名覆盖问题
-  🐛 plugin-image: 选项切换显示错误,
 
 插件
-  🔥 plugin-image 新增图片处理插件(不默认内置)
-  🐛 plugin-apipost 忽略证书验证功能错误
+  🐛 plugin-image: 选项切换显示错误
 
 
 使用前请看README和wiki
