@@ -13,7 +13,7 @@ val REG_NUMBER = "\\d+".toRegex()
 val REG_CRACK_HEADER = "\\d+ [\\w)]+(-->\\d+ )?".toRegex()
 
 val build: String
-    get() = "2022/12/25"
+    get() = "2023/03/03"
 
 val appVersion: String
-    get() = "1.15.3.beta"
+    get() = "1.15.4.beta"
