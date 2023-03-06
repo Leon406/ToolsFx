@@ -130,29 +130,48 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private val selectedKeyPairAlg = SimpleStringProperty(keyPairAlgs.keys.first())
     private val selectedSigAlg = SimpleStringProperty(keyPairAlgs.values.first().first())
 
-    private var taKey: TextArea by singleAssign()
+    private var taPubKey: TextArea by singleAssign()
+    private var taPriKey: TextArea by singleAssign()
     private var taRaw: TextArea by singleAssign()
     private var labelInfo: Label by singleAssign()
     private var taSigned: TextArea by singleAssign()
     private var tgInput: ToggleGroup by singleAssign()
     private var tgOutput: ToggleGroup by singleAssign()
     private var cbSigs: ComboBox<String> by singleAssign()
-    private val key: String
-        get() = taKey.text
     private val msg: String
         get() = taRaw.text
     private val signText: String
         get() = taSigned.text
 
     private val eventHandler = fileDraggedHandler {
-        taKey.text =
+        taPubKey.text =
             with(it.first()) {
-                if (extension in listOf("pk8", "key", "der")) {
-                    readBytes().base64()
-                } else if (extension in listOf("cer", "crt")) {
-                    parsePublicKeyFromCerFile()
-                } else {
-                    properText()
+                when (extension) {
+                    in listOf("pk8", "key", "der") -> {
+                        readBytes().base64()
+                    }
+                    in listOf("cer", "crt") -> {
+                        parsePublicKeyFromCerFile()
+                    }
+                    else -> {
+                        properText()
+                    }
+                }
+            }
+    }
+    private val priKeyEventHandler = fileDraggedHandler {
+        taPriKey.text =
+            with(it.first()) {
+                when (extension) {
+                    in listOf("pk8", "key", "der") -> {
+                        readBytes().base64()
+                    }
+                    in listOf("cer", "crt") -> {
+                        parsePublicKeyFromCerFile()
+                    }
+                    else -> {
+                        properText()
+                    }
                 }
             }
     }
@@ -194,13 +213,22 @@ class SignatureView : Fragment(messages["signVerify"]) {
             label(messages["key"])
             button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
-                action { taKey.text = clipboardText() }
+                action { taPubKey.text = clipboardText() }
             }
         }
-        taKey = textarea {
-            promptText = messages["inputHintAsy"]
-            isWrapText = true
-            onDragEntered = eventHandler
+
+        hbox {
+            spacing = DEFAULT_SPACING_3X
+            taPubKey = textarea {
+                promptText = messages["inputHintAsyPub"]
+                isWrapText = true
+                onDragEntered = eventHandler
+            }
+            taPriKey = textarea {
+                promptText = messages["inputHintAsyPri"]
+                isWrapText = true
+                onDragEntered = priKeyEventHandler
+            }
         }
 
         hbox {
@@ -264,7 +292,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
         taSigned = textarea {
             promptText = messages["outputHint"]
             isWrapText = true
-            prefHeight = DEFAULT_SPACING_10X
+            prefHeight = DEFAULT_SPACING_16X
         }
     }
     override val root = borderpane {
@@ -279,7 +307,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     controller.sign(
                         selectedKeyPairAlg.get(),
                         selectedSigAlg.get(),
-                        key,
+                        taPriKey.text,
                         msg,
                         inputEncode,
                         outputEncode,
@@ -302,7 +330,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     controller.verify(
                         selectedKeyPairAlg.get(),
                         selectedSigAlg.get(),
-                        key,
+                        taPubKey.text,
                         msg,
                         inputEncode,
                         outputEncode,

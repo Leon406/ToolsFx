@@ -17,7 +17,8 @@ val JWT_SIGNATURE_ALGS =
         "RS256" to "RSA/SHA256withRSA",
         "RS384" to "RSA/SHA384withRSA",
         "RS512" to "RSA/SHA512withRSA",
-        // @refer https://stackoverflow.com/questions/59228957/es256-jwt-validation-signatureexception-invalid-encoding-for-signature-java
+        // @refer
+        // https://stackoverflow.com/questions/59228957/es256-jwt-validation-signatureexception-invalid-encoding-for-signature-java
         "ES256" to "ECDSA/SHA256withPLAIN-ECDSA",
         "ES384" to "ECDSA/SHA384withPLAIN-ECDSA",
         "ES512" to "ECDSA/SHA512withPLAIN-ECDSA",

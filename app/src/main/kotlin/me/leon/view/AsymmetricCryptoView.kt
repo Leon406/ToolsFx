@@ -31,10 +31,17 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
 
     private var cbBits: ComboBox<Number> by singleAssign()
     private var taInput: TextArea by singleAssign()
-    private var taKey: TextArea by singleAssign()
+    private var taPubKey: TextArea by singleAssign()
+    private var taPriKey: TextArea by singleAssign()
     private var taOutput: TextArea by singleAssign()
     private var tgInput: ToggleGroup by singleAssign()
     private var tgOutput: ToggleGroup by singleAssign()
+
+    private val isPrivate
+        get() =
+            privateKeyEncrypt.get() && isEncrypt || privateKeyEncrypt.get().not() && isEncrypt.not()
+    private val isPublic
+        get() = privateKeyEncrypt.get() && !isEncrypt || privateKeyEncrypt.get().not() && isEncrypt
 
     private var inputText: String
         get() = taInput.text
@@ -53,19 +60,15 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             "${selectedAlg.get()}  bits: ${selectedBits.get()}  mode: ${
                 if (privateKeyEncrypt.get()) {
                     "private key encrypt"
-                }else {
+                } else {
                     "public key encrypt"
-                }}  " +
+                }
+            }  " +
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
     private val selectedPadding = SimpleStringProperty(RSA_PADDINGS.first())
     private var labelInfo: Label by singleAssign()
-    private var keyText: String
-        get() = taKey.text.trim()
-        set(value) {
-            taKey.text = value
-        }
 
     private val alg
         get() =
@@ -78,7 +81,20 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
 
     private val keyEventHandler = fileDraggedHandler {
         val firstFile = it.first()
-        keyText =
+        taPubKey.text =
+            if (firstFile.extension in listOf("pk8", "key", "der")) {
+                firstFile.readBytes().base64()
+            } else if (firstFile.extension in listOf("cer", "crt")) {
+                firstFile.parsePublicKeyFromCerFile()
+            } else {
+                firstFile.properText()
+            }
+        updateKeySize()
+    }
+
+    private val priKeyEventHandler = fileDraggedHandler {
+        val firstFile = it.first()
+        taPriKey.text =
             if (firstFile.extension in listOf("pk8", "key", "der")) {
                 firstFile.readBytes().base64()
             } else if (firstFile.extension in listOf("cer", "crt")) {
@@ -119,20 +135,19 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             prefRowCount = TEXT_AREA_LINES
         }
 
+        hbox { label(messages["key"]) }
         hbox {
-            label(messages["key"])
-            button(graphic = imageview(IMG_IMPORT)) {
-                tooltip(messages["pasteFromClipboard"])
-                action {
-                    keyText = clipboardText()
-                    updateKeySize()
-                }
+            spacing = DEFAULT_SPACING_3X
+            taPubKey = textarea {
+                promptText = messages["inputHintAsyPub"]
+                isWrapText = true
+                onDragEntered = keyEventHandler
             }
-        }
-        taKey = textarea {
-            promptText = messages["inputHintAsy"]
-            isWrapText = true
-            onDragEntered = keyEventHandler
+            taPriKey = textarea {
+                promptText = messages["inputHintAsyPri"]
+                isWrapText = true
+                onDragEntered = priKeyEventHandler
+            }
         }
 
         hbox {
@@ -184,13 +199,8 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                     runAsync { genBase64KeyArray(alg, listOf(selectedBits.value.toInt())) } ui
                         {
                             processing.value = false
-                            if (isPrivateKey) {
-                                taInput.text = it[0]
-                                taKey.text = it[1]
-                            } else {
-                                taInput.text = it[1]
-                                taKey.text = it[0]
-                            }
+                            taPubKey.text = it[0]
+                            taPriKey.text = it[1]
                         }
                 }
             }
@@ -199,10 +209,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 enableWhen(!processing)
                 action {
                     processing.value = true
-                    runAsync { catch({ it }) { taKey.text.privateKeyDerivedPublicKey(alg) } } ui
+                    runAsync { catch({ it }) { taPriKey.text.privateKeyDerivedPublicKey(alg) } } ui
                         {
                             processing.value = false
-                            taOutput.text = it
+                            taPubKey.text = it
                         }
                 }
             }
@@ -250,9 +260,9 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         runAsync {
             runCatching {
                     if (isPrivateKey) {
-                        controller.lengthFromPri(keyText)
+                        controller.lengthFromPri(taPriKey.text.trim())
                     } else {
-                        controller.lengthFromPub(keyText)
+                        controller.lengthFromPub(taPubKey.text.trim())
                     }
                 }
                 .getOrDefault(1024)
@@ -260,7 +270,8 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     }
 
     private fun doCrypto() {
-        if (keyText.isEmpty() || inputText.isEmpty()) {
+        val isKeyEmpty = isPrivate && taPriKey.text.isEmpty() || isPublic && taPubKey.text.isEmpty()
+        if (isKeyEmpty || inputText.isEmpty()) {
             outputText = "请输入key 或者 待处理内容"
             return
         }
@@ -270,9 +281,9 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             startTime = System.currentTimeMillis()
             runCatching {
                     if (isEncrypt) {
-                        if (privateKeyEncrypt.get()) {
+                        if (isPrivateKey) {
                             controller.priEncrypt(
-                                keyText,
+                                taPriKey.text,
                                 alg,
                                 inputText,
                                 singleLine.get(),
@@ -281,7 +292,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             )
                         } else {
                             controller.pubEncrypt(
-                                keyText,
+                                taPubKey.text,
                                 alg,
                                 inputText,
                                 singleLine.get(),
@@ -291,7 +302,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                         }
                     } else if (privateKeyEncrypt.get()) {
                         controller.pubDecrypt(
-                            keyText,
+                            taPubKey.text,
                             alg,
                             inputText,
                             singleLine.get(),
@@ -300,7 +311,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                         )
                     } else {
                         controller.priDecrypt(
-                            keyText,
+                            taPriKey.text,
                             alg,
                             inputText,
                             singleLine.get(),

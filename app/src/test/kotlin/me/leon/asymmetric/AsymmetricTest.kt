@@ -1,8 +1,10 @@
 package me.leon.asymmetric
 
 import java.io.File
-import java.security.Security
+import java.security.*
+import java.util.Base64
 import javax.crypto.Cipher
+import javax.crypto.spec.DHParameterSpec
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import me.leon.TEST_ASYMMETRIC_DIR
@@ -172,6 +174,45 @@ class AsymmetricTest {
         val c1c3c2 = changeC1C2C3ToC1C3C2(d.hex2ByteArray()).toHex()
         println(c1c3c2)
         println(changeC1C3C2ToC1C2C3(c1c3c2.hex2ByteArray()).toHex())
+    }
+
+    @Test
+    fun elGamal() {
+        val keySize = 512
+        val alg = "ElGamal"
+        val str = "ElGamal密码交换算法"
+
+        Security.addProvider(BouncyCastleProvider())
+        val apg: AlgorithmParameterGenerator = AlgorithmParameterGenerator.getInstance(alg)
+        apg.init(keySize)
+        val params: AlgorithmParameters = apg.generateParameters()
+        val elParams = params.getParameterSpec(DHParameterSpec::class.java)
+        val kpg = KeyPairGenerator.getInstance(alg)
+        kpg.initialize(elParams, SecureRandom())
+
+        val keyPair = kpg.generateKeyPair()
+        var publicKey = keyPair.public
+        var privateKey = keyPair.private
+        println("公钥：" + Base64.getEncoder().encodeToString(publicKey.encoded))
+        println("私钥：" + Base64.getEncoder().encodeToString(privateKey.encoded))
+        println("=============密钥对构造完毕，接收方将公钥公布给发送方=============")
+
+        println("原文：$str")
+        println("=============发送方还原接收方公钥，并使用公钥对数据进行加密=============")
+
+        val kp = genKeyPair(alg, listOf(keySize))
+        // 数据加密
+        var cipher = Cipher.getInstance(alg)
+        cipher.init(Cipher.ENCRYPT_MODE, kp.public)
+        val bytes = cipher.doFinal(str.toByteArray())
+        println("加密后的数据：" + Base64.getEncoder().encodeToString(bytes))
+        println("=============接收方使用私钥对数据进行解密===========")
+
+        // 数据解密
+        cipher = Cipher.getInstance(alg)
+        cipher.init(Cipher.DECRYPT_MODE, kp.private)
+        val bytes1 = cipher.doFinal(bytes)
+        println("解密后的数据：" + bytes1.decodeToString())
     }
 
     /** bc加解密使用旧标c1||c2||c3，此方法在加密后调用，将结果转化为c1||c3||c2 */
