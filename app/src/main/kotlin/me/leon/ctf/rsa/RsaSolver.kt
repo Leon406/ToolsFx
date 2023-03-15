@@ -237,44 +237,49 @@ object RsaSolver {
                 (c.modPow(e.invert(phi), n) / p).n2s()
             }
             else -> {
-                println("factor: start")
-                val factors = n.factor()
-                factors.let {
-                    if (it.groupBy { it }.size == 1) {
-                        println("euler solve ${it.first()} ^ ${it.size}")
-                        val phi = it.first().eulerPhi(it.size)
-                        val d = e.invert(phi).also { println(it) }
-                        val propN = it.propN(n)
-                        c.decrypt2String(d, propN).also { println(it) }
-                    } else if (it.size >= 2) {
-                        println(it)
-                        val phi = it.phi()
-                        val gcd = e.gcd(phi)
+                defaultNec(n, e, c)
+            }
+        }
+    }
 
-                        if (gcd == BigInteger.ONE) {
-                            println("e phi are co-prime $phi")
-                            val d = e.invert(phi).also { println(it) }
-                            val propN = it.propN(n)
-                            c.decrypt2String(d, propN).also { println(it) }
-                        } else {
-                            println("e phi are not are co-prime  $gcd")
-                            val d = (e / gcd).invert(phi).also { println(it) }
-                            val m = c.modPow(d, n)
-                            var result = ""
-                            for (i in 0..1_000_000) {
-                                val root = (m + n * i.toBigInteger()).root(gcd.toInt())
-                                if (root.last() == BigInteger.ZERO) {
-                                    result = root.first().n2s()
-                                    println("times $i ${root.first()} $result")
-                                    break
-                                }
-                            }
-                            result
+    private fun defaultNec(n: BigInteger, e: BigInteger, c: BigInteger): String {
+        println("factor: start")
+        val factors = n.factor()
+        return factors.let {
+            if (it.groupBy { it }.size == 1) {
+                println("euler solve ${it.first()} ^ ${it.size}")
+                val phi = it.first().eulerPhi(it.size)
+                val d = e.invert(phi).also { println(it) }
+                val propN = it.propN(n)
+                c.decrypt2String(d, propN).also { println(it) }
+            } else if (it.size >= 2) {
+                println(it)
+                val factors = it.phiMutualPrime(e)
+                val phi = factors.phi()
+                val gcd = e.gcd(phi)
+                println("$factors $phi $gcd")
+                if (gcd == BigInteger.ONE) {
+                    println("e phi are co-prime $phi")
+                    val d = e.invert(phi).also { println(it) }
+                    val propN = factors.product()
+                    c.decrypt2String(d, propN).also { println(it) }
+                } else {
+                    println("e phi are not are co-prime  $gcd")
+                    val d = (e / gcd).invert(phi).also { println(it) }
+                    val m = c.modPow(d, n)
+                    var result = ""
+                    for (i in 0..1_000_000) {
+                        val root = (m + n * i.toBigInteger()).root(gcd.toInt())
+                        if (root.last() == BigInteger.ZERO) {
+                            result = root.first().n2s()
+                            println("times $i ${root.first()} $result")
+                            break
                         }
-                    } else {
-                        "no solution"
                     }
+                    result
                 }
+            } else {
+                "no solution"
             }
         }
     }
@@ -338,7 +343,7 @@ object RsaSolver {
                 return m.first().n2s()
             }
         }
-        return "no solution"
+        return defaultNec(n, e, c)
     }
 
     private fun dpLeak(params: MutableMap<String, BigInteger>): String {

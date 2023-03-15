@@ -43,6 +43,10 @@ fun List<BigInteger>.phi(): BigInteger =
         .map { it.key.eulerPhi(it.value.size) }
         .reduce { acc, phi -> acc * phi }
 
+fun List<BigInteger>.phiMutualPrime(e: BigInteger): List<BigInteger> = filter {
+    it > BigInteger.ZERO && e.gcd(it.minus(ONE)) == ONE
+}
+
 fun List<BigInteger>.product(): BigInteger = reduce { acc, int -> acc * int }
 
 fun List<BigInteger>.propN(n: BigInteger) =

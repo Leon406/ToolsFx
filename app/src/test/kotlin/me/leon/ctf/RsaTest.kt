@@ -217,4 +217,10 @@ class RsaTest {
         val params = "rsa_dec_p_next_q.txt".parseRsaParams()
         assertEquals("NCTF{70u2_nn47h_14_v3ry_gOO0000000d}", solve(params))
     }
+
+    @Test
+    fun nec3() {
+        val params = "nec3.txt".parseRsaParams()
+        assertEquals("CMISCCTF{3_RSA}", solve(params))
+    }
 }
