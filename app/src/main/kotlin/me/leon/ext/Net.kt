@@ -21,8 +21,8 @@ fun String.readBytesFromNet(
                 .apply {
                     connectTimeout = timeout
                     readTimeout = timeout
-                    setRequestProperty("Content-Type", "zh-CN,zh;q=0.9,en;q=0.8")
-                    setRequestProperty("Accept-Language", "application/json; charset=utf-8")
+                    setRequestProperty("Content-Type", "application/json; charset=utf-8")
+                    setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
                     setRequestProperty(
                         "user-agent",
                         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +

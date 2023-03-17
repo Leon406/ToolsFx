@@ -27,4 +27,6 @@ fun Any.toJson() = GsonUtil.toJson(this)
 
 fun <T> String.fromJson(clazz: Class<T>) = GsonUtil.fromJson(this, clazz)
 
+inline fun <reified T> String.fromJson() = GsonUtil.fromJson(this, T::class.java)
+
 fun <T> String.fromJsonArray(clazz: Class<T>) = GsonUtil.jsonToArrayList(this, clazz)

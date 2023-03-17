@@ -1,5 +1,5 @@
 var fontFamily = "'Microsoft YaHei',SimHei,FangSong,simsun,tahoma,arial,sans-serif";
-var tags = ["html", "body", "div", "button", "span", "a", "p", "h1", "h2", "h3", "h4", "h5", "h6", "input", "code","textarea"];
+var tags = ["html", "body", "div", "button", "span", "a", "p", "h1", "h2", "h3", "h4","li", "h5", "h6", "input", "code","textarea"];
 for (var i = 0; i < tags.length; i++) {
     console.log(tags[i]);
     var eles = document.getElementsByTagName(tags[i]);

@@ -254,14 +254,14 @@ object RsaSolver {
                 c.decrypt2String(d, propN).also { println(it) }
             } else if (it.size >= 2) {
                 println(it)
-                val factors = it.phiMutualPrime(e)
-                val phi = factors.phi()
+                val properFactors = it.phiMutualPrime(e)
+                val phi = properFactors.phi()
                 val gcd = e.gcd(phi)
-                println("$factors $phi $gcd")
+                println("$properFactors $phi $gcd")
                 if (gcd == BigInteger.ONE) {
                     println("e phi are co-prime $phi")
                     val d = e.invert(phi).also { println(it) }
-                    val propN = factors.product()
+                    val propN = properFactors.product()
                     c.decrypt2String(d, propN).also { println(it) }
                 } else {
                     println("e phi are not are co-prime  $gcd")
