@@ -22,7 +22,7 @@ dependencies {
     implementation(project(":app"))
     // compress dependencies
     implementation("org.apache.commons:commons-compress:1.22")
-    implementation("com.github.luben:zstd-jni:1.5.2-5")
+    implementation("com.github.luben:zstd-jni:1.5.4-2")
     implementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
     implementation("org.tukaani:xz:1.9")
     implementation("org.brotli:dec:0.1.2")
