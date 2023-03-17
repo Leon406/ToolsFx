@@ -65,7 +65,7 @@ dependencies {
     implementation(project(":plugin-lib"))
     api("org.bouncycastle:bcprov-jdk18on:${rootProject.extra["bouncycastle_version"]}")
     implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
-    api("com.google.code.gson:gson:2.10")
+    api("com.google.code.gson:gson:2.10.1")
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
