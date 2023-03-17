@@ -21,9 +21,9 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
 
-    testImplementation("org.xerial:sqlite-jdbc:3.39.3.0")
-    testImplementation("net.java.dev.jna:jna:5.12.1")
-    testImplementation("net.java.dev.jna:jna-platform:5.12.1")
+    testImplementation("org.xerial:sqlite-jdbc:3.41.0.0")
+    testImplementation("net.java.dev.jna:jna:5.13.0")
+    testImplementation("net.java.dev.jna:jna-platform:5.13.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

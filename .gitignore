@@ -8,3 +8,4 @@ local.properties
 /tools/*/
 dict/
 *.json
+downloads/
