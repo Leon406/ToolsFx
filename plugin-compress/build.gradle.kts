@@ -21,7 +21,7 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
     // compress dependencies
-    implementation("org.apache.commons:commons-compress:1.22")
+    implementation("org.apache.commons:commons-compress:1.23.0")
     implementation("com.github.luben:zstd-jni:1.5.4-2")
     implementation("org.objectweb.asm:com.springsource.org.objectweb.asm:3.2.0")
     implementation("org.tukaani:xz:1.9")
