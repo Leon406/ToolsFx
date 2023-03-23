@@ -14,13 +14,13 @@ import java.io.File
  * @since 2023-03-16 13:57
  * @email deadogone@gmail.com
  */
-val APPID = "appSTozGuyf6388"
+const val APPID = "appSTozGuyf6388"
 const val UID = "u_anonymous_64128d857cd86_Epc0i5SdCo"
-val server2 = "https://pc.mijialaw.com"
+const val server2 = "https://pc.mijialaw.com"
 
-val server = "https://$APPID.h5.xiaoeknow.com"
+const val server = "https://$APPID.h5.xiaoeknow.com"
 
-val API_VIDEO_INFO = "$server2/xe.course.business.video.detail_info.get/2.0.0/"
+const val API_VIDEO_INFO = "$server2/xe.course.business.video.detail_info.get/2.0.0/"
 
 val REG_M3U8_KEY = "#EXT-X-KEY:METHOD=AES-128,URI=\"([^\"]+)\"".toRegex()
 val REG_M3U8_TS = """(\w+\.\w+\.ts)\?start=\d+&end=\d+""".toRegex()
