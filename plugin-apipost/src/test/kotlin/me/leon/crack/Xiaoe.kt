@@ -1,11 +1,11 @@
 package me.leon.crack
 
+import java.io.File
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.*
 import me.leon.ext.crypto.decryptFile
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
-import java.io.File
 
 /**
  * 解密参考文章: https://www.52pojie.cn/thread-1689801-1-1.html
@@ -71,7 +71,7 @@ fun getBase64Key(url: String): String {
 fun main() {
     val key = videoInfo("v_61275811e4b065461cbf4126", "p_610a413ce4b0a27d0e393ff8")
     // https://encrypt-k-vod.xet.tech/529d8d60vodtransbj1252524126/a695d22c387702295310109806/drm/v.f421220.m3u8?sign=68a5bb6fc0a61c4b7fc06f96bc22dd54&t=6413995a&us=QMBfMbOCPG&exper=180&time=1678962840428&time=1678962840433
-    require(key != null)
+    requireNotNull(key)
     HttpUrlUtil.downloadFolder
         .listFiles { _, name -> name.endsWith("ts") }
         ?.forEach {

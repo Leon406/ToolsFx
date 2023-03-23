@@ -191,10 +191,8 @@ class AsymmetricTest {
         kpg.initialize(elParams, SecureRandom())
 
         val keyPair = kpg.generateKeyPair()
-        var publicKey = keyPair.public
-        var privateKey = keyPair.private
-        println("公钥：" + Base64.getEncoder().encodeToString(publicKey.encoded))
-        println("私钥：" + Base64.getEncoder().encodeToString(privateKey.encoded))
+        println("公钥：" + Base64.getEncoder().encodeToString(keyPair.public.encoded))
+        println("私钥：" + Base64.getEncoder().encodeToString(keyPair.private.encoded))
         println("=============密钥对构造完毕，接收方将公钥公布给发送方=============")
 
         println("原文：$str")

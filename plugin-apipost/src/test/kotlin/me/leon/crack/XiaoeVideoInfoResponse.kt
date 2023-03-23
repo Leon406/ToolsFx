@@ -22,7 +22,10 @@ data class XiaoeVideoInfoResponse(
         @SerializedName("video_info") val videoInfo: VideoInfo?
     ) {
         fun decryptVideoUrl() =
-            videoUrls?.replace("__ba", "")?.base64UrlDecode2String(XIAO_E_TONG_BASE64_DICT) ?: ""
+            videoUrls
+                ?.replace("__ba", "")
+                ?.base64UrlDecode2String(XIAO_E_TONG_BASE64_DICT)
+                .orEmpty()
     }
 
     data class VideoInfo(
@@ -30,7 +33,6 @@ data class XiaoeVideoInfoResponse(
         @SerializedName("resource_id") val resourceId: String?,
         @SerializedName("video_length") val videoLength: Int?,
         @SerializedName("file_name") val fileName: String?,
-        @SerializedName("is_drm") val isDrm: Int?,
         @SerializedName("resource_type") val resourceType: Int?
     )
 }

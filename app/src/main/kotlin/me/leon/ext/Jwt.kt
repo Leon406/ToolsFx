@@ -43,8 +43,8 @@ private fun generateBase64Sig(toEncryptData: String, alg: String, key: String): 
         JWT_HMAC_ALGS[alg]?.let {
             toEncryptData.toByteArray().mac(key.toByteArray(), JWT_HMAC_ALGS[alg]!!).base64Url()
         }
-            ?: JWT_SIGNATURE_ALGS[alg]!!.let {
-                val (kpAlg, sigAlg) = it.split("/")
+            ?: JWT_SIGNATURE_ALGS[alg]!!.run {
+                val (kpAlg, sigAlg) = split("/")
                 toEncryptData.toByteArray().sign(kpAlg, sigAlg, key).base64Url()
             }
     return base64Sig
@@ -54,7 +54,7 @@ fun String.jwtVerify(key: String): Boolean {
 
     val jwtParts = split(".")
     val header = jwtParts[0].base64UrlDecode2String()
-    val alg = header.fromJson(LinkedHashMap::class.java)["alg"].safeAs<String>() ?: ""
+    val alg = header.fromJson(LinkedHashMap::class.java)["alg"].safeAs<String>().orEmpty()
 
     val sig = jwtParts[2]
     return if (alg.startsWith("HS")) {

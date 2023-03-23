@@ -25,16 +25,16 @@ fun main() {
     "https://www.douyin.com/aweme/v1/web/aweme/post/?$query"
         .readBytesFromNet(
             headers =
-            mapOf(
-                "referer" to "https://www.douyin.com/user",
-                "user-agent" to
+                mapOf(
+                    "referer" to "https://www.douyin.com/user",
+                    "user-agent" to
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                        "Chrome/104.0.0.0 Safari/537.36",
-                "cookie" to
+                            "Chrome/104.0.0.0 Safari/537.36",
+                    "cookie" to
                         "strategyABtestKey=%221672340505.13%22;" +
-                        "ttwid=1%7CmKYQriuiDg_yUyQYU8SsO0BLRWWHot8TjPqs3zUWUsU%7C1673312168%7Cd2898f5fb3" +
-                        "0808177f883755ee3e61cf955726cc599aaef1c2574ae264160302;"
-            )
+                            "ttwid=1%7CmKYQriuiDg_yUyQYU8SsO0BLRWWHot8TjPqs3zUWUsU%7C1673312168%7Cd2898f5fb3" +
+                            "0808177f883755ee3e61cf955726cc599aaef1c2574ae264160302;"
+                )
         )
         .also { println("______" + it.decodeToString()) }
 }
@@ -77,9 +77,9 @@ fun calc(s: String): String {
     val x2 = s[1].code and 255 shl 8
     val x3 = x1 or x2 or s[2].code
     return CHARACTER[x3 and 16_515_072 shr 18].toString() +
-            CHARACTER[x3 and 258_048 shr 12] +
-            CHARACTER[x3 and 4_032 shr 6] +
-            CHARACTER[x3 and 63]
+        CHARACTER[x3 and 258_048 shr 12] +
+        CHARACTER[x3 and 4_032 shr 6] +
+        CHARACTER[x3 and 63]
 }
 
 fun encoding_conversion2(a: String = "ÿ", b: String): String {
