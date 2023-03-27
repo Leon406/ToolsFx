@@ -1,6 +1,71 @@
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
 <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx:: Visitor's Count" />
 
+# v1.16.0
+## feature:
+- feat(app): CTF RSA-crack nec模式优化
+- feat(app): 非对称加密/签名支持同时显示公私钥
+- feat(app): jwt add ECDSA algorithm
+- feat(app): Signature add jwt
+- feat(app): Misc add ip2Int,ipLocation,cidr,int2Ip
+- feat(app): misc add whois & icp
+- feat(app): CTF Image新增wakanda,编码 Unicode支持 js utf-16解码
+- feat(app): CTF 新增 Citrix CTX1
+- feat(app): Hash 新增 mysql(oldpassword)  mysql5(password), md5-middle
+- feat(app): CTF add Type7
+- feat(plugin-image): 支持hex转图片,另存为图片
+- feat(app): misc模块新增ping tcping,提示
+- feat(app): 新增misc模块
+- feat(app): CTF RSA-crack支持 多因子费马分解, 修复fullFermat错误后停止分解
+- feat(app): 编码加入输入选项限制,只能选一个
+- feat(app): 字符处理,支持转义
+- feat(app): QrcodeView多文件识别修复及简化交互
+- feat(plugin-image): 加入自动识别文件路径和base64, 加入图片缩放,支持图片上移
+- feat(plugin-image): 新增形态学,图片转01,图片处理功能
+- feat(plugin-apipost): 新增base64File方法
+- feat(plugin-apipost): Post form-data 参数自动urlencode
+- feat(plugin-image): fix png支持宽高同时修改
+- feat(plugin-image): 新增微信data图片解密
+- feat(app): SymmetricCrypto 底部提示新增key/iv长度
+- feat(app): 文件模式 显示非文本文件扩展
+- feat(app): SymmetricCrypto key iv编码支持自动转换
+- feat(app): SymmetricCrypto新增 Tnepres
+- feat(app): 编码支持文件加解密
+- feat(plugin-image): 集成StegSolve
+- feat(app): BigInt新增排列和组合
+- feat(plugin-image): add gif split
+- feat(app): CTF RSA-crack 支持d c e nbits参数
+- feat(plugin-image): 新增图片模块
+- feat(plugin-sample): add sample2
+- feat(app): Encode add 十进制转其他进制,需自定义字典
+- feat(app): support custom scale
+- feat(app): CTF add Symbol Cipher and rename
+- feat(app): Digest crack 支持 mask
+- feat(app): 字符处理 分割支持正则
+- feat(app): CTF zwcUnicode不设置字典可以自动解析
+- feat(app): CTF优化 rsa-crack参数解析,过滤多余字符
+- feat(app): 合并CTF类似功能算法
+- feat(app): CTF base32 steg加解密
+- feat(app): CTF base64 steg 支持加密
+- feat(app): CTF 新增百家姓, base64隐写
+- feat: crc add padding
+- feat(plugin-apipost): 使用默认Dispatchers.IO
+- feat(app): CTF RSA fermat分解支持完全分解
+- feat(app): CTF新增zwc unicode
+## bug fix:
+- fix(plugin-image): 选项切换显示错误
+- fix(app): 编码文件解密同名覆盖问题
+- fix(app): js hex编码缺少补零
+- fix(tools): 添加minjre缺少模块
+- fix(app): 内嵌浏览器中文显示乱码
+- fix(tools): minjre缺少模块
+- fix(app): 功能名太长自动换行
+- fix(plugin-apipost): 忽略证书验证功能错误
+- feat(plugin-image): fix png支持宽高同时修改
+- fix(app): 动态参数未生效
+- fix(app): CTF base64 steg 解密错误
+- fix(app): CTF图片编码 jar资源文件夹遍历错误
+
 
 #  v1.15.0
 
@@ -387,3 +452,4 @@
 - fix: toast 异常
 - fix:编码转换 hex转base64错误
 - fix:编码转换异常显示
+

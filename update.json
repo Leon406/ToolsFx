@@ -1,22 +1,33 @@
-{"version":"1.15.4.beta","info":"1.15.4.beta 2023-03-03,
+{"version":"1.16.0","info":"1.6.0 2023-03-27,
 
 新功能
 
-  🔥 Misc add ip2Int,ipLocation,cidr,int2Ip
-  🔥 Misc add whois & icp
-  🔥 编码 Unicode支持 js utf-16解码
-  🔥 CTF 新增 Citrix CTX1
-  🔥 Hash 新增 mysql(oldpassword)  mysql5(password), md5-middle
-  🔥 CTF add Type7
+  🔥 非对称加密/签名支持同时显示公私钥
+  🔥 Signature add jwt功能
+  🔥 新增Misc模块
+  🔥 Hash 新增 mysql,mysql5, md5-middle
+  🔥 SymmetricCrypto新增 Tnepres,及key iv编码支持自动转
+  🔥 编码支持文件加解密
+  🔥 BigInt新增排列和组合
+  🔥 CTF RSA-crack支持更多格式
+  🔥 Encode add 十进制转其他进制,需自定义字典
+  🔥 Digest crack 支持 mask
+  🔥 合并CTF类似功能算法
+  🔥 CTF新增三种零宽算法(zwc),百家姓, base64隐写,Type7,Citrix CTX1
+  🐛 js hex编码缺少补零
+  🐛 CTF图片编码 jar资源文件夹遍历错误
 
 
 插件
-  🐛 plugin-image: 选项切换显示错误
+  🔥 plugin-image: 新增图片插件
+  🐛 plugin-apipost: 忽略证书验证功能错误
+
 
 
 使用前请看README和wiki
 
 已开通打赏渠道,入口不会嵌入软件中
-想支持作者,可在README或者个人github主页打赏
+想支持作者,可在README或者个人github主页打赏,
+感谢 Flamiec，爱发电用户_HW58 打赏！
 
   "}
