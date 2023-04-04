@@ -7,6 +7,7 @@ object Prefs {
     private const val ALWAYS_ON_TOP = "alwaysOnTop"
     private const val LANGUAGE = "language"
     private const val AUTO_COPY = "autoCopy"
+    private const val TRAY = "tray"
     private const val HI_DPI = "hidpi"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
     var isIgnoreUpdate
@@ -35,6 +36,11 @@ object Prefs {
         get() = preference.getBoolean(AUTO_COPY, false)
         set(value) {
             preference.putBoolean(AUTO_COPY, value)
+        }
+    var miniToTray: Boolean
+        get() = preference.getBoolean(TRAY, false)
+        set(value) {
+            preference.putBoolean(TRAY, value)
         }
     fun preference(): Preferences = preference
 }

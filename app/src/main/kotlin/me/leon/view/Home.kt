@@ -99,7 +99,22 @@ class Home : View("${messages["appName"]} v$appVersion build $build") {
                     }
                 }
             }
+            item("Minimize to System Tray${"  √".takeIf { Prefs.miniToTray }.orEmpty()}") {
+                action {
+                    Prefs.miniToTray = !Prefs.miniToTray
+                    text = "Minimize to System Tray${"  √".takeIf { Prefs.miniToTray }.orEmpty()}"
+                    if (Prefs.miniToTray) {
+                        Tray.systemTray(primaryStage)
+                    } else {
+                        Tray.removeTray()
+                    }
+                }
+            }
             item("GC") { action { System.gc() } }
+        }
+        if (Prefs.miniToTray) {
+            println("~~~~~~~~~~~")
+            Tray.systemTray(primaryStage)
         }
     }
 

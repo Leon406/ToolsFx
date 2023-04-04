@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 
 group = "me.leon.tools"
-version = "1.16.0"
+version = "1.16.1.beta"
 
 plugins {
     application
