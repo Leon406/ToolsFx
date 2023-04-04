@@ -192,6 +192,9 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             }
         }
     }
+    init {
+        println("Plugin Info:$description $version $date $author")
+    }
 
     private fun doProcess() {
         if (inputText.isEmpty()) return
