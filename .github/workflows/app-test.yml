@@ -48,8 +48,8 @@ jobs:
       - name: Run app test
         run: ./gradlew  :app:test
       # test will auto execute jar task
-      #- name: Make app jar
-      #  run: ./gradlew  :app:jar
+      - name: Make app jar
+        run: ./gradlew  :app:jar
       - uses: actions/upload-artifact@v3
         with:
           path: |
