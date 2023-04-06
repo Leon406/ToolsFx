@@ -1,7 +1,8 @@
 package me.leon;
 
-import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.*;
+
+import java.util.concurrent.TimeUnit;
 
 @Warmup(iterations = 1)
 @Measurement(iterations = 2)

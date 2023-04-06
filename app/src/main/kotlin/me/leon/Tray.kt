@@ -1,10 +1,10 @@
 package me.leon
 
-import javafx.application.Platform
-import javafx.stage.Stage
 import java.awt.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import javafx.application.Platform
+import javafx.stage.Stage
 import javax.swing.*
 
 /**
@@ -54,10 +54,10 @@ object Tray {
                 // 加载系统托盘组件
                 trayIcon =
                     TrayIcon(
-                        Toolkit.getDefaultToolkit()
-                            .getImage(Tray.javaClass.getResource(IMG_ICON)),
-                        "系统"
-                    )
+                            Toolkit.getDefaultToolkit()
+                                .getImage(Tray.javaClass.getResource(IMG_ICON)),
+                            "系统"
+                        )
                         .apply {
                             isImageAutoSize = true
                             addMouseListener(
