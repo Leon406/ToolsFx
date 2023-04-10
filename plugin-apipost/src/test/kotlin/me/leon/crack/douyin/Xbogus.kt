@@ -22,7 +22,7 @@ private const val QUERY_FORMAT =
 
 private const val COOKIE =
     "ttwid=1%7CfAd-xtIAXDq0GGfzA6AkbXNJ11-dEzxQspZbqsmrN0w%7C1673262048%7" +
-            "Ca2150a159edd95de9da46d5efced2d6e0e2414859e4c4d3c896a4544f66dc003; "
+        "Ca2150a159edd95de9da46d5efced2d6e0e2414859e4c4d3c896a4544f66dc003; "
 
 private const val UA =
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +

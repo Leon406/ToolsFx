@@ -101,6 +101,10 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             raw.lineAction { runCatching { it.ipLocation() }.getOrElse { it.stacktrace() } }
                 .joinToString(System.lineSeparator())
+    },
+    DNS_SOLVE("DNS hosts") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            dnsSolve(raw.lines().filterNot { it.startsWith("#") || it.isEmpty() })
     };
 
     override fun hint(): String {
@@ -127,6 +131,7 @@ val HINTS =
         MiscServiceType.INT2IP to "int, transform integer to ip,  eg. 3232235521,separate by line",
         MiscServiceType.CIDR to "ip, format 192.168.0.1/25,separate by line",
         MiscServiceType.IP_LOCATION to "ip/url",
+        MiscServiceType.DNS_SOLVE to "domains,separate by line, comment by #",
     )
 
 val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }
