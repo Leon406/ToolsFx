@@ -71,7 +71,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("org.mockito:mockito-core:5.2.0")
+    testImplementation("org.mockito:mockito-core:5.3.0")
     testImplementation("org:jaudiotagger:2.0.3")
     testImplementation("org.javassist:javassist:3.29.2-GA")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
