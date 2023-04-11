@@ -66,7 +66,7 @@ enum class MiscServiceType(val type: String) : MiscService {
     BATCH_PING("ping") {
         override fun process(raw: String, params: MutableMap<String, String>) = raw.batchPing()
     },
-    BATCH_TCPING("tcping") {
+    TCPING("tcping") {
         override fun process(raw: String, params: MutableMap<String, String>) = raw.batchTcPing()
     },
     WHOIS("whois(online)") {
@@ -124,7 +124,7 @@ val HINTS =
         MiscServiceType.PORT_SCAN_FULL to "ip or domain ( port from 1 to 65535)",
         MiscServiceType.IP_SCAN to "ip w/o last dot,like 192.168.0",
         MiscServiceType.BATCH_PING to "ping ip or domains,separate by line",
-        MiscServiceType.BATCH_TCPING to "tcp ping ip or domains,separate by line",
+        MiscServiceType.TCPING to "tcp ping ip or domains,separate by line,format ip:port",
         MiscServiceType.WHOIS to "domain,separate by line",
         MiscServiceType.ICP to "domain, 工信部备案信息,separate by line",
         MiscServiceType.IP2INT to "ip, transform ip to integer, eg. 192.168.0.1,separate by line",
