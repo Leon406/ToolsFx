@@ -341,7 +341,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                 .getOrElse { it.stacktrace() }
         } ui
             { state ->
-                if (selectedKeyPairAlg.get() == "JWT") {
+                if (selectedKeyPairAlg.get() == "JWT" && signText.isNotEmpty()) {
                     val (alg, payload) = signText.jwtParse()
                     selectedSigAlg.set(alg)
                     taRaw.text = payload
