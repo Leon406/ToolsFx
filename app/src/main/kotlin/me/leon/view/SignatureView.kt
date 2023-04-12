@@ -127,6 +127,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
 
     override val closeable = SimpleBooleanProperty(false)
     private val singleLine = SimpleBooleanProperty(false)
+    private val showPrivateKey = SimpleBooleanProperty(true)
     private val selectedKeyPairAlg = SimpleStringProperty(keyPairAlgs.keys.first())
     private val selectedSigAlg = SimpleStringProperty(keyPairAlgs.values.first().first())
 
@@ -138,6 +139,8 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private var tgInput: ToggleGroup by singleAssign()
     private var tgOutput: ToggleGroup by singleAssign()
     private var cbSigs: ComboBox<String> by singleAssign()
+
+    private val SAME_KEY_ALGS = arrayOf("HS256", "HS384", "HS512")
     private val msg: String
         get() = taRaw.text
     private val signText: String
@@ -227,6 +230,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
             taPriKey = textarea {
                 promptText = messages["inputHintAsyPri"]
                 isWrapText = true
+                visibleWhen(showPrivateKey)
                 onDragEntered = priKeyEventHandler
             }
         }
@@ -254,6 +258,8 @@ class SignatureView : Fragment(messages["signVerify"]) {
 
         selectedSigAlg.addListener { _, _, newValue ->
             println("selectedSigAlg __ $newValue")
+
+            showPrivateKey.value = !SAME_KEY_ALGS.contains(newValue)
             timeConsumption = 0
             labelInfo.text = info
             newValue?.run { println("算法 ${selectedKeyPairAlg.get()}") }
@@ -307,7 +313,11 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     controller.sign(
                         selectedKeyPairAlg.get(),
                         selectedSigAlg.get(),
-                        taPriKey.text,
+                        if (SAME_KEY_ALGS.contains(selectedSigAlg.get())) {
+                            taPubKey.text
+                        } else {
+                            taPriKey.text
+                        },
                         msg,
                         inputEncode,
                         outputEncode,

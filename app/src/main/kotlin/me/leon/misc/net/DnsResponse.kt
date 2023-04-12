@@ -5,7 +5,6 @@ package me.leon.misc.net
  * @since 2023-04-10 9:00
  * @email deadogone@gmail.com
  */
-
 @Suppress("ALL")
 data class DnsResponse(
     val Status: Int,
@@ -20,5 +19,4 @@ data class DnsResponse(
 
 data class Question(val name: String, val type: Int)
 
-@Suppress("ALL")
-data class Answer(val name: String, val TTL: Int, val type: Int, val data: String)
+@Suppress("ALL") data class Answer(val name: String, val TTL: Int, val type: Int, val data: String)
