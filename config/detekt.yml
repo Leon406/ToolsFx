@@ -305,7 +305,7 @@ style:
   CollapsibleIfStatements:
     active: true
   DestructuringDeclarationWithTooManyEntries:
-    active: true
+    active: false
   EqualsOnSignatureLine:
     active: true
   ExplicitCollectionElementAccessMethod:
