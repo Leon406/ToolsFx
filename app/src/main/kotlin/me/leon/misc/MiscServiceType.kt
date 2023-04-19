@@ -105,6 +105,13 @@ enum class MiscServiceType(val type: String) : MiscService {
     DNS_SOLVE("DNS hosts") {
         override fun process(raw: String, params: MutableMap<String, String>) =
             dnsSolve(raw.lines().filterNot { it.startsWith("#") || it.isEmpty() })
+    },
+    CRON_EXPLAIN("Cron explain") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.lines()
+                .filterNot { it.startsWith("#") || it.isEmpty() }
+                .map { CronExpression(it).explain() }
+                .joinToString(System.lineSeparator())
     };
 
     override fun hint(): String {
@@ -132,6 +139,8 @@ val HINTS =
         MiscServiceType.CIDR to "ip, format 192.168.0.1/25,separate by line",
         MiscServiceType.IP_LOCATION to "ip/url",
         MiscServiceType.DNS_SOLVE to "domains,separate by line, comment by #",
+        MiscServiceType.CRON_EXPLAIN to
+            "cron expression, support crontab, quarts and normal format",
     )
 
 val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }
