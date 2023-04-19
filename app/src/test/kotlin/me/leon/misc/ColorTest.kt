@@ -12,11 +12,14 @@ import kotlin.test.assertEquals
 class ColorTest {
     @Test
     fun color() {
-        val colorL = ColorL(144, 202, 248)
-        println(colorL)
-        val cmykColor = colorL.toCmyk()
+        val color = Color(144, 202, 248)
+        println(color)
+        val cmykColor = color.toCmyk()
         println(cmykColor)
         println(cmykColor.toColor())
+
+        println(Color.parseColor("#f5f6f7").toRgbaString())
+        println(Color.parseColor("#333"))
     }
 
     @Test
@@ -24,9 +27,9 @@ class ColorTest {
         val r = 144
         val g = 202
         val b = 248
-        val colorL = ColorL(r, g, b)
+        val color = Color(r, g, b)
         // 207 42 97
-        val hsvColor = colorL.toHsv()
+        val hsvColor = color.toHsv()
         println(hsvColor)
         val (rc, gc, bc) = ColorUtil.hsv2Rgb(hsvColor.hue, hsvColor.saturation, hsvColor.value)
 
@@ -44,10 +47,10 @@ class ColorTest {
         val r = 144
         val g = 202
         val b = 248
-        val colorL = ColorL(r, g, b)
+        val color = Color(r, g, b)
         // 207 88 77
         println(ColorUtil.rgb2Hsl(r, g, b))
-        val (hue, saturation, lightness) = colorL.toHsl().also { println(it) }
+        val (hue, saturation, lightness) = color.toHsl().also { println(it) }
 
         assertEquals(hue.roundToInt(), 207)
         assertEquals(saturation.percentRound, 88)
