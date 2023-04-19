@@ -56,7 +56,7 @@ object Tray {
                     TrayIcon(
                             Toolkit.getDefaultToolkit()
                                 .getImage(Tray.javaClass.getResource(IMG_ICON)),
-                            "系统"
+                            "ToolsFx"
                         )
                         .apply {
                             isImageAutoSize = true
