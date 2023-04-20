@@ -1,5 +1,7 @@
 package me.leon.misc
 
+import java.lang.*
+import kotlin.arrayOf
 import kotlin.test.Ignore
 import kotlin.test.Test
 import me.leon.misc.net.*
@@ -60,5 +62,17 @@ class MiscTest {
         corns
             .map { CronExpression(it.trim()) }
             .forEach { println(it.expression + " " + it.explain()) }
+    }
+
+    @Test
+    fun ieee754() {
+        val floatToRawIntBits = java.lang.Float.floatToRawIntBits(220.5F)
+        println(Integer.toBinaryString(floatToRawIntBits))
+        println(Integer.toHexString(floatToRawIntBits))
+        println(Integer.toBinaryString(java.lang.Float.floatToRawIntBits(-220.5F)))
+        println(java.lang.Long.toBinaryString(java.lang.Double.doubleToRawLongBits(1.111)))
+        println(java.lang.Long.toHexString(java.lang.Double.doubleToRawLongBits(1.111)))
+        println(java.lang.Long.toBinaryString(java.lang.Double.doubleToRawLongBits(-1.111)))
+        println(java.lang.Long.toHexString(java.lang.Double.doubleToRawLongBits(-1.111)))
     }
 }
