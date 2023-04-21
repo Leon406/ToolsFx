@@ -16,8 +16,8 @@ import me.leon.toolsfx.plugin.ext.*
 import tornadofx.*
 
 class ImageProcessView : PluginFragment("ImageProcessView") {
-    override val version = "v1.2.1"
-    override val date: String = "2022-12-29"
+    override val version = "v1.3.1"
+    override val date: String = "2023-04-21"
     override val author = "Leon406"
     override val description = "图片模块"
     private var taInput: TextArea by singleAssign()

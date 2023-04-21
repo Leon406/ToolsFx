@@ -21,8 +21,17 @@ val EXTENSION_IMAGE = arrayOf("jpg", "png", "gif", "bmp")
 /** ihdr width height crc 12-29 ihdr 16-20 width 20-24 height 29-33 crc */
 private fun ByteArray.parsePngIhdr() = arrayOf(copyOfRange(12, 29), copyOfRange(29, 33))
 
+private val PNG_MAGIC = byteArrayOf(137.toByte(), 80, 78, 71)
+
 fun ByteArray.fixPng(maxPixel: Int = 2048, minPixel: Int = 5): ByteArray {
     val bytes = this
+
+    for (i in 0..3) {
+        if (PNG_MAGIC[i] != bytes[i]) {
+            bytes[i] = PNG_MAGIC[i]
+        }
+    }
+
     val (ihdr, crc) = bytes.parsePngIhdr()
 
     if (crc.toHex() == ihdr.crc32()) {
