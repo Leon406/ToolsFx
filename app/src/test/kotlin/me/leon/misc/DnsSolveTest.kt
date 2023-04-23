@@ -1,6 +1,7 @@
 package me.leon.misc
 
 import kotlin.test.Test
+import me.leon.ext.readResourceText
 import me.leon.misc.net.dnsSolve
 
 /**
@@ -11,8 +12,8 @@ import me.leon.misc.net.dnsSolve
 class DnsSolveTest {
     @Test
     fun dns() {
-        println(
-            dnsSolve(Files.readResourceText("/domains").lines().filterNot { it.startsWith("#") })
-        )
+        val urls = readResourceText("/domains").lines().filterNot { it.startsWith("#") }
+        assert(urls.size > 1)
+        println(dnsSolve(urls))
     }
 }

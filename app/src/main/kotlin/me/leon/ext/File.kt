@@ -1,6 +1,7 @@
 package me.leon.ext
 
 import java.io.File
+import me.leon.ctf.Words
 import me.leon.encode.base.base64
 
 /** @link https://en.wikipedia.org/wiki/List_of_file_signatures */
@@ -154,3 +155,6 @@ fun File.properText(limit: Int = 128 * 1024, hints: String = "") =
     }
 
 fun String.toFile() = File(this)
+
+fun readResourceText(path: String) =
+    Words.javaClass.getResourceAsStream(path)?.reader()?.readText().orEmpty()

@@ -143,4 +143,6 @@ val CLASSIC_CONFIG =
         ClassicalCryptoType.MANCHESTER_DIFF to mapOf(CHECK to arrayOf("reverse 8bit")),
         ClassicalCryptoType.BACON24 to mapOf(CHECK to arrayOf("bacon26")),
         ClassicalCryptoType.TYPE7 to mapOf(HINT to arrayOf("seed(need in encrypt), from 0 to 52")),
+        ClassicalCryptoType.BASE64_CASE to
+            mapOf(HINT to arrayOf("addition words, separate by non-letter")),
     )

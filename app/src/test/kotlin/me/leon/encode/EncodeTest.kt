@@ -5,9 +5,10 @@ import kotlin.system.measureNanoTime
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import me.leon.TEST_ENCODE_DIR
+import me.leon.classical.hackWord
+import me.leon.classical.hackWordDecode
 import me.leon.controller.EncodeController
-import me.leon.ctf.bubbleBabble
-import me.leon.ctf.bubbleBabbleDecode2String
+import me.leon.ctf.*
 import me.leon.encode.base.*
 import me.leon.ext.*
 import me.leon.ext.crypto.EncodeType
@@ -440,5 +441,24 @@ class EncodeTest {
         println(controller.encode2String("37123123", EncodeType.DECIMAL_RADIX_N, base37))
         assertEquals("JTWZO", "37123123".toBigInteger().radixNEncode(base37))
         assertEquals("37123123", "JTWZO".radixNDecode2DecimalString(base37.map { it.toString() }))
+    }
+
+    @Test
+    fun caseCrack() {
+        val encode = "ZMXHZ3TZMHVFSDR2M19GMHVUZF83ADNFUJFNADDFNG41DZNYFQ=="
+        val raw = "flag{Y0u_H4v3_F0und_7h3_R1gh7_4n5w3r}"
+        println(encode.base64CaseCrack())
+        assertEquals(encode, raw.base64UpperCase())
+    }
+
+    @Test
+    fun hackString() {
+        val hackWord =
+            ("This message serves to prove how our minds can do amazing things!" +
+                    "In the beginning it was hard but now, on this line your mind is reading it automatically" +
+                    " without even thinking about it, be proud!Only certain people can read this!")
+                .hackWord()
+        println(hackWord)
+        println(hackWord.hackWordDecode().lowercase())
     }
 }
