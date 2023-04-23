@@ -350,13 +350,26 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
     },
     ZWC_UNICODE("zwUnicode") {
         override fun encrypt(raw: String, params: Map<String, String>) =
-            raw.zwcUnicode(
-                params[P1]?.ifEmpty { "show" } ?: "show",
-                params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
-            )
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.zwcUnicodeBinary(
+                    params[P1]?.ifEmpty { "show" } ?: "show",
+                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+                )
+            } else {
+                raw.zwcUnicode(
+                    params[P1]?.ifEmpty { "show" } ?: "show",
+                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+                )
+            }
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
-            raw.zwcUnicodeDecode(params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT)
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.zwcUnicodeDecodeBinary(
+                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+                )
+            } else {
+                raw.zwcUnicodeDecode(params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT)
+            }
     },
     PeriodicTable("periodicTable") {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.elementPeriodEncode()

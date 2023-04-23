@@ -307,4 +307,27 @@ class CtfTest {
         val data = File(TEST_CTF_DIR, "zwc_unicode2.txt").readText()
         assertEquals(data.zwcUnicodeDecode(), data.zwcUnicodeDecode("\\u200f\\u202a\\u202c"))
     }
+
+    @Test
+    fun zwcUnicode2() {
+        val dict = "\\u200c\\u200d\\u202c\\ufeff"
+        val expected = "flag{z1p_wiTh_z3r0width_1s_So_H4rdddddd~}"
+        val encode =
+            "\u200D\u202C\u200D\u202Cwhere\u200D\u202C\uFEFF\u200C \u200D\u202C\u200C\u200D\u200D\u202C\u200D\uFEFFis" +
+                "\u200D\uFEFF\u202C\uFEFF flag\u200D\uFEFF\u202C\u202C\u200C\uFEFF\u200C\u200D\u200D\uFEFF\u200C" +
+                "\u200C\u200D\u200D\uFEFF\uFEFF?\u200D\uFEFF\u200D\uFEFF\u200D\u202C\u202C\u200D\u200D\u200D\u200D" +
+                "\u200C\u200D\u202C\u202C\u200C\u200D\u200D\uFEFF\uFEFF\u200D\uFEFF\u202C\u202C\u200C\uFEFF\u200C" +
+                "\uFEFF\u200D\uFEFF\u200C\u202C\u200C\uFEFF\u200C\u200C\u200D\uFEFF\u200D\uFEFF\u200D\u202C" +
+                "\u202C\u200D\u200D\u202C\u200D\u200C\u200D\uFEFF\u200D\u200C\u200D\u202C\u202C\u200C\u200D" +
+                "\u200D\uFEFF\uFEFF\u200C\uFEFF\u200C\u200D\u200D\uFEFF\u200C\uFEFF\u200D\u200D\uFEFF\uFEFF" +
+                "\u200D\u200D\u200C\uFEFF\u200D\u202C\uFEFF\uFEFF\u200D\u200D\uFEFF\uFEFF\u200D\u200C\u202C" +
+                "\u200C\u200C\uFEFF\u200D\u200C\u200D\uFEFF\u200C\u202C\u200D\u202C\u200D\u200C\u200D\u202C" +
+                "\u200D\u200C\u200D\u202C\u200D\u200C\u200D\u202C\u200D\u200C\u200D\u202C\u200D\u200C\u200D" +
+                "\u202C\u200D\u200C\u200D\uFEFF\uFEFF\u202C\u200D\uFEFF\uFEFF\u200D"
+        val show = "where is flag"
+        assertEquals(expected, encode.zwcUnicodeDecodeBinary(dict))
+
+        val encoded = expected.zwcUnicodeBinary(show, dict)
+        assertEquals(expected, encoded.zwcUnicodeDecodeBinary(dict))
+    }
 }

@@ -1,33 +1,21 @@
-{"version":"1.16.0","info":"1.6.0 2023-03-27,
+{"version":"1.16.1.beta","info":"1.6.1 2023-04-21,
 
 新功能
 
-  🔥 非对称加密/签名支持同时显示公私钥
-  🔥 Signature add jwt功能
-  🔥 新增Misc模块
-  🔥 Hash 新增 mysql,mysql5, md5-middle
-  🔥 SymmetricCrypto新增 Tnepres,及key iv编码支持自动转
-  🔥 编码支持文件加解密
-  🔥 BigInt新增排列和组合
-  🔥 CTF RSA-crack支持更多格式
-  🔥 Encode add 十进制转其他进制,需自定义字典
-  🔥 Digest crack 支持 mask
-  🔥 合并CTF类似功能算法
-  🔥 CTF新增三种零宽算法(zwc),百家姓, base64隐写,Type7,Citrix CTX1
-  🐛 js hex编码缺少补零
-  🐛 CTF图片编码 jar资源文件夹遍历错误
+  🔥 新增最小化到系统托盘
+  🔥 Misc加入 DNS host解析
+  🔥 Signature JWT优化HMAC输入秘钥显示
+  🔥 Misc add cron explain
+  🔥 其他优化
 
 
-插件
-  🔥 plugin-image: 新增图片插件
-  🐛 plugin-apipost: 忽略证书验证功能错误
-
+  插件
+  🔥 plugin-image: fixPng support correct magic number
 
 
 使用前请看README和wiki
 
-已开通打赏渠道,入口不会嵌入软件中
-想支持作者,可在README或者个人github主页打赏,
-感谢 Flamiec，爱发电用户_HW58 打赏！
+github项目已开通打赏(sponsor)入口,
+感谢  naonaonao师傅 大力支持！
 
   "}

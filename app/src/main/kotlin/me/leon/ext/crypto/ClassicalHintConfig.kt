@@ -67,6 +67,7 @@ val CLASSIC_CONFIG =
         ClassicalCryptoType.ZWC_UNICODE to
             mapOf(
                 HINT to arrayOf("show plain text", "encode dict,default $ZWC_UNICODE_DICT"),
+                CHECK to arrayOf("binary")
             ),
         ClassicalCryptoType.CurveCipher to
             mapOf(

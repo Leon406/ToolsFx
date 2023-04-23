@@ -4,10 +4,7 @@ import kotlin.math.ceil
 import kotlin.math.log
 import me.leon.classical.morseDecrypt
 import me.leon.classical.morseEncrypt
-import me.leon.ext.distinct
-import me.leon.ext.sorted
-import me.leon.ext.toUnicodeString
-import me.leon.ext.unicode2String
+import me.leon.ext.*
 
 // ported from https://github.com/yuanfux/zero-width-lib
 // ported from https://github.com/rover95/morse-encrypt
@@ -99,6 +96,43 @@ fun String.zwcUnicode(show: String, dict: String = ZWC_UNICODE_DICT): String {
 }
 
 fun String.zwcUnicodeDecode(dict: String = ZWC_UNICODE_DICT): String {
+    val encodeMap = parseDict(dict)
+    val radix = encodeMap.length
+    val encodeLength = ceil(log(65_536.0, radix.toDouble())).toInt()
+
+    return filter { it in encodeMap }
+        .chunked(encodeLength)
+        .map { it.map { encodeMap.indexOf(it) }.joinToString("").toInt(radix).toChar() }
+        .joinToString("")
+}
+
+fun String.zwcUnicodeBinary(show: String, dict: String = ZWC_UNICODE_DICT): String {
+    val encodeMap = dict.unicode2String()
+    val radix = encodeMap.length
+    val encodeLength = ceil(log(256.0, radix.toDouble())).toInt()
+
+    return toByteArray()
+        .joinToString("") {
+            it.toString(radix)
+                .padStart(encodeLength, '0')
+                .map { encodeMap[it - '0'] }
+                .joinToString("")
+        }
+        .run { "${show.first()}$this${show.substring(1)}" }
+}
+
+fun String.zwcUnicodeDecodeBinary(dict: String = ZWC_UNICODE_DICT): String {
+    val encodeMap = parseDict(dict)
+    val radix = encodeMap.length
+    val encodeLength = ceil(log(256.0, radix.toDouble())).toInt()
+    return zwcUnicodeDecode2Radix(encodeMap)
+        .chunked(encodeLength)
+        .map { it.toByte(encodeLength) }
+        .toByteArray()
+        .decodeToString()
+}
+
+private fun String.parseDict(dict: String): String {
     var encodeMap = dict.unicode2String()
     val zwcMapInData =
         distinct().sorted().filter {
@@ -111,11 +145,9 @@ fun String.zwcUnicodeDecode(dict: String = ZWC_UNICODE_DICT): String {
     if (dict == ZWC_UNICODE_DICT && zwcMapInData.any { !encodeMap.contains(it) }) {
         encodeMap = zwcMapInData
     }
-    val radix = encodeMap.length
-    val encodeLength = ceil(log(65_536.0, radix.toDouble())).toInt()
+    return encodeMap
+}
 
-    return filter { it in encodeMap }
-        .chunked(encodeLength)
-        .map { it.map { encodeMap.indexOf(it) }.joinToString("").toInt(radix).toChar() }
-        .joinToString("")
+private fun String.zwcUnicodeDecode2Radix(encodeMap: String): String {
+    return filter { it in encodeMap }.map { encodeMap.indexOf(it) }.joinToString("")
 }
