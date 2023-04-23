@@ -726,7 +726,8 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun isIgnoreSpace() = false
     },
     BASE64_CASE("base64CaseCrack") {
-        override fun encrypt(raw: String, params: Map<String, String>) = raw.base64UpperCase()
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            raw.lineAction2String { it.base64UpperCase() }
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.base64CaseCrack(params[P1].orEmpty())

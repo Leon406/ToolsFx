@@ -12,7 +12,12 @@ import me.leon.ext.crypto.next
  * @since 2023-04-23 16:29
  * @email deadogone@gmail.com
  */
-val DEFAULT_CONDITION = { s: String -> !REG_NON_PRINTABLE.containsMatchIn(s.base64Decode2String()) }
+val DEFAULT_CONDITION = { s: String ->
+    with(s.base64Decode2String()) {
+        all { it.code < 128 && it.code != 10 && it.code != 13 } &&
+            !REG_NON_PRINTABLE.containsMatchIn(this)
+    }
+}
 
 fun String.base64CaseCrack(words: String = ""): String {
     if (words.isNotEmpty()) {

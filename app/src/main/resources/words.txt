@@ -28,7 +28,6 @@ ability
 abject
 ablaze
 able
-able-bodied
 abnormal
 abnormality
 abnormally
@@ -46,7 +45,6 @@ abortion
 abound
 about
 above
-above-average
 abrasion
 abrasive
 abreast
@@ -405,7 +403,6 @@ africa
 african
 aft
 after
-after-school
 afterlife
 aftermath
 afternoon
@@ -417,8 +414,6 @@ afterwards
 again
 against
 age
-age-old
-age-related
 aged
 agency
 agenda
@@ -474,8 +469,6 @@ aiming
 aimlessly
 ain
 air
-air-conditioned
-air-conditioning
 airborne
 aircraft
 airfare
@@ -541,14 +534,6 @@ alignment
 alike
 alive
 all
-all-day
-all-important
-all-night
-all-out
-all-purpose
-all-star
-all-time
-all-white
 allay
 allegation
 allege
@@ -1191,9 +1176,6 @@ asylum
 asymmetrical
 asymmetry
 at
-at-bat
-at-large
-at-risk
 ate
 atheist
 ather
@@ -1326,7 +1308,6 @@ avail
 availability
 available
 avalanche
-avant-garde
 avatar
 avenge
 avenged
@@ -1354,7 +1335,6 @@ awaken
 awakened
 awakening
 award
-award-winning
 aware
 awareness
 awash
@@ -1389,12 +1369,9 @@ babel
 babies
 baboon
 baby
-baby-sit
-baby-sitter
 babylon
 bachelor
 back
-back-to-back
 backand
 backbone
 backcountry
@@ -1712,7 +1689,6 @@ beheld
 behemoth
 behest
 behind
-behind-the-scenes
 behold
 beholden
 beholder
@@ -1787,9 +1763,6 @@ beside
 besides
 besiege
 best
-best-known
-best-seller
-best-selling
 bestow
 bestowed
 bet
@@ -1828,10 +1801,6 @@ bidder
 bidding
 bide
 big
-big-city
-big-name
-big-screen
-big-time
 bigger
 biggest
 bigot
@@ -1909,9 +1878,6 @@ bittersweet
 biz
 bizarre
 black
-black-and-white
-black-eyed
-black-owned
 blackberry
 blackboard
 blacken
@@ -2016,7 +1982,6 @@ blot
 blotted
 blouse
 blow
-blow-up
 blower
 blowers
 blowing
@@ -2024,10 +1989,6 @@ blown
 blowout
 blows
 blue
-blue-chip
-blue-collar
-blue-eyed
-blue-green
 bluebeard
 blueberry
 bluegrass
@@ -2148,7 +2109,6 @@ bored
 boredom
 boring
 born
-born-again
 borne
 borough
 borrow
@@ -2207,7 +2167,6 @@ bowler
 bowling
 bows
 box
-box-office
 boxed
 boxer
 boxes
@@ -2242,8 +2201,6 @@ branch
 branches
 branching
 brand
-brand-name
-brand-new
 brandish
 brandishing
 brandy
@@ -2265,7 +2222,6 @@ bread
 breadth
 breadwinner
 break
-break-in
 breakaway
 breakdown
 breaker
@@ -2277,7 +2233,6 @@ breaks
 breakthrough
 breakup
 breast
-breast-feeding
 breasts
 breastworks
 breath
@@ -2346,7 +2301,6 @@ british
 brittle
 broach
 broad
-broad-based
 broadband
 broadcast
 broadcaster
@@ -2379,7 +2333,6 @@ broom
 broth
 brothel
 brother
-brother-in-law
 brotherhood
 brothers
 brought
@@ -2437,7 +2390,6 @@ builder
 building
 buildings
 built
-built-in
 bulb
 bulge
 bulging
@@ -2496,7 +2448,6 @@ burlap
 burly
 burn
 burned
-burned-out
 burner
 burning
 burnout
@@ -2554,9 +2505,7 @@ buzzer
 buzzing
 buzzword
 by
-by-product
 bye
-bye-bye
 bygone
 bypass
 bystander
@@ -2783,7 +2732,6 @@ carrier
 carrion
 carrot
 carry
-carry-on
 carrying
 cars
 cart
@@ -2800,7 +2748,6 @@ carver
 carving
 cascade
 case
-case-by-case
 caseload
 cases
 caseworker
@@ -2814,7 +2761,6 @@ casserole
 cassette
 cassock
 cast
-cast-iron
 caste
 casting
 castle
@@ -2886,7 +2832,6 @@ caviar
 cavity
 cayenne
 cease
-cease-fire
 ceased
 ceases
 ceasing
@@ -2938,7 +2883,6 @@ centrifugal
 centrist
 cents
 centuries
-centuries-old
 century
 ceramic
 ceramics
@@ -2960,7 +2904,6 @@ cessation
 chafe
 chagrin
 chain
-chain-link
 chains
 chainsaw
 chair
@@ -3106,7 +3049,6 @@ chewed
 chewing
 chewy
 chi
-chi-square
 chic
 chick
 chickamauga
@@ -3120,7 +3062,6 @@ chieftain
 chiffon
 chignon
 child
-child-rearing
 childbirth
 childhood
 childish
@@ -3252,7 +3193,6 @@ citywide
 civic
 civics
 civil
-civil-military
 civilian
 civilians
 civilisation
@@ -3291,7 +3231,6 @@ clasp
 clasped
 clasping
 class
-class-action
 classes
 classic
 classical
@@ -3321,7 +3260,6 @@ cleanser
 cleansing
 cleanup
 clear
-clear-cut
 clearance
 cleared
 clearing
@@ -3382,8 +3320,6 @@ clog
 clone
 cloning
 close
-close-knit
-close-up
 closed
 closely
 closeness
@@ -3428,26 +3364,10 @@ clutched
 clutching
 clutter
 cluttered
-co-author
-co-chair
-co-chairman
-co-director
-co-found
-co-founder
-co-host
-co-op
-co-opt
-co-owner
-co-pilot
-co-sponsor
-co-star
-co-worker
-co-write
 coach
 coaching
 coachman
 coal
-coal-fired
 coalesce
 coalition
 coarse
@@ -3517,7 +3437,6 @@ coke
 col
 cola
 cold
-cold-blooded
 colder
 coldly
 coldness
@@ -3618,7 +3537,6 @@ commanded
 commandeer
 commandeered
 commander
-commander-in-chief
 commanding
 commandment
 commando
@@ -3674,7 +3592,6 @@ communique
 communism
 communist
 community
-community-based
 commute
 commuter
 compact
@@ -3781,8 +3698,6 @@ computation
 computational
 compute
 computer
-computer-based
-computer-generated
 computerized
 computing
 comrade
@@ -4269,8 +4184,6 @@ cosmology
 cosmopolitan
 cosmos
 cost
-cost-benefit
-cost-effective
 costly
 costs
 costume
@@ -4345,7 +4258,6 @@ couture
 cove
 covenant
 cover
-cover-up
 coverage
 coveralls
 covered
@@ -4434,7 +4346,6 @@ credential
 credibility
 credible
 credit
-credit-card
 creditor
 credo
 creed
@@ -4500,13 +4411,6 @@ cropland
 cropped
 crops
 cross
-cross-border
-cross-country
-cross-cultural
-cross-examination
-cross-legged
-cross-section
-cross-sectional
 crossed
 crosses
 crossfire
@@ -4581,7 +4485,6 @@ cuddle
 cue
 cuff
 cuisine
-cul-de-sac
 culinary
 cull
 culminate
@@ -4652,7 +4555,6 @@ custodial
 custodian
 custody
 custom
-custom-made
 customary
 customer
 customers
@@ -4660,7 +4562,6 @@ customize
 customized
 customs
 cut
-cut-off
 cutback
 cute
 cuticle
@@ -4668,7 +4569,6 @@ cuts
 cutter
 cutthroat
 cutting
-cutting-edge
 cyanide
 cyberspace
 cycle
@@ -4739,7 +4639,6 @@ dare
 dared
 daring
 dark
-dark-haired
 darken
 darkened
 darkening
@@ -4765,14 +4664,12 @@ dated
 dates
 dating
 daughter
-daughter-in-law
 daughters
 daunting
 davis
 dawn
 dawned
 day
-day-to-day
 daybreak
 daycare
 daydream
@@ -4787,7 +4684,6 @@ dazzling
 de
 deacon
 dead
-dead-end
 deadline
 deadlock
 deadly
@@ -4849,8 +4745,6 @@ deciduous
 decimate
 decipher
 decision
-decision-maker
-decision-making
 decisive
 decisively
 deck
@@ -4899,9 +4793,6 @@ deeds
 deem
 deemed
 deep
-deep-sea
-deep-seated
-deep-water
 deepen
 deepening
 deeper
@@ -5314,7 +5205,6 @@ dictum
 did
 didactic
 die
-die-hard
 died
 diego
 dies
@@ -5695,7 +5585,6 @@ dizzy
 dizzying
 dmitry
 do
-do-it-yourself
 doable
 doan
 doc
@@ -5754,7 +5643,6 @@ donut
 doom
 doomed
 door
-door-to-door
 doorbell
 doorknob
 doorman
@@ -5771,12 +5659,9 @@ dosage
 dose
 dosed
 dot
-dot-com
 doting
 dotted
 double
-double-digit
-double-edged
 doubled
 doubling
 doubly
@@ -5793,7 +5678,6 @@ dove
 dovecote
 dowagers
 down
-down-to-earth
 downed
 downfall
 downgrade
@@ -5892,8 +5776,6 @@ drip
 dripped
 dripping
 drive
-drive-by
-drive-in
 driven
 driver
 drivers
@@ -5909,7 +5791,6 @@ droop
 drooped
 drooping
 drop
-drop-off
 droplet
 dropout
 dropped
@@ -5924,7 +5805,6 @@ drowsily
 drowsiness
 drowsy
 drug
-drug-related
 drugs
 drugstore
 drum
@@ -6027,9 +5907,6 @@ dysentery
 dysfunction
 dysfunctional
 e
-e-commerce
-e-mail
-e-mailed
 each
 eager
 eagerly
@@ -6040,7 +5917,6 @@ earlier
 earliest
 earls
 early
-early-morning
 earmark
 earn
 earned
@@ -6117,7 +5993,6 @@ edit
 editing
 edition
 editor
-editor-in-chief
 editorial
 educate
 educated
@@ -6156,15 +6031,10 @@ ego
 egregious
 eh
 eight
-eight-year
-eight-year-old
 eighteen
 eighteenth
-eighteenth-century
 eighth
-eighth-grade
 eighty
-eighty-five
 either
 eject
 el
@@ -6325,7 +6195,6 @@ empowerment
 emptied
 emptiness
 empty
-empty-handed
 emptying
 emulate
 en
@@ -6393,7 +6262,6 @@ energetic
 energetically
 energize
 energy
-energy-efficient
 enforce
 enforceable
 enforced
@@ -6509,7 +6377,6 @@ entrepreneurship
 entrust
 entrusted
 entry
-entry-level
 entryway
 entwine
 enumerate
@@ -6692,9 +6559,6 @@ events
 eventual
 eventually
 ever
-ever-changing
-ever-increasing
-ever-present
 evergreen
 everlasting
 every
@@ -6706,7 +6570,6 @@ everywhere
 evict
 eviction
 evidence
-evidence-based
 evident
 evidently
 evil
@@ -6722,8 +6585,6 @@ evolve
 evolved
 evolving
 ex
-ex-husband
-ex-wife
 exacerbate
 exact
 exacting
@@ -6933,7 +6794,6 @@ extinguisher
 extol
 extortion
 extra
-extra-virgin
 extract
 extracted
 extraction
@@ -6960,7 +6820,6 @@ exuberance
 exuberant
 exude
 eye
-eye-catching
 eyeball
 eyebrow
 eyebrows
@@ -6986,8 +6845,6 @@ fabulous
 fac
 facade
 face
-face-lift
-face-to-face
 faced
 faceless
 faces
@@ -7029,7 +6886,6 @@ fairness
 fairway
 fairy
 faith
-faith-based
 faithful
 faithfully
 fake
@@ -7078,10 +6934,6 @@ fantasize
 fantastic
 fantasy
 far
-far-fetched
-far-flung
-far-off
-far-reaching
 faraway
 farce
 fare
@@ -7108,25 +6960,19 @@ fashion
 fashionable
 fashioned
 fast
-fast-growing
-fast-moving
-fast-paced
 fastball
 fasten
 fastened
 fastener
 faster
 fastest
-fastest-growing
 fat
-fat-free
 fatal
 fatality
 fatally
 fate
 fateful
 father
-father-in-law
 fatherhood
 fatherly
 fathers
@@ -7189,7 +7035,6 @@ feedback
 feeder
 feeding
 feel
-feel-good
 feeling
 feelings
 feels
@@ -7256,7 +7101,6 @@ fiancee
 fiasco
 fiat
 fiber
-fiber-optic
 fiberglass
 fibrosis
 fibrous
@@ -7281,11 +7125,8 @@ fifes
 fifteen
 fifteenth
 fifth
-fifth-grade
 fifties
 fifty
-fifty-five
-fifty-two
 fig
 fight
 fighter
@@ -7338,7 +7179,6 @@ finder
 finding
 finds
 fine
-fine-tuning
 fined
 finely
 finer
@@ -7380,17 +7220,6 @@ firm
 firmly
 firmness
 first
-first-class
-first-degree
-first-ever
-first-generation
-first-person
-first-place
-first-quarter
-first-rate
-first-round
-first-time
-first-year
 firsthand
 fiscal
 fiscally
@@ -7413,11 +7242,6 @@ fits
 fitted
 fitting
 five
-five-day
-five-minute
-five-star
-five-year
-five-year-old
 fix
 fixate
 fixation
@@ -7503,7 +7327,6 @@ fling
 flinging
 flint
 flip
-flip-flop
 flippant
 flipper
 flipping
@@ -7601,7 +7424,6 @@ folklore
 folks
 follies
 follow
-follow-up
 followed
 follower
 following
@@ -7638,7 +7460,6 @@ footsteps
 footwear
 fop
 for
-for-profit
 fora
 forage
 foray
@@ -7669,7 +7490,6 @@ foregoing
 foreground
 forehead
 foreign
-foreign-born
 foreigner
 foreman
 foremost
@@ -7742,14 +7562,6 @@ fortunately
 fortune
 fortunes
 forty
-forty-eight
-forty-five
-forty-four
-forty-one
-forty-seven
-forty-six
-forty-three
-forty-two
 forum
 forward
 forwards
@@ -7770,18 +7582,10 @@ foundries
 foundry
 fountain
 four
-four-day
-four-hour
-four-star
-four-wheel
-four-year
-four-year-old
 foursome
 fourteen
 fourteenth
 fourth
-fourth-grade
-fourth-quarter
 fowl
 fowls
 fox
@@ -7831,9 +7635,6 @@ freckled
 freckles
 fredericksburg
 free
-free-market
-free-standing
-free-trade
 freed
 freedmen
 freedom
@@ -7889,9 +7690,6 @@ frog
 from
 frond
 front
-front-line
-front-page
-front-runner
 frontal
 frontier
 frontline
@@ -7928,14 +7726,6 @@ fulfil
 fulfill
 fulfillment
 full
-full-blown
-full-fledged
-full-length
-full-page
-full-scale
-full-service
-full-size
-full-time
 fullback
 fullness
 fully
@@ -7952,8 +7742,6 @@ functionally
 functioning
 functions
 fund
-fund-raiser
-fund-raising
 fundamental
 fundamentalism
 fundamentalist
@@ -8043,7 +7831,6 @@ game
 games
 gaming
 gamma
-gamma-ray
 gamut
 gang
 gangrene
@@ -8344,8 +8131,6 @@ gone
 gong
 goo
 good
-good-looking
-good-natured
 goodbye
 goodies
 goodness
@@ -8445,7 +8230,6 @@ grappling
 grasp
 grasped
 grass
-grass-roots
 grasshopper
 grassland
 grassy
@@ -8471,7 +8255,6 @@ gravitational
 gravity
 gravy
 gray
-gray-haired
 graybeards
 graze
 grazing
@@ -8479,8 +8262,6 @@ grease
 greased
 greasy
 great
-great-grandfather
-great-grandmother
 greatcoat
 greater
 greatest
@@ -8553,7 +8334,6 @@ grossly
 grotesque
 grotto
 ground
-ground-based
 grounding
 grounds
 groundwater
@@ -8570,7 +8350,6 @@ grower
 growing
 growl
 grown
-grown-up
 grows
 growth
 grub
@@ -8680,11 +8459,6 @@ hairpins
 hairstyle
 hairy
 half
-half-century
-half-hearted
-half-hour
-half-mile
-half-million
 halfway
 halibut
 halifax
@@ -8716,8 +8490,6 @@ hamster
 hamstring
 han
 hand
-hand-held
-hand-painted
 handbag
 handbook
 handcuff
@@ -8739,7 +8511,6 @@ handling
 handmade
 handout
 hands
-hands-on
 handset
 handshake
 handsome
@@ -8775,13 +8546,6 @@ harbinger
 harbor
 harbour
 hard
-hard-boiled
-hard-core
-hard-earned
-hard-line
-hard-liner
-hard-pressed
-hard-working
 hardball
 hardcover
 harden
@@ -8851,7 +8615,6 @@ haunting
 haut
 havana
 have
-have-not
 haven
 having
 havoc
@@ -8865,8 +8628,6 @@ hazy
 he
 he/she
 head
-head-on
-head-to-head
 headache
 headband
 headboard
@@ -8894,7 +8655,6 @@ healed
 healer
 healing
 health
-health-related
 healthful
 healthy
 heap
@@ -8907,7 +8667,6 @@ hearing
 hears
 hearsay
 heart
-heart-shaped
 heartache
 heartbeat
 heartbreak
@@ -8938,8 +8697,6 @@ heavier
 heavily
 heaving
 heavy
-heavy-duty
-heavy-handed
 heavyweight
 heck
 hectic
@@ -9048,25 +8805,6 @@ hiding
 hierarchical
 hierarchy
 high
-high-definition
-high-end
-high-energy
-high-flying
-high-level
-high-performance
-high-pitched
-high-powered
-high-pressure
-high-priced
-high-profile
-high-quality
-high-ranking
-high-resolution
-high-rise
-high-risk
-high-speed
-high-stakes
-high-tech
 higher
 highest
 highland
@@ -9100,7 +8838,6 @@ hinted
 hinterland
 hints
 hip
-hip-hop
 hippie
 hips
 hire
@@ -9252,7 +8989,6 @@ horror
 horrors
 hors
 horse
-horse-drawn
 horseback
 horsehair
 horseman
@@ -9288,7 +9024,6 @@ hottest
 hound
 hounds
 hour
-hour-long
 hourly
 hours
 house
@@ -9301,7 +9036,6 @@ housework
 housing
 hover
 how
-how-to
 however
 howl
 howling
@@ -9429,7 +9163,6 @@ i
 iam
 ican
 ice
-ice-cream
 iceberg
 iced
 ices
@@ -9489,7 +9222,6 @@ iii
 ile
 ilk
 ill
-ill-fated
 illegal
 illegally
 illegitimate
@@ -9666,10 +9398,6 @@ impunity
 impurity
 imputed
 in
-in-depth
-in-house
-in-law
-in-service
 ina
 inability
 inaccessible
@@ -9975,7 +9703,6 @@ inmate
 inn
 innate
 inner
-inner-city
 innermost
 inning
 innings
@@ -10545,7 +10272,6 @@ jumble
 jumbled
 jumbo
 jump
-jump-start
 jumped
 jumper
 jumping
@@ -10698,7 +10424,6 @@ knot
 knots
 knotted
 know
-know-how
 knowing
 knowingly
 knowledge
@@ -10716,7 +10441,6 @@ label
 labeled
 labeling
 labor
-labor-intensive
 laboratory
 labored
 laborer
@@ -10754,10 +10478,8 @@ ladyship
 lag
 lagoon
 laid
-laid-back
 lain
 lair
-laissez-faire
 laity
 lak
 lake
@@ -10774,7 +10496,6 @@ lamplighters
 lamps
 lance
 land
-land-use
 landed
 lander
 landfall
@@ -10803,11 +10524,9 @@ lapse
 laptop
 lard
 large
-large-scale
 largely
 largemouth
 larger
-larger-than-life
 largest
 lark
 larva
@@ -10819,13 +10538,11 @@ lashed
 lashes
 lashing
 last
-last-minute
 lasted
 lasting
 lastly
 latch
 late
-late-night
 lately
 latency
 latent
@@ -10837,7 +10554,6 @@ latin
 latitude
 latte
 latter
-latter-day
 lattice
 laud
 laudable
@@ -10860,7 +10576,6 @@ lavender
 lavish
 lavishly
 law
-law-abiding
 lawful
 lawless
 lawmaker
@@ -10934,10 +10649,6 @@ leery
 leeway
 lef
 left
-left-hand
-left-handed
-left-hander
-left-wing
 leftist
 leftover
 lefty
@@ -11057,9 +10768,6 @@ lies
 lieu
 lieutenant
 life
-life-saving
-life-size
-life-threatening
 lifeboat
 lifeguard
 lifeless
@@ -11074,8 +10782,6 @@ lifted
 lifting
 ligament
 light
-light-hearted
-light-year
 lightbulb
 lighted
 lighten
@@ -11089,7 +10795,6 @@ lights
 lightweight
 likable
 like
-like-minded
 liked
 likelihood
 likely
@@ -11181,7 +10886,6 @@ litmus
 litter
 littered
 little
-little-known
 liturgical
 liturgy
 livable
@@ -11265,21 +10969,8 @@ lonely
 loner
 lonesome
 long
-long-ago
-long-awaited
-long-distance
-long-held
-long-lasting
-long-lived
-long-lost
-long-range
-long-running
-long-standing
-long-term
-long-term-care
 longed
 longer
-longer-term
 longevity
 longing
 longingly
@@ -11288,7 +10979,6 @@ longitudinal
 longs
 longtime
 look
-look-alike
 looked
 looking
 lookout
@@ -11350,14 +11040,6 @@ loves
 loving
 lovingly
 low
-low-cost
-low-fat
-low-income
-low-key
-low-level
-low-lying
-low-tech
-low-wage
 lowed
 lower
 lowered
@@ -11490,7 +11172,6 @@ maid
 maiden
 maids
 mail
-mail-order
 mailbox
 mailing
 mailman
@@ -11513,7 +11194,6 @@ maize
 majestic
 majesty
 major
-major-league
 majority
 make
 makeover
@@ -11527,7 +11207,6 @@ malaise
 malaria
 malarial
 male
-male-dominated
 malevolent
 malfunction
 malice
@@ -11551,7 +11230,6 @@ mammography
 mammoth
 mammy
 man
-man-made
 manage
 manageable
 managed
@@ -11697,7 +11375,6 @@ masonry
 masons
 masquerade
 mass
-mass-produced
 massacre
 massage
 massed
@@ -11748,8 +11425,6 @@ matrons
 matte
 matted
 matter
-matter-of-fact
-matter-of-factly
 mattered
 matters
 mattress
@@ -11781,7 +11456,6 @@ meager
 meal
 meals
 mean
-mean-spirited
 meander
 meaning
 meaningful
@@ -11835,10 +11509,6 @@ meditation
 meditative
 meditatively
 medium
-medium-high
-medium-low
-medium-size
-medium-sized
 medley
 meek
 meekly
@@ -11894,7 +11564,6 @@ meningitis
 menopause
 menstrual
 mental
-mental-health
 mentality
 mentally
 mention
@@ -11940,7 +11609,6 @@ messianic
 messy
 mestizo
 met
-meta-analysis
 metabolic
 metabolism
 metal
@@ -11991,16 +11659,8 @@ microscope
 microscopic
 microwave
 mid
-mid-afternoon
-mid-air
-mid-century
-mid-morning
-mid-size
 midday
 middle
-middle-aged
-middle-class
-middle-income
 midget
 midnight
 midpoint
@@ -12045,7 +11705,6 @@ millers
 millimeter
 milling
 million
-million-dollar
 millionaire
 millions
 millisecond
@@ -12057,7 +11716,6 @@ mimosa
 mince
 minced
 mind
-mind-boggling
 minded
 mindful
 mindless
@@ -12088,7 +11746,6 @@ minivan
 mink
 minnow
 minor
-minor-league
 minority
 minstrel
 minstrels
@@ -12186,7 +11843,6 @@ mixing
 mixture
 miz
 mm
-mm-hmm
 mme
 mmm
 mo
@@ -12218,7 +11874,6 @@ moderately
 moderation
 moderator
 modern
-modern-day
 modernism
 modernist
 modernity
@@ -12353,7 +12008,6 @@ mostly
 motel
 moth
 mother
-mother-in-law
 motherfucker
 motherhood
 mothers
@@ -12417,7 +12071,6 @@ mozzarella
 mr
 mrs
 much
-much-needed
 muck
 mucus
 mud
@@ -12435,13 +12088,10 @@ mulch
 mule
 mules
 mull
-multi-ethnic
-multi-party
 multicultural
 multiculturalism
 multilateral
 multimedia
-multimillion-dollar
 multimillionaire
 multinational
 multiple
@@ -12580,8 +12230,6 @@ nasty
 natalya
 natasha
 nation
-nation-building
-nation-state
 national
 nationalism
 nationalist
@@ -12606,7 +12254,6 @@ nauseated
 nautical
 naval
 navarre
-nave
 navel
 navigate
 navigation
@@ -12713,7 +12360,6 @@ neutralize
 neutrino
 neutron
 never
-never-ending
 nevertheless
 new
 newborn
@@ -12734,7 +12380,6 @@ newsprint
 newsroom
 newsstand
 next
-next-door
 nexus
 nib
 nibble
@@ -12772,13 +12417,9 @@ nikolay
 nimble
 nina
 nine
-nine-year-old
 nineteen
 nineteenth
-nineteenth-century
 ninety
-ninety-five
-ninety-nine
 ninny
 ninth
 nip
@@ -12787,10 +12428,6 @@ nitrate
 nitrogen
 nix
 no
-no-brainer
-no-fly
-no-hitter
-no-nonsense
 nobility
 noble
 nobleman
@@ -12816,9 +12453,6 @@ nominate
 nomination
 nominee
 non
-non-native
-non-western
-non-white
 nonchalant
 nondescript
 none
@@ -12862,7 +12496,6 @@ nostalgic
 nostril
 nostrils
 not
-not-for-profit
 notable
 notably
 notation
@@ -12919,7 +12552,6 @@ null
 nullify
 numb
 number
-number-one
 numbered
 numbers
 numbness
@@ -13068,9 +12700,6 @@ oeuvres
 of
 ofcourse
 off
-off-duty
-off-limits
-off-road
 offbeat
 offence
 offences
@@ -13111,12 +12740,6 @@ ok
 okay
 okra
 old
-old-fashioned
-old-growth
-old-school
-old-style
-old-time
-old-timer
 older
 oldest
 ole
@@ -13129,33 +12752,11 @@ omission
 omit
 omnipresent
 on
-on-site
-on-the-job
 once
 oncologist
 oncology
 oncoming
 one
-one-bedroom
-one-day
-one-dimensional
-one-fifth
-one-fourth
-one-half
-one-hour
-one-man
-one-of-a-kind
-one-on-one
-one-party
-one-quarter
-one-room
-one-sided
-one-stop
-one-tenth
-one-third
-one-time
-one-way
-one-year
 oneness
 onerous
 ones
@@ -13177,12 +12778,8 @@ ooh
 oops
 ooze
 oozing
-op-ed
 opaque
 open
-open-air
-open-ended
-open-minded
 opened
 opener
 opening
@@ -13323,8 +12920,6 @@ ourselves
 oust
 ouster
 out
-out-of-state
-out-of-town
 outage
 outbreak
 outbuildings
@@ -13394,7 +12989,6 @@ ovary
 ovation
 oven
 over
-over-the-counter
 overall
 overarching
 overbearing
@@ -13636,7 +13230,6 @@ parchment
 pardon
 pare
 parent
-parent-child
 parental
 parenthesis
 parenthood
@@ -13667,7 +13260,6 @@ parse
 parsley
 parsonage
 part
-part-time
 partake
 parted
 partial
@@ -13888,7 +13480,6 @@ pennsylvania
 penny
 pension
 pensive
-pent-up
 penthouse
 peon
 people
@@ -14363,7 +13954,6 @@ policeman
 policemen
 policing
 policy
-policy-making
 policymaker
 polio
 polish
@@ -14412,7 +14002,6 @@ poor
 poorhouse
 poorly
 pop
-pop-up
 popcorn
 pope
 poplar
@@ -14469,8 +14058,6 @@ possible
 possibly
 possum
 post
-post-mortem
-post-traumatic
 postage
 postal
 postcard
@@ -14554,12 +14141,6 @@ prayed
 prayer
 prayers
 praying
-pre-columbian
-pre-dawn
-pre-emptive
-pre-existing
-pre-service
-pre-war
 preach
 preacher
 preaching
@@ -14669,7 +14250,6 @@ prescription
 preseason
 presence
 present
-present-day
 presentation
 presented
 presenter
@@ -14687,7 +14267,6 @@ preside
 presided
 presidency
 president
-president-elect
 presidential
 press
 pressed
@@ -14781,7 +14360,6 @@ prissy
 pristine
 privacy
 private
-private-sector
 privately
 privations
 privatization
@@ -14790,10 +14368,8 @@ privilege
 privileged
 privy
 prize
-prize-winning
 prized
 pro
-pro-life
 proactive
 probability
 probable
@@ -14802,7 +14378,6 @@ probation
 probe
 probing
 problem
-problem-solving
 problematic
 problems
 procedural
@@ -15064,7 +14639,6 @@ pub
 puberty
 pubic
 public
-public-relations
 publication
 publicist
 publicity
@@ -15160,7 +14734,6 @@ pursuit
 purveyor
 purview
 push
-push-up
 pushed
 pushing
 pushy
@@ -15215,7 +14788,6 @@ quarrelling
 quarrels
 quarry
 quarter
-quarter-century
 quarterback
 quartered
 quarterfinal
@@ -15447,17 +15019,6 @@ rays
 raze
 razor
 re
-re-create
-re-elect
-re-election
-re-emerge
-re-enact
-re-enactment
-re-enter
-re-entry
-re-establish
-re-evaluate
-re-examine
 reach
 reached
 reaching
@@ -15475,12 +15036,8 @@ readiness
 reading
 readjust
 ready
-ready-made
 reaffirm
 real
-real-life
-real-time
-real-world
 realignment
 realise
 realised
@@ -15640,8 +15197,6 @@ recycle
 recycled
 recycling
 red
-red-haired
-red-hot
 redden
 redder
 reddish
@@ -15761,7 +15316,6 @@ regretted
 regretting
 regroup
 regular
-regular-season
 regularity
 regularly
 regulate
@@ -16309,8 +15863,6 @@ rig
 rigged
 rigging
 right
-right-hand
-right-wing
 righted
 righteous
 righteousness
@@ -16413,11 +15965,9 @@ rogue
 rogues
 roil
 role
-role-playing
 roll
 rolled
 roller
-roller-coaster
 rolling
 rollover
 rolls
@@ -16472,7 +16022,6 @@ roughened
 roughly
 roulette
 round
-round-trip
 rounded
 rounds
 roundup
@@ -16540,13 +16089,9 @@ rumour
 rump
 rumpled
 run
-run-down
-run-in
-run-up
 runaway
 rung
 runner
-runner-up
 running
 runny
 runoff
@@ -16661,7 +16206,6 @@ salvage
 salvation
 sam
 same
-same-sex
 sameness
 samovar
 sample
@@ -16815,8 +16359,6 @@ scholarly
 scholarship
 scholastic
 school
-school-age
-school-based
 schoolboy
 schoolboys
 schoolchild
@@ -16831,7 +16373,6 @@ schoolwork
 schoolyard
 schooner
 science
-science-fiction
 scientific
 scientifically
 scientist
@@ -16958,21 +16499,12 @@ secession
 secluded
 seclusion
 second
-second-class
-second-degree
-second-floor
-second-generation
-second-hand
-second-largest
-second-round
-second-year
 secondary
 secondly
 seconds
 secrecy
 secret
 secretary
-secretary-general
 secrete
 secretion
 secretive
@@ -17035,46 +16567,6 @@ selection
 selective
 selectively
 self
-self-awareness
-self-centered
-self-concept
-self-confidence
-self-conscious
-self-consciously
-self-consciousness
-self-contained
-self-control
-self-defense
-self-described
-self-destructive
-self-determination
-self-doubt
-self-efficacy
-self-employed
-self-esteem
-self-evident
-self-expression
-self-government
-self-help
-self-image
-self-imposed
-self-interest
-self-made
-self-perception
-self-pity
-self-portrait
-self-proclaimed
-self-regulation
-self-reliance
-self-report
-self-reported
-self-respect
-self-righteous
-self-serving
-self-sufficiency
-self-sufficient
-self-taught
-self-worth
 selfish
 selfishness
 selfless
@@ -17088,7 +16580,6 @@ semblance
 semen
 semester
 semi
-semi-automatic
 semiconductor
 semifinal
 seminal
@@ -17186,15 +16677,10 @@ settler
 settling
 setup
 seven
-seven-day
-seven-year
-seven-year-old
 seventeen
 seventeenth
-seventeenth-century
 seventh
 seventy
-seventy-five
 sever
 several
 severance
@@ -17230,7 +16716,6 @@ shaft
 shafts
 shaggy
 shake
-shake-up
 shaken
 shaker
 shakespeare
@@ -17367,8 +16852,6 @@ shops
 shore
 shoreline
 short
-short-lived
-short-term
 shortage
 shortcoming
 shortcut
@@ -17452,7 +16935,6 @@ sickle
 sickly
 sickness
 side
-side-by-side
 sidebar
 sideboard
 sided
@@ -17547,10 +17029,6 @@ sing
 singer
 singing
 single
-single-family
-single-handedly
-single-minded
-single-parent
 singular
 singularity
 singularly
@@ -17567,11 +17045,9 @@ sir
 siren
 sissy
 sister
-sister-in-law
 sisterly
 sisters
 sit
-sit-up
 sitcom
 site
 sits
@@ -17583,19 +17059,10 @@ situation
 situational
 situations
 six
-six-day
-six-month
-six-pack
-six-week
-six-year
-six-year-old
 sixteen
 sixteenth
-sixteenth-century
 sixth
-sixth-grade
 sixty
-sixty-five
 sizable
 size
 sizeable
@@ -17736,7 +17203,6 @@ sloth
 slouch
 slovenly
 slow
-slow-moving
 slowdown
 slowed
 slower
@@ -17757,9 +17223,6 @@ sly
 slyly
 smack
 small
-small-business
-small-scale
-small-town
 smaller
 smallest
 smallmouth
@@ -17852,7 +17315,6 @@ snort
 snorted
 snout
 snow
-snow-covered
 snowball
 snowboard
 snowfall
@@ -17868,8 +17330,6 @@ snug
 snuggle
 snugly
 so
-so-and-so
-so-called
 soak
 soaked
 soaking
@@ -17909,7 +17369,6 @@ sodium
 sofa
 sofar
 soft
-soft-spoken
 softball
 soften
 softened
@@ -17965,7 +17424,6 @@ sometimes
 somewhat
 somewhere
 son
-son-in-law
 sonar
 song
 songbird
@@ -18004,7 +17462,6 @@ sorts
 sot
 souffle
 sought
-sought-after
 soul
 soulful
 souls
@@ -18038,7 +17495,6 @@ soy
 soybean
 spa
 space
-space-time
 spacecraft
 spaces
 spaceship
@@ -18315,9 +17771,7 @@ stagnation
 staid
 stain
 stained
-stained-glass
 stainless
-stainless-steel
 stains
 stair
 staircase
@@ -18345,9 +17799,6 @@ stamping
 stan
 stance
 stand
-stand-alone
-stand-in
-stand-up
 standard
 standardization
 standardize
@@ -18380,7 +17831,6 @@ starry
 stars
 starship
 start
-start-up
 started
 starter
 starting
@@ -18396,10 +17846,6 @@ starving
 stash
 stasis
 state
-state-of-the-art
-state-owned
-state-run
-state-sponsored
 stated
 statehood
 stately
@@ -18428,7 +17874,6 @@ staunch
 stave
 staveley
 stay
-stay-at-home
 stayed
 staying
 stays
@@ -18465,7 +17910,6 @@ stem
 stems
 stench
 step
-step-by-step
 stepfather
 stephens
 stepmother
@@ -18526,7 +17970,6 @@ stipend
 stipulate
 stipulation
 stir
-stir-fry
 stirred
 stirring
 stirrup
@@ -18561,7 +18004,6 @@ stopping
 stops
 storage
 store
-store-bought
 stored
 storefront
 storehouse
@@ -18708,7 +18150,6 @@ stuck
 stud
 studded
 student
-student-athlete
 students
 studied
 studies
@@ -19165,7 +18606,6 @@ systematically
 systemic
 systems
 t
-t-test
 ta
 tab
 table
@@ -19203,7 +18643,6 @@ tails
 taint
 tainted
 take
-take-out
 taken
 takeover
 taker
@@ -19288,8 +18727,6 @@ taut
 tavern
 tawny
 tax
-tax-exempt
-tax-free
 taxable
 taxation
 taxes
@@ -19303,7 +18740,6 @@ te
 tea
 teach
 teacher
-teacher-librarian
 teachers
 teaching
 teachings
@@ -19384,8 +18820,6 @@ temptation
 tempted
 tempting
 ten
-ten-year
-ten-year-old
 tenacious
 tenacity
 tenant
@@ -19432,7 +18866,6 @@ terminus
 termite
 terms
 tern
-terra-cotta
 terrace
 terrain
 terrestrial
@@ -19453,7 +18886,6 @@ terrors
 terse
 tertiary
 test
-test-retest
 testament
 tested
 tester
@@ -19478,7 +18910,6 @@ th
 thames
 than
 thank
-thank-you
 thanked
 thankful
 thankfully
@@ -19554,25 +18985,12 @@ thinly
 thinner
 thinning
 third
-third-generation
-third-largest
-third-party
-third-quarter
 thirds
 thirst
 thirsty
 thirteen
 thirteenth
 thirty
-thirty-eight
-thirty-five
-thirty-four
-thirty-nine
-thirty-one
-thirty-seven
-thirty-six
-thirty-three
-thirty-two
 this
 thistle
 thither
@@ -19607,22 +19025,6 @@ threatened
 threatening
 threats
 three
-three-bedroom
-three-day
-three-dimensional
-three-fourths
-three-hour
-three-month
-three-part
-three-point
-three-pointer
-three-quarters
-three-story
-three-time
-three-way
-three-week
-three-year
-three-year-old
 threshold
 threw
 thrice
@@ -19707,9 +19109,6 @@ tilted
 timber
 timbre
 time
-time-consuming
-time-honored
-time-out
 timeless
 timeline
 timely
@@ -19752,7 +19151,6 @@ title
 titles
 titular
 to
-to-do
 toa
 toad
 toast
@@ -19783,7 +19181,6 @@ tolerance
 tolerant
 tolerate
 toll
-toll-free
 tolly
 tom
 tomake
@@ -19817,10 +19214,6 @@ toothless
 toothpaste
 toothpick
 top
-top-down
-top-notch
-top-ranked
-top-rated
 topic
 topical
 topless
@@ -19905,7 +19298,6 @@ tract
 traction
 tractor
 trade
-trade-off
 trademark
 trader
 trading
@@ -20033,7 +19425,6 @@ treatment
 treaty
 treble
 tree
-tree-lined
 trees
 treetop
 trek
@@ -20149,7 +19540,6 @@ try
 trying
 tryout
 tsunami
-tu
 tub
 tube
 tuber
@@ -20193,7 +19583,6 @@ turkeys
 turkish
 turmoil
 turn
-turn-of-the-century
 turnaround
 turned
 turning
@@ -20223,18 +19612,7 @@ twelfth
 twelve
 twelvemonth
 twentieth
-twentieth-century
 twenty
-twenty-eight
-twenty-first
-twenty-five
-twenty-four
-twenty-nine
-twenty-one
-twenty-seven
-twenty-six
-twenty-three
-twenty-two
 twice
 twig
 twigs
@@ -20254,20 +19632,6 @@ twisting
 twitch
 twitched
 two
-two-bedroom
-two-day
-two-dimensional
-two-fold
-two-hour
-two-lane
-two-part
-two-story
-two-thirds
-two-time
-two-way
-two-week
-two-year
-two-year-old
 twofold
 tycoon
 tying
@@ -20288,8 +19652,6 @@ ugliest
 ugliness
 ugly
 uh
-uh-huh
-uh-oh
 ulcer
 ultimate
 ultimately
@@ -20302,8 +19664,6 @@ umbilical
 umbrella
 umm
 umpire
-un
-un-american
 unabashed
 unabashedly
 unable
@@ -20708,8 +20068,6 @@ unwritten
 unyielding
 unzip
 up
-up-front
-up-to-date
 upbeat
 upbraid
 upbringing
@@ -20729,7 +20087,6 @@ uplifting
 upload
 upon
 upper
-upper-class
 uppity
 upright
 uprights
@@ -20744,7 +20101,6 @@ upset
 upsetting
 upshot
 upside
-upside-down
 upstairs
 upstart
 upstate
@@ -20779,7 +20135,6 @@ useful
 usefulness
 useless
 user
-user-friendly
 usher
 using
 usual
@@ -20829,7 +20184,6 @@ valor
 valuable
 valuation
 value
-value-added
 valued
 valve
 vampire
@@ -20967,7 +20321,6 @@ vibrate
 vibration
 vicar
 vice
-vice-president
 vicinity
 vicious
 viciously
@@ -20982,7 +20335,6 @@ victories
 victorious
 victory
 video
-video-game
 videotape
 vie
 vied
@@ -21040,7 +20392,6 @@ virtuoso
 virtuous
 virulent
 virus
-vis-a-vis
 visa
 visage
 visceral
@@ -21155,16 +20506,13 @@ waitress
 waive
 waiver
 wake
-wake-up
 wakeful
 wakefulness
 wakes
 waking
 walk
-walk-in
 walked
 walker
-walkie-talkie
 walking
 walks
 walkway
@@ -21195,7 +20543,6 @@ wanting
 wanton
 wants
 war
-war-torn
 ward
 warden
 wardrobe
@@ -21208,7 +20555,6 @@ warhead
 warily
 warlord
 warm
-warm-up
 warmed
 warming
 warmly
@@ -21308,7 +20654,6 @@ weave
 weaver
 weaving
 web
-web-based
 website
 wed
 wedding
@@ -21320,7 +20665,6 @@ wee
 weed
 weeds
 week
-week-long
 weekday
 weekend
 weekly
@@ -21343,23 +20687,6 @@ welder
 welding
 welfare
 well
-well-being
-well-defined
-well-designed
-well-developed
-well-documented
-well-dressed
-well-educated
-well-established
-well-heeled
-well-intentioned
-well-known
-well-meaning
-well-off
-well-rounded
-well-to-do
-well-trained
-well-worn
 wellness
 wells
 welt
@@ -21435,11 +20762,8 @@ whispering
 whispers
 whist
 whistle
-whistle-blower
 whistling
 white
-white-collar
-white-haired
 whiteness
 whiter
 whites
@@ -21456,7 +20780,6 @@ who
 whoa
 whoever
 whole
-whole-wheat
 wholeheartedly
 wholeness
 wholesale
@@ -21476,9 +20799,6 @@ wicker
 wickham
 wid
 wide
-wide-eyed
-wide-open
-wide-ranging
 widely
 widen
 widened
@@ -21520,7 +20840,6 @@ wilted
 wily
 wimp
 win
-win-win
 wince
 winced
 wind
@@ -21643,7 +20962,6 @@ wording
 words
 wore
 work
-work-related
 workable
 workbench
 workday
@@ -21653,7 +20971,6 @@ workers
 workforce
 workhorse
 working
-working-class
 workload
 workman
 workout
@@ -21663,15 +20980,12 @@ worksheet
 workshop
 workstation
 world
-world-class
-world-famous
 worldly
 worldview
 worldwide
 worm
 worms
 worn
-worn-out
 worried
 worriedly
 worries
@@ -21684,13 +20998,11 @@ worsening
 worship
 worshiper
 worst
-worst-case
 worth
 worthless
 worthwhile
 worthy
 would
-would-be
 wound
 wounded
 wounds
@@ -21745,12 +21057,10 @@ wrongly
 wrongness
 wrote
 wrought
-wrought-iron
 wrung
 wry
 wryly
 wud
-x-ray
 xavier
 xiii
 xiv
@@ -21778,10 +21088,6 @@ ye
 yea
 yeah
 year
-year-end
-year-long
-year-old
-year-round
 yearbook
 yearly
 yearn
@@ -21807,8 +21113,6 @@ yet
 yield
 yielded
 yielding
-yo
-yo-yo
 yoga
 yogurt
 yoke
@@ -21817,7 +21121,6 @@ yonder
 yore
 york
 you
-you-all
 young
 younger
 youngest
