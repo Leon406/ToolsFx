@@ -1,7 +1,5 @@
 package me.leon.misc
 
-import java.lang.*
-import kotlin.arrayOf
 import kotlin.test.Ignore
 import kotlin.test.Test
 import me.leon.misc.net.*
@@ -74,5 +72,15 @@ class MiscTest {
         println(java.lang.Long.toHexString(java.lang.Double.doubleToRawLongBits(1.111)))
         println(java.lang.Long.toBinaryString(java.lang.Double.doubleToRawLongBits(-1.111)))
         println(java.lang.Long.toHexString(java.lang.Double.doubleToRawLongBits(-1.111)))
+    }
+
+    @Test
+    fun githubMirror() {
+        val file = "https://github.com/Leon406/ToolsFx/blob/dev/testdata/sm2/sm_qd_data.txt"
+        val url = "https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/host"
+
+        println(url.githubMirror())
+        println()
+        println(file.githubMirror())
     }
 }

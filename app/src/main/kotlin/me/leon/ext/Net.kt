@@ -8,6 +8,33 @@ private const val DEFAULT_TIME_OUT = 10_000
 const val RESPONSE_OK = 200
 const val RESPONSE_NOT_FOUND = 404
 
+fun String.headRequest(
+    method: String = "HEAD",
+    timeout: Int = DEFAULT_TIME_OUT,
+    headers: Map<String, Any> = emptyMap()
+) =
+    runCatching {
+            URL(this)
+                .openConnection()
+                .cast<HttpURLConnection>()
+                .apply {
+                    connectTimeout = timeout
+                    readTimeout = timeout
+                    setRequestProperty("Content-Type", "application/json; charset=utf-8")
+                    setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+                    setRequestProperty(
+                        "user-agent",
+                        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                            "Chrome/86.0.4240.198 Safari/537.36"
+                    )
+                    for ((k, v) in headers) setRequestProperty(k, v.toString())
+
+                    requestMethod = method
+                }
+                .run { responseCode == 200 }
+        }
+        .getOrElse { false }
+
 fun String.readBytesFromNet(
     method: String = "GET",
     timeout: Int = DEFAULT_TIME_OUT,

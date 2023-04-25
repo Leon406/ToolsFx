@@ -3,6 +3,7 @@ package me.leon.misc.net
 import java.net.*
 import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.*
+import me.leon.ext.headRequest
 
 /**
  * @author Leon
@@ -91,4 +92,17 @@ fun String.batchTcPing() = runBlocking {
         .map { it.first to it.second.await() }
         .sortedByDescending { it.second }
         .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+}
+
+fun String.linkCheck(timeout: Int = 2000) =
+    lines()
+        .filter { it.isNotEmpty() }
+        .linkCheck(timeout)
+        .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+
+fun List<String>.linkCheck(timeout: Int = 2000) = runBlocking {
+    filter { it.isNotEmpty() }
+        .map { it to async(DISPATCHER) { it.headRequest("GET", timeout) } }
+        .map { it.first to it.second.await() }
+        .sortedByDescending { it.second }
 }

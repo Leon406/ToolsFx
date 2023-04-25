@@ -106,13 +106,19 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             dnsSolve(raw.lines().filterNot { it.startsWith("#") || it.isEmpty() })
     },
-    CRON_EXPLAIN("Cron explain") {
+    CRON_EXPLAIN("Cron Explain") {
         override fun process(raw: String, params: MutableMap<String, String>) =
             raw.lines()
                 .filterNot { it.startsWith("#") || it.isEmpty() }
-                .map { CronExpression(it).explain() }
-                .joinToString(System.lineSeparator())
-    };
+                .joinToString(System.lineSeparator()) { CronExpression(it).explain() }
+    },
+    LINK_CHECK("Link Check") {
+        override fun process(raw: String, params: MutableMap<String, String>) = raw.linkCheck()
+    },
+    GITHUB_MIRROR("Github Mirror") {
+        override fun process(raw: String, params: MutableMap<String, String>) = raw.githubMirror()
+    },
+    ;
 
     override fun hint(): String {
         return HINTS[this].orEmpty()
@@ -137,10 +143,12 @@ val HINTS =
         MiscServiceType.IP2INT to "ip, transform ip to integer, eg. 192.168.0.1,separate by line",
         MiscServiceType.INT2IP to "int, transform integer to ip,  eg. 3232235521,separate by line",
         MiscServiceType.CIDR to "ip, format 192.168.0.1/25,separate by line",
+        MiscServiceType.LINK_CHECK to "url links,separate by line",
         MiscServiceType.IP_LOCATION to "ip/url",
         MiscServiceType.DNS_SOLVE to "domains,separate by line, comment by #",
         MiscServiceType.CRON_EXPLAIN to
             "cron expression, support crontab, quarts and normal format",
+        MiscServiceType.GITHUB_MIRROR to "github repo or raw link",
     )
 
 val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }
