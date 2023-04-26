@@ -19,7 +19,7 @@ fun dnsSolve(urls: List<String>): String = runBlocking {
         .joinToString(System.lineSeparator())
 }
 
-private fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long>? {
+fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long>? {
     return runCatching {
             ips.map { ip ->
                     ip to
@@ -32,7 +32,7 @@ private fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long
         .getOrNull()
 }
 
-private fun resolveDomains(name: String): List<String> =
+fun resolveDomains(name: String): List<String> =
     "https://dns.alidns.com/resolve?name=$name&type=1"
         .readFromNet()
         .fromJson(DnsResponse::class.java)

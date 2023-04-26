@@ -1,5 +1,6 @@
 package me.leon.misc.net
 
+import java.nio.charset.Charset
 import kotlin.math.pow
 import me.leon.ext.*
 
@@ -79,5 +80,14 @@ fun String.cidr(): String {
 }
 
 private const val IP_API = "http://ip-api.com/json/%s?lang=zh-CN"
+private const val PCONLINE_API = "http://whois.pconline.com.cn/ipJson.jsp?ip=%s&json=true"
 
-fun String.ipLocation() = IP_API.format(this).readFromNet().fromJson(IpApi::class.java).info
+fun String.ipLocation() =
+    runCatching {
+            PCONLINE_API.format(fastestIp(resolveDomains(this))?.first)
+                .readBytesFromNet()
+                .toString(Charset.forName("GBK"))
+                .fromJson(PcOnlineIp::class.java)
+                .addr
+        }
+        .getOrElse { IP_API.format(this).readFromNet().fromJson(IpApi::class.java).info }
