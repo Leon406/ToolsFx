@@ -6,4 +6,5 @@ for %%X in ("%LIB%"\*.jar) do (
 )
 del /F *.jar
 jar -cvfM bigJar.jar .
+rem  %JAVA_HOME_17%/bin/jar -cvfM bigJar.jar .
 pause
