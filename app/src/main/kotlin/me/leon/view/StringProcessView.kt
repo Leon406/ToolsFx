@@ -2,16 +2,11 @@ package me.leon.view
 
 import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
-import kotlin.collections.set
+import javafx.scene.control.*
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
-import me.leon.ext.fx.clipboardText
-import me.leon.ext.fx.copy
-import me.leon.ext.fx.fileDraggedHandler
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -156,10 +151,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     measureTimeMillis {
                             outputText =
                                 inputText
-                                    .fold(mutableMapOf<Char, Int>()) { acc, c ->
-                                        acc.apply { acc[c] = (acc[c] ?: 0) + 1 }
-                                    }
+                                    .groupingBy { it }
+                                    .eachCount()
                                     .toList()
+                                    .filter { it.first.code > 32 }
                                     .sortedByDescending { it.second }
                                     .joinToString(System.lineSeparator()) {
                                         "${it.first}: ${it.second}"

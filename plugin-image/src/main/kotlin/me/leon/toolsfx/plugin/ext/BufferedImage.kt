@@ -387,18 +387,13 @@ operator fun BufferedImage.minus(other: BufferedImage): BufferedImage =
         }
     }
 
-fun BufferedImage.toBinaryString(isBlackOne: Boolean): String =
-    StringBuilder()
-        .apply {
-            repeat(width) { x ->
-                repeat(height) { y ->
-                    append(
-                        1.takeIf { this@toBinaryString.getRGB(x, y).isWhite xor isBlackOne } ?: 0
-                    )
-                }
-            }
+fun BufferedImage.toBinaryString(isBlackOne: Boolean): String = buildString {
+    repeat(width) { x ->
+        repeat(height) { y ->
+            append(1.takeIf { this@toBinaryString.getRGB(x, y).isWhite xor isBlackOne } ?: 0)
         }
-        .toString()
+    }
+}
 
 fun File.toBufferImage(): BufferedImage = ImageIO.read(this)
 
