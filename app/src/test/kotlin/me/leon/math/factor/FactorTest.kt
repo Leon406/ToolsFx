@@ -7,6 +7,7 @@ import me.leon.ctf.rsa.*
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 import org.junit.Test
+import kotlin.test.Ignore
 
 /**
  * trial divide rho p-1
@@ -61,6 +62,7 @@ class FactorTest {
     }
 
     @Test
+    @Ignore
     fun factorDbNewApi() {
         "http://factordb.com/api?query=11111111111111111111116667777777777777777777777999999999333333117777"
             .readFromNet()

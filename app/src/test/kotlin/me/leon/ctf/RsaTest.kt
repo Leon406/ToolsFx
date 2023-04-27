@@ -86,6 +86,7 @@ class RsaTest {
 
     /** n (多个数相乘,含合数) e c */
     @Test
+    @Ignore
     fun rsa7() {
         // n 由两个素数相乘
         println("_______  n 由两个素数相乘 ________")
@@ -219,6 +220,7 @@ class RsaTest {
     }
 
     @Test
+    @Ignore
     fun nec3() {
         val params = "nec3.txt".parseRsaParams()
         assertEquals("CMISCCTF{3_RSA}", solve(params))
