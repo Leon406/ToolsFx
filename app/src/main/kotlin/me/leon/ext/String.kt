@@ -36,3 +36,23 @@ fun String.random(count: Int): String {
     repeat(count) { sb.append(random()) }
     return sb.toString()
 }
+
+fun String.toFullWidth() = map { it.fullWidth }.joinToString("")
+
+fun String.toHalfWidth() = map { it.halfWidth }.joinToString("")
+
+val Char.fullWidth
+    get() =
+        when (code) {
+            32 -> 12_288.toChar()
+            in 33..126 -> (code + 65_248).toChar()
+            else -> this
+        }
+
+val Char.halfWidth
+    get() =
+        when (code) {
+            12_288 -> 32.toChar()
+            in 65_281..65_374 -> (code - 65_248).toChar()
+            else -> this
+        }

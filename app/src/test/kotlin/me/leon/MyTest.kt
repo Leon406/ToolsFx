@@ -2,7 +2,6 @@ package me.leon
 
 import java.io.ByteArrayInputStream
 import java.io.File
-import java.nio.charset.Charset
 import java.security.Security
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -54,9 +53,9 @@ class MyTest {
     fun charset() {
         val r = "中国China 666"
         val uft8Bytes = r.toByteArray()
-        val gbkBytes = r.toByteArray(Charset.forName("gb2312"))
-        val big5Bytes = r.toByteArray(Charset.forName("BIG5"))
-        val iso88591 = r.toByteArray(Charset.forName("ISO8859-1"))
+        val gbkBytes = r.toByteArray(GBK)
+        val big5Bytes = r.toByteArray(BIG5)
+        val iso88591 = r.toByteArray(Charsets.ISO_8859_1)
         uft8Bytes.contentToString().also { println(it) }
         println(gbkBytes.charsetChange("gbk", "utf-8").contentToString())
         println(big5Bytes.charsetChange("BIG5", "utf-8").contentToString())
@@ -67,10 +66,10 @@ class MyTest {
 
         String(iso88591).also { println(it) }
         String(uft8Bytes).also { println(it) }
-        uft8Bytes.toString(Charset.forName("gb2312")).also { println(it) }
-        gbkBytes.toString(Charset.forName("gbk")).also { println(it) }
-        big5Bytes.toString(Charset.forName("big5")).also { println(it) }
-        iso88591.toString(Charset.forName("utf-8")).also { println(it) }
+        uft8Bytes.toString(GBK).also { println(it) }
+        gbkBytes.toString(GBK).also { println(it) }
+        big5Bytes.toString(BIG5).also { println(it) }
+        iso88591.toString(Charsets.UTF_8).also { println(it) }
     }
 
     @Test

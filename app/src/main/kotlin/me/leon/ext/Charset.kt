@@ -2,15 +2,11 @@ package me.leon.ext
 
 import java.nio.charset.Charset
 
-val charsets =
-    arrayOf(
-        Charsets.UTF_8,
-        Charsets.ISO_8859_1,
-        Charset.forName("windows-1252"),
-        Charset.forName("Shift_Jis"),
-        Charset.forName("Big5"),
-        Charset.forName("GBK")
-    )
+val GBK = Charset.forName("GBK")
+val BIG5 = Charset.forName("Big5")
+val SHIFT_JIS = Charset.forName("Shift_Jis")
+
+val charsets = arrayOf(Charsets.UTF_8, Charsets.ISO_8859_1, SHIFT_JIS, BIG5, GBK)
 
 fun String.recoverEncoding() =
     charsets
@@ -28,6 +24,7 @@ fun String.recoverEncoding() =
                         "|\u009D|\u009E|\u009F| |¡|¢|£|¤|¥|¦|§|¨|©|ª|«|¬|\u00AD" +
                         "|®|¯|°|±|²|³|´|µ|¶|·|¸|¹|º|»|¼|½|¾|¿|À|Á|Â|Ã|Ä|Å|Æ|Ç|È|É|Ê|Ë|Ì|Í|Î|Ï|Ð" +
                         "|Ò|Ó|Ô|Õ|Ö|×|Ø|Ù|Ú|Û|Ü|Ý|Þ|ß|à|á|â|ã|ä|å|æ|ç|è|é|ê|ë|ì|í|î|ï|ð|ñ|ò|ó|ô" +
+                        "|ソ|ぉ" +
                         "|õ|ö|÷|ø|ù|ú|û|ü|ý|þ|ÿ|Ā")
                     .toRegex()
             )

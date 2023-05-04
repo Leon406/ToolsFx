@@ -1,6 +1,5 @@
 package me.leon.misc.net
 
-import java.nio.charset.Charset
 import kotlin.math.pow
 import me.leon.ext.*
 
@@ -86,7 +85,7 @@ fun String.ipLocation() =
     runCatching {
             PCONLINE_API.format(fastestIp(resolveDomains(this))?.first)
                 .readBytesFromNet()
-                .toString(Charset.forName("GBK"))
+                .toString(GBK)
                 .fromJson(PcOnlineIp::class.java)
                 .addr
         }

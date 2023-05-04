@@ -7,8 +7,6 @@ import me.leon.encode.base.base64Decode
 import me.leon.ext.crypto.BINARY_REGEX
 import me.leon.ext.crypto.HEX_WITH_LEAD_REGEX
 
-val ENCODERS = listOf("raw", "hex", "base64", "oct", "binary")
-
 /** note: 不兼容编码转换会导致数据丢失,需要两个编码都能表示才能正常工作 */
 fun ByteArray.charsetChange(from: String, to: String) =
     toString(Charset.forName(from)).toByteArray(Charset.forName(to))

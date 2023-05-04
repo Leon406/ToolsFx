@@ -118,6 +118,16 @@ enum class MiscServiceType(val type: String) : MiscService {
     GITHUB_MIRROR("Github Mirror") {
         override fun process(raw: String, params: MutableMap<String, String>) = raw.githubMirror()
     },
+    ENCODING_RECOVERY("recover encoding") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.recoverEncoding()
+    },
+    FULL_WIDTH("full width") {
+        override fun process(raw: String, params: MutableMap<String, String>) = raw.toFullWidth()
+    },
+    HALF_WIDTH("half width") {
+        override fun process(raw: String, params: MutableMap<String, String>) = raw.toHalfWidth()
+    },
     ;
 
     override fun hint(): String {
@@ -149,6 +159,9 @@ val HINTS =
         MiscServiceType.CRON_EXPLAIN to
             "cron expression, support crontab, quarts and normal format",
         MiscServiceType.GITHUB_MIRROR to "github repo or raw link",
+        MiscServiceType.ENCODING_RECOVERY to "recover encoding",
+        MiscServiceType.FULL_WIDTH to "transfer half width char to full width",
+        MiscServiceType.HALF_WIDTH to "transfer full width char to half width",
     )
 
 val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }
