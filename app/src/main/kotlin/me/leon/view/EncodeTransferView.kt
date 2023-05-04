@@ -35,8 +35,10 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
         get() =
             " $srcEncodeType --> $dstEncodeType  ${messages["inputLength"]}: ${inputText.length}" +
                 "  ${messages["outputLength"]}: ${outputText.length} cost: $timeConsumption ms"
+
     private val inputText: String
         get() = taInput.text
+
     private val outputText: String
         get() = taOutput.text
 

@@ -42,8 +42,10 @@ class ClassicalView : Fragment(messages["classical"]) {
         get() =
             "${if (isEncrypt) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} cost: $timeConsumption ms"
+
     private val inputText: String
         get() = taInput.text.takeUnless { decodeIgnoreSpace.get() } ?: taInput.text.stripAllSpace()
+
     private val outputText: String
         get() = taOutput.text
 

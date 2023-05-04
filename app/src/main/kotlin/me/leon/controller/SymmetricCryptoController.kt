@@ -52,6 +52,7 @@ class SymmetricCryptoController : Controller() {
                 .encrypt(key, iv, alg, associatedData)
                 .encodeTo(outputEncode, charset)
         }
+
     fun encryptByFile(
         key: ByteArray,
         path: String,

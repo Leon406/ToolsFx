@@ -8,9 +8,11 @@ import kotlin.math.roundToInt
 object Base91 {
 
     private val ENCODING_TABLE =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_`{|}~\"".toByteArray()
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_`{|}~\""
+            .toByteArray()
     private val BASE = ENCODING_TABLE.size
     private const val AVERAGE_ENCODING_RATIO = 1.2297f
+
     fun encode(data: ByteArray, dict: ByteArray = ENCODING_TABLE): ByteArray {
         val estimatedSize = ceil((data.size * AVERAGE_ENCODING_RATIO).toDouble()).toInt()
         val output = ByteArrayOutputStream(estimatedSize)

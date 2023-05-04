@@ -71,8 +71,10 @@ data class CmykColor(val c: Float, val m: Float, val y: Float, val k: Float) {
 
     val red
         get() = (255 * (1 - c) * (1 - k)).toInt()
+
     val green
         get() = (255 * (1 - m) * (1 - k)).toInt()
+
     val blue
         get() = (255 * (1 - y) * (1 - k)).toInt()
 

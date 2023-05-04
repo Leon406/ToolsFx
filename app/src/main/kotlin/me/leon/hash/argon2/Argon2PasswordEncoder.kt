@@ -98,6 +98,7 @@ constructor(
         private const val DEFAULT_PARALLELISM = 1
         private const val DEFAULT_MEMORY = 1 shl 12
         private const val DEFAULT_ITERATIONS = 3
+
         private fun constantTimeArrayEquals(expected: ByteArray, actual: ByteArray): Boolean {
             if (expected.size != actual.size) {
                 return false

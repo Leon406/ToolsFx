@@ -20,6 +20,7 @@ class Ocr {
         val data = "https://wx1.sinaimg.cn/mw2000/7736d59fly1gzpm3yc7m6j20j80ip755.jpg"
         assertTrue(BaiduOcr.ocr(data).contains("你们别看我"))
     }
+
     private fun fixSsl() {
         val trustManagers =
             arrayOf(
@@ -48,6 +49,7 @@ class Ocr {
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
         HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
     }
+
     @Test
     fun base64Ocr() {
         assertTrue(

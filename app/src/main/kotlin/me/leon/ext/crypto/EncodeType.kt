@@ -192,6 +192,7 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
     },
     OCTAL("octal") {
         override fun decode(encoded: String, dict: String, charset: String) = encoded.octalDecode()
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.octal(charset)
     },
@@ -239,11 +240,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
     },
     UUENCODE("uuEncode") {
         override fun decode(encoded: String, dict: String, charset: String) = encoded.uuDecode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.uuEncode(dict)
     },
     XXENCODE("xxEncode") {
         override fun decode(encoded: String, dict: String, charset: String) = encoded.xxDecode(dict)
+
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.xxEncode(dict)
     },

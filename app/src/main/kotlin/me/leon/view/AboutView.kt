@@ -72,9 +72,11 @@ class AboutView : Fragment(messages["about"]) {
                     if (it.isEmpty()) {
                         messages["unknown"]
                     } else if (appVersion != releaseInfo.version) {
-                        "${messages["latestVer"]} v${releaseInfo.version}".also {
-                            find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
-                        }
+                        "${messages["latestVer"]} v${releaseInfo.version}"
+                            .also {
+                                find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo))
+                                    .openModal()
+                            }
                     } else {
                         messages["alreadyLatest"]
                     }
@@ -94,9 +96,11 @@ class AboutView : Fragment(messages["about"]) {
                     if (it.isEmpty()) {
                         messages["unknown"]
                     } else if (!appVersion.contains("beta") && appVersion != releaseInfo.version) {
-                        "${messages["latestVer"]} v${releaseInfo.version}".also {
-                            find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo)).openModal()
-                        }
+                        "${messages["latestVer"]} v${releaseInfo.version}"
+                            .also {
+                                find<UpdateFragment>(mapOf("releaseInfo" to releaseInfo))
+                                    .openModal()
+                            }
                     } else {
                         messages["alreadyLatest"]
                     }

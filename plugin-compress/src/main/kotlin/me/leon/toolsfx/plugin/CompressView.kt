@@ -32,10 +32,13 @@ class CompressView : PluginFragment(messages["compression"]) {
     private lateinit var taOutput: TextArea
     private val inputText: String
         get() = taInput.text
+
     private val outputText: String
         get() = taOutput.text
+
     private val info
         get() = "Cipher: $cipher   charset: ${selectedCharset.get()} "
+
     private lateinit var infoLabel: Label
 
     private var inputEncode = "raw"
@@ -48,6 +51,7 @@ class CompressView : PluginFragment(messages["compression"]) {
 
     private val cipher
         get() = selectedAlg.get()
+
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
     private val singleLine = SimpleBooleanProperty(false)
     private val centerNode = vbox {

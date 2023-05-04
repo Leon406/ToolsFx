@@ -56,6 +56,7 @@ class Salted {
         println(d.openSslEncrypt(alg, password, salt, keySize, ivSize, "SHA1"))
         println(e.openSslDecrypt(alg, password, keySize, ivSize))
     }
+
     @Test
     fun saltDes3() {
         val e = "U2FsdGVkX182QzHidtsqbtNnHgTgYNY8"

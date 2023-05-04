@@ -94,6 +94,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
 
     private val inputText: String
         get() = taInput.text
+
     private val outputText: String
         get() = taOutput.text
 

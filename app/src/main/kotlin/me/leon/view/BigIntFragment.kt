@@ -51,6 +51,7 @@ class BigIntFragment : Fragment("BigInt") {
                         }.getOrDefault("0")
                     }  " +
                 "cost: $timeConsumption ms "
+
     private var outputText: String
         get() = taOutput.text
         set(value) {

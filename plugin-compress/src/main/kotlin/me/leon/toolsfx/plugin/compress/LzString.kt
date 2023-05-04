@@ -12,6 +12,7 @@ object LzString {
 
     private val Int.string
         get() = this.toChar().toString()
+
     private fun Int.power() = 1 shl this
 
     private data class Data(var value: Char = '0', var position: Int = 0, var index: Int = 1)
@@ -239,6 +240,7 @@ object LzString {
     }
 
     fun compress(source: String) = compress(source, 16) { it.toChar() }
+
     fun decompress(compressed: String) =
         if (compressed.isBlank()) null else decompress(compressed.length, 32_768) { compressed[it] }
 

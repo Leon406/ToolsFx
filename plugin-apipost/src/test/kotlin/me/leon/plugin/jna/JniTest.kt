@@ -32,6 +32,7 @@ class JniTest {
         val args = listOf("a", "b", "c")
         args.forEachIndexed { i, s -> CLibrary.INSTANCE.printf("Argument %d: %s\n", i, s) }
     }
+
     @Test
     fun kernel32() {
         val lib = Native.load("kernel32", Kernel32::class.java) as Kernel32

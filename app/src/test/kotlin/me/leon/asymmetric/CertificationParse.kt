@@ -14,10 +14,12 @@ class CertificationParse {
     init {
         Security.addProvider(BouncyCastleProvider())
     }
+
     @Test
     fun parseSm2() {
         File(TEST_DATA_DIR, "signature/SM2.cer").parsePublicKeyFromCerFile().also { println(it) }
     }
+
     @Test
     fun ans1() {
         ASN1InputStream(File(TEST_DATA_DIR, "signature/SM2.cer").inputStream()).use {

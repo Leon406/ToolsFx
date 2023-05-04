@@ -61,12 +61,14 @@ class ApiPostView : PluginFragment("ApiPost") {
 
     private val reqHeaders
         get() = controller.parseHeaderString(taReqHeaders.text)
+
     private val reqTableParams
         get() =
             requestParams
                 .filter { it.isEnable && it.key.isNotEmpty() && !it.isFile }
                 .associate { it.key to it.value }
                 .toMutableMap()
+
     private val uploadParams
         get() = requestParams.firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
 

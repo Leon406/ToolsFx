@@ -285,6 +285,7 @@ enum class PasswordHashingType(val alg: String) {
     };
 
     abstract fun hash(data: ByteArray): String
+
     open fun check(pass: String, hash: String): Boolean {
         return hash(pass.toByteArray()) == hash
     }

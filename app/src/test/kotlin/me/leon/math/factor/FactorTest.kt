@@ -1,13 +1,13 @@
 package me.leon.math.factor
 
 import kotlin.system.measureTimeMillis
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import me.leon.*
 import me.leon.ctf.rsa.*
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 import org.junit.Test
-import kotlin.test.Ignore
 
 /**
  * trial divide rho p-1

@@ -40,6 +40,7 @@ abstract class AbsToggleView(
             selectCallback?.onChange(old.cast<RadioButton>().text, new.cast<RadioButton>().text)
         }
     }
+
     fun callback(callback: SelectCallback) {
         selectCallback = callback
     }

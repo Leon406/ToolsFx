@@ -50,16 +50,19 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
                 "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
                 "cost: $timeConsumption ms"
+
     private var inputText: String
         get() = taInput.text
         set(value) {
             taInput.text = value
         }
+
     private var outputText: String
         get() = taOutput.text
         set(value) {
             taOutput.text = value
         }
+
     private val extractReg
         get() = tfExtract.text.unescape()
 

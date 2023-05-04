@@ -27,6 +27,7 @@ class CurlParse {
 
         println(raw.parseCurl())
     }
+
     @Test
     fun parse() {
         val raw2 =

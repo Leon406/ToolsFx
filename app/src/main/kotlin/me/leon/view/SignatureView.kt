@@ -143,6 +143,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
     private val SAME_KEY_ALGS = arrayOf("HS256", "HS384", "HS512")
     private val msg: String
         get() = taRaw.text
+
     private val signText: String
         get() = taSigned.text
 

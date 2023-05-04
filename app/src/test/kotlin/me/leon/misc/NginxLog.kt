@@ -20,6 +20,7 @@ data class NginxLog(
     fun timeRangeCondition(start: String, end: Date = Date()): Boolean {
         return date.after(sdf.parse(start)) && date.before(end)
     }
+
     fun timeRangeCondition(start: String, end: String): Boolean {
         return date.after(sdf.parse(start)) && date.before(sdf.parse(end))
     }

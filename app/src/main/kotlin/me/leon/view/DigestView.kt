@@ -43,6 +43,7 @@ class DigestView : Fragment(messages["hash"]) {
         set(value) {
             taInput.text = value
         }
+
     private var outputText: String
         get() = taOutput.text
         set(value) {
@@ -126,7 +127,8 @@ class DigestView : Fragment(messages["hash"]) {
                         "${selectedAlg.get()}${new.takeIf { ALGOS_HASH[selectedAlg.get()]!!.size > 1 }.orEmpty()}"
                             .replace("SHA2", "SHA-")
                             .replace(
-                                "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
+                                "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)"
+                                    .toRegex(),
                                 "$1-"
                             )
                     }

@@ -57,6 +57,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
 
     private val inputText: String
         get() = taInput.text
+
     private val outputText: String
         get() = taOutput.text
 

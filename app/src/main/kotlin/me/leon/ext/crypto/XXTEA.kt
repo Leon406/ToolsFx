@@ -8,6 +8,7 @@ package me.leon.ext.crypto
 
 object XXTEA {
     private const val DELTA = -0x61c88647
+
     private fun mx(sum: Int, y: Int, z: Int, p: Int, e: Int, k: IntArray): Int {
         return (z ushr 5 xor (y shl 2)) + (y ushr 3 xor (z shl 4)) xor
             (sum xor y) + (k[p and 3 xor e] xor z)

@@ -39,6 +39,7 @@ class Styles : Stylesheet() {
             maxWidth = infinity
         }
     }
+
     companion object {
         // Define our styles
         val myButton by cssclass()

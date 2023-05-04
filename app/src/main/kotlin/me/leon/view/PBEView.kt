@@ -39,14 +39,19 @@ class PBEView : Fragment("PBE") {
 
     private val inputText: String
         get() = taInput.text
+
     private val outputText: String
         get() = taOutput.text
+
     private val keyLength
         get() = tfKeyLength.text.toInt()
+
     private val saltLength
         get() = tfSaltLength.text.toInt()
+
     private val cipher
         get() = "PBEWith${selectedAlg.get()}"
+
     private val info
         get() =
             "PBE Cipher: $cipher   charset: ${selectedCharset.get()} " +

@@ -103,7 +103,7 @@ object ColorUtil {
 
         val hk = h / 360F
         val tr = hk + 1 / 3F
-        var tg = hk
+        val tg = hk
         val tb = hk - 1 / 3F
         println("11111 $hk    $tr $tg  $tb")
         val rgb =

@@ -18,6 +18,7 @@ val TEST_DATA_DIR = File(TEST_PRJ_DIR, "testdata/plugin")
 
 class Main : Application() {
     var index = 0
+
     override fun start(primaryStage: Stage) {
         try {
             val root = BorderPane()

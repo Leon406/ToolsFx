@@ -19,6 +19,7 @@ object ApiConfig {
         set(value) {
             Prefs.preference().putBoolean(IS_ENABLE_PROXY, value)
         }
+
     var isIgnoreCert
         get() = Prefs.preference().getBoolean(IGNORE_CERT, false)
         set(value) {
@@ -30,16 +31,19 @@ object ApiConfig {
         set(value) {
             Prefs.preference().put(GLOBAL_HEADERS, value)
         }
+
     var proxyType: String
         get() = Prefs.preference().get(PROXY_TYPE, "HTTP")
         set(value) {
             Prefs.preference().put(PROXY_TYPE, value)
         }
+
     var proxyHost: String
         get() = Prefs.preference().get(PROXY_HOST, "127.0.0.1")
         set(value) {
             Prefs.preference().put(PROXY_HOST, value)
         }
+
     var proxyPort: String
         get() = Prefs.preference().get(PROXY_PORT, "80")
         set(value) {
@@ -51,6 +55,7 @@ object ApiConfig {
         set(value) {
             Prefs.preference().putInt(TIME_OUT, value)
         }
+
     var followRedirect: Boolean
         get() = Prefs.preference().getBoolean(FOLLOW_REDIRECT, false)
         set(value) {

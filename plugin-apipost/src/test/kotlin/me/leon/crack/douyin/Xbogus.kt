@@ -1,5 +1,6 @@
 package me.leon.crack.douyin
 
+import kotlinx.coroutines.delay
 import me.leon.ext.readBytesFromNet
 import me.leon.selenium.Selenium
 
@@ -29,7 +30,7 @@ private const val UA =
         "Chrome/95.0.4638.69 Safari/537.36"
 private const val REFERER = "https://www.douyin.com/user"
 
-fun main() {
+suspend fun main() {
 
     val maxCursor = 1_667_207_880_000L
     var query = QUERY_FORMAT.format(maxCursor)
@@ -49,7 +50,7 @@ fun main() {
                 println("______$body")
                 ok = body.isNotEmpty()
                 if (ok.not()) {
-                    Thread.sleep(3000)
+                    delay(3000)
                 }
             }
     }

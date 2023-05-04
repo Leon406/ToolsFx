@@ -50,6 +50,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
 
     private val inputText: String
         get() = taInput.text.trim()
+
     private val outputText: String
         get() = taOutput.text
 
@@ -192,6 +193,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             }
         }
     }
+
     init {
         println("Plugin Info:$description $version $date $author")
     }

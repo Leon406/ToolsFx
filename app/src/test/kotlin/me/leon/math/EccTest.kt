@@ -97,6 +97,7 @@ open class EccPoint(
 
     val isInfinity: Boolean
         get() = x == null || y == null
+
     val isOnCurve: Boolean
         get() =
             (requireNotNull(y) * y - requireNotNull(x) * x * x - _curve.a * x - _curve.b) %

@@ -15,6 +15,7 @@ object Prefs {
         set(value) {
             preference.putBoolean(IGNORE_UPDATE, value)
         }
+
     var alwaysOnTop
         get() = preference.getBoolean(ALWAYS_ON_TOP, true)
         set(value) {
@@ -27,20 +28,24 @@ object Prefs {
         set(value) {
             preference.putBoolean(HI_DPI, value)
         }
+
     var language: String
         get() = preference.get(LANGUAGE, "zh")
         set(value) {
             preference.put(LANGUAGE, value)
         }
+
     var autoCopy: Boolean
         get() = preference.getBoolean(AUTO_COPY, false)
         set(value) {
             preference.putBoolean(AUTO_COPY, value)
         }
+
     var miniToTray: Boolean
         get() = preference.getBoolean(TRAY, false)
         set(value) {
             preference.putBoolean(TRAY, value)
         }
+
     fun preference(): Preferences = preference
 }

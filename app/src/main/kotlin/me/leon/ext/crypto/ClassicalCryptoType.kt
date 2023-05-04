@@ -83,7 +83,9 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
             raw.affineDecrypt(params[P1]!!.toInt(), params[P2]!!.toInt())
 
         override fun isIgnoreSpace() = false
+
         override fun hasCrack() = true
+
         override fun crack(raw: String, keyword: String): String {
             val sb = StringBuilder()
             for (a in 1..26) for (b in 1..26) {

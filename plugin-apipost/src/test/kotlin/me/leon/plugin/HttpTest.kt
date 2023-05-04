@@ -8,6 +8,7 @@ import org.junit.Test
 class HttpTest {
 
     private val httpConfigPath = File(File("").absoluteFile.parentFile, "/testdata/https")
+
     @Test
     fun getTest() {
         HttpUrlUtil.get(

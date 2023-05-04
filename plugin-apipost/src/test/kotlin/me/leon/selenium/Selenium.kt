@@ -29,6 +29,6 @@ object Selenium {
         driver.executeScript(js)
     }
 
-    fun makeXBogus(query: String, userAgent: String) =
+    fun makeXBogus(query: String, userAgent: String): Any =
         driver.executeScript("return sign('$query','$userAgent')")
 }

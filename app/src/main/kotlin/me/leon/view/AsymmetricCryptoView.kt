@@ -40,6 +40,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val isPrivate
         get() =
             privateKeyEncrypt.get() && isEncrypt || privateKeyEncrypt.get().not() && isEncrypt.not()
+
     private val isPublic
         get() = privateKeyEncrypt.get() && !isEncrypt || privateKeyEncrypt.get().not() && isEncrypt
 
@@ -48,6 +49,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         set(value) {
             taInput.text = value
         }
+
     private var outputText: String
         get() = taOutput.text
         set(value) {
@@ -67,6 +69,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 "${messages["inputLength"]}: ${inputText.length}  " +
                 "${messages["outputLength"]}: ${outputText.length}  " +
                 "cost: $timeConsumption ms"
+
     private val selectedPadding = SimpleStringProperty(RSA_PADDINGS.first())
     private var labelInfo: Label by singleAssign()
 

@@ -25,8 +25,10 @@ class LocationView : PluginFragment("LocationView") {
     private var locationServiceType: LocationServiceType = LocationServiceType.WGS2GCJ
     private val inputText: String
         get() = taInput.text.trim()
+
     private val outputText: String
         get() = taOutput.text
+
     private val singleLine = SimpleBooleanProperty(false)
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
 

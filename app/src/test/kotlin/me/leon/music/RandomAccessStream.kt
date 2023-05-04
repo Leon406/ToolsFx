@@ -12,6 +12,7 @@ import java.io.RandomAccessFile
 class RandomAccessStream(val file: File, mode: String = "r") {
 
     private val randomAccessFile = RandomAccessFile(file, mode)
+
     fun readNBytes(length: Int, reset: Boolean = false): ByteArray {
         val byteArray = ByteArray(length)
         randomAccessFile.read(byteArray)
@@ -28,11 +29,13 @@ class RandomAccessStream(val file: File, mode: String = "r") {
     fun read(byteArray: ByteArray): Int {
         return randomAccessFile.read(byteArray)
     }
+
     fun readValidate(length: Int): ByteArray {
         val byteArray = ByteArray(length)
         val len = read(byteArray)
         return byteArray.copyOf(len)
     }
+
     fun readValidate(byteArray: ByteArray): ByteArray {
         val length = read(byteArray)
         return byteArray.copyOf(length)

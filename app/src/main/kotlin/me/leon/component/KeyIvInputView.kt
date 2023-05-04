@@ -23,6 +23,7 @@ class KeyIvInputView(
 
     val ivByteArray
         get() = tfIv.text.decodeToByteArray(toggleIv.selectText)
+
     val associatedData
         get() = tfData.text.decodeToByteArray(toggleData.selectText)
 

@@ -28,6 +28,7 @@ data class Rdap(
     var title = ""
     val dnsSecInfo
         get() = "DNSSEC: ${"signed".takeIf { secureDNS.delegationSigned } ?: "unsigned"}"
+
     val serverInfo
         get() =
             "Registry Server URL: " +
@@ -53,12 +54,16 @@ data class Rdap(
                         .also { append(it) }
                 }
                 .toString()
+
     val registrarInfo: String
         get() = info(Whois.ENTITY_ROLE_REGISTRAR)
+
     val technicalInfo
         get() = info(Whois.ENTITY_ROLE_TECHNICAL)
+
     val registrantInfo
         get() = info(Whois.ENTITY_ROLE_REGISTRANT)
+
     val administrativeInfo
         get() = info(ENTITY_ROLE_ADMINISTRATIVE)
 
@@ -133,9 +138,10 @@ private fun List<*>.info() =
         "tel" -> "phone (${(this[1] as Map<String, String>)["type"]}): " + last()
         "adr" -> "Address: " + (last() as List<String>).dropLast(2).joinToString(" ")
         else ->
-            "".also {
-                //                println("info ${first()} ${last()} $this")
-            }
+            ""
+                .also {
+                    //                println("info ${first()} ${last()} $this")
+                }
     }
 
 data class Entity(

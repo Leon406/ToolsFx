@@ -13,9 +13,8 @@ data class BaiduGeo(val status: Int?, val result: Result?) {
 
     fun geoInfo(): String {
         return "location：${result?.location?.lng},${result?.location?.lat} precise:${result?.precise} " +
-            "confidence:${result?.precise} comprehension:${result?.comprehension} level:${result?.level}".also {
-                println(this)
-            }
+            "confidence:${result?.precise} comprehension:${result?.comprehension} level:${result?.level}"
+                .also { println(this) }
     }
 
     fun geos(): String {

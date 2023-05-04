@@ -21,6 +21,7 @@ class ParamsTest(private val p1: Int, private val p2: Int, private val p3: Strin
     fun init() {
         MockitoAnnotations.openMocks(this)
     }
+
     @Test
     fun ppp() {
         println("$p1 $p2 $p3")

@@ -14,6 +14,7 @@ class Toast private constructor() {
     companion object {
         var size: Double = 15.0
         var opacity: Double = 5.0
+
         fun makeText(
             stage: Stage,
             message: String,

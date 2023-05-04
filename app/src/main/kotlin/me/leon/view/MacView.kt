@@ -18,7 +18,8 @@ class MacView : Fragment("MAC") {
 
     private var method = "HmacMD5"
     private val regAlgReplace =
-        "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)".toRegex()
+        "(POLY1305|GOST3411-2012|SIPHASH(?=\\d-)|SIPHASH128|SHA3(?=\\d{3})|DSTU7564|Skein|Threefish)"
+            .toRegex()
     private var timeConsumption = 0L
     private var startTime = 0L
     private var inputEncode = "raw"

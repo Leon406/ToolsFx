@@ -12,7 +12,8 @@ class JsonFormat {
         println(j.prettyJson())
         val json = """{"key1":"v1","key2":"v2"}"""
         val jsonArray =
-            """[{"key1":"v1","key2":"v2"},{"key1":"v1","key2":"v2"},{"key1":"v1","key2":"v2"}]""".trimMargin()
+            """[{"key1":"v1","key2":"v2"},{"key1":"v1","key2":"v2"},{"key1":"v1","key2":"v2"}]"""
+                .trimMargin()
 
         println(json.prettyJson())
         println(jsonArray.prettyJson())

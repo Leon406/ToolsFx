@@ -45,6 +45,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             "${if (isEncode) messages["encode"] else messages["decode"]}: $encodeType  ${messages["inputLength"]}:" +
                 " ${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
                 "count: $times cost: $timeConsumption ms"
+
     private val inputText: String
         get() =
             taInput.text.takeIf {
@@ -54,6 +55,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             }
                 ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
                     ?: taInput.text.stripAllSpace()
+
     private val outputText: String
         get() = taOutput.text
 

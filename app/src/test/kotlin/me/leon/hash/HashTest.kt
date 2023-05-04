@@ -197,7 +197,8 @@ class HashTest {
                         "${k}${alg.takeIf { requireNotNull(ALGOS_HASH[k]).size > 1 }.orEmpty()}"
                             .replace("SHA2", "SHA-")
                             .replace(
-                                "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)".toRegex(),
+                                "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)"
+                                    .toRegex(),
                                 "$1-"
                             )
                     })

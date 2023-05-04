@@ -12,6 +12,7 @@ class HttpParams {
 
     val isFile: Boolean
         get() = fileProperty.get()
+
     val isEnable: Boolean
         get() = enableProperty.get()
 

@@ -5,10 +5,13 @@ import java.math.BigInteger
 data class FactorDbResponse(val id: String, val status: String, val factors: List<List<Any>>) {
     val canFullFactor
         get() = status == "FF"
+
     val partialFactor
         get() = status == "CF"
+
     val composeNotFactor
         get() = status == "C"
+
     val isPrime
         get() = status == "P"
 
@@ -17,6 +20,7 @@ data class FactorDbResponse(val id: String, val status: String, val factors: Lis
             factors.associate {
                 it.first().toString().toBigInteger() to (it.last() as Double).toInt()
             }
+
     val factorList
         get() =
             factors.fold(mutableListOf<BigInteger>()) { acc, factor ->
