@@ -23,11 +23,11 @@ spotless {
     java {
         target "src/**/*.java"
         // https://github.com/google/google-java-format/releases
-        googleJavaFormat('1.15.0').aosp()
+        googleJavaFormat('1.17.0').aosp()
     }
     kotlin {
         target "src/**/*.kt"
         // https://github.com/facebookincubator/ktfmt/releases
-        ktfmt('0.43').kotlinlangStyle()
+        ktfmt('0.44').kotlinlangStyle()
     }
 }

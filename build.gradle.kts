@@ -3,7 +3,7 @@ plugins {
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
     id("com.diffplug.spotless") version "6.18.0"
     // https://detekt.dev/changelog/
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0-RC3"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
@@ -16,7 +16,7 @@ subprojects {
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     dependencies {
-        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0-RC3")
     }
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
