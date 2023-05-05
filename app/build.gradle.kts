@@ -74,5 +74,5 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.3.1")
     testImplementation("org:jaudiotagger:2.0.3")
     testImplementation("org.javassist:javassist:3.29.2-GA")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
 }
