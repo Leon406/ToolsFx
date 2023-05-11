@@ -68,7 +68,7 @@ dependencies {
     api("com.google.code.gson:gson:2.10.1")
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("org.mockito:mockito-core:5.3.1")
