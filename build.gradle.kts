@@ -16,7 +16,7 @@ subprojects {
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     dependencies {
-        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0-RC3")
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0")
     }
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
