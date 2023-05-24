@@ -3,7 +3,7 @@ plugins {
     // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
     id("com.diffplug.spotless") version "6.18.0"
     // https://detekt.dev/changelog/
-    id("io.gitlab.arturbosch.detekt") version "1.23.0-RC3"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0"
     id("org.openjfx.javafxplugin") version "0.0.14"
 }
 
