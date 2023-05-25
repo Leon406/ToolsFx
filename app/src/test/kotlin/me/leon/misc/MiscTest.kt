@@ -1,7 +1,6 @@
 package me.leon.misc
 
-import kotlin.test.Ignore
-import kotlin.test.Test
+import kotlin.test.*
 import me.leon.misc.net.*
 
 /**
@@ -82,5 +81,12 @@ class MiscTest {
         println(url.githubMirror())
         println()
         println(file.githubMirror())
+    }
+
+    @Test
+    fun romanNumber() {
+        val str = "399"
+        println(str.roman())
+        repeat(3999) { assertEquals(it + 1, (it + 1).toRoman().romanToInt()) }
     }
 }

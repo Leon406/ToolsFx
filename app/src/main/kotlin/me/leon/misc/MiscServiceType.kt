@@ -128,6 +128,10 @@ enum class MiscServiceType(val type: String) : MiscService {
     HALF_WIDTH("half width") {
         override fun process(raw: String, params: MutableMap<String, String>) = raw.toHalfWidth()
     },
+    ROMAN("roman number") {
+        override fun process(raw: String, params: MutableMap<String, String>) =
+            raw.lineAction2String { runCatching { it.roman() }.getOrElse { it.stacktrace() } }
+    },
     ;
 
     override fun hint(): String {
@@ -162,6 +166,7 @@ val HINTS =
         MiscServiceType.ENCODING_RECOVERY to "recover encoding",
         MiscServiceType.FULL_WIDTH to "transfer half width char to full width",
         MiscServiceType.HALF_WIDTH to "transfer full width char to half width",
+        MiscServiceType.ROMAN to "roman number, like VIII or 8,separate by line",
     )
 
 val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }
