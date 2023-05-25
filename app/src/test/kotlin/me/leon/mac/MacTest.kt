@@ -5,6 +5,10 @@ import kotlin.test.assertEquals
 import me.leon.ext.crypto.mac
 import me.leon.ext.crypto.macWithIv
 import me.leon.ext.toHex
+import org.bouncycastle.crypto.engines.ChaCha7539Engine
+import org.bouncycastle.crypto.macs.Poly1305
+import org.bouncycastle.crypto.params.KeyParameter
+import org.bouncycastle.crypto.params.ParametersWithIV
 import org.junit.Test
 
 class MacTest {
@@ -117,5 +121,30 @@ class MacTest {
         key = "12341234123412341234123412341234".toByteArray()
         iv = "1234123412341234123412341".toByteArray()
         data.macWithIv(key, iv, "ZUC-256-32").toHex().also { println(it) }
+    }
+
+    @Test
+    fun mac() {
+        // 输入需要加密的数据和密钥
+        val data = "Hello World!".toByteArray()
+        val key = "ThisIsAKey123456ThisIsAKey123456".toByteArray()
+        // 初始化ChaCha20加密引擎
+        val chacha20 = ChaCha7539Engine()
+        val parametersWithIV = ParametersWithIV(KeyParameter(key), ByteArray(12))
+        chacha20.init(true, parametersWithIV)
+        // 加密数据
+        val encryptedData = ByteArray(data.size)
+        chacha20.processBytes(data, 0, data.size, encryptedData, 0)
+
+        // 初始化Poly1305消息认证码算法
+        val poly1305 = Poly1305()
+        poly1305.init(KeyParameter(key))
+        // 计算消息认证码
+        val mac = ByteArray(poly1305.macSize)
+        poly1305.update(encryptedData, 0, encryptedData.size)
+        poly1305.doFinal(mac, 0)
+        // 输出加密后的数据和消息认证码
+        println("Encrypted data: ${String(encryptedData)}")
+        println("MAC: ${String(mac)}")
     }
 }
