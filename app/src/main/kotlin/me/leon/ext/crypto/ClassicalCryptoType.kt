@@ -343,12 +343,17 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
                 raw.zwcBinary(params[P1]?.ifEmpty { "show" } ?: "show")
             }
 
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            if (requireNotNull(params[C1]).toBoolean()) {
-                raw.zwcMorseDecode()
-            } else {
-                raw.zwcBinaryDecode()
-            }
+        override fun decrypt(raw: String, params: Map<String, String>): String = buildString {
+            append(raw.filterNot { it in zeroWidthDict })
+            appendLine()
+            append(
+                if (requireNotNull(params[C1]).toBoolean()) {
+                    raw.zwcMorseDecode()
+                } else {
+                    raw.zwcBinaryDecode()
+                }
+            )
+        }
     },
     ZWC_UNICODE("zwUnicode") {
         override fun encrypt(raw: String, params: Map<String, String>) =
@@ -364,14 +369,21 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
                 )
             }
 
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            if (requireNotNull(params[C1]).toBoolean()) {
-                raw.zwcUnicodeDecodeBinary(
-                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
-                )
-            } else {
-                raw.zwcUnicodeDecode(params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT)
-            }
+        override fun decrypt(raw: String, params: Map<String, String>): String = buildString {
+            append(raw.filterNot { it in zeroWidthDict })
+            appendLine()
+            append(
+                if (requireNotNull(params[C1]).toBoolean()) {
+                    raw.zwcUnicodeDecodeBinary(
+                        params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+                    )
+                } else {
+                    raw.zwcUnicodeDecode(
+                        params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+                    )
+                }
+            )
+        }
     },
     PeriodicTable("periodicTable") {
         override fun encrypt(raw: String, params: Map<String, String>) = raw.elementPeriodEncode()
@@ -509,10 +521,20 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
 
         override fun isIgnoreSpace() = false
     },
-    BuddhaSay("佛曰") {
-        override fun encrypt(raw: String, params: Map<String, String>) = raw.buddhaSays()
+    BuddhaSay("与佛论禅") {
+        override fun encrypt(raw: String, params: Map<String, String>) =
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.buddhaPbe(requireNotNull(params[P1]))
+            } else {
+                raw.buddhaSays()
+            }
 
-        override fun decrypt(raw: String, params: Map<String, String>): String = raw.buddhaExplain()
+        override fun decrypt(raw: String, params: Map<String, String>): String =
+            if (requireNotNull(params[C1]).toBoolean()) {
+                raw.buddhaPbeDecrypt(requireNotNull(params[P1]))
+            } else {
+                raw.buddhaExplain()
+            }
     },
     BuddhaSay2("新佛曰(online)") {
         override fun encrypt(raw: String, params: Map<String, String>) =

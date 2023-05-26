@@ -63,7 +63,7 @@ val CLASSIC_CONFIG =
                     ),
             ),
         ClassicalCryptoType.ZWC to
-            mapOf(HINT to arrayOf("show plain text"), CHECK to arrayOf("morse")),
+            mapOf(HINT to arrayOf("show plain text(optional)"), CHECK to arrayOf("morse")),
         ClassicalCryptoType.ZWC_UNICODE to
             mapOf(
                 HINT to arrayOf("show plain text", "encode dict,default $ZWC_UNICODE_DICT"),
@@ -145,4 +145,9 @@ val CLASSIC_CONFIG =
         ClassicalCryptoType.TYPE7 to mapOf(HINT to arrayOf("seed(need in encrypt), from 0 to 52")),
         ClassicalCryptoType.BASE64_CASE to
             mapOf(HINT to arrayOf("addition words, separate by non-letter")),
+        ClassicalCryptoType.BuddhaSay to
+            mapOf(
+                HINT to arrayOf("custom password for encrypt version, default is TakuronDotTop"),
+                CHECK to arrayOf("encrypt version"),
+            ),
     )

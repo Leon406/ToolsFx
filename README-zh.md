@@ -234,9 +234,9 @@
 - [x] Bifid/Trifid/四方密码 (FourSquare Cipher)
 - [x] Gronsfeld密码
 - [x] 格雷码(Gray code)
-- [x] 佛曰
+- [x] 与佛论禅/与佛论禅(加密版)
 - [x] 希尔密码
-- [x] 新佛曰/兽音/熊曰(需联网)
+- [x] 新约佛论禅/兽音/熊曰(需联网)
 - [x] rabbit
 - [x] aaencode/jjencode
 - [x] RSA crack (nec,pqec)

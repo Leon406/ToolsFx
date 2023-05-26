@@ -144,6 +144,20 @@ BAABAAABBBABAAABAAAB ABAAABAAAB AAAABAAAAAAAABAABBABABBAA 24
 BAABBAABBBABAAABAABA ABAAABAABA AAAABAAAAAAAABAABBBAABBAB 26
 ```
 
+## base64CaseCrack
+
+base64大小爆破, 注意长度不能太长
+
+**特征**: base64字符 + 见提示
+
+**测试数据**:
+
+```
+AGVSBG8=
+```
+
+## 
+
 ## baudot
 
 博多密码
@@ -1106,7 +1120,7 @@ LXFOPVEFRNHR
 默认字典
 
 ```
-​​​​​​Lorem ipsum​​​​​​​ dolor ‌‌‌‌‍﻿‍‍sit​​​​​​​​ amet​​​​​​​​​‌‌‌‌‍﻿‍‌, consectetur ​​​​​​​adipiscing​​​​​​​‌‌‌‌‍‬‍‬ elit​​​​​​​.‌‌‌‌‍‬﻿‌​​​​​​​‌‌‌‌‍‬‌‍ Phasellus quis​​​​​​​ tempus​​​​​​ ante, ​​​​​​​​nec vehicula​​​​​​​​​​​​​​​​ mi​​​​​​​​. ​​​​​​​‌‌‌‌‍‬‍﻿Aliquam nec​​​​​​​​​‌‌‌‌‍﻿‬﻿ nisi ut neque​​​​​​​ interdum auctor​​​​​​​.‌‌‌‌‍﻿‍﻿ Aliquam felis ‌‌‌‌‍‬‬‌orci​​​​​​​, vestibulum ‌‌‌‌‍﻿‬‍sit ​​​​​​​amet​​​​​​​​​ ante‌‌‌‌‍‌﻿‬ at​​​​​​​, consectetur‌‌‌‌‍‌﻿﻿ lobortis eros​​​​​​​​​.‌‌‌‌‍‍‍‌ ‌‌‌‌‍‌‌‌​​​​​​​Orci varius​​​​​​​ ​​​​​​​natoque ‌‌‌‌‍﻿‌﻿penatibus et ‌‌‌‌‍‬‌﻿​​​​​​​magnis‌‌‌‌‌﻿‌‍‌‌‌‌‌﻿‌‍ dis ​​​​​​​‌‌‌‌‍‍﻿﻿parturient montes, ​​​​​​​nascetur ridiculus ‌‌‌‌‌﻿‍‌​​​​​​​​​​​​​​‌‌‌‌‌﻿‬‍mus. In finibus‌‌‌‌‌﻿‌‬ magna​​​​​​‌‌‌‌‌﻿‍﻿ mauris, quis‌‌‌‌‍‬‌‍ auctor ‌‌‌‌‍‬‌‍libero congue quis. ‌‌‌‌‍‬‬‬Duis‌‌‌‌‍‬‌‬ sagittis consequat urna non tristique. Pellentesque eu lorem ‌‌‌‌‍﻿‌‍id‌‌‌‌‍‬‬﻿ quam vestibulum ultricies vel ac purus‌‌‌‌‌﻿‌‍.‌‌‌‌‌
+​​​​​Lorem ipsum​​​​​​​ dolor ‌‌‌‌‍﻿‍‍sit​​​​​​​​ amet​​​​​​​​​‌‌‌‌‍﻿‍‌, consectetur ​​​​​​​adipiscing​​​​​​​‌‌‌‌‍‬‍‬ elit​​​​​​​.‌‌‌‌‍‬﻿‌​​​​​​​‌‌‌‌‍‬‌‍ Phasellus quis​​​​​​​ tempus​​​​​​ ante, ​​​​​​​​nec vehicula​​​​​​​​​​​​​​​​ mi​​​​​​​​. ​​​​​​​‌‌‌‌‍‬‍﻿Aliquam nec​​​​​​​​​‌‌‌‌‍﻿‬﻿ nisi ut neque​​​​​​​ interdum auctor​​​​​​​.‌‌‌‌‍﻿‍﻿ Aliquam felis ‌‌‌‌‍‬‬‌orci​​​​​​​, vestibulum ‌‌‌‌‍﻿‬‍sit ​​​​​​​amet​​​​​​​​​ ante‌‌‌‌‍‌﻿‬ at​​​​​​​, consectetur‌‌‌‌‍‌﻿﻿ lobortis eros​​​​​​​​​.‌‌‌‌‍‍‍‌ ‌‌‌‌‍‌‌‌​​​​​​​Orci varius​​​​​​​ ​​​​​​​natoque ‌‌‌‌‍﻿‌﻿penatibus et ‌‌‌‌‍‬‌﻿​​​​​​​magnis‌‌‌‌‌﻿‌‍‌‌‌‌‌﻿‌‍ dis ​​​​​​​‌‌‌‌‍‍﻿﻿parturient montes, ​​​​​​​nascetur ridiculus ‌‌‌‌‌﻿‍‌​​​​​​​​​​​​​​‌‌‌‌‌﻿‬‍mus. In finibus‌‌‌‌‌﻿‌‬ magna​​​​​​‌‌‌‌‌﻿‍﻿ mauris, quis‌‌‌‌‍‬‌‍ auctor ‌‌‌‌‍‬‌‍libero congue quis. ‌‌‌‌‍‬‬‬Duis‌‌‌‌‍‬‌‬ sagittis consequat urna non tristique. Pellentesque eu lorem ‌‌‌‌‍﻿‌‍id‌‌‌‌‍‬‬﻿ quam vestibulum ultricies vel ac purus‌‌‌‌‌﻿‌‍.‌‌‌‌‌
 ```
 
 
@@ -1119,7 +1133,7 @@ LXFOPVEFRNHR
 
 
 
-## [佛曰](https://www.keyfc.net/bbs/tools/tudoucode.aspx)
+## [与佛论禅](https://www.keyfc.net/bbs/tools/tudoucode.aspx)
 
 与佛论禅
 
@@ -1130,6 +1144,22 @@ LXFOPVEFRNHR
 ```
 佛曰：麼奢道梵呼舍舍等密爍皤集怯一梵殿缽離罰喝不耶苦
 ```
+
+
+
+## [与佛论禅加密版](https://fy.by950.top/)
+
+与佛论禅加密版, 与佛论禅算法勾选加密版本选项
+
+**特征**: `佛曰：`开头去 且 有密码
+
+**测试数据**:
+
+```
+佛曰：楞醯吉数舍苏卢楞烁楞醯阿摩驮娑孕那尼摩楞遮迦萨墀伊阿写罚卢嚧娑婆穆度俱唎烁咩伊输写尼栗喝娑苏豆写醯蒙舍度舍帝咩数输楞娑苏菩醯楞呼怛呼度无谨哆喝遮咩栗穆地漫漫
+```
+
+## 
 
 ## [六十四卦](https://blog.csdn.net/weixin_44110537/article/details/107494966)
 
@@ -1199,7 +1229,13 @@ base64编码,字典为64卦
 
 PS. 结果是油猴脚本链接
 
+## 百家姓
 
+**特征**:  姓氏组合
+
+```
+水褚尤范尤褚柳尤张朱
+```
 
 ## [阴阳怪气](https://github.com/mmdjiji/yygq.js)
 
