@@ -9,6 +9,7 @@
 <a href="changelog.md"><img src="https://img.shields.io/badge/updates-%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-brightgreen"/></a>
 <img src="https://img.shields.io/badge/license-ISC-green"/>
 <img src="https://img.shields.io/github/downloads/Leon406/Toolsfx/total"/>
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=RfiFeARrf_XDHsT0_TzwbWPIpxDTCx4Z&jump_from=webapi&authKey=zDsFRjKKhpfstcAP/XouVrrFO7m+vfjU3S7j5ZuXo1SnxTpPKIQyLX2da+bowY1P"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="ToolsFx交流群" title="ToolsFx交流群"></a>
 <a href="https://gitter.im/ToolsFx/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img src="https://badges.gitter.im/ToolsFx/community.svg"/></a>
 </p>
 <p align="center">
