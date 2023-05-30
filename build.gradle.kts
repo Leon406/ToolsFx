@@ -1,22 +1,19 @@
 plugins {
-    kotlin("jvm") version "1.8.21"
-    // https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
-    id("com.diffplug.spotless") version "6.19.0"
-    // https://detekt.dev/changelog/
-    id("io.gitlab.arturbosch.detekt") version "1.23.0"
-    id("org.openjfx.javafxplugin") version "0.0.14"
+    kotlin("jvm") version libs.versions.kotlinVer.get()
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.javafx)
+    alias(libs.plugins.spotless)
 }
 
-apply(from = "${rootProject.projectDir}/config/Versions.gradle.kts")
 val jvmTarget = "1.8"
 
 subprojects {
     apply(from = "${rootProject.projectDir}/config/codeQuality.gradle")
-
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.kotlin.jvm")
+
     dependencies {
-        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0")
+        detektPlugins(rootProject.libs.detekt.formatting)
     }
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
@@ -29,7 +26,7 @@ subprojects {
 }
 
 val hook = File("${rootProject.projectDir}/.git/hooks/pre-commit")
-
+hook.parentFile.mkdirs()
 hook.writeBytes(
     """
         #!/bin/bash

@@ -7,7 +7,7 @@ plugins {
 
 javafx {
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
-    version = rootProject.extra["jfx_version"] as String
+    version = libs.versions.jfxVer.get()
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
@@ -20,5 +20,5 @@ javafx {
 dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation(libs.kotlin.test)
 }

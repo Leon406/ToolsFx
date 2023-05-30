@@ -19,6 +19,11 @@ dependencyResolutionManagement {
         maven { url = uri("https://maven.aliyun.com/repository/public") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("./config/libs.versions.toml"))
+        }
+    }
 }
 rootProject.name = "ToolsFx"
 include(

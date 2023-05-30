@@ -8,12 +8,12 @@ version = "1.16.1.beta"
 
 plugins {
     application
-    kotlin("plugin.serialization") version "1.8.21"
+    kotlin("plugin.serialization") version libs.versions.kotlinVer.get()
 }
 
 buildscript {
     dependencies {
-        classpath("org.javassist:javassist:3.29.2-GA")
+        classpath(libs.javassist)
     }
 }
 repositories {
@@ -21,8 +21,9 @@ repositories {
 }
 
 javafx {
+
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
-    version = rootProject.extra["jfx_version"] as String
+    version = libs.versions.jfxVer.get()
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
@@ -63,16 +64,16 @@ tasks.withType<Jar>().forEach {
 
 dependencies {
     implementation(project(":plugin-lib"))
-    api("org.bouncycastle:bcprov-jdk18on:${rootProject.extra["bouncycastle_version"]}")
-    implementation("com.google.zxing:javase:${rootProject.extra["zxing_version"]}")
-    api("com.google.code.gson:gson:2.10.1")
-    implementation("org.openjdk.nashorn:nashorn-core:15.4")
+    api(libs.bouncycastle)
+    implementation(libs.zxing)
+    api(libs.gson)
+    implementation(libs.nashron)
+    implementation(libs.kotlinx.coroutines)
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    testImplementation(libs.kotlin.serialization)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.mockito)
+    testImplementation(libs.javassist)
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("org.mockito:mockito-core:5.3.1")
     testImplementation("org:jaudiotagger:2.0.3")
-    testImplementation("org.javassist:javassist:3.29.2-GA")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 }

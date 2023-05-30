@@ -13,5 +13,5 @@ dependencies {
     implementation("cn.hutool:hutool-all:5.8.19")
     kapt("org.openjdk.jmh:jmh-generator-annprocess:1.36")
     implementation(project(":app"))
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation(libs.kotlin.test)
 }

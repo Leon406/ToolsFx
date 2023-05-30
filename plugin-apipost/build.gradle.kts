@@ -7,7 +7,7 @@ plugins {
 
 javafx {
     // latest version https://mvnrepository.com/artifact/org.openjfx/javafx-controls
-    version = rootProject.extra["jfx_version"] as String
+    version = libs.versions.jfxVer.get()
     modules = listOf(
         "javafx.controls",
         "javafx.swing",
@@ -21,10 +21,9 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
 
-    testImplementation("org.xerial:sqlite-jdbc:3.42.0.0")
-    testImplementation("net.java.dev.jna:jna:5.13.0")
-    testImplementation("net.java.dev.jna:jna-platform:5.13.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("org.seleniumhq.selenium:selenium-java:4.9.1")
+    testImplementation(libs.sqlite)
+    testImplementation(libs.jna.platform)
+    testImplementation(libs.kotlinx.coroutines)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.selenium)
 }
