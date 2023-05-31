@@ -106,7 +106,7 @@ class MyTest {
             var entry: ZipEntry? = null
             while (nextEntry?.also { entry = it } != null) {
                 println(entry)
-                println(this.readAllBytes().decodeToString())
+                println(this.readBytes().decodeToString())
             }
         }
     }

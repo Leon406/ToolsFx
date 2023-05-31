@@ -25,7 +25,7 @@ fun ByteArray.base64(dict: String = BASE64_DICT, needPadding: Boolean = true) =
         .run {
             // lcm (6, 8) /6 = 4
             if (needPadding) {
-                padding("=", BASE64_PADDING_SIZE)
+                padding("=".takeUnless { dict.contains(it) } ?: "＝", BASE64_PADDING_SIZE)
             } else {
                 this
             }
@@ -34,7 +34,7 @@ fun ByteArray.base64(dict: String = BASE64_DICT, needPadding: Boolean = true) =
 fun String.base64Decode(dict: String = BASE64_DICT) =
     stripAllSpace() // remove all space  RFC 2045定义，每行为76个字符，行末加入\r\n
         .asIterable()
-        .filter { dict.contains(".") || !dict.contains(".") && it != '=' && it != '.' }
+        .filter { (!dict.contains("=") && it != '=') || dict.contains(it) }
         .joinToString("") {
             dict
                 .ifEmpty { BASE64_DICT }
