@@ -5,8 +5,7 @@ import java.net.Proxy
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlinx.coroutines.*
-import me.leon.ext.stacktrace
-import me.leon.ext.toFile
+import me.leon.ext.*
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
 
@@ -18,6 +17,9 @@ private const val SHODAN_URL =
     "https://www.shodan.io/search?query=Location%3A+https%3A%2F%2Faccount.jetbrains.com%2Ffls-auth"
 
 private const val TMP_FILE = "C:\\Users\\Leon\\Desktop\\jblicense.txt"
+private val REG_LINK = "https?://[^\"<]+".toRegex()
+private val REG_FILTER_LINK =
+    "\\.(?:png|html|js|css)|github\\.com|greasyfork\\.org|sms-activate\\.org".toRegex()
 
 class JbLicenseTest {
 
@@ -131,5 +133,37 @@ class JbLicenseTest {
         verifySSL(false)
         checkUrl("https://35.188.104.230").also { println(it) }
         HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
+    }
+
+    @Test
+    fun gptMirror() {
+        val urls =
+            arrayOf(
+                "https://c.aalib.net/tool/chatgpt/",
+                "https://chatgpts.ninvfeng.xyz/",
+                "https://jichangtuijian.com/chatgpt%E5%A5%97%E5%A3%B3%E9%95%9C%E5%83%8F.html",
+            )
+
+        runBlocking {
+            urls
+                .map { it.readFromNet() }
+                .forEach {
+                    REG_LINK.findAll(it)
+                        .map { it.value }
+                        .distinct()
+                        .filterNot { REG_FILTER_LINK.containsMatchIn(it) }
+                        .toList()
+                        .map {
+                            it to
+                                async(Dispatchers.IO) {
+                                    runCatching { HttpUrlUtil.get(it).code == 200 }
+                                        .getOrDefault(false)
+                                }
+                        }
+                        .filter { it.second.await() }
+                        .map { it.first }
+                        .forEach { println(it) }
+                }
+        }
     }
 }
