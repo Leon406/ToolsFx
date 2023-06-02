@@ -1,7 +1,6 @@
 package me.leon.misc.net
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 
@@ -13,10 +12,10 @@ import me.leon.ext.readFromNet
 fun dnsSolve(urls: List<String>): String = runBlocking {
     urls
         .sorted()
-        .map { domain -> domain to async(DISPATCHER) { fastestIp(resolveDomains(domain)) } }
-        .filter { it.second.await() != null }
-        .map { "${it.second.await()!!.first} ${it.first}" }
-        .joinToString(System.lineSeparator())
+        .map { domain -> async(DISPATCHER) { domain to fastestIp(resolveDomains(domain)) } }
+        .awaitAll()
+        .filter { it.second != null }
+        .joinToString(System.lineSeparator()) { "${it.second!!.first} ${it.first}" }
 }
 
 fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long>? {

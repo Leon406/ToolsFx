@@ -54,8 +54,9 @@ class JbLicenseTest {
         verifySSL(false)
         runBlocking {
             sortedServers
-                .map { it to async(Dispatchers.IO) { checkUrl(it) } }
-                .filter { it.second.await() }
+                .map { async(Dispatchers.IO) { it to checkUrl(it) } }
+                .awaitAll()
+                .filter { it.second }
                 .map { it.first }
                 .also {
                     println("${it.size} / ${sortedServers.size} ")
@@ -146,7 +147,8 @@ class JbLicenseTest {
 
         runBlocking {
             urls
-                .map { it.readFromNet() }
+                .map { async { it.readFromNet() } }
+                .awaitAll()
                 .forEach {
                     REG_LINK.findAll(it)
                         .map { it.value }
@@ -154,13 +156,14 @@ class JbLicenseTest {
                         .filterNot { REG_FILTER_LINK.containsMatchIn(it) }
                         .toList()
                         .map {
-                            it to
-                                async(Dispatchers.IO) {
+                            async(Dispatchers.IO) {
+                                it to
                                     runCatching { HttpUrlUtil.get(it).code == 200 }
                                         .getOrDefault(false)
-                                }
+                            }
                         }
-                        .filter { it.second.await() }
+                        .awaitAll()
+                        .filter { it.second }
                         .map { it.first }
                         .forEach { println(it) }
                 }
