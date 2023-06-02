@@ -74,6 +74,7 @@ dependencies {
     testImplementation(libs.kotlin.test)
     testImplementation(libs.mockito)
     testImplementation(libs.javassist)
+    testImplementation(libs.kotlinx.coroutines.test)
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org:jaudiotagger:2.0.3")
     // https://www.atilika.org/

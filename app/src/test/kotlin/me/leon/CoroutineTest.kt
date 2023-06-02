@@ -3,6 +3,7 @@ package me.leon
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 /**
@@ -13,7 +14,7 @@ import org.junit.Test
 class CoroutineTest {
     @Test
     fun flow2() {
-        runBlocking {
+        runTest {
             flow {
                     for (i in 1..5) {
                         delay(100)
@@ -56,8 +57,6 @@ class CoroutineTest {
                 .awaitAll()
                 .sum()
                 .also { println(it) }
-            //            val sum = deferreds.awaitAll().sum()
-            //            println("$sum")
         }
     }
 

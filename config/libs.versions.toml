@@ -43,6 +43,7 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerVer" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinVer" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutineVer" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutineVer" }
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVer" }
 nashron = { module = "org.openjdk.nashorn:nashorn-core", version.ref = "nashornVer" }
 selenium = { module = "org.seleniumhq.selenium:selenium-java", version.ref = "seleniumVer" }
