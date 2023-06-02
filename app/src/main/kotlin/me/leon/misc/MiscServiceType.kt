@@ -151,6 +151,13 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: Map<String, String>) =
             raw.lineAction2String { runCatching { it.roman() }.getOrElse { it.stacktrace() } }
     },
+    ROMANJI("romanji(CJK)") {
+        override fun process(raw: String, params: Map<String, String>) =
+            raw.lineAction2String {
+                runCatching { it.kawa(KawaType.valueOf(requireNotNull(params[C1]))).pretty() }
+                    .getOrElse { it.stacktrace() }
+            }
+    },
     ;
 
     override fun hint(): String {

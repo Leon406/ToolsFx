@@ -38,8 +38,9 @@ val MISC_CONFIG =
             mapOf(HINT to "cron expression, support crontab, quarts and normal format"),
         MiscServiceType.GITHUB_MIRROR to mapOf(HINT to "github repo or raw link"),
         MiscServiceType.ENCODING_RECOVERY to mapOf(HINT to "recover encoding"),
-        MiscServiceType.FULL_WIDTH to mapOf(HINT to "transfer full/half width char to full width"),
+        MiscServiceType.FULL_WIDTH to mapOf(HINT to "transfer full/half width char"),
         MiscServiceType.ROMAN to mapOf(HINT to "roman number, like VIII or 8,separate by line"),
+        MiscServiceType.ROMANJI to mapOf(HINT to "romanji for Chinese,Japanese,Korean"),
     )
 
 val MISC_OPTIONS_CONFIG =
@@ -55,6 +56,8 @@ val MISC_OPTIONS_CONFIG =
                         "days",
                     )
             ),
+        MiscServiceType.ROMANJI to
+            mapOf(OPTIONS to KawaType.values().map { it.toString() }.toTypedArray()),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.DATE2STAMP to mapOf(PARAMS_HINT to arrayOf("optional, input date format")),
     )
