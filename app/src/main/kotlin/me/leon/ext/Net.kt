@@ -164,3 +164,5 @@ fun String.readHeadersFromNet(timeout: Int = DEFAULT_TIME_OUT) =
             println("read bytes err $stacktrace ")
             stacktrace
         }
+
+fun Map<String, Any>.toParams() = entries.joinToString("&") { it.key + "=" + it.value }

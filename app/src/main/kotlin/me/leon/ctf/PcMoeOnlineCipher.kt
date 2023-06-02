@@ -46,6 +46,4 @@ object PcMoeOnlineCipher {
                     )
             )
             .decodeToString()
-
-    private fun Map<String, Any>.toParams() = entries.joinToString("&") { it.key + "=" + it.value }
 }

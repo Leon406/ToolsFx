@@ -6,7 +6,11 @@ import tornadofx.*
 
 class MiscController : Controller() {
 
-    fun process(type: MiscServiceType, input: String): String {
-        return runCatching { type.process(input, mutableMapOf()) }.getOrElse { it.stacktrace() }
+    fun process(
+        type: MiscServiceType,
+        input: String,
+        params: Map<String, String> = emptyMap()
+    ): String {
+        return runCatching { type.process(input, params) }.getOrElse { it.stacktrace() }
     }
 }

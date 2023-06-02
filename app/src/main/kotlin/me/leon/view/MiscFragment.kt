@@ -1,10 +1,8 @@
 package me.leon.view
 
-import javafx.beans.property.BooleanProperty
-import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.*
 import javafx.geometry.Pos
-import javafx.scene.control.RadioButton
-import javafx.scene.control.TextArea
+import javafx.scene.control.*
 import me.leon.*
 import me.leon.controller.MiscController
 import me.leon.ext.*
@@ -20,16 +18,26 @@ class MiscFragment : PluginFragment("Misc") {
     override val description = "Misc"
     private var taInput: TextArea by singleAssign()
     private var taOutput: TextArea by singleAssign()
+    private var param1: TextField by singleAssign()
+    private var cbParam: ComboBox<String> by singleAssign()
+
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
     private var serviceType: MiscServiceType = MiscServiceType.UUID
     private val controller: MiscController by inject()
+
     private val processing: BooleanProperty = SimpleBooleanProperty(false)
+    private val showComboParam = SimpleBooleanProperty(false)
+    private val selectedParam = SimpleStringProperty("")
+    private val showParams = SimpleBooleanProperty(false)
 
     private val inputText: String
         get() = taInput.text.trim()
 
     private val outputText: String
         get() = taOutput.text
+
+    private val paramsMap: Map<String, String>
+        get() = mutableMapOf(P1 to param1.text, C1 to selectedParam.get())
 
     override val root = vbox {
         prefWidth = 800.0
@@ -61,7 +69,7 @@ class MiscFragment : PluginFragment("Misc") {
                 vgap = 8.0
                 hgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns = 5
+                prefColumns = 6
                 togglegroup {
                     miscServiceTypeMap.forEach {
                         radiobutton(it.key) {
@@ -72,9 +80,30 @@ class MiscFragment : PluginFragment("Misc") {
                     selectedToggleProperty().addListener { _, _, new ->
                         serviceType = new.cast<RadioButton>().text.miscServiceType()
                         taInput.promptText = serviceType.hint()
+                        val paramHints = serviceType.paramsHints()
+                        showParams.value = paramHints.isNotEmpty()
+                        param1.promptText = "".takeIf { paramHints.isEmpty() } ?: paramHints.first()
+                        val options = serviceType.options()
+                        showComboParam.value = options.isNotEmpty()
+                        if (options.isNotEmpty()) {
+                            cbParam.items = options.toMutableList().asObservable()
+                            selectedParam.set(if (options.isEmpty()) "" else options.first())
+                            cbParam.bind(selectedParam)
+                        }
                         println(serviceType)
+                        println(
+                            "params ${paramHints.contentToString()} options ${options.contentToString()}"
+                        )
                     }
                 }
+            }
+        }
+        hbox {
+            addClass(Styles.group, Styles.left)
+            cbParam = combobox(selectedParam) { visibleWhen(showComboParam) }
+            param1 = textfield {
+                prefWidth = DEFAULT_SPACING_24X
+                visibleWhen(showParams)
             }
         }
 
@@ -114,7 +143,7 @@ class MiscFragment : PluginFragment("Misc") {
         if (inputText.isEmpty() && serviceType != MiscServiceType.IP_LOCATION) return
         runAsync {
             processing.value = true
-            controller.process(serviceType, inputText)
+            controller.process(serviceType, inputText, paramsMap)
         } ui
             {
                 processing.value = false
