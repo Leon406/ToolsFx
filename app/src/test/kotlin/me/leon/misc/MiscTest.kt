@@ -297,11 +297,16 @@ class MiscTest {
 
     @Test
     fun githubMirror() {
-        val file = "https://github.com/Leon406/ToolsFx/blob/dev/testdata/sm2/sm_qd_data.txt"
-        val url = "https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/host"
 
+        val url = "https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/host"
+        val url2 =
+            "https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.1/Git-2.41.0-64-bit.exe"
+        val file = "https://github.com/Leon406/ToolsFx/blob/dev/testdata/sm2/sm_qd_data.txt"
+        println("_____raw")
         println(url.githubMirror())
-        println()
+        println("_____release download")
+        println(url2.githubMirror())
+        println("_____blob")
         println(file.githubMirror())
     }
 
