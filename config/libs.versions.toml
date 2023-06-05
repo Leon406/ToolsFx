@@ -19,7 +19,7 @@ nashornVer = "15.4"
 seleniumVer = "4.9.1"
 sqliteVer = "3.42.0.0"
 tornadofxVer = "1.7.20"
-zstdVer = "1.5.5-3"
+zstdVer = "1.5.5-4"
 zxingVer = "3.5.1"
 
 # plugin
