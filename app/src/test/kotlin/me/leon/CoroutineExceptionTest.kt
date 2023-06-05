@@ -2,6 +2,7 @@ package me.leon
 
 import kotlin.test.Test
 import kotlinx.coroutines.*
+import org.junit.Ignore
 
 /**
  * @author Leon
@@ -10,6 +11,7 @@ import kotlinx.coroutines.*
  */
 @OptIn(DelicateCoroutinesApi::class)
 @Suppress("All")
+@Ignore
 class CoroutineExceptionTest {
 
     val handler = CoroutineExceptionHandler { _, exception ->

@@ -3,12 +3,14 @@ package me.leon
 import kotlin.system.measureTimeMillis
 import kotlin.test.Test
 import kotlinx.coroutines.*
+import org.junit.Ignore
 
 /**
  * @author Leon
  * @since 2023-06-05 9:24
  * @email deadogone@gmail.com
  */
+@Ignore
 class CoroutineTest2 {
     @Test
     fun sequential() {

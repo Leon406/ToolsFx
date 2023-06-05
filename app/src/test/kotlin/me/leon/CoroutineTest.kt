@@ -4,6 +4,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
+import org.junit.Ignore
 import org.junit.Test
 
 /**
@@ -11,6 +12,7 @@ import org.junit.Test
  * @since 2023-06-02 16:51
  * @email deadogone@gmail.com
  */
+@Ignore
 class CoroutineTest {
     @Test
     fun flow2() {

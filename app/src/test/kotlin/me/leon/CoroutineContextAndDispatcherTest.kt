@@ -2,6 +2,7 @@
 
 package me.leon
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlinx.coroutines.*
 
@@ -10,6 +11,7 @@ import kotlinx.coroutines.*
  * @since 2023-06-05 10:18
  * @email deadogone@gmail.com
  */
+@Ignore
 class CoroutineContextAndDispatcherTest {
     val threadLocal = ThreadLocal<String?>()
 

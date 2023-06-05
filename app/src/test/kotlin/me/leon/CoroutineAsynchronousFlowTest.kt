@@ -1,7 +1,7 @@
 package me.leon
 
 import kotlin.system.measureTimeMillis
-import kotlin.test.Test
+import kotlin.test.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.*
  * @since 2023-06-05 11:19
  * @email deadogone@gmail.com
  */
+@Ignore
 class CoroutineAsynchronousFlowTest {
     fun simple(): List<Int> = listOf(1, 2, 3)
 

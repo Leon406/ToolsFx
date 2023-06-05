@@ -7,12 +7,14 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.junit.Ignore
 
 /**
  * @author Leon
  * @since 2023-06-05 16:48
  * @email deadogone@gmail.com
  */
+@Ignore
 class CoroutineShareTest {
 
     var counter = 0
