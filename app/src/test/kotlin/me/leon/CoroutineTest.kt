@@ -94,4 +94,45 @@ class CoroutineTest {
     fun log(message: Any?) {
         println("[${Thread.currentThread().name}] $message")
     }
+
+    @Test
+    fun cancelTest() {
+        // 超时会有异常, 如果不捕获不会抛出
+        runTest {
+            val job = launch {
+                repeat(1000) { i ->
+                    if (isActive) {
+                        try {
+                            println("job: I'm sleeping $i ...")
+                            delay(500L)
+                        } catch (e: Exception) {
+                            println(e)
+                        }
+                    }
+                }
+            }
+            delay(1300L) // delay a bit
+            println("main: I'm tired of waiting!")
+            //            job.cancel() // cancels the job
+            //            job.join() // waits for job's completion
+            job.cancelAndJoin()
+            println("main: Now I can quit.")
+        }
+    }
+
+    @Test
+    fun timeoutTest() {
+        runTest {
+            try {
+                withTimeout(1300L) {
+                    repeat(1000) { i ->
+                        println("I'm sleeping $i ...")
+                        delay(500L)
+                    }
+                }
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
 }
