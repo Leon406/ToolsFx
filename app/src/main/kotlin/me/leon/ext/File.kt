@@ -158,3 +158,6 @@ fun String.toFile() = File(this)
 
 fun readResourceText(path: String) =
     Words.javaClass.getResourceAsStream(path)?.reader()?.readText().orEmpty()
+
+inline fun <reified T> readRes(path: String) =
+    T::class.java.getResourceAsStream(path)?.reader()?.readText().orEmpty()
