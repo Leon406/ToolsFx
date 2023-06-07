@@ -2,8 +2,10 @@ package me.leon.plugin
 
 import java.io.File
 import java.util.Base64
+import kotlin.test.Test
+import me.leon.Api
+import me.leon.ext.*
 import me.leon.toolsfx.plugin.net.*
-import org.junit.Test
 
 class HttpTest {
 
@@ -136,6 +138,30 @@ class HttpTest {
             ),
             "image"
         )
+    }
+
+    @Test
+    fun parse() {
+        val apis = readRes<HttpTest>("/apis.json").fromJsonArray(Api::class.java)
+        println(apis)
+        for (api in apis.take(1)) {
+            println(api)
+            val r =
+                HttpUrlUtil.postFile(
+                        api.api,
+                        listOf(
+                            File(
+                                "E:\\prj\\Android-app\\app\\src\\main\\res\\drawable\\icon_photograph.png"
+                            )
+                        ),
+                        api.file,
+                        api.body.toMutableMap(),
+                        api.headers.toMutableMap()
+                    )
+                    .data
+
+            println(r.simpleJsonPath(api.result))
+        }
     }
 
     @Test

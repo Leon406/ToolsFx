@@ -18,8 +18,8 @@ import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.6.1"
-    override val date: String = "2022-12-25"
+    override val version = "v1.7.0"
+    override val date: String = "2023-06-07"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -34,8 +34,10 @@ class ApiPostView : PluginFragment("ApiPost") {
     private lateinit var textRspStatus: Text
     private lateinit var taRspHeaders: TextArea
     private lateinit var taRspContent: TextArea
+    private lateinit var tfJsonPath: TextField
     private lateinit var table: TableView<HttpParams>
     private val prettyProperty = SimpleBooleanProperty(true)
+    private val showJsonPath = SimpleBooleanProperty(false)
     private val methods =
         mutableListOf(
             "POST",
@@ -175,11 +177,17 @@ class ApiPostView : PluginFragment("ApiPost") {
                             .onSuccess {
                                 textRspStatus.text = it.statusInfo
                                 taRspHeaders.text = it.headerInfo
-                                taRspContent.text =
-                                    if (prettyProperty.get()) {
-                                        it.data.unicodeMix2String().prettyJson()
+                                val showdata =
+                                    if (showJsonPath.get() && tfJsonPath.text.trim().isNotEmpty()) {
+                                        it.data.simpleJsonPath(tfJsonPath.text.trim())
                                     } else {
                                         it.data
+                                    }
+                                taRspContent.text =
+                                    if (prettyProperty.get()) {
+                                        showdata.unicodeMix2String().prettyJson()
+                                    } else {
+                                        showdata
                                     }
                                 this@ApiPostView.running.value = false
                             }
@@ -331,6 +339,11 @@ class ApiPostView : PluginFragment("ApiPost") {
             }
 
             checkbox("prettify", prettyProperty)
+            checkbox("jsonpath", showJsonPath)
+            tfJsonPath = textfield {
+                visibleWhen(showJsonPath)
+                promptText = "json path"
+            }
         }
         stackpane {
             alignment = Pos.CENTER_RIGHT
