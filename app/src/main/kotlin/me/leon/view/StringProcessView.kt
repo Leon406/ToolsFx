@@ -23,7 +23,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private var tfReplaceFrom: TextField by singleAssign()
     private var tfReplaceTo: TextField by singleAssign()
     private var tfSplitLength: TextField by singleAssign()
-    private var tfSeprator: TextField by singleAssign()
+    private var tfSeparator: TextField by singleAssign()
     private var labelInfo: Label by singleAssign()
     private var tfExtract: TextField by singleAssign()
 
@@ -41,8 +41,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     8
                 }
 
-    private val sepratorText
-        get() = tfSeprator.text.unescape()
+    private val separatorText
+        get() = tfSeparator.text.unescape()
 
     private val info: String
         get() =
@@ -219,7 +219,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             paddingBottom = DEFAULT_SPACING
             label(messages["split"])
             tfSplitLength = textfield { promptText = messages["splitLength"] }
-            tfSeprator = textfield { promptText = messages["delimiter"] }
+            tfSeparator = textfield { promptText = messages["delimiter"] }
             checkbox(messages["regexp"], splitRegexp)
             button(messages["run"], imageview(IMG_RUN)) { action { doSplit() } }
         }
@@ -287,9 +287,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     if (splitRegexp.get()) {
                         inputText
                             .split(tfSplitLength.text.unescape().toRegex())
-                            .joinToString(sepratorText)
+                            .joinToString(separatorText)
                     } else {
-                        inputText.asIterable().chunked(splitLengthText).joinToString(sepratorText) {
+                        inputText.asIterable().chunked(splitLengthText).joinToString(separatorText) {
                             it.joinToString("")
                         }
                     }
