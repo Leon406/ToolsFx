@@ -9,6 +9,9 @@ import me.leon.ext.toJson
  * @email deadogone@gmail.com
  */
 fun String.simpleJsonPath(path: String): String {
+    if (path.isEmpty()) {
+        return this
+    }
     val params = path.split(".")
     var d: Any = fromJson(LinkedHashMap::class.java)
     for (param in params) {
