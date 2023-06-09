@@ -17,8 +17,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val regexp = SimpleBooleanProperty(false)
     private val splitRegexp = SimpleBooleanProperty(false)
     private val fileMode = SimpleBooleanProperty(false)
+    private val showAddition = SimpleBooleanProperty(false)
+    private val showAdditionCheck = SimpleBooleanProperty(false)
 
     private var taInput: TextArea by singleAssign()
+    private var taInput2: TextArea by singleAssign()
     private var taOutput: TextArea by singleAssign()
     private var tfReplaceFrom: TextField by singleAssign()
     private var tfReplaceTo: TextField by singleAssign()
@@ -55,6 +58,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         get() = taInput.text
         set(value) {
             taInput.text = value
+        }
+
+    private var inputText2: String
+        get() = taInput2.text
+        set(value) {
+            taInput2.text = value
         }
 
     private var outputText: String
@@ -196,6 +205,34 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 item(messages["removeAllSpace"]) {
                     action { taInput.text = inputText.stripAllSpace() }
                 }
+                item("input - addition") {
+                    action {
+                        val (inputs, inputs2) = inputsList()
+                        taOutput.text =
+                            inputs
+                                .filterNot { inputs2.contains(it) }
+                                .joinToString(System.lineSeparator())
+                        showAddition.value = false
+                    }
+                }
+                item("input ∪ addition") {
+                    action {
+                        val (inputs, inputs2) = inputsList()
+                        taOutput.text =
+                            (inputs + inputs2).distinct().joinToString(System.lineSeparator())
+                        showAddition.value = false
+                    }
+                }
+                item("input ∩ addition") {
+                    action {
+                        val (inputs, inputs2) = inputsList()
+                        taOutput.text =
+                            inputs
+                                .filter { inputs2.contains(it) }
+                                .joinToString(System.lineSeparator())
+                        showAddition.value = false
+                    }
+                }
             }
             textProperty().addListener { _, _, _ ->
                 timeConsumption = 0
@@ -252,17 +289,39 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     taOutput.text = ""
                 }
             }
-        }
 
-        taOutput = textarea {
-            promptText = messages["outputHint"]
-            isWrapText = true
+            hbox {
+                addClass(Styles.center)
+                checkbox("show addition", showAddition) { visibleWhen(showAdditionCheck) }
+            }
+        }
+        stackpane {
+            prefHeight = 300.0
+            spacing = 8.0
+            taInput2 = textarea {
+                promptText = "additional input or output"
+                isWrapText = true
+                visibleWhen(showAddition)
+            }
+            taOutput = textarea {
+                promptText = messages["outputHint"]
+                visibleWhen(!showAddition)
+                isWrapText = true
+            }
         }
         subscribe<SimpleMsgEvent> { inputText = it.msg }
     }
+
     override val root = borderpane {
         center = centerNode
         bottom = hbox { labelInfo = label(info) }
+    }
+
+    private fun inputsList(): Pair<List<String>, List<String>> {
+        showAdditionCheck.value = true
+        val inputs = inputText.lines().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
+        val inputs2 = inputText2.lines().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
+        return Pair(inputs, inputs2)
     }
 
     private fun doExtract() {
@@ -289,7 +348,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                             .split(tfSplitLength.text.unescape().toRegex())
                             .joinToString(separatorText)
                     } else {
-                        inputText.asIterable().chunked(splitLengthText).joinToString(separatorText) {
+                        inputText.asIterable().chunked(splitLengthText).joinToString(
+                            separatorText
+                        ) {
                             it.joinToString("")
                         }
                     }
