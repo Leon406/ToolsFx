@@ -213,6 +213,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                                 .filterNot { inputs2.contains(it) }
                                 .joinToString(System.lineSeparator())
                         showAddition.value = false
+                        labelInfo.text = info
                     }
                 }
                 item("input ∪ addition") {
@@ -221,6 +222,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         taOutput.text =
                             (inputs + inputs2).distinct().joinToString(System.lineSeparator())
                         showAddition.value = false
+                        labelInfo.text = info
                     }
                 }
                 item("input ∩ addition") {
@@ -231,6 +233,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                                 .filter { inputs2.contains(it) }
                                 .joinToString(System.lineSeparator())
                         showAddition.value = false
+                        labelInfo.text = info
                     }
                 }
             }
