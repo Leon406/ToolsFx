@@ -16,9 +16,6 @@ buildscript {
         classpath(libs.javassist)
     }
 }
-repositories {
-    mavenCentral()
-}
 
 javafx {
 
