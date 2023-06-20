@@ -1,13 +1,13 @@
 package me.leon
 
-import java.io.File
-import java.net.Proxy
-import kotlin.test.Ignore
-import kotlin.test.Test
 import kotlinx.coroutines.*
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
+import java.io.File
+import java.net.Proxy
+import kotlin.test.Ignore
+import kotlin.test.Test
 
 private const val RUSHB_URL = "https://rushb.pro/article/JetBrains-license-server.html"
 private val REG_HTML_CODE = "(?s)<code class=\"lang-\\w+\">(.+)</code>".toRegex()
@@ -26,8 +26,12 @@ class JbLicenseTest {
     @Test
     @Ignore
     fun list() {
+        HttpUrlUtil.setupProxy(Proxy.Type.SOCKS, "127.0.0.1", 7890)
         val response = HttpUrlUtil.get(RUSHB_URL)
-        REG_HTML_CODE.findAll(response.data).forEach { println(it.groupValues[1].lines()) }
+        REG_HTML_CODE.findAll(response.data)
+            .forEach {
+                println(it.groupValues[1].lines().filter { it.startsWith("http") })
+            }
     }
 
     @Test
@@ -71,17 +75,17 @@ class JbLicenseTest {
         runCatching {
             val response = HttpUrlUtil.get(RUSHB_URL)
             REG_HTML_CODE.findAll(response.data).forEach {
-                servers.addAll(it.groupValues[1].lines())
+                servers.addAll(it.groupValues[1].lines().filter { it.startsWith("http") })
             }
             println("success from RUSHUB ${servers.size}")
         }
 
         runCatching {
-                val response2 = HttpUrlUtil.get(SHODAN_URL)
-                REG_SHODAN_CODE.findAll(response2.data).forEach {
-                    servers.addAll(it.groupValues[1].lines())
-                }
+            val response2 = HttpUrlUtil.get(SHODAN_URL)
+            REG_SHODAN_CODE.findAll(response2.data).forEach {
+                servers.addAll(it.groupValues[1].lines())
             }
+        }
             .getOrElse { println("error fetch  shoda ${it.stacktrace()}") }
 
         return servers
@@ -114,8 +118,8 @@ class JbLicenseTest {
             // 设置followRedirect会自动会重定向到 /login
             validate =
                 runCatching {
-                        HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
-                    }
+                    HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
+                }
                     .getOrDefault(false)
         }
         return validate
@@ -158,8 +162,8 @@ class JbLicenseTest {
                         .map {
                             async(Dispatchers.IO) {
                                 it to
-                                    runCatching { HttpUrlUtil.get(it).code == 200 }
-                                        .getOrDefault(false)
+                                        runCatching { HttpUrlUtil.get(it).code == 200 }
+                                            .getOrDefault(false)
                             }
                         }
                         .awaitAll()
