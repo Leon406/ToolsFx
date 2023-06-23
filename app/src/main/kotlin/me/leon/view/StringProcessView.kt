@@ -2,11 +2,15 @@ package me.leon.view
 
 import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.TextArea
+import javafx.scene.control.TextField
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
-import me.leon.ext.fx.*
+import me.leon.ext.fx.clipboardText
+import me.leon.ext.fx.copy
+import me.leon.ext.fx.fileDraggedHandler
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -17,7 +21,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val regexp = SimpleBooleanProperty(false)
     private val splitRegexp = SimpleBooleanProperty(false)
     private val fileMode = SimpleBooleanProperty(false)
+    private val overrideInput = SimpleBooleanProperty(false)
     private val showAddition = SimpleBooleanProperty(false)
+    private val additionfileMode = SimpleBooleanProperty(false)
     private val showAdditionCheck = SimpleBooleanProperty(false)
 
     private var taInput: TextArea by singleAssign()
@@ -85,11 +91,22 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
     }
+    private val additionEventHandler = fileDraggedHandler {
+        taInput2.text =
+            with(it.first()) {
+                if (additionfileMode.get()) {
+                    it.map { it.absolutePath }.joinToString(System.lineSeparator())
+                } else {
+                    it.first().properText()
+                }
+            }
+    }
     private val centerNode = vbox {
         addClass(Styles.group)
         hbox {
             label(messages["input"])
             spacing = DEFAULT_SPACING
+            addClass(Styles.left)
             button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
                 action {
@@ -100,84 +117,62 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
             button(graphic = imageview("/img/uppercase.png")) {
                 tooltip(messages["uppercase"])
-                action { outputText = inputText.uppercase() }
+                action { processInput(inputText.uppercase()) }
             }
 
             button(graphic = imageview("/img/lowercase.png")) {
                 tooltip(messages["lowercase"])
-                action { outputText = inputText.lowercase() }
+                action { processInput(inputText.lowercase()) }
             }
             button(graphic = imageview("/img/trimIndent.png")) {
                 tooltip(messages["trimIndent"])
-                action { outputText = inputText.trimIndent() }
+                action { processInput(inputText.trimIndent()) }
             }
             button(graphic = imageview("/img/ascend.png")) {
                 tooltip(messages["orderByStringASC"])
                 action {
-                    measureTimeMillis {
-                            outputText =
-                                inputText
-                                    .split("\n|\r\n".toRegex())
-                                    .sorted()
-                                    .joinToString(System.lineSeparator())
-                        }
-                        .also {
-                            timeConsumption = it
-                            labelInfo.text = info
-                        }
+                    processInput(
+                        inputText
+                            .split("\n|\r\n".toRegex())
+                            .sorted()
+                            .joinToString(System.lineSeparator())
+                    )
                 }
             }
             button(graphic = imageview("/img/descend.png")) {
                 tooltip(messages["orderByStringDESC"])
                 action {
-                    measureTimeMillis {
-                            outputText =
-                                inputText
-                                    .split("\n|\r\n".toRegex())
-                                    .sortedDescending()
-                                    .joinToString(System.lineSeparator())
-                        }
-                        .also {
-                            timeConsumption = it
-                            labelInfo.text = info
-                        }
+                    processInput(
+                        inputText
+                            .split("\n|\r\n".toRegex())
+                            .sortedDescending()
+                            .joinToString(System.lineSeparator())
+                    )
                 }
             }
 
             button(graphic = imageview("/img/deduplicate.png")) {
                 tooltip(messages["deduplicateLine"])
                 action {
-                    measureTimeMillis {
-                            outputText =
-                                inputText.lines().distinct().joinToString(System.lineSeparator())
-                        }
-                        .also {
-                            timeConsumption = it
-                            labelInfo.text = info
-                        }
+                    processInput(inputText.lines().distinct().joinToString(System.lineSeparator()))
                 }
             }
             button(graphic = imageview("/img/statistic.png")) {
                 tooltip(messages["letterStatistics"])
                 action {
-                    measureTimeMillis {
-                            outputText =
-                                inputText
-                                    .groupingBy { it }
-                                    .eachCount()
-                                    .toList()
-                                    .filter { it.first.code > 32 }
-                                    .sortedByDescending { it.second }
-                                    .joinToString(System.lineSeparator()) {
-                                        "${it.first}: ${it.second}"
-                                    }
-                        }
-                        .also {
-                            timeConsumption = it
-                            labelInfo.text = info
-                        }
+                    processInput(
+                        inputText
+                            .groupingBy { it }
+                            .eachCount()
+                            .toList()
+                            .filter { it.first.code > 32 }
+                            .sortedByDescending { it.second }
+                            .joinToString(System.lineSeparator()) { "${it.first}: ${it.second}" }
+                    )
                 }
             }
+
+            checkbox("override", overrideInput)
         }
 
         taInput = textarea {
@@ -189,12 +184,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
                 }
                 item(messages["recoverEncoding"]) {
-                    action { runAsync { inputText.recoverEncoding() } ui { taInput.text = it } }
+                    action { runAsync { inputText.recoverEncoding() } ui { inputText = it } }
                 }
-                item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
+                item(messages["reverse"]) { action { inputText = inputText.reversed() } }
                 item(messages["removeAllSpaceByLine"]) {
                     action {
-                        taInput.text =
+                        inputText =
                             inputText
                                 .lines()
                                 .map { it.stripAllSpace() }
@@ -203,8 +198,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     }
                 }
                 item(messages["removeAllSpace"]) {
-                    action { taInput.text = inputText.stripAllSpace() }
+                    action { inputText = inputText.stripAllSpace() }
                 }
+                item("tokenize") { action { tokenize() } }
+                item("tokenize - addition") { action { tokenize2() } }
                 item("input - addition") {
                     action {
                         val (inputs, inputs2) = inputsList()
@@ -216,6 +213,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         labelInfo.text = info
                     }
                 }
+
                 item("input ∪ addition") {
                     action {
                         val (inputs, inputs2) = inputsList()
@@ -294,8 +292,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
 
             hbox {
-                addClass(Styles.center)
+                addClass(Styles.left)
                 checkbox("show addition", showAddition) { visibleWhen(showAdditionCheck) }
+                checkbox("file mode", additionfileMode) { visibleWhen(showAdditionCheck) }
             }
         }
         stackpane {
@@ -305,6 +304,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 promptText = "additional input or output"
                 isWrapText = true
                 visibleWhen(showAddition)
+                onDragEntered = additionEventHandler
             }
             taOutput = textarea {
                 promptText = messages["outputHint"]
@@ -323,58 +323,111 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private fun inputsList(): Pair<List<String>, List<String>> {
         showAdditionCheck.value = true
         val inputs = inputText.lines().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
-        val inputs2 = inputText2.lines().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
+        val inputs2 = inputs2()
         return Pair(inputs, inputs2)
     }
 
-    private fun doExtract() {
-        measureTimeMillis {
-                outputText =
-                    extractReg
-                        .toRegex()
-                        .findAll(if (fileMode.get()) inputText.toFile().readText() else inputText)
-                        .map { it.value }
-                        .joinToString("\n")
+    private fun inputs2(): List<String> {
+        val inputs2 =
+            if (additionfileMode.get()) {
+                inputText2
+                    .lines()
+                    .map { it.toFile() }
+                    .filter { it.exists() }
+                    .map { it.readText().lines().map { it.stripAllSpace() } }
+                    .flatten()
+                    .filterNot { it.isEmpty() }
+                    .distinct()
+            } else {
+                inputText2.lines().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
             }
-            .also {
-                timeConsumption = it
-                labelInfo.text = info
-            }
+        return inputs2
     }
 
-    private fun doSplit() {
-
-        measureTimeMillis {
-                outputText =
-                    if (splitRegexp.get()) {
-                        inputText
-                            .split(tfSplitLength.text.unescape().toRegex())
-                            .joinToString(separatorText)
-                    } else {
-                        inputText.asIterable().chunked(splitLengthText).joinToString(
-                            separatorText
-                        ) {
-                            it.joinToString("")
-                        }
-                    }
-            }
-            .also {
-                timeConsumption = it
-                labelInfo.text = info
-            }
+    private fun tokenize() {
+        showAdditionCheck.value = true
+        val tokens =
+            inputText
+                .replace("[\\W\\d]+".toRegex(), "\n")
+                .lines()
+                .map { it.lowercase() }
+                .distinct()
+                .sorted()
+                .joinToString(System.lineSeparator())
+        if (overrideInput.get()) {
+            taInput.text = tokens
+        } else {
+            taOutput.text = tokens
+        }
+        showAddition.value = true
+        labelInfo.text = info
     }
 
-    private fun doReplace() {
+    private fun tokenize2() {
+        showAdditionCheck.value = true
+        val tokens =
+            (inputText
+                    .replace("[\\W\\d]+".toRegex(), "\n")
+                    .lines()
+                    .map { it.lowercase() }
+                    .distinct()
+                    .sorted() - inputs2())
+                .joinToString(System.lineSeparator())
+        if (overrideInput.get()) {
+            taInput.text = tokens
+        } else {
+            taOutput.text = tokens
+        }
+        showAddition.value = false
+        labelInfo.text = info
+    }
+
+    private fun processInput(text: String) {
         measureTimeMillis {
-                if (replaceFromText.isNotEmpty()) {
-                    println(replaceToText)
-                    outputText = if (fileMode.get()) renameFiles() else replaceStr(inputText)
+                if (overrideInput.get()) {
+                    inputText = text
+                } else {
+                    outputText = text
                 }
             }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
             }
+    }
+
+    private fun doExtract() {
+        processInput(
+            extractReg
+                .toRegex()
+                .findAll(if (fileMode.get()) inputText.toFile().readText() else inputText)
+                .map { it.value }
+                .joinToString("\n")
+        )
+    }
+
+    private fun doSplit() {
+        processInput(
+            if (splitRegexp.get()) {
+                inputText.split(tfSplitLength.text.unescape().toRegex()).joinToString(separatorText)
+            } else {
+                inputText.asIterable().chunked(splitLengthText).joinToString(separatorText) {
+                    it.joinToString("")
+                }
+            }
+        )
+    }
+
+    private fun doReplace() {
+        if (replaceFromText.isNotEmpty()) {
+            processInput(
+                if (fileMode.get()) {
+                    renameFiles()
+                } else {
+                    replaceStr(inputText)
+                }
+            )
+        }
     }
 
     private fun replaceStr(name: String) =
