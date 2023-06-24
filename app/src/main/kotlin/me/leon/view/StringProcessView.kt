@@ -334,7 +334,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     .lines()
                     .map { it.toFile() }
                     .filter { it.exists() }
-                    .map { it.readText().lines().map { it.stripAllSpace() } }
+                    .map { it.readText().lines().map { it.stripAllSpace().lowercase() } }
                     .flatten()
                     .filterNot { it.isEmpty() }
                     .distinct()
