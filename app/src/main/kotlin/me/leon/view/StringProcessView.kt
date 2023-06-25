@@ -1,18 +1,14 @@
 package me.leon.view
 
-import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.control.Label
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
-import kotlin.system.measureTimeMillis
+import javafx.scene.control.*
 import me.leon.*
 import me.leon.ext.*
-import me.leon.ext.fx.clipboardText
-import me.leon.ext.fx.copy
-import me.leon.ext.fx.fileDraggedHandler
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
+import java.io.File
+import kotlin.system.measureTimeMillis
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
 
@@ -23,8 +19,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val fileMode = SimpleBooleanProperty(false)
     private val overrideInput = SimpleBooleanProperty(false)
     private val showAddition = SimpleBooleanProperty(false)
-    private val additionfileMode = SimpleBooleanProperty(false)
+    private val additionFileMode = SimpleBooleanProperty(false)
     private val showAdditionCheck = SimpleBooleanProperty(false)
+    private val ignoreCase = SimpleBooleanProperty(false)
 
     private var taInput: TextArea by singleAssign()
     private var taInput2: TextArea by singleAssign()
@@ -56,9 +53,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                "cost: $timeConsumption ms"
+                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                    "cost: $timeConsumption ms"
 
     private var inputText: String
         get() = taInput.text
@@ -87,18 +84,16 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 if (fileMode.get()) {
                     absolutePath
                 } else {
-                    it.first().properText()
+                    it.first().properText(1024 * 1024)
                 }
             }
     }
     private val additionEventHandler = fileDraggedHandler {
         taInput2.text =
-            with(it.first()) {
-                if (additionfileMode.get()) {
-                    it.map { it.absolutePath }.joinToString(System.lineSeparator())
-                } else {
-                    it.first().properText()
-                }
+            if (additionFileMode.get()) {
+                it.joinToString(System.lineSeparator()) { it.absolutePath }
+            } else {
+                it.first().properText()
             }
     }
     private val centerNode = vbox {
@@ -134,7 +129,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     processInput(
                         inputText
                             .split("\n|\r\n".toRegex())
-                            .sorted()
+                            .sortedBy {
+                                if (ignoreCase.get()) {
+                                    it.lowercase()
+                                } else {
+                                    it
+                                }
+                            }
                             .joinToString(System.lineSeparator())
                     )
                 }
@@ -145,7 +146,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     processInput(
                         inputText
                             .split("\n|\r\n".toRegex())
-                            .sortedDescending()
+                            .sortedByDescending {
+                                if (ignoreCase.get()) {
+                                    it.lowercase()
+                                } else {
+                                    it
+                                }
+                            }
                             .joinToString(System.lineSeparator())
                     )
                 }
@@ -173,6 +180,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
 
             checkbox("override", overrideInput)
+            checkbox("ignore case", ignoreCase)
         }
 
         taInput = textarea {
@@ -182,9 +190,6 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             contextmenu {
                 item(messages["loadFromNet"]) {
                     action { runAsync { inputText.readFromNet() } ui { taInput.text = it } }
-                }
-                item(messages["recoverEncoding"]) {
-                    action { runAsync { inputText.recoverEncoding() } ui { inputText = it } }
                 }
                 item(messages["reverse"]) { action { inputText = inputText.reversed() } }
                 item(messages["removeAllSpaceByLine"]) {
@@ -202,34 +207,50 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
                 item("tokenize") { action { tokenize() } }
                 item("tokenize - addition") { action { tokenize2() } }
-                item("input - addition") {
+                item("input - addition (key)") {
                     action {
                         val (inputs, inputs2) = inputsList()
                         taOutput.text =
                             inputs
-                                .filterNot { inputs2.contains(it) }
+                                .filterNot {
+                                    val key =
+                                        if (extractReg.isEmpty()) {
+                                            it
+                                        } else {
+                                            it.replace(extractReg.toRegex(), "$1")
+                                        }
+                                    inputs2.any { it.equals(key, ignoreCase.get()) }
+                                }
                                 .joinToString(System.lineSeparator())
                         showAddition.value = false
                         labelInfo.text = info
                     }
                 }
+                item("input ∩ addition (key)") {
+                    action {
+                        val (inputs, inputs2) = inputsList()
 
+                        taOutput.text =
+                            inputs
+                                .filter {
+                                    val key =
+                                        if (extractReg.isEmpty()) {
+                                            it
+                                        } else {
+                                            it.replace(extractReg.toRegex(), "$1")
+                                        }
+                                    inputs2.any { it.equals(key, ignoreCase.get()) }
+                                }
+                                .joinToString(System.lineSeparator())
+                        showAddition.value = false
+                        labelInfo.text = info
+                    }
+                }
                 item("input ∪ addition") {
                     action {
                         val (inputs, inputs2) = inputsList()
                         taOutput.text =
                             (inputs + inputs2).distinct().joinToString(System.lineSeparator())
-                        showAddition.value = false
-                        labelInfo.text = info
-                    }
-                }
-                item("input ∩ addition") {
-                    action {
-                        val (inputs, inputs2) = inputsList()
-                        taOutput.text =
-                            inputs
-                                .filter { inputs2.contains(it) }
-                                .joinToString(System.lineSeparator())
                         showAddition.value = false
                         labelInfo.text = info
                     }
@@ -294,7 +315,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             hbox {
                 addClass(Styles.left)
                 checkbox("show addition", showAddition) { visibleWhen(showAdditionCheck) }
-                checkbox("file mode", additionfileMode) { visibleWhen(showAdditionCheck) }
+                checkbox("file mode", additionFileMode) { visibleWhen(showAdditionCheck) }
             }
         }
         stackpane {
@@ -322,24 +343,24 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun inputsList(): Pair<List<String>, List<String>> {
         showAdditionCheck.value = true
-        val inputs = inputText.lines().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
+        val inputs = inputText.lines().map { it.trim() }.filterNot { it.isEmpty() }
         val inputs2 = inputs2()
         return Pair(inputs, inputs2)
     }
 
     private fun inputs2(): List<String> {
         val inputs2 =
-            if (additionfileMode.get()) {
+            if (additionFileMode.get()) {
                 inputText2
                     .lines()
                     .map { it.toFile() }
                     .filter { it.exists() }
-                    .map { it.readText().lines().map { it.stripAllSpace().lowercase() } }
+                    .map { it.readText().lines().map { it.trim().lowercase() } }
                     .flatten()
                     .filterNot { it.isEmpty() }
                     .distinct()
             } else {
-                inputText2.lines().map { it.stripAllSpace() }.filterNot { it.isEmpty() }
+                inputText2.lines().map { it.trim() }.filterNot { it.isEmpty() }
             }
         return inputs2
     }
@@ -367,11 +388,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         showAdditionCheck.value = true
         val tokens =
             (inputText
-                    .replace("[\\W\\d]+".toRegex(), "\n")
-                    .lines()
-                    .map { it.lowercase() }
-                    .distinct()
-                    .sorted() - inputs2())
+                .replace("[\\W\\d]+".toRegex(), "\n")
+                .lines()
+                .map { it.lowercase() }
+                .distinct()
+                .sorted() - inputs2())
                 .joinToString(System.lineSeparator())
         if (overrideInput.get()) {
             taInput.text = tokens
@@ -384,12 +405,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun processInput(text: String) {
         measureTimeMillis {
-                if (overrideInput.get()) {
-                    inputText = text
-                } else {
-                    outputText = text
-                }
+            if (overrideInput.get()) {
+                inputText = text
+            } else {
+                outputText = text
             }
+        }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
