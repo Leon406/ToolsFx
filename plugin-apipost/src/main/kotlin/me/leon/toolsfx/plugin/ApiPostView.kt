@@ -18,8 +18,8 @@ import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.7.0"
-    override val date: String = "2023-06-07"
+    override val version = "v1.7.1"
+    override val date: String = "2023-06-28"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -258,11 +258,11 @@ class ApiPostView : PluginFragment("ApiPost") {
 
             button("Pretty") { action { taReqContent.text = taReqContent.text.prettyJson() } }
             button("Ugly") { action { taReqContent.text = taReqContent.text.uglyJson() } }
-            button("add") {
+            button(graphic = imageview(IMG_ADD)) {
                 visibleWhen(showReqTable)
                 action { requestParams.add(HttpParams()) }
             }
-            button("remove") {
+            button(graphic = imageview(IMG_REMOVE)) {
                 visibleWhen(showReqTable)
                 action { requestParams.remove(table.selectionModel.selectedItem) }
             }

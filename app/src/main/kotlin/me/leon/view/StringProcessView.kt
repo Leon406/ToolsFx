@@ -1,26 +1,32 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.collections.FXCollections
 import javafx.scene.control.*
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCombination
+import javafx.util.Callback
+import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
-import java.io.File
-import kotlin.system.measureTimeMillis
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private var timeConsumption = 0L
+    private var lastDuplicate = ""
     override val closeable = SimpleBooleanProperty(false)
     private val regexp = SimpleBooleanProperty(false)
     private val splitRegexp = SimpleBooleanProperty(false)
     private val fileMode = SimpleBooleanProperty(false)
     private val overrideInput = SimpleBooleanProperty(false)
-    private val showAddition = SimpleBooleanProperty(false)
+    private val showAdditionInput = SimpleBooleanProperty(false)
+    private val showList = SimpleBooleanProperty(false)
     private val additionFileMode = SimpleBooleanProperty(false)
-    private val showAdditionCheck = SimpleBooleanProperty(false)
+    private val showAdditionUi = SimpleBooleanProperty(false)
     private val ignoreCase = SimpleBooleanProperty(false)
 
     private var taInput: TextArea by singleAssign()
@@ -32,6 +38,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private var tfSeparator: TextField by singleAssign()
     private var labelInfo: Label by singleAssign()
     private var tfExtract: TextField by singleAssign()
+    private var lvVocabularyList: ListView<Vocabulary> by singleAssign()
 
     private val replaceFromText
         get() = tfReplaceFrom.text.unescape()
@@ -47,15 +54,16 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     8
                 }
 
+    private val words = FXCollections.observableArrayList<Vocabulary>()
     private val separatorText
         get() = tfSeparator.text.unescape()
 
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                    "cost: $timeConsumption ms"
+                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                "cost: $timeConsumption ms"
 
     private var inputText: String
         get() = taInput.text
@@ -205,8 +213,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 item(messages["removeAllSpace"]) {
                     action { inputText = inputText.stripAllSpace() }
                 }
-                item("tokenize") { action { tokenize() } }
-                item("tokenize - addition") { action { tokenize2() } }
+                item("tokenize - addition (optional)", KeyCombination.valueOf("Ctrl+T")) {
+                    action { tokenize() }
+                }
                 item("input - addition (key)") {
                     action {
                         val (inputs, inputs2) = inputsList()
@@ -222,7 +231,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                                     inputs2.any { it.equals(key, ignoreCase.get()) }
                                 }
                                 .joinToString(System.lineSeparator())
-                        showAddition.value = false
+                        showAdditionInput.value = false
                         labelInfo.text = info
                     }
                 }
@@ -242,7 +251,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                                     inputs2.any { it.equals(key, ignoreCase.get()) }
                                 }
                                 .joinToString(System.lineSeparator())
-                        showAddition.value = false
+                        showAdditionInput.value = false
                         labelInfo.text = info
                     }
                 }
@@ -251,8 +260,20 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         val (inputs, inputs2) = inputsList()
                         taOutput.text =
                             (inputs + inputs2).distinct().joinToString(System.lineSeparator())
-                        showAddition.value = false
+                        showAdditionInput.value = false
                         labelInfo.text = info
+                    }
+                }
+                item("duplicate", KeyCombination.valueOf("Ctrl+D")) {
+                    action {
+                        lastDuplicate =
+                            taInput.text
+                                .substring(taInput.selection.start, taInput.selection.end)
+                                .ifEmpty { lastDuplicate }
+                        taInput.insertText(
+                            taInput.selection.end,
+                            System.lineSeparator() + lastDuplicate
+                        )
                     }
                 }
             }
@@ -302,7 +323,15 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             label(messages["output"])
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
-                action { outputText.copy() }
+                action {
+                    if (showList.get()) {
+                        lvVocabularyList.selectionModel.selectedItems
+                            .joinToString(System.lineSeparator()) { it.word }
+                            .copy()
+                    } else {
+                        outputText.copy()
+                    }
+                }
             }
             button(graphic = imageview(IMG_UP)) {
                 tooltip(messages["up"])
@@ -314,23 +343,58 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
             hbox {
                 addClass(Styles.left)
-                checkbox("show addition", showAddition) { visibleWhen(showAdditionCheck) }
-                checkbox("file mode", additionFileMode) { visibleWhen(showAdditionCheck) }
+                checkbox("show addition", showAdditionInput) { visibleWhen(showAdditionUi) }
+                checkbox("file mode", additionFileMode) { visibleWhen(showAdditionUi) }
+                checkbox("list", showList) { visibleWhen(showAdditionUi) }
+                button(graphic = imageview(IMG_ADD)) {
+                    tooltip("only keep selected item")
+                    visibleWhen(showList)
+                    action {
+                        words.removeAll(words - lvVocabularyList.selectionModel.selectedItems)
+                    }
+                }
+                button(graphic = imageview(IMG_REMOVE)) {
+                    tooltip("delete selected item")
+                    visibleWhen(showList)
+                    action { words.removeAll(lvVocabularyList.selectionModel.selectedItems) }
+                }
             }
         }
         stackpane {
             prefHeight = 300.0
             spacing = 8.0
+            taOutput = textarea {
+                promptText = messages["outputHint"]
+                isWrapText = true
+            }
+
             taInput2 = textarea {
                 promptText = "additional input or output"
                 isWrapText = true
-                visibleWhen(showAddition)
+                visibleWhen(showAdditionInput)
                 onDragEntered = additionEventHandler
             }
-            taOutput = textarea {
-                promptText = messages["outputHint"]
-                visibleWhen(!showAddition)
-                isWrapText = true
+            lvVocabularyList =
+                listview(words) {
+                    visibleWhen(showList)
+                    cellFactory = Callback { VocabularyCell() }
+                    selectionModel.selectionMode = SelectionMode.MULTIPLE
+                    setOnKeyPressed { keyEvent ->
+                        if (keyEvent.code == KeyCode.ENTER) {
+                            VocabularyCell.showWordInfo(selectionModel.selectedItems.first().word)
+                        }
+                    }
+                }
+
+            showList.addListener { _, _, newValue ->
+                if (newValue) {
+                    showAdditionInput.value = false
+                }
+            }
+            showAdditionInput.addListener { _, _, newValue ->
+                if (newValue) {
+                    showList.value = false
+                }
             }
         }
         subscribe<SimpleMsgEvent> { inputText = it.msg }
@@ -342,7 +406,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private fun inputsList(): Pair<List<String>, List<String>> {
-        showAdditionCheck.value = true
+        showAdditionUi.value = true
         val inputs = inputText.lines().map { it.trim() }.filterNot { it.isEmpty() }
         val inputs2 = inputs2()
         return Pair(inputs, inputs2)
@@ -366,51 +430,36 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private fun tokenize() {
-        showAdditionCheck.value = true
-        val tokens =
-            inputText
-                .replace("[\\W\\d]+".toRegex(), "\n")
-                .lines()
-                .map { it.lowercase() }
-                .distinct()
-                .sorted()
-                .joinToString(System.lineSeparator())
-        if (overrideInput.get()) {
-            taInput.text = tokens
-        } else {
-            taOutput.text = tokens
-        }
-        showAddition.value = true
-        labelInfo.text = info
-    }
-
-    private fun tokenize2() {
-        showAdditionCheck.value = true
+        showAdditionUi.value = true
+        words.clear()
         val tokens =
             (inputText
-                .replace("[\\W\\d]+".toRegex(), "\n")
-                .lines()
-                .map { it.lowercase() }
-                .distinct()
-                .sorted() - inputs2())
+                    .replace("[\\W\\d]+".toRegex(), "\n")
+                    .lines()
+                    .map { it.lowercase() }
+                    .distinct()
+                    .sorted() - inputs2())
+                .filter { it.isNotEmpty() }
+                .also { words.addAll(it.map { Vocabulary(it) }) }
                 .joinToString(System.lineSeparator())
         if (overrideInput.get()) {
             taInput.text = tokens
         } else {
             taOutput.text = tokens
         }
-        showAddition.value = false
+        showList.value = true
         labelInfo.text = info
+        lvVocabularyList.requestFocus()
     }
 
     private fun processInput(text: String) {
         measureTimeMillis {
-            if (overrideInput.get()) {
-                inputText = text
-            } else {
-                outputText = text
+                if (overrideInput.get()) {
+                    inputText = text
+                } else {
+                    outputText = text
+                }
             }
-        }
             .also {
                 timeConsumption = it
                 labelInfo.text = info

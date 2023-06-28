@@ -4,6 +4,7 @@ import java.io.File
 import java.util.Locale
 import java.util.Properties
 import javafx.scene.image.Image
+import me.leon.ext.fromJson
 import me.leon.ext.fx.Prefs
 import me.leon.view.Home
 import tornadofx.*
@@ -55,21 +56,35 @@ class ToolsApp : App(Home::class, Styles::class) {
         val scale: String
             get() = (properties["uiScale"] ?: "-1").toString()
 
+        /** online translation dict */
+        lateinit var dict: DictionaryConfig.Dict
+
         private fun initConfig() {
 
             var file = File(APP_ROOT, "ToolsFx.properties")
-            if (!file.exists()) {
-                ToolsApp::class.java.getResourceAsStream("/ToolsFx.properties")?.use {
-                    it.copyTo(file.outputStream())
-                }
-            }
+
+            copyResourceFileIfNotExist("/ToolsFx.properties", file)
             properties.load(file.inputStream())
+
             file = File(DICT_DIR, "top1000.txt")
+            copyResourceFileIfNotExist("/top1000.txt", file)
 
-            file.parentFile.mkdirs()
+            file = File(DICT_DIR, "dictionary.conf")
+            copyResourceFileIfNotExist("/dictionary.conf", file)
+            file.readText().fromJson(DictionaryConfig::class.java).run {
+                dict = dicts[active]
+                dict.autoPronounce = autoPronounce
+            }
+            println(dict)
+        }
 
-            ToolsApp::class.java.getResourceAsStream("/top1000.txt")?.use {
-                it.copyTo(file.outputStream())
+        private fun copyResourceFileIfNotExist(fileName: String, targetFile: File) {
+            if (targetFile.exists()) {
+                return
+            }
+            targetFile.parentFile.mkdirs()
+            ToolsApp::class.java.getResourceAsStream(fileName)?.use {
+                it.copyTo(targetFile.outputStream())
             }
         }
     }
