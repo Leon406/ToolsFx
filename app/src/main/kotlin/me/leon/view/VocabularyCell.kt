@@ -44,9 +44,14 @@ class VocabularyCell : ListCell<Vocabulary>() {
             WebView().apply {
                 engine.userStyleSheetLocation =
                     (OnlineWebView::class.java).getResource("/css/webview.css")?.toExternalForm()
+                var startTime = System.currentTimeMillis()
+
                 engine.loadWorker.stateProperty().addListener { _, _, newState ->
                     println("loading $newState")
-                    if (newState == Worker.State.SUCCEEDED) {
+                    if (newState == Worker.State.READY) {
+                        isVisible = false
+                        startTime = System.currentTimeMillis()
+                    } else if (newState == Worker.State.SUCCEEDED) {
                         val hideJs =
                             if (ToolsApp.dict.hideCssElement.isNotEmpty()) {
                                 "hideElements('${ToolsApp.dict.hideCssElement}');"
@@ -60,14 +65,16 @@ class VocabularyCell : ListCell<Vocabulary>() {
                                 ""
                             }
                         runCatching {
-                                engine.executeScript(
-                                    "function hideElements(selector){" +
+                            engine.executeScript(
+                                "function hideElements(selector){" +
                                         "var items=document.querySelectorAll(selector);" +
                                         "for(var i=0,size=items.length;i<size;i++){" +
                                         "items[i].style.display='none'}}\n$hideJs;$extraJs"
-                                )
-                            }
+                            )
+                        }
                             .getOrElse { println(it.stacktrace()) }
+                        println("it takes ${System.currentTimeMillis() - startTime}")
+                        isVisible = true
                     }
                 }
             }
