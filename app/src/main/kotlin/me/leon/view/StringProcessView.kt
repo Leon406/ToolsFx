@@ -8,6 +8,7 @@ import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.util.Callback
+import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
@@ -496,7 +497,17 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     .distinct()
                     .sorted() - inputs2())
                 .filter { it.isNotEmpty() }
-                .also { words.addAll(it.map { Vocabulary(it) }) }
+                .also {
+                    words.addAll(it.map { token -> Vocabulary(token, ToolsApp.vocabulary[token]) })
+
+                    thread {
+                        println(
+                            words
+                                .filter { it.mean.isNullOrEmpty() }
+                                .joinToString(System.lineSeparator()) { it.word }
+                        )
+                    }
+                }
                 .joinToString(System.lineSeparator())
         if (overrideInput.get()) {
             taInput.text = tokens

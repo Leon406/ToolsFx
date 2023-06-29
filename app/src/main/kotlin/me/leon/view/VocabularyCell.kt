@@ -2,30 +2,26 @@ package me.leon.view
 
 import javafx.concurrent.Worker
 import javafx.geometry.Insets
-import javafx.scene.control.Alert
-import javafx.scene.control.ListCell
-import javafx.scene.layout.HBox
-import javafx.scene.text.Text
+import javafx.scene.control.*
 import javafx.scene.web.WebView
 import me.leon.ToolsApp
-import me.leon.ext.DEFAULT_SPACING_40X
-import me.leon.ext.stacktrace
+import me.leon.ext.*
 import tornadofx.*
 
 class VocabularyCell : ListCell<Vocabulary>() {
-    private val tWord = Text()
+    lateinit var tWord: Label
+    lateinit var tMean: Label
 
     init {
-
-        val container = HBox(tWord)
-        container.prefWidth = DEFAULT_SPACING_40X
-        container.padding = Insets(8.0)
-        graphic = container
-
-        container.setOnMouseClicked { event ->
-            // 双击事件
-            if (event.clickCount == 2) {
-                showWordInfo(item.word)
+        graphic = hbox {
+            tWord = label { this.prefWidth = DEFAULT_SPACING_32X }
+            tMean = label()
+            padding = Insets(8.0)
+            spacing = DEFAULT_SPACING_8X
+            setOnMouseClicked {
+                if (it.clickCount == 2) {
+                    showWordInfo(item.word)
+                }
             }
         }
     }
@@ -34,8 +30,12 @@ class VocabularyCell : ListCell<Vocabulary>() {
         super.updateItem(item, empty)
         if (item != null) {
             tWord.text = item.word
+            tWord.tooltip(item.word)
+            tMean.text = item.mean
+            tMean.tooltip(item.mean)
         } else {
             tWord.text = ""
+            tMean.text = ""
         }
     }
 
@@ -95,7 +95,7 @@ class VocabularyCell : ListCell<Vocabulary>() {
     }
 }
 
-data class Vocabulary(val word: String, val explanation: String = "") {
+data class Vocabulary(val word: String, val mean: String? = null) {
 
     override fun equals(other: Any?): Boolean {
         if (other !is Vocabulary) {
@@ -106,7 +106,7 @@ data class Vocabulary(val word: String, val explanation: String = "") {
 
     override fun hashCode(): Int {
         var result = word.hashCode()
-        result = 31 * result + explanation.hashCode()
+        result = 31 * result + mean.hashCode()
         return result
     }
 }

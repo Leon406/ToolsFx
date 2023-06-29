@@ -16,6 +16,9 @@ class ToolsApp : App(Home::class, Styles::class) {
 
     companion object {
         private val properties: Properties = Properties()
+        var vocabulary: MutableMap<String, String> = mutableMapOf()
+        /** online translation dict */
+        lateinit var dict: DictionaryConfig.Dict
 
         init {
             // for text i18n
@@ -56,9 +59,6 @@ class ToolsApp : App(Home::class, Styles::class) {
         val scale: String
             get() = (properties["uiScale"] ?: "-1").toString()
 
-        /** online translation dict */
-        lateinit var dict: DictionaryConfig.Dict
-
         private fun initConfig() {
 
             var file = File(APP_ROOT, "ToolsFx.properties")
@@ -74,6 +74,20 @@ class ToolsApp : App(Home::class, Styles::class) {
             file.readText().fromJson(DictionaryConfig::class.java).run {
                 dict = dicts[active]
                 dict.autoPronounce = autoPronounce
+                File(DICT_DIR, dictFile).run {
+                    println("dict $this")
+                    if (exists()) {
+                        readText()
+                            .lines()
+                            .filter { it.isNotEmpty() }
+                            .forEach {
+                                val (word, mean) = it.split("\t")
+
+                                vocabulary[word] = mean
+                            }
+                        println("vocabulary ${vocabulary.size}")
+                    }
+                }
             }
             println(dict)
         }

@@ -7,9 +7,14 @@ package me.leon
  */
 data class DictionaryConfig(
     val active: Int,
+    val dictFileName: String? = null,
     val autoPronounce: Boolean = true,
     val dicts: List<Dict>
 ) {
+
+    val dictFile
+        get() = dictFileName?.ifEmpty { "vocabulary.txt" } ?: "vocabulary.txt"
+
     data class Dict(
         val name: String,
         val url: String,
