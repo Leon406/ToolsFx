@@ -1,6 +1,7 @@
 package me.leon.view
 
 import java.io.File
+import java.io.FileOutputStream
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
 import javafx.scene.control.*
@@ -17,7 +18,8 @@ import tornadofx.FX.Companion.messages
 class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private var timeConsumption = 0L
-    private var lastDuplicate = ""
+    private var dictType = "known"
+
     override val closeable = SimpleBooleanProperty(false)
     private val regexp = SimpleBooleanProperty(false)
     private val splitRegexp = SimpleBooleanProperty(false)
@@ -112,7 +114,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             addClass(Styles.left)
             button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
+                shortcut(KeyCombination.valueOf("Ctrl+I"))
                 action {
+                    selectThisTab()
                     inputText = clipboardText()
                     timeConsumption = 0
                     labelInfo.text = info
@@ -214,7 +218,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     action { inputText = inputText.stripAllSpace() }
                 }
                 item("tokenize - addition (optional)", KeyCombination.valueOf("Ctrl+T")) {
-                    action { tokenize() }
+                    action {
+                        selectThisTab()
+                        tokenize()
+                    }
                 }
                 item("input - addition (key)") {
                     action {
@@ -266,14 +273,22 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
                 item("duplicate", KeyCombination.valueOf("Ctrl+D")) {
                     action {
-                        lastDuplicate =
+                        var targetEnd = taInput.selection.end
+                        val duplicateText =
                             taInput.text
                                 .substring(taInput.selection.start, taInput.selection.end)
-                                .ifEmpty { lastDuplicate }
-                        taInput.insertText(
-                            taInput.selection.end,
-                            System.lineSeparator() + lastDuplicate
-                        )
+                                .ifEmpty {
+                                    with(inputText.lines()) {
+                                        val i =
+                                            inputText
+                                                .substring(0, taInput.caretPosition)
+                                                .lines()
+                                                .size
+                                        targetEnd = this.take(i).sumOf { it.length + 1 } - 1
+                                        this[i - 1]
+                                    }
+                                }
+                        taInput.insertText(targetEnd, System.lineSeparator() + duplicateText)
                     }
                 }
             }
@@ -350,13 +365,31 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     tooltip("only keep selected item")
                     visibleWhen(showList)
                     action {
-                        words.removeAll(words - lvVocabularyList.selectionModel.selectedItems)
+                        val vocabularies = words - lvVocabularyList.selectionModel.selectedItems
+                        writeVocabularyToFile(vocabularies)
+                        words.removeAll(vocabularies)
                     }
                 }
                 button(graphic = imageview(IMG_REMOVE)) {
                     tooltip("delete selected item")
                     visibleWhen(showList)
-                    action { words.removeAll(lvVocabularyList.selectionModel.selectedItems) }
+                    shortcut(KeyCombination.valueOf("Ctrl+S"))
+                    action {
+                        writeVocabularyToFile(lvVocabularyList.selectionModel.selectedItems)
+                        words.removeAll(lvVocabularyList.selectionModel.selectedItems)
+                    }
+                }
+            }
+            hbox {
+                addClass(Styles.left)
+                visibleWhen(showList)
+                togglegroup {
+                    radiobutton("known") { isSelected = true }
+                    radiobutton("new")
+                    radiobutton("exclusive")
+                    selectedToggleProperty().addListener { _, _, new ->
+                        dictType = new.cast<RadioButton>().text
+                    }
                 }
             }
         }
@@ -405,6 +438,25 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         bottom = hbox { labelInfo = label(info) }
     }
 
+    private fun writeVocabularyToFile(vocabularies: List<Vocabulary>) {
+        val defaultFile = File(DICT_DIR, dictType)
+        val targetFile =
+            if (additionFileMode.get()) {
+                inputText2
+                    .lines()
+                    .map { it.toFile() }
+                    .firstOrNull { it.exists() && it.name.contains(dictType) }
+                    ?: defaultFile
+            } else {
+                defaultFile
+            }
+
+        FileOutputStream(targetFile, true).bufferedWriter().use {
+            it.write(vocabularies.joinToString(System.lineSeparator()) { it.word })
+            it.write(System.lineSeparator())
+        }
+    }
+
     private fun inputsList(): Pair<List<String>, List<String>> {
         showAdditionUi.value = true
         val inputs = inputText.lines().map { it.trim() }.filterNot { it.isEmpty() }
@@ -430,6 +482,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private fun tokenize() {
+        if (inputText.isEmpty()) {
+            inputText = clipboardText()
+        }
+
         showAdditionUi.value = true
         words.clear()
         val tokens =
@@ -450,6 +506,15 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         showList.value = true
         labelInfo.text = info
         lvVocabularyList.requestFocus()
+    }
+
+    private fun selectThisTab() {
+        root.findParentOfType(TabPane::class)?.run {
+            val thisTab = tabs.first { it.text == messages["stringProcess"] }
+            if (selectionModel.selectedItem != thisTab) {
+                selectionModel.select(thisTab)
+            }
+        }
     }
 
     private fun processInput(text: String) {

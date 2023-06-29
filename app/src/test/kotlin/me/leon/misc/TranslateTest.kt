@@ -12,6 +12,8 @@ import org.jsoup.Jsoup
  */
 const val ICBA = "https://www.iciba.com/word?w=%s"
 const val BING = "https://cn.bing.com/dict/search?q=%s"
+
+/** refer https://github.com/Haleclipse/-Api/blob/master/YoudaoDic.md */
 const val YOUDAO = "https://dict.youdao.com/jsonapi?xmlVersion=5.1&jsonversion=2&q=%s"
 const val CAMBRIDGE = "https://dictionary.cambridge.org/dictionary/english-chinese-simplified/%s"
 
@@ -64,12 +66,12 @@ class TranslateTest {
 
     @Test
     fun youdao() {
-        YOUDAO.format("123").readFromNet().also { println(it.fromJson(YouDaoResponse::class.java)) }
+        YOUDAO.format(word).readFromNet().also { println(it.fromJson(YouDaoResponse::class.java)) }
     }
 
     @Test
     fun cambridge() {
-        Jsoup.connect(CAMBRIDGE.format("super")).get().run {
+        Jsoup.connect(CAMBRIDGE.format(word)).get().run {
             val headWord = selectFirst(".headword")?.text()
             val pronounceUs =
                 select(".us>.pron").distinctBy { it.text() }.joinToString(" ") { it.text() }
