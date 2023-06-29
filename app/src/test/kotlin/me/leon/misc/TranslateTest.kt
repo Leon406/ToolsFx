@@ -2,8 +2,8 @@ package me.leon.misc
 
 import IcibaVocabulary
 import kotlin.test.Test
-import me.leon.ext.fromJson
-import me.leon.ext.readFromNet
+import me.leon.ext.*
+import org.jsoup.Jsoup
 
 /**
  * @author Leon
@@ -22,7 +22,6 @@ class TranslateTest {
 
     @Test
     fun icba() {
-
         ICBA.format(word).readFromNet().run {
             REG_ICBA.find(this)?.groupValues?.get(1)?.run {
                 fromJson(IcibaVocabulary::class.java).also { println(it) }
@@ -32,16 +31,71 @@ class TranslateTest {
 
     @Test
     fun bing() {
-        BING.format(word).readFromNet().also { println(it) }
+        Jsoup.connect(BING.format(word)).get().run {
+            val headWord = selectFirst("#headword")?.text()
+            val pronounceUs = selectFirst(".hd_prUS.b_primtxt")?.text().orEmpty()
+            val pronounceUk = selectFirst(".hd_pr.b_primtxt")?.text().orEmpty()
+
+            // 意思
+            val pos = select("li>span.pos").map { it.text() }
+            val def = select("li>span.def").map { it.text() }
+            val meanings =
+                pos.zip(def).joinToString(System.lineSeparator()) {
+                    "${it.first.center(6)} \t ${it.second}"
+                }
+
+            buildString {
+                    append(headWord)
+                    append("\t ")
+                    append(pronounceUs).append(" ")
+                    append(pronounceUk)
+                    append("\n\n")
+                    append(meanings)
+                    append("\n\n")
+                    // 变形
+                    append(select(".hd_if").joinToString("\t") { it.text() })
+                    // 搭配
+                    append("\n\n")
+                    append(select(".df_div2").joinToString("\n") { it.text() })
+                }
+                .also { println(it) }
+        }
     }
 
     @Test
     fun youdao() {
-        YOUDAO.format(word).readFromNet().also { println(it) }
+        YOUDAO.format("123").readFromNet().also { println(it.fromJson(YouDaoResponse::class.java)) }
     }
 
     @Test
     fun cambridge() {
-        CAMBRIDGE.format(word).readFromNet().also { println(it) }
+        Jsoup.connect(CAMBRIDGE.format("super")).get().run {
+            val headWord = selectFirst(".headword")?.text()
+            val pronounceUs =
+                select(".us>.pron").distinctBy { it.text() }.joinToString(" ") { it.text() }
+            val pronounceUk =
+                select(".uk>.pron").distinctBy { it.text() }.joinToString(" ") { it.text() }
+
+            buildString {
+                    append(headWord)
+                    if (pronounceUs.isNotEmpty()) {
+                        append("\t US:")
+                        append(pronounceUs)
+                    }
+                    if (pronounceUk.isNotEmpty()) {
+                        append(" UK: ")
+                        append(pronounceUk)
+                    }
+                    appendLine()
+                    selectFirst(".irreg-infls.dinfls")?.text()?.run {
+                        append(selectFirst(".irreg-infls.dinfls")?.text())
+                        appendLine()
+                    }
+                    append(
+                        select(".def-body>.trans.dtrans.break-cj").joinToString("\t") { it.text() }
+                    )
+                }
+                .also { println(it) }
+        }
     }
 }
