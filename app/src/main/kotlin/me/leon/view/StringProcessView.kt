@@ -1,20 +1,20 @@
 package me.leon.view
 
-import java.io.File
-import java.io.FileOutputStream
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.util.Callback
-import kotlin.concurrent.thread
-import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.concurrent.thread
+import kotlin.system.measureTimeMillis
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
 
@@ -64,9 +64,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                "cost: $timeConsumption ms"
+                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                    "cost: $timeConsumption ms"
 
     private var inputText: String
         get() = taInput.text
@@ -491,11 +491,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         words.clear()
         val tokens =
             (inputText
-                    .replace("[\\W\\d]+".toRegex(), "\n")
-                    .lines()
-                    .map { it.lowercase() }
-                    .distinct()
-                    .sorted() - inputs2())
+                .replace("[^a-zA-Z'-]+".toRegex(), "\n")
+                .lines()
+                .map { it.lowercase() }
+                .distinct()
+                .sorted() - inputs2())
                 .filter { it.isNotEmpty() }
                 .also {
                     words.addAll(it.map { token -> Vocabulary(token, ToolsApp.vocabulary[token]) })
@@ -530,12 +530,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun processInput(text: String) {
         measureTimeMillis {
-                if (overrideInput.get()) {
-                    inputText = text
-                } else {
-                    outputText = text
-                }
+            if (overrideInput.get()) {
+                inputText = text
+            } else {
+                outputText = text
             }
+        }
             .also {
                 timeConsumption = it
                 labelInfo.text = info

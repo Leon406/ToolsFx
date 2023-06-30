@@ -150,7 +150,11 @@ class TranslateTest {
         val groups =
             text
                 .split(System.lineSeparator())
-                .map { it.split("\t").run { this[0] to this[1] } }
+                .toSet()
+                .filter { it.isNotEmpty() }
+                .map {
+                    it.split("\t").run { this[0] to this[1] }
+                }
                 .groupBy { it.first }
 
         groups
