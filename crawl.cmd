@@ -1,0 +1,1 @@
+gradlew  :app:test  --tests "me.leon.misc.TranslateTest.icba"

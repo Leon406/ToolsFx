@@ -19,11 +19,9 @@ data class IcibaVocabulary(
 
         fun pronunciation() = symbols?.get(0)?.run { "UK: /$ph_en/  US: /$ph_am/" }
 
-        fun meanings() =
+        fun meanings(separator: String = System.lineSeparator()) =
             symbols?.get(0)?.parts?.run {
-                joinToString(System.lineSeparator()) {
-                    "${it.part}  ${it.means?.joinToString("；")}"
-                }
+                joinToString(separator) { "${it.part}  ${it.means?.joinToString("；")}" }
             }
 
         data class Symbol(
