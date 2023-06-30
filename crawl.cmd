@@ -1,1 +1,1 @@
-gradlew  :app:test  --tests "me.leon.misc.TranslateTest.icba"
+gradlew  :benchmark:test  --tests "me.leon.translate.TranslateTest.icba"

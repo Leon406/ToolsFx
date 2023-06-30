@@ -1,3 +1,5 @@
+package me.leon.translate
+
 data class IcibaVocabulary(
     val phrase: List<Phrase>?,
     val derivation: List<Derivation>?,
@@ -21,7 +23,7 @@ data class IcibaVocabulary(
 
         fun meanings(separator: String = System.lineSeparator()) =
             symbols?.get(0)?.parts?.run {
-                joinToString(separator) { "${it.part}  ${it.means?.joinToString("；")}" }
+                joinToString(separator) { "${it.part} ${it.means?.joinToString("；")}" }
             }
 
         data class Symbol(

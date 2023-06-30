@@ -1,7 +1,7 @@
 package me.leon
 
-import org.jsoup.Jsoup
 import java.io.File
+import org.jsoup.Jsoup
 
 /**
  * @author Leon
@@ -28,7 +28,7 @@ fun main() {
     //            "/"
     //        )
     //    }
-//    val untranslated = listOf("zinfandel")
+    //    val untranslated = listOf("zinfandel")
     println("$tnew/${untranslated.size}/${coca.size}")
     dict.run {
         for (word in untranslated) {
@@ -53,15 +53,15 @@ fun main() {
             }
             for (article in articles) {
                 runCatching {
-                    val mean = parse(article.value)
-                    if (mean.isNotEmpty()) {
-                        val data = article.key.lowercase() + "\t" + mean
-                        tnew.appendText(data)
-                        tnew.appendText("\n")
-                    } else {
-                        nodata.appendText("$word${System.lineSeparator()}")
+                        val mean = parse(article.value)
+                        if (mean.isNotEmpty()) {
+                            val data = article.key.lowercase() + "\t" + mean
+                            tnew.appendText(data)
+                            tnew.appendText("\n")
+                        } else {
+                            nodata.appendText("$word${System.lineSeparator()}")
+                        }
                     }
-                }
                     .getOrElse { errors.add(word) }
             }
         }
@@ -80,9 +80,9 @@ fun File.parseWordKv() =
 
 fun List<String>.exclude(another: List<String>) = filterNot {
     another.contains(it) ||
-            another.contains(it.capitalize()) ||
-            another.contains(it.uppercase()) ||
-            (it.contains("-") && another.contains(it.split("-").joinToString("-") { it.capitalize() }))
+        another.contains(it.capitalize()) ||
+        another.contains(it.uppercase()) ||
+        (it.contains("-") && another.contains(it.split("-").joinToString("-") { it.capitalize() }))
 }
 
 fun parse(html: String) =

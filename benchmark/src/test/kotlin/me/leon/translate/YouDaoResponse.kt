@@ -1,4 +1,4 @@
-package me.leon.misc
+package me.leon.translate
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,20 +1,22 @@
 package me.leon.view
 
+import java.io.File
+import java.io.FileOutputStream
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.util.Callback
-import me.leon.*
-import me.leon.ext.*
-import me.leon.ext.fx.*
-import tornadofx.*
-import tornadofx.FX.Companion.messages
-import java.io.File
-import java.io.FileOutputStream
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
+import me.leon.*
+import me.leon.ext.*
+import me.leon.ext.fx.clipboardText
+import me.leon.ext.fx.copy
+import me.leon.ext.fx.fileDraggedHandler
+import tornadofx.*
+import tornadofx.FX.Companion.messages
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
 
@@ -64,9 +66,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                    "cost: $timeConsumption ms"
+                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                "cost: $timeConsumption ms"
 
     private var inputText: String
         get() = taInput.text
@@ -491,21 +493,25 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         words.clear()
         val tokens =
             (inputText
-                .replace("[^a-zA-Z'-]+".toRegex(), "\n")
-                .lines()
-                .map { it.lowercase() }
-                .distinct()
-                .sorted() - inputs2())
-                .filter { it.isNotEmpty() }
+                    .replace("[^a-zA-Z'-]+".toRegex(), "\n")
+                    .lines()
+                    .map { it.lowercase() }
+                    .distinct()
+                    .sorted() - inputs2())
+                .filter { it.isNotEmpty() && it.first().isLetter() }
                 .also {
                     words.addAll(it.map { token -> Vocabulary(token, ToolsApp.vocabulary[token]) })
-
                     thread {
-                        println(
-                            words
-                                .filter { it.mean.isNullOrEmpty() }
-                                .joinToString(System.lineSeparator()) { it.word }
-                        )
+                        val outOfDict =
+                            File(DICT_DIR, "outOfDict.txt").also {
+                                if (!it.exists()) {
+                                    it.createNewFile()
+                                }
+                            }
+                        val newWords =
+                            words.filter { it.mean.isNullOrEmpty() }.map { it.word } -
+                                outOfDict.readText().lines().toSet()
+                        outOfDict.writeText(newWords.joinToString(System.lineSeparator()))
                     }
                 }
                 .joinToString(System.lineSeparator())
@@ -530,12 +536,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun processInput(text: String) {
         measureTimeMillis {
-            if (overrideInput.get()) {
-                inputText = text
-            } else {
-                outputText = text
+                if (overrideInput.get()) {
+                    inputText = text
+                } else {
+                    outputText = text
+                }
             }
-        }
             .also {
                 timeConsumption = it
                 labelInfo.text = info

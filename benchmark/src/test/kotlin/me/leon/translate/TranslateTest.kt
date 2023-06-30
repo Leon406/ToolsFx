@@ -1,11 +1,12 @@
-package me.leon.misc
+package me.leon.translate
 
-import IcibaVocabulary
 import java.io.File
 import kotlin.test.Test
-import me.leon.ext.*
+import me.leon.ext.center
+import me.leon.ext.fromJson
+import me.leon.ext.readFromNet
+import me.leon.ext.toFile
 import org.jsoup.Jsoup
-import kotlin.test.Ignore
 
 /**
  * @author Leon
@@ -21,7 +22,6 @@ const val CAMBRIDGE = "https://dictionary.cambridge.org/dictionary/english-chine
 
 val REG_ICBA = """"wordInfo":([^<]+?),"history"""".toRegex()
 
-@Ignore
 class TranslateTest {
     val word = "do"
 
@@ -29,18 +29,17 @@ class TranslateTest {
     fun icba() {
         val file = "C:\\Users\\Leon\\Desktop\\rr2.txt".toFile()
         val nodata = "C:\\Users\\Leon\\Desktop\\nodata.txt".toFile()
-        val exclusion = nodata.readText().lines()
-        nodata.writeText("")
+        val exclusion = nodata.readText().lines().toSet()
         val trans = File(file.parentFile, "trans.txt")
 
         val translated =
             runCatching { trans.readText() }.getOrNull()?.lines()?.map { it.split("\t")[0] }
                 ?: emptyList()
         val lines = file.readText().lines()
-        val diff = lines - translated
-        println("${lines.size} / ${translated.size}   diff: ${diff.size} ")
+        val diff = lines - translated - exclusion
+        println("${lines.size} / ${translated.size}/${exclusion.size}   diff: ${diff.size} ")
         diff.forEach { w ->
-            print(w)
+            println(w)
             ICBA.format(w).readFromNet().run {
                 // 网站限制访问qps
                 Thread.sleep(500)
@@ -53,12 +52,12 @@ class TranslateTest {
                             it.baesInfo?.run {
                                 val mean = meanings(" ")
                                 if (!mean.isNullOrEmpty()) {
+                                    println(">>>>>>got<<<<<<")
                                     trans.appendText("$w\t$mean\n")
                                 } else {
-                                    nodata.writeText("$w\t")
+                                    nodata.appendText("$w\n")
                                 }
                             }
-                            println(">>>>>>got<<<<<<")
                             //                            println(it.baesInfo?.meanings(" "))
                         }
                     }
@@ -145,7 +144,7 @@ class TranslateTest {
     fun vocabulary() {
         val onedriveDir = "E:\\OneDrive\\我的文档\\学习"
         val text = "$onedriveDir/vocabulary.txt".toFile().readText()
-        val output = "$onedriveDir/vocabulary2.txt".toFile().outputStream().bufferedWriter()
+        val output = "$onedriveDir/vocabulary2.txt".toFile()
 
         val sets = mutableSetOf<Pair<String, String>>()
         println(text.lines().size)
@@ -154,9 +153,7 @@ class TranslateTest {
                 .split(System.lineSeparator())
                 .toSet()
                 .filter { it.isNotEmpty() }
-                .map {
-                    it.split("\t").run { this[0] to this[1] }
-                }
+                .map { it.split("\t").run { this[0] to this[1] } }
                 .groupBy { it.first }
 
         groups
@@ -174,7 +171,7 @@ class TranslateTest {
             }
 
         println(sets.size)
-        output.write(
+        output.writeText(
             sets
                 .sortedBy { it.first.lowercase() }
                 .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
