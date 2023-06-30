@@ -5,6 +5,7 @@ import java.io.File
 import kotlin.test.Test
 import me.leon.ext.*
 import org.jsoup.Jsoup
+import kotlin.test.Ignore
 
 /**
  * @author Leon
@@ -20,6 +21,7 @@ const val CAMBRIDGE = "https://dictionary.cambridge.org/dictionary/english-chine
 
 val REG_ICBA = """"wordInfo":([^<]+?),"history"""".toRegex()
 
+@Ignore
 class TranslateTest {
     val word = "do"
 
