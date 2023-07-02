@@ -498,9 +498,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     .map { it.lowercase() }
                     .distinct()
                     .sorted() - inputs2())
-                .filter { it.isNotEmpty() && it.first().isLetter() }
+                .filterNot { it.isEmpty() || !it.first().isLetter() || it.endsWith("'s") }
                 .also {
-                    words.addAll(it.map { token -> Vocabulary(token, ToolsApp.vocabulary[token]) })
+                    words.addAll(
+                        it.map { token ->
+                            Vocabulary(token.trim('\''), ToolsApp.vocabulary[token.trim('\'')])
+                        }
+                    )
                     thread {
                         val outOfDict =
                             File(DICT_DIR, "outOfDict.txt").also {
@@ -511,7 +515,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         val newWords =
                             words.filter { it.mean.isNullOrEmpty() }.map { it.word } -
                                 outOfDict.readText().lines().toSet()
-                        outOfDict.writeText(newWords.joinToString(System.lineSeparator()))
+                        outOfDict.appendText(
+                            newWords.joinToString(System.lineSeparator()) + System.lineSeparator()
+                        )
                     }
                 }
                 .joinToString(System.lineSeparator())

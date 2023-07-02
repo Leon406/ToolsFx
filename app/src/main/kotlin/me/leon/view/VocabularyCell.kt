@@ -2,11 +2,18 @@ package me.leon.view
 
 import javafx.concurrent.Worker
 import javafx.geometry.Insets
-import javafx.scene.control.*
+import javafx.scene.control.Alert
+import javafx.scene.control.Label
+import javafx.scene.control.ListCell
 import javafx.scene.web.WebView
 import me.leon.ToolsApp
-import me.leon.ext.*
-import tornadofx.*
+import me.leon.ext.DEFAULT_SPACING_32X
+import me.leon.ext.DEFAULT_SPACING_8X
+import me.leon.ext.stacktrace
+import tornadofx.attachTo
+import tornadofx.hbox
+import tornadofx.label
+import tornadofx.tooltip
 
 class VocabularyCell : ListCell<Vocabulary>() {
     lateinit var tWord: Label
@@ -69,7 +76,8 @@ class VocabularyCell : ListCell<Vocabulary>() {
                                     "function hideElements(selector){" +
                                         "var items=document.querySelectorAll(selector);" +
                                         "for(var i=0,size=items.length;i<size;i++){" +
-                                        "items[i].style.display='none'}}\n$hideJs;$extraJs"
+                                        "items[i].style.display='none'}}" +
+                                        "\n$hideJs;$extraJs"
                                 )
                             }
                             .getOrElse { println(it.stacktrace()) }
