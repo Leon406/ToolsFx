@@ -22,17 +22,17 @@ val lengthFactor =
 val REG_LENGTH = "([\\d.]+)\\s*([a-zA-Z]+)".toRegex()
 
 fun String.lengthUnit(): String =
-    REG_PRESSURE.matchEntire(this)?.run {
+    REG_LENGTH.matchEntire(this)?.run {
         var len = groupValues[1].toDouble()
         val unit = groupValues[2]
         len *= (lengthFactor[unit] ?: 1.0)
         String.format(
             "%.2f m\n%.2f inch\n%.2f ft\n%.3f km\n%.3f mile\n",
             len,
-            len / pressureFactor["inch"]!!,
-            len / pressureFactor["ft"]!!,
-            len / pressureFactor["km"]!!,
-            len / pressureFactor["mile"]!!,
+            len / lengthFactor["inch"]!!,
+            len / lengthFactor["ft"]!!,
+            len / lengthFactor["km"]!!,
+            len / lengthFactor["mile"]!!,
         )
     }
         ?: kotlin.run {
@@ -40,9 +40,9 @@ fun String.lengthUnit(): String =
             String.format(
                 "%.2f m\n%.2f inch\n%.2f ft\n%.3f km\n%.3f mile\n",
                 len,
-                len / pressureFactor["inch"]!!,
-                len / pressureFactor["ft"]!!,
-                len / pressureFactor["km"]!!,
-                len / pressureFactor["mile"]!!,
+                len / lengthFactor["inch"]!!,
+                len / lengthFactor["ft"]!!,
+                len / lengthFactor["km"]!!,
+                len / lengthFactor["mile"]!!,
             )
         }

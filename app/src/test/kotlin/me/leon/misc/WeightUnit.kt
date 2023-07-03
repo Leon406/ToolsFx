@@ -21,19 +21,19 @@ val weightFactor =
 val REG_WEIGHT = "([\\d.]+)\\s*([a-zA-Z斤两]+)".toRegex()
 
 fun String.weightUnit(): String =
-    REG_PRESSURE.matchEntire(this)?.run {
+    REG_WEIGHT.matchEntire(this)?.run {
         var len = groupValues[1].toDouble()
         val unit = groupValues[2]
         println(groupValues[2])
-        len *= (areaFactor[unit] ?: 1.0)
+        len *= (weightFactor[unit] ?: 1.0)
 
         String.format(
             "%.2f kg\n%.2f lb\n%.2f 斤\n%.2f oz\n%.3f t\n",
             len,
-            len / pressureFactor["lb"]!!,
-            len / pressureFactor["斤"]!!,
-            len / pressureFactor["oz"]!!,
-            len / pressureFactor["t"]!!,
+            len / weightFactor["lb"]!!,
+            len / weightFactor["斤"]!!,
+            len / weightFactor["oz"]!!,
+            len / weightFactor["t"]!!,
         )
     }
         ?: kotlin.run {
@@ -41,9 +41,9 @@ fun String.weightUnit(): String =
             String.format(
                 "%.2f kg\n%.2f lb\n%.2f 斤\n%.2f oz\n%.3f t\n",
                 len,
-                len / pressureFactor["lb"]!!,
-                len / pressureFactor["斤"]!!,
-                len / pressureFactor["oz"]!!,
-                len / pressureFactor["t"]!!,
+                len / weightFactor["lb"]!!,
+                len / weightFactor["斤"]!!,
+                len / weightFactor["oz"]!!,
+                len / weightFactor["t"]!!,
             )
         }
