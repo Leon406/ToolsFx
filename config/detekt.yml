@@ -377,7 +377,7 @@ style:
   TrimMultilineRawString:
     active: true
   UnderscoresInNumericLiterals:
-    active: true
+    active: false
   UnnecessaryAnnotationUseSiteTarget:
     active: true
   UnnecessaryFilter:
