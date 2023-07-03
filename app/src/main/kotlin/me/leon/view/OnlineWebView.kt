@@ -54,7 +54,13 @@ class OnlineWebView : Fragment("Browser") {
                 web.engine.load(tfUrl.text)
             }
             button(graphic = imageview(IMG_RUN)) {
-                action { web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() }) }
+                action {
+                    if (tfUrl.text.contains("<")) {
+                        web.engine.loadContent(tfUrl.text)
+                    } else {
+                        web.engine.load(tfUrl.text.ifEmpty { selectedUrl.get() })
+                    }
+                }
             }
             button(graphic = imageview("/img/browser.png")) {
                 action { tfUrl.text.openInBrowser() }
@@ -70,7 +76,9 @@ class OnlineWebView : Fragment("Browser") {
 
                     if (newState == Worker.State.SUCCEEDED) {
                         println("load ${engine.history.entries[engine.history.currentIndex].url}")
-                        tfUrl.text = engine.history.entries[engine.history.currentIndex].url
+                        if (!tfUrl.text.contains("<")) {
+                            tfUrl.text = engine.history.entries[engine.history.currentIndex].url
+                        }
                         web.engine.executeScript(fontJS).also { println(it) }
                     }
                 }
