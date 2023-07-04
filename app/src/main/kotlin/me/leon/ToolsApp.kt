@@ -4,6 +4,7 @@ import java.io.File
 import java.util.Locale
 import java.util.Properties
 import javafx.scene.image.Image
+import kotlin.concurrent.thread
 import me.leon.ext.fromJson
 import me.leon.ext.fx.Prefs
 import me.leon.view.Home
@@ -66,30 +67,31 @@ class ToolsApp : App(Home::class, Styles::class) {
             copyResourceFileIfNotExist("/ToolsFx.properties", file)
             properties.load(file.inputStream())
 
-            file = File(DICT_DIR, "top1000.txt")
-            copyResourceFileIfNotExist("/top1000.txt", file)
+            thread {
+                file = File(DICT_DIR, "top1000.txt")
+                copyResourceFileIfNotExist("/top1000.txt", file)
+                file = File(DICT_DIR, "dictionary.conf")
+                copyResourceFileIfNotExist("/dictionary.conf", file)
+                file.readText().fromJson(DictionaryConfig::class.java).run {
+                    dict = dicts[active]
+                    dict.autoPronounce = autoPronounce
+                    File(DICT_DIR, dictFile).run {
+                        println("dict $this")
+                        if (exists()) {
+                            readText()
+                                .lines()
+                                .filter { it.isNotEmpty() }
+                                .forEach {
+                                    val (word, mean) = it.split("\t")
 
-            file = File(DICT_DIR, "dictionary.conf")
-            copyResourceFileIfNotExist("/dictionary.conf", file)
-            file.readText().fromJson(DictionaryConfig::class.java).run {
-                dict = dicts[active]
-                dict.autoPronounce = autoPronounce
-                File(DICT_DIR, dictFile).run {
-                    println("dict $this")
-                    if (exists()) {
-                        readText()
-                            .lines()
-                            .filter { it.isNotEmpty() }
-                            .forEach {
-                                val (word, mean) = it.split("\t")
-
-                                vocabulary[word] = mean
-                            }
-                        println("vocabulary ${vocabulary.size}")
+                                    vocabulary[word] = mean
+                                }
+                            println("vocabulary ${vocabulary.size}")
+                        }
                     }
                 }
+                println(dict)
             }
-            println(dict)
         }
 
         private fun copyResourceFileIfNotExist(fileName: String, targetFile: File) {
