@@ -1,7 +1,6 @@
 package me.leon.view
 
 import java.io.File
-import java.io.FileOutputStream
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
 import javafx.scene.control.*
@@ -12,9 +11,7 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
-import me.leon.ext.fx.clipboardText
-import me.leon.ext.fx.copy
-import me.leon.ext.fx.fileDraggedHandler
+import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -447,6 +444,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             if (additionFileMode.get()) {
                 inputText2
                     .lines()
+                    .filter { it.isNotEmpty() }
                     .map { it.toFile() }
                     .firstOrNull { it.exists() && it.name.contains(dictType) }
                     ?: defaultFile
@@ -454,10 +452,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 defaultFile
             }
 
-        FileOutputStream(targetFile, true).bufferedWriter().use {
-            it.write(vocabularies.joinToString(System.lineSeparator()) { it.word })
-            it.write(System.lineSeparator())
+        if (defaultFile == targetFile) {
+            inputText2 = "$inputText2${System.lineSeparator()}${defaultFile.absolutePath}"
+            additionFileMode.value = true
         }
+        println("_____$targetFile")
+        targetFile.appendText(vocabularies.joinToString(System.lineSeparator()) { it.word })
+        targetFile.appendText(System.lineSeparator())
     }
 
     private fun inputsList(): Pair<List<String>, List<String>> {
