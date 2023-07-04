@@ -17,6 +17,12 @@ data class YouDaoResponse(
     @SerializedName("rel_word") val relWord: RelWord?,
     val etym: Etym?
 ) {
+
+    fun simple(): String = buildString {
+        append(simple?.query).append("\t")
+        append(ec?.means()?.replace("\n", "")?.replace("\r\n", ""))
+    }
+
     override fun toString(): String {
         return buildString {
             append(simple)
@@ -84,6 +90,16 @@ data class Phrs(val word: String, val phrs: List<Phr>) {
 
 data class Ec(val exam_type: List<String>, val word: List<WordX>) {
 
+    fun means() =
+        word
+            .firstOrNull()
+            ?.trs
+            //        ?.filter {
+            //        it.tr.first().l.i.any { it.contains("^\\w+".toRegex()) } ?: true
+            //    }
+            ?.joinToString("; ")
+            .orEmpty()
+
     override fun toString(): String {
         return buildString {
             append(exam_type.joinToString("/"))
@@ -146,12 +162,7 @@ data class Etym(val etyms: Etyms, val word: String) {
     }
 }
 
-data class WebTranslation(
-    val `@same`: String?,
-    val key: String,
-    val `key-speech`: String,
-    val trans: List<Tran>
-) {
+data class WebTranslation(val key: String, val `key-speech`: String, val trans: List<Tran>) {
     fun translation() = buildString {
         append(key)
         append("\t ")

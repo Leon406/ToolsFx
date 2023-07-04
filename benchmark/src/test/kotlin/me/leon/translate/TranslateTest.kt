@@ -2,10 +2,8 @@ package me.leon.translate
 
 import java.io.File
 import kotlin.test.Test
-import me.leon.ext.center
-import me.leon.ext.fromJson
-import me.leon.ext.readFromNet
-import me.leon.ext.toFile
+import me.leon.ext.*
+import me.leon.onedriveDir
 import org.jsoup.Jsoup
 
 /**
@@ -87,6 +85,13 @@ class TranslateTest {
 
             buildString {
                     append(headWord)
+                        .append("\t")
+                        .append(pos.zip(def).joinToString("; ") { it.first + " " + it.second })
+                }
+                .also { println(it) }
+
+            buildString {
+                    append(headWord)
                     append("\t ")
                     append(pronounceUs).append(" ")
                     append(pronounceUk)
@@ -105,8 +110,52 @@ class TranslateTest {
 
     @Test
     fun youdao() {
-        YOUDAO.format(word).readFromNet().also { println(it.fromJson(YouDaoResponse::class.java)) }
+        YOUDAO.format("resumes").readFromNet().also {
+            println(it.fromJson(YouDaoResponse::class.java).simple())
+        }
     }
+
+    @Test
+    fun translate() {
+
+        val toTranslated = "$onedriveDir/known.txt".toFile()
+        val trans = File(toTranslated.parentFile, "trans.txt")
+        val translated =
+            runCatching { trans.readText() }.getOrNull()?.lines()?.map { it.split("\t")[0] }
+                ?: emptyList()
+        val lines = toTranslated.readText().lines()
+        val diff = lines - translated
+        println("${lines.size} / ${translated.size}  diff: ${diff.size} ")
+        diff.forEach { trans.appendText(translateSimple(it) + System.lineSeparator()) }
+
+        //        println(translateSimple("amazes"))
+        //        println(translateSimple("abandon"))
+        //        println(translateSimple("bothering"))
+    }
+
+    private fun translateSimple(text: String) =
+        //  显示变形翻译
+        YOUDAO.format(text)
+            .readFromNet()
+            .also {
+                //            println(it)
+            }
+            .fromJson(YouDaoResponse::class.java)
+            .simple()
+    //  显示原形翻译
+    //        Jsoup.connect(BING.format(text)).get().run {
+    //            val headWord = selectFirst("#headword")?.text()
+    //            // 意思
+    //            val pos = select("li>span.pos").map { it.text() }
+    //            val def = select("li>span.def").map { it.text() }
+    //            buildString {
+    //                append(headWord).append("\t").append(pos.zip(def).joinToString("; ") {
+    // it.first + " " + it.second })
+    //            }
+    //        }.also {
+    //            println(it)
+    //        }
+    //    }
 
     @Test
     fun cambridge() {
@@ -144,12 +193,13 @@ class TranslateTest {
     fun vocabulary() {
         val onedriveDir = "E:\\OneDrive\\我的文档\\学习"
         val text = "$onedriveDir/vocabulary.txt".toFile().readText()
+        val trans = "$onedriveDir/trans.txt".toFile().readText()
         val output = "$onedriveDir/vocabulary2.txt".toFile()
 
         val sets = mutableSetOf<Pair<String, String>>()
         println(text.lines().size)
         val groups =
-            text
+            (text + trans)
                 .split(System.lineSeparator())
                 .toSet()
                 .filter { it.isNotEmpty() }
