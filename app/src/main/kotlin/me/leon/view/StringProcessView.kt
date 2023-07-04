@@ -11,7 +11,9 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.ext.*
-import me.leon.ext.fx.*
+import me.leon.ext.fx.clipboardText
+import me.leon.ext.fx.copy
+import me.leon.ext.fx.fileDraggedHandler
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -516,9 +518,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         val newWords =
                             words.filter { it.mean.isNullOrEmpty() }.map { it.word } -
                                 outOfDict.readText().lines().toSet()
-                        outOfDict.appendText(
-                            newWords.joinToString(System.lineSeparator()) + System.lineSeparator()
-                        )
+                        if (newWords.isNotEmpty()) {
+                            outOfDict.appendText(
+                                newWords.joinToString(System.lineSeparator()) +
+                                    System.lineSeparator()
+                            )
+                        }
                     }
                 }
                 .joinToString(System.lineSeparator())

@@ -1,14 +1,19 @@
 package me.leon
 
 import java.io.File
-import java.util.Locale
-import java.util.Properties
+import java.util.*
 import javafx.scene.image.Image
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 import kotlin.concurrent.thread
 import me.leon.ext.fromJson
 import me.leon.ext.fx.Prefs
+import me.leon.ext.toFile
 import me.leon.view.Home
-import tornadofx.*
+import tornadofx.App
+import tornadofx.FX
+import tornadofx.addStageIcon
 
 class ToolsApp : App(Home::class, Styles::class) {
     init {
@@ -18,6 +23,7 @@ class ToolsApp : App(Home::class, Styles::class) {
     companion object {
         private val properties: Properties = Properties()
         var vocabulary: MutableMap<String, String> = mutableMapOf()
+
         /** online translation dict */
         lateinit var dict: DictionaryConfig.Dict
 
@@ -75,7 +81,16 @@ class ToolsApp : App(Home::class, Styles::class) {
                 file.readText().fromJson(DictionaryConfig::class.java).run {
                     dict = dicts[active]
                     dict.autoPronounce = autoPronounce
-                    File(DICT_DIR, dictFile).run {
+
+                    val defaultDict = File(DICT_DIR, dictFile)
+                    val customDict = dictFileName?.toFile()
+                    val file =
+                        if (customDict?.exists() == true) {
+                            customDict
+                        } else {
+                            defaultDict
+                        }
+                    file.run {
                         println("dict $this")
                         if (exists()) {
                             readText()
