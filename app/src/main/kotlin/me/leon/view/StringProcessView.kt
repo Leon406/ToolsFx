@@ -463,14 +463,14 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         targetFile.appendText(System.lineSeparator())
     }
 
-    private fun inputsList(): Pair<List<String>, List<String>> {
+    private fun inputsList(): Pair<Set<String>, Set<String>> {
         showAdditionUi.value = true
-        val inputs = inputText.lines().map { it.trim() }.filterNot { it.isEmpty() }
+        val inputs = inputText.lines().map { it.trim() }.filterNot { it.isEmpty() }.toSet()
         val inputs2 = inputs2()
         return Pair(inputs, inputs2)
     }
 
-    private fun inputs2(): List<String> {
+    private fun inputs2(): Set<String> {
         val inputs2 =
             if (additionFileMode.get()) {
                 inputText2
@@ -479,12 +479,10 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     .filter { it.exists() }
                     .map { it.readText().lines().map { it.trim().lowercase() } }
                     .flatten()
-                    .filterNot { it.isEmpty() }
-                    .distinct()
             } else {
-                inputText2.lines().map { it.trim() }.filterNot { it.isEmpty() }
+                inputText2.lines().map { it.trim() }
             }
-        return inputs2
+        return inputs2.filterNot { it.isEmpty() }.toSet()
     }
 
     private fun tokenize() {
@@ -498,16 +496,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             (inputText
                     .replace("[^a-zA-Z'-]+".toRegex(), "\n")
                     .lines()
-                    .map { it.lowercase() }
+                    .map { it.lowercase().trim('\'') }
                     .distinct()
                     .sorted() - inputs2())
                 .filterNot { it.isEmpty() || !it.first().isLetter() || it.endsWith("'s") }
                 .also {
-                    words.addAll(
-                        it.map { token ->
-                            Vocabulary(token.trim('\''), ToolsApp.vocabulary[token.trim('\'')])
-                        }
-                    )
+                    words.addAll(it.map { token -> Vocabulary(token, ToolsApp.vocabulary[token]) })
                     thread {
                         val outOfDict =
                             File(DICT_DIR, "outOfDict.txt").also {
