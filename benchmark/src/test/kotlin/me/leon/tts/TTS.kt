@@ -1,20 +1,10 @@
 package me.leon.tts
 
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.UUID
+import java.util.*
 
 class TTS(private val voice: Voice?, private val content: String) {
-    private val EDGE_URL =
-        "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1" +
-            "?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
-    private val EDGE_UA =
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-            "Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55"
-    private val EDGE_ORIGIN = "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold"
-    private val voicesListUrl =
-        "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/voices/list?" +
-            "trustedclienttoken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+
     private var headers: MutableMap<String, String> = mutableMapOf()
     private var findHeadHook = false
     private var format = "audio-24khz-48kbitrate-mono-mp3"
@@ -111,45 +101,45 @@ class TTS(private val voice: Voice?, private val content: String) {
 
     private fun mkAudioFormat(dateStr: String): String {
         return "X-Timestamp:" +
-            dateStr +
-            "\r\n" +
-            "Content-Type:application/json; charset=utf-8\r\n" +
-            "Path:speech.config\r\n\r\n" +
-            "{\"context\":{\"synthesis\":{\"audio\":" +
-            "{\"metadataoptions\":{\"sentenceBoundaryEnabled\":\"false\"," +
-            "\"wordBoundaryEnabled\":\"true\"}," +
-            "\"outputFormat\":\"" +
-            format +
-            "\"}}}}\n"
+                dateStr +
+                "\r\n" +
+                "Content-Type:application/json; charset=utf-8\r\n" +
+                "Path:speech.config\r\n\r\n" +
+                "{\"context\":{\"synthesis\":{\"audio\":" +
+                "{\"metadataoptions\":{\"sentenceBoundaryEnabled\":\"false\"," +
+                "\"wordBoundaryEnabled\":\"true\"}," +
+                "\"outputFormat\":\"" +
+                format +
+                "\"}}}}\n"
     }
 
     private fun mkssml(locate: String?, voiceName: String?): String {
         return "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='" +
-            locate +
-            "'>" +
-            "<voice name='" +
-            voiceName +
-            "'><prosody pitch='" +
-            voicePitch +
-            "' rate='" +
-            voiceRate +
-            "' volume='" +
-            voiceVolume +
-            "'>" +
-            content +
-            "</prosody></voice></speak>"
+                locate +
+                "'>" +
+                "<voice name='" +
+                voiceName +
+                "'><prosody pitch='" +
+                voicePitch +
+                "' rate='" +
+                voiceRate +
+                "' volume='" +
+                voiceVolume +
+                "'>" +
+                content +
+                "</prosody></voice></speak>"
     }
 
     private fun ssmlHeadersPlusData(requestId: String, timestamp: String, ssml: String): String {
         return "X-RequestId:" +
-            requestId +
-            "\r\n" +
-            "Content-Type:application/ssml+xml\r\n" +
-            "X-Timestamp:" +
-            timestamp +
-            "Z\r\n" +
-            "Path:ssml\r\n\r\n" +
-            ssml
+                requestId +
+                "\r\n" +
+                "Content-Type:application/ssml+xml\r\n" +
+                "X-Timestamp:" +
+                timestamp +
+                "Z\r\n" +
+                "Path:ssml\r\n\r\n" +
+                ssml
     }
 
     private fun dateToString(date: Date): String {
@@ -159,5 +149,18 @@ class TTS(private val voice: Voice?, private val content: String) {
 
     private fun uuid(): String {
         return UUID.randomUUID().toString().replace("-", "")
+    }
+
+    companion object {
+        const val EDGE_URL =
+            "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1" +
+                    "?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+        const val EDGE_UA =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                    "Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55"
+        const val EDGE_ORIGIN = "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold"
+        const val VOICES_LIST_URL =
+            "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/voices/list?" +
+                    "trustedclienttoken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
     }
 }

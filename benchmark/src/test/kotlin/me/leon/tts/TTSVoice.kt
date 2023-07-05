@@ -1,6 +1,7 @@
 package me.leon.tts
 
 import me.leon.ext.GsonUtil.jsonToArrayList
+import me.leon.ext.readStreamFromNet
 
 object TTSVoice {
     private var voices: List<Voice>? = null
@@ -11,8 +12,9 @@ object TTSVoice {
                 .java
                 .classLoader
                 .getResourceAsStream("voicesList.json")
-                ?.bufferedReader()
-                ?.use { voices = jsonToArrayList(it.readText(), Voice::class.java) }
+                ?: TTS.VOICES_LIST_URL.readStreamFromNet()
+                    ?.bufferedReader()
+                    ?.use { voices = jsonToArrayList(it.readText(), Voice::class.java) }
         }
     }
 

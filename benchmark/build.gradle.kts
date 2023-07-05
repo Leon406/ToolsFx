@@ -45,6 +45,6 @@ dependencies {
     testImplementation("com.tianscar.javasound:javasound-speex:0.9.8")
     // wav
     testImplementation("com.tianscar.javasound:javasound-wavpack:1.4.2")
-    // aac
-    testImplementation("com.tianscar.javasound:javasound-aac:0.9.8")
+    // aac  会误识别mp3为 aac
+//    testImplementation("com.tianscar.javasound:javasound-aac:0.9.8")
 }
