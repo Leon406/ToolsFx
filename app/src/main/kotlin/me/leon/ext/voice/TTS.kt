@@ -213,7 +213,7 @@ fun tts(
         return null
     }
     val voice = TTSVoice.find(voiceModel)
-    val properContent = content.trim().replace("…", "...").toHtmlEntity(isAll = false)
+    val properContent = content.trim().removeUnsupportedChar().toHtmlEntity(isAll = false)
     println("TTS $voiceModel: speed $rate volume $volume pitch $pitch $cacheable\n$properContent")
     return TTS(voice, properContent)
         .voicePitch(pitch)
@@ -226,3 +226,11 @@ fun tts(
             play(this.inputStream(), isAsync)
         }
 }
+
+fun String.removeUnsupportedChar() =
+    replace("…", "...")
+        .replace("—", "-")
+        .replace("’", "'")
+        .replace("‘", "'")
+        .replace("“", "\"")
+        .replace("”", "\"")
