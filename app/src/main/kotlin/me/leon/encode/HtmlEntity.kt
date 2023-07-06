@@ -263,11 +263,18 @@ val HTML_ENTITY_MAP =
 val HTML_ENTITY_DECODE_MAP =
     mutableMapOf<String, Int>().apply { putAll(HTML_ENTITY_MAP.values.zip(HTML_ENTITY_MAP.keys)) }
 
-fun Int.toHtmlEntityAll(radix: Int = 10) =
-    "&#${HTML_ENTITY_MAP[this] ?: (("".takeIf { radix == 10 } ?: "x") + this.toString(radix))};"
+fun Int.toHtmlEntityAll(radix: Int = 10) = buildString {
+    HTML_ENTITY_MAP[this@toHtmlEntityAll]?.let { append("&$it;") }
+        ?: run {
+            append("&#")
+            append("".takeIf { radix == 10 } ?: "x")
+            append(this@toHtmlEntityAll.toString(radix))
+            append(";")
+        }
+}
 
 fun Int.toHtmlEntity() = HTML_ENTITY_MAP[this]?.let { "&$it;" }
 
 fun String.charHtmlEntityDecode() =
     HTML_ENTITY_DECODE_MAP[
-        "(?i)&#(x?[0-9a-z]+)+;".toRegex().find(this)?.groupValues?.get(1).orEmpty()]
+        "(?i)&#?(x?[0-9a-z]+)+;".toRegex().find(this)?.groupValues?.get(1).orEmpty()]

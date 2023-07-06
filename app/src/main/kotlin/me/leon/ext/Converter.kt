@@ -131,8 +131,8 @@ fun String.unicode2String() =
     }
 
 fun String.htmlEntity2String() =
-    if (contains("&#")) {
-        StringBuilder(this).replace("(?i)&#(x?[0-9a-z]+)+;".toRegex()) {
+    if (contains("&")) {
+        StringBuilder(this).replace("(?i)&#?(x?[0-9a-z]+)+;".toRegex()) {
             it.value.charHtmlEntityDecode()?.toUnicodeChar()
                 ?: if (it.groupValues[1].startsWith("x")) {
                     it.groupValues[1].substring(1).toInt(HEX_RADIX).toUnicodeChar()
