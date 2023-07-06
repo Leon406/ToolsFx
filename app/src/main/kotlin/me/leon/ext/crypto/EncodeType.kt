@@ -269,6 +269,13 @@ enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode 
             encoded.htmlEntity2String().toByteArray(Charset.forName(charset))
 
         override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
+            bytes.toString(Charset.forName(charset)).toHtmlEntity(isAll = false)
+    },
+    HTML_ENTITY_ALL("htmlEntityAll") {
+        override fun decode(encoded: String, dict: String, charset: String) =
+            encoded.htmlEntity2String().toByteArray(Charset.forName(charset))
+
+        override fun encode2String(bytes: ByteArray, dict: String, charset: String) =
             bytes.toString(Charset.forName(charset)).toHtmlEntity(isAll = true)
     },
     HEX_REVERSE("hexReverse") {

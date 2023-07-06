@@ -1,4 +1,4 @@
-package me.leon.tts
+package me.leon.ext.voice
 
 import java.net.URI
 import java.nio.ByteBuffer

@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.URL
+import javafx.application.Platform
 import javafx.embed.swing.SwingFXUtils
 import javafx.event.EventHandler
 import javafx.scene.image.Image
@@ -56,3 +57,7 @@ fun String.base64Image() = Image(base64Decode().inputStream())
 fun ByteArray.toImage() = Image(inputStream())
 
 fun File.toImage() = Image(inputStream())
+
+fun runOnUi(action: () -> Unit) {
+    Platform.runLater { action() }
+}

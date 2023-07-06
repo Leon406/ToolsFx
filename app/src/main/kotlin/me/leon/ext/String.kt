@@ -53,3 +53,24 @@ val Char.halfWidth
             in 65_281..65_374 -> (code - 65_248).toChar()
             else -> this
         }
+
+fun String.splitParagraph(): MutableList<Pair<IntRange, String>> {
+    val splits = mutableListOf<Pair<IntRange, String>>()
+    var endIndex: Int
+    var startIndex = 0
+    while (indexOf("\n", startIndex, false).also { endIndex = it } != -1) {
+        val range = startIndex..endIndex
+        if (startIndex != endIndex) {
+            splits.add(range to substring(range))
+        }
+        startIndex = endIndex + 1
+    }
+    if (endIndex == -1) {
+        endIndex = lastIndex
+        val range = startIndex..endIndex
+        splits.add(range to substring(range))
+    }
+    println("start $startIndex end $endIndex")
+
+    return splits
+}

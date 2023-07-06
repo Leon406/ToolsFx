@@ -5,6 +5,8 @@ import kotlin.math.ln
 import kotlin.math.pow
 import me.leon.*
 import me.leon.ext.findParallel
+import me.leon.ext.math.DivideResult
+import me.leon.ext.math.crt
 
 object RsaSolver {
 

@@ -7,6 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import me.leon.*
+import me.leon.config.TEXT_AREA_LINES
 import me.leon.controller.CalculatorController
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode

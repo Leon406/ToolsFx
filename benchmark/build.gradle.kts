@@ -32,19 +32,16 @@ dependencies {
     testImplementation("org.java-websocket:Java-WebSocket:1.5.3")
     // mp3格式支持
 //    testImplementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
+
+    //  refer  https://github.com/Tianscar/javasound-spcollect
     // https://mvnrepository.com/artifact/com.tianscar.javasound/javasound-mp3  com.googlecode.soundlib 维护库
     testImplementation("com.tianscar.javasound:javasound-mp3:1.9.8")
-
     //    https://mvnrepository.com/artifact/com.googlecode.soundlibs/vorbisspi ogg格式支持
     testImplementation("com.googlecode.soundlibs:vorbisspi:1.0.3.3")
     // flac格式
     testImplementation("com.tianscar.javasound:javasound-flac:1.4.1")
     // ape格式
     testImplementation("com.tianscar.javasound:javasound-ape:1.7.7")
-    // speex格式  opus
-    testImplementation("com.tianscar.javasound:javasound-speex:0.9.8")
-    // wav
-    testImplementation("com.tianscar.javasound:javasound-wavpack:1.4.2")
-    // aac  会误识别mp3为 aac
+    // aac  某些mp3会误识别为 aac
 //    testImplementation("com.tianscar.javasound:javasound-aac:0.9.8")
 }

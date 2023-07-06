@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.text.Font
 import javafx.scene.text.Text
 import me.leon.*
+import me.leon.config.*
 import me.leon.ext.*
 import me.leon.ext.fx.Prefs
 import me.leon.ext.fx.openInBrowser

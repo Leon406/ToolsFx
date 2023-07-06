@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.component
 
 import java.awt.*
 import java.awt.event.MouseAdapter
@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent
 import javafx.application.Platform
 import javafx.stage.Stage
 import javax.swing.*
+import me.leon.IMG_ICON
 
 /**
  * @author Leon
@@ -13,8 +14,8 @@ import javax.swing.*
  * @email deadogone@gmail.com
  */
 object Tray {
-    private var trayIcon: TrayIcon? = null //  系统托盘组件
-    private var popWindow: JDialog? = null //  系统托盘组件
+    private var trayIcon: TrayIcon? = null
+    private var popWindow: JDialog? = null
 
     /** 系统托盘 */
     fun systemTray(stage: Stage) {

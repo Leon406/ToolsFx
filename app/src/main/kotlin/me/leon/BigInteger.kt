@@ -6,6 +6,7 @@ import java.util.*
 import me.leon.ctf.rsa.THREE
 import me.leon.ctf.rsa.TWO
 import me.leon.ext.fromJson
+import me.leon.ext.math.Kgcd
 import me.leon.ext.readFromNet
 
 // this = p

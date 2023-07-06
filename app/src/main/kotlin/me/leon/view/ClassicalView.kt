@@ -4,6 +4,8 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.*
+import me.leon.config.TEXT_AREA_LINES
+import me.leon.config.WIKI_CTF
 import me.leon.controller.ClassicalController
 import me.leon.ext.*
 import me.leon.ext.crypto.*

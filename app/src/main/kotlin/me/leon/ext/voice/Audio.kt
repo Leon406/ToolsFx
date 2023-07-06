@@ -1,4 +1,4 @@
-package me.leon.tts
+package me.leon.ext.voice
 
 import java.io.File
 import java.io.InputStream
@@ -94,11 +94,17 @@ object Audio {
             val srcDataLine = AudioSystem.getLine(dataLine) as SourceDataLine
             srcDataLine.open(audioFormat)
             srcDataLine.start()
+            srcDataLine.addLineListener {
+                if (it.type == LineEvent.Type.STOP) {
+                    srcDataLine.close()
+                }
+            }
             if (isAsync) {
                 thread { writeData(audioFormat, srcDataLine, ais) }
             } else {
                 writeData(audioFormat, srcDataLine, ais)
             }
+
             return srcDataLine
         }
     }
@@ -117,5 +123,6 @@ object Audio {
         while (ais.read(soundData).also { bytesLength = it } != -1) {
             srcDataLine.write(soundData, 0, bytesLength)
         }
+        srcDataLine.stop()
     }
 }

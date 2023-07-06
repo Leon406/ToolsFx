@@ -12,6 +12,7 @@ import me.leon.ToolsApp.Companion.isEnablePBE
 import me.leon.ToolsApp.Companion.isEnableQrcode
 import me.leon.ToolsApp.Companion.isEnableSignature
 import me.leon.ToolsApp.Companion.isEnableSymmetricStream
+import me.leon.component.Tray
 import me.leon.ext.fx.Prefs
 import me.leon.toolsfx.plugin.PluginFragment
 import me.leon.toolsfx.plugin.PluginView

@@ -1,6 +1,7 @@
 package me.leon.controller
 
 import me.leon.*
+import me.leon.config.DICT_DIR
 import me.leon.ext.*
 import me.leon.ext.crypto.*
 import me.leon.hash.lmHash

@@ -266,7 +266,7 @@ val HTML_ENTITY_DECODE_MAP =
 fun Int.toHtmlEntityAll(radix: Int = 10) =
     "&#${HTML_ENTITY_MAP[this] ?: (("".takeIf { radix == 10 } ?: "x") + this.toString(radix))};"
 
-fun Int.toHtmlEntity() = HTML_ENTITY_MAP[this]?.let { "&#$it;" }
+fun Int.toHtmlEntity() = HTML_ENTITY_MAP[this]?.let { "&$it;" }
 
 fun String.charHtmlEntityDecode() =
     HTML_ENTITY_DECODE_MAP[

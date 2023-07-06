@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import me.leon.*
+import me.leon.config.TEXT_AREA_LINES
 import me.leon.controller.EncodeController
 import me.leon.ext.*
 import me.leon.ext.crypto.*

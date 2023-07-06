@@ -2,6 +2,9 @@ package me.leon.ext.fx
 
 import java.util.prefs.Preferences
 
+const val TTS_DEFAULT_MODEL = "en-US-MichelleNeural"
+const val TTS_DEFAULT_RATE = "+0%"
+
 object Prefs {
     private const val IGNORE_UPDATE = "isIgnoreUpdate"
     private const val ALWAYS_ON_TOP = "alwaysOnTop"
@@ -9,6 +12,12 @@ object Prefs {
     private const val AUTO_COPY = "autoCopy"
     private const val TRAY = "tray"
     private const val HI_DPI = "hidpi"
+    private const val TTS_VOICE = "ttsVoice"
+    private const val TTS_SPEED = "ttsSpeed"
+    private const val TTS_VOLUME = "ttsVolume"
+    private const val TTS_PITCH = "ttsPitch"
+    private const val TTS_CACHE = "ttsCache"
+    private const val TTS_LONG_SENTENCE = "ttsLongSentence"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
     var isIgnoreUpdate
         get() = preference.getBoolean(IGNORE_UPDATE, false)
@@ -33,6 +42,42 @@ object Prefs {
         get() = preference.get(LANGUAGE, "zh")
         set(value) {
             preference.put(LANGUAGE, value)
+        }
+
+    var ttsVoice: String
+        get() = preference.get(TTS_VOICE, TTS_DEFAULT_MODEL)
+        set(value) {
+            preference.put(TTS_VOICE, value)
+        }
+
+    var ttsSpeed: String
+        get() = preference.get(TTS_SPEED, TTS_DEFAULT_RATE)
+        set(value) {
+            preference.put(TTS_SPEED, value)
+        }
+
+    var ttsVolume: String
+        get() = preference.get(TTS_VOLUME, TTS_DEFAULT_RATE)
+        set(value) {
+            preference.put(TTS_VOLUME, value)
+        }
+
+    var ttsPitch: String
+        get() = preference.get(TTS_PITCH, TTS_DEFAULT_RATE)
+        set(value) {
+            preference.put(TTS_PITCH, value)
+        }
+
+    var ttsCacheable: Boolean
+        get() = preference.getBoolean(TTS_CACHE, false)
+        set(value) {
+            preference.putBoolean(TTS_CACHE, value)
+        }
+
+    var ttsLongSentence: Boolean
+        get() = preference.getBoolean(TTS_LONG_SENTENCE, false)
+        set(value) {
+            preference.putBoolean(TTS_LONG_SENTENCE, value)
         }
 
     var autoCopy: Boolean

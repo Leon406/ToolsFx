@@ -2,8 +2,8 @@ package me.leon.view
 
 import javafx.geometry.Pos
 import javafx.scene.text.Font
-import me.leon.REPO_URL
 import me.leon.ReleaseInfo
+import me.leon.config.REPO_URL
 import me.leon.ext.*
 import me.leon.ext.fx.Prefs
 import me.leon.ext.fx.openInBrowser

@@ -7,13 +7,14 @@ import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.util.Callback
+import javax.sound.sampled.SourceDataLine
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 import me.leon.*
+import me.leon.config.DICT_DIR
 import me.leon.ext.*
-import me.leon.ext.fx.clipboardText
-import me.leon.ext.fx.copy
-import me.leon.ext.fx.fileDraggedHandler
+import me.leon.ext.fx.*
+import me.leon.ext.voice.tts
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -21,6 +22,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private var timeConsumption = 0L
     private var dictType = "known"
+    private var sourceDataline: SourceDataLine? = null
+    private var stopTts: Boolean = false
 
     override val closeable = SimpleBooleanProperty(false)
     private val regexp = SimpleBooleanProperty(false)
@@ -193,6 +196,42 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
 
+            button(graphic = imageview(IMG_TTS)) {
+                shortcut(KeyCombination.valueOf("Alt+V"))
+                longClick { find<TtsFragment>().openWindow() }
+                action {
+                    taInput.requestFocus()
+                    runAsync {
+                        sourceDataline?.run {
+                            stop()
+                            stopTts = true
+                        }
+
+                        val text = taInput.selectedText.ifEmpty { taInput.text }
+                        val start =
+                            taInput.selection.start.takeIf { it != taInput.selection.end } ?: 0
+                        if (Prefs.ttsLongSentence) {
+                            speak(text.indices, start, text)
+                        } else {
+                            var count = 0
+                            for ((range, content) in text.splitParagraph()) {
+                                if (count == 0) {
+                                    stopTts = false
+                                } else if (stopTts) {
+                                    break
+                                }
+                                speak(range, start, content)
+                                count++
+                            }
+                            println("____end")
+                        }
+
+                        stopTts = false
+                        sourceDataline = null
+                    }
+                }
+            }
+
             checkbox("override", overrideInput)
             checkbox("ignore case", ignoreCase)
         }
@@ -277,19 +316,14 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     action {
                         var targetEnd = taInput.selection.end
                         val duplicateText =
-                            taInput.text
-                                .substring(taInput.selection.start, taInput.selection.end)
-                                .ifEmpty {
-                                    with(inputText.lines()) {
-                                        val i =
-                                            inputText
-                                                .substring(0, taInput.caretPosition)
-                                                .lines()
-                                                .size
-                                        targetEnd = this.take(i).sumOf { it.length + 1 } - 1
-                                        this[i - 1]
-                                    }
+                            taInput.selectedText.ifEmpty {
+                                with(inputText.lines()) {
+                                    val i =
+                                        inputText.substring(0, taInput.caretPosition).lines().size
+                                    targetEnd = this.take(i).sumOf { it.length + 1 } - 1
+                                    this[i - 1]
                                 }
+                            }
                         taInput.insertText(targetEnd, System.lineSeparator() + duplicateText)
                     }
                 }
@@ -438,6 +472,22 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     override val root = borderpane {
         center = centerNode
         bottom = hbox { labelInfo = label(info) }
+    }
+
+    private fun speak(range: IntRange, start: Int, content: String) {
+        taInput.selectRange(range.first + start, range.last + start + 1)
+        sourceDataline =
+            tts(
+                content,
+                voiceModel = Prefs.ttsVoice,
+                rate = Prefs.ttsSpeed,
+                volume = Prefs.ttsVolume,
+                pitch = Prefs.ttsPitch,
+                cacheable = Prefs.ttsCacheable,
+            )
+        while (sourceDataline?.isOpen == true) {
+            // loop check
+        }
     }
 
     private fun writeVocabularyToFile(vocabularies: List<Vocabulary>) {

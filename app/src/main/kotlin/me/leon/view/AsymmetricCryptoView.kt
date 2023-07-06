@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.*
 import javafx.scene.control.*
 import me.leon.*
+import me.leon.config.TEXT_AREA_LINES
 import me.leon.controller.AsymmetricCryptoController
 import me.leon.encode.base.base64
 import me.leon.ext.*
