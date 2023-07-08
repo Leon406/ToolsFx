@@ -2,12 +2,16 @@ package me.leon.ext.voice
 
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.UUID
+import java.util.*
 import javax.sound.sampled.SourceDataLine
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+import me.leon.ext.splitParagraph
 import me.leon.ext.toHtmlEntity
 import me.leon.ext.voice.Audio.play
 import me.leon.hash
+import me.leon.misc.net.DISPATCHER
 
 class TTS(private val voice: Voice?, private val content: String) {
 
@@ -121,7 +125,6 @@ class TTS(private val voice: Voice?, private val content: String) {
                     ttsMp3.writeBytes(it)
                 }
             }
-            //            fileName
         } catch (ignored: Exception) {
             ignored.printStackTrace()
             null
@@ -212,6 +215,7 @@ fun tts(
     if (content.isBlank()) {
         return null
     }
+    val startTime = System.currentTimeMillis()
     val voice = TTSVoice.find(voiceModel)
     val properContent = content.trim().removeUnsupportedChar().toHtmlEntity(isAll = false)
     println("TTS $voiceModel: speed $rate volume $volume pitch $pitch $cacheable\n$properContent")
@@ -222,9 +226,45 @@ fun tts(
         .cache(cacheable)
         .trans()
         ?.run {
-            println(size)
+            println("==> takes ${(System.currentTimeMillis() - startTime) / 1000.0} s size: $size")
             play(this.inputStream(), isAsync)
         }
+}
+
+fun ttsMultiStream(
+    content: String,
+    voiceModel: String = "en-US-MichelleNeural",
+    rate: String = "+20%",
+    volume: String = "+0%",
+    pitch: String = "+0%",
+    cacheable: Boolean = false,
+): List<Pair<Pair<IntRange, String>, ByteArray?>>? {
+    if (content.isBlank()) {
+        return null
+    }
+    val startTime = System.currentTimeMillis()
+    val voice = TTSVoice.find(voiceModel)
+    val properContent = content.trim().removeUnsupportedChar().toHtmlEntity(isAll = false)
+    println("TTS $voiceModel: speed $rate volume $volume pitch $pitch $cacheable\n$properContent")
+
+    return runBlocking {
+        content
+            .splitParagraph()
+            .filterNot { it.second.all { it.code < 32 } }
+            .map {
+                async(DISPATCHER) {
+                    it to
+                        TTS(voice, it.second)
+                            .voicePitch(pitch)
+                            .voiceRate(rate)
+                            .voiceVolume(volume)
+                            .cache(cacheable)
+                            .trans()
+                }
+            }
+            .awaitAll()
+            .also { println("==> takes ${(System.currentTimeMillis() - startTime) / 1000.0} s") }
+    }
 }
 
 fun String.removeUnsupportedChar() =

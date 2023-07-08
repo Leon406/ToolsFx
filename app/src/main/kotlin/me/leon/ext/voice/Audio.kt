@@ -36,20 +36,9 @@ object Audio {
 
     fun playAudioStream(stream: AudioInputStream, isAsync: Boolean = false): SourceDataLine? {
         // http://java.ittoolbox.com/groups/technical-functional/java-l/sound-in-an-application-90681
-
         var ais = stream
-        println(ais.frameLength)
-        // get the AudioFormat for the AudioInputStream
         var audioFormat = ais.format
-        println("Format: $audioFormat")
-        println("Encoding: " + audioFormat.encoding)
-        println("SampleRate:" + audioFormat.sampleRate)
-        println("SampleSizeInBits: " + audioFormat.sampleSizeInBits)
-        println("Channels: " + audioFormat.channels)
-        println("FrameSize: " + audioFormat.frameSize)
-        println("FrameRate: " + audioFormat.frameRate)
-        println("BigEndian: " + audioFormat.isBigEndian)
-
+        println("Format: $audioFormat BigEndian ${audioFormat.isBigEndian}")
         // ULAW format to PCM format conversion
         if (
             audioFormat.encoding === AudioFormat.Encoding.ULAW ||
@@ -86,10 +75,10 @@ object Audio {
         // checking for a supported output line
         val dataLine = DataLine.Info(SourceDataLine::class.java, audioFormat)
         if (!AudioSystem.isLineSupported(dataLine)) {
-            println("Line matching $dataLine is not supported.")
+            println("!!! not supported $dataLine")
             return null
         } else {
-            println("Line matching $dataLine is supported.")
+            println("==> supported $dataLine")
             // opening the sound output line
             val srcDataLine = AudioSystem.getLine(dataLine) as SourceDataLine
             srcDataLine.open(audioFormat)

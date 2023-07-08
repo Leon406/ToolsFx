@@ -14,7 +14,9 @@ import me.leon.*
 import me.leon.config.DICT_DIR
 import me.leon.ext.*
 import me.leon.ext.fx.*
+import me.leon.ext.voice.Audio
 import me.leon.ext.voice.tts
+import me.leon.ext.voice.ttsMultiStream
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -213,19 +215,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         if (Prefs.ttsLongSentence) {
                             speak(text.indices, start, text)
                         } else {
-                            var count = 0
-                            for ((range, content) in text.splitParagraph()) {
-                                if (count == 0) {
-                                    stopTts = false
-                                } else if (stopTts) {
-                                    break
-                                }
-                                speak(range, start, content)
-                                count++
-                            }
+                            speakMulti(start, text)
                             println("____end")
                         }
-
                         stopTts = false
                         sourceDataline = null
                     }
@@ -488,6 +480,30 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         while (sourceDataline?.isOpen == true) {
             // loop check
         }
+    }
+
+    private fun speakMulti(start: Int, content: String) {
+        ttsMultiStream(
+                content,
+                voiceModel = Prefs.ttsVoice,
+                rate = Prefs.ttsSpeed,
+                volume = Prefs.ttsVolume,
+                pitch = Prefs.ttsPitch,
+                cacheable = Prefs.ttsCacheable,
+            )
+            ?.forEach {
+                val (rangePair, bytes) = it
+                val (range, _) = rangePair
+                if (stopTts) {
+                    return
+                }
+                println(it)
+                taInput.selectRange(range.first + start, range.last + start + 1)
+                sourceDataline = bytes?.run { Audio.play(this.inputStream(), true) }
+                while (sourceDataline?.isOpen == true) {
+                    // loop check
+                }
+            }
     }
 
     private fun writeVocabularyToFile(vocabularies: List<Vocabulary>) {
