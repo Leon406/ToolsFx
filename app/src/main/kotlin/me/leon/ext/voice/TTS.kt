@@ -8,7 +8,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import me.leon.ext.splitParagraph
-import me.leon.ext.toHtmlEntity
 import me.leon.ext.voice.Audio.play
 import me.leon.hash
 import me.leon.misc.net.DISPATCHER
@@ -23,8 +22,7 @@ class TTS(private val voice: Voice?, private val content: String) {
     private var voiceVolume = "+0%"
     private var cacheable = false
     private var saveDir = "./ttsFile"
-    private val _content: String =
-        content.trim().removeUnsupportedChar().toHtmlEntity(isAll = false)
+    private val _content: String = content.trim().removeUnsupportedChar()
 
     fun voicePitch(voicePitch: String): TTS {
         this.voicePitch = voicePitch
@@ -205,6 +203,17 @@ class TTS(private val voice: Voice?, private val content: String) {
     }
 }
 
+fun String.removeUnsupportedChar() =
+    replace("…", "...")
+        .replace("—", "-")
+        .replace("’", "'")
+        .replace("‘", "'")
+        .replace("“", "\"")
+        .replace("”", "\"")
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+
 fun tts(
     content: String,
     isAsync: Boolean = true,
@@ -266,11 +275,3 @@ fun ttsMultiStream(
             .also { println("==> takes ${(System.currentTimeMillis() - startTime) / 1000.0} s") }
     }
 }
-
-fun String.removeUnsupportedChar() =
-    replace("…", "...")
-        .replace("—", "-")
-        .replace("’", "'")
-        .replace("‘", "'")
-        .replace("“", "\"")
-        .replace("”", "\"")
