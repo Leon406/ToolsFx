@@ -31,6 +31,9 @@ object Audio {
         playAudioStream(AudioSystem.getAudioInputStream(file), isAsync)
 
     fun play(stream: InputStream?, isAsync: Boolean = false): SourceDataLine? {
+        if (stream == null || stream.available() == 0) {
+            return null
+        }
         return playAudioStream(AudioSystem.getAudioInputStream(stream), isAsync)
     }
 
@@ -38,7 +41,7 @@ object Audio {
         // http://java.ittoolbox.com/groups/technical-functional/java-l/sound-in-an-application-90681
         var ais = stream
         var audioFormat = ais.format
-        println("Format: $audioFormat BigEndian ${audioFormat.isBigEndian}")
+        println("Format: $audioFormat, BigEndian ${audioFormat.isBigEndian}")
         // ULAW format to PCM format conversion
         if (
             audioFormat.encoding === AudioFormat.Encoding.ULAW ||
@@ -69,7 +72,6 @@ object Audio {
                 )
             ais = AudioSystem.getAudioInputStream(newFormat, ais)
             audioFormat = newFormat
-            println("~~~~~~~")
         }
 
         // checking for a supported output line

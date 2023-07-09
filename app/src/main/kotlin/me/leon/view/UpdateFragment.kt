@@ -19,7 +19,7 @@ class UpdateFragment : Fragment(messages["latestVer"]) {
         alignment = Pos.CENTER
         text(releaseInfo.info) { font = Font.font(14.0) }
         hbox {
-            prefWidth = DEFAULT_SPACING_40X
+            prefWidth = DEFAULT_SPACING_50X
             prefHeight = DEFAULT_SPACING_20X
             spacing = DEFAULT_SPACING_2X
             alignment = Pos.CENTER

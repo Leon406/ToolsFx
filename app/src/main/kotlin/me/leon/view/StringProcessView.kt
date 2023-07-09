@@ -17,6 +17,7 @@ import me.leon.ext.fx.*
 import me.leon.ext.voice.Audio
 import me.leon.ext.voice.tts
 import me.leon.ext.voice.ttsMultiStream
+import me.leon.misc.Translator
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -116,7 +117,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val centerNode = vbox {
         addClass(Styles.group)
         hbox {
-            label(messages["input"])
+            label(messages["input"]) { longClick { find<TtsFragment>().openWindow() } }
             spacing = DEFAULT_SPACING
             addClass(Styles.left)
             button(graphic = imageview(IMG_IMPORT)) {
@@ -200,7 +201,6 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
             button(graphic = imageview(IMG_TTS)) {
                 shortcut(KeyCombination.valueOf("Alt+V"))
-                longClick { find<TtsFragment>().openWindow() }
                 action {
                     taInput.requestFocus()
                     runAsync {
@@ -317,6 +317,24 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                                 }
                             }
                         taInput.insertText(targetEnd, System.lineSeparator() + duplicateText)
+                    }
+                }
+
+                item("translate", KeyCombination.valueOf("Alt+T")) {
+                    action {
+                        val text = taInput.selectedText.ifEmpty { taInput.text }
+                        runAsync { Translator.google(text, target = Prefs.translateTargetLan) } ui
+                            {
+                                Alert(Alert.AlertType.WARNING)
+                                    .apply {
+                                        title = "Translate"
+                                        headerText = ""
+                                        dialogPane.maxWidth = DEFAULT_SPACING_80X
+                                        graphic =
+                                            text(it).apply { wrappingWidth = DEFAULT_SPACING_80X }
+                                    }
+                                    .show()
+                            }
                     }
                 }
             }

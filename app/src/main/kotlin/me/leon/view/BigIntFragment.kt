@@ -215,12 +215,12 @@ class BigIntFragment : Fragment("BigInt") {
                 label("P:")
                 ta1 = textarea {
                     isWrapText = true
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                 }
                 label("Q:")
                 ta2 = textarea {
                     isWrapText = true
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                 }
             }
             .also { vBox.add(it) }
@@ -230,13 +230,13 @@ class BigIntFragment : Fragment("BigInt") {
                 label("N:")
                 ta3 = textarea {
                     isWrapText = true
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                 }
 
                 label("e:")
                 ta4 = textarea {
                     isWrapText = true
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                 }
             }
             .also { vBox.add(it) }
@@ -246,12 +246,12 @@ class BigIntFragment : Fragment("BigInt") {
                 label("d:")
                 ta5 = textarea {
                     isWrapText = true
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                 }
                 label("C:")
                 ta6 = textarea {
                     isWrapText = true
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                 }
             }
             .also { vBox.add(it) }

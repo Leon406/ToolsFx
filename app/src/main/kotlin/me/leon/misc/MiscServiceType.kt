@@ -1,7 +1,7 @@
 package me.leon.misc
 
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import me.leon.C1
 import me.leon.P1
 import me.leon.ext.*
@@ -157,6 +157,12 @@ enum class MiscServiceType(val type: String) : MiscService {
                 runCatching { it.kawa(KawaType.valueOf(requireNotNull(params[C1]))).pretty() }
                     .getOrElse { it.stacktrace() }
             }
+    },
+    TRANSLATE("translate") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return Translator.google(raw, target = type)
+        }
     },
     ;
 

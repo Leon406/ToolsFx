@@ -1,19 +1,29 @@
 package me.leon.view
 
-import javafx.beans.property.*
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.*
+import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
+import javafx.scene.control.RadioButton
 import me.leon.Styles
 import me.leon.ext.*
-import me.leon.ext.fx.*
+import me.leon.ext.fx.Prefs
+import me.leon.ext.fx.TRANSLATE_DEFAULT_LANGUAGE
+import me.leon.ext.fx.TTS_DEFAULT_MODEL
+import me.leon.ext.fx.TTS_DEFAULT_RATE
 import me.leon.ext.voice.TTSVoice
 import me.leon.ext.voice.Voice
+import me.leon.misc.Translator
 import tornadofx.*
 
 class TtsFragment : Fragment("TTS") {
 
     private val selectedVoice: SimpleObjectProperty<Voice> =
         SimpleObjectProperty(TTSVoice.find(Prefs.ttsVoice))
+    private val selectedTargetLanguage: SimpleStringProperty =
+        SimpleStringProperty(Prefs.translateTargetLan)
     private val selectedLocale: SimpleStringProperty =
         SimpleStringProperty(selectedVoice.get().Locale)
     private val cacheable: SimpleBooleanProperty = SimpleBooleanProperty(Prefs.ttsCacheable)
@@ -32,8 +42,9 @@ class TtsFragment : Fragment("TTS") {
     override val root = vbox {
         paddingAll = DEFAULT_SPACING
         spacing = DEFAULT_SPACING_2X
-        prefWidth = DEFAULT_SPACING_40X
+        prefWidth = DEFAULT_SPACING_50X
         alignment = Pos.CENTER
+
         hbox {
             addClass(Styles.left)
             label("gender: ")
@@ -132,6 +143,12 @@ class TtsFragment : Fragment("TTS") {
         }
 
         hbox {
+            addClass(Styles.left)
+            label("target language: ")
+            combobox(selectedTargetLanguage, Translator.SUPPORT_LANGUAGE.toList())
+        }
+
+        hbox {
             spacing = DEFAULT_SPACING_2X
             alignment = Pos.CENTER
 
@@ -143,6 +160,7 @@ class TtsFragment : Fragment("TTS") {
                     Prefs.ttsPitch = pitchLabel.text
                     Prefs.ttsCacheable = cacheable.get()
                     Prefs.ttsLongSentence = longSentence.get()
+                    Prefs.translateTargetLan = selectedTargetLanguage.get()
                     close()
                 }
             }
@@ -155,6 +173,7 @@ class TtsFragment : Fragment("TTS") {
                     Prefs.ttsPitch = TTS_DEFAULT_RATE
                     Prefs.ttsCacheable = false
                     Prefs.ttsLongSentence = false
+                    Prefs.translateTargetLan = TRANSLATE_DEFAULT_LANGUAGE
                     close()
                 }
             }

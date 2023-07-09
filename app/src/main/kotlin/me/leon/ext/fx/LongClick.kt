@@ -8,7 +8,7 @@ import kotlin.concurrent.thread
  * @since 2023-07-06 11:13
  * @email deadogone@gmail.com
  */
-fun Control.longClick(threshold: Long = 500L, action: () -> Unit) {
+fun Control.longClick(threshold: Long = 300L, action: () -> Unit) {
     var pressedState: Boolean
     var thread: Thread? = null
 

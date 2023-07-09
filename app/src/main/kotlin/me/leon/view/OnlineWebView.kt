@@ -5,7 +5,7 @@ import javafx.concurrent.Worker
 import javafx.scene.control.TextField
 import javafx.scene.web.WebView
 import me.leon.*
-import me.leon.ext.DEFAULT_SPACING_40X
+import me.leon.ext.DEFAULT_SPACING_50X
 import me.leon.ext.fx.openInBrowser
 import tornadofx.*
 
@@ -43,7 +43,7 @@ class OnlineWebView : Fragment("Browser") {
             tfUrl =
                 textfield(selectedUrl.get()) {
                     promptText = "input url"
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                     setOnAction { web.engine.load(tfUrl.text) }
                 }
             combobox(selectedUrl, ToolsApp.extUrls.toMutableList()) { cellFormat { text = it } }
@@ -89,7 +89,7 @@ class OnlineWebView : Fragment("Browser") {
             addClass(Styles.group, Styles.left)
             val tf =
                 textfield("document.body.style.fontFamily='\"Microsoft YaHei\",Arial'") {
-                    prefWidth = DEFAULT_SPACING_40X
+                    prefWidth = DEFAULT_SPACING_50X
                 }
             button("inject js") { action { web.engine.executeScript(tf.text) } }
         }

@@ -11,6 +11,7 @@ import me.leon.config.*
 import me.leon.ext.fromJson
 import me.leon.ext.fx.Prefs
 import me.leon.ext.toFile
+import me.leon.misc.Translator
 import me.leon.view.Home
 import tornadofx.App
 import tornadofx.FX
@@ -107,6 +108,8 @@ class ToolsApp : App(Home::class, Styles::class) {
                     }
                 }
                 println(dict)
+                // 提前加载class,进行init
+                Translator
             }
         }
 

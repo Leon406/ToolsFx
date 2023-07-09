@@ -4,6 +4,7 @@ import java.util.prefs.Preferences
 
 const val TTS_DEFAULT_MODEL = "en-US-MichelleNeural"
 const val TTS_DEFAULT_RATE = "+0%"
+const val TRANSLATE_DEFAULT_LANGUAGE = "zh-CN"
 
 object Prefs {
     private const val IGNORE_UPDATE = "isIgnoreUpdate"
@@ -18,6 +19,7 @@ object Prefs {
     private const val TTS_PITCH = "ttsPitch"
     private const val TTS_CACHE = "ttsCache"
     private const val TTS_LONG_SENTENCE = "ttsLongSentence"
+    private const val TRANSLATE_TARGET_LAN = "translateTargetLanguage"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
     var isIgnoreUpdate
         get() = preference.getBoolean(IGNORE_UPDATE, false)
@@ -66,6 +68,12 @@ object Prefs {
         get() = preference.get(TTS_PITCH, TTS_DEFAULT_RATE)
         set(value) {
             preference.put(TTS_PITCH, value)
+        }
+
+    var translateTargetLan: String
+        get() = preference.get(TRANSLATE_TARGET_LAN, TRANSLATE_DEFAULT_LANGUAGE)
+        set(value) {
+            preference.put(TRANSLATE_TARGET_LAN, value)
         }
 
     var ttsCacheable: Boolean

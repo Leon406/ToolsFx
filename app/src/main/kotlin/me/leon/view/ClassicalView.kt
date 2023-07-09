@@ -158,13 +158,13 @@ class ClassicalView : Fragment(messages["classical"]) {
                     removeWhen(checkbox2Hidden)
                 }
             tfParam1 = textfield {
-                prefWidth = DEFAULT_SPACING_40X
+                prefWidth = DEFAULT_SPACING_50X
                 promptText = encodeType.paramsHints()[0]
                 onDragEntered = eventHandlerParam1
                 visibleWhen(param1Enabled)
             }
             tfParam2 = textfield {
-                prefWidth = DEFAULT_SPACING_40X
+                prefWidth = DEFAULT_SPACING_50X
                 promptText = encodeType.paramsHints()[1]
                 visibleWhen(param2Enabled)
             }

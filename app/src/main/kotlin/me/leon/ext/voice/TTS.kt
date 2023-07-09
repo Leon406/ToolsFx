@@ -23,6 +23,8 @@ class TTS(private val voice: Voice?, private val content: String) {
     private var voiceVolume = "+0%"
     private var cacheable = false
     private var saveDir = "./ttsFile"
+    private val _content: String =
+        content.trim().removeUnsupportedChar().toHtmlEntity(isAll = false)
 
     fun voicePitch(voicePitch: String): TTS {
         this.voicePitch = voicePitch
@@ -164,7 +166,7 @@ class TTS(private val voice: Voice?, private val content: String) {
             "' volume='" +
             voiceVolume +
             "'>" +
-            content +
+            _content +
             "</prosody></voice></speak>"
     }
 
@@ -217,9 +219,8 @@ fun tts(
     }
     val startTime = System.currentTimeMillis()
     val voice = TTSVoice.find(voiceModel)
-    val properContent = content.trim().removeUnsupportedChar().toHtmlEntity(isAll = false)
-    println("TTS $voiceModel: speed $rate volume $volume pitch $pitch $cacheable\n$properContent")
-    return TTS(voice, properContent)
+    println("TTS $voiceModel: speed $rate volume $volume pitch $pitch $cacheable\n$content")
+    return TTS(voice, content)
         .voicePitch(pitch)
         .voiceRate(rate)
         .voiceVolume(volume)
@@ -244,8 +245,7 @@ fun ttsMultiStream(
     }
     val startTime = System.currentTimeMillis()
     val voice = TTSVoice.find(voiceModel)
-    val properContent = content.trim().removeUnsupportedChar().toHtmlEntity(isAll = false)
-    println("TTS $voiceModel: speed $rate volume $volume pitch $pitch $cacheable\n$properContent")
+    println("TTS $voiceModel: speed $rate volume $volume pitch $pitch $cacheable\n$content")
 
     return runBlocking {
         content
