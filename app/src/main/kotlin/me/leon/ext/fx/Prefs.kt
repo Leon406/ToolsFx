@@ -28,7 +28,7 @@ object Prefs {
         }
 
     var alwaysOnTop
-        get() = preference.getBoolean(ALWAYS_ON_TOP, true)
+        get() = preference.getBoolean(ALWAYS_ON_TOP, false)
         set(value) {
             preference.putBoolean(ALWAYS_ON_TOP, value)
         }

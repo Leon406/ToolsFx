@@ -9,3 +9,4 @@ local.properties
 dict/
 *.json
 downloads/
+.DS_store
