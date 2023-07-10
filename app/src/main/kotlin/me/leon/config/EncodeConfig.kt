@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.config
 
 import me.leon.ext.crypto.EncodeType
 

@@ -15,6 +15,8 @@ import me.leon.ext.*
 import me.leon.ext.crypto.Calculator
 import me.leon.ext.crypto.calculatorType
 import me.leon.ext.fx.copy
+import me.leon.ext.math.n2s
+import me.leon.ext.math.s2n
 import tornadofx.*
 
 class BigIntFragment : Fragment("BigInt") {

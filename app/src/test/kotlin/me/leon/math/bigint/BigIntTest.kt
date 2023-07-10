@@ -2,9 +2,7 @@ package me.leon.math.bigint
 
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import me.leon.*
-import me.leon.ext.math.DivideResult
-import me.leon.ext.math.crt
+import me.leon.ext.math.*
 import org.junit.Test
 
 class BigIntTest {

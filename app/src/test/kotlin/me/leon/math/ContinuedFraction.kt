@@ -1,7 +1,7 @@
 package me.leon.math
 
 import kotlin.test.assertContentEquals
-import me.leon.*
+import me.leon.ext.math.*
 import org.junit.Test
 
 /**

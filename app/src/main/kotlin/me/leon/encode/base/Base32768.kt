@@ -2,7 +2,7 @@ package me.leon.encode.base
 
 import kotlin.math.floor
 import me.leon.ext.toUnicodeChar
-import me.leon.toBigInteger
+import me.leon.ext.math.toBigInteger
 
 /**
  * ported from https://github.com/qntm/base32768/blob/main/src/index.js

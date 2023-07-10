@@ -1,7 +1,7 @@
 package me.leon.ctf
 
 import me.leon.encode.base.base36Decode
-import me.leon.toBigInteger
+import me.leon.ext.math.toBigInteger
 
 /**
  * @see { https://www.calcresult.com/misc/cyphers/twin-hex.html }

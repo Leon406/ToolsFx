@@ -2,8 +2,8 @@ package me.leon.ext.crypto
 
 import java.math.BigInteger
 import java.security.SecureRandom
-import me.leon.*
 import me.leon.ctf.rsa.factor
+import me.leon.ext.math.*
 
 private const val FACTOR_UPPER = 120_000
 

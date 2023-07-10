@@ -6,6 +6,7 @@ import me.leon.*
 import me.leon.ctf.rsa.RsaSolver.solve
 import me.leon.ctf.rsa.RsaSolver.solveN2E2C2
 import me.leon.ctf.rsa.RsaSolver.solvePQEC
+import me.leon.ext.math.*
 import org.junit.Test
 
 /**

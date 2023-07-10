@@ -12,6 +12,7 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.config.DICT_DIR
+import me.leon.domain.SimpleMsgEvent
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.ext.voice.Audio

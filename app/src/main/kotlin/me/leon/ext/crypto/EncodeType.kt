@@ -6,7 +6,6 @@ import java.nio.charset.Charset
 import me.leon.encode.*
 import me.leon.encode.base.*
 import me.leon.ext.*
-import me.leon.toBigInteger
 
 enum class EncodeType(val type: String, val defaultDict: String = "") : IEncode {
     HEX("hex") {

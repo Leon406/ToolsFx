@@ -4,7 +4,7 @@ import kotlin.math.log2
 import me.leon.encode.base.*
 import me.leon.ext.binary2Ascii
 import me.leon.ext.toBinaryString
-import me.leon.lcm
+import me.leon.ext.math.lcm
 
 /**
  * https://blog.csdn.net/Sanctuary1307/article/details/113836907

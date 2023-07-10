@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.domain
 
 import tornadofx.*
 

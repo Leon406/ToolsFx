@@ -1,7 +1,6 @@
 package me.leon.ext.math
 
 import java.math.BigInteger
-import me.leon.lcm
 
 object Kgcd {
     /**

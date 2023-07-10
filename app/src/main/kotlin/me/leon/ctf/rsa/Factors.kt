@@ -2,8 +2,8 @@ package me.leon.ctf.rsa
 
 import java.math.BigInteger
 import java.math.BigInteger.*
-import me.leon.factorDb
-import me.leon.root
+import me.leon.ext.math.factorDb
+import me.leon.ext.math.root
 
 /** 时间复杂度 O(sqrt(N)) 优化 加入试除后 素数判断 */
 val THREE = 3.toBigInteger()

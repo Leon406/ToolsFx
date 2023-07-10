@@ -5,7 +5,10 @@ import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import me.leon.*
 import me.leon.ctf.rsa.*
+import me.leon.domain.FactorDbResponse
 import me.leon.ext.fromJson
+import me.leon.ext.math.getPrimeFromFactorDb
+import me.leon.ext.math.root
 import me.leon.ext.readFromNet
 import org.junit.Test
 

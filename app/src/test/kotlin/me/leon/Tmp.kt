@@ -9,6 +9,7 @@ import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import me.leon.ext.crypto.EncodeType
+import me.leon.ext.math.eulerPhi
 import me.leon.hash.argon2.Argon2PasswordEncoder
 import me.leon.hash.bcrypt.BCryptPasswordEncoder
 import me.leon.hash.password.*
