@@ -161,7 +161,6 @@ class TtsFragment : Fragment("TTS") {
                     Prefs.ttsCacheable = cacheable.get()
                     Prefs.ttsLongSentence = longSentence.get()
                     Prefs.translateTargetLan = selectedTargetLanguage.get()
-                    close()
                 }
             }
 
