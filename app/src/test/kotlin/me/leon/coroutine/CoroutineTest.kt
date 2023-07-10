@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.coroutine
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel

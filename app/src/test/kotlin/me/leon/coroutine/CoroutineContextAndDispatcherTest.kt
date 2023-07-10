@@ -1,6 +1,6 @@
 @file:OptIn(DelicateCoroutinesApi::class)
 
-package me.leon
+package me.leon.coroutine
 
 import kotlin.test.Ignore
 import kotlin.test.Test

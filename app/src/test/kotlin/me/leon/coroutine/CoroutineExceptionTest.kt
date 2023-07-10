@@ -1,4 +1,4 @@
-package me.leon
+package me.leon.coroutine
 
 import kotlin.test.Test
 import kotlinx.coroutines.*
