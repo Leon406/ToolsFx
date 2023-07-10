@@ -151,7 +151,7 @@ class CoroutineExceptionTest {
         runBlocking {
             try {
                 supervisorScope {
-                    val child = launch {
+                    launch {
                         try {
                             println("The child is sleeping")
                             delay(Long.MAX_VALUE)

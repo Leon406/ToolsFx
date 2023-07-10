@@ -47,7 +47,7 @@ class TtsFragment : Fragment("TTS") {
             togglegroup {
                 radiobutton("Female") { isSelected = selectGender == "Female" }
                 radiobutton("Male") { isSelected = selectGender != "Female" }
-                selectedToggleProperty().addListener { _, old, new ->
+                selectedToggleProperty().addListener { _, _, new ->
                     println(new.cast<RadioButton>().text)
                     selectGender = new.cast<RadioButton>().text
                     cbVoice.items =

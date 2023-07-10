@@ -305,7 +305,7 @@ class CoroutineAsynchronousFlowTest {
                 .onCompletion { cause ->
                     if (cause != null) println("Flow completed exceptionally")
                 }
-                .catch { cause -> println("Caught exception") }
+                .catch { println("Caught exception") }
                 .collect { value -> println(value) }
         }
     }
@@ -315,7 +315,6 @@ class CoroutineAsynchronousFlowTest {
 
     @Test
     fun `Launching flow`() {
-        val flow = (1..3).asFlow()
         runBlocking {
             events()
                 .onEach { event -> println("Event: $event") }

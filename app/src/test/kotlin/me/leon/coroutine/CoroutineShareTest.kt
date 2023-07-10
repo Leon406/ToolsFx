@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package me.leon.coroutine
 
 import java.util.concurrent.atomic.AtomicInteger
@@ -19,6 +21,7 @@ class CoroutineShareTest {
 
     var counter = 0
     var counter2 = AtomicInteger(0)
+    @OptIn(DelicateCoroutinesApi::class)
     val counterContext = newSingleThreadContext("CounterContext")
     val mutex = Mutex()
 
