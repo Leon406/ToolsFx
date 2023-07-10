@@ -101,4 +101,20 @@ object Prefs {
         }
 
     fun preference(): Preferences = preference
+
+    fun configTtsParams(
+        voice: String = TTS_DEFAULT_MODEL,
+        speed: String = TTS_DEFAULT_RATE,
+        volume: String = TTS_DEFAULT_RATE,
+        pitch: String = TTS_DEFAULT_RATE,
+        cacheable: Boolean = false,
+        longSentence: Boolean = false,
+    ) {
+        ttsVoice = voice
+        ttsSpeed = speed
+        ttsVolume = volume
+        ttsPitch = pitch
+        ttsCacheable = cacheable
+        ttsLongSentence = longSentence
+    }
 }

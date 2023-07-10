@@ -7,7 +7,8 @@ import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import me.leon.Styles
 import me.leon.ext.*
-import me.leon.ext.fx.*
+import me.leon.ext.fx.Prefs
+import me.leon.ext.fx.TRANSLATE_DEFAULT_LANGUAGE
 import me.leon.ext.voice.TTSVoice
 import me.leon.ext.voice.Voice
 import me.leon.misc.Translator
@@ -130,24 +131,21 @@ class TtsFragment : Fragment("TTS") {
 
             button(messages["save"]) {
                 action {
-                    Prefs.ttsVoice = selectedVoice.get().ShortName
-                    Prefs.ttsSpeed = speedLabel.text
-                    Prefs.ttsVolume = volumeLabel.text
-                    Prefs.ttsPitch = pitchLabel.text
-                    Prefs.ttsCacheable = cacheable.get()
-                    Prefs.ttsLongSentence = longSentence.get()
+                    Prefs.configTtsParams(
+                        selectedVoice.get().ShortName,
+                        speedLabel.text,
+                        volumeLabel.text,
+                        pitchLabel.text,
+                        cacheable.get(),
+                        longSentence.get()
+                    )
                     Prefs.translateTargetLan = selectedTargetLanguage.get()
                 }
             }
 
             button(messages["reset"]) {
                 action {
-                    Prefs.ttsVoice = TTS_DEFAULT_MODEL
-                    Prefs.ttsSpeed = TTS_DEFAULT_RATE
-                    Prefs.ttsVolume = TTS_DEFAULT_RATE
-                    Prefs.ttsPitch = TTS_DEFAULT_RATE
-                    Prefs.ttsCacheable = false
-                    Prefs.ttsLongSentence = false
+                    Prefs.configTtsParams()
                     Prefs.translateTargetLan = TRANSLATE_DEFAULT_LANGUAGE
                     close()
                 }
