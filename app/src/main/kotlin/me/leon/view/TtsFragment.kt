@@ -1,18 +1,13 @@
 package me.leon.view
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.*
+import javafx.event.EventTarget
 import javafx.geometry.Pos
-import javafx.scene.control.ComboBox
-import javafx.scene.control.Label
-import javafx.scene.control.RadioButton
+import javafx.scene.control.*
+import javafx.scene.input.KeyCode
 import me.leon.Styles
 import me.leon.ext.*
-import me.leon.ext.fx.Prefs
-import me.leon.ext.fx.TRANSLATE_DEFAULT_LANGUAGE
-import me.leon.ext.fx.TTS_DEFAULT_MODEL
-import me.leon.ext.fx.TTS_DEFAULT_RATE
+import me.leon.ext.fx.*
 import me.leon.ext.voice.TTSVoice
 import me.leon.ext.voice.Voice
 import me.leon.misc.Translator
@@ -100,41 +95,22 @@ class TtsFragment : Fragment("TTS") {
             label("Speed: ")
             speedLabel = label(Prefs.ttsSpeed)
         }
-        hbox {
-            addClass(Styles.center)
-            slider(-100, 400, Prefs.ttsSpeed.parseParam()) {
-                prefWidth = DEFAULT_SPACING_32X
-                setOnDragDetected { speedLabel.text = value.ttsParam() }
-                setOnMouseDragged { speedLabel.text = value.ttsParam() }
-            }
-        }
+
+        addSlider(-100, 400, Prefs.ttsSpeed, speedLabel)
+
         hbox {
             label("Volume: ")
             volumeLabel = label(Prefs.ttsVolume)
         }
 
-        hbox {
-            addClass(Styles.center)
-            slider(-100, 0, Prefs.ttsVolume.parseParam()) {
-                prefWidth = DEFAULT_SPACING_32X
-                setOnDragDetected { volumeLabel.text = value.ttsParam() }
-                setOnMouseDragged { volumeLabel.text = value.ttsParam() }
-            }
-        }
+        addSlider(-100, 0, Prefs.ttsVolume, volumeLabel)
 
         hbox {
             label("Pitch: ")
             pitchLabel = label(Prefs.ttsPitch)
         }
 
-        hbox {
-            addClass(Styles.center)
-            slider(-100, 400, Prefs.ttsPitch.parseParam()) {
-                prefWidth = DEFAULT_SPACING_32X
-                setOnDragDetected { pitchLabel.text = value.ttsParam() }
-                setOnMouseDragged { pitchLabel.text = value.ttsParam() }
-            }
-        }
+        addSlider(-100, 400, Prefs.ttsPitch, pitchLabel)
 
         hbox {
             addClass(Styles.center)
@@ -179,11 +155,29 @@ class TtsFragment : Fragment("TTS") {
         }
     }
 
-    private fun Double.ttsParam() =
+    private fun EventTarget.addSlider(min: Int, max: Int, default: String, label: Label) {
+        hbox {
+            addClass(Styles.center)
+            slider(min, max, default.parseParam()) {
+                prefWidth = DEFAULT_SPACING_32X
+                setOnDragDetected { label.text = value.toInt().ttsParam() }
+                setOnMouseDragged { label.text = value.toInt().ttsParam() }
+                setOnKeyPressed {
+                    if (it.code == KeyCode.LEFT) {
+                        label.text = (value - 0.5).toInt().coerceAtLeast(min).ttsParam()
+                    } else if (it.code == KeyCode.RIGHT) {
+                        label.text = (value + 0.5).toInt().coerceAtMost(max).ttsParam()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun Int.ttsParam() =
         if (this < 0) {
-            String.format("%.0f%%", this)
+            String.format("%d%%", this)
         } else {
-            String.format("+%.0f%%", this)
+            String.format("+%d%%", this)
         }
 
     private fun String.parseParam() = replace("%", "").toInt()
