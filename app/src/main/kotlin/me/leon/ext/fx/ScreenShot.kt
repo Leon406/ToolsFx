@@ -1,4 +1,4 @@
-package me.leon.view
+package me.leon.ext.fx
 
 import java.awt.Rectangle
 import java.awt.Robot
