@@ -20,6 +20,8 @@ object Prefs {
     private const val TTS_CACHE = "ttsCache"
     private const val TTS_LONG_SENTENCE = "ttsLongSentence"
     private const val TRANSLATE_TARGET_LAN = "translateTargetLanguage"
+    private const val OCR_KEY = "ocrKey"
+    private const val OCR_SECRET = "ocrSecret"
     private val preference = Preferences.userNodeForPackage(Prefs::class.java)
     var isIgnoreUpdate
         get() = preference.getBoolean(IGNORE_UPDATE, false)
@@ -100,6 +102,18 @@ object Prefs {
             preference.putBoolean(TRAY, value)
         }
 
+    var ocrKey: String
+        get() = preference.get(OCR_KEY, "")
+        set(value) {
+            preference.put(OCR_KEY, value)
+        }
+
+    var ocrSecret: String
+        get() = preference.get(OCR_SECRET, "")
+        set(value) {
+            preference.put(OCR_SECRET, value)
+        }
+
     fun preference(): Preferences = preference
 
     fun configTtsParams(
@@ -116,5 +130,10 @@ object Prefs {
         ttsPitch = pitch
         ttsCacheable = cacheable
         ttsLongSentence = longSentence
+    }
+
+    fun configOcr(key: String = "", secret: String = "") {
+        ocrKey = key
+        ocrSecret = secret
     }
 }

@@ -1,9 +1,9 @@
 package me.leon.ext.math
 
-import me.leon.REG_NON_PRINTABLE
 import java.math.BigInteger
 import java.math.BigInteger.ONE
 import java.util.*
+import me.leon.REG_NON_PRINTABLE
 import me.leon.ctf.rsa.THREE
 import me.leon.ctf.rsa.TWO
 import me.leon.domain.FactorDbResponse

@@ -8,6 +8,7 @@ const val REPO_ISSUE = "https://github.com/Leon406/ToolsFx/issues/new"
 const val PJ52_URL = "https://www.52pojie.cn/thread-1501153-1-1.html"
 const val LAN_ZOU_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9av2kb?pwd=52pj"
 const val LAN_ZOU_PLUGIN_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9w4cof?pwd=ax63"
+const val BAIDU_OCR_APPLY_URL = "https://console.bce.baidu.com/ai/#/ai/ocr/app/list"
 const val CHECK_UPDATE_URL =
     "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/main/update.json"
 const val CHECK_UPDATE_URL2 = "https://gitee.com/LeonShih/ToolsFx/raw/main/update.json"

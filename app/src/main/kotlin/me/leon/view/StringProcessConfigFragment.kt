@@ -6,15 +6,15 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import me.leon.Styles
+import me.leon.config.BAIDU_OCR_APPLY_URL
 import me.leon.ext.*
-import me.leon.ext.fx.Prefs
-import me.leon.ext.fx.TRANSLATE_DEFAULT_LANGUAGE
+import me.leon.ext.fx.*
 import me.leon.ext.voice.TTSVoice
 import me.leon.ext.voice.Voice
 import me.leon.misc.Translator
 import tornadofx.*
 
-class TtsFragment : Fragment("TTS") {
+class StringProcessConfigFragment : Fragment(FX.messages["stringProcess"]) {
 
     private val selectedVoice: SimpleObjectProperty<Voice> =
         SimpleObjectProperty(TTSVoice.find(Prefs.ttsVoice))
@@ -30,6 +30,8 @@ class TtsFragment : Fragment("TTS") {
     private var volumeLabel: Label by singleAssign()
     private var speedLabel: Label by singleAssign()
     private var pitchLabel: Label by singleAssign()
+    private var tfOcrKey: TextField by singleAssign()
+    private var tfOcrSecret: TextField by singleAssign()
 
     private val locales: List<String> by lazy {
         TTSVoice.provides().map { it.Locale }.distinct().sorted()
@@ -126,6 +128,16 @@ class TtsFragment : Fragment("TTS") {
         }
 
         hbox {
+            addClass(Styles.left)
+            hyperlink("百度OCR ").action { BAIDU_OCR_APPLY_URL.openInBrowser() }
+        }
+        hbox {
+            addClass(Styles.left)
+            tfOcrKey = textfield(Prefs.ocrKey) { promptText = "key" }
+            tfOcrSecret = textfield(Prefs.ocrSecret) { promptText = "secret" }
+        }
+
+        hbox {
             spacing = DEFAULT_SPACING_2X
             alignment = Pos.CENTER
 
@@ -139,6 +151,7 @@ class TtsFragment : Fragment("TTS") {
                         cacheable.get(),
                         longSentence.get()
                     )
+                    Prefs.configOcr(tfOcrKey.text, tfOcrSecret.text)
                     Prefs.translateTargetLan = selectedTargetLanguage.get()
                 }
             }
@@ -146,6 +159,7 @@ class TtsFragment : Fragment("TTS") {
             button(messages["reset"]) {
                 action {
                     Prefs.configTtsParams()
+                    Prefs.configOcr()
                     Prefs.translateTargetLan = TRANSLATE_DEFAULT_LANGUAGE
                     close()
                 }
