@@ -1,11 +1,12 @@
 package me.leon.misc
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 import me.leon.C1
 import me.leon.P1
 import me.leon.ext.*
 import me.leon.misc.net.*
+import me.leon.misc.unit.unitConvert
 
 val SDF_TIME = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 val SDF_DATE = SimpleDateFormat("yyyy-MM-dd")
@@ -162,6 +163,12 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: Map<String, String>): String {
             val type = requireNotNull(params[C1])
             return Translator.google(raw, target = type)
+        }
+    },
+    UNIT_CONVERT("unit conversion") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return raw.lineAction2String { it.unitConvert(type) }
         }
     },
     ;

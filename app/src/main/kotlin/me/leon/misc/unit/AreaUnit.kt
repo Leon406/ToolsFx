@@ -1,4 +1,4 @@
-package me.leon.misc
+package me.leon.misc.unit
 
 /**
  * @author Leon
@@ -28,7 +28,15 @@ fun String.areaUnit(): String =
         println(groupValues[2])
         len *= (areaFactor[unit] ?: 1.0)
 
-        String.format(
+        areaFormat(len)
+    }
+        ?: kotlin.run {
+            val len = this.trim().toDouble()
+            areaFormat(len)
+        }
+
+private fun areaFormat(len: Double) =
+    String.format(
             "%.2f m²\n%.2f 亩\n%f km²\n%f ha\n%f mi²\n",
             len,
             len / areaFactor["亩"]!!,
@@ -36,15 +44,4 @@ fun String.areaUnit(): String =
             len / areaFactor["ha"]!!,
             len / areaFactor["mi2"]!!,
         )
-    }
-        ?: kotlin.run {
-            val len = this.trim().toDouble()
-            String.format(
-                "%.2f m²\n%.2f 亩\n%f km²\n%f ha\n%f mi²\n",
-                len,
-                len / areaFactor["亩"]!!,
-                len / areaFactor["km2"]!!,
-                len / areaFactor["ha"]!!,
-                len / areaFactor["mi2"]!!,
-            )
-        }
+        .replace(REG_TRIM_ZERO, "")

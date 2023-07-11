@@ -1,5 +1,7 @@
 package me.leon.misc
 
+import me.leon.misc.unit.UNIT_TYPES
+
 /**
  * @author Leon
  * @since 2023-06-02 14:04
@@ -42,6 +44,7 @@ val MISC_CONFIG =
         MiscServiceType.TRANSLATE to mapOf(HINT to "translate sentence to specific language"),
         MiscServiceType.ROMAN to mapOf(HINT to "roman number, like VIII or 8,separate by line"),
         MiscServiceType.ROMANJI to mapOf(HINT to "romanji for Chinese,Japanese,Korean"),
+        MiscServiceType.UNIT_CONVERT to mapOf(HINT to "unit convert, should specify type"),
     )
 
 val MISC_OPTIONS_CONFIG =
@@ -61,5 +64,6 @@ val MISC_OPTIONS_CONFIG =
             mapOf(OPTIONS to KawaType.values().map { it.toString() }.toTypedArray()),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
+        MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.DATE2STAMP to mapOf(PARAMS_HINT to arrayOf("optional, input date format")),
     )

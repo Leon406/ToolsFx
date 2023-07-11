@@ -1,6 +1,7 @@
 package me.leon.misc
 
 import kotlin.test.Test
+import me.leon.misc.unit.*
 
 /**
  * @author Leon
@@ -10,7 +11,6 @@ import kotlin.test.Test
 class UnitConvertTest {
     @Test
     fun temperature() {
-
         listOf("100", "100.2", "100C", "100 C", " 100 C", "373.15K", "212F", "671.67R").forEach {
             println(it.temperature())
         }

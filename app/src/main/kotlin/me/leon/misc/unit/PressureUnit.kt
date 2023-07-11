@@ -1,4 +1,4 @@
-package me.leon.misc
+package me.leon.misc.unit
 
 /**
  * @author Leon
@@ -28,7 +28,15 @@ fun String.pressureUnit(): String =
         println(groupValues[2])
         len *= (pressureFactor[unit] ?: 1.0)
 
-        String.format(
+        pressureFormat(len)
+    }
+        ?: kotlin.run {
+            val len = this.trim().toDouble()
+            pressureFormat(len)
+        }
+
+private fun pressureFormat(len: Double) =
+    String.format(
             "%.2f Pa\n%.2f kPa\n%.2f torr\n%.2f psi\n%.3f atm\n",
             len,
             len / pressureFactor["kpa"]!!,
@@ -36,15 +44,4 @@ fun String.pressureUnit(): String =
             len / pressureFactor["psi"]!!,
             len / pressureFactor["atm"]!!,
         )
-    }
-        ?: kotlin.run {
-            val len = this.trim().toDouble()
-            String.format(
-                "%.2f Pa\n%.2f kPa\n%.2f torr\n%.2f psi\n%.3f atm\n",
-                len,
-                len / pressureFactor["kpa"]!!,
-                len / pressureFactor["torr"]!!,
-                len / pressureFactor["psi"]!!,
-                len / pressureFactor["atm"]!!,
-            )
-        }
+        .replace(REG_TRIM_ZERO, "")

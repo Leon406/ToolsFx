@@ -4,8 +4,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.Button
-import javafx.scene.control.TextArea
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCombination
@@ -137,8 +136,18 @@ class QrcodeView : Fragment("Qrcode") {
                 iv.image = bufferedImage
                 runAsync { runCatching { it.qrReader() }.getOrElse { it.stacktrace() } } ui
                     {
+                        selectThisTab()
                         ta.text = it
                     }
+            }
+        }
+    }
+
+    private fun selectThisTab() {
+        root.findParentOfType(TabPane::class)?.run {
+            val thisTab = tabs.first { it.text == title }
+            if (selectionModel.selectedItem != thisTab) {
+                selectionModel.select(thisTab)
             }
         }
     }

@@ -1,4 +1,4 @@
-package me.leon.misc
+package me.leon.misc.unit
 
 /**
  * @author Leon
@@ -27,7 +27,15 @@ fun String.weightUnit(): String =
         println(groupValues[2])
         len *= (weightFactor[unit] ?: 1.0)
 
-        String.format(
+        weightFormat(len)
+    }
+        ?: kotlin.run {
+            val len = this.trim().toDouble()
+            weightFormat(len)
+        }
+
+private fun weightFormat(len: Double) =
+    String.format(
             "%.2f kg\n%.2f lb\n%.2f 斤\n%.2f oz\n%.3f t\n",
             len,
             len / weightFactor["lb"]!!,
@@ -35,15 +43,4 @@ fun String.weightUnit(): String =
             len / weightFactor["oz"]!!,
             len / weightFactor["t"]!!,
         )
-    }
-        ?: kotlin.run {
-            val len = this.trim().toDouble()
-            String.format(
-                "%.2f kg\n%.2f lb\n%.2f 斤\n%.2f oz\n%.3f t\n",
-                len,
-                len / weightFactor["lb"]!!,
-                len / weightFactor["斤"]!!,
-                len / weightFactor["oz"]!!,
-                len / weightFactor["t"]!!,
-            )
-        }
+        .replace(REG_TRIM_ZERO, "")

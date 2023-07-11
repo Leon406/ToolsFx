@@ -225,11 +225,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 }
             }
             button(graphic = imageview("/img/ocr.png")) {
+                shortcut(KeyCombination.valueOf("Ctrl+O"))
                 action {
                     primaryStage.screenShot {
                         if (it == null) {
                             primaryStage.showToast("unrecognized")
                         } else {
+                            selectThisTab()
                             runCatching {
                                     taInput.text = BaiduOcr.ocrBase64(it.toByteArray().base64())
                                 }
@@ -634,7 +636,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun selectThisTab() {
         root.findParentOfType(TabPane::class)?.run {
-            val thisTab = tabs.first { it.text == messages["stringProcess"] }
+            val thisTab = tabs.first { it.text == title }
             if (selectionModel.selectedItem != thisTab) {
                 selectionModel.select(thisTab)
             }
