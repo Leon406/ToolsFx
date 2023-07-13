@@ -109,7 +109,7 @@ class ToolsApp : App(Home::class, Styles::class) {
                 }
                 println(dict)
                 // 提前加载class,进行init
-                Translator
+                Translator.init()
             }
         }
 
