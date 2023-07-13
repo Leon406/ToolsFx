@@ -1,33 +1,35 @@
 package me.leon.view
 
 import javafx.concurrent.Worker
-import javafx.geometry.Insets
 import javafx.scene.control.Alert
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.web.WebView
 import me.leon.ToolsApp
+import me.leon.ext.DEFAULT_SPACING
 import me.leon.ext.DEFAULT_SPACING_32X
 import me.leon.ext.DEFAULT_SPACING_8X
 import me.leon.ext.stacktrace
-import tornadofx.attachTo
-import tornadofx.hbox
-import tornadofx.label
-import tornadofx.tooltip
+import tornadofx.*
 
 class VocabularyCell : ListCell<Vocabulary>() {
-    lateinit var tWord: Label
-    lateinit var tMean: Label
+    private lateinit var tWord: Label
+    private lateinit var tMean: Label
+    var action: (String) -> Unit = EMPTY
 
     init {
         graphic = hbox {
             tWord = label { this.prefWidth = DEFAULT_SPACING_32X }
             tMean = label()
-            padding = Insets(8.0)
+            paddingAll = DEFAULT_SPACING
             spacing = DEFAULT_SPACING_8X
             setOnMouseClicked {
                 if (it.clickCount == 2) {
-                    showWordInfo(item.word)
+                    if (it.isControlDown && action != EMPTY) {
+                        action(item.word)
+                    } else {
+                        showWordInfo(item.word)
+                    }
                 }
             }
         }
@@ -47,6 +49,8 @@ class VocabularyCell : ListCell<Vocabulary>() {
     }
 
     companion object {
+
+        private val EMPTY: (String) -> Unit = {}
         private val shareWebview =
             WebView().apply {
                 engine.userStyleSheetLocation =

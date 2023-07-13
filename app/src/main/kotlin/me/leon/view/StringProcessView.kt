@@ -17,7 +17,9 @@ import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
-import me.leon.ext.voice.*
+import me.leon.ext.voice.Audio
+import me.leon.ext.voice.tts
+import me.leon.ext.voice.ttsMultiStream
 import me.leon.misc.Translator
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -50,6 +52,25 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private var labelInfo: Label by singleAssign()
     private var tfExtract: TextField by singleAssign()
     private var lvVocabularyList: ListView<Vocabulary> by singleAssign()
+
+    private var preWord: Pair<String, Int>? = null
+    private val findInputPositionAction = { word: String ->
+        val text = taInput.text.lowercase()
+        val sameWord = preWord?.first == word
+        val fromIndex =
+            if (sameWord) {
+                preWord!!.second
+            } else {
+                0
+            }
+        var startIndex = text.indexOf(word, fromIndex)
+        if (startIndex == -1) {
+            startIndex = text.indexOf(word)
+        }
+        taInput.requestFocus()
+        taInput.selectRange(startIndex, startIndex + word.length)
+        preWord = word to startIndex + word.length
+    }
 
     private val replaceFromText
         get() = tfReplaceFrom.text.unescape()
@@ -297,7 +318,6 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 item("input ∩ addition (key)") {
                     action {
                         val (inputs, inputs2) = inputsList()
-
                         taOutput.text =
                             inputs
                                 .filter {
@@ -475,7 +495,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             lvVocabularyList =
                 listview(words) {
                     visibleWhen(showList)
-                    cellFactory = Callback { VocabularyCell() }
+                    cellFactory = Callback {
+                        VocabularyCell().apply { action = findInputPositionAction }
+                    }
                     selectionModel.selectionMode = SelectionMode.MULTIPLE
                     setOnKeyPressed { keyEvent ->
                         if (keyEvent.code == KeyCode.ENTER) {

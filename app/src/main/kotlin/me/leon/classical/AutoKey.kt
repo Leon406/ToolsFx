@@ -6,9 +6,7 @@ fun String.autoKey(keyword: String): String {
     val key = keyword.uppercase()
     val stripText = this.stripAllSpace()
     val splits = splitBySpace().map { it.length }
-    return stripText
-        .virgeneneEncode(key + stripText)
-        .sliceList(splits)
+    return stripText.virgeneneEncode(key + stripText).sliceList(splits)
 }
 
 fun String.autoKeyDecrypt(keyword: String): String {
