@@ -54,23 +54,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private var lvVocabularyList: ListView<Vocabulary> by singleAssign()
 
     private var preWord: Pair<String, Int>? = null
-    private val findInputPositionAction = { word: String ->
-        val text = taInput.text.lowercase()
-        val sameWord = preWord?.first == word
-        val fromIndex =
-            if (sameWord) {
-                preWord!!.second
-            } else {
-                0
-            }
-        var startIndex = text.indexOf(word, fromIndex)
-        if (startIndex == -1) {
-            startIndex = text.indexOf(word)
-        }
-        taInput.requestFocus()
-        taInput.selectRange(startIndex, startIndex + word.length)
-        preWord = word to startIndex + word.length
-    }
+    private val findInputPositionAction = { word: String -> locateWord(word) }
 
     private val replaceFromText
         get() = tfReplaceFrom.text.unescape()
@@ -502,6 +486,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     setOnKeyPressed { keyEvent ->
                         if (keyEvent.code == KeyCode.ENTER) {
                             VocabularyCell.showWordInfo(selectionModel.selectedItems.first().word)
+                        } else if (keyEvent.code == KeyCode.F1) {
+                            locateWord(selectionModel.selectedItems.first().word)
                         }
                     }
                 }
@@ -523,6 +509,23 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     override val root = borderpane {
         center = centerNode
         bottom = hbox { labelInfo = label(info) }
+    }
+
+    private fun locateWord(word: String) {
+        val text = taInput.text.lowercase()
+        val sameWord = preWord?.first == word
+        val fromIndex =
+            if (sameWord) {
+                preWord!!.second
+            } else {
+                0
+            }
+        var startIndex = text.indexOf(word, fromIndex)
+        if (startIndex == -1) {
+            startIndex = text.indexOf(word)
+        }
+        taInput.selectRange(startIndex, startIndex + word.length)
+        preWord = word to startIndex + word.length
     }
 
     private fun speak(range: IntRange, start: Int, content: String) {

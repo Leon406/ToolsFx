@@ -25,7 +25,7 @@ class VocabularyCell : ListCell<Vocabulary>() {
             spacing = DEFAULT_SPACING_8X
             setOnMouseClicked {
                 if (it.clickCount == 2) {
-                    if (it.isControlDown && action != EMPTY) {
+                    if (action != EMPTY) {
                         action(item.word)
                     } else {
                         showWordInfo(item.word)
