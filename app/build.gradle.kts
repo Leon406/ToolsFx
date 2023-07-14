@@ -60,6 +60,7 @@ tasks.withType<Jar>().forEach {
 }
 
 dependencies {
+    implementation(fileTree("dir" to "../libs", "include" to arrayOf("*.jar")))
     implementation(project(":plugin-lib"))
     api(libs.bouncycastle)
     implementation(libs.zxing)
