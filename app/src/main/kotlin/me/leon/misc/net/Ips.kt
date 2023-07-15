@@ -83,7 +83,7 @@ private const val PCONLINE_API = "http://whois.pconline.com.cn/ipJson.jsp?ip=%s&
 
 fun String.ipLocation() =
     runCatching {
-            PCONLINE_API.format(fastestIp(resolveDomains(this))?.first)
+            PCONLINE_API.format(fastestIp(resolveDomainByAli(this))?.first)
                 .readBytesFromNet()
                 .toString(GBK)
                 .fromJson(PcOnlineIp::class.java)
