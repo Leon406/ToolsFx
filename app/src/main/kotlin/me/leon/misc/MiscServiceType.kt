@@ -81,7 +81,8 @@ enum class MiscServiceType(val type: String) : MiscService {
             raw.lanScan().joinToString(System.lineSeparator())
     },
     BATCH_PING("ping") {
-        override fun process(raw: String, params: Map<String, String>) = raw.batchPing()
+        override fun process(raw: String, params: Map<String, String>) =
+            raw.batchPing(requireNotNull(params[C1]))
     },
     TCPING("tcping") {
         override fun process(raw: String, params: Map<String, String>) = raw.batchTcPing()

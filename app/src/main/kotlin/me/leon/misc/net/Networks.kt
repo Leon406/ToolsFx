@@ -1,6 +1,8 @@
 package me.leon.misc.net
 
-import java.net.*
+import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
 import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.*
 import me.leon.ext.headRequest
@@ -73,13 +75,25 @@ fun String.lanScan(): List<Int> {
     }
 }
 
-fun String.batchPing() = runBlocking {
+fun String.batchPing(type: String) =
+    with(batchPingResult()) {
+        when (type) {
+            "Ok" ->
+                filter { it.second > 0 }
+                    .sortedBy { it.second }
+                    .joinToString(System.lineSeparator()) { it.first }
+            "Fail" -> filter { it.second < 0 }.joinToString(System.lineSeparator()) { it.first }
+            "All" -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+            else -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+        }
+    }
+
+fun String.batchPingResult() = runBlocking {
     lines()
         .filter { it.isNotEmpty() }
         .map { async(DISPATCHER) { it to it.substringBeforeLast(":").ping() } }
         .awaitAll()
         .sortedByDescending { it.second }
-        .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
 }
 
 fun String.batchTcPing() = runBlocking {

@@ -65,5 +65,6 @@ val MISC_OPTIONS_CONFIG =
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
+        MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
         MiscServiceType.DATE2STAMP to mapOf(PARAMS_HINT to arrayOf("optional, input date format")),
     )
