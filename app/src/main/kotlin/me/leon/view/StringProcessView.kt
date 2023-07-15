@@ -346,7 +346,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 item("translate", KeyCombination.valueOf("Alt+T")) {
                     action {
                         val text = taInput.selectedText.ifEmpty { taInput.text }
-                        runAsync { Translator.google(text, target = Prefs.translateTargetLan) } ui
+                        runAsync {
+                            Translator.translate(text, target = Prefs.translateTargetLan)
+                        } ui
                             {
                                 Alert(Alert.AlertType.WARNING)
                                     .apply {

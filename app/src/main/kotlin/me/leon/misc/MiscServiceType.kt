@@ -163,7 +163,7 @@ enum class MiscServiceType(val type: String) : MiscService {
     TRANSLATE("translate") {
         override fun process(raw: String, params: Map<String, String>): String {
             val type = requireNotNull(params[C1])
-            return Translator.google(raw, target = type)
+            return Translator.translate(raw, target = type)
         }
     },
     UNIT_CONVERT("unit conversion") {
