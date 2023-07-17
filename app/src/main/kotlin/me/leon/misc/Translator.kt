@@ -90,12 +90,11 @@ object Translator {
             .toString()
 
     fun google(text: String, src: String = "auto", target: String = "zh-CN"): String =
-        (URL_GOOGLE.format(googleOkServer.first(), src, target, URLEncoder.encode(text, "utf-8"))
-                .readFromNet()
-                .fromJson(Map::class.java)["sentences"]
-                as List<Map<String, Any>>)
-            .first()["trans"]
-            .toString()
+        URL_GOOGLE.format(googleOkServer.first(), src, target, URLEncoder.encode(text, "utf-8"))
+            .readFromNet()
+            .fromJson(GoogleTranslation::class.java)
+            .sentences
+            .joinToString("") { it.trans }
 
     fun lingva(text: String, src: String = "auto", target: String = "zh"): String =
         URL_LINGVA.format(
@@ -106,4 +105,8 @@ object Translator {
             .readFromNet()
             .fromJson(Map::class.java)["translation"]
             .toString()
+
+    data class GoogleTranslation(val sentences: List<Sentence>) {
+        data class Sentence(val trans: String, val orig: String)
+    }
 }
