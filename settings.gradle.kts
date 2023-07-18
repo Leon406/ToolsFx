@@ -8,6 +8,7 @@ pluginManagement {
         maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 
@@ -18,6 +19,7 @@ dependencyResolutionManagement {
         maven { url = uri("https://mirrors.huaweicloud.com/repository/maven") }
         maven { url = uri("https://maven.aliyun.com/repository/public") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
+        mavenCentral()
     }
     versionCatalogs {
         create("libs") {
