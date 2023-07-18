@@ -1,5 +1,7 @@
 package me.leon
 
+import me.leon.ext.toFile
+
 /**
  * @author Leon
  * @since 2023-06-30 14:23
@@ -8,7 +10,8 @@ package me.leon
 const val MDX_DIR = "E:\\software\\Lily5\\soft\\GoldenDict\\content"
 const val MDX = "$MDX_DIR/The little dict多功能/TLD.mdx"
 const val DESKTOP = "C:\\Users\\Leon\\Desktop"
-const val onedriveDir = "E:\\OneDrive\\我的文档\\学习"
+const val ONE_DRIVE_DIR = "E:\\OneDrive\\我的文档\\学习"
 
-const val vocabularyFile = "$onedriveDir/vocabulary.txt"
+val VOCABULARY_FILE = "$ONE_DRIVE_DIR/vocabulary.txt".toFile()
 const val translateFile = "$DESKTOP/trans.txt"
+val SYLLABLE_FILE = "$ONE_DRIVE_DIR/syllable.txt".toFile()

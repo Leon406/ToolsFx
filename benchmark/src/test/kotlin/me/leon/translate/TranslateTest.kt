@@ -2,8 +2,8 @@ package me.leon.translate
 
 import java.io.File
 import kotlin.test.Test
+import me.leon.ONE_DRIVE_DIR
 import me.leon.ext.*
-import me.leon.onedriveDir
 import org.jsoup.Jsoup
 
 /**
@@ -118,7 +118,7 @@ class TranslateTest {
     @Test
     fun translate() {
 
-        val toTranslated = "$onedriveDir/known.txt".toFile()
+        val toTranslated = "$ONE_DRIVE_DIR/known.txt".toFile()
         val trans = File(toTranslated.parentFile, "trans.txt")
         val translated =
             runCatching { trans.readText() }.getOrNull()?.lines()?.map { it.split("\t")[0] }
