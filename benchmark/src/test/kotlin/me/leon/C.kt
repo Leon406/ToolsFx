@@ -15,3 +15,4 @@ const val ONE_DRIVE_DIR = "E:\\OneDrive\\我的文档\\学习"
 val VOCABULARY_FILE = "$ONE_DRIVE_DIR/vocabulary.txt".toFile()
 const val translateFile = "$DESKTOP/trans.txt"
 val SYLLABLE_FILE = "$ONE_DRIVE_DIR/syllable.txt".toFile()
+val SYLLABLE_NO_DATA_FILE = "$ONE_DRIVE_DIR/syllable-no.txt".toFile()
