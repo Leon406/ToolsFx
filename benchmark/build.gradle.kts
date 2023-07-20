@@ -29,7 +29,7 @@ dependencies {
     testImplementation("tokyo.northside:mdict4j:0.5.3") {
         exclude("org.bouncycastle", "bcprov-jdk15on")
     }
-    testImplementation("org.java-websocket:Java-WebSocket:1.5.3")
+    testImplementation("org.java-websocket:Java-WebSocket:1.5.4")
     // mp3格式支持
 //    testImplementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
 
