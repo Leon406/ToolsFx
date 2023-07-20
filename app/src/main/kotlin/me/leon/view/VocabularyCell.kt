@@ -1,15 +1,10 @@
 package me.leon.view
 
 import javafx.concurrent.Worker
-import javafx.scene.control.Alert
-import javafx.scene.control.Label
-import javafx.scene.control.ListCell
+import javafx.scene.control.*
 import javafx.scene.web.WebView
 import me.leon.ToolsApp
-import me.leon.ext.DEFAULT_SPACING
-import me.leon.ext.DEFAULT_SPACING_32X
-import me.leon.ext.DEFAULT_SPACING_8X
-import me.leon.ext.stacktrace
+import me.leon.ext.*
 import tornadofx.*
 
 class VocabularyCell : ListCell<Vocabulary>() {
@@ -39,7 +34,7 @@ class VocabularyCell : ListCell<Vocabulary>() {
         super.updateItem(item, empty)
         if (item != null) {
             tWord.text = item.word
-            tWord.tooltip(item.word)
+            tWord.tooltip(item.syllable ?: item.word)
             tMean.text = item.mean
             tMean.tooltip(item.mean)
         } else {
@@ -76,14 +71,14 @@ class VocabularyCell : ListCell<Vocabulary>() {
                                 ""
                             }
                         runCatching {
-                                engine.executeScript(
-                                    "function hideElements(selector){" +
+                            engine.executeScript(
+                                "function hideElements(selector){" +
                                         "var items=document.querySelectorAll(selector);" +
                                         "for(var i=0,size=items.length;i<size;i++){" +
                                         "items[i].style.display='none'}}" +
                                         "\n$hideJs;$extraJs"
-                                )
-                            }
+                            )
+                        }
                             .getOrElse { println(it.stacktrace()) }
                         println("it takes ${System.currentTimeMillis() - startTime}")
                         isVisible = true
@@ -108,6 +103,8 @@ class VocabularyCell : ListCell<Vocabulary>() {
 }
 
 data class Vocabulary(val word: String, val mean: String? = null) {
+
+    var syllable: String? = null
 
     override fun equals(other: Any?): Boolean {
         if (other !is Vocabulary) {
