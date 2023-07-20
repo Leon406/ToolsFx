@@ -595,12 +595,20 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             }
 
         if (defaultFile == targetFile) {
-            inputText2 = "$inputText2${System.lineSeparator()}${defaultFile.absolutePath}"
+            if (!inputText2.lines().contains(targetFile.absolutePath)) {
+                inputText2 = "$inputText2${System.lineSeparator()}${defaultFile.absolutePath}"
+            }
             additionFileMode.value = true
         }
-        println("_____$targetFile")
-        targetFile.appendText(vocabularies.joinToString(System.lineSeparator()) { it.word })
-        targetFile.appendText(System.lineSeparator())
+        if (!targetFile.exists()) {
+            targetFile.createNewFile()
+        }
+        println("==> write to $targetFile")
+        val newWords = vocabularies.map { it.word } - targetFile.readText().lines().toSet()
+        if (newWords.isNotEmpty()) {
+            targetFile.appendText(newWords.joinToString(System.lineSeparator()))
+            targetFile.appendText(System.lineSeparator())
+        }
     }
 
     private fun inputsList(): Pair<Set<String>, Set<String>> {
