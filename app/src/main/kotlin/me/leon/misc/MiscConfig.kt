@@ -45,6 +45,7 @@ val MISC_CONFIG =
         MiscServiceType.ROMAN to mapOf(HINT to "roman number, like VIII or 8,separate by line"),
         MiscServiceType.ROMANJI to mapOf(HINT to "romanji for Chinese,Japanese,Korean"),
         MiscServiceType.UNIT_CONVERT to mapOf(HINT to "unit convert, should specify type"),
+        MiscServiceType.TRADITION_CHINESE_CONVERT to mapOf(HINT to "convert tradition chinese"),
     )
 
 val MISC_OPTIONS_CONFIG =
@@ -61,10 +62,25 @@ val MISC_OPTIONS_CONFIG =
                     )
             ),
         MiscServiceType.ROMANJI to
-            mapOf(OPTIONS to KawaType.values().map { it.toString() }.toTypedArray()),
+            mapOf(OPTIONS to KawaType.entries.map { it.toString() }.toTypedArray()),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
-        MiscServiceType.DATE2STAMP to mapOf(PARAMS_HINT to arrayOf("optional, input date format")),
+        MiscServiceType.TRADITION_CHINESE_CONVERT to
+            mapOf(
+                OPTIONS to
+                    arrayOf(
+                        "t2s",
+                        "s2t",
+                        "s2tw",
+                        "s2twp",
+                        "s2hk",
+                        "tw2s",
+                        "hk2s",
+                        "hk2t",
+                        "jp2t",
+                        "t2jp"
+                    )
+            )
     )

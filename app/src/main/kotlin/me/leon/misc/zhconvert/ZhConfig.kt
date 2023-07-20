@@ -1,4 +1,4 @@
-package me.leon.misc
+package me.leon.misc.zhconvert
 
 /**
  * @author Leon
@@ -99,22 +99,21 @@ val CONFIG =
     )
 
 fun ZhConvertConfig.convert(text: String): String {
-    println(dicts)
     val translators =
         dicts.map { dicts ->
             val dict = dicts.first()
             val reverse = dict.endsWith("Rev")
             CACHE_TRANSLATOR[dicts.toString()]
-                ?: ZhTranslator("/${dict.replace("Rev$".toRegex(), "")}.txt", reverse).also {
-                    translator ->
-                    dicts.drop(1).forEach {
-                        translator.loadDict(
-                            "/${it.replace("Rev$".toRegex(), "")}.txt",
-                            it.endsWith("Rev")
-                        )
+                ?: ZhTranslator("/zhconvert/${dict.replace("Rev$".toRegex(), "")}.txt", reverse)
+                    .also { translator ->
+                        dicts.drop(1).forEach {
+                            translator.loadDict(
+                                "/zhconvert/${it.replace("Rev$".toRegex(), "")}.txt",
+                                it.endsWith("Rev")
+                            )
+                        }
+                        CACHE_TRANSLATOR[dicts.toString()] = translator
                     }
-                    CACHE_TRANSLATOR[dicts.toString()] = translator
-                }
         }
     var converted = text
     for (translator in translators) {

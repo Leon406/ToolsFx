@@ -1,8 +1,11 @@
 package me.leon.misc
 
 import java.io.File
+import kotlin.system.measureNanoTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import me.leon.misc.zhconvert.CONFIG
+import me.leon.misc.zhconvert.convert
 
 /**
  * @author Leon
@@ -92,7 +95,6 @@ class SimpleChineseTraditionTest {
 
     @Test
     fun convertHk() {
-
         val simple = "群峰"
         val hk = "羣峯"
 
@@ -110,12 +112,28 @@ class SimpleChineseTraditionTest {
     @Test
     fun convertJp() {
         val old = "壓邊國號變步缺罐屍篰"
-        val neww = "圧辺国号変歩欠缶死部"
+        val newHanzi = "圧辺国号変歩欠缶死部"
 
         var config = CONFIG.first { it.name == "jp2t" }
-        assertEquals(old, config.convert(neww))
+        assertEquals(old, config.convert(newHanzi))
 
         config = CONFIG.first { it.name == "t2jp" }
-        assertEquals(neww, config.convert(old))
+        assertEquals(newHanzi, config.convert(old))
+    }
+
+    @Test
+    fun convert() {
+        val simple =
+            "虽然之前来过日本旅游两次，但是理解都浮于表面，只是惊叹于日本街道的干净和优良的秩序。" +
+                "哪怕现在我也很难说我对日本有多么深刻的认识，只是浸淫在这样的文化中，体验更加真实。" +
+                "日本是我生活的第五个国家（前四个是中国、英国、瑞士、美国），也是第一个中国以外的东方国家。"
+        val config = CONFIG.first { it.name == "s2t" }
+
+        val count = 1000
+        var sum = 0L
+        // warm up
+        repeat(count) { config.convert(simple) }
+        repeat(count) { measureNanoTime { config.convert(simple) }.also { sum += it } }
+        println(sum / count)
     }
 }

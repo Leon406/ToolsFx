@@ -7,6 +7,8 @@ import me.leon.P1
 import me.leon.ext.*
 import me.leon.misc.net.*
 import me.leon.misc.unit.unitConvert
+import me.leon.misc.zhconvert.CONFIG
+import me.leon.misc.zhconvert.convert
 
 val SDF_TIME = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 val SDF_DATE = SimpleDateFormat("yyyy-MM-dd")
@@ -172,6 +174,12 @@ enum class MiscServiceType(val type: String) : MiscService {
             return raw.lineAction2String { it.unitConvert(type) }
         }
     },
+    TRADITION_CHINESE_CONVERT("繁简体转换") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return CONFIG.first { it.name == type }.convert(raw)
+        }
+    },
     ;
 
     override fun hint(): String {
@@ -184,6 +192,6 @@ enum class MiscServiceType(val type: String) : MiscService {
         MISC_OPTIONS_CONFIG[this]?.get(PARAMS_HINT).orEmpty()
 }
 
-val miscServiceTypeMap = MiscServiceType.values().associateBy { it.type }
+val miscServiceTypeMap = MiscServiceType.entries.associateBy { it.type }
 
 fun String.miscServiceType() = miscServiceTypeMap[this] ?: MiscServiceType.UUID

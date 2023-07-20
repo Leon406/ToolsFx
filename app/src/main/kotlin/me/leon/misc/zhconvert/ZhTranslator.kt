@@ -1,4 +1,4 @@
-package me.leon.misc
+package me.leon.misc.zhconvert
 
 import me.leon.ext.readResourceText
 
@@ -8,36 +8,15 @@ import me.leon.ext.readResourceText
  * @email deadogone@gmail.com
  */
 data class ZhTranslator(val path: String, val reversed: Boolean = false) {
-    private var tries = HanziTrie()
+    private var tries = Trie()
     private val dicts = mutableMapOf<String, String>()
 
     init {
-        loadDict()
+        loadDict(path, reversed)
     }
 
-    private fun loadDict() {
-        readResourceText(path)
-            .lines()
-            .map { it.split("\t") }
-            .filter { it.size > 1 }
-            .fold(dicts) { acc, s ->
-                val value = s[1].split(" ").first()
-                if (reversed) {
-                    acc[value] = s[0]
-                } else {
-                    acc[s[0]] = value
-                }
-                acc
-            }
-        tries =
-            dicts.keys.fold(HanziTrie()) { acc, s ->
-                acc.insert(s)
-                acc
-            }
-    }
-
-    fun loadDict(other: String, isReverse: Boolean = false) {
-        readResourceText(other)
+    fun loadDict(dict: String, isReverse: Boolean = false) {
+        readResourceText(dict)
             .lines()
             .map { it.split("\t") }
             .filter { it.size > 1 }
@@ -53,68 +32,73 @@ data class ZhTranslator(val path: String, val reversed: Boolean = false) {
                 acc
             }
 
-        dicts.keys.fold(tries) { acc, s ->
-            acc.insert(s)
-            acc
-        }
+        // 优化内存占用, 只有词组才构建
+        dicts.keys
+            .filter { it.length > 1 }
+            .fold(tries) { acc, s ->
+                acc.insert(s)
+                acc
+            }
     }
 
     fun convert(text: String): String = buildString {
         var pre = ""
         for (c in text) {
             if (pre.isEmpty()) {
-                if (tries.search(c.toString())) {
+                if (tries.search(c)) {
                     pre = c.toString()
                 } else {
-                    append(c)
+                    append(c.mapping())
                 }
             } else {
                 if (tries.search(pre + c)) {
                     pre += c
                 } else {
-                    if (dicts[pre] != null) {
-                        append(dicts[pre])
-                    } else {
-                        append(pre.ss())
-                    }
+                    append(pre.findMapping())
                     pre =
-                        if (tries.search(c.toString())) {
+                        if (tries.search(c)) {
                             c.toString()
                         } else {
-                            append(c)
+                            append(c.mapping())
                             ""
                         }
                 }
             }
         }
         if (pre.isNotEmpty()) {
-            append(dicts[pre] ?: pre)
+            append(pre.findMapping())
         }
     }
 
     /** fixme performance issue */
-    private fun String.ss(): String {
+    private fun String.findMapping(): String {
         //        println(this)
+        // 剪枝优化
         if (isEmpty()) {
             return ""
         }
-        if (length == 1) {
-            return mapping()
+        if (dicts[this] != null) {
+            return dicts[this]!!
         }
-        if (length == 2) {
-            return first().toString().mapping() + last().toString().mapping()
+        if (length <= 2) {
+            return map { it.mapping() }.joinToString("")
         }
+
+        // 长度大于2,递归查找
+        println("~~~~~$this")
         for (i in length - 1 downTo 1) {
             val s = dicts[substring(0, i)]
             if (s != null) {
                 val sub = substring(i, length)
-                return s + sub.ss()
+                return s + sub.findMapping()
             }
         }
-        return (dicts[first().toString()] ?: first().toString()) + substring(1).ss()
+        return first().mapping() + substring(1).findMapping()
     }
 
     private fun String.mapping() = dicts[this] ?: this
+
+    private fun Char.mapping() = toString().mapping()
 }
 
 /** 缓存翻译 */
