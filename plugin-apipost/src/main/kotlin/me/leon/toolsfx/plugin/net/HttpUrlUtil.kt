@@ -2,6 +2,7 @@
 
 package me.leon.toolsfx.plugin.net
 
+import tornadofx.*
 import java.io.DataOutputStream
 import java.io.File
 import java.net.*
@@ -12,7 +13,6 @@ import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
 import kotlin.system.measureTimeMillis
-import tornadofx.*
 
 object HttpUrlUtil {
     private val httpsDelegate by lazy {
@@ -20,6 +20,7 @@ object HttpUrlUtil {
         clazz.getDeclaredField("delegate").apply { isAccessible = true }
     }
 
+    val APPLICATION_URL_ENCODE = "application/x-www-form-urlencoded"
     private val DEFAULT_PRE_ACTION: (Request) -> Unit = {}
     private val DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
     private val isDebug = false
@@ -55,15 +56,7 @@ object HttpUrlUtil {
             }
         }
 
-    val globalHeaders: MutableMap<String, Any> =
-        mutableMapOf(
-            "Accept" to "*/*",
-            "Connection" to "Keep-Alive",
-            "Content-Type" to "application/json; charset=utf-8",
-            "User-Agent" to
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)" +
-                    " Chrome/86.0.4240.198 Safari/537.36",
-        )
+    val globalHeaders: MutableMap<String, Any> = mutableMapOf()
 
     fun setupProxy(type: Proxy.Type, host: String, port: Int) {
         proxy =
@@ -207,7 +200,7 @@ object HttpUrlUtil {
         val req = Request(url, "POST", params, headers)
         preAction(req)
         val urlEncode =
-            headers.values.any { (it as String).contains("application/x-www-form-urlencoded") }
+            headers.values.any { (it as String).contains(APPLICATION_URL_ENCODE) }
         val data = if (isJson) req.params.toJson() else req.params.toParams(urlEncode)
         return postData(url, data, headers)
     }
@@ -414,8 +407,8 @@ object HttpUrlUtil {
         entries.joinToString("&") {
             (it.key.takeUnless { isEncode }
                 ?: it.key.urlEncoded) +
-                "=" +
-                (it.value.takeUnless { isEncode } ?: it.value.toString().urlEncoded)
+                    "=" +
+                    (it.value.takeUnless { isEncode } ?: it.value.toString().urlEncoded)
         }
 
     private fun Map<String, Any>.toJson(): String =
