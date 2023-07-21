@@ -71,14 +71,14 @@ class VocabularyCell : ListCell<Vocabulary>() {
                                 ""
                             }
                         runCatching {
-                            engine.executeScript(
-                                "function hideElements(selector){" +
+                                engine.executeScript(
+                                    "function hideElements(selector){" +
                                         "var items=document.querySelectorAll(selector);" +
                                         "for(var i=0,size=items.length;i<size;i++){" +
                                         "items[i].style.display='none'}}" +
                                         "\n$hideJs;$extraJs"
-                            )
-                        }
+                                )
+                            }
                             .getOrElse { println(it.stacktrace()) }
                         println("it takes ${System.currentTimeMillis() - startTime}")
                         isVisible = true

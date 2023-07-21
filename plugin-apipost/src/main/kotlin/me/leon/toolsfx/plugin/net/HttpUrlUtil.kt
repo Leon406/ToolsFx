@@ -2,7 +2,6 @@
 
 package me.leon.toolsfx.plugin.net
 
-import tornadofx.*
 import java.io.DataOutputStream
 import java.io.File
 import java.net.*
@@ -13,6 +12,7 @@ import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
 import kotlin.system.measureTimeMillis
+import tornadofx.*
 
 object HttpUrlUtil {
     private val httpsDelegate by lazy {
@@ -199,8 +199,7 @@ object HttpUrlUtil {
     ): Response {
         val req = Request(url, "POST", params, headers)
         preAction(req)
-        val urlEncode =
-            headers.values.any { (it as String).contains(APPLICATION_URL_ENCODE) }
+        val urlEncode = headers.values.any { (it as String).contains(APPLICATION_URL_ENCODE) }
         val data = if (isJson) req.params.toJson() else req.params.toParams(urlEncode)
         return postData(url, data, headers)
     }
@@ -407,8 +406,8 @@ object HttpUrlUtil {
         entries.joinToString("&") {
             (it.key.takeUnless { isEncode }
                 ?: it.key.urlEncoded) +
-                    "=" +
-                    (it.value.takeUnless { isEncode } ?: it.value.toString().urlEncoded)
+                "=" +
+                (it.value.takeUnless { isEncode } ?: it.value.toString().urlEncoded)
         }
 
     private fun Map<String, Any>.toJson(): String =

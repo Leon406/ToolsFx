@@ -1,11 +1,15 @@
 package me.leon.view
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.util.Callback
+import javax.sound.sampled.SourceDataLine
+import kotlin.concurrent.thread
+import kotlin.system.measureTimeMillis
 import me.leon.*
 import me.leon.config.DICT_DIR
 import me.leon.domain.SimpleMsgEvent
@@ -17,10 +21,6 @@ import me.leon.ext.voice.*
 import me.leon.misc.Translator
 import tornadofx.*
 import tornadofx.FX.Companion.messages
-import java.io.File
-import javax.sound.sampled.SourceDataLine
-import kotlin.concurrent.thread
-import kotlin.system.measureTimeMillis
 
 class StringProcessView : Fragment(messages["stringProcess"]) {
 
@@ -58,10 +58,14 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         val r = mutableMapOf<String, String>()
         val file = File(DICT_DIR, "syllable.txt")
         if (file.exists()) {
-            file.readText().lines().filter { it.isNotEmpty() }.map {
-                val (w, s) = it.split("\t")
-                r[w] = s
-            }
+            file
+                .readText()
+                .lines()
+                .filter { it.isNotEmpty() }
+                .map {
+                    val (w, s) = it.split("\t")
+                    r[w] = s
+                }
         }
         r
     }
@@ -87,9 +91,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                    "cost: $timeConsumption ms"
+                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                "cost: $timeConsumption ms"
 
     private var inputText: String
         get() = taInput.text
@@ -248,8 +252,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         } else {
                             selectThisTab()
                             runCatching {
-                                taInput.text = BaiduOcr.ocrBase64(it.toByteArray().base64())
-                            }
+                                    taInput.text = BaiduOcr.ocrBase64(it.toByteArray().base64())
+                                }
                                 .onFailure { taInput.text = it.stackTraceToString() }
                         }
                     }
@@ -359,17 +363,17 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         runAsync {
                             Translator.translate(text, target = Prefs.translateTargetLan)
                         } ui
-                                {
-                                    Alert(Alert.AlertType.WARNING)
-                                        .apply {
-                                            title = "Translate"
-                                            headerText = ""
-                                            dialogPane.maxWidth = DEFAULT_SPACING_80X
-                                            graphic =
-                                                text(it).apply { wrappingWidth = DEFAULT_SPACING_80X }
-                                        }
-                                        .show()
-                                }
+                            {
+                                Alert(Alert.AlertType.WARNING)
+                                    .apply {
+                                        title = "Translate"
+                                        headerText = ""
+                                        dialogPane.maxWidth = DEFAULT_SPACING_80X
+                                        graphic =
+                                            text(it).apply { wrappingWidth = DEFAULT_SPACING_80X }
+                                    }
+                                    .show()
+                            }
                     }
                 }
             }
@@ -558,13 +562,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun speakMulti(start: Int, content: String) {
         ttsMultiStream(
-            content,
-            voiceModel = Prefs.ttsVoice,
-            rate = Prefs.ttsSpeed,
-            volume = Prefs.ttsVolume,
-            pitch = Prefs.ttsPitch,
-            cacheable = Prefs.ttsCacheable,
-        )
+                content,
+                voiceModel = Prefs.ttsVoice,
+                rate = Prefs.ttsSpeed,
+                volume = Prefs.ttsVolume,
+                pitch = Prefs.ttsPitch,
+                cacheable = Prefs.ttsCacheable,
+            )
             ?.forEach {
                 val (rangePair, bytes) = it
                 val (range, _) = rangePair
@@ -642,18 +646,20 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         words.clear()
         val tokens =
             (inputText
-                .replace("[^a-zA-Z'-]+".toRegex(), "\n")
-                .lines()
-                .map { it.lowercase().trim('\'') }
-                .distinct()
-                .sorted() - inputs2())
+                    .replace("[^a-zA-Z'-]+".toRegex(), "\n")
+                    .lines()
+                    .map { it.lowercase().trim('\'') }
+                    .distinct()
+                    .sorted() - inputs2())
                 .filterNot { it.isEmpty() || !it.first().isLetter() || it.endsWith("'s") }
                 .also {
-                    words.addAll(it.map { token ->
-                        Vocabulary(token, ToolsApp.vocabulary[token]).apply {
-                            syllable = syllables[token]
+                    words.addAll(
+                        it.map { token ->
+                            Vocabulary(token, ToolsApp.vocabulary[token]).apply {
+                                syllable = syllables[token]
+                            }
                         }
-                    })
+                    )
                     thread {
                         val outOfDict =
                             File(DICT_DIR, "outOfDict.txt").also {
@@ -663,11 +669,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                             }
                         val newWords =
                             words.filter { it.mean.isNullOrEmpty() }.map { it.word } -
-                                    outOfDict.readText().lines().toSet()
+                                outOfDict.readText().lines().toSet()
                         if (newWords.isNotEmpty()) {
                             outOfDict.appendText(
                                 newWords.joinToString(System.lineSeparator()) +
-                                        System.lineSeparator()
+                                    System.lineSeparator()
                             )
                         }
                     }
@@ -694,12 +700,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun processInput(text: String) {
         measureTimeMillis {
-            if (overrideInput.get()) {
-                inputText = text
-            } else {
-                outputText = text
+                if (overrideInput.get()) {
+                    inputText = text
+                } else {
+                    outputText = text
+                }
             }
-        }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
