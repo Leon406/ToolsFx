@@ -19,8 +19,9 @@ data class YouDaoResponse(
 ) {
 
     fun simple(): String = buildString {
-        append(simple?.query).append("\t")
-        append(ec?.means()?.replace("\n", "")?.replace("\r\n", ""))
+        if (simple?.query != null && ec?.means() != null) {
+            append(ec.means().replace("\n", "").replace("\r\n", ""))
+        }
     }
 
     override fun toString(): String {

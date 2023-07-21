@@ -1,5 +1,6 @@
 package me.leon.translate
 
+import java.util.concurrent.ForkJoinPool
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import me.leon.*
@@ -12,9 +13,13 @@ import me.leon.ext.toFile
  */
 class SyllableTest {
 
-    init {
-        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "256")
-    }
+    private val forkJoinPool = ForkJoinPool(128)
+    private val SYLLABLE2 =
+        "$ONE_DRIVE_DIR/syllable2.txt".toFile().also {
+            if (!it.exists()) {
+                it.createNewFile()
+            }
+        }
 
     @Test
     fun howMany() {
@@ -29,6 +34,7 @@ class SyllableTest {
     @Test
     fun wordHelp() {
         assertEquals("rul-er", "ruler".syllableWordHelp())
+        println("languages".syllableWordHelp())
     }
 
     @Test
@@ -39,7 +45,7 @@ class SyllableTest {
     @Test
     fun ss() {
         val words =
-            VOCABULARY_FILE.readText()
+            VOCABULARY_FILE2.readText()
                 .lines()
                 .filter { it.isNotEmpty() && !it.contains("-") && !it.contains("'") }
                 .map { it.split("\t").first() }
@@ -49,63 +55,93 @@ class SyllableTest {
             words -
                 SYLLABLE_FILE.readText().lines().map { it.split("\t").first() }.toSet() -
                 SYLLABLE_NO_DATA_FILE.readText().lines().toSet()
-        println("${nodata.size} ${words.size}")
-
-        nodata.parallelStream().forEach { word ->
-            runCatching { word.syllable() }
-                .getOrNull()
-                ?.let {
-                    val data = "$word\t$it${System.lineSeparator()}"
-                    print(data)
-                    SYLLABLE_FILE.appendText(data)
+        println("${nodata.size}/${words.size}")
+        forkJoinPool
+            .submit {
+                nodata.parallelStream().forEach { word ->
+                    runCatching { word.syllable() }
+                        .getOrNull()
+                        ?.let {
+                            if (it.isEmpty()) {
+                                SYLLABLE_NO_DATA_FILE.appendText("$word{System.lineSeparator()}")
+                            }
+                            val data = "$word\t$it${System.lineSeparator()}"
+                            print(data)
+                            SYLLABLE_FILE.appendText(data)
+                        }
                 }
-        }
+            }
+            .get()
     }
 
     @Test
     fun noData() {
-        val newData = "$ONE_DRIVE_DIR/syllable2.txt".toFile()
         val nodataOri =
             SYLLABLE_FILE.readText().lines().emptyData().also {
                 SYLLABLE_NO_DATA_FILE.writeText(it.joinToString(System.lineSeparator()))
             }
         println(nodataOri.size)
-        val nodata = SYLLABLE_NO_DATA_FILE.readText().lines().toSet()
-        println("${nodata.size}")
-        nodata.parallelStream().forEach { word ->
-            runCatching { word.syllable() }
-                .getOrNull()
-                ?.let {
-                    if (it.isNotEmpty()) {
-                        val data = "$word\t$it${System.lineSeparator()}"
-                        print(data)
-                        newData.appendText(data)
+        var nodata = SYLLABLE_NO_DATA_FILE.readText().lines().toSet()
+        repeat(10) {
+            forkJoinPool
+                .submit {
+                    nodata =
+                        (nodata -
+                            SYLLABLE2.readText().lines().notEmptyData().map { it.first() }.toSet())
+                    println("nodata ${nodata.size}")
+                    nodata.parallelStream().forEach { word ->
+                        runCatching { word.syllable() }
+                            .getOrNull()
+                            ?.let {
+                                //                            println(word)
+                                if (it.isNotEmpty()) {
+                                    val data = "$word\t$it${System.lineSeparator()}"
+                                    print(data)
+                                    SYLLABLE2.appendText(data)
+                                }
+                            }
                     }
                 }
+                .get()
         }
+    }
+
+    @Test
+    fun duplicate() {
+        val s2 = "$ONE_DRIVE_DIR/syllable.txt".toFile()
+        val data = s2.readText().lines()
+        data.notEmptyData().groupBy { it.first() }.filter { it.value.size > 1 }.also { println(it) }
+        println(data.size)
+        data
+            .map { it.split("\t") }
+            .filter { it.isNotEmpty() && it.first() == it.last().replace("-", "").lowercase() }
+            .also {
+                println(it.size)
+                s2.writeText(
+                    it.joinToString(System.lineSeparator()) { it.first() + "\t" + it.last() }
+                )
+            }
     }
 
     @Test
     fun replaceWords() {
         var text = SYLLABLE_FILE.readText()
-        "$ONE_DRIVE_DIR/syllable2.txt"
-            .toFile()
-            .readText()
+        SYLLABLE2.readText()
             .lines()
             .filter { it.split("\t").last().isNotEmpty() }
             .also { println(it.size) }
             .forEach {
                 val line = it.substringBefore("\t")
                 val regex = "\\b$line\t(?=\r?\n)".toRegex()
-                println("$line $it ${text.contains(regex)}")
+                //                println("$line $it ${text.contains(regex)}")
                 text = text.replace(regex, it)
             }
 
         SYLLABLE_FILE.writeText(text)
     }
 
-    private fun String.syllable(): String =
-        runCatching { this.syllableWord() }.getOrElse { this.syllableHowMany() }
+    private fun String.syllable(): String? = runCatching { syllableHowMany() }.getOrNull()
+    //            .getOrElse { this.syllableHowMany() }
 }
 
 fun List<String>.emptyData(separator: String = "\t") =

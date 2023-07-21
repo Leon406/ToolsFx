@@ -9,6 +9,7 @@ import org.jsoup.Jsoup
  * @email deadogone@gmail.com
  */
 fun main() {
+    println(System.getProperty("user.dir"))
     val dict = MdictLoader.loadMdx(MDX)
     val tnew = File("$DESKTOP/tnew2.txt")
     val err = File("$DESKTOP/err.txt")
@@ -17,8 +18,7 @@ fun main() {
     if (!tnew.exists()) {
         tnew.createNewFile()
     }
-    //    val coca = File("$onedriveDir/COCA60000.txt").readText().lines()
-    val coca = File("$DESKTOP/rr2.txt").readText().lines()
+    val coca = File("$DESKTOP/nomeaning.txt").readText().lines()
 
     val errors = mutableSetOf<String>()
     val untranslated = coca.exclude(tnew.parseWordKv().map { it.first })

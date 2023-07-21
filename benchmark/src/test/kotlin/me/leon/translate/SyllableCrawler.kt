@@ -32,6 +32,7 @@ fun String.syllableWord(timeout: Int = DEFAULT_TIME_OUT) =
         .text()
         .orEmpty()
 
+/** 支持第三人称,复数 */
 fun String.syllableWordHelp(timeout: Int = DEFAULT_TIME_OUT) =
     Jsoup.connect(URL_WORD_HELP + this)
         .timeout(timeout)
@@ -39,14 +40,18 @@ fun String.syllableWordHelp(timeout: Int = DEFAULT_TIME_OUT) =
         .select("ul>li")[1]
         .select("div>div")[1]
         .text()
+        .takeIf { it.replace("-", "") == this }
         .orEmpty()
 
+/** 不支持第三人称,复数 */
 fun String.syllableLdoce(timeout: Int = DEFAULT_TIME_OUT) =
     Jsoup.connect(URL_LDOCE + this)
         .timeout(timeout)
         .get()
-        .selectFirst(".HYPHENATION")
+        .select(".HYPHENATION")
+        .firstOrNull { it.text().contains(".") }
         ?.text()
+        ?.lowercase()
         ?.replace("‧", "-")
         ?.replace("·", "-")
         .orEmpty()

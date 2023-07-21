@@ -2,6 +2,7 @@ package me.leon.translate
 
 import java.io.File
 import kotlin.test.Test
+import me.leon.DESKTOP
 import me.leon.ONE_DRIVE_DIR
 import me.leon.ext.*
 import org.jsoup.Jsoup
@@ -22,21 +23,14 @@ val REG_ICBA = """"wordInfo":([^<]+?),"history"""".toRegex()
 
 class TranslateTest {
     val word = "do"
+    val noMeaning = "$DESKTOP/nomeaning.txt".toFile()
+    val nodata = "$DESKTOP/nodata.txt".toFile()
+    val defaultTrans = File(noMeaning.parentFile, "trans.txt")
 
     @Test
     fun icba() {
-        val file = "C:\\Users\\Leon\\Desktop\\rr2.txt".toFile()
-        val nodata = "C:\\Users\\Leon\\Desktop\\nodata.txt".toFile()
-        val exclusion = nodata.readText().lines().toSet()
-        val trans = File(file.parentFile, "trans.txt")
 
-        val translated =
-            runCatching { trans.readText() }.getOrNull()?.lines()?.map { it.split("\t")[0] }
-                ?: emptyList()
-        val lines = file.readText().lines()
-        val diff = lines - translated - exclusion
-        println("${lines.size} / ${translated.size}/${exclusion.size}   diff: ${diff.size} ")
-        diff.forEach { w ->
+        readData().forEach { w ->
             println(w)
             ICBA.format(w).readFromNet().run {
                 // 网站限制访问qps
@@ -51,7 +45,7 @@ class TranslateTest {
                                 val mean = meanings(" ")
                                 if (!mean.isNullOrEmpty()) {
                                     println(">>>>>>got<<<<<<")
-                                    trans.appendText("$w\t$mean\n")
+                                    defaultTrans.appendText("$w\t$mean\n")
                                 } else {
                                     nodata.appendText("$w\n")
                                 }
@@ -61,7 +55,7 @@ class TranslateTest {
                     }
                         ?: {
                             println(">>>>>>no result")
-                            trans.appendText("$w\t\n")
+                            defaultTrans.appendText("$w\t\n")
                         }
                 }
             }
@@ -70,92 +64,40 @@ class TranslateTest {
 
     @Test
     fun bing() {
-        Jsoup.connect(BING.format(word)).get().run {
-            val headWord = selectFirst("#headword")?.text()
-            val pronounceUs = selectFirst(".hd_prUS.b_primtxt")?.text().orEmpty()
-            val pronounceUk = selectFirst(".hd_pr.b_primtxt")?.text().orEmpty()
-
-            // 意思
-            val pos = select("li>span.pos").map { it.text() }
-            val def = select("li>span.def").map { it.text() }
-            val meanings =
-                pos.zip(def).joinToString(System.lineSeparator()) {
-                    "${it.first.center(6)} \t ${it.second}"
+        println(word.bingDetail())
+        readData().forEach { w ->
+            with(w.bingTranslate()) {
+                if (isNotEmpty()) {
+                    println("$w\t$this")
                 }
-
-            buildString {
-                    append(headWord)
-                        .append("\t")
-                        .append(pos.zip(def).joinToString("; ") { it.first + " " + it.second })
-                }
-                .also { println(it) }
-
-            buildString {
-                    append(headWord)
-                    append("\t ")
-                    append(pronounceUs).append(" ")
-                    append(pronounceUk)
-                    append("\n\n")
-                    append(meanings)
-                    append("\n\n")
-                    // 变形
-                    append(select(".hd_if").joinToString("\t") { it.text() })
-                    // 搭配
-                    append("\n\n")
-                    append(select(".df_div2").joinToString("\n") { it.text() })
-                }
-                .also { println(it) }
+            }
         }
     }
 
     @Test
     fun youdao() {
-        YOUDAO.format("resumes").readFromNet().also {
-            println(it.fromJson(YouDaoResponse::class.java).simple())
+        println(word.youdaoSimple())
+        println("resumes".youdaoSimple())
+        readData().forEach { w ->
+            with(w.youdaoSimple()) {
+                if (isNotEmpty()) {
+                    println("$w\t$this")
+                }
+            }
         }
     }
 
     @Test
     fun translate() {
-
         val toTranslated = "$ONE_DRIVE_DIR/known.txt".toFile()
-        val trans = File(toTranslated.parentFile, "trans.txt")
-        val translated =
-            runCatching { trans.readText() }.getOrNull()?.lines()?.map { it.split("\t")[0] }
-                ?: emptyList()
-        val lines = toTranslated.readText().lines()
-        val diff = lines - translated
-        println("${lines.size} / ${translated.size}  diff: ${diff.size} ")
-        diff.forEach { trans.appendText(translateSimple(it) + System.lineSeparator()) }
-
-        //        println(translateSimple("amazes"))
-        //        println(translateSimple("abandon"))
-        //        println(translateSimple("bothering"))
-    }
-
-    private fun translateSimple(text: String) =
-        //  显示变形翻译
-        YOUDAO.format(text)
-            .readFromNet()
-            .also {
-                //            println(it)
+        readData(toTranslated, nodata).forEach {
+            println(it)
+            val mean = it.combineTranslate()
+            if (mean.isNotEmpty()) {
+                defaultTrans.appendText("$it\t$mean${System.lineSeparator()}")
             }
-            .fromJson(YouDaoResponse::class.java)
-            .simple()
-    //  显示原形翻译
-    //        Jsoup.connect(BING.format(text)).get().run {
-    //            val headWord = selectFirst("#headword")?.text()
-    //            // 意思
-    //            val pos = select("li>span.pos").map { it.text() }
-    //            val def = select("li>span.def").map { it.text() }
-    //            buildString {
-    //                append(headWord).append("\t").append(pos.zip(def).joinToString("; ") {
-    // it.first + " " + it.second })
-    //            }
-    //        }.also {
-    //            println(it)
-    //        }
-    //    }
+        }
+    }
 
     @Test
     fun cambridge() {
@@ -190,11 +132,10 @@ class TranslateTest {
     }
 
     @Test
-    fun vocabulary() {
-        val onedriveDir = "E:\\OneDrive\\我的文档\\学习"
-        val text = "$onedriveDir/vocabulary.txt".toFile().readText()
-        val trans = "$onedriveDir/trans.txt".toFile().readText()
-        val output = "$onedriveDir/vocabulary2.txt".toFile()
+    fun combineVocabulary() {
+        val text = "$ONE_DRIVE_DIR/vocabulary.txt".toFile().readText()
+        val trans = "$ONE_DRIVE_DIR/trans.txt".toFile().readText()
+        val output = "$ONE_DRIVE_DIR/vocabulary2.txt".toFile()
 
         val sets = mutableSetOf<Pair<String, String>>()
         println(text.lines().size)
@@ -226,5 +167,24 @@ class TranslateTest {
                 .sortedBy { it.first.lowercase() }
                 .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
         )
+    }
+
+    private fun readData(
+        toTranslate: File = noMeaning,
+        noTranslation: File = nodata
+    ): List<String> {
+
+        val translatedFile = File(toTranslate.parentFile, "trans.txt")
+        val translated =
+            runCatching { translatedFile.readText() }
+                .getOrNull()
+                ?.lines()
+                ?.map { it.split("\t")[0] }
+                ?: emptyList()
+        val lines = toTranslate.readText().lines()
+        val exclusion = noTranslation.readText().lines().toSet()
+        val diff = lines - translated.toSet() - exclusion
+        println("${lines.size} / ${translated.size}/${exclusion.size}   diff: ${diff.size} ")
+        return diff
     }
 }
