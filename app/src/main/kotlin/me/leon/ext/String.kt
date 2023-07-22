@@ -74,3 +74,31 @@ fun String.splitParagraph(): MutableList<Pair<IntRange, String>> {
 
     return splits
 }
+
+val ALPHABETA_DICT = mapOf(
+    'a' to 'a',
+    'à' to 'a',
+    'á' to 'a',
+    'ä' to 'a',
+    'â' to 'a',
+    'é' to 'e',
+    'è' to 'e',
+    'ê' to 'e',
+    'ë' to 'e',
+    'ì' to 'i',
+    'í' to 'i',
+    'ï' to 'i',
+    'î' to 'i',
+    'ò' to 'o',
+    'ó' to 'o',
+    'ô' to 'o',
+    'ö' to 'o',
+    'ù' to 'u',
+    'ú' to 'u',
+    'û' to 'u',
+    'ü' to 'u',
+    'ç' to 'c',
+    'ñ' to 'n',
+)
+
+fun String.normalCharacter() = map { ALPHABETA_DICT[it] ?: it }.joinToString("")
