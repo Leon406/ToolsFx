@@ -2,47 +2,60 @@ package me.leon
 
 import java.io.File
 import java.net.Proxy
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlinx.coroutines.*
-import me.leon.ext.*
+import me.leon.ext.readFromNet
+import me.leon.ext.toFile
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
 
 private const val RUSHB_URL = "https://rushb.pro/article/JetBrains-license-server.html"
-private val REG_HTML_CODE = "(?s)<code class=\"lang-\\w+\">(.+)</code>".toRegex()
-private val REG_SHODAN_CODE =
-    "https://account\\.jetbrains\\.com/fls-auth</strong>\\?.*?url=(.*?)/auth".toRegex()
-private const val SHODAN_URL =
-    "https://www.shodan.io/search?query=Location%3A+https%3A%2F%2Faccount.jetbrains.com%2Ffls-auth"
-
+private val REG_HTML_TAG = "<[^>]+>".toRegex()
 private const val TMP_FILE = "C:\\Users\\Leon\\Desktop\\jblicense.txt"
 private val REG_LINK = "https?://[^\"<]+".toRegex()
 private val REG_FILTER_LINK =
     "\\.(?:png|html|js|css)|github\\.com|greasyfork\\.org|sms-activate\\.org".toRegex()
+private const val UA =
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+        "Chrome/95.0.4638.69 Safari/537.36"
+
+val commonHeaders = mutableMapOf<String, Any>("user-agent" to UA)
+
+val RPC =
+    "/rpc/obtainTicket.action?buildDate=20230328" +
+        // 软件版本
+        "&buildNumber=2023.1.4+Build+IU-231.9225.16" +
+        "&clientVersion=14" +
+        "&hostName=DESKTOP-V4GADAN" +
+        "&machineId=b66470e8-8a99-4de3-9a19-95d4f8c64d7d" +
+        "&productCode=49c202d4-ac56-452b-bb84-735056242fb3" +
+        "&productFamilyId=49c202d4-ac56-452b-bb84-735056242fb3&salt=1690279992325" +
+        "&secure=false" +
+        "&userName=Leon" +
+        "&version=2023100" +
+        "&versionNumber=2023100"
+
+val regMsg = "<message>([^<]+)</message>".toRegex()
 
 class JbLicenseTest {
 
     @Test
-    @Ignore
     fun list() {
         HttpUrlUtil.setupProxy(Proxy.Type.SOCKS, "127.0.0.1", 7890)
-        val response = HttpUrlUtil.get(RUSHB_URL)
-        REG_HTML_CODE.findAll(response.data).forEach {
-            println(it.groupValues[1].lines().filter { it.startsWith("http") })
+        println(crawlFromRushb())
+    }
+
+    @Test
+    fun checkJbAuth() {
+
+        HttpUrlUtil.get("https://jb.samuraism.com$RPC").also {
+            println(regMsg.find(it.data)?.groupValues?.get(1))
+            println()
+            println(it.data)
         }
     }
 
     @Test
-    @Ignore
-    fun sodan() {
-        HttpUrlUtil.setupProxy(Proxy.Type.SOCKS, "127.0.0.1", 7890)
-        val response = HttpUrlUtil.get(SHODAN_URL)
-        REG_SHODAN_CODE.findAll(response.data).forEach { println(it.groupValues[1].lines()) }
-    }
-
-    @Test
-    //    @Ignore
     fun licenseServerValidate() {
         //        HttpUrlUtil.setupProxy(Proxy.Type.SOCKS,"127.0.0.1",7890)
         val servers = crawlFromNet()
@@ -72,21 +85,9 @@ class JbLicenseTest {
     private fun crawlFromNet(): MutableSet<String> {
         val servers = mutableSetOf<String>()
         runCatching {
-            val response = HttpUrlUtil.get(RUSHB_URL)
-            REG_HTML_CODE.findAll(response.data).forEach {
-                servers.addAll(it.groupValues[1].lines().filter { it.startsWith("http") })
-            }
+            servers.addAll(crawlFromRushb())
             println("success from RUSHUB ${servers.size}")
         }
-
-        runCatching {
-                val response2 = HttpUrlUtil.get(SHODAN_URL)
-                REG_SHODAN_CODE.findAll(response2.data).forEach {
-                    servers.addAll(it.groupValues[1].lines())
-                }
-            }
-            .getOrElse { println("error fetch  shoda ${it.stacktrace()}") }
-
         return servers
     }
 
@@ -103,25 +104,13 @@ class JbLicenseTest {
     }
 
     private fun checkUrl(url: String): Boolean {
-        HttpUrlUtil.followRedirect = true
-        val response = runCatching { HttpUrlUtil.get(url) }.getOrNull()
-        val location = response?.headers?.get("Location")
-        val hasAuth = location?.run { this.toString().contains("fls-auth") } ?: false
 
-        // 域名设置followRedirect会自动跳转,只有ip会有location
-        if (location == null) {
-            return response?.data?.contains("loader_config={") ?: false
+        runCatching {
+            HttpUrlUtil.get("$url$RPC").also {
+                regMsg.find(it.data)?.groupValues?.get(1) ?: return true
+            }
         }
-        var validate = false
-        if (hasAuth) {
-            // 设置followRedirect会自动会重定向到 /login
-            validate =
-                runCatching {
-                        HttpUrlUtil.get(location.toString()).data.contains("loader_config={")
-                    }
-                    .getOrDefault(false)
-        }
-        return validate
+        return false
     }
 
     @Test
@@ -171,5 +160,16 @@ class JbLicenseTest {
                         .forEach { println(it) }
                 }
         }
+    }
+
+    private fun crawlFromRushb(): List<String> {
+        val response = HttpUrlUtil.get(RUSHB_URL, headers = commonHeaders)
+
+        return REG_HTML_TAG.replace(response.data, "")
+            .substringAfter(RUSHB_URL)
+            .substringBefore(RUSHB_URL)
+            .lines()
+            .filter { it.startsWith("http") }
+            .map { it.substringBefore("捐赠") }
     }
 }
