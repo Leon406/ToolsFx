@@ -4,7 +4,7 @@ asmVer = "3.2.0"
 # https://www.bouncycastle.org/releasenotes.html
 bcVer = "1.75"
 commonCompressVer = "1.23.0"
-coroutineVer = "1.7.2"
+coroutineVer = "1.7.3"
 gsonVer = "2.10.1"
 javassistVer = "3.29.2-GA"
 javaxJsonVer = "1.1.4"
