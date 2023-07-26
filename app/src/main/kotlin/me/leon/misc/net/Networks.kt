@@ -1,8 +1,6 @@
 package me.leon.misc.net
 
-import java.net.InetAddress
-import java.net.InetSocketAddress
-import java.net.Socket
+import java.net.*
 import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.*
 import me.leon.ext.headRequest
@@ -14,12 +12,17 @@ import me.leon.ext.headRequest
  */
 @OptIn(ExperimentalCoroutinesApi::class) val DISPATCHER = Dispatchers.IO.limitedParallelism(1024)
 
+val LOCAL_IP_A = "^10\\.".toRegex()
+val LOCAL_IP_B = "^172\\.(1[6-9]|2[0-9]|3[0-1])\\.".toRegex()
+val LOCAL_IP_C = "^192\\.168\\.".toRegex()
+const val LOOPBACK_IP = "127.0.0.1"
+
 fun String.connect(
     port: Int = 80,
     timeout: Int = 1000,
     exceptionHandler: (info: String) -> Unit = {}
 ) =
-    if (!contains(".") || port < 0) {
+    if (!contains(".") && !contains(":") || port < 0) {
         //        println("quick fail from cache")
         -1
     } else {
@@ -34,7 +37,7 @@ fun String.connect(
 
 /** ping 测试 */
 fun String.ping(timeout: Int = 1000, exceptionHandler: (info: String) -> Unit = {}) =
-    if (!contains(".")) {
+    if (!contains(".") && !contains(":")) {
         println("fast failed")
         -1
     } else {
@@ -88,9 +91,10 @@ fun String.batchPing(type: String) =
         }
     }
 
-fun String.batchPingResult() = runBlocking {
-    lines()
-        .filter { it.isNotEmpty() }
+fun String.batchPingResult() = lines().batchPingResult()
+
+fun Collection<String>.batchPingResult() = runBlocking {
+    filter { it.isNotEmpty() }
         .map { async(DISPATCHER) { it to it.substringBeforeLast(":").ping() } }
         .awaitAll()
         .sortedByDescending { it.second }
@@ -109,13 +113,17 @@ fun String.batchTcPing() = runBlocking {
         .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
 }
 
+fun Collection<String>.batchTcPing(port: Int) = runBlocking {
+    map { async(DISPATCHER) { it to it.connect(port) } }.awaitAll().sortedByDescending { it.second }
+}
+
 fun String.linkCheck(timeout: Int = 2000) =
     lines()
         .filter { it.isNotEmpty() }
         .linkCheck(timeout)
         .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
 
-fun List<String>.linkCheck(timeout: Int = 2000) = runBlocking {
+fun Collection<String>.linkCheck(timeout: Int = 2000) = runBlocking {
     filter { it.isNotEmpty() }
         .map { async(DISPATCHER) { it to it.headRequest("GET", timeout) } }
         .awaitAll()

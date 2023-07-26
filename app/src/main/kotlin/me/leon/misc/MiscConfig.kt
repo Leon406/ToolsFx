@@ -21,7 +21,6 @@ val MISC_CONFIG =
                         "like 2023-02-01 12:00:00, 2023-02-01, 2023/02/01, 20230201,separate by line")
             ),
         MiscServiceType.PORT_SCAN to mapOf(HINT to "ip or domain (port from 1 to 10000)"),
-        MiscServiceType.PORT_SCAN_FULL to mapOf(HINT to "ip or domain ( port from 1 to 65535)"),
         MiscServiceType.IP_SCAN to mapOf(HINT to "ip w/o last dot,like 192.168.0"),
         MiscServiceType.BATCH_PING to mapOf(HINT to "ping ip or domains,separate by line"),
         MiscServiceType.TCPING to
@@ -63,6 +62,10 @@ val MISC_OPTIONS_CONFIG =
             ),
         MiscServiceType.ROMANJI to
             mapOf(OPTIONS to KawaType.entries.map { it.toString() }.toTypedArray()),
+        MiscServiceType.PORT_SCAN to
+            mapOf(
+                OPTIONS to arrayOf("1-10000", "1-20000", "1-30000", "1-40000", "1-50000", "1-65535")
+            ),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),

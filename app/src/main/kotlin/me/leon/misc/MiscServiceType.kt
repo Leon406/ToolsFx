@@ -72,11 +72,10 @@ enum class MiscServiceType(val type: String) : MiscService {
     },
     PORT_SCAN("port scan") {
         override fun process(raw: String, params: Map<String, String>) =
-            raw.portScan().joinToString(System.lineSeparator())
-    },
-    PORT_SCAN_FULL("full port scan") {
-        override fun process(raw: String, params: Map<String, String>) =
-            raw.portScan(ALL_PORTS).joinToString(System.lineSeparator())
+            with(requireNotNull(params[C1])) {
+                val range = substringBefore("-").toInt()..substringAfter("-").toInt()
+                raw.portScan(range.toList()).joinToString(System.lineSeparator())
+            }
     },
     IP_SCAN("ip scan") {
         override fun process(raw: String, params: Map<String, String>) =
