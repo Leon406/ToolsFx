@@ -80,6 +80,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.jsoup)
 
+    testImplementation("dnsjava:dnsjava:3.5.2")
+
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org:jaudiotagger:2.0.3")
     // https://www.atilika.org/

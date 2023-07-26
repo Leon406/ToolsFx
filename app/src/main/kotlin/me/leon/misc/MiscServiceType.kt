@@ -14,7 +14,6 @@ val SDF_TIME = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 val SDF_DATE = SimpleDateFormat("yyyy-MM-dd")
 val SDF_DATE2 = SimpleDateFormat("yyyyMMdd")
 private const val NOW = "NOW"
-val ALL_PORTS = (1..65_535).toList()
 
 enum class MiscServiceType(val type: String) : MiscService {
     UUID("uuid") {
