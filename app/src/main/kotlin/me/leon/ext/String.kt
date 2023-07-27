@@ -103,3 +103,5 @@ val ALPHABETA_DICT =
     )
 
 fun String.normalCharacter() = map { ALPHABETA_DICT[it] ?: it }.joinToString("")
+    .replace("’", "'")
+    .replace("‘", "'")
