@@ -3,6 +3,7 @@ package me.leon.view
 import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
+import javafx.concurrent.Task
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
@@ -17,9 +18,7 @@ import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
-import me.leon.ext.voice.Audio
-import me.leon.ext.voice.tts
-import me.leon.ext.voice.ttsMultiStream
+import me.leon.ext.voice.*
 import me.leon.misc.Translator
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -41,6 +40,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val additionFileMode = SimpleBooleanProperty(false)
     private val showAdditionUi = SimpleBooleanProperty(false)
     private val ignoreCase = SimpleBooleanProperty(false)
+    private val enableTtsButton = SimpleBooleanProperty(true)
 
     private var taInput: TextArea by singleAssign()
     private var taInput2: TextArea by singleAssign()
@@ -55,6 +55,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private var preWord: Pair<String, Int>? = null
     private val findInputPositionAction = { word: String -> locateWord(word) }
+
+    private var ttsTask: Task<Unit>? = null
 
     private val syllables by lazy {
         val r = mutableMapOf<String, String>()
@@ -220,12 +222,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     )
                 }
             }
-
             button(graphic = imageview(IMG_TTS)) {
                 shortcut(KeyCombination.valueOf("Alt+V"))
+                enableWhen(enableTtsButton)
                 action {
                     taInput.requestFocus()
-                    runAsync {
+                    ttsTask?.cancel()
+                    ttsTask = runAsync {
                         sourceDataline?.run {
                             stop()
                             stopTts = true
@@ -547,6 +550,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private fun speak(range: IntRange, start: Int, content: String) {
+        enableTtsButton.value = false
         taInput.selectRange(range.first + start, range.last + start + 1)
         sourceDataline =
             tts(
@@ -557,6 +561,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 pitch = Prefs.ttsPitch,
                 cacheable = Prefs.ttsCacheable,
             )
+        enableTtsButton.value = true
         while (sourceDataline?.isOpen == true) {
             // loop check
         }

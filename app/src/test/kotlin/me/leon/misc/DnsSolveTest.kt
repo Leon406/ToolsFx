@@ -2,12 +2,12 @@ package me.leon.misc
 
 import java.io.File
 import java.time.Duration
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlinx.coroutines.*
 import me.leon.ext.readResourceText
 import me.leon.misc.net.*
 import org.xbill.DNS.*
-import kotlin.test.Ignore
 
 /**
  * @author Leon
@@ -56,7 +56,8 @@ class DnsSolveTest {
         println("before " + dns.size)
 
         runBlocking {
-            dns.take(1000).map { host ->
+            dns.take(1000)
+                .map { host ->
                     async(DISPATCHER) {
                         runCatching {
                             queryMessage.query(host).run {
