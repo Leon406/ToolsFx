@@ -7,6 +7,7 @@ import kotlinx.coroutines.*
 import me.leon.ext.readFromNet
 import me.leon.ext.toFile
 import me.leon.toolsfx.plugin.net.HttpUrlUtil
+import me.leon.toolsfx.plugin.net.HttpUrlUtil.toParams
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
 
 private const val RUSHB_URL = "https://rushb.pro/article/JetBrains-license-server.html"
@@ -21,19 +22,20 @@ private const val UA =
 
 val commonHeaders = mutableMapOf<String, Any>("user-agent" to UA)
 
-val RPC =
-    "/rpc/obtainTicket.action?buildDate=20230328" +
-        // 软件版本
-        "&buildNumber=2023.1.4+Build+IU-231.9225.16" +
-        "&clientVersion=14" +
-        "&hostName=DESKTOP-V4GADAN" +
-        "&machineId=b66470e8-8a99-4de3-9a19-95d4f8c64d7d" +
-        "&productCode=49c202d4-ac56-452b-bb84-735056242fb3" +
-        "&productFamilyId=49c202d4-ac56-452b-bb84-735056242fb3&salt=1690279992325" +
-        "&secure=false" +
-        "&userName=Leon" +
-        "&version=2023100" +
-        "&versionNumber=2023100"
+const val RPC_RELEASE = "/rpc/releaseTicket.action?"
+const val RPC = "/rpc/obtainTicket.action?"
+val queries
+    get() =
+        mapOf(
+                "machineId" to "b66470e8-8a99-4de3-9a19-95d4f8c64d7d",
+                "productCode" to "49c202d4-ac56-452b-bb84-735056242fb3",
+                "salt" to System.currentTimeMillis(),
+                "clientVersion" to "13",
+                "hostName" to "DESKTOP-V4GADAN",
+                "userName" to "Leon",
+                "ticketId" to "ld7cgjawjz",
+            )
+            .toParams()
 
 val regMsg = "<message>([^<]+)</message>".toRegex()
 
@@ -47,11 +49,16 @@ class JbLicenseTest {
 
     @Test
     fun checkJbAuth() {
-
-        HttpUrlUtil.get("https://jb.samuraism.com$RPC").also {
-            println(regMsg.find(it.data)?.groupValues?.get(1))
-            println()
-            println(it.data)
+        val server = "http://jetbrains.ychinfo.com"
+        HttpUrlUtil.get("$server$RPC_RELEASE$queries").also {
+            println(it)
+            if (it.data.contains("<responseCode>OK</responseCode>")) {
+                HttpUrlUtil.get("$server$RPC$queries".also { println(it) }).also {
+                    println(regMsg.find(it.data)?.groupValues?.get(1))
+                    println()
+                    println(it.data)
+                }
+            }
         }
     }
 
@@ -106,8 +113,15 @@ class JbLicenseTest {
     private fun checkUrl(url: String): Boolean {
 
         runCatching {
-            HttpUrlUtil.get("$url$RPC").also {
-                regMsg.find(it.data)?.groupValues?.get(1) ?: return true
+            HttpUrlUtil.get("$url$RPC_RELEASE$queries").also {
+                if (it.data.contains("<responseCode>OK</responseCode>")) {
+                    HttpUrlUtil.get("$url$RPC$queries").also {
+                        regMsg.find(it.data)?.groupValues?.get(1).also { println("$url\t\t$it") }
+                            ?: return true
+                    }
+                } else {
+                    return false
+                }
             }
         }
         return false
@@ -137,6 +151,7 @@ class JbLicenseTest {
                 "https://jichangtuijian.com/chatgpt%E5%A5%97%E5%A3%B3%E9%95%9C%E5%83%8F.html",
             )
 
+        mutableMapOf<String, Any>().toParams()
         runBlocking {
             urls
                 .map { async { it.readFromNet() } }
