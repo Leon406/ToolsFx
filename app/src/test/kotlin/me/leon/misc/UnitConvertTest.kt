@@ -70,4 +70,17 @@ class UnitConvertTest {
             )
             .forEach { println(it.lowercase().pressureUnit()) }
     }
+
+    @Test
+    fun speed() {
+        listOf(
+                "1m/s",
+                "5 knot",
+                "5 节",
+                "20 m/s",
+                "760 mi/h",
+                "1 ft/s",
+            )
+            .forEach { println(it.lowercase().speedUnit()) }
+    }
 }
