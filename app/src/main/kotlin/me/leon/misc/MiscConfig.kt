@@ -1,5 +1,6 @@
 package me.leon.misc
 
+import me.leon.misc.net.ShortUrlEnum
 import me.leon.misc.unit.UNIT_TYPES
 
 /**
@@ -45,6 +46,7 @@ val MISC_CONFIG =
         MiscServiceType.ROMANJI to mapOf(HINT to "romanji for Chinese,Japanese,Korean"),
         MiscServiceType.UNIT_CONVERT to mapOf(HINT to "unit convert, should specify type"),
         MiscServiceType.TRADITION_CHINESE_CONVERT to mapOf(HINT to "convert tradition chinese"),
+        MiscServiceType.SHORT_URL to mapOf(HINT to "short long url,separate by line"),
     )
 
 val MISC_OPTIONS_CONFIG =
@@ -70,6 +72,8 @@ val MISC_OPTIONS_CONFIG =
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
+        MiscServiceType.SHORT_URL to
+            mapOf(OPTIONS to ShortUrlEnum.values().map { it.name }.toTypedArray()),
         MiscServiceType.TRADITION_CHINESE_CONVERT to
             mapOf(
                 OPTIONS to

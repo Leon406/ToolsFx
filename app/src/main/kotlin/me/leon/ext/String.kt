@@ -102,6 +102,5 @@ val ALPHABETA_DICT =
         'ñ' to 'n',
     )
 
-fun String.normalCharacter() = map { ALPHABETA_DICT[it] ?: it }.joinToString("")
-    .replace("’", "'")
-    .replace("‘", "'")
+fun String.normalCharacter() =
+    map { ALPHABETA_DICT[it] ?: it }.joinToString("").replace("’", "'").replace("‘", "'")

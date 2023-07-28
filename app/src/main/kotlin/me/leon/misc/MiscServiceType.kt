@@ -178,6 +178,14 @@ enum class MiscServiceType(val type: String) : MiscService {
             return CONFIG.first { it.name == type }.convert(raw)
         }
     },
+    SHORT_URL("shorten url") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return raw.lineAction2String {
+                runCatching { it.shortUrl(type) }.getOrElse { it.stacktrace() }
+            }
+        }
+    },
     ;
 
     override fun hint(): String {
