@@ -118,7 +118,7 @@ fun String.toPrivateKey(alg: String): PrivateKey? =
 fun ByteArray.pubDecrypt(key: String, alg: String) = pubDecrypt(key.toPublicKey(alg), alg)
 
 fun ByteArray.pubDecrypt(publicKey: PublicKey?, alg: String): ByteArray =
-    Cipher.getInstance(alg).run {
+    Cipher.getInstance(alg.properOAEPAlg()).run {
         if (alg.isOAEP()) {
             init(Cipher.DECRYPT_MODE, publicKey, OAEP_PARAM_SPEC_SHA1)
             return@pubDecrypt doFinal(this@pubDecrypt)
