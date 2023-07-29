@@ -60,6 +60,7 @@ class Ocr {
 
     @Test
     fun fileOcr() {
+        println(BaiduOcr.ocrBase64(File(TEST_OCR_DIR, "ja.jpg").toBase64()))
         assertTrue(BaiduOcr.ocrBase64(File(TEST_OCR_DIR, "ocr.jpg").toBase64()).contains("你们别看我平时"))
     }
 

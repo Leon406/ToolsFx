@@ -83,8 +83,8 @@ class JbLicenseTest {
                 .map { it.first }
                 .also {
                     println("${it.size} / ${sortedServers.size} ")
+                    println("\tfail\n${sortedServers - it}")
                     println("\tok\n${it.joinToString("\n")}")
-                    println("\tfail\n${(sortedServers - it).joinToString("\n")}")
                 }
         }
     }

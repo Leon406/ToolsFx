@@ -1,8 +1,10 @@
 package me.leon.ext.ocr
 
-import me.leon.ext.*
+import me.leon.ext.fromJson
 import me.leon.ext.fx.Prefs
-import tornadofx.*
+import me.leon.ext.readBytesFromNet
+import me.leon.ext.simpleReadFromNet
+import tornadofx.urlEncoded
 
 object BaiduOcr {
     private var token: String? = null
@@ -16,11 +18,11 @@ object BaiduOcr {
             ?.also { token = it as String }
 
     fun ocr(url: String): String {
-        return ocrData("url=$url")
+        return ocrData("url=$url&detect_language=true")
     }
 
     fun ocrBase64(base64: String): String {
-        return ocrData("image=${base64.urlEncoded}")
+        return ocrData("image=${base64.urlEncoded}&detect_language=true")
     }
 
     private fun ocrData(data: String): String {
@@ -38,6 +40,6 @@ object BaiduOcr {
             .fromJson(BaiduOcrBean::class.java)
             .results
             ?.joinToString(System.lineSeparator()) { it.words }
-            ?: kotlin.error("request failed")
+            ?: error("request failed")
     }
 }
