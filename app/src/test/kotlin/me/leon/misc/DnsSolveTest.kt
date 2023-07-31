@@ -38,6 +38,7 @@ class DnsSolveTest {
     }
 
     @Test
+    @Ignore
     fun dnsQuery() {
         val domain = "translate.googleapis.com"
         val queryMessage = domain.dnsQuery().query("45.90.28.217")
