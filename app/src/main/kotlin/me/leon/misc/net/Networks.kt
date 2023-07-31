@@ -95,7 +95,7 @@ fun String.batchPingResult() = lines().batchPingResult()
 
 fun Collection<String>.batchPingResult() = runBlocking {
     filter { it.isNotEmpty() }
-        .map { async(DISPATCHER) { it to it.substringBeforeLast(":").ping() } }
+        .map { async(DISPATCHER) { it to it.ping() } }
         .awaitAll()
         .sortedByDescending { it.second }
 }
