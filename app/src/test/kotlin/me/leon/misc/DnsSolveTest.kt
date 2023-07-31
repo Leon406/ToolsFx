@@ -56,7 +56,8 @@ class DnsSolveTest {
         println("before " + dns.size)
 
         runBlocking {
-            dns.take(1000)
+            dns
+//                .take(1000)
                 .map { host ->
                     async(DISPATCHER) {
                         runCatching {
@@ -111,8 +112,8 @@ class DnsSolveTest {
         println(ipV6.connect(445))
     }
 
-    private fun String.dnsQuery(): Message {
-        val queryRecord: Record = Record.newRecord(Name.fromString("$this."), Type.A, DClass.IN)
+    private fun String.dnsQuery(type: Int = Type.A): Message {
+        val queryRecord: Record = Record.newRecord(Name.fromString("$this."), type, DClass.IN)
         return Message.newQuery(queryRecord)
     }
 
