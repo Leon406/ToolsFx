@@ -1,11 +1,11 @@
 package me.leon.controller
 
-import me.leon.*
 import me.leon.config.DICT_DIR
 import me.leon.ext.*
 import me.leon.ext.crypto.*
-import me.leon.hash.lmHash
-import me.leon.hash.ntlmHash
+import me.leon.fileHash
+import me.leon.hash.*
+import me.leon.hash2String
 import tornadofx.*
 
 class DigestController : Controller() {
@@ -28,11 +28,8 @@ class DigestController : Controller() {
 
     private fun digest(method: String, data: String, inputEncode: String) =
         if (method.startsWith("CRC")) {
-            if (method.contains("32")) {
-                data.decodeToByteArray(inputEncode).crc32()
-            } else {
-                data.decodeToByteArray(inputEncode).crc64()
-            }
+            CRC_MAPPING[method.substringAfter("CRC")]!!.crc()
+                .digest(data.decodeToByteArray(inputEncode))
         } else if (method == "Adler32") {
             data.decodeToByteArray(inputEncode).adler32()
         } else if (method == "NTLM") {
@@ -60,11 +57,7 @@ class DigestController : Controller() {
             if (path.isEmpty()) {
                 ""
             } else if (method.startsWith("CRC")) {
-                if (method.contains("32")) {
-                    path.crc32File()
-                } else {
-                    path.crc64File()
-                }
+                path.toFile().crc(CRC_MAPPING[method.substringAfter("CRC")]!!)
             } else if (method == "Adler32") {
                 path.adler32File()
             } else if (method.passwordHashingType() != null) {
