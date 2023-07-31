@@ -152,21 +152,6 @@ class HashTest {
 
     @Test
     @Ignore
-    fun crc64() {
-        val readBytes = File(TEST_PRJ_DIR, "LICENSE").readBytes()
-        readBytes.run {
-            CRC64()
-                .apply {
-                    update(this@run)
-                    assertEquals("ea9848a519ac78d9", this.crcHex())
-                }
-                .crcDecimal()
-                .also { assertEquals("16904341075272693977", it) }
-        }
-    }
-
-    @Test
-    @Ignore
     fun hash() {
         println("hello".hash("TupleHash128"))
         println("hello".hash("TupleHash256"))

@@ -58,7 +58,7 @@ class DnsSolveTest {
 
         runBlocking {
             dns
-//                .take(1000)
+                //                .take(1000)
                 .map { host ->
                     async(DISPATCHER) {
                         runCatching {
