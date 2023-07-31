@@ -75,18 +75,25 @@ class JbLicenseTest {
         HttpUrlUtil.setupProxy()
         HttpUrlUtil.followRedirect = true
         verifySSL(false)
-        runBlocking {
-            sortedServers
-                .map { async(Dispatchers.IO) { it to checkUrl(it) } }
-                .awaitAll()
-                .filter { it.second }
-                .map { it.first }
-                .also {
-                    println("${it.size} / ${sortedServers.size} ")
-                    println("\tfail\n${sortedServers - it}")
-                    println("\tok\n${it.joinToString("\n")}")
-                }
+        var tmpServers = sortedServers.toSet()
+        val okServers = mutableSetOf<String>()
+        repeat(3) {
+            runBlocking {
+                tmpServers
+                    .map { async(Dispatchers.IO) { it to checkUrl(it) } }
+                    .awaitAll()
+                    .filter { it.second }
+                    .map { it.first }
+                    .also {
+                        okServers.addAll(it)
+                        tmpServers = tmpServers - okServers
+                        println("\tok\n${it.joinToString("\n")}")
+                    }
+            }
         }
+        println("${okServers.size} / ${sortedServers.size} ")
+        println("\tfail\n${sortedServers - okServers}")
+        println("\tok\n${okServers.joinToString("\n")}")
     }
 
     private fun crawlFromNet(): MutableSet<String> {
