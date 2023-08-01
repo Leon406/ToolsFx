@@ -73,7 +73,9 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: Map<String, String>) =
             with(requireNotNull(params[C1])) {
                 val range = substringBefore("-").toInt()..substringAfter("-").toInt()
-                raw.portScan(range.toList()).joinToString(System.lineSeparator())
+                raw.portScan(range.toList()).joinToString(System.lineSeparator()) {
+                    "$it    ${CodeMapping.PORT_DICT[it.toString()].orEmpty()}"
+                }
             }
     },
     IP_SCAN("ip scan") {
@@ -183,6 +185,15 @@ enum class MiscServiceType(val type: String) : MiscService {
             val type = requireNotNull(params[C1])
             return raw.lineAction2String {
                 runCatching { it.shortUrl(type) }.getOrElse { it.stacktrace() }
+            }
+        }
+    },
+    CODE_EXPLAIN("code explain") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return raw.lineAction2String {
+                runCatching { CodeMapping.TYPE[type]!![it].orEmpty().ifEmpty { raw } }
+                    .getOrElse { it.stacktrace() }
             }
         }
     },

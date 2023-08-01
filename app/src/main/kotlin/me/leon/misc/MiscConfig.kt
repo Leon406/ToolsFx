@@ -47,6 +47,8 @@ val MISC_CONFIG =
         MiscServiceType.UNIT_CONVERT to mapOf(HINT to "unit convert, should specify type"),
         MiscServiceType.TRADITION_CHINESE_CONVERT to mapOf(HINT to "convert tradition chinese"),
         MiscServiceType.SHORT_URL to mapOf(HINT to "short long url,separate by line"),
+        MiscServiceType.CODE_EXPLAIN to
+            mapOf(HINT to "explain the meaning of code,separate by line"),
     )
 
 val MISC_OPTIONS_CONFIG =
@@ -66,7 +68,16 @@ val MISC_OPTIONS_CONFIG =
             mapOf(OPTIONS to KawaType.entries.map { it.toString() }.toTypedArray()),
         MiscServiceType.PORT_SCAN to
             mapOf(
-                OPTIONS to arrayOf("1-10000", "1-20000", "1-30000", "1-40000", "1-50000", "1-65535")
+                OPTIONS to
+                    arrayOf(
+                        "1-1023",
+                        "1-10000",
+                        "1-20000",
+                        "1-30000",
+                        "1-40000",
+                        "1-49151",
+                        "1-65535"
+                    )
             ),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
@@ -89,5 +100,6 @@ val MISC_OPTIONS_CONFIG =
                         "jp2t",
                         "t2jp"
                     )
-            )
+            ),
+        MiscServiceType.CODE_EXPLAIN to mapOf(OPTIONS to CodeMapping.TYPE.keys.toTypedArray())
     )

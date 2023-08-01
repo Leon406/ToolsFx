@@ -1,0 +1,101 @@
+100	Continue
+101	Switching protocols
+102	Processing (WebDAV)
+103	Early hints
+200	OK
+201	Created
+202	Accepted
+203	Non authoritative information
+204	No content
+205	Reset content
+206	Partial content
+207	Multi-status (WebDAV)
+208	Already reported (WebDAV)
+226	Im used (HTTP Delta encoding)
+300	Multiple choices
+301	Moved permanently
+302	Found
+303	See other
+304	Not modified
+305	Use proxy deprecated
+306	Switch Proxy
+307	Temporary redirect
+308	Permanent redirect
+400	Bad request
+401	Unauthorized
+402	Payment required (experimental)
+403	Forbidden
+404	Not found
+405	Method not allowed
+406	Not acceptable
+407	Proxy authentication required
+408	Request timeout
+409	Conflict
+410	Gone
+411	Length required
+412	Precondition failed
+413	Payload too large
+414	Uri too long
+415	Unsupported media type
+416	Range not satisfiable
+417	Expectation failed
+418	I'm a teapot
+421	Misdirected request
+422	Unprocessable entity
+423	Locked (WebDAV)
+424	Failed dependency (WebDAV)
+425	Too early (experimental)
+426	Upgrade required
+428	Precondition required
+429	Too many requests
+431	Request
+444	Instruct nginx to close the connection
+451	Unavailable for legal reasons
+500	Internal server error
+501	Not implemented
+502	Bad gateway
+503	Service unavailable
+504	Gateway timeout
+505	Not supported
+506	Variant also negotiates
+507	Insufficient storage (WebDAV)
+508	Loop detected (WebDAV)
+510	Not extended
+511	Network authentication required
+419	Page Expired (Laravel Framework)
+420	Method Failure (Spring Framework)/Enhance Your Calm (Twitter)
+430	Request Header Fields Too Large (Shopify)
+450	Blocked by Windows Parental Controls (Microsoft)
+498	Invalid Token (Esri)Invalid Token (Esri)
+509	Bandwidth Limit Exceeded (Apache Web Server/cPanel)
+529	Site is overloaded (Qualys)
+598	(Informal convention) Network read timeout error
+599	Network Connect Timeout Error
+440	Login Time-out (IIS)
+449	Retry With (IIS)
+451	Redirect (IIS)
+444	No Response (nginx)
+494	Request header too large (nginx)
+495	SSL Certificate Error (nginx)
+496	SSL Certificate Required (nginx)
+497	HTTP Request Sent to HTTPS Port (nginx)
+499	Client Closed Request (nginx) / Token Required (Esri)
+520	Web Server Returned an Unknown Error (Cloudflare)
+521	Web Server Is Down (Cloudflare)
+522	Connection Timed Out (Cloudflare)
+523	Origin Is Unreachable (Cloudflare)
+524	A Timeout Occurred (Cloudflare)
+525	SSL Handshake Failed (Cloudflare)
+526	Invalid SSL Certificate (Cloudflare)
+527	Railgun Error (Cloudflare)
+530	Site is frozen (Pantheon) / returned along with a 1xxx error (Cloudflare)
+460	Client closed the connection with the load balancer before the idle timeout period elapsed. Typically when client timeout is sooner than the Elastic Load Balancer's timeout. (Amazon's Elastic Load Balancing)
+463	The load balancer received an X-Forwarded-For request header with more than 30 IP addresses. (Amazon's Elastic Load Balancing)
+561	Unauthorized (Amazon's Elastic Load Balancing)
+110	Response is Stale (obsoleted)
+111	Revalidation Failed (obsoleted)
+112	Disconnected Operation (obsoleted)
+113	Heuristic Expiration (obsoleted)
+199	Miscellaneous Warning (obsoleted)
+214	Transformation Applied (obsoleted)
+299	Miscellaneous Persistent Warning (obsoleted)
