@@ -20,7 +20,7 @@ dependencies {
     implementation("org.openjdk.jol:jol-core:0.17")
     implementation("org.openjdk.jmh:jmh-core:1.37")
     implementation("cn.hutool:hutool-all:5.8.21")
-    kapt("org.openjdk.jmh:jmh-generator-annprocess:1.36")
+    kapt("org.openjdk.jmh:jmh-generator-annprocess:1.37")
     implementation(project(":app"))
     testImplementation(libs.kotlin.test)
 
