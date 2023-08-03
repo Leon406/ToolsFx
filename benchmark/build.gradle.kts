@@ -18,7 +18,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 dependencies {
     implementation("androidx.collection:collection-ktx:1.2.0")
     implementation("org.openjdk.jol:jol-core:0.17")
-    implementation("org.openjdk.jmh:jmh-core:1.36")
+    implementation("org.openjdk.jmh:jmh-core:1.37")
     implementation("cn.hutool:hutool-all:5.8.21")
     kapt("org.openjdk.jmh:jmh-generator-annprocess:1.36")
     implementation(project(":app"))
