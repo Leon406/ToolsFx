@@ -26,4 +26,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.selenium)
+    testImplementation("org.ktorm:ktorm-support-sqlite:3.6.0")
 }
