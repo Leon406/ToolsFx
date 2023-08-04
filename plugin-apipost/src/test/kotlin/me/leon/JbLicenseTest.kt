@@ -1,7 +1,6 @@
 package me.leon
 
 import java.io.File
-import java.net.Proxy
 import kotlin.test.Test
 import kotlinx.coroutines.*
 import me.leon.ext.readFromNet
@@ -10,8 +9,6 @@ import me.leon.toolsfx.plugin.net.HttpUrlUtil
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.toParams
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.verifySSL
 
-private const val RUSHB_URL = "https://rushb.pro/article/JetBrains-license-server.html"
-private val REG_HTML_TAG = "<[^>]+>".toRegex()
 private const val TMP_FILE = "C:\\Users\\Leon\\Desktop\\jblicense.txt"
 private val REG_LINK = "https?://[^\"<]+".toRegex()
 private val REG_FILTER_LINK =
@@ -19,8 +16,6 @@ private val REG_FILTER_LINK =
 private const val UA =
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
         "Chrome/95.0.4638.69 Safari/537.36"
-
-val commonHeaders = mutableMapOf<String, Any>("user-agent" to UA)
 
 const val RPC_RELEASE = "/rpc/releaseTicket.action?"
 const val RPC = "/rpc/obtainTicket.action?"
@@ -42,14 +37,8 @@ val regMsg = "<message>([^<]+)</message>".toRegex()
 class JbLicenseTest {
 
     @Test
-    fun list() {
-        HttpUrlUtil.setupProxy(Proxy.Type.SOCKS, "127.0.0.1", 7890)
-        println(crawlFromRushb())
-    }
-
-    @Test
     fun checkJbAuth() {
-        val server = "http://jetbrains.ychinfo.com"
+        val server = "http://vip.52shizhan.cn"
         HttpUrlUtil.get("$server$RPC_RELEASE$queries").also {
             println(it)
             if (it.data.contains("<responseCode>OK</responseCode>")) {
@@ -65,8 +54,7 @@ class JbLicenseTest {
     @Test
     fun licenseServerValidate() {
         //        HttpUrlUtil.setupProxy(Proxy.Type.SOCKS,"127.0.0.1",7890)
-        val servers = crawlFromNet()
-        println("success from net ${servers.size}")
+        val servers = mutableSetOf<String>()
         val localServers = parseFromFile()
         println("localServers ${localServers.size}")
         servers.addAll(localServers)
@@ -77,7 +65,7 @@ class JbLicenseTest {
         verifySSL(false)
         var tmpServers = sortedServers.toSet()
         val okServers = mutableSetOf<String>()
-        repeat(3) {
+        repeat(1) {
             runBlocking {
                 tmpServers
                     .map { async(Dispatchers.IO) { it to checkUrl(it) } }
@@ -92,17 +80,8 @@ class JbLicenseTest {
             }
         }
         println("${okServers.size} / ${sortedServers.size} ")
-        println("\tfail\n${sortedServers - okServers}")
+        //        println("\tfail\n${sortedServers - okServers}")
         println("\tok\n${okServers.joinToString("\n")}")
-    }
-
-    private fun crawlFromNet(): MutableSet<String> {
-        val servers = mutableSetOf<String>()
-        runCatching {
-            servers.addAll(crawlFromRushb())
-            println("success from RUSHUB ${servers.size}")
-        }
-        return servers
     }
 
     private fun parseFromFile(file: File = TMP_FILE.toFile()): MutableSet<String> {
@@ -182,16 +161,5 @@ class JbLicenseTest {
                         .forEach { println(it) }
                 }
         }
-    }
-
-    private fun crawlFromRushb(): List<String> {
-        val response = HttpUrlUtil.get(RUSHB_URL, headers = commonHeaders)
-
-        return REG_HTML_TAG.replace(response.data, "")
-            .substringAfter(RUSHB_URL)
-            .substringBefore(RUSHB_URL)
-            .lines()
-            .filter { it.startsWith("http") }
-            .map { it.substringBefore("捐赠") }
     }
 }
