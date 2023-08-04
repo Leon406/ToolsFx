@@ -10,3 +10,4 @@ dict/
 *.json
 downloads/
 .DS_store
+vocabulary/

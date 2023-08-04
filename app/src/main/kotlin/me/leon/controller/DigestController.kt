@@ -10,7 +10,13 @@ import tornadofx.*
 
 class DigestController : Controller() {
     private val dicts
-        get() = DICT_DIR.toFile().listFiles()?.flatMap { it.readLines() }?.distinct().orEmpty()
+        get() =
+            DICT_DIR.toFile()
+                .listFiles()
+                ?.filter { it.endsWith(".txt") }
+                ?.flatMap { it.readLines() }
+                ?.distinct()
+                .orEmpty()
 
     fun digest(
         method: String,

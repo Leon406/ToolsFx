@@ -12,7 +12,7 @@ import javax.sound.sampled.SourceDataLine
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 import me.leon.*
-import me.leon.config.DICT_DIR
+import me.leon.config.VOCABULARY_DIR
 import me.leon.domain.SimpleMsgEvent
 import me.leon.encode.base.base64
 import me.leon.ext.*
@@ -60,7 +60,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private val syllables by lazy {
         val r = mutableMapOf<String, String>()
-        val file = File(DICT_DIR, "syllable.txt")
+        val file = File(VOCABULARY_DIR, "syllable.txt")
         if (file.exists()) {
             file
                 .readText()
@@ -592,7 +592,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     }
 
     private fun writeVocabularyToFile(vocabularies: List<Vocabulary>) {
-        val defaultFile = File(DICT_DIR, dictType)
+        val defaultFile = File(VOCABULARY_DIR, dictType)
         val targetFile =
             if (additionFileMode.get()) {
                 inputText2
@@ -667,7 +667,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     )
                     thread {
                         val outOfDict =
-                            File(DICT_DIR, "outOfDict.txt").also {
+                            File(VOCABULARY_DIR, "outOfDict.txt").also {
                                 if (!it.exists()) {
                                     it.createNewFile()
                                 }

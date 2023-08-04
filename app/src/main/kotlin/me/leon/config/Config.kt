@@ -20,3 +20,4 @@ const val WIKI_CTF = "https://github.com/Leon406/ToolsFx/wiki/CTF"
 const val WIKI = "https://github.com/Leon406/ToolsFx/wiki/Home"
 val APP_ROOT: String = File("").absolutePath
 val DICT_DIR: String = "$APP_ROOT/dict"
+val VOCABULARY_DIR: String = "$APP_ROOT/vocabulary"

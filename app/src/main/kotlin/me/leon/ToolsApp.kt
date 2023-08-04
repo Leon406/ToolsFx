@@ -78,13 +78,13 @@ class ToolsApp : App(Home::class, Styles::class) {
             thread {
                 file = File(DICT_DIR, "top1000.txt")
                 copyResourceFileIfNotExist("/top1000.txt", file)
-                file = File(DICT_DIR, "dictionary.conf")
+                file = File(VOCABULARY_DIR, "dictionary.conf")
                 copyResourceFileIfNotExist("/dictionary.conf", file)
                 file.readText().fromJson(DictionaryConfig::class.java).run {
                     dict = dicts[active]
                     dict.autoPronounce = autoPronounce
 
-                    val defaultDict = File(DICT_DIR, dictFile)
+                    val defaultDict = File(VOCABULARY_DIR, dictFile)
                     val customDict = dictFileName?.toFile()
                     val file =
                         if (customDict?.exists() == true) {
