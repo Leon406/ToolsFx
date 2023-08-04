@@ -24,7 +24,6 @@ object CodeMapping {
             .fold(mutableMapOf<String, String>()) { acc, p ->
                 acc.also {
                     val range = p.first().split("-")
-                    println(p)
                     val startPort = range.first().toInt()
                     val ports =
                         if (range.size == 2) {
