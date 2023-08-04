@@ -69,7 +69,7 @@ class MiscFragment : PluginFragment("Misc") {
                 vgap = 8.0
                 hgap = 8.0
                 alignment = Pos.TOP_LEFT
-                prefColumns = 6
+                prefColumns = 7
                 togglegroup {
                     miscServiceTypeMap.forEach {
                         radiobutton(it.key) {
