@@ -20,7 +20,14 @@ data class YouDaoResponse(
 
     fun simple(): String = buildString {
         if (simple?.query != null && ec?.means() != null) {
-            append(ec.means().replace("\n", "").replace("\r\n", ""))
+            append(
+                ec.means()
+                    .replace("\n", "")
+                    .replace("\r\n", "")
+                    .replace("; · [^;]+; [^;\\r]+".toRegex(), "")
+                    .replace("。;", ";")
+                    .replace("．;", "．")
+            )
         }
     }
 

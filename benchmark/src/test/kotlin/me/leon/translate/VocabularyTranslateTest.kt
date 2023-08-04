@@ -12,19 +12,15 @@ import org.jsoup.Jsoup
  * @since 2023-06-28 18:10
  * @email deadogone@gmail.com
  */
-const val ICBA = "https://www.iciba.com/word?w=%s"
-const val BING = "https://cn.bing.com/dict/search?q=%s"
-
-/** refer https://github.com/Haleclipse/-Api/blob/master/YoudaoDic.md */
-const val YOUDAO = "https://dict.youdao.com/jsonapi?xmlVersion=5.1&jsonversion=2&q=%s"
-const val CAMBRIDGE = "https://dictionary.cambridge.org/dictionary/english-chinese-simplified/%s"
-
-val REG_ICBA = """"wordInfo":([^<]+?),"history"""".toRegex()
-
 class TranslateTest {
-    val word = "do"
-    val noMeaning = "$DESKTOP/nomeaning.txt".toFile()
-    val nodata = "$DESKTOP/nodata.txt".toFile()
+    val word = "annexing"
+    val noMeaning = "$ONE_DRIVE_DIR/outOfDict.txt".toFile()
+    val nodata =
+        "$DESKTOP/nodata.txt".toFile().also {
+            if (it.exists()) {
+                it.createNewFile()
+            }
+        }
     val defaultTrans = File(noMeaning.parentFile, "trans.txt")
 
     @Test
@@ -89,11 +85,11 @@ class TranslateTest {
 
     @Test
     fun translate() {
-        val toTranslated = "$ONE_DRIVE_DIR/known.txt".toFile()
-        readData(toTranslated, nodata).forEach {
-            println(it)
+        readData().forEach {
+            //            println(it)
             val mean = it.combineTranslate()
             if (mean.isNotEmpty()) {
+                println(mean)
                 defaultTrans.appendText("$it\t$mean${System.lineSeparator()}")
             }
         }
