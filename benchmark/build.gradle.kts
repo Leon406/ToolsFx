@@ -22,16 +22,12 @@ dependencies {
     implementation("cn.hutool:hutool-all:5.8.21")
     kapt("org.openjdk.jmh:jmh-generator-annprocess:1.37")
     implementation(project(":app"))
-    testImplementation(libs.kotlin.test)
 
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.jsoup)
-    // https://mvnrepository.com/artifact/tokyo.northside/mdict4j
-    testImplementation("tokyo.northside:mdict4j:0.5.3") {
-        exclude("org.bouncycastle", "bcprov-jdk15on")
-    }
     testImplementation("org.java-websocket:Java-WebSocket:1.5.4")
     // mp3格式支持
-//    testImplementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
+    // testImplementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
 
     //  refer  https://github.com/Tianscar/javasound-spcollect
     // https://mvnrepository.com/artifact/com.tianscar.javasound/javasound-mp3  com.googlecode.soundlib 维护库
@@ -43,7 +39,7 @@ dependencies {
     // ape格式
     testImplementation("com.tianscar.javasound:javasound-ape:1.7.7")
     // aac  某些mp3会误识别为 aac
-//    testImplementation("com.tianscar.javasound:javasound-aac:0.9.8")
+    // testImplementation("com.tianscar.javasound:javasound-aac:0.9.8")
 
     testImplementation("org.bytedeco:cpython-platform:3.11.4-1.5.10-SNAPSHOT")
 }
