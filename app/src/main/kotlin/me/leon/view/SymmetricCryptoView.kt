@@ -67,8 +67,8 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             "NoPadding",
             "TBCPadding",
             "X923Padding",
-            "ISO7816d4Padding",
-            "ISO10126d2Padding"
+            "ISO7816-4Padding",
+            "ISO10126-2Padding"
         )
     private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
 
