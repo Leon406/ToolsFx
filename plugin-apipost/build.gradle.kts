@@ -21,10 +21,8 @@ dependencies {
     implementation(project(":plugin-lib"))
     implementation(project(":app"))
 
-    testImplementation(libs.sqlite)
     testImplementation(libs.jna.platform)
     testImplementation(libs.kotlinx.coroutines)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.selenium)
-    testImplementation("org.ktorm:ktorm-support-sqlite:3.6.0")
 }
