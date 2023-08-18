@@ -4,15 +4,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
-import org.junit.Ignore
 import org.junit.Test
 
-/**
- * @author Leon
- * @since 2023-06-02 16:51
- * @email deadogone@gmail.com
- */
-@Ignore
 class CoroutineTest {
     @Test
     fun flow2() {
@@ -135,6 +128,14 @@ class CoroutineTest {
             } catch (e: Exception) {
                 println(e)
             }
+        }
+    }
+
+    @Test
+    fun batch() {
+        val list = 1..100
+        runBlocking {
+            list.chunked(10).map { async(Dispatchers.IO) { it.forEach { Thread.sleep(200) } } }
         }
     }
 }

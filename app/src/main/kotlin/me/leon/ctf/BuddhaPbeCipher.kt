@@ -7,7 +7,7 @@ import me.leon.ext.crypto.PBE
  * @since 2023-05-26 9:37
  * @email deadogone@gmail.com
  */
-private const val KEY = "TakuronDotTop"
+private const val KEY = "takuron.top"
 private const val ALG = "PBEWithMD5and256bitAES-CBC-OPENSSL"
 private val encode =
     mapOf(
@@ -81,7 +81,7 @@ private val encode =
 private val decode = encode.values.zip(encode.keys).toMap()
 
 fun String.buddhaPbe(key: String = KEY): String {
-    return "佛曰：" +
+    return "佛又曰：" +
         PBE.encrypt(key.ifEmpty { KEY }, this, PBE.getSalt(), ALG)
             .substring(10)
             .map { encode[it] }
@@ -91,7 +91,7 @@ fun String.buddhaPbe(key: String = KEY): String {
 fun String.buddhaPbeDecrypt(pass: String = KEY): String {
     return PBE.decrypt(
         pass.ifEmpty { KEY },
-        "U2FsdGVkX1" + substring(3).map { decode[it] }.joinToString(""),
+        "U2FsdGVkX1" + substringAfter("：").map { decode[it] }.joinToString(""),
         8,
         ALG
     )
