@@ -21,4 +21,20 @@ class CodeExplainTest {
         println(CodeMapping.PORT_DICT["23"])
         println(CodeMapping.PORT_DICT["53"])
     }
+
+    @Test
+    fun mime() {
+        println(CodeMapping.MIME_DICT["jpeg"])
+        println(CodeMapping.MIME_DICT["mp4"])
+        println(CodeMapping.MIME_DICT["mp3"])
+        println(CodeMapping.MIME_DICT["mpeg"])
+        println(CodeMapping.MIME_DICT["css"])
+        println(CodeMapping.MIME_DICT["aac"])
+        val search = "mp4"
+        (CodeMapping.MIME_DICT[search]
+                ?: CodeMapping.MIME_DICT.filter { it.key.contains(search) }
+                    .map { (k, v) -> "$k\t$v" }
+                    .joinToString(System.lineSeparator()))
+            .also { println(it) }
+    }
 }

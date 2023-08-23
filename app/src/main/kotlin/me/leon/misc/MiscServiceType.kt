@@ -192,7 +192,7 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: Map<String, String>): String {
             val type = requireNotNull(params[C1])
             return raw.lineAction2String {
-                runCatching { CodeMapping.TYPE[type]!![it].orEmpty().ifEmpty { raw } }
+                runCatching { CodeMapping.TYPE[type]!![it].orEmpty().ifEmpty { it } }
                     .getOrElse { it.stacktrace() }
             }
         }

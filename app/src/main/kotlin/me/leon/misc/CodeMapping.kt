@@ -16,6 +16,18 @@ object CodeMapping {
             .fold(mutableMapOf<String, String>()) { acc, p -> acc.also { acc[p.first()] = p[1] } }
             .toMap()
 
+    /**
+     * data from https://www.iana.org/assignments/media-types/media-types.xhtml
+     */
+    val MIME_DICT =
+        readResourceText("/mapping/mime.txt")
+            .lines()
+            .map { it.split("\t") }
+            .fold(mutableMapOf<String, String>()) { acc, p ->
+                acc.also { acc[p.first().lowercase()] = p[1] }
+            }
+            .toMap()
+
     /** refer https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers */
     val PORT_DICT =
         readResourceText("/mapping/ports.txt")
@@ -47,5 +59,6 @@ object CodeMapping {
         mapOf(
             "PORT" to PORT_DICT,
             "HTTP RESPONSE CODE" to HTTP_CODE_DICT,
+            "MIME" to MIME_DICT,
         )
 }
