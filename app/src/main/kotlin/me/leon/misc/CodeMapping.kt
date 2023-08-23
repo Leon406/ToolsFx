@@ -16,9 +16,7 @@ object CodeMapping {
             .fold(mutableMapOf<String, String>()) { acc, p -> acc.also { acc[p.first()] = p[1] } }
             .toMap()
 
-    /**
-     * data from https://www.iana.org/assignments/media-types/media-types.xhtml
-     */
+    /** data from https://www.iana.org/assignments/media-types/media-types.xhtml */
     val MIME_DICT =
         readResourceText("/mapping/mime.txt")
             .lines()
