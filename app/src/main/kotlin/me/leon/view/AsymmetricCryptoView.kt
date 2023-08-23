@@ -2,6 +2,7 @@ package me.leon.view
 
 import javafx.beans.property.*
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.config.TEXT_AREA_LINES
 import me.leon.controller.AsymmetricCryptoController
@@ -249,9 +250,9 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             }
         }
         taOutput = textarea {
+            vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
-            prefRowCount = TEXT_AREA_LINES
         }
     }
 

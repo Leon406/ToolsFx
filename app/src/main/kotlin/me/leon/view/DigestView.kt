@@ -4,6 +4,7 @@ import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.controller.DigestController
 import me.leon.encode.base.base64
@@ -195,6 +196,7 @@ class DigestView : Fragment(messages["hash"]) {
             }
         }
         taOutput = textarea {
+            vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
             contextmenu {

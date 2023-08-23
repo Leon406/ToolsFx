@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.controller.PBEController
 import me.leon.encode.base.base64Decode
@@ -177,6 +178,7 @@ class PBEView : Fragment("PBE") {
             }
         }
         taOutput = textarea {
+            vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
         }

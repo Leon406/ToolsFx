@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.config.TEXT_AREA_LINES
 import me.leon.config.showDict
@@ -154,7 +155,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
         }
 
         taOutput = textarea {
-            prefRowCount = TEXT_AREA_LINES - 2
+            vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
         }

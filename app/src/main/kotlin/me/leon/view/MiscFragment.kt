@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.*
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.controller.MiscController
 import me.leon.ext.*
@@ -134,6 +135,7 @@ class MiscFragment : PluginFragment("Misc") {
             }
         }
         taOutput = textarea {
+            vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
         }

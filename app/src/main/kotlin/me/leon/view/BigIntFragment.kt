@@ -5,9 +5,9 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import me.leon.*
-import me.leon.config.TEXT_AREA_LINES
 import me.leon.controller.CalculatorController
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
@@ -174,9 +174,9 @@ class BigIntFragment : Fragment("BigInt") {
             .also { vBox.add(it) }
         taOutput =
             textarea {
+                    vgrow = Priority.ALWAYS
                     promptText = messages["outputHint"]
                     isWrapText = true
-                    prefRowCount = TEXT_AREA_LINES - 2
                     contextmenu {
                         item("numberToString") { action { number2String() } }
                         item("stringToNumber") { action { string2Number() } }

@@ -7,6 +7,7 @@ import javafx.concurrent.Task
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
+import javafx.scene.layout.Priority
 import javafx.util.Callback
 import javax.sound.sampled.SourceDataLine
 import kotlin.concurrent.thread
@@ -487,6 +488,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
             prefHeight = 300.0
             spacing = 8.0
             taOutput = textarea {
+                vgrow = Priority.ALWAYS
                 promptText = messages["outputHint"]
                 isWrapText = true
             }

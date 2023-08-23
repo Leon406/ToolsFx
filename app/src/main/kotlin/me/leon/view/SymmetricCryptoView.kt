@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.component.KeyIvInputView
 import me.leon.controller.SymmetricCryptoController
@@ -243,6 +244,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             }
         }
         taOutput = textarea {
+            vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
         }

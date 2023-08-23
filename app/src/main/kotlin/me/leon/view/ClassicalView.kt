@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.config.TEXT_AREA_LINES
 import me.leon.config.WIKI_CTF
@@ -217,9 +218,9 @@ class ClassicalView : Fragment(messages["classical"]) {
         }
 
         taOutput = textarea {
+            vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
-            prefRowCount = TEXT_AREA_LINES - 2
             contextmenu {
                 item("uppercase") { action { taOutput.text = taOutput.text.uppercase() } }
                 item("lowercase") { action { taOutput.text = taOutput.text.lowercase() } }
