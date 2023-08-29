@@ -28,7 +28,7 @@ jsoupVer = "1.16.1"
 detektVer = "1.23.1"
 javafxVer = "0.0.14"
 # https://github.com/diffplug/spotless/blob/main/plugin-gradle/CHANGES.md
-spotlessVer = "6.20.0"
+spotlessVer = "6.21.0"
 
 
 [libraries]
