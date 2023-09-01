@@ -2,6 +2,7 @@ package me.leon.component
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
+import javafx.scene.layout.Priority
 import me.leon.Styles
 import me.leon.ext.decodeToByteArray
 import me.leon.ext.encodeTo
@@ -30,7 +31,10 @@ class KeyIvInputView(
     override val root = hbox {
         addClass(Styles.left)
         label("key:")
-        tfKey = textfield { promptText = messages["keyHint"] }
+        tfKey = textfield {
+            promptText = messages["keyHint"]
+            hgrow = Priority.SOMETIMES
+        }
         add(toggleKey.root)
         toggleKey.callback { old, new ->
             if (autoConvert.get()) {
@@ -41,6 +45,7 @@ class KeyIvInputView(
         tfIv = textfield {
             promptText = messages["ivHint"]
             visibleWhen(enableIv)
+            hgrow = Priority.SOMETIMES
         }
         add(toggleIv.root)
         toggleIv.callback { old, new ->
@@ -52,6 +57,7 @@ class KeyIvInputView(
         tfData = textfield {
             promptText = messages["associateDataHint"]
             visibleWhen(enableAssociatedData)
+            hgrow = Priority.SOMETIMES
         }
         add(toggleData.root)
         toggleData.callback { old, new ->
