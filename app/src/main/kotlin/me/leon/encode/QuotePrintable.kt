@@ -42,7 +42,7 @@ object QuotePrintable {
             } else if (curPos == lastPos) {
                 hex.append(preHandle.subSequence(lastPos + 1, lastPos + 3))
                 lastPos += 3
-                while (preHandle[lastPos] == '=') {
+                while (lastPos < preHandle.length && preHandle[lastPos] == '=') {
                     hex.append(preHandle.subSequence(lastPos + 1, lastPos + 3))
                     lastPos += 3
                 }

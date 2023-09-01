@@ -267,6 +267,7 @@ class EncodeTest {
 
         assertEquals(encrypted, gbkMsg)
         assertEquals(raw, QuotePrintable.decode(gbkMsg, "gbk"))
+        assertEquals("好", QuotePrintable.decode("=e5=a5=bd"))
     }
 
     @Test
