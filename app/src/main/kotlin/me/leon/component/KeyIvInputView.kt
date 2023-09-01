@@ -33,7 +33,7 @@ class KeyIvInputView(
         label("key:")
         tfKey = textfield {
             promptText = messages["keyHint"]
-            hgrow = Priority.SOMETIMES
+            autoSizeAndShowTooltips()
         }
         add(toggleKey.root)
         toggleKey.callback { old, new ->
@@ -45,7 +45,7 @@ class KeyIvInputView(
         tfIv = textfield {
             promptText = messages["ivHint"]
             visibleWhen(enableIv)
-            hgrow = Priority.SOMETIMES
+            autoSizeAndShowTooltips()
         }
         add(toggleIv.root)
         toggleIv.callback { old, new ->
@@ -57,13 +57,21 @@ class KeyIvInputView(
         tfData = textfield {
             promptText = messages["associateDataHint"]
             visibleWhen(enableAssociatedData)
-            hgrow = Priority.SOMETIMES
+            autoSizeAndShowTooltips()
         }
         add(toggleData.root)
         toggleData.callback { old, new ->
             if (autoConvert.get()) {
                 tfData.text = tfData.text.decodeToByteArray(old).encodeTo(new)
             }
+        }
+    }
+
+    private fun TextField.autoSizeAndShowTooltips() {
+        hgrow = Priority.SOMETIMES
+        tooltip("")
+        textProperty().addListener { _, _, newValue ->
+            tooltip.text = newValue
         }
     }
 }
