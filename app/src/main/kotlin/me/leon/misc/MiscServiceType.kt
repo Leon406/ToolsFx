@@ -87,7 +87,8 @@ enum class MiscServiceType(val type: String) : MiscService {
             raw.batchPing(requireNotNull(params[C1]))
     },
     TCPING("tcping") {
-        override fun process(raw: String, params: Map<String, String>) = raw.batchTcPing()
+        override fun process(raw: String, params: Map<String, String>) =
+            raw.batchTcPing(requireNotNull(params[C1]))
     },
     WHOIS("whois(online)") {
         override fun process(raw: String, params: Map<String, String>) =

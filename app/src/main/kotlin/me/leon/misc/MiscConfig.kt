@@ -88,6 +88,7 @@ val MISC_OPTIONS_CONFIG =
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
+        MiscServiceType.TCPING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
         MiscServiceType.SHORT_URL to
             mapOf(OPTIONS to ShortUrlEnum.values().map { it.name }.toTypedArray()),
         MiscServiceType.TRADITION_CHINESE_CONVERT to

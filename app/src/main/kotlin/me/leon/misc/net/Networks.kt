@@ -78,18 +78,7 @@ fun String.lanScan(): List<Int> {
     }
 }
 
-fun String.batchPing(type: String) =
-    with(batchPingResult()) {
-        when (type) {
-            "Ok" ->
-                filter { it.second > 0 }
-                    .sortedBy { it.second }
-                    .joinToString(System.lineSeparator()) { it.first }
-            "Fail" -> filter { it.second < 0 }.joinToString(System.lineSeparator()) { it.first }
-            "All" -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
-            else -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
-        }
-    }
+fun String.batchPing(type: String) = batchPingResult().properResult(type)
 
 fun String.batchPingResult() = lines().batchPingResult()
 
@@ -100,7 +89,7 @@ fun Collection<String>.batchPingResult() = runBlocking {
         .sortedByDescending { it.second }
 }
 
-fun String.batchTcPing() = runBlocking {
+fun String.batchTcPingResult() = runBlocking {
     lines()
         .filter { it.contains(":") }
         .map {
@@ -110,8 +99,20 @@ fun String.batchTcPing() = runBlocking {
         }
         .awaitAll()
         .sortedByDescending { it.second }
-        .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
 }
+
+fun String.batchTcPing(type: String) = batchTcPingResult().properResult(type)
+
+private fun List<Pair<String, Long>>.properResult(type: String) =
+    when (type) {
+        "Ok" ->
+            filter { it.second >= 0 }
+                .sortedBy { it.second }
+                .joinToString(System.lineSeparator()) { it.first }
+        "Fail" -> filter { it.second < 0 }.joinToString(System.lineSeparator()) { it.first }
+        "All" -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+        else -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+    }
 
 fun Collection<String>.batchTcPing(port: Int) = runBlocking {
     map { async(DISPATCHER) { it to it.connect(port) } }.awaitAll().sortedByDescending { it.second }
