@@ -10,6 +10,7 @@ import me.leon.*
 import me.leon.component.KeyIvInputView
 import me.leon.controller.SymmetricCryptoController
 import me.leon.ext.*
+import me.leon.ext.crypto.AEAD_MODE_REG
 import me.leon.ext.fx.*
 import tornadofx.*
 import tornadofx.FX.Companion.messages
@@ -27,6 +28,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             "RC4", // aka ARC4
             "ChaCha",
             "ChaCha20",
+            // AEAD
             "ChaCha20-Poly1305",
             "VMPC",
             "VMPC-KSA3",
@@ -44,6 +46,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private val fileProperty = SimpleBooleanProperty(false)
     private val enableIv = SimpleBooleanProperty(false)
     private val autoKeyIv = SimpleBooleanProperty(false)
+    private val enableAEAD = SimpleBooleanProperty(false)
     private val processing = SimpleBooleanProperty(false)
     private val selectedAlg = SimpleStringProperty(algs.first())
     private val selectedCharset = SimpleStringProperty(CHARSETS.first())
@@ -54,7 +57,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
     private lateinit var tgOutput: ToggleGroup
     private lateinit var taOutput: TextArea
     private lateinit var infoLabel: Label
-    private val keyIvInputView = KeyIvInputView(enableIv, autoConvert = autoKeyIv)
+    private val keyIvInputView = KeyIvInputView(enableIv, enableAEAD, autoKeyIv)
 
     private val inputText: String
         get() = taInput.text
@@ -112,7 +115,10 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             addClass(Styles.left)
             label(messages["alg"])
             combobox(selectedAlg, algs) { cellFormat { text = it } }
-            selectedAlg.addListener { _, _, newValue -> enableIv.value = newValue != "RC4" }
+            selectedAlg.addListener { _, _, newValue ->
+                enableIv.value = newValue != "RC4"
+                enableAEAD.value = newValue.contains(AEAD_MODE_REG)
+            }
 
             label("charset:")
             combobox(selectedCharset, CHARSETS) { cellFormat { text = it } }
@@ -189,7 +195,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                     keyIvInputView.keyByteArray,
                                     it,
                                     keyIvInputView.ivByteArray,
-                                    cipher
+                                    cipher,
+                                    keyIvInputView.associatedData
                                 )
                             }
                         } else {
@@ -201,7 +208,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                 selectedCharset.get(),
                                 singleLine.get(),
                                 inputEncode,
-                                outputEncode
+                                outputEncode,
+                                keyIvInputView.associatedData
                             )
                         }
                     } else if (fileProperty.get()) {
@@ -210,7 +218,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                 keyIvInputView.keyByteArray,
                                 it,
                                 keyIvInputView.ivByteArray,
-                                cipher
+                                cipher,
+                                keyIvInputView.associatedData
                             )
                         }
                     } else {
@@ -222,7 +231,8 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                             selectedCharset.get(),
                             singleLine.get(),
                             inputEncode,
-                            outputEncode
+                            outputEncode,
+                            keyIvInputView.associatedData
                         )
                     }
                 }

@@ -3,8 +3,9 @@ package me.leon.ext.crypto
 import java.io.File
 import javax.crypto.*
 import javax.crypto.spec.*
+import org.bouncycastle.jcajce.spec.AEADParameterSpec
 
-val AEAD_MODE_REG = "GCM|EAX|CCM|OCB".toRegex()
+val AEAD_MODE_REG = "GCM|EAX|CCM|OCB|ChaCha20-Poly1305".toRegex()
 
 fun ByteArray.encrypt(
     key: ByteArray,
@@ -34,7 +35,12 @@ fun makeCipher(
         }
         // require jdk 11
         else if (alg.equals("ChaCha20", true)) {
-            init(cipherMode, keySpec, ChaCha20ParameterSpec(iv, 7))
+            init(
+                cipherMode,
+                keySpec,
+                runCatching { ChaCha20ParameterSpec(iv, 0) }
+                    .getOrElse { AEADParameterSpec(iv, 128) }
+            )
         } else {
             init(cipherMode, keySpec, IvParameterSpec(iv)).also {
                 if (alg.contains(AEAD_MODE_REG) && associatedData.isNotEmpty()) {
