@@ -14,7 +14,7 @@ object MiitInfo {
     private const val API_INFO =
         "https://hlwicpfwc.miit.gov.cn/icpproject_query/api/icpAbbreviateInfo/queryByCondition"
 
-    private fun getToken(): String {
+    fun getToken(): String {
         if (System.currentTimeMillis() < expirationTime) {
             println("cache token")
             return _token
@@ -40,7 +40,7 @@ object MiitInfo {
     fun domainInfo(domain: String) =
         API_INFO.readFromNet(
                 "POST",
-                data = "{\"unitName\": \"${domain}\"}",
+                data = "{\"unitName\": \"${domain}\",\"serviceType\":1}",
                 headers =
                     mapOf(
                         "token" to getToken(),
@@ -48,5 +48,6 @@ object MiitInfo {
                         "Referer" to "https://beian.miit.gov.cn/"
                     )
             )
+            .also { println(it) }
             .fromJson(MiitDetail::class.java)
 }

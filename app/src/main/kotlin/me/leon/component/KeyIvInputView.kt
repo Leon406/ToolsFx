@@ -70,8 +70,6 @@ class KeyIvInputView(
     private fun TextField.autoSizeAndShowTooltips() {
         hgrow = Priority.SOMETIMES
         tooltip("")
-        textProperty().addListener { _, _, newValue ->
-            tooltip.text = newValue
-        }
+        textProperty().addListener { _, _, newValue -> tooltip.text = newValue }
     }
 }
