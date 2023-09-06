@@ -4,9 +4,9 @@ pluginManagement {
         maven { url = uri("https://mirrors.tencent.com/nexus/repository/maven-public") }
         maven { url = uri("https://mirrors.huaweicloud.com/repository/maven") }
         //  新库同步较慢, 降低优先级
-        maven { url = uri("https://maven.aliyun.com/repository/public") }
-        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
-        maven { url = uri("https://maven.aliyun.com/repository/google") }
+//        maven { url = uri("https://maven.aliyun.com/repository/public") }
+//        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+//        maven { url = uri("https://maven.aliyun.com/repository/google") }
         gradlePluginPortal()
         mavenCentral()
     }
