@@ -1913,6 +1913,7 @@ prs.btif	image/prs.btif	[Ben_Simon]
 prs.pti	image/prs.pti	[Juern_Laun]
 pwg-raster	image/pwg-raster	[Michael_Sweet]
 svg+xml	image/svg+xml	[W3C][http://www.w3.org/TR/SVG/mimereg.html]
+svg	image/svg+xml	[W3C][http://www.w3.org/TR/SVG/mimereg.html]
 t38	image/t38	[RFC3362]
 tiff	image/tiff	[RFC3302]
 tiff-fx	image/tiff-fx	[RFC3950]
@@ -2149,7 +2150,9 @@ H264-SVC	video/H264-SVC	[RFC6190]
 H265	video/H265	[RFC7798]
 H266	video/H266	[RFC9328]
 iso.segment	video/iso.segment	[David_Singer][ISO-IEC_JTC_1]
-JPEG	video/JPEG	[RFC3555]
+jpeg	image/jpeg
+jpg	image/jpeg
+gif	image/gif
 jpeg2000	video/jpeg2000	[RFC5371][RFC5372]
 jxsv	video/jxsv	[RFC9134]
 mj2	video/mj2	[RFC3745]
@@ -2217,3 +2220,10 @@ VP8	video/VP8	[RFC7741]
 VP9	video/VP9	[RFC-ietf-payload-vp9-16]
 mp2	audio/x-mpeg
 mp3	audio/x-mpeg
+collection	font/collection	[RFC8081]
+eot	font/eot
+otf	font/otf	[RFC8081]
+sfnt	font/sfnt	[RFC8081]
+ttf	font/ttf	[RFC8081]
+woff	font/woff	[RFC8081]
+woff2	font/woff2	[RFC8081]
