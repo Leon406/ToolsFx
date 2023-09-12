@@ -2158,6 +2158,7 @@ mj2	video/mj2	[RFC3745]
 MP1S	video/MP1S	[RFC3555]
 MP2P	video/MP2P	[RFC3555]
 MP2T	video/MP2T	[RFC3555]
+ts	video/mp2t	[RFC3555]
 mp4	video/mp4	[RFC4337][RFC6381]
 MP4V-ES	video/MP4V-ES	[RFC6416]
 MPV	video/MPV	[RFC3555]
@@ -2218,7 +2219,7 @@ vnd.vivo	video/vnd.vivo	[John_Wolfe]
 VP8	video/VP8	[RFC7741]
 VP9	video/VP9	[RFC-ietf-payload-vp9-16]
 mp2	audio/x-mpeg
-mp3	audio/x-mpeg
+mp3	audio/mpeg
 collection	font/collection	[RFC8081]
 eot	font/eot
 otf	font/otf	[RFC8081]
@@ -2226,3 +2227,11 @@ sfnt	font/sfnt	[RFC8081]
 ttf	font/ttf	[RFC8081]
 woff	font/woff	[RFC8081]
 woff2	font/woff2	[RFC8081]
+7z	application/x-7z-compressed
+xls	application/vnd.ms-excel
+xlsx	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+webm	video/webm
+weba	audio/webm
+wav	audio/wav
+txt	text/plain
+mjs	text/javascript
