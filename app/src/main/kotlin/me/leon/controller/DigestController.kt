@@ -13,7 +13,7 @@ class DigestController : Controller() {
         get() =
             DICT_DIR.toFile()
                 .listFiles()
-                ?.filter { it.endsWith(".txt") }
+                ?.filter { it.name.endsWith(".txt") }
                 ?.flatMap { it.readLines() }
                 ?.distinct()
                 .orEmpty()
