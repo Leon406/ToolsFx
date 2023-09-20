@@ -1,6 +1,97 @@
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
 <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx:: Visitor's Count" />
 
+# v1.17.0  
+
+## feature:
+- feat(app): KeyIvInputView add tooltip
+- feat(app): Misc Tcping add output options
+- feat(app): ChaCha20-Poly1305 support AAD
+- feat(app): KeyIvInputView support auto sizing
+- feat(app): output textarea support resizing
+- feat(app): Misc add Endia
+- feat(app): Misc 加入MIME解析
+- feat(app): adjust misc prefColumns to 7
+- feat(app): Misc add code mapping
+- feat(app): 哈希加入各种CRC算法 #139
+- feat(app): ocr support auto detect language
+- feat(app): Misc Unit Convert add speed
+- feat(app): Misc add shorten url
+- feat(app): optimize normalCharacter
+- feat(app): StringProcess optimize tts
+- feat(app): Misc combine port scan & ping/tcping support ipv6
+- feat(app): StringProcess tokenize support variant character
+- feat(plugin-apipost): 移除默认请求头,限制最大显示内容为1M
+- feat(app): StringProcessView Vocabulary add syllable
+- feat(app): Misc新增繁简体转换
+- feat(app): Misc add origin Google Translate, add translation strategy
+- feat(app): Misc DNS hosts add fail urls cloudfare attempt
+- feat(app): Misc ping add output options
+- feat(app): StringProcessView add locating word position
+- feat(app): Misc add Unit Conversion
+- feat(app): adjust ocr
+- feat(app): TTS设置支持方向盘拖动微调及显示
+- feat(app): TTS设置保存后不自动关闭
+- feat(app): 默认不置顶显示
+- feat(app): 加入句子在线翻译功能
+- feat(app): tts分段请求并发
+- feat(app): 加入tts功能,支持配置
+- feat(app): update dictionary.conf
+- feat(app): StringProcessView 词典配置文件支持目录
+- feat(app): StringProcessView 加入默认文件排除
+- feat(app): OnlineWebView support loading html
+- feat(app): optimize StringProcessView
+- feat(app): StringProcessView 优化tokenize条件
+- feat(app): StringProcess 加入自定义字典翻译
+- feat(app): StringProcess 写入文件及Ctrl+D 光标行复制
+- feat(app): StringProcess 优化Webview加载过度显示
+- feat(app): StringProcess token优化,增加列表显示,查看在线翻译,加入快捷键
+- feat(app): StringProcess 新增忽略大小写
+- feat(app): StringProcess addition小写自动转换
+- feat(app): StringProcess addition操作支持多文件
+- feat(app): 字符处理 差集/并集/合集更新底部提示
+- feat(app): 字符处理 加入两个数据源 差集/并集/合集
+- feat(plugin-apipost): jsonpath raw string不处理
+- feat(plugin-apipost): 支持简化jsonpath提取
+- feat(app): 优化webview中文字体显示
+- feat(app): Misc githubMirror support release url
+- feat(app): Misc加入中日韩罗马音标注
+- feat(app): Misc支持更多参数和选项
+- feat(app): CTF与佛论禅新增加密版本, 优化零宽显示结果
+- feat(app): Misc新增罗马数字转换,修复换行字符转义符号替换
+- feat(app): Misc add encoding recovery, full/half width char
+- feat(app): Misc 新增链接校验,github镜像链接
+- feat(app): CTF 新增base64大小写 crack, hacker words
+- feat(app): CTF zwcUnicode 新增binary算法
+- feat(plugin-image): fixPng support correct magic number
+- feat(app): Misc add cron explain
+- feat(app): Misc加入 DNS host解析
+- feat(app): add minimize to system tray
+- feat(plugin-image): add load log
+
+## bug fix:
+- fix: Hash Crack Dict read error
+- fix(app): Misc ICP备案失效
+- fix(app): QuotePrintable decode error
+- fix(app): Block Cipher padding alg error #146
+- fix(app): Misc ping ipv6 error
+- fix(app): RSA pubDecrypt OAEP error
+- fix(app): StringProcessView default vocabulary files duplicate
+- fix(app): google translation support long sentences
+- fix(app): Translator initialization jam issue
+- fix(app): CTF autokey 包含小写无法正常加解密
+- fix(app): tts部分符号无法正常播放
+- fix(app): TTS 异常字符处理
+- fix(app): Encode HtmlEntity 编码错误,多余"#"
+- fix(app): StringProcessView tokenize 重复
+- fix(app):  导包错误, 兼容jdk8
+- fix(app): base64 字典包含padding字符解码错误
+- fix(app): MISC ip地址修复
+- feat(plugin-image): fixPng support correct magic number
+- fix(app): Signature JWT未输入验证内容错误
+
+
+
 # v1.16.0
 ## feature:
 - feat(app): CTF RSA-crack nec模式优化

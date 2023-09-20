@@ -18,4 +18,4 @@ val build: String
     get() = "2023/05/26"
 
 val appVersion: String
-    get() = "1.16.1.beta"
+    get() = "1.17.0"

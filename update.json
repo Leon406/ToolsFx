@@ -1,16 +1,17 @@
-{"version":"1.16.1.beta","info":"1.6.1 2023-04-21,
+{"version":"1.17.0","info":"1.7.0 2023-09-20, 喜迎 JDK 21 LTS
 
 新功能
 
+  🔥 StringProcess 加入tts功能
+  🔥 哈希加入各种CRC算法
+  🔥 ChaCha20-Poly1305 support AAD
   🔥 新增最小化到系统托盘
-  🔥 Misc加入 DNS host解析
+  🔥 Misc加入 DNS host解析,Endia,MIME解析,githubMirror
+  🔥 Misc加入 shorten url,Unit Convert,繁简体转换, 翻译
   🔥 Signature JWT优化HMAC输入秘钥显示
-  🔥 Misc add cron explain
-  🔥 其他优化
+  🔥 CTF与佛论禅新增加密版本, 优化零宽显示结果
+  🔥 其他优化 =详见Changelog.md
 
-
-  插件
-  🔥 plugin-image: fixPng support correct magic number
 
 
 使用前请看README和wiki
