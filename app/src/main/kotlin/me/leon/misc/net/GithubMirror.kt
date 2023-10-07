@@ -6,6 +6,7 @@ package me.leon.misc.net
  * @email deadogone@gmail.com
  */
 private const val RAW = "https://raw.githubusercontent.com"
+private const val RAW2 = "https://raw.github.com"
 private const val GITHUB = "https://github.com"
 private val RAW_MIRRORS =
     listOf(
@@ -44,7 +45,7 @@ private val RELEASE_MIRRORS =
 
 /** 支持release, raw, 预览路径 */
 fun String.githubMirror() =
-    with(substringAfter(RAW)) {
+    with(substringAfter(RAW).substringAfter(RAW2)) {
         val path = this.substringAfter(GITHUB).replace("/blob/", "/")
         val mirrors =
             if (contains(RELEASE_RESOURCE_KEY)) {
