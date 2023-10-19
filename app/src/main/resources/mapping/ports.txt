@@ -247,7 +247,8 @@
 2301	HP System Management Redirect to port 2381
 2369	BMC Software CONTROL-M/Server
 2370	BMC Software CONTROL-M/Server
-2375	Docker
+2375	Docker REST API (HTTP)
+2376	Docker REST API (HTTPS)
 2381	HP Insight Manager default port for webserver
 2404	IEC 60870-5-104
 2427	Cisco MGCP
@@ -286,6 +287,7 @@
 3386	GTP' 3GPP GSM/UMTS CDR logging protocol
 3389	RDP
 3396	Novell NDPS Printer Agent
+3478	STUN, TURN (NAT Traversal)
 3689	ITunes DAAP
 3690	Subversion version control system
 3702	Web Services Dynamic Discovery (WS-Discovery), used by various components of Windows Vista
@@ -296,6 +298,8 @@
 3899	Remote Administrator
 3900	Unidata UDT OS udt_os
 3945	Emcads server service port, a Giritech product used by G/On
+4000	Phoenix, Jekyll
+4001	etcd
 4007	PrintBuzzer printer monitoring socket server
 4089	OpenCORE Remote Control Service
 4093	PxPlus Client server interface ProvideX
@@ -303,16 +307,18 @@
 4100	WatchGuard Authentication Applet - default port
 4111	Xgrid
 4111	SharePoint
+4200	AngularJS
 4226	Aleph One (computer game)
 4224	Cisco CDP Cisco discovery Protocol
 4848	GlassFish
+4567	Sinatra
 4569	Inter-Asterisk eXchange
 4662	OrbitNet Message Service
 4662	EMule
 4672	EMule
 4894	LysKOM Protocol A
 4899	Radmin
-5000	UPnP
+5000	UPnP,Flask (Python)
 5000	VTun
 5001	Iperf
 5003	FileMaker Filemaker Pro
@@ -329,6 +335,7 @@
 5223	XMPP/Jabber - default port for SSL Client Connection
 5269	XMPP/Jabber- server connection
 5353	mDNS
+5349	STUN, TURN over TLS
 5402	StarBurst AutoCast MFTP
 5405	NetSupport
 5421	Net Support 2
@@ -508,3 +515,4 @@
 49152-65535	dynamic port
 50000	SAP
 50070	hadoop
+51820	WireGuard
