@@ -1,6 +1,6 @@
 package me.leon.encode.base
 
-private const val RADIX8_DICT = "0123456789"
+private const val RADIX8_DICT = "01234567"
 
 fun ByteArray.radix8(): String = radixNEncode(RADIX8_DICT)
 
