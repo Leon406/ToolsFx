@@ -11,36 +11,32 @@ private const val GITHUB = "https://github.com"
 private val RAW_MIRRORS =
     listOf(
         "https://ghproxy.net/https://raw.githubusercontent.com",
-        "https://raw.iqiq.io",
+        "https://ghproxy.com/https://raw.githubusercontent.com",
+        "https://gh-proxy.com/https://raw.githubusercontent.com",
+        "https://raw.fgit.cf",
         "https://raw.fastgit.org",
-        "https://raw.kgithub.com",
-        "https://cdn.staticaly.com/gh",
-        "https://cdn.statically.io/gh",
         "https://fastly.jsdelivr.net/gh",
-        "https://cdn.jsdelivr.net/gh",
+        "https://gcore.jsdelivr.net/gh",
         "https://github.moeyy.xyz/https://raw.githubusercontent.com",
     )
 private const val RELEASE_RESOURCE_KEY = "/releases/download/"
 private val RELEASE_MIRRORS =
     listOf(
+        "https://gh.h233.eu.org" to true,
         "https://slink.ltd" to true,
         "https://gh.gh2233.ml" to true,
         "https://gh.ddlc.top" to true,
-        "https://ghdl.feizhuqwq.cf" to true,
         "https://git.xfj0.cn" to true,
         "https://ghproxy.com" to true,
+        "https://gh-proxy.com" to true,
         "https://gh.con.sh" to true,
-        "https://ghps.cc" to true,
         "https://hub.gitmirror.com" to true,
-        "https://js.xxooo.ml" to true,
         "https://proxy.freecdn.ml/?url=" to true,
         "https://cors.isteed.cc/github.com" to false,
         "https://download.njuu.cf" to false,
         "https://download.yzuu.cf" to false,
         "https://download.nuaa.cf" to false,
         "https://download.fastgit.org" to false,
-        "https://download.fastgit.ixmu.net" to false,
-        "https://kgithub.com" to false,
     )
 
 /** 支持release, raw, 预览路径 */
