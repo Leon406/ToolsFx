@@ -27,7 +27,6 @@ val MISC_CONFIG =
         MiscServiceType.TCPING to
             mapOf(HINT to "tcp ping ip or domains,separate by line,format ip:port"),
         MiscServiceType.WHOIS to mapOf(HINT to "domain,separate by line"),
-        MiscServiceType.ICP to mapOf(HINT to "domain, 工信部备案信息,separate by line"),
         MiscServiceType.IP2INT to
             mapOf(HINT to "ip, transform ip to integer, eg. 192.168.0.1,separate by line"),
         MiscServiceType.INT2IP to

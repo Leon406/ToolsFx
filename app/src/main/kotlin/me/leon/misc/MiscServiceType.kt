@@ -95,14 +95,6 @@ enum class MiscServiceType(val type: String) : MiscService {
             runCatching { Whois.parse(raw)?.showInfo ?: raw.whoisSocket() }
                 .getOrElse { it.stacktrace() }
     },
-    ICP("ICP备案(online)") {
-        override fun process(raw: String, params: Map<String, String>) =
-            raw.lineAction2String {
-                "$it:\n\n" +
-                    runCatching { MiitInfo.domainInfo(it).showInfo }.getOrElse { it.stacktrace() } +
-                    "\n"
-            }
-    },
     IP2INT("ip2Int") {
         override fun process(raw: String, params: Map<String, String>) =
             raw.lineAction { runCatching { it.ip2Uint().toString() }.getOrElse { it.stacktrace() } }
