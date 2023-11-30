@@ -23,6 +23,16 @@ class CodeExplainTest {
     }
 
     @Test
+    fun carNo() {
+        println(CodeMapping.CN_CAR_NO["甘M"])
+        println(CodeMapping.CN_CAR_NO["青O"])
+        println(CodeMapping.CN_CAR_NO["青A"])
+        println(CodeMapping.CN_CAR_NO["新B"])
+        println(CodeMapping.CN_CAR_NO["沪M"])
+        println(CodeMapping.CN_CAR_NO["琼C3"])
+    }
+
+    @Test
     fun mime() {
         println(CodeMapping.MIME_DICT["jpeg"])
         println(CodeMapping.MIME_DICT["mp4"])
