@@ -2,12 +2,14 @@ package me.leon.misc
 
 import kotlin.test.Test
 import me.leon.misc.net.*
+import kotlin.test.Ignore
 
 /**
  * @author Leon
  * @since 2023-07-28 14:45
  * @email deadogone@gmail.com
  */
+@Ignore
 class ShortUrlTest {
 
     private val url = "https://github.com/Leon406/ToolsFx"

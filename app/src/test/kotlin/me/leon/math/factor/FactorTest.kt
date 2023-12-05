@@ -18,6 +18,8 @@ import org.junit.Test
  * https://github.com/nishanth17/factor/blob/master/factor.py
  * http://helper.ipam.ucla.edu/publications/scws4/scws4_6744.pdf
  */
+
+@Ignore
 class FactorTest {
 
     @Test

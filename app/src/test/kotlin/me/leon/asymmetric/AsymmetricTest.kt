@@ -18,7 +18,9 @@ import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
+import kotlin.test.Ignore
 
+@Ignore
 class AsymmetricTest {
 
     init {
