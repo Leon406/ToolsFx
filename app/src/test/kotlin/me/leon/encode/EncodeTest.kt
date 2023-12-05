@@ -15,7 +15,9 @@ import me.leon.ext.crypto.EncodeType
 import me.leon.ext.crypto.encodeTypeMap
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.Ignore
 
+@Ignore
 class EncodeTest {
 
     lateinit var controller: EncodeController

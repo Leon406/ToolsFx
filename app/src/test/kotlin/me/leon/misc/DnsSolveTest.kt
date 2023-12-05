@@ -46,6 +46,7 @@ class DnsSolveTest {
     }
 
     @Test
+    @Ignore
     fun dnsLookup() {
         // 获取所有dns解析ip, 再ping或者tcping
         // 全球dns服务器 https://public-dns.info/

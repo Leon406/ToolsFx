@@ -232,6 +232,7 @@ class MiscTest {
         )
 
     @Test
+    @Ignore
     fun port() {
         println("127.0.0.1".connect(7890, 20))
         val ports = 7882..10_000
@@ -296,6 +297,7 @@ class MiscTest {
     }
 
     @Test
+    @Ignore
     fun githubMirror() {
 
         val url = "https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/host"

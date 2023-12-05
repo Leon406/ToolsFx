@@ -40,6 +40,4 @@ dependencies {
     testImplementation("com.tianscar.javasound:javasound-ape:1.7.7")
     // aac  某些mp3会误识别为 aac
     // testImplementation("com.tianscar.javasound:javasound-aac:0.9.8")
-
-    testImplementation("org.bytedeco:cpython-platform:3.11.3-1.5.9")
 }
