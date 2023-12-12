@@ -334,6 +334,8 @@ see [changelog.md](changelog.md)
 
 [tornadofx](https://github.com/edvin/tornadofx)
 
+[JetBrains](https://jb.gg/OpenSourceSupport)
+
 [badge maker](https://shields.io/)
 
 ## DONATE
