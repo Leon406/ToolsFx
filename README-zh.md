@@ -349,6 +349,10 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
 
 [tornadofx](https://github.com/edvin/tornadofx)
 
+[JetBrains](https://jb.gg/OpenSourceSupport)
+
+[badge maker](https://shields.io/)
+
 ## DONATE
 
 [赞赏作者](https://afdian.net/a/leon406)
