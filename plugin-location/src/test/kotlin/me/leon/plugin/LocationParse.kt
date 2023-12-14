@@ -1,11 +1,42 @@
 package me.leon.plugin
 
 import javax.json.Json.createReader
+import kotlin.test.Test
 import me.leon.ext.*
 import me.leon.toolsfx.plugin.CoordinatorTransform
-import org.junit.Test
+import me.leon.toolsfx.plugin.LocationServiceType
 
 class LocationParse {
+
+    @Test
+    fun geo() {
+
+        //        LocationServiceType.GEO_TIAN.process("北京市延庆区延庆镇莲花池村前街50夕阳红养老院", mutableMapOf())
+        //            .also {
+        //                println(it)
+        //            }
+        //        LocationServiceType.GEO_REVERSE_TIAN.process("116.001608,40.453170",
+        // mutableMapOf())
+        //            .also {
+        //                println(it)
+        //            }
+        LocationServiceType.GEO_REVERSE_BD.process("116.001608,40.453170", mutableMapOf()).also {
+            println(it)
+        }
+        LocationServiceType.GEO_REVERSE_BD_GCJ.process("116.001608,40.453170", mutableMapOf())
+            .also { println(it) }
+        LocationServiceType.GEO_REVERSE_BD_BD09.process("116.001608,40.453170", mutableMapOf())
+            .also { println(it) }
+        //        LocationServiceType.GEO_BD.process("北京市延庆区延庆镇莲花池村前街50夕阳红养老院", mutableMapOf())
+        //            .also {
+        //                println(it)
+        //            }
+        //        LocationServiceType.GEO_AMAP.process("北京市延庆区延庆镇莲花池村前街50夕阳红养老院", mutableMapOf())
+        //            .also {
+        //                println(it)
+        //            }
+    }
+
     @Test
     fun location() {
         "C:\\Users\\Leon\\Desktop\\loc.txt"
