@@ -10,8 +10,8 @@ import me.leon.ext.fx.*
 import tornadofx.*
 
 class LocationView : PluginFragment("LocationView") {
-    override val version = "v1.2.0"
-    override val date: String = "2022-04-06"
+    override val version = "v1.3.0"
+    override val date: String = "2023-12-14"
     override val author = "Leon406"
     override val description = "经纬度相关"
 
@@ -83,7 +83,8 @@ class LocationView : PluginFragment("LocationView") {
                             when (locationServiceType) {
                                 LocationServiceType.DISTANCE -> promptList[1]
                                 LocationServiceType.GEO_BD,
-                                LocationServiceType.GEO_AMPA -> promptList.last()
+                                LocationServiceType.GEO_TIAN,
+                                LocationServiceType.GEO_AMAP -> promptList.last()
                                 else -> promptList.first()
                             }
                         println(locationServiceType)

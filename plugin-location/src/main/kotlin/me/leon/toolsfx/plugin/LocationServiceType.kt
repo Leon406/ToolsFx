@@ -3,8 +3,8 @@ package me.leon.toolsfx.plugin
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 import me.leon.hash
-import me.leon.toolsfx.domain.AmapGeo
-import me.leon.toolsfx.domain.BaiduGeo
+import me.leon.toolsfx.KeyProvider
+import me.leon.toolsfx.domain.*
 import tornadofx.*
 
 enum class LocationServiceType(val type: String) : ILocationService {
@@ -73,12 +73,12 @@ enum class LocationServiceType(val type: String) : ILocationService {
             )
         }
     },
-    GEO_AMPA("geoAmap") {
+    GEO_AMAP("geoAmap") {
         override fun process(raw: String, params: MutableMap<String, String>): String {
             val address = "address=${raw.urlEncoded}"
-            val queries = "address=$raw&key=282f521c5c372f233da702769e43bfba&output=json"
+            val queries = "address=$raw&key=${KeyProvider.KEY_AMAP}&output=json"
             return ("https://restapi.amap.com/v3/geocode/geo?" +
-                    "$address&key=282f521c5c372f233da702769e43bfba&output=json" +
+                    "$address&key=${KeyProvider.KEY_AMAP}&output=json" +
                     "&sig=${(queries + "57b0452167c85d33217472e4e53028ec").hash("md5")}")
                 .also { println(it) }
                 .readFromNet()
@@ -90,12 +90,72 @@ enum class LocationServiceType(val type: String) : ILocationService {
     GEO_BD("geoBaidu") {
         override fun process(raw: String, params: MutableMap<String, String>): String {
             return ("http://api.map.baidu.com/geocoding/v3/?address=${raw.urlEncoded}" +
-                    "&output=json&ak=V0AKhZ3wN8CTU3zx8lGf4QvwyOs5rGIn")
+                    "&output=json&ak=${KeyProvider.KEY_BD}")
                 .readFromNet()
                 .fromJson(BaiduGeo::class.java)
                 .geoInfo()
         }
     },
+    GEO_BD_GCJ("geoBaidu-GCJ") {
+        override fun process(raw: String, params: MutableMap<String, String>): String {
+            return ("http://api.map.baidu.com/geocoding/v3/?address=${raw.urlEncoded}" +
+                    "&ret_coordtype=gcj02ll&output=json&ak=${KeyProvider.KEY_BD}")
+                .readFromNet()
+                .fromJson(BaiduGeo::class.java)
+                .geoInfo()
+        }
+    },
+    GEO_TIAN("geoTian") {
+        override fun process(raw: String, params: MutableMap<String, String>): String {
+            return (("https://api.tianditu.gov.cn/geocoder?" +
+                    "ds={\"keyWord\":\"${raw.urlEncoded}\"}&tk=${KeyProvider.KEY_TIAN}")
+                    .also { println(it) })
+                .readFromNet(headers = mapOf("User-Agent" to "curl"))
+                .also { println(it) }
+                .fromJson(TianGeo::class.java)
+                .geoInfo()
+        }
+    },
+    GEO_REVERSE_TIAN("geoRevTian") {
+        override fun process(raw: String, params: MutableMap<String, String>): String {
+            val (lon, lat) = raw.split(",")
+            return (("https://api.tianditu.gov.cn/geocoder" +
+                    "?postStr={'lon':$lon,'lat':$lat,'ver':1}&type=geocode&tk=${KeyProvider.KEY_TIAN}")
+                    .also { println(it) })
+                .readFromNet(headers = mapOf("User-Agent" to ""))
+                .also { println(it) }
+                .fromJson(TianReverseGeo::class.java)
+                .formatLocation()
+        }
+    },
+
+    /** https://lbs.baidu.com/faq/api?title=webapi/guide/webservice-geocoding-abroad-base */
+    GEO_REVERSE_BD("geoRevBD-WGS") {
+        override fun process(raw: String, params: MutableMap<String, String>): String {
+            return baiduGeoReverse(raw)
+        }
+    },
+    GEO_REVERSE_BD_GCJ("geoRevBD-GCJ") {
+        override fun process(raw: String, params: MutableMap<String, String>): String {
+            return baiduGeoReverse(raw, "gcj02ll")
+        }
+    },
+    GEO_REVERSE_BD_BD09("geoRevBD") {
+        override fun process(raw: String, params: MutableMap<String, String>): String {
+            return baiduGeoReverse(raw, "bd09ll")
+        }
+    };
+
+    fun baiduGeoReverse(raw: String, coordType: String = "wgs84ll"): String {
+        val (lon, lat) = raw.split(",")
+        return (("http://api.map.baidu.com/reverse_geocoding/v3/?location=$lat,$lon" +
+                    "&coordtype=$coordType&output=json&ak=${KeyProvider.KEY_BD}")
+                .also { println(it) })
+            .readFromNet(headers = mapOf("User-Agent" to ""))
+            .also { println(it) }
+            .fromJson(TianReverseGeo::class.java)
+            .formatLocation()
+    }
 }
 
 val locationServiceTypeMap = LocationServiceType.values().associateBy { it.type }
