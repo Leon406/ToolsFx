@@ -50,7 +50,7 @@ jobs:
       # test will auto execute jar task
       - name: Make app jar
         run: ./gradlew  :app:jar
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: |
             app/build/libs
