@@ -21,6 +21,6 @@ jobs:
       - name: Qodana - Code Inspection
         uses: JetBrains/qodana-action@v2.2.1-eap
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ${{ github.workspace }}/qodana
