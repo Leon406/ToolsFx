@@ -6,7 +6,7 @@ bcVer = "1.77"
 commonCompressVer = "1.25.0"
 coroutineVer = "1.7.3"
 gsonVer = "2.10.1"
-javassistVer = "3.30.1-GA"
+javassistVer = "3.30.2-GA"
 javaxJsonVer = "1.1.4"
 # openjfx LTS version needs Subscription https://mvnrepository.com/artifact/org.openjfx/javafx-controls
 # jfx 20.x+ requires jdk 17+
