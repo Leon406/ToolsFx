@@ -5,6 +5,7 @@ import java.security.*
 import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.DHParameterSpec
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import me.leon.TEST_ASYMMETRIC_DIR
@@ -18,7 +19,6 @@ import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
-import kotlin.test.Ignore
 
 @Ignore
 class AsymmetricTest {

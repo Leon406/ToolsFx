@@ -2,6 +2,7 @@ package me.leon.encode
 
 import java.io.File
 import kotlin.system.measureNanoTime
+import kotlin.test.Ignore
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import me.leon.TEST_ENCODE_DIR
@@ -15,7 +16,6 @@ import me.leon.ext.crypto.EncodeType
 import me.leon.ext.crypto.encodeTypeMap
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.Ignore
 
 @Ignore
 class EncodeTest {

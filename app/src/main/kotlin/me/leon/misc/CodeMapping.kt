@@ -53,7 +53,10 @@ object CodeMapping {
             }
             .toMap()
 
-    /** data from https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E6%B0%91%E7%94%A8%E6%9C%BA%E5%8A%A8%E8%BD%A6%E5%8F%B7%E7%89%8C */
+    /**
+     * data from
+     * https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E6%B0%91%E7%94%A8%E6%9C%BA%E5%8A%A8%E8%BD%A6%E5%8F%B7%E7%89%8C
+     */
     val CN_CAR_NO =
         readResourceText("/mapping/CNcarNumber.txt")
             .lines()
@@ -63,9 +66,7 @@ object CodeMapping {
                 acc.also {
                     val codes = p.first().split("/")
                     acc[codes.first()] = p[1]
-                    codes.drop(1).forEach {
-                        acc[codes.first().first() + it] = p[1]
-                    }
+                    codes.drop(1).forEach { acc[codes.first().first() + it] = p[1] }
                 }
             }
             .toMap()

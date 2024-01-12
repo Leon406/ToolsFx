@@ -10,7 +10,7 @@ import me.leon.ext.headRequest
  * @since 2023-01-31 17:00
  * @email deadogone@gmail.com
  */
-@OptIn(ExperimentalCoroutinesApi::class) val DISPATCHER = Dispatchers.IO.limitedParallelism(1024)
+@OptIn(ExperimentalCoroutinesApi::class) val DISPATCHER = Dispatchers.IO.limitedParallelism(128)
 
 val LOCAL_IP_A = "^10\\.".toRegex()
 val LOCAL_IP_B = "^172\\.(1[6-9]|2[0-9]|3[0-1])\\.".toRegex()
@@ -118,14 +118,23 @@ fun Collection<String>.batchTcPing(port: Int) = runBlocking {
     map { async(DISPATCHER) { it to it.connect(port) } }.awaitAll().sortedByDescending { it.second }
 }
 
-fun String.linkCheck(timeout: Int = 2000) =
-    lines()
-        .filter { it.isNotEmpty() }
-        .linkCheck(timeout)
-        .joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+fun String.linkCheck(timeout: Int = 2000, type: String = "All") =
+    linkCheckResult(timeout).linkCheckProperResult(type)
+
+fun List<Pair<String, Boolean>>.linkCheckProperResult(type: String) =
+    when (type) {
+        "Ok" -> filter { it.second }.joinToString(System.lineSeparator()) { it.first }
+        "Fail" -> filterNot { it.second }.joinToString(System.lineSeparator()) { it.first }
+        "All" -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+        else -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
+    }
+
+fun String.linkCheckResult(timeout: Int = 2000) =
+    lines().filter { it.isNotEmpty() }.linkCheck(timeout)
 
 fun Collection<String>.linkCheck(timeout: Int = 2000) = runBlocking {
     filter { it.isNotEmpty() }
+        .map { it.substringBefore("\t").substringBefore(" ") }
         .map { async(DISPATCHER) { it to it.headRequest("GET", timeout) } }
         .awaitAll()
         .sortedByDescending { it.second }
