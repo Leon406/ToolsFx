@@ -108,7 +108,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
     GEO_TIAN("geoTian") {
         override fun process(raw: String, params: MutableMap<String, String>): String {
             return (("https://api.tianditu.gov.cn/geocoder?" +
-                    "ds={\"keyWord\":\"${raw.urlEncoded}\"}&tk=${KeyProvider.KEY_TIAN}")
+                        "ds={\"keyWord\":\"${raw.urlEncoded}\"}&tk=${KeyProvider.KEY_TIAN}")
                     .also { println(it) })
                 .readFromNet(headers = mapOf("User-Agent" to "curl"))
                 .also { println(it) }
@@ -120,7 +120,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
         override fun process(raw: String, params: MutableMap<String, String>): String {
             val (lon, lat) = raw.split(",")
             return (("https://api.tianditu.gov.cn/geocoder" +
-                    "?postStr={'lon':$lon,'lat':$lat,'ver':1}&type=geocode&tk=${KeyProvider.KEY_TIAN}")
+                        "?postStr={'lon':$lon,'lat':$lat,'ver':1}&type=geocode&tk=${KeyProvider.KEY_TIAN}")
                     .also { println(it) })
                 .readFromNet(headers = mapOf("User-Agent" to ""))
                 .also { println(it) }

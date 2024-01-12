@@ -126,7 +126,8 @@ enum class MiscServiceType(val type: String) : MiscService {
                 .joinToString(System.lineSeparator()) { CronExpression(it).explain() }
     },
     LINK_CHECK("Link Check") {
-        override fun process(raw: String, params: Map<String, String>) = raw.linkCheck()
+        override fun process(raw: String, params: Map<String, String>) =
+            raw.linkCheck(3_000, type = requireNotNull(params[C1]))
     },
     GITHUB_MIRROR("Github Mirror") {
         override fun process(raw: String, params: Map<String, String>) = raw.githubMirror()

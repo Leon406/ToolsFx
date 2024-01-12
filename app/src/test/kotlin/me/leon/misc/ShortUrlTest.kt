@@ -1,8 +1,8 @@
 package me.leon.misc
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 import me.leon.misc.net.*
-import kotlin.test.Ignore
 
 /**
  * @author Leon
