@@ -54,15 +54,9 @@ enum class MiscServiceType(val type: String) : MiscService {
                     } else {
                         sdf?.parse(it)?.time
                             ?: when (it.length) {
-                                10 -> {
-                                    SDF_DATE.parse(it.replace("/", "-")).time
-                                }
-                                8 -> {
-                                    SDF_DATE2.parse(it).time
-                                }
-                                else -> {
-                                    SDF_TIME.parse(it.replace("/", "-")).time
-                                }
+                                10 -> SDF_DATE.parse(it.replace("/", "-")).time
+                                8 -> SDF_DATE2.parse(it).time
+                                else -> SDF_TIME.parse(it.replace("/", "-")).time
                             }
                     }
                 }
