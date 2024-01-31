@@ -20,7 +20,7 @@ seleniumVer = "4.17.0"
 sqliteVer = "3.45.0.0"
 tornadofxVer = "1.7.20"
 zstdVer = "1.5.5-11"
-zxingVer = "3.5.2"
+zxingVer = "3.5.3"
 jsoupVer = "1.17.2"
 
 # plugin
