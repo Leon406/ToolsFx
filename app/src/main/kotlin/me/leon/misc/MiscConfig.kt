@@ -40,6 +40,7 @@ val MISC_CONFIG =
         MiscServiceType.GITHUB_MIRROR to mapOf(HINT to "github repo or raw link"),
         MiscServiceType.ENCODING_RECOVERY to mapOf(HINT to "recover encoding"),
         MiscServiceType.FULL_WIDTH to mapOf(HINT to "transfer full/half width char"),
+        MiscServiceType.PUNCTUATION to mapOf(HINT to "convert punctuation format"),
         MiscServiceType.TRANSLATE to mapOf(HINT to "translate sentence to specific language"),
         MiscServiceType.ROMAN to mapOf(HINT to "roman number, like VIII or 8,separate by line"),
         MiscServiceType.ROMANJI to mapOf(HINT to "romanji for Chinese,Japanese,Korean"),
@@ -84,6 +85,7 @@ val MISC_OPTIONS_CONFIG =
                     )
             ),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
+        MiscServiceType.PUNCTUATION to mapOf(OPTIONS to arrayOf("ZH", "EN")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
