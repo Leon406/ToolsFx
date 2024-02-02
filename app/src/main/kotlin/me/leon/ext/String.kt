@@ -38,6 +38,30 @@ fun String.toFullWidth() = map { it.fullWidth }.joinToString("")
 
 fun String.toHalfWidth() = map { it.halfWidth }.joinToString("")
 
+fun String.toZhPunctuation() =
+    replace(":", "：")
+        .replace(",", "，")
+        .replace(".", "。")
+        .replace("\"([^\"]+)\"".toRegex(), "“$1”")
+        .replace("'([^']+)'".toRegex(), "‘$1’")
+        .replace("'", "‘")
+        .replace("\"", "“")
+        .replace(";", "；")
+        .replace("?", "？")
+        .replace("!", "！")
+
+fun String.toEnPunctuation() =
+    replace("：", ":")
+        .replace("，", ",")
+        .replace("。", ".")
+        .replace("“", "\"")
+        .replace("”", "\"")
+        .replace("‘", "'")
+        .replace("’", "'")
+        .replace("；", ";")
+        .replace("？", "?")
+        .replace("！", "!")
+
 val Char.fullWidth
     get() =
         when (code) {

@@ -139,6 +139,16 @@ enum class MiscServiceType(val type: String) : MiscService {
             }
         }
     },
+    PUNCTUATION("中英文标点") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return if (type == "EN") {
+                raw.toEnPunctuation()
+            } else {
+                raw.toZhPunctuation()
+            }
+        }
+    },
     ROMAN("roman number") {
         override fun process(raw: String, params: Map<String, String>) =
             raw.lineAction2String { runCatching { it.roman() }.getOrElse { it.stacktrace() } }
