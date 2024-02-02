@@ -71,11 +71,53 @@ object CodeMapping {
             }
             .toMap()
 
+    /** https://ww2.24timezones.com/shi_jie3.php */
+    val TIME_ZONE =
+        with(
+            readResourceText("/mapping/timezone.txt")
+                .lines()
+                .filterNot { it.isBlank() }
+                .map { it.split("\t") }
+        ) {
+            groupBy { it.first() }
+                .map { it.key to it.value.joinToString("; ") { it.joinToString(" ") } }
+                .toMap() +
+                groupBy {
+                        it[1]
+                            .replace("时间", "")
+                            .replace("夏令", "")
+                            .replace("冬令", "")
+                            .replace("标准", "")
+                    }
+                    .map { it.key to it.value.joinToString("; ") { it.joinToString(" ") } }
+                    .toMap()
+        }
+
+    /** https://www.iamwawa.cn/huobi.html */
+    val CURRENCY =
+        with(
+            readResourceText("/mapping/currency.txt")
+                .lines()
+                .filterNot { it.isBlank() }
+                .map { it.split("\t") }
+        ) {
+            groupBy { it.first() }
+                .map { it.key to it.value.joinToString("; ") { it.drop(1).joinToString(" ") } }
+                .toMap() +
+                groupBy { it[4] }
+                    .map {
+                        it.key to it.value.joinToString("; ") { it.dropLast(1).joinToString(" ") }
+                    }
+                    .toMap()
+        }
+
     val TYPE =
         mapOf(
             "PORT" to PORT_DICT,
             "HTTP RESPONSE CODE" to HTTP_CODE_DICT,
             "MIME" to MIME_DICT,
             "China CAR NO" to CN_CAR_NO,
+            "Time Zone" to TIME_ZONE,
+            "Currency" to CURRENCY,
         )
 }
