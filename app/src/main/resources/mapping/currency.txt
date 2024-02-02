@@ -1,0 +1,136 @@
+中国	人民币元	Renminbi Yuan	RMB￥	CNY
+中国香港	港元	HongKong Dollars	HK＄	HKD
+中国澳门	澳门元	Macao Pataca	PAT.;P.	MOP
+中国台湾	新台币	New Taiwan Currency	NT$	TWD
+朝鲜	圆	Korean Won	　	KPW
+越南	越南盾	Vietnamese Dong	D.	VND
+日本	日圆	Japanese Yen	￥;J.￥	JPY
+老挝	基普	Laotian Kip	K.	LAK
+柬埔寨	瑞尔	Camboddian Riel	CR.;J Ri.	KHR
+菲律宾	菲律宾比索	Philippine Peso	Ph.Pes.; Phil.P.	PHP
+马来西亚	马元	Malaysian Dollar	M.＄;Mal.＄	MYR
+新加坡	新加坡元	Ssingapore Dollar	S.＄	SGD
+泰国	泰铢	Thai Baht (Thai Tical)	BT.;Tc.	THP
+缅甸	缅元	Burmese Kyat	K.	BUK
+斯里兰卡	斯里兰卡卢比	Sri Lanka Rupee	S.Re. 复数:S.Rs.	LKR
+马尔代夫	马尔代夫卢比	Maldives Rupee	M.R.R; MAL.Rs.	MVR
+印度尼西亚	盾	Indonesian Rupiah	Rps.	IDR
+巴基斯坦	巴基斯坦卢比	Pakistan Pupee	Pak.Re.;P.Re. 复数:P.Rs.	PRK
+印度	卢比	Indian Rupee	Re.复数:Rs.	INR
+尼泊尔	尼泊尔卢比	Nepalese Rupee	N.Re.复数:N.Rs.	NPR
+阿富汗	阿富汗尼	Afghani	Af.	AFA
+伊朗	伊朗里亚尔	Iranian Rial	RI.	IRR
+伊拉克	伊拉克第纳尔	Iraqi Dinar	ID	IQD
+叙利亚	叙利亚镑	Syrian Pound	￡.Syr.; ￡.S.	SYP
+黎巴嫩	黎巴嫩镑	Lebanese Pound	￡L.	LBP
+约旦	约旦第纳尔	Jordanian Dinar	J.D.; J.Dr.	JOD
+沙特阿拉伯	亚尔	Saudi Arabian Riyal	S.A.Rls.; S.R.	SAR
+科威特	科威特第纳尔	Kuwaiti Dinar	K.D.	KWD
+巴林	巴林第纳尔	Bahrain Dinar	BD.	BHD
+卡塔尔	卡塔尔里亚尔	Qatar Riyal	QR.	QAR
+阿曼	阿曼里亚尔	Oman Riyal	RO.	OMR
+阿拉伯也门	也门里亚尔	Yemeni Riyal	YRL.	YER
+民主也门	也门第纳尔	Yemeni Dinar	YD.	YDD
+土耳其	土耳其镑	Turkish Pound (Turkish Lira)	￡T. (TL.)	TRL
+塞浦路斯	塞浦路斯镑	Cyprus Pound	￡C.	CYP
+欧洲货币联盟	欧元	Euro	EUR	EUR
+冰岛	冰岛克朗	Icelandic Krona（复数：Kronur）	I.Kr.	ISK
+丹麦	丹麦克朗	Danish Krona（复数：Kronur）	D.Kr.	DKK
+挪威	挪威克朗	Norwegian Krone（复数：Kronur）	N.Kr.	NOK
+瑞典	瑞典克朗	Swedish Krona（复数：Kronor）	S.Kr.	SEK
+芬兰	芬兰马克	Finnish Markka (or Mark)	MK.;FM.; FK.;FMK.	FIM
+俄罗斯	卢布	Russian Ruble (or Rouble)	Rbs. Rbl.	SUR
+波兰	兹罗提	Polish Zloty	ZL.	PLZ
+捷克和斯洛伐克	捷克克朗	Czechish Koruna	Kcs.; Cz.Kr.	CSK
+匈牙利	福林	Hungarian Forint	FT.	HUF
+德国	马克	Deutsche Mark	DM.	DEM
+奥地利	奥地利先令	Austrian Schilling	Sch.	ATS
+瑞士	瑞士法郎	Swiss Franc	SF.;SFR.	CHF
+荷兰	荷兰盾	Dutch Guilder(or Florin)	Gs.;Fl.;Dfl.; Hfl.;fl.	NLG
+比利时	比利时法郎	Belgian Franc	Bi.;B.Fr.; B.Fc.	BEF
+卢森堡	卢森堡法郎	Luxembourg Franc	Lux.F.	LUF
+英国	英镑	Pound, Sterling	￡;￡ Stg.	GBP
+爱尔兰	爱尔兰镑	Irish pound	￡.Ir.	IEP
+法国	法郎	French Franc	F.F.;Fr.Fc.; F.FR.	FRF
+西班牙	比塞塔	Spanish Peseta	Pts.;Pes.	ESP
+葡萄牙	埃斯库多	Portuguese Escudo	ESC.	PTE**
+意大利	里拉	Italian Lira	Lit.	ITL
+马耳他	马耳他镑	Maltess Pound	￡.M.	MTP
+罗马尼亚	列伊	Rumanian Leu（复数：Leva）	L.	ROL
+保加利亚	列弗	Bulgarian Lev（复数：Lei）	Lev.	BGL
+阿尔巴尼亚	列克	Albanian Lek	Af.	ALL
+希腊	德拉马克	Greek Drachma	Dr.	GRD
+塞尔维亚	第纳尔	Serbian dinar	Din.Dr.	RSD
+加拿大	加元	Canadian Dollar	Can.＄	CAD
+美国	美元	U.S.Dollar	U.S.＄	USD
+墨西哥	墨西哥比索	Mexican Peso	Mex.＄	MXP
+危地马拉	格查尔	Quatemalan Quetzal	Q	GTQ
+萨尔瓦多	萨尔瓦多科朗	Salvadoran Colon	￠	SVC
+洪都拉斯	伦皮拉	Honduran Lempira	L.	HNL
+尼加拉瓜	科多巴	Nicaraguan Cordoba	CS	NIC
+哥斯达黎加	哥斯达黎加科朗	Costa Rican Colon	￠	CRC
+巴拿马	巴拿马巴波亚	Panamanian Balboa	B.	PAB
+古巴	古巴比索	Cuban Peso	Cu.Pes.	CUP
+巴哈马联邦	巴哈马元	Bahaman Dollar	B.＄	BSD
+牙买加	牙买加元	Jamaican Dollars	＄.J.	JMD
+海地	古德	Haitian Gourde	G.;Gds.	HTG
+多米尼加	多米尼加比索	Dominican Peso	R.D.＄	DOP
+特立尼达和多巴哥	特立尼达多巴哥元	Trinidad and Tobago Dollar	T.T.＄	TTD
+巴巴多斯	巴巴多斯元	Barbados Dollar	BDS.＄	BBD
+哥伦比亚	哥伦比亚比索	Colombian Peso	Col＄	COP
+委内瑞拉	博利瓦	Venezuelan Bolivar	B	VEB
+圭亚那	圭亚那元	Guyanan Dollar	G.＄	GYD
+苏里南	苏里南盾	Surinam Florin	S.Fl.	SRG
+秘鲁	新索尔	Peruvian Sol	S/.	PES
+厄瓜多尔	苏克雷	Ecuadoran Sucre	S/.	ECS
+巴西	新克鲁赛罗	Brazilian New Cruzeiro G	Gr.＄	BRC
+玻利维亚	玻利维亚比索	Bolivian Peso	Bol.P.	BOP
+智利	智利比索	Chilean Peso	P.	CLP
+阿根廷	阿根廷比索	Argentine Peso	Arg.P.	ARP
+巴拉圭	巴拉圭瓜拉尼	Paraguayan Guarani	Guars.	PYG
+乌拉圭	乌拉圭新比索	New Uruguayan Peso	N.＄	UYP
+埃及	埃及镑	Egyptian Pound	￡E.;LF.	EGP
+利比亚	利比亚第纳尔	Libyan Dinar	LD.	LYD
+苏丹	苏丹镑	Sudanese Pound	￡S.	SDP
+突尼斯	突尼斯第纳尔	Tunisian Dinar	TD.	TND
+阿尔及利亚	阿尔及利亚第纳尔	Algerian Dinar	AD.	DZD
+摩洛哥	摩洛哥迪拉姆	Moroccan Dirham	DH.	MAD
+毛里塔尼亚	乌吉亚	Mauritania Ouguiya	UM	MRO
+塞内加尔	非共体法郎	African Financial Community Franc	C.F.A.F.	XOF
+上沃尔特	非共体法郎	African Financial Community Franc	C.F.A.F.	XOF
+科特迪瓦	非共体法郎	African Financial Community Franc	C.F.A.F.	XOF
+多哥	非共体法郎	African Financial Community Franc	C.F.A.F.	XOF
+贝宁	非共体法郎	African Financial Community Franc	C.F.A.F.	XOF
+尼泊尔	非共体法郎	African Financial Community Franc	C.F.A.F.	XOF
+冈比亚	法拉西	Gambian Dalasi	D.G.	GMD
+几内亚比绍	几内亚比索	Guine- Bissau peso	PG.	GWP
+几内亚	几内亚西里	Guinean Syli	GS.	GNS
+塞拉里昂	利昂	Sierra Leone Leone	Le.	SLL
+利比里亚	利比里亚元	Liberian Dollar	L.＄￡;Lib.＄	LRD
+加纳	塞地	Ghanaian Cedi	￠	GHC
+尼日利亚	奈拉	Nigerian Naira	N	NGN
+喀麦隆	中非金融合作法郎	Central African Finan-Coop Franc	CFAF	XAF
+乍得	中非金融合作法郎	Central African Finan-Coop Franc	CFAF	XAF
+刚果	中非金融合作法郎	Central African Finan-Coop Franc	CFAF	XAF
+加蓬	中非金融合作法郎	Central African Finan-Coop Franc	CFAF	XAF
+中非	中非金融合作法郎	Central African Finan-Coop Franc	CFAF	XAF
+赤道几内亚	赤道几内亚埃奎勒	Equatorial Guinea Ekuele	EK.	GQE
+南非	兰特	South African Rand	R.	ZAR
+吉布提	吉布提法郎	Djibouti Franc	DJ.FS;DF	DJF
+索马里	索马里先令	Somali Shilling	Sh.So.	SOS
+肯尼亚	肯尼亚先令	Kenya Shilling	K.Sh	KES
+乌干达	乌干达先令	Uganda Shilling	U.Sh.	UGS
+坦桑尼亚	坦桑尼亚先令	Tanzania Shilling	T.Sh.	TZS
+卢旺达	卢旺达法郎	Rwanda Franc	RF.	RWF
+布隆迪	布隆迪法郎	Burnudi Franc	F.Bu	BIF
+扎伊尔	扎伊尔	Zaire Rp Zaire	Z.	ZRZ
+赞比亚	赞比亚克瓦查	Zambian Kwacha	KW.;K.	ZMK
+马达加斯加	马达加斯加法郎	Franc de Madagasca	F.Mg.	MCF
+塞舌尔	塞舌尔卢比	Seychelles Rupee	S.RP(S)	SCR
+毛里求斯	毛里求斯卢比	Mauritius Rupee	Maur. Rp.	MUR
+津巴布韦	津巴布韦元	Zimbabwe Dollar	ZIM.＄	ZWD
+科摩罗	科摩罗法郎	Comoros Franc	Com.F.	KMF
+澳大利亚	澳大利亚元	Australian Dollar	＄A.	AUD
+新西兰	新西兰元	New Zealand Dollar	＄NZ.	NZD
+斐济	斐济元	Fiji Dollar	F.＄	FJD
+所罗门群岛	所罗门元	Solomon Dollar.	SL. ＄	SBD
