@@ -79,7 +79,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
             val queries = "address=$raw&key=${KeyProvider.KEY_AMAP}&output=json"
             return ("https://restapi.amap.com/v3/geocode/geo?" +
                     "$address&key=${KeyProvider.KEY_AMAP}&output=json" +
-                    "&sig=${(queries + "57b0452167c85d33217472e4e53028ec").hash("md5")}")
+                    "&sig=${(queries + "c7753ad6eef2064d6d2aa35a927be951").hash("md5")}")
                 .also { println(it) }
                 .readFromNet()
                 .also { println(it) }

@@ -10,8 +10,8 @@ import me.leon.ext.fx.*
 import tornadofx.*
 
 class LocationView : PluginFragment("LocationView") {
-    override val version = "v1.3.0"
-    override val date: String = "2023-12-14"
+    override val version = "v1.3.1"
+    override val date: String = "2024-02-05"
     override val author = "Leon406"
     override val description = "经纬度相关"
 
@@ -19,8 +19,8 @@ class LocationView : PluginFragment("LocationView") {
         println("Plugin Info:$description $version $date $author  ")
     }
 
-    lateinit var taInput: TextArea
-    lateinit var taOutput: TextArea
+    private lateinit var taInput: TextArea
+    private lateinit var taOutput: TextArea
     private val controller: LocationController by inject()
     private var locationServiceType: LocationServiceType = LocationServiceType.WGS2GCJ
     private val inputText: String
