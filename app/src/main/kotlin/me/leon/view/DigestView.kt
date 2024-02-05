@@ -263,8 +263,14 @@ class DigestView : Fragment(messages["hash"]) {
                 inputText.lineAction2String { controller.digestFile(method, it) }
             } else {
                 var result: String = inputText
-                repeat(times) {
-                    result = controller.digest(method, result, inputEncode, singleLine.get())
+                repeat(times) { time ->
+                    result =
+                        controller.digest(
+                            method,
+                            result,
+                            "raw".takeIf { time > 0 } ?: inputEncode,
+                            singleLine.get()
+                        )
                 }
                 result
             }
