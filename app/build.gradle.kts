@@ -67,7 +67,7 @@ dependencies {
     api(libs.gson)
     implementation(libs.nashron)
     implementation(libs.kotlinx.coroutines)
-    implementation("org.java-websocket:Java-WebSocket:1.5.5")
+    implementation("org.java-websocket:Java-WebSocket:1.5.6")
     // mp3格式支持
     implementation("com.googlecode.soundlibs:mp3spi:1.9.5.4") {
         exclude(group = "junit")
