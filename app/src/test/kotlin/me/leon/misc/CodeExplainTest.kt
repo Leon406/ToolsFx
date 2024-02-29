@@ -33,6 +33,17 @@ class CodeExplainTest {
     }
 
     @Test
+    fun language() {
+        println(CodeMapping.LANGUAGE["鞑靼语"])
+        println(CodeMapping.LANGUAGE["vi"])
+        println(CodeMapping.LANGUAGE["中文"])
+        println(CodeMapping.LANGUAGE["uz"])
+        println(CodeMapping.LANGUAGE["ay_BO"])
+        println(CodeMapping.LANGUAGE["sq_AL"])
+        println(CodeMapping.LANGUAGE["sr_SP"])
+    }
+
+    @Test
     fun mime() {
         println(CodeMapping.MIME_DICT["jpeg"])
         println(CodeMapping.MIME_DICT["mp4"])
