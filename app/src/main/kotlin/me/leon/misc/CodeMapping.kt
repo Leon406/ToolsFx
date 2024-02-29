@@ -111,6 +111,21 @@ object CodeMapping {
                     .toMap()
         }
 
+    /** http://www.lingoes.cn/zh/translator/langcode.htm */
+    val LANGUAGE =
+        with(
+            readResourceText("/mapping/language.txt")
+                .lines()
+                .filterNot { it.isBlank() }
+                .map { it.split("\t") }
+        ) {
+            associate { it.first() to it[1] } +
+                filter { it.first().contains("-") }
+                    .associate { it.first().replace("-", "_") to it[1] } +
+                groupBy { it[1].substringBefore("(") }
+                    .map { it.key to it.value.joinToString("\t") { "${it.first()}:${it[1]}" } }
+        }
+
     val TYPE =
         mapOf(
             "PORT" to PORT_DICT,
@@ -119,5 +134,6 @@ object CodeMapping {
             "China CAR NO" to CN_CAR_NO,
             "Time Zone" to TIME_ZONE,
             "Currency" to CURRENCY,
+            "Language" to LANGUAGE,
         )
 }
