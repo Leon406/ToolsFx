@@ -4,7 +4,7 @@ import java.io.*
 import java.math.BigInteger
 import java.security.*
 import java.security.cert.CertificateFactory
-import java.security.interfaces.RSAPrivateCrtKey
+import java.security.interfaces.*
 import java.security.spec.*
 import javax.crypto.Cipher
 import javax.crypto.spec.*
@@ -364,4 +364,17 @@ fun String.privateKeyDerivedPublicKey(alg: String = "RSA"): String =
                 .encoded
                 .base64()
         }
+    }
+
+fun Key.parseRsaInfo() =
+    when (this) {
+        is RSAPublicKey ->
+            "Key Length: ${bitLength()}${System.lineSeparator()}" +
+                "Modulus: ${modulus.toString(16).uppercase()}${System.lineSeparator()}" +
+                "Public Exponent: ${publicExponent.toString(16).uppercase()}"
+        is RSAPrivateKey ->
+            "Key Length: ${bitLength()}${System.lineSeparator()}" +
+                "Private Exponent: ${privateExponent.toString(16).uppercase()}${System.lineSeparator()}" +
+                "Modulus: ${modulus.toString(16).uppercase()}"
+        else -> "Unsupported Type ${javaClass.name}"
     }

@@ -235,6 +235,22 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                         }
                 }
             }
+            button("RSA info") {
+                enableWhen(!processing)
+                action {
+                    processing.value = true
+                    runAsync {
+                        catch({ it }) {
+                            println("________")
+                            controller.parseInfo(taInput.text, alg)
+                        }
+                    } ui
+                        {
+                            processing.value = false
+                            taOutput.text = it
+                        }
+                }
+            }
         }
         hbox {
             addClass(Styles.left)
