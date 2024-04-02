@@ -6,6 +6,7 @@ import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.config.TEXT_AREA_LINES
 import me.leon.controller.AsymmetricCryptoController
+import me.leon.domain.SimpleMsgEvent
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.crypto.*
@@ -140,7 +141,20 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             prefRowCount = TEXT_AREA_LINES
         }
 
-        hbox { label(messages["key"]) }
+        hbox {
+            label(messages["key"])
+            button(graphic = imageview("/img/jump.png")) {
+                tooltip(messages["goSignature"])
+                action {
+                    fire(SimpleMsgEvent(taPubKey.text, 1))
+                    fire(SimpleMsgEvent(taPriKey.text, 2))
+                    val tabPane = findParentOfType(TabPane::class)
+                    tabPane
+                        ?.selectionModel
+                        ?.select(tabPane.tabs.first { it.text == messages["signVerify"] })
+                }
+            }
+        }
         hbox {
             spacing = DEFAULT_SPACING_3X
             taPubKey = textarea {
