@@ -36,6 +36,12 @@ class AsymmetricCryptoController : Controller() {
 
     fun lengthFromPri(key: String): Int = key.toPrivateKey("RSA")!!.bitLength()
 
+    fun parseInfo(key: String, alg: String) =
+        runCatching { key.toPublicKey(alg) }
+            .onFailure { println(it.stackTraceToString()) }
+            .getOrElse { key.toPrivateKey(alg) }
+            ?.parseRsaInfo()
+
     fun priDecrypt(
         key: String,
         alg: String,
