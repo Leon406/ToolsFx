@@ -7,6 +7,7 @@ import javafx.scene.control.*
 import javafx.scene.layout.Priority
 import me.leon.*
 import me.leon.controller.SignatureController
+import me.leon.domain.SimpleMsgEvent
 import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.crypto.parsePublicKeyFromCerFile
@@ -301,6 +302,13 @@ class SignatureView : Fragment(messages["signVerify"]) {
             vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
+        }
+        subscribe<SimpleMsgEvent> {
+            if (it.type == 1) {
+                taPubKey.text = it.msg
+            } else if (it.type == 2) {
+                taPriKey.text = it.msg
+            }
         }
     }
     override val root = borderpane {
