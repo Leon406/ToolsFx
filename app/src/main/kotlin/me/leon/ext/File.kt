@@ -1,8 +1,8 @@
 package me.leon.ext
 
+import java.io.File
 import me.leon.ctf.Words
 import me.leon.encode.base.base64
-import java.io.File
 
 /** @link https://en.wikipedia.org/wiki/List_of_file_signatures */
 val magics =
