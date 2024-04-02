@@ -75,7 +75,9 @@ class MiscFragment : PluginFragment("Misc") {
                     miscServiceTypeMap.forEach {
                         radiobutton(it.key) {
                             setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-                            if (it.value == MiscServiceType.UUID) isSelected = true
+                            if (it.value == MiscServiceType.UUID) {
+                                isSelected = true
+                            }
                         }
                     }
                     selectedToggleProperty().addListener { _, _, new ->
@@ -84,17 +86,8 @@ class MiscFragment : PluginFragment("Misc") {
                         val paramHints = serviceType.paramsHints()
                         showParams.value = paramHints.isNotEmpty()
                         param1.promptText = "".takeIf { paramHints.isEmpty() } ?: paramHints.first()
-                        val options = serviceType.options()
-                        showComboParam.value = options.isNotEmpty()
-                        if (options.isNotEmpty()) {
-                            cbParam.items = options.toMutableList().asObservable()
-                            selectedParam.set(if (options.isEmpty()) "" else options.first())
-                            cbParam.bind(selectedParam)
-                        }
-                        println(serviceType)
-                        println(
-                            "params ${paramHints.contentToString()} options ${options.contentToString()}"
-                        )
+                        serviceType.displayOptions()
+                        println("$serviceType params ${paramHints.contentToString()}")
                     }
                 }
             }
@@ -138,6 +131,17 @@ class MiscFragment : PluginFragment("Misc") {
             vgrow = Priority.ALWAYS
             promptText = messages["outputHint"]
             isWrapText = true
+        }
+        MiscServiceType.UUID.displayOptions()
+    }
+
+    private fun MiscServiceType.displayOptions() {
+        val options = options()
+        showComboParam.value = options.isNotEmpty()
+        if (options.isNotEmpty()) {
+            cbParam.items = options.toMutableList().asObservable()
+            selectedParam.set(if (options.isEmpty()) "" else options.first())
+            cbParam.bind(selectedParam)
         }
     }
 

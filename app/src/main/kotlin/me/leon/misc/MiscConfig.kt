@@ -69,6 +69,7 @@ val MISC_OPTIONS_CONFIG =
                         "days",
                     )
             ),
+        MiscServiceType.UUID to mapOf(OPTIONS to arrayOf("normal", "w/o '-'")),
         MiscServiceType.ROMANJI to
             mapOf(OPTIONS to KawaType.entries.map { it.toString() }.toTypedArray()),
         MiscServiceType.PORT_SCAN to

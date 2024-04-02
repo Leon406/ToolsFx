@@ -21,7 +21,14 @@ enum class MiscServiceType(val type: String) : MiscService {
             (0 until runCatching { raw.toInt() }.getOrDefault(1)).joinToString(
                 System.lineSeparator()
             ) {
-                java.util.UUID.randomUUID().toString()
+                val type = requireNotNull(params[C1])
+                with(java.util.UUID.randomUUID().toString()) {
+                    if (type == "normal") {
+                        this
+                    } else {
+                        this.replace("-", "")
+                    }
+                }
             }
     },
     TIME_STAMP("stamp2date") {
