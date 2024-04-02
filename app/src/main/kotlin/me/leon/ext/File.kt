@@ -1,13 +1,16 @@
 package me.leon.ext
 
-import java.io.File
 import me.leon.ctf.Words
 import me.leon.encode.base.base64
+import java.io.File
 
 /** @link https://en.wikipedia.org/wiki/List_of_file_signatures */
 val magics =
     mapOf(
         "ffd8ff" to "jpg",
+        "000000246674797068656963" to "heif",
+        "000000186674797068656963" to "heif",
+        "000000206674797068656963" to "heif",
         "60ea" to "arj",
         "785634" to "pbt",
         "aced" to "Serialized Java Data",
@@ -124,11 +127,12 @@ fun File.realExtension() =
         } else {
             magicNumber().run {
                 magics.keys
-                    .firstOrNull { this.startsWith(it, true) }
+                    .filter { this.startsWith(it, true) }
+                    .maxByOrNull { it.length }
                     ?.let { key ->
-                        println(name + " magic: $this " + key + " " + magics[key])
+                        println(name + "magic: $this " + key + " " + magics[key])
                         (if (magics[key] in multiExts) {
-                            "$extension(probably)".takeIf { extension != name } ?: magics[key]
+                            extension.takeIf { extension in multiExts } ?: magics[key]
                         } else {
                             magics[key]
                         })
@@ -140,7 +144,7 @@ fun File.realExtension() =
         "dir"
     }
 
-fun File.magicNumber(bytes: Int = 10) =
+fun File.magicNumber(bytes: Int = 12) =
     inputStream().use {
         val b = ByteArray(bytes)
         it.read(b)
@@ -153,7 +157,8 @@ fun File.toBase64() = readBytes().base64()
 fun File.properText(limit: Int = 128 * 1024, hints: String = "") =
     if (length() <= limit) {
         val ext = realExtension()
-        if (ext in unsupportedExts) {
+        println("-- $ext")
+        if (unsupportedExts.contains(ext.replace("(probably)", ""))) {
             "unsupported extension $ext"
         } else {
             readText()
