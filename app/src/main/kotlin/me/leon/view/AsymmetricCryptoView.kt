@@ -89,7 +89,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         val firstFile = it.first()
         taPubKey.text =
             if (firstFile.extension in listOf("pk8", "key", "der")) {
-                firstFile.readBytes().base64()
+                val text = firstFile.readText()
+                if (text.startsWith("-----BEGIN")) {
+                    text
+                } else {
+                    firstFile.readBytes().base64()
+                }
             } else if (firstFile.extension in listOf("cer", "crt")) {
                 firstFile.parsePublicKeyFromCerFile()
             } else {
@@ -102,7 +107,12 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
         val firstFile = it.first()
         taPriKey.text =
             if (firstFile.extension in listOf("pk8", "key", "der")) {
-                firstFile.readBytes().base64()
+                val text = firstFile.readText()
+                if (text.startsWith("-----BEGIN")) {
+                    text
+                } else {
+                    firstFile.readBytes().base64()
+                }
             } else if (firstFile.extension in listOf("cer", "crt")) {
                 firstFile.parsePublicKeyFromCerFile()
             } else {
