@@ -154,7 +154,12 @@ class SignatureView : Fragment(messages["signVerify"]) {
             with(it.first()) {
                 when (extension) {
                     in listOf("pk8", "key", "der") -> {
-                        readBytes().base64()
+                        val text = readText()
+                        if (text.startsWith("-----BEGIN")) {
+                            text
+                        } else {
+                            readBytes().base64()
+                        }
                     }
                     in listOf("cer", "crt") -> {
                         parsePublicKeyFromCerFile()
@@ -170,7 +175,12 @@ class SignatureView : Fragment(messages["signVerify"]) {
             with(it.first()) {
                 when (extension) {
                     in listOf("pk8", "key", "der") -> {
-                        readBytes().base64()
+                        val text = readText()
+                        if (text.startsWith("-----BEGIN")) {
+                            text
+                        } else {
+                            readBytes().base64()
+                        }
                     }
                     in listOf("cer", "crt") -> {
                         parsePublicKeyFromCerFile()
