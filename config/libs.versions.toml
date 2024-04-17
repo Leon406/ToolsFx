@@ -10,7 +10,7 @@ javassistVer = "3.30.2-GA"
 javaxJsonVer = "1.1.4"
 # openjfx LTS version needs Subscription https://mvnrepository.com/artifact/org.openjfx/javafx-controls
 # jfx 20.x+ requires jdk 17+
-jfxVer = "21"
+jfxVer = "22"
 jnaVer = "5.14.0"
 kotlinSerVer = "1.6.3"
 kotlinVer = "1.9.23"
