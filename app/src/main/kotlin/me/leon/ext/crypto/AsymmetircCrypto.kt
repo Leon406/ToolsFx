@@ -56,7 +56,7 @@ val OAEP_PARAM_SPEC_SHA1 =
     OAEPParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, PSource.PSpecified.DEFAULT)
 
 fun String.removePemInfo() =
-    replace("---+(?:END|BEGIN) (?:RSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
+    replace("---+(?:END|BEGIN) (?:RSA |EC )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
 
 fun getPropPublicKey(key: String): ByteArray =
     if (key.contains("-----BEGIN CERTIFICATE-----")) {
@@ -173,7 +173,7 @@ fun String.keyAutoDecode(): ByteArray =
     if (HEX_REGEX.matches(this)) {
         hex2ByteArray()
     } else {
-        base64Decode()
+        removePemInfo().base64Decode()
     }
 
 fun ByteArray.asymmetricDecrypt(key: Key?, alg: String): ByteArray =
