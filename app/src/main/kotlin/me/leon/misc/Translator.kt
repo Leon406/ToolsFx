@@ -1,9 +1,9 @@
 package me.leon.misc
 
+import java.net.URLEncoder
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 import me.leon.misc.net.linkCheck
-import java.net.URLEncoder
 
 object Translator {
     val SUPPORT_LANGUAGE =
@@ -115,10 +115,10 @@ object Translator {
 
     fun lingva(text: String, src: String = "auto", target: String = "zh"): String =
         URL_LINGVA.format(
-            src.replace("-CN", ""),
-            target.replace("-CN", ""),
-            URLEncoder.encode(text, "utf-8")
-        )
+                src.replace("-CN", ""),
+                target.replace("-CN", ""),
+                URLEncoder.encode(text, "utf-8")
+            )
             .readFromNet()
             .fromJson(Map::class.java)["translation"]
             .toString()
