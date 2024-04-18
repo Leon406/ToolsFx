@@ -35,11 +35,6 @@ class ShortUrlTest {
     }
 
     @Test
-    fun gg() {
-        println(ShortUrl.gg(url))
-    }
-
-    @Test
     fun e() {
         ShortUrlEnum.entries.map { it.name }.forEach { println(url.shortUrl(it)) }
     }

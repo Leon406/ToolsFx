@@ -46,17 +46,6 @@ object ShortUrl {
             )
             .fromJson(Map::class.java)["short"]
             .toString()
-
-    fun gg(url: String) =
-        "http://gg.gg/create"
-            .readFromNet(
-                "POST",
-                headers =
-                    mapOf(
-                        "Content-Type" to "application/x-www-form-urlencoded",
-                    ),
-                data = "long_url=$url"
-            )
 }
 
 interface Shorten {
@@ -73,9 +62,6 @@ enum class ShortUrlEnum : Shorten {
     },
     DWZ {
         override fun short(url: String) = ShortUrl.dwz(url)
-    },
-    GG {
-        override fun short(url: String) = ShortUrl.gg(url)
     },
     BAKA {
         override fun short(url: String) = ShortUrl.baka(url)
