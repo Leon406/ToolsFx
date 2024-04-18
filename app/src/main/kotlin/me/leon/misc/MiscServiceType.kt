@@ -210,6 +210,15 @@ enum class MiscServiceType(val type: String) : MiscService {
             }
         }
     },
+    VARIABLE_NAMING("variable naming") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return raw.lineAction2String {
+                runCatching { VariableNaming.valueOf(type).convert(it) }
+                    .getOrElse { it.stacktrace() }
+            }
+        }
+    },
     ;
 
     override fun hint(): String {

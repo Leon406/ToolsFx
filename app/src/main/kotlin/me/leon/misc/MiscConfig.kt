@@ -54,6 +54,8 @@ val MISC_CONFIG =
                 HINT to
                     "convert raw string or hex string to byte order hex(add '0x' prefix to hex string),separate by line"
             ),
+        MiscServiceType.VARIABLE_NAMING to
+            mapOf(HINT to "variable naming convert, separate by line"),
     )
 
 val MISC_OPTIONS_CONFIG =
@@ -112,4 +114,6 @@ val MISC_OPTIONS_CONFIG =
             ),
         MiscServiceType.CODE_EXPLAIN to mapOf(OPTIONS to CodeMapping.TYPE.keys.toTypedArray()),
         MiscServiceType.ENDIA to mapOf(OPTIONS to Endia.values().map { it.name }.toTypedArray()),
+        MiscServiceType.VARIABLE_NAMING to
+            mapOf(OPTIONS to VariableNaming.values().map { it.name }.toTypedArray()),
     )
