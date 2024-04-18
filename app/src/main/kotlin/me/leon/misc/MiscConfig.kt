@@ -1,5 +1,6 @@
 package me.leon.misc
 
+import me.leon.misc.net.GithubAction
 import me.leon.misc.net.ShortUrlEnum
 import me.leon.misc.unit.UNIT_TYPES
 
@@ -37,7 +38,7 @@ val MISC_CONFIG =
         MiscServiceType.DNS_SOLVE to mapOf(HINT to "domains,separate by line, comment by #"),
         MiscServiceType.CRON_EXPLAIN to
             mapOf(HINT to "cron expression, support crontab, quarts and normal format"),
-        MiscServiceType.GITHUB_MIRROR to mapOf(HINT to "github repo or raw link"),
+        MiscServiceType.GITHUB to mapOf(HINT to "github repo or raw link"),
         MiscServiceType.ENCODING_RECOVERY to mapOf(HINT to "recover encoding"),
         MiscServiceType.FULL_WIDTH to mapOf(HINT to "transfer full/half width char"),
         MiscServiceType.PUNCTUATION to mapOf(HINT to "convert punctuation format"),
@@ -116,4 +117,6 @@ val MISC_OPTIONS_CONFIG =
         MiscServiceType.ENDIA to mapOf(OPTIONS to Endia.values().map { it.name }.toTypedArray()),
         MiscServiceType.VARIABLE_NAMING to
             mapOf(OPTIONS to VariableNaming.values().map { it.name }.toTypedArray()),
+        MiscServiceType.GITHUB to
+            mapOf(OPTIONS to GithubAction.values().map { it.name }.toTypedArray()),
     )

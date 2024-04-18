@@ -313,6 +313,21 @@ class MiscTest {
     }
 
     @Test
+    fun githubRepoUrl() {
+
+        val url = "https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/host"
+
+        val url2 =
+            "https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.1/Git-2.41.0-64-bit.exe"
+        val file = "https://github.com/Leon406/ToolsFx/blob/dev/testdata/sm2/sm_qd_data.txt"
+
+        val repoUrl = url.githubRepoUrl()
+        println(repoUrl)
+        println(repoUrl.replace(REG_GITHUB, "https://raw.githubusercontent.com/$2/"))
+        println("_____raw")
+    }
+
+    @Test
     fun romanNumber() {
         val str = "399"
         println(str.roman())
