@@ -49,6 +49,12 @@ fun String.toZhPunctuation() =
         .replace(";", "；")
         .replace("?", "？")
         .replace("!", "！")
+        .replace("(", "（")
+        .replace(")", "）")
+        .replace("[", "【")
+        .replace("]", "】")
+        .replace("<", "《")
+        .replace(">", "》")
 
 fun String.toEnPunctuation() =
     replace("：", ":")
@@ -61,6 +67,11 @@ fun String.toEnPunctuation() =
         .replace("；", ";")
         .replace("？", "?")
         .replace("！", "!")
+        .replace("（", "(")
+        .replace("）", ")")
+        .replace("《", "<")
+        .replace("》", ">")
+        .replace("、", ",")
 
 val Char.fullWidth
     get() =
