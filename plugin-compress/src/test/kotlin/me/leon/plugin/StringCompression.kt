@@ -5,6 +5,7 @@ import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 import me.leon.ext.readBytesFromNet
 import me.leon.toolsfx.plugin.compress.Compression
+import me.leon.toolsfx.plugin.compress.LzString
 import org.junit.Test
 
 class StringCompression {
@@ -124,5 +125,15 @@ class StringCompression {
                 println(it)
             }
         assertEquals(data, decompressed)
+
+        val bytes =
+            "IIEwbghgdgxgpiABASyiOUAuiDmBXZdAZ0QBtU5EALZHK8uzVHRGaRAI0owg9IUQAzAPYAnIA==="
+                .base64Decode()
+        assertEquals(
+            "Advanced indent guides line highlighting can be enabled for",
+            Compression.LZString.decompress(bytes).decodeToString()
+        )
+
+        println(LzString.compressToBase64("ba"))
     }
 }
