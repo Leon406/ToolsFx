@@ -85,5 +85,5 @@ dependencies {
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org:jaudiotagger:2.0.3")
     // https://www.atilika.org/
-    testImplementation("com.atilika.kuromoji:kuromoji-ipadic:+")
+    testImplementation("com.atilika.kuromoji:kuromoji-ipadic:0.9.0")
 }
