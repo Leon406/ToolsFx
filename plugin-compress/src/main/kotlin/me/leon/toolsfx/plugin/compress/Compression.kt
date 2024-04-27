@@ -125,7 +125,18 @@ enum class Compression(val alg: String) : ICompress {
             LzString.compressToBase64(bytes.decodeToString()).base64Decode()
 
         override fun decompress(bytes: ByteArray) =
-            LzString.decompressFromBase64(bytes.base64())?.toByteArray() ?: byteArrayOf()
+            LzString.decompressFromBase64(
+                    bytes.base64().let {
+                        // 补充额外 'A===' padding
+                        if (it.endsWith("=")) {
+                            it
+                        } else {
+                            it + "A==="
+                        }
+                    }
+                )
+                ?.toByteArray()
+                ?: byteArrayOf()
     }
 }
 
