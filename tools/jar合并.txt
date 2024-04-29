@@ -1,0 +1,57 @@
+kotlin 相关jar包合并  kotlin-xxx.jar  -4
+
+kotlin-reflect-xxx.jar
+kotlin-stdlib-xxx.jar
+
+kotlin-stdlib-common-xxx.jar
+kotlin-stdlib-jdk7-xxx.jar
+kotlin-stdlib-jdk8-xxx.jar
+
+
+
+
+javafx win合并  javafx-xxx-win.jar  -9
+
+
+javafx-base-xxx-win.jar
+javafx-controls-xxx-win.jar
+javafx-graphics-xxx.jar
+javafx-graphics-xxx-win.jar
+javafx-media-xxx-win.jar
+javafx-swing-xxx-win.jar
+javafx-web-xxx-win.jar
+
+javafx-base-xxx.jar
+javafx-media-xxx.jar
+javafx-controls-xxx.jar
+
+
+
+
+其他外部库  zxing-xxx.jar  -3
+ 
+
+core-xxx.jar
+jai-imageio-core-xxx.jar
+javase-xxx.jar
+jcommander-xxx.jar
+
+tornadofx   tornadofx-core.jar  -2
+
+tornadofx-1.7.20.jar
+annotations-13.0.jar
+javax.json-1.1.4.jar
+
+
+gson-2.8.9.jar
+bcprov-jdk15on-1.69.jar
+
+
+plugin
+
+
+
+
+
+
+
