@@ -10,10 +10,10 @@ const val LAN_ZOU_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9av2kb?pwd=52pj"
 const val LAN_ZOU_PLUGIN_DOWNLOAD_URL = "https://leon.lanzoub.com/b0d9w4cof?pwd=ax63"
 const val BAIDU_OCR_APPLY_URL = "https://console.bce.baidu.com/ai/#/ai/ocr/app/list"
 const val CHECK_UPDATE_URL =
-    "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/main/update.json"
+    "https://ghproxy.net/https://raw.githubusercontent.com/Leon406/ToolsFx/main/update.json"
 const val CHECK_UPDATE_URL2 = "https://gitee.com/LeonShih/ToolsFx/raw/main/update.json"
 const val DEV_UPDATE_URL =
-    "https://ghproxy.com/https://raw.githubusercontent.com/Leon406/ToolsFx/dev/update.json"
+    "https://ghproxy.net/https://raw.githubusercontent.com/Leon406/ToolsFx/dev/update.json"
 const val DEV_UPDATE_URL2 = "https://raw.githubusercontent.com/Leon406/ToolsFx/dev/update.json"
 const val LICENSE = "https://raw.githubusercontent.com/Leon406/ToolsFx/main/LICENSE"
 const val WIKI_CTF = "https://github.com/Leon406/ToolsFx/wiki/CTF"
