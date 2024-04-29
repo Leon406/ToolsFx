@@ -15,7 +15,7 @@ val REG_NUMBER = "\\d+".toRegex()
 val REG_CRACK_HEADER = "\\d+ [\\w)]+(-->\\d+ )?".toRegex()
 
 val build: String
-    get() = "2023/09/20"
+    get() = "2024/04/29"
 
 val appVersion: String
-    get() = "1.17.0"
+    get() = "1.18.0"

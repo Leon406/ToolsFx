@@ -1,6 +1,34 @@
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
 <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx:: Visitor's Count" />
 
+# v1.18.0
+## feature:
+- feat(app): misc github 新增地址转raw直链，直链转浏览地址，更新镜像
+- feat(app): misc shorturl remove unavailable type
+- feat(app): misc add variable naming
+- feat(app): Misc 更新翻译镜像服务器
+- feat(app): key base64自动解析移除 pem header 和 footer #248
+- feat(app): 非对称加密/签名支持key,der,pk8后缀 文本解析
+- feat(app): 非对称加密新增公私钥指数模模解析
+- feat(app): 非对称加密中秘钥可带到签名与验签模块
+- feat(app): File Magic Number add heic, and fix bug
+- feat(app): Misc uuid可选删除连接符
+- feat(app): Misc 新增世界语言编码匹配
+- feat(location): 加入amap签名校验, 1.3.1
+- feat(app): misc 新增世界货币
+- feat(app): misc 新增中英文标点转换
+- feat(app): misc link check add type option
+- feat(plugin-location): 新增天地图及逆地理编码,支持环境变量配置key
+- feat(app): .class magics support jdk 20-27
+- feat(app): misc add China car number
+- feat(app): remove mit info
+- feat(app): Misc githubMirror support raw.github.com
+## bug fix:
+- fix(plugin-compress): Lzstring base64 decoding padding处理 #252
+- feat(app): File Magic Number add heic, and fix bug
+- fix(app): 哈希算法，base64,hex编码迭代计算错误 #220
+- fix(app): radix8 dict错误
+
 # v1.17.0  
 
 ## feature:
@@ -543,4 +571,3 @@
 - fix: toast 异常
 - fix:编码转换 hex转base64错误
 - fix:编码转换异常显示
-
