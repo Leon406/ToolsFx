@@ -2,8 +2,10 @@ package me.leon.toolsfx.plugin.compress
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import me.leon.encode.base.base64
-import me.leon.encode.base.base64Decode
+import me.leon.ext.decodeToByteArray
+import me.leon.ext.encodeTo
+import me.leon.ext.hex2String
+import me.leon.ext.toHex
 import org.apache.commons.compress.compressors.brotli.BrotliCompressorInputStream
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream
@@ -121,22 +123,35 @@ enum class Compression(val alg: String) : ICompress {
             }
     },
     LZString("lzString") {
-        override fun compress(bytes: ByteArray) =
-            LzString.compressToBase64(bytes.decodeToString()).base64Decode()
+        override fun compress(bytes: ByteArray) = error("Unsupported")
 
-        override fun decompress(bytes: ByteArray) =
-            LzString.decompressFromBase64(
-                    bytes.base64().let {
-                        // 补充额外 'A===' padding
-                        if (it.endsWith("=")) {
-                            it
-                        } else {
-                            it + "A==="
-                        }
-                    }
-                )
-                ?.toByteArray()
-                ?: byteArrayOf()
+        override fun decompress(bytes: ByteArray) = error("Unsupported")
+
+        override fun compress(raw: String, inputEncode: String, outputEncode: String) =
+            when (outputEncode) {
+                "raw" -> LzString.compress(raw.decodeToByteArray(inputEncode).encodeTo("raw"))
+                "base64" ->
+                    LzString.compressToBase64(raw.decodeToByteArray(inputEncode).encodeTo("raw"))
+                "hex" ->
+                    LzString.compress(raw.decodeToByteArray(inputEncode).encodeTo("raw")).toHex()
+                else -> error("Wrong Encoding!!!")
+            }
+
+        override fun decompress(raw: String, inputEncode: String, outputEncode: String) =
+            when (inputEncode) {
+                "raw" -> LzString.decompress(raw).orEmpty().toByteArray().encodeTo(outputEncode)
+                "base64" ->
+                    LzString.decompressFromBase64(raw)
+                        .orEmpty()
+                        .toByteArray()
+                        .encodeTo(outputEncode)
+                "hex" ->
+                    LzString.decompress(raw.hex2String())
+                        .orEmpty()
+                        .toByteArray()
+                        .encodeTo(outputEncode)
+                else -> error("Wrong Encoding!!!")
+            }
     }
 }
 
