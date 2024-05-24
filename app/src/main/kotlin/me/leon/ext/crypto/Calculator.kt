@@ -41,7 +41,7 @@ enum class Calculator(val algo: String) : ICalculator {
     },
     MOD("P mod Q") {
         override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0] % (ints[1])).toString()
+            return (ints[0].mod(ints[1])).toString()
         }
     },
     PLUS_MOD("(P+Q) mod N") {
