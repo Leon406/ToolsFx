@@ -57,6 +57,7 @@ val MISC_CONFIG =
             ),
         MiscServiceType.VARIABLE_NAMING to
             mapOf(HINT to "variable naming convert, separate by line"),
+        MiscServiceType.WORD_SPLITER to mapOf(HINT to "split no space letters, eg. whoseyourdaddy"),
     )
 
 val MISC_OPTIONS_CONFIG =

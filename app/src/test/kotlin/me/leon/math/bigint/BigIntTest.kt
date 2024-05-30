@@ -1,10 +1,10 @@
 package me.leon.math.bigint
 
+import java.math.BigInteger
+import kotlin.test.assertEquals
 import me.leon.ext.crypto.Calculator
 import me.leon.ext.math.*
 import org.junit.Test
-import java.math.BigInteger
-import kotlin.test.assertEquals
 
 class BigIntTest {
 
@@ -54,6 +54,6 @@ class BigIntTest {
         val p = (-92).toBigInteger()
         val q = 19.toBigInteger()
         assertEquals("3", p.mod(q).toString())
-        assertEquals("3", Calculator.MOD.calculate(listOf(p,q)))
+        assertEquals("3", Calculator.MOD.calculate(listOf(p, q)))
     }
 }

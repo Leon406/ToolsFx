@@ -34,6 +34,7 @@ fun String.normalSpaceFormat(): String =
 
 /** （小）驼峰 hellLeon */
 fun String.camelNaming() = charTransform(Char::uppercase)
+
 // pascal case
 
 /** 帕斯卡命名 （大）驼峰 HellLeon */
@@ -62,6 +63,7 @@ fun String.snakeCaseNaming() = normalSpaceFormat().replace(" ", "_")
 
 /** 大写命名 HELLO_LEON, 常量 */
 fun String.uppercaseNaming() = snakeCaseNaming().uppercase()
+
 //
 /** kebab case， spinal case */
 fun String.dashNaming() = normalSpaceFormat().replace(" ", "-")

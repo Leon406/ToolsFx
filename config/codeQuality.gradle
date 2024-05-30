@@ -23,7 +23,7 @@ spotless {
     java {
         target "src/**/*.java"
         // https://github.com/google/google-java-format/releases
-        googleJavaFormat('1.17.0').aosp()
+        googleJavaFormat('1.22.0').aosp()
     }
     kotlin {
         target "src/**/*.kt"
