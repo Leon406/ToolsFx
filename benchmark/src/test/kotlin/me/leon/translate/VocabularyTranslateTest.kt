@@ -175,8 +175,7 @@ class TranslateTest {
             runCatching { translatedFile.readText() }
                 .getOrNull()
                 ?.lines()
-                ?.map { it.split("\t")[0] }
-                ?: emptyList()
+                ?.map { it.split("\t")[0] } ?: emptyList()
         val lines = toTranslate.readText().lines()
         val exclusion = noTranslation.readText().lines().toSet()
         val diff = lines - translated.toSet() - exclusion

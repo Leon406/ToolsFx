@@ -73,8 +73,7 @@ fun String.readBytesFromNet(
                 }
                 .takeIf { it.responseCode == RESPONSE_OK || it.responseCode == RESPONSE_NOT_FOUND }
                 ?.stream()
-                ?.readBytes()
-                ?: byteArrayOf()
+                ?.readBytes() ?: byteArrayOf()
         }
         .getOrElse {
             println("read bytes err ${it.stacktrace()} ")

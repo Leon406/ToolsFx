@@ -39,7 +39,6 @@ object BaiduOcr {
             .also { println(it) }
             .fromJson(BaiduOcrBean::class.java)
             .results
-            ?.joinToString(System.lineSeparator()) { it.words }
-            ?: error("request failed")
+            ?.joinToString(System.lineSeparator()) { it.words } ?: error("request failed")
     }
 }

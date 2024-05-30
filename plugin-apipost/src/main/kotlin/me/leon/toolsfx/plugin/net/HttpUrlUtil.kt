@@ -404,8 +404,7 @@ object HttpUrlUtil {
 
     fun Map<String, Any>.toParams(isEncode: Boolean = false) =
         entries.joinToString("&") {
-            (it.key.takeUnless { isEncode }
-                ?: it.key.urlEncoded) +
+            (it.key.takeUnless { isEncode } ?: it.key.urlEncoded) +
                 "=" +
                 (it.value.takeUnless { isEncode } ?: it.value.toString().urlEncoded)
         }

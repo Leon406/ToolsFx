@@ -601,8 +601,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     .lines()
                     .filter { it.isNotEmpty() }
                     .map { it.toFile() }
-                    .firstOrNull { it.exists() && it.name.contains(dictType) }
-                    ?: defaultFile
+                    .firstOrNull { it.exists() && it.name.contains(dictType) } ?: defaultFile
             } else {
                 defaultFile
             }

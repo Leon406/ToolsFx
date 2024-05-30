@@ -122,10 +122,9 @@ class LocationParse {
                             ?: bean.pois?.firstOrNull {
                                 it.name?.run {
                                     contains(addr[2]) && contains("居委会|村委会|综合服务中心|党群服务中心".toRegex())
-                                }
-                                    ?: false
+                                } ?: false
                             }
-                                ?: bean.pois?.first().also {
+                            ?: bean.pois?.first().also {
                                 println("$location 可能不准确  \n\t\t${bean.pois}")
                             }
                     calculateDistance(poi, addr, location)

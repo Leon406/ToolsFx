@@ -18,16 +18,15 @@ object NetHelper {
             URLDecoder.decode(
                 response.getHeaderField("Content-Disposition")?.let { getFileName(it) }
                     ?: response.getHeaderField("content-disposition")?.let { getFileName(it) }
-                        ?: getUrlFileName(response.url.toString())
-                        ?: "unknownfile_${System.currentTimeMillis()}"
+                    ?: getUrlFileName(response.url.toString())
+                    ?: "unknownfile_${System.currentTimeMillis()}"
             )
         )
 
     private fun getCorrectUrl(url: String) =
         url.toByteArray(Charsets.ISO_8859_1).toString(Charsets.UTF_8).takeIf {
             REG_CHINESE.matcher(it).find()
-        }
-            ?: url
+        } ?: url
 
     /**
      * 通过 ‘？’ 和 ‘/’ 判断文件名

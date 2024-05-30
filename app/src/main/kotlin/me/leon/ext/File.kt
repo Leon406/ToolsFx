@@ -136,8 +136,7 @@ fun File.realExtension() =
                         } else {
                             magics[key]
                         })
-                    }
-                    ?: "$extension(probably)".also { println("unknown magic number $this $name") }
+                    } ?: "$extension(probably)".also { println("unknown magic number $this $name") }
             }
         }
     } else {

@@ -65,6 +65,5 @@ fun String.methodParse(): String {
             tmp = tmp.methodParse()
         }
         replace(this.groupValues.first(), this.groupValues[1].methodCall(tmp))
-    }
-        ?: this
+    } ?: this
 }
