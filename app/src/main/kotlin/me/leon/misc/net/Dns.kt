@@ -1,8 +1,6 @@
 package me.leon.misc.net
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import me.leon.ext.fromJson
 import me.leon.ext.readFromNet
 
@@ -11,7 +9,18 @@ import me.leon.ext.readFromNet
  * @since 2023-04-10 11:03
  * @email deadogone@gmail.com
  */
-fun dnsSolve(urls: List<String>): String = runBlocking {
+fun dnsSolve(urls: List<String>): String =
+    dnsSolveResult(urls)
+        .groupBy { it.second.ipCloudFlare() }
+        .toList()
+        .joinToString(System.lineSeparator()) { (k, v) ->
+            v.joinToString(
+                System.lineSeparator(),
+                "# CloudFlare ip ${System.lineSeparator()}".takeIf { k }.orEmpty()
+            ) { it.second + "\t" + it.first }
+        }
+
+fun dnsSolveResult(urls: List<String>): List<Pair<String, String>> = runBlocking {
     val aliOkUrls =
         urls
             .sorted()
@@ -21,29 +30,27 @@ fun dnsSolve(urls: List<String>): String = runBlocking {
             .filter { it.second != null }
     // if alidns ip is not available, try cloudfare dns
     val cfOkUrls =
-        (urls - aliOkUrls.map { it.second!!.first }.toSet())
-            .also { println("ali dns failed ips: $it") }
+        (urls - aliOkUrls.map { it.first }.toSet())
+            .also { println("ali dns failed ips: ${it.size}") }
             .map { domain ->
                 async(DISPATCHER) { domain to fastestIp(resolveDomainsByCloudfare(domain)) }
             }
             .awaitAll()
             .filter { it.second != null }
 
-    (aliOkUrls + cfOkUrls).joinToString(System.lineSeparator()) {
-        "${it.second!!.first} ${it.first}"
-    }
+    (aliOkUrls + cfOkUrls).map { it.first to it.second!!.first }
 }
 
 fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long>? {
     return runCatching {
-            ips.map { ip ->
-                    ip to
-                        runCatching { ip.connect(443, timeout) }
-                            .getOrElse { ip.connect(80, timeout) }
-                }
-                .filter { it.second > 0 }
-                .minBy { it.second }
+        ips.map { ip ->
+            ip to
+                    runCatching { ip.connect(443, timeout) }
+                        .getOrElse { ip.connect(80, timeout) }
         }
+            .filter { it.second > 0 }
+            .minBy { it.second }
+    }
         .getOrNull()
 }
 

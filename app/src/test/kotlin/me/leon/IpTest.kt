@@ -68,6 +68,13 @@ class IpTest {
     }
 
     @Test
+    fun ipCloudFlare() {
+        val ip = "43.97.0.1"
+        println(ip.ipCloudFlare())
+        println("172.67.74.154".ipCloudFlare())
+    }
+
+    @Test
     fun ipLocation() {
         val url = "baidu.com"
         println(url.ipLocation())

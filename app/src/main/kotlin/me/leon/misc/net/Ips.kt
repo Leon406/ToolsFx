@@ -78,8 +78,41 @@ fun String.cidr(): String {
         .toString()
 }
 
+fun String.cidrRange(): UIntRange {
+    val (ipStr, cidrStr) = split("/").takeIf { it.size > 1 } ?: listOf(this, "24")
+    val cidr = cidrStr.takeIf { it.isNotEmpty() }?.toInt() ?: 24
+    val ip = ipStr.ip2Uint()
+    val sub = 32 - cidr
+    val count = 2.0.pow(sub).toInt()
+    val mask = cidr.ipMask().ip2Uint()
+    val net = mask and ip
+    return (net + 1U)..(net + (count - 2).toUInt())
+}
+
 private const val IP_API = "http://ip-api.com/json/%s?lang=zh-CN"
 private const val PCONLINE_API = "http://whois.pconline.com.cn/ipJson.jsp?ip=%s&json=true"
+
+val cfCidrs =
+    setOf(
+            "103.21.244.0/22",
+            "103.22.200.0/22",
+            "103.31.4.0/22",
+            "104.16.0.0/13",
+            "104.24.0.0/14",
+            "108.162.192.0/18",
+            "131.0.72.0/22",
+            "141.101.64.0/18",
+            "162.158.0.0/15",
+            "172.64.0.0/13",
+            "173.245.48.0/20",
+            "188.114.96.0/20",
+            "190.93.240.0/20",
+            "197.234.240.0/22",
+            "198.41.128.0/17"
+        )
+        .map { it.cidrRange() }
+
+fun String.ipCloudFlare() = cfCidrs.any { it.contains(ip2Uint()) }
 
 fun String.ipLocation() =
     runCatching {
