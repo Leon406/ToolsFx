@@ -1,10 +1,11 @@
 package me.leon.misc
 
+import me.leon.config.WORDNINJA_DICT_FILE
+import me.leon.ext.readResourceText
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.ln
 import kotlin.math.max
-import me.leon.config.WORDNINJA_DICT_FILE
 
 /**
  * ported from
@@ -16,13 +17,15 @@ object Spliter {
     private var maxWordLength: Int = 0
 
     init {
-        if (WORDNINJA_DICT_FILE.exists()) {
-            initDict()
-        }
+        initDict()
     }
 
     fun initDict(file: File = WORDNINJA_DICT_FILE) {
-        val dictionaryWords = file.readLines()
+        val dictionaryWords = if (file.exists()) {
+            file.readLines()
+        } else {
+            readResourceText("/${WORDNINJA_DICT_FILE.name}").lines()
+        }
         // Build a cost dictionary, assuming Zipf's law and cost = -math.log(probability).
         wordCost.clear()
         val lgDictSize = ln(dictionaryWords.size.toDouble())
@@ -72,7 +75,7 @@ object Spliter {
                 val lastWord = output[output.size - 1]
                 if (
                     lastWord.equals("'s", ignoreCase = true) ||
-                        partSentence[idx - 1].isDigit() && lastWord[0].isDigit()
+                    partSentence[idx - 1].isDigit() && lastWord[0].isDigit()
                 ) {
                     output[output.size - 1] = token + lastWord
                     newToken = false
@@ -117,23 +120,23 @@ object Spliter {
 
     fun String.parts() =
         fold(Triple(mutableListOf<String>(), StringBuilder(), AtomicBoolean(false))) { acc, char ->
-                if (char.isLetter()) {
-                    if (acc.third.get()) {
-                        acc.first.add(acc.second.toString())
-                        acc.second.clear()
-                    }
-                    acc.third.set(false)
-                    acc.second.append(char)
-                } else {
-                    if (acc.second.isNotEmpty()) {
-                        acc.first.add(acc.second.toString())
-                        acc.second.clear()
-                    }
-                    acc.second.append(char)
-                    acc.third.set(true)
+            if (char.isLetter()) {
+                if (acc.third.get()) {
+                    acc.first.add(acc.second.toString())
+                    acc.second.clear()
                 }
-                acc
+                acc.third.set(false)
+                acc.second.append(char)
+            } else {
+                if (acc.second.isNotEmpty()) {
+                    acc.first.add(acc.second.toString())
+                    acc.second.clear()
+                }
+                acc.second.append(char)
+                acc.third.set(true)
             }
+            acc
+        }
             .also {
                 if (it.second.isNotEmpty()) {
                     it.first.add(it.second.toString())
