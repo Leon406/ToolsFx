@@ -227,7 +227,7 @@ enum class MiscServiceType(val type: String) : MiscService {
     WORD_SPLITER("word ninja") {
         override fun process(raw: String, params: Map<String, String>): String {
             return raw.lineAction2String {
-                runCatching { Spliter.splitContiguousWords(it).joinToString(" ") }
+                runCatching { Spliter.splitContiguousWords(it).joinToString("") }
                     .getOrElse { it.stacktrace() }
             }
         }

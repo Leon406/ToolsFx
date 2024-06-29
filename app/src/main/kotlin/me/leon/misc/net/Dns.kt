@@ -17,7 +17,9 @@ fun dnsSolve(urls: List<String>): String =
             v.joinToString(
                 System.lineSeparator(),
                 "# CloudFlare ip ${System.lineSeparator()}".takeIf { k }.orEmpty()
-            ) { it.second + "\t" + it.first }
+            ) {
+                it.second + "\t" + it.first
+            }
         }
 
 fun dnsSolveResult(urls: List<String>): List<Pair<String, String>> = runBlocking {
@@ -43,14 +45,14 @@ fun dnsSolveResult(urls: List<String>): List<Pair<String, String>> = runBlocking
 
 fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long>? {
     return runCatching {
-        ips.map { ip ->
-            ip to
-                    runCatching { ip.connect(443, timeout) }
-                        .getOrElse { ip.connect(80, timeout) }
+            ips.map { ip ->
+                    ip to
+                        runCatching { ip.connect(443, timeout) }
+                            .getOrElse { ip.connect(80, timeout) }
+                }
+                .filter { it.second > 0 }
+                .minBy { it.second }
         }
-            .filter { it.second > 0 }
-            .minBy { it.second }
-    }
         .getOrNull()
 }
 

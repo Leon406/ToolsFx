@@ -1,5 +1,7 @@
 package me.leon.misc
 
+import java.io.File
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.ln
 import kotlin.math.max
 import me.leon.config.WORDNINJA_DICT_FILE
@@ -11,11 +13,18 @@ import me.leon.config.WORDNINJA_DICT_FILE
 object Spliter {
     private val splitRegex = "[^a-zA-Z0-9']+".toRegex()
     private val wordCost = mutableMapOf<String, Number>()
-    private val maxWordLength: Int
+    private var maxWordLength: Int = 0
 
     init {
-        val dictionaryWords: List<String> = WORDNINJA_DICT_FILE.readLines()
+        if (WORDNINJA_DICT_FILE.exists()) {
+            initDict()
+        }
+    }
+
+    fun initDict(file: File = WORDNINJA_DICT_FILE) {
+        val dictionaryWords = file.readLines()
         // Build a cost dictionary, assuming Zipf's law and cost = -math.log(probability).
+        wordCost.clear()
         val lgDictSize = ln(dictionaryWords.size.toDouble())
         var wordIdx = 0
         for (word in dictionaryWords) {
@@ -26,11 +35,15 @@ object Spliter {
 
     fun splitContiguousWords(sentence: String): List<String> {
         val splitWords =
-            sentence
-                .split(splitRegex)
-                .filter { it.isNotEmpty() }
-                .fold(mutableListOf<String>()) { acc, s -> acc.apply { add(split(s)) } }
-        println("Split word for the sentence: $splitWords")
+            sentence.parts().fold(mutableListOf<String>()) { acc, s ->
+                acc.apply {
+                    if (splitRegex.matches(s)) {
+                        add(s)
+                    } else {
+                        add(split(s))
+                    }
+                }
+            }
         return splitWords
     }
 
@@ -101,4 +114,30 @@ object Spliter {
         }
         return minPair
     }
+
+    fun String.parts() =
+        fold(Triple(mutableListOf<String>(), StringBuilder(), AtomicBoolean(false))) { acc, char ->
+                if (char.isLetter()) {
+                    if (acc.third.get()) {
+                        acc.first.add(acc.second.toString())
+                        acc.second.clear()
+                    }
+                    acc.third.set(false)
+                    acc.second.append(char)
+                } else {
+                    if (acc.second.isNotEmpty()) {
+                        acc.first.add(acc.second.toString())
+                        acc.second.clear()
+                    }
+                    acc.second.append(char)
+                    acc.third.set(true)
+                }
+                acc
+            }
+            .also {
+                if (it.second.isNotEmpty()) {
+                    it.first.add(it.second.toString())
+                }
+            }
+            .first
 }
