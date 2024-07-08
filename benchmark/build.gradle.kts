@@ -25,7 +25,7 @@ dependencies {
 
     testImplementation(libs.kotlin.test)
     testImplementation(libs.jsoup)
-    testImplementation("org.java-websocket:Java-WebSocket:1.5.6")
+    testImplementation("org.java-websocket:Java-WebSocket:1.5.7")
     // mp3格式支持
     // testImplementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
 
