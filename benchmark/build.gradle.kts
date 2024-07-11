@@ -16,7 +16,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = jvmTarget
 }
 dependencies {
-    implementation("androidx.collection:collection-ktx:1.4.0")
+    implementation("androidx.collection:collection-ktx:1.4.1")
     implementation("org.openjdk.jol:jol-core:0.17")
     implementation("org.openjdk.jmh:jmh-core:1.37")
     implementation("cn.hutool:hutool-all:5.8.29")
