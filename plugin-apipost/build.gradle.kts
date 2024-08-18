@@ -25,4 +25,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.selenium)
+    testImplementation("io.github.sashirestela:simple-openai:3.6.0")
 }
