@@ -2,16 +2,17 @@ package me.leon
 
 import io.github.sashirestela.openai.SimpleOpenAI
 import io.github.sashirestela.openai.domain.chat.ChatMessage
-import java.util.*
-import kotlin.test.Test
+import me.leon.ext.toFile
 import me.leon.misc.SDF_TIME
+import java.util.Date
+import kotlin.test.Test
 
 val TEST_USER_MESSAGE = ChatMessage.UserMessage.of("Hi")
 
 class OpenAiTest {
 
-    val server = "https://llm.indrin.cn"
-    val sk = "sk-9sN1wGBOUiwot0s277F709972eAa481dB64b8cEa39B47380"
+    val server = "https://api.7xnn.cn"
+    val sk = "sk-gKnLPEIn6WXLNIJUB69888B0A6A94d5094A39dB7C51bDdA8"
 
     @Test
     fun models() {
@@ -115,6 +116,35 @@ class OpenAiTest {
             .groupBy { it.ownedBy }
             .forEach { (k, v) ->
                 println("===$k===\n${v.joinToString(System.lineSeparator()) { it.id }}")
+            }
+    }
+
+    @Test
+    fun parse() {
+        val USER = System.getenv("userprofile")
+        "$USER/desktop/keys.txt".toFile().readLines()
+            .forEach {
+                val (api, key) = it.split("\t")
+                val aks = key.split(",", ";").toSet()
+                aks.map {
+                    it to quota(api, it)
+                }.forEach { (key, tr) ->
+                    val untilInfo =
+                        when {
+                            tr.third == 0L -> "无限"
+                            System.currentTimeMillis() > tr.third -> "已过期"
+                            else -> "过期时间：${SDF_TIME.format(Date(tr.third))}"
+                        }
+
+                    println("====>$api $key")
+                    println("使用量：${tr.first.format()} / ${tr.second.format()}\n有效期：$untilInfo")
+                    if (untilInfo != "已过期" && tr.second != 0.0) {
+                        models(api, key).groupBy { it.ownedBy }
+                            .forEach { (k, v) ->
+                                println("===$k===\n${v.joinToString(System.lineSeparator()) { it.id }}")
+                            }
+                    }
+                }
             }
     }
 
