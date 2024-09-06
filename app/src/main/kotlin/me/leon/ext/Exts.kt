@@ -29,3 +29,12 @@ fun <T> List<T>.sliceList(split: List<Int>): MutableList<List<T>> {
 }
 
 fun String.containsRegexIgnoreCase(keyword: String) = contains("(?i)$keyword".toRegex())
+
+fun isWindows() = System.getProperty("os.name").lowercase().startsWith("windows")
+
+fun hasJna() =
+    runCatching {
+            val clazz = Class.forName("com.sun.jna.Library")
+            true
+        }
+        .getOrElse { false }

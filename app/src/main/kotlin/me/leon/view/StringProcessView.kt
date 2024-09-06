@@ -19,6 +19,7 @@ import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
+import me.leon.ext.ocr.WechatOcr
 import me.leon.ext.voice.*
 import me.leon.misc.Translator
 import tornadofx.*
@@ -258,7 +259,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         } else {
                             selectThisTab()
                             runCatching {
-                                    taInput.text = BaiduOcr.ocrBase64(it.toByteArray().base64())
+                                    taInput.text =
+                                        if (isWindows() && hasJna()) {
+                                            WechatOcr.ocr(it.toByteArray())
+                                        } else {
+                                            BaiduOcr.ocrBase64(it.toByteArray().base64())
+                                        }
                                 }
                                 .onFailure { taInput.text = it.stackTraceToString() }
                         }
