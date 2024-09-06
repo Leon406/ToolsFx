@@ -50,7 +50,6 @@ class StringProcessConfigFragment : Fragment(FX.messages["stringProcess"]) {
                 radiobutton("Female") { isSelected = selectGender == "Female" }
                 radiobutton("Male") { isSelected = selectGender != "Female" }
                 selectedToggleProperty().addListener { _, _, new ->
-                    println(new.cast<RadioButton>().text)
                     selectGender = new.cast<RadioButton>().text
                     cbVoice.items =
                         TTSVoice.provides()
@@ -58,7 +57,7 @@ class StringProcessConfigFragment : Fragment(FX.messages["stringProcess"]) {
                                 it.Locale == selectedLocale.get() && it.Gender == selectGender
                             }
                             .toObservable()
-                    selectedVoice.set(cbVoice.items.first())
+                    selectedVoice.set(cbVoice.items.firstOrNull())
                 }
             }
         }
@@ -73,7 +72,7 @@ class StringProcessConfigFragment : Fragment(FX.messages["stringProcess"]) {
                         TTSVoice.provides()
                             .filter { it.Locale == this && it.Gender == selectGender }
                             .toObservable()
-                    selectedVoice.set(cbVoice.items.first())
+                    selectedVoice.set(cbVoice.items.firstOrNull())
                 }
             }
         }
