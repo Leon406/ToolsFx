@@ -73,9 +73,6 @@ dependencies {
         exclude(group = "junit")
     }
 
-    // add jna if you need windows ocr
-    compileOnly(libs.jna.platform)
-
     testImplementation(libs.kotlin.serialization)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.mockito)
