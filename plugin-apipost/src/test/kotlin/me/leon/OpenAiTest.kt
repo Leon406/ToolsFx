@@ -2,10 +2,10 @@ package me.leon
 
 import io.github.sashirestela.openai.SimpleOpenAI
 import io.github.sashirestela.openai.domain.chat.ChatMessage
-import me.leon.ext.toFile
-import me.leon.misc.SDF_TIME
 import java.util.Date
 import kotlin.test.Test
+import me.leon.ext.toFile
+import me.leon.misc.SDF_TIME
 
 val TEST_USER_MESSAGE = ChatMessage.UserMessage.of("Hi")
 
@@ -122,13 +122,11 @@ class OpenAiTest {
     @Test
     fun parse() {
         val USER = System.getenv("userprofile")
-        "$USER/desktop/keys.txt".toFile().readLines()
-            .forEach {
-                val (api, key) = it.split("\t")
-                val aks = key.split(",", ";").toSet()
-                aks.map {
-                    it to quota(api, it)
-                }.forEach { (key, tr) ->
+        "$USER/desktop/keys.txt".toFile().readLines().forEach {
+            val (api, key) = it.split("\t")
+            val aks = key.split(",", ";").toSet()
+            aks.map { it to quota(api, it) }
+                .forEach { (key, tr) ->
                     val untilInfo =
                         when {
                             tr.third == 0L -> "无限"
@@ -139,13 +137,16 @@ class OpenAiTest {
                     println("====>$api $key")
                     println("使用量：${tr.first.format()} / ${tr.second.format()}\n有效期：$untilInfo")
                     if (untilInfo != "已过期" && tr.second != 0.0) {
-                        models(api, key).groupBy { it.ownedBy }
+                        models(api, key)
+                            .groupBy { it.ownedBy }
                             .forEach { (k, v) ->
-                                println("===$k===\n${v.joinToString(System.lineSeparator()) { it.id }}")
+                                println(
+                                    "===$k===\n${v.joinToString(System.lineSeparator()) { it.id }}"
+                                )
                             }
                     }
                 }
-            }
+        }
     }
 
     private fun makeAI(): SimpleOpenAI {
