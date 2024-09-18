@@ -4,14 +4,14 @@ asmVer = "3.2.0"
 # https://www.bouncycastle.org/releasenotes.html
 bcVer = "1.78.1"
 commonCompressVer = "1.27.1"
-coroutineVer = "1.8.1"
+coroutineVer = "1.9.0"
 gsonVer = "2.11.0"
 javassistVer = "3.30.2-GA"
 javaxJsonVer = "1.1.4"
 # openjfx LTS version needs Subscription https://mvnrepository.com/artifact/org.openjfx/javafx-controls
 # jfx 20.x+ requires jdk 17+
 jfxVer = "22.0.2"
-jnaVer = "5.14.0"
+jnaVer = "5.15.0"
 kotlinSerVer = "1.7.2"
 kotlinVer = "2.0.20"
 mockitoCoreVer = "5.13.0"
