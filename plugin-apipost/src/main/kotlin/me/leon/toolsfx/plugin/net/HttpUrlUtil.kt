@@ -12,6 +12,7 @@ import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
 import kotlin.system.measureTimeMillis
+import me.leon.encode.base.base64
 import tornadofx.*
 
 object HttpUrlUtil {
@@ -20,10 +21,12 @@ object HttpUrlUtil {
         clazz.getDeclaredField("delegate").apply { isAccessible = true }
     }
 
-    val APPLICATION_URL_ENCODE = "application/x-www-form-urlencoded"
+    const val APPLICATION_URL_ENCODE = "application/x-www-form-urlencoded"
+    const val HEADER_PROXY_AUTH = "Proxy-Authorization"
+    const val PROPERTY_AUTH_TUNNELING = "jdk.http.auth.tunneling.disabledSchemes"
     private val DEFAULT_PRE_ACTION: (Request) -> Unit = {}
     private val DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
-    private val isDebug = false
+    var isDebug = false
     var timeOut = 10_000
     private var proxy: Proxy = Proxy.NO_PROXY
     var followRedirect: Boolean = false
@@ -58,17 +61,30 @@ object HttpUrlUtil {
 
     val globalHeaders: MutableMap<String, Any> = mutableMapOf()
 
-    fun setupProxy(type: Proxy.Type, host: String, port: Int) {
+    fun setupProxy(
+        type: Proxy.Type,
+        host: String,
+        port: Int,
+        user: String = "",
+        pass: String = ""
+    ) {
         proxy =
             if (type == Proxy.Type.DIRECT) {
+                removeAuth()
                 Proxy.NO_PROXY
             } else {
                 Proxy(type, InetSocketAddress(host, port))
             }
+        if (user.isNotEmpty() && pass.isNotEmpty()) {
+            auth(user, pass)
+        }
     }
 
     fun setupProxy(proxy: Proxy = Proxy.NO_PROXY) {
         HttpUrlUtil.proxy = proxy
+        if (proxy == Proxy.NO_PROXY) {
+            removeAuth()
+        }
     }
 
     fun addPreHandle(action: (Request) -> Unit) {
@@ -84,6 +100,28 @@ object HttpUrlUtil {
         HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
         sc.init(null, if (enable) null else arrayOf(ALL_TRUST_MANAGER), null)
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
+    }
+
+    private fun auth(user: String, pass: String) {
+        // http请求 设置 "Proxy-Authorization" 即可
+        globalHeaders[HEADER_PROXY_AUTH] = basic(user, pass)
+        // https key code
+        System.setProperty(PROPERTY_AUTH_TUNNELING, "")
+        Authenticator.setDefault(
+            object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(user, pass.toCharArray())
+                }
+            }
+        )
+    }
+
+    private fun removeAuth() {
+        // http请求 设置 "Proxy-Authorization" 即可
+        globalHeaders.remove(HEADER_PROXY_AUTH)
+        // https key code
+        System.clearProperty(PROPERTY_AUTH_TUNNELING)
+        Authenticator.setDefault(null)
     }
 
     fun get(
@@ -425,3 +463,5 @@ object HttpUrlUtil {
             .build()
             .toString()
 }
+
+fun basic(user: String, pass: String) = "Basic " + "$user:$pass".base64()
