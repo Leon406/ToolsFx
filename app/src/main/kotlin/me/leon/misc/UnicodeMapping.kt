@@ -1,6 +1,8 @@
 package me.leon.misc
 
 /**
+ * data from https://github.com/seadfeng/font-generator/blob/main/src/fonts.ts
+ *
  * @author Leon
  * @since 2024-09-18 17 to18
  * @email deadogone@gmail.com
@@ -76,6 +78,7 @@ val FONTS =
         "canadianAboriginalLetterlike2" to
             "\"\\ !#$%&'()*+,-./0123456789:;<=>?@ᗩᗷᑕᗞᕮᒋᕋᖺᑊᒎᕙᘂᘻᘯᗜᑭᘝᖇᔕᘕᕞᕓᘺ᙮ᒉᓯ[]^_`ᗩᗷᑕᗞᕮᒋᕋᖺᑊᒎᕙᘂᘻᘯᗜᑭᘝᖇᔕᘕᕞᕓᘺ᙮ᒉᓯ{|}~",
     )
+
 @Suppress("All")
 // áäÄéíóúÁÉÍÓÚàâæçèêëîïôœùûüÿÀÂÆÇÈÊËÎÏÔŒÙÛÜŸğĞöÖşŞıİ
 val FONTS_ADDITION =
@@ -993,20 +996,5 @@ val mapping =
         }
         .toMap()
 
-fun main() {
-    val font = mapping["sansSerif"]!!
-    val data = FONTS["normal"]
-    println(data)
-    println(data?.length)
-    FONTS.keys.forEach { k ->
-        val dd = data!!.map { mapping[k]!![it.toString()] ?: it }.joinToString("")
-
-        if (dd != FONTS[k]!!) {
-            println(dd)
-            println(dd.length)
-            println(FONTS[k])
-            println(FONTS[k]?.length)
-            println(k)
-        }
-    }
-}
+fun String.unicodeFont(fontName: String) =
+    map { mapping[fontName]!![it.toString()] ?: it }.joinToString("")

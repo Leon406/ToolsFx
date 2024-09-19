@@ -58,6 +58,7 @@ val MISC_CONFIG =
         MiscServiceType.VARIABLE_NAMING to
             mapOf(HINT to "variable naming convert, separate by line"),
         MiscServiceType.WORD_SPLITER to mapOf(HINT to "split no space letters, eg. whoseyourdaddy"),
+        MiscServiceType.UNICODE_FONT to mapOf(HINT to "Unicode Font,separate by line"),
     )
 
 val MISC_OPTIONS_CONFIG =
@@ -92,6 +93,7 @@ val MISC_OPTIONS_CONFIG =
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.PUNCTUATION to mapOf(OPTIONS to arrayOf("ZH", "EN")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
+        MiscServiceType.UNICODE_FONT to mapOf(OPTIONS to FONTS.keys.drop(1).toTypedArray()),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
         MiscServiceType.LINK_CHECK to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),

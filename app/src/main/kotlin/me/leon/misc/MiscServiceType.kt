@@ -232,6 +232,14 @@ enum class MiscServiceType(val type: String) : MiscService {
             }
         }
     },
+    UNICODE_FONT("unicode font") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return raw.lineAction2String {
+                runCatching { it.unicodeFont(type) }.getOrElse { it.stacktrace() }
+            }
+        }
+    },
     ;
 
     override fun hint(): String {
