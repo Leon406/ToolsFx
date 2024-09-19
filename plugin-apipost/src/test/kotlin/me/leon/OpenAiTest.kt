@@ -11,8 +11,8 @@ val TEST_USER_MESSAGE = ChatMessage.UserMessage.of("Hi")
 
 class OpenAiTest {
 
-    val server = "https://api.7xnn.cn"
-    val sk = "sk-gKnLPEIn6WXLNIJUB69888B0A6A94d5094A39dB7C51bDdA8"
+    val server = "https://llm.indrin.cn"
+    val sk = "sk-9sN1wGBOUiwot0s277F709972eAa481dB64b8cEa39B47380"
 
     @Test
     fun models() {
@@ -117,6 +117,11 @@ class OpenAiTest {
             .forEach { (k, v) ->
                 println("===$k===\n${v.joinToString(System.lineSeparator()) { it.id }}")
             }
+    }
+
+    @Test
+    fun gp() {
+        group(server, sk).forEach { println(it) }
     }
 
     @Test

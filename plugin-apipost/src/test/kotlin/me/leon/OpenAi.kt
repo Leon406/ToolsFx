@@ -43,6 +43,8 @@ fun SimpleOpenAI.supportModels() = models().list.get()
 const val PATH_SUBSCRIPTION = "/dashboard/billing/subscription"
 const val PATH_USAGE = "/dashboard/billing/usage"
 const val PATH_MODELS = "/v1/models"
+const val PATH_GROUP = "/api/user/group"
+const val PATH_MODEL_PRICE = "/api/pricing?group=default"
 
 fun quota(baseUrl: String, sk: String): Triple<Double, Double, Long> {
     var total = 0.0
@@ -83,6 +85,21 @@ fun models(baseUrl: String, sk: String): List<ModelInfo.Model> {
     return emptyList()
 }
 
+fun group(baseUrl: String, sk: String): List<Group.GP> {
+    runCatching {
+            return HttpUrlUtil.get(
+                    baseUrl + PATH_GROUP,
+                    headers = mutableMapOf("Authorization" to "Bearer $sk")
+                )
+                .data
+                .also { println(it) }
+                .fromJson(Group::class.java)
+                .data
+        }
+        .onFailure { println(it.stacktrace()) }
+    return emptyList()
+}
+
 data class Subscription(
     @SerializedName("access_until") val accessUntil: Long,
     @SerializedName("hard_limit_usd") val hardLimitUsd: Double,
@@ -117,4 +134,8 @@ data class ModelInfo(val data: List<Model>, val success: Boolean) {
         val parent: Any,
         val root: String
     )
+}
+
+data class Group(val message: String, val code: Int, val data: List<GP>) {
+    data class GP(@SerializedName("group_name") val groupName: String, val ratio: Double)
 }
