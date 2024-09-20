@@ -20,8 +20,8 @@ import tornadofx.*
 private const val MAX_SHOW_LENGTH = 1_000_000
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.7.2"
-    override val date: String = "2023-07-20"
+    override val version = "v1.8.0"
+    override val date: String = "2024-09-20"
     override val author = "Leon406"
     override val description = "ApiPost"
 

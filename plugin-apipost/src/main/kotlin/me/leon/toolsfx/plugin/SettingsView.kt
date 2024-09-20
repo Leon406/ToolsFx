@@ -3,8 +3,9 @@ package me.leon.toolsfx.plugin
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.control.TextInputControl
+import javafx.scene.layout.Priority
 import me.leon.ext.fx.fileDraggedHandler
 import me.leon.toolsfx.plugin.ApiConfig.saveConfig
 import me.leon.toolsfx.plugin.net.TrustManager
@@ -19,9 +20,11 @@ class SettingsView : View("Setting") {
     private val ignoreCert = SimpleBooleanProperty(ApiConfig.isIgnoreCert)
     private val p12 = SimpleBooleanProperty(false)
 
-    private lateinit var taHeaders: TextArea
+    private lateinit var taHeaders: TextInputControl
     private lateinit var tfIp: TextField
     private lateinit var tfPort: TextField
+    private lateinit var tfUserName: TextField
+    private lateinit var tfPassword: TextField
     private lateinit var tfTime: TextField
     private lateinit var tfCerPath: TextField
     private lateinit var tfCerPass: TextField
@@ -78,8 +81,28 @@ class SettingsView : View("Setting") {
                 }
             checkbox("enable", enableProxy)
         }
+        hbox {
+            spacing = 8.0
+            paddingLeft = 24.0
+            alignment = Pos.CENTER
+            tfUserName =
+                textfield(ApiConfig.proxyUser) {
+                    enableWhen(enableProxy)
+                    promptText = "name, optional"
+                }
+            tfPassword =
+                textfield(ApiConfig.proxyPassword) {
+                    enableWhen(enableProxy)
+                    promptText = "password,optional"
+                }
+        }
         label("Global Headers")
-        taHeaders = textarea(ApiConfig.globalHeaders) { promptText = "global header" }
+        taHeaders =
+            textarea(ApiConfig.globalHeaders) {
+                vgrow = Priority.ALWAYS
+                isWrapText = true
+                promptText = "global header"
+            }
 
         button("apply") {
             action {
@@ -96,6 +119,8 @@ class SettingsView : View("Setting") {
                     selectedProxy.get(),
                     tfIp.text,
                     tfPort.text,
+                    tfUserName.text,
+                    tfPassword.text,
                     tfTime.text.toInt(),
                     followRedirect.get(),
                     ignoreCert.get()
