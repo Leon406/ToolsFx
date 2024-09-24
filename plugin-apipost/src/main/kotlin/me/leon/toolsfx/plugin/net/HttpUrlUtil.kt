@@ -333,17 +333,16 @@ object HttpUrlUtil {
             DataOutputStream(conn.outputStream).use { out ->
                 val sbParams = makeMultiPartParamBody(req, boundary)
                 out.write(sbParams.toString().also { println(it) }.toByteArray())
-                for (file in files) {
+
+                for ((index, file) in files.withIndex()) {
                     val sb = makeMultipartFileBody(boundary, name, file)
                     out.write(sb.toString().also { println(it) }.toByteArray())
                     file.inputStream().use {
                         out.write(it.readBytes().also { println(it.decodeToString()) })
                     }
                     out.write(LINE_END.toByteArray())
-                    out.write(
-                        (PREFIX + boundary + PREFIX + LINE_END).also { println(it) }.toByteArray()
-                    )
                 }
+                out.write((PREFIX + boundary + PREFIX + LINE_END).toByteArray())
                 out.flush()
             }
 

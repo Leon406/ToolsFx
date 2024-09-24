@@ -20,8 +20,8 @@ import tornadofx.*
 private const val MAX_SHOW_LENGTH = 1_000_000
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.8.0"
-    override val date: String = "2024-09-20"
+    override val version = "v1.8.1"
+    override val date: String = "2024-09-24"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -78,10 +78,8 @@ class ApiPostView : PluginFragment("ApiPost") {
         get() = requestParams.firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
 
     private val eventHandler = fileDraggedHandler {
-        with(it.first()) {
-            println(absolutePath)
-            table.selectionModel.selectedItem.valueProperty.value = absolutePath
-        }
+        table.selectionModel.selectedItem.valueProperty.value =
+            it.joinToString(";") { it.absolutePath }
     }
     private val curlFileHandler = fileDraggedHandler {
         with(it.first()) {
@@ -299,7 +297,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                                 uploadParams?.run {
                                     controller.uploadFile(
                                         tfUrl.text,
-                                        listOf(this.value.toFile()),
+                                        this.value.split(",", ";").map { it.toFile() },
                                         this.key,
                                         reqTableParams as MutableMap<String, Any>,
                                         reqHeaders
