@@ -1,7 +1,5 @@
 package me.leon.toolsfx.plugin.ext
 
-import me.leon.ext.toFile
-
 /**
  * @author Leon
  * @since 2022-12-23 16:42
@@ -10,30 +8,30 @@ import me.leon.ext.toFile
 enum class ImageOperation : SimpleService {
     GRAY {
         override fun process(file: String, params: Map<String, String>) =
-            file.toFile().toBufferImage().gray()
+            file.autoConvertToBufferImage()!!.gray()
     },
     BINARY {
         override fun process(file: String, params: Map<String, String>) =
-            with(file.toFile().toBufferImage()) { binary(ostu()) }
+            with(file.autoConvertToBufferImage()!!) { binary(ostu()) }
     },
     INVERSE {
         override fun process(file: String, params: Map<String, String>) =
-            file.toFile().toBufferImage().inverse()
+            file.autoConvertToBufferImage()!!.inverse()
     },
     MIRROR_HEIGHT {
         override fun process(file: String, params: Map<String, String>) =
-            file.toFile().toBufferImage().mirrorHeight()
+            file.autoConvertToBufferImage()!!.mirrorHeight()
     },
     MIRROR_WIDTH {
         override fun process(file: String, params: Map<String, String>) =
-            file.toFile().toBufferImage().mirrorWidth()
+            file.autoConvertToBufferImage()!!.mirrorWidth()
     },
     MOSAIC {
         override fun process(file: String, params: Map<String, String>) =
-            file.toFile().toBufferImage().mosaic()
+            file.autoConvertToBufferImage()!!.mosaic()
     },
     OIL_PAINT {
         override fun process(file: String, params: Map<String, String>) =
-            file.toFile().toBufferImage().oilPaint()
+            file.autoConvertToBufferImage()!!.oilPaint()
     }
 }

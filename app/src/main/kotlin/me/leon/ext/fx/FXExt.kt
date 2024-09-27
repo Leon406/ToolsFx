@@ -13,6 +13,7 @@ import javafx.scene.input.*
 import javafx.stage.FileChooser
 import javafx.stage.Window
 import javax.imageio.ImageIO
+import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode
 
 fun String.copy() =
@@ -21,6 +22,8 @@ fun String.copy() =
 fun clipboardText(): String = Clipboard.getSystemClipboard().string.orEmpty()
 
 fun clipboardImage(): Image? = Clipboard.getSystemClipboard().image
+
+fun Image.base64String() = toBufferImage().toByteArray().base64()
 
 fun Image.copy() =
     Clipboard.getSystemClipboard().setContent(ClipboardContent().apply { putImage(this@copy) })

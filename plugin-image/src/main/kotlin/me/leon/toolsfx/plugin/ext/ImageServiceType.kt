@@ -39,11 +39,9 @@ enum class ImageServiceType(val type: String) : ImageService {
     },
     IMAGE_TO_01("image to 01") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
-            raw.toFile()
-                .toBufferImage()
-                .toBinaryString(
-                    isBlackOne = requireNotNull(params[C1]) == ColorMode.BLACK1.toString()
-                )
+            raw.autoConvertToBufferImage()!!.toBinaryString(
+                isBlackOne = requireNotNull(params[C1]) == ColorMode.BLACK1.toString()
+            )
     },
     RGB_IMAGE("rgb to image") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =

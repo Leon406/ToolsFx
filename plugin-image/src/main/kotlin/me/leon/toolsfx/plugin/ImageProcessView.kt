@@ -74,7 +74,13 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             }
             button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
-                action { taInput.text = clipboardText() }
+                action {
+                    clipboardImage()?.let {
+                        showInputImage.set(true)
+                        ivInput.image = it
+                        taInput.text = it.base64String()
+                    } ?: run { taInput.text = clipboardText() }
+                }
             }
         }
 
