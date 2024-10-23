@@ -93,6 +93,20 @@ class ClassicalView : Fragment(messages["classical"]) {
 
             contextmenu {
                 item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
+                item(messages["caseReverse"]) {
+                    action {
+                        taInput.text =
+                            inputText
+                                .map {
+                                    if (it.isUpperCase()) {
+                                        it.lowercaseChar()
+                                    } else {
+                                        it.uppercaseChar()
+                                    }
+                                }
+                                .joinToString("")
+                    }
+                }
             }
         }
         hbox {
@@ -227,7 +241,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 item("binary2hex") {
                     action { taOutput.text = taOutput.text.binary2ByteArray().toHex() }
                 }
-                item("reverse") {
+                item(messages["reverse"]) {
                     action {
                         taOutput.text =
                             taOutput.text.split("\r\n|\n".toRegex()).joinToString("\r\n") {
