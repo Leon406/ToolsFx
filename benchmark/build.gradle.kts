@@ -19,7 +19,7 @@ dependencies {
     implementation("androidx.collection:collection-ktx:1.4.5")
     implementation("org.openjdk.jol:jol-core:0.17")
     implementation("org.openjdk.jmh:jmh-core:1.37")
-    implementation("cn.hutool:hutool-all:5.8.32")
+    implementation("cn.hutool:hutool-all:5.8.33")
     kapt("org.openjdk.jmh:jmh-generator-annprocess:1.37")
     implementation(project(":app"))
 
