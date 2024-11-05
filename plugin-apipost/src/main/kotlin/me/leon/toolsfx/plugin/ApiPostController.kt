@@ -19,7 +19,6 @@ class ApiPostController : Controller() {
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
-        println("req: $url")
         return HttpUrlUtil.request(
             url.addHttp().replacePlaceHolders(),
             method,

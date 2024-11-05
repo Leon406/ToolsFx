@@ -9,6 +9,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.text.Text
+import kotlinx.coroutines.*
 import me.leon.*
 import me.leon.ext.*
 import me.leon.ext.fx.*
@@ -20,8 +21,8 @@ import tornadofx.*
 private const val MAX_SHOW_LENGTH = 1_000_000
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.8.1"
-    override val date: String = "2024-09-24"
+    override val version = "v1.9.0"
+    override val date: String = "2024-11-05"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -38,6 +39,8 @@ class ApiPostView : PluginFragment("ApiPost") {
     private lateinit var taRspContent: TextArea
     private lateinit var tfJsonPath: TextField
     private lateinit var table: TableView<HttpParams>
+    private var tfRepeatNum: TextField by singleAssign()
+    private var tfConcurrent: TextField by singleAssign()
     private val prettyProperty = SimpleBooleanProperty(true)
     private val showJsonPath = SimpleBooleanProperty(false)
     private val methods =
@@ -72,7 +75,7 @@ class ApiPostView : PluginFragment("ApiPost") {
             requestParams
                 .filter { it.isEnable && it.key.isNotEmpty() && !it.isFile }
                 .associate { it.key to it.value }
-                .toMutableMap()
+                .toMutableMap() as MutableMap<String, Any>
 
     private val uploadParams
         get() = requestParams.firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
@@ -129,7 +132,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                     Request(
                             tfUrl.text,
                             selectedMethod.get(),
-                            reqTableParams as MutableMap<String, Any>,
+                            reqTableParams,
                             reqHeaders,
                             taReqContent.text
                         )
@@ -142,6 +145,17 @@ class ApiPostView : PluginFragment("ApiPost") {
                         .toCurl()
                         .copy()
                 }
+            }
+
+            tfRepeatNum = textfield {
+                promptText = "number"
+                prefWidth = DEFAULT_SPACING_10X
+                textFormatter = intTextFormatter
+            }
+            tfConcurrent = textfield {
+                promptText = "concurrent"
+                prefWidth = DEFAULT_SPACING_10X
+                textFormatter = intTextFormatter
             }
         }
 
@@ -286,9 +300,19 @@ class ApiPostView : PluginFragment("ApiPost") {
             return
         }
         running.value = true
+        val count = runCatching { tfRepeatNum.text.toInt() }.getOrDefault(1)
+        val concurrent = runCatching { tfConcurrent.text.toInt() }.getOrDefault(1)
+        if (selectedBodyType.get() == BodyType.FORM_DATA.type) {
+            reqHeaders["Content-Type"] = HttpUrlUtil.APPLICATION_URL_ENCODE
+        }
+
+        val dispatcher = Dispatchers.IO.limitedParallelism(concurrent)
+
         runAsync {
-            runCatching {
-                    if (selectedMethod.get() == "POST") {
+            val start = System.currentTimeMillis()
+            var success = 0
+            fun req() =
+                if (selectedMethod.get() == "POST") {
                         val bodyType = bodyTypeMap[selectedBodyType.get()]
                         requireNotNull(bodyType)
                         when (bodyType) {
@@ -299,21 +323,14 @@ class ApiPostView : PluginFragment("ApiPost") {
                                         tfUrl.text,
                                         this.value.split(",", ";").map { it.toFile() },
                                         this.key,
-                                        reqTableParams as MutableMap<String, Any>,
+                                        reqTableParams,
                                         reqHeaders
                                     )
                                 }
                                     ?: controller.post(
                                         tfUrl.text,
-                                        reqTableParams as MutableMap<String, Any>,
-                                        reqHeaders.apply {
-                                            if (selectedBodyType.get() == BodyType.FORM_DATA.type) {
-                                                put(
-                                                    "Content-Type",
-                                                    HttpUrlUtil.APPLICATION_URL_ENCODE
-                                                )
-                                            }
-                                        },
+                                        reqTableParams,
+                                        reqHeaders,
                                         bodyType == BodyType.JSON
                                     )
                             BodyType.RAW ->
@@ -323,12 +340,30 @@ class ApiPostView : PluginFragment("ApiPost") {
                         controller.request(
                             tfUrl.text,
                             selectedMethod.get(),
-                            reqTableParams as MutableMap<String, Any>,
+                            reqTableParams,
                             reqHeaders
                         )
                     }
+                    .also {
+                        if (it.code == 200) {
+                            success++
+                        }
+                    }
+            runCatching {
+                    runBlocking { (1..count).map { async(dispatcher) { req() } }.awaitAll().last() }
                 }
-                .onSuccess { handleSuccess(it) }
+                .onSuccess {
+                    handleSuccess(it)
+                    if (count > 1) {
+                        ui {
+                            primaryStage.showToast(
+                                "  time  costs : ${System.currentTimeMillis() - start} ms" +
+                                        "\nsuccess/total: $success/$count",
+                                3000
+                            )
+                        }
+                    }
+                }
                 .onFailure {
                     textRspStatus.text = it.message
                     taRspHeaders.text = ""

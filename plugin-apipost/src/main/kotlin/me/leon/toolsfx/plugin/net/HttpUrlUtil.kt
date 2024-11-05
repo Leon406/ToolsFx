@@ -332,14 +332,12 @@ object HttpUrlUtil {
             httpConfig(conn, "octet-stream")
             DataOutputStream(conn.outputStream).use { out ->
                 val sbParams = makeMultiPartParamBody(req, boundary)
-                out.write(sbParams.toString().also { println(it) }.toByteArray())
+                out.write(sbParams.toString().toByteArray())
 
-                for ((index, file) in files.withIndex()) {
+                for (file in files) {
                     val sb = makeMultipartFileBody(boundary, name, file)
-                    out.write(sb.toString().also { println(it) }.toByteArray())
-                    file.inputStream().use {
-                        out.write(it.readBytes().also { println(it.decodeToString()) })
-                    }
+                    out.write(sb.toString().toByteArray())
+                    file.inputStream().use { out.write(it.readBytes()) }
                     out.write(LINE_END.toByteArray())
                 }
                 out.write((PREFIX + boundary + PREFIX + LINE_END).toByteArray())
