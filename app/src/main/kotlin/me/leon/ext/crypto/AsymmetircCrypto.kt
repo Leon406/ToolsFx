@@ -55,8 +55,8 @@ val RSA_PADDINGS =
 val OAEP_PARAM_SPEC_SHA1 =
     OAEPParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, PSource.PSpecified.DEFAULT)
 
-fun String.removePemInfo() =
-    replace("---+(?:END|BEGIN) (?:RSA |EC )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
+fun String.removePemArmor() =
+    replace("---+(?:END|BEGIN) (?:RSA |EC |DSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
 
 fun getPropPublicKey(key: String): ByteArray =
     if (key.contains("-----BEGIN CERTIFICATE-----")) {
@@ -66,7 +66,7 @@ fun getPropPublicKey(key: String): ByteArray =
             .publicKey
             .encoded
     } else {
-        key.removePemInfo().keyAutoDecode()
+        key.removePemArmor().keyAutoDecode()
     }
 
 fun File.parsePublicKeyFromCerFile(): String {
@@ -102,7 +102,7 @@ fun String.toPublicKey(alg: String): PublicKey? =
 
 fun String.toPrivateKey(alg: String): PrivateKey? =
     try {
-        val keySpec = PKCS8EncodedKeySpec(removePemInfo().keyAutoDecode())
+        val keySpec = PKCS8EncodedKeySpec(removePemArmor().keyAutoDecode())
         KeyFactory.getInstance(alg.properKeyPairAlg()).generatePrivate(keySpec)
     } catch (ignore: Exception) {
         if (alg.contains("RSA")) {
@@ -164,7 +164,7 @@ private fun String.isOAEP() = endsWith("OAEP")
 
 fun ByteArray.pubEncrypt(key: String, alg: String, reserved: Int = 11) =
     if (alg == "SM2") {
-        sm2(true, key.removePemInfo().keyAutoDecode().toECPublicKeyParams())
+        sm2(true, key.removePemArmor().keyAutoDecode().toECPublicKeyParams())
     } else {
         pubEncrypt(key.toPublicKey(alg), alg, reserved)
     }
@@ -173,7 +173,7 @@ fun String.keyAutoDecode(): ByteArray =
     if (HEX_REGEX.matches(this)) {
         hex2ByteArray()
     } else {
-        removePemInfo().base64Decode()
+        removePemArmor().base64Decode()
     }
 
 fun ByteArray.asymmetricDecrypt(key: Key?, alg: String): ByteArray =
@@ -355,7 +355,7 @@ fun pkcs1ToPkcs8(pkcs1: String) =
         }
 
 fun String.privateKeyDerivedPublicKey(alg: String = "RSA"): String =
-    PKCS8EncodedKeySpec(removePemInfo().keyAutoDecode()).run {
+    PKCS8EncodedKeySpec(removePemArmor().keyAutoDecode()).run {
         with(
             KeyFactory.getInstance(alg.properKeyPairAlg()).generatePrivate(this) as RSAPrivateCrtKey
         ) {
