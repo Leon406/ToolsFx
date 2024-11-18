@@ -21,8 +21,8 @@ import tornadofx.*
 private const val MAX_SHOW_LENGTH = 1_000_000
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.9.0"
-    override val date: String = "2024-11-05"
+    override val version = "v1.9.1"
+    override val date: String = "2024-11-18"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -41,6 +41,7 @@ class ApiPostView : PluginFragment("ApiPost") {
     private lateinit var table: TableView<HttpParams>
     private var tfRepeatNum: TextField by singleAssign()
     private var tfConcurrent: TextField by singleAssign()
+    private var tfDelay: TextField by singleAssign()
     private val prettyProperty = SimpleBooleanProperty(true)
     private val showJsonPath = SimpleBooleanProperty(false)
     private val methods =
@@ -154,6 +155,11 @@ class ApiPostView : PluginFragment("ApiPost") {
             }
             tfConcurrent = textfield {
                 promptText = "concurrent"
+                prefWidth = DEFAULT_SPACING_10X
+                textFormatter = intTextFormatter
+            }
+            tfDelay = textfield {
+                promptText = "delay"
                 prefWidth = DEFAULT_SPACING_10X
                 textFormatter = intTextFormatter
             }
@@ -302,6 +308,7 @@ class ApiPostView : PluginFragment("ApiPost") {
         running.value = true
         val count = runCatching { tfRepeatNum.text.toInt() }.getOrDefault(1)
         val concurrent = runCatching { tfConcurrent.text.toInt() }.getOrDefault(1)
+        val delayMillis = runCatching { tfDelay.text.toLong() }.getOrDefault(0L)
         if (selectedBodyType.get() == BodyType.FORM_DATA.type) {
             reqHeaders["Content-Type"] = HttpUrlUtil.APPLICATION_URL_ENCODE
         }
@@ -311,6 +318,7 @@ class ApiPostView : PluginFragment("ApiPost") {
         runAsync {
             val start = System.currentTimeMillis()
             var success = 0
+            val countMap: MutableMap<String, Int> = mutableMapOf()
             fun req() =
                 if (selectedMethod.get() == "POST") {
                         val bodyType = bodyTypeMap[selectedBodyType.get()]
@@ -347,10 +355,25 @@ class ApiPostView : PluginFragment("ApiPost") {
                     .also {
                         if (it.code == 200) {
                             success++
+                            countMap[it.data] = countMap[it.data]?.let { it + 1 } ?: 1
                         }
                     }
             runCatching {
-                    runBlocking { (1..count).map { async(dispatcher) { req() } }.awaitAll().last() }
+                    runBlocking {
+                        (1..count)
+                            .map {
+                                async(dispatcher) {
+                                    req().also {
+                                        if (delayMillis > 0) {
+                                            // delay 无法阻塞其他
+                                            Thread.sleep(delayMillis)
+                                        }
+                                    }
+                                }
+                            }
+                            .awaitAll()
+                            .last()
+                    }
                 }
                 .onSuccess {
                     handleSuccess(it)
@@ -358,7 +381,11 @@ class ApiPostView : PluginFragment("ApiPost") {
                         ui {
                             primaryStage.showToast(
                                 "  time  costs : ${System.currentTimeMillis() - start} ms" +
-                                        "\nsuccess/total: $success/$count",
+                                    "\nsuccess/total: $success/$count" +
+                                    "\n    detail   :\n${
+                                            countMap.map { "\t\tresp len: ${it.key.length}  num: ${it.value}" }
+                                                .joinToString(System.lineSeparator())
+                                        }",
                                 3000
                             )
                         }
