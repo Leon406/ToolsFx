@@ -164,7 +164,7 @@ private fun String.isOAEP() = endsWith("OAEP")
 
 fun ByteArray.pubEncrypt(key: String, alg: String, reserved: Int = 11) =
     if (alg == "SM2") {
-        sm2(true, key.removePemArmor().keyAutoDecode().toECPublicKeyParams())
+        sm2(true, getPropPublicKey(key).toECPublicKeyParams())
     } else {
         pubEncrypt(key.toPublicKey(alg), alg, reserved)
     }
