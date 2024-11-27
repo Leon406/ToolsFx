@@ -21,7 +21,7 @@ sqliteVer = "3.47.1.0"
 tornadofxVer = "1.7.20"
 zstdVer = "1.5.6-8"
 zxingVer = "3.5.3"
-jsoupVer = "1.18.1"
+jsoupVer = "1.18.2"
 
 # plugin
 # https://detekt.dev/changelog/
