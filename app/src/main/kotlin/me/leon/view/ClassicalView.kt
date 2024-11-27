@@ -58,7 +58,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 P1 to tfParam1.text,
                 P2 to tfParam2.text,
                 C1 to cb1.isSelected.toString(),
-                C2 to cb2.isSelected.toString()
+                C2 to cb2.isSelected.toString(),
             )
 
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
@@ -265,12 +265,7 @@ class ClassicalView : Fragment(messages["classical"]) {
         startTime = System.currentTimeMillis()
         runAsync {
             if (isEncrypt) {
-                controller.encrypt(
-                    inputText,
-                    encodeType,
-                    cryptoParams,
-                    singleLine.get(),
-                )
+                controller.encrypt(inputText, encodeType, cryptoParams, singleLine.get())
             } else {
                 controller.decrypt(inputText, encodeType, cryptoParams, singleLine.get())
             }
@@ -295,7 +290,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 encodeType,
                 tfCrackKey.text.takeUnless { it.isNullOrEmpty() } ?: "flag",
                 singleLine.get(),
-                cryptoParams
+                cryptoParams,
             )
         } ui
             {

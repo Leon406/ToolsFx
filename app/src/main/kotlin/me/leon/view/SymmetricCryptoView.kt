@@ -69,7 +69,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             "TBCPadding",
             "X923Padding",
             "ISO7816-4Padding",
-            "ISO10126-2Padding"
+            "ISO10126-2Padding",
         )
     private val modes = mutableListOf("CBC", "ECB", "CFB", "OFB", "CTR", "GCM", "CCM", "EAX", "OCB")
 
@@ -268,7 +268,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                                     it,
                                     keyIvInputView.ivByteArray,
                                     cipher,
-                                    keyIvInputView.associatedData
+                                    keyIvInputView.associatedData,
                                 )
                             }
                         } else {
@@ -281,7 +281,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                                 singleLine.get(),
                                 inputEncode,
                                 outputEncode,
-                                keyIvInputView.associatedData
+                                keyIvInputView.associatedData,
                             )
                         }
                     } else if (fileProperty.get()) {
@@ -291,7 +291,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                                 it,
                                 keyIvInputView.ivByteArray,
                                 cipher,
-                                keyIvInputView.associatedData
+                                keyIvInputView.associatedData,
                             )
                         }
                     } else {
@@ -304,7 +304,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
                             singleLine.get(),
                             inputEncode,
                             outputEncode,
-                            keyIvInputView.associatedData
+                            keyIvInputView.associatedData,
                         )
                     }
                 }

@@ -40,7 +40,7 @@ class EncodeController : Controller() {
         type: EncodeType = EncodeType.BASE64,
         dic: String = "",
         charset: String = UTF8,
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
     ): String =
         if (singleLine) {
             raw.lineAction2String {
@@ -54,7 +54,7 @@ class EncodeController : Controller() {
         raw: ByteArray,
         type: EncodeType = EncodeType.BASE64,
         dic: String = "",
-        charset: String = UTF8
+        charset: String = UTF8,
     ): String =
         catch({ "编码错误: $it" }) {
             if (DEBUG) {
@@ -72,7 +72,7 @@ class EncodeController : Controller() {
         type: EncodeType = EncodeType.BASE64,
         dic: String = "",
         charset: String = UTF8,
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
     ): String =
         if (singleLine) {
             encoded.lineAction2String {
@@ -88,7 +88,7 @@ class EncodeController : Controller() {
         dic: String = "",
         charset: String = UTF8,
         singleLine: Boolean = false,
-        isFile: Boolean = false
+        isFile: Boolean = false,
     ): String =
         if (isFile && encoded.length < 1024) {
             val file = encoded.toFile()
@@ -96,7 +96,7 @@ class EncodeController : Controller() {
             val out =
                 File(
                     file.parentFile,
-                    name.takeIf { file.extension.isNotEmpty() && file.name != name } ?: "$name.dec"
+                    name.takeIf { file.extension.isNotEmpty() && file.name != name } ?: "$name.dec",
                 )
             out.outputStream().use {
                 it.write(decode(encoded.toFile().readText(), type, dic, charset))
@@ -110,7 +110,7 @@ class EncodeController : Controller() {
         encoded: String,
         type: EncodeType = EncodeType.BASE64,
         dic: String = "",
-        charset: String = UTF8
+        charset: String = UTF8,
     ): ByteArray =
         catch({ "解码错误: ${it.lines().first()}".toByteArray() }) {
             if (DEBUG) {

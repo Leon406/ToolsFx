@@ -42,7 +42,7 @@ constructor(
     var hashLength: Int = DEFAULT_HASH_LENGTH,
     var parallelism: Int = DEFAULT_PARALLELISM,
     var memory: Int = DEFAULT_MEMORY,
-    var iterations: Int = DEFAULT_ITERATIONS
+    var iterations: Int = DEFAULT_ITERATIONS,
 ) : PasswordEncoder {
     private val saltGenerator: BytesKeyGenerator = secureRandom(saltLength)
 

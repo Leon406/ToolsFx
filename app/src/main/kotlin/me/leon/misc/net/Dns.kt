@@ -16,7 +16,7 @@ fun dnsSolve(urls: List<String>): String =
         .joinToString(System.lineSeparator()) { (k, v) ->
             v.joinToString(
                 System.lineSeparator(),
-                "# CloudFlare ip ${System.lineSeparator()}".takeIf { k }.orEmpty()
+                "# CloudFlare ip ${System.lineSeparator()}".takeIf { k }.orEmpty(),
             ) {
                 it.second + "\t" + it.first
             }

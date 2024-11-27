@@ -69,7 +69,7 @@ val emojiMap =
         "😍",
         "✅",
         "🔪",
-        "🗒"
+        "🗒",
     )
 const val EMOJI_BASE64_DICT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/="
 

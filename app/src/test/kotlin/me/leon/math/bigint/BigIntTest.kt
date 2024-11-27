@@ -24,27 +24,14 @@ class BigIntTest {
     @Test
     fun crtTest() {
         // 三三数之剩二，五五数之剩三，七七数之剩二。问物几何？
-        var data =
-            listOf(
-                DivideResult("2", "3"),
-                DivideResult("3", "5"),
-                DivideResult("2", "7"),
-            )
+        var data = listOf(DivideResult("2", "3"), DivideResult("3", "5"), DivideResult("2", "7"))
         assertEquals(23, crt(data).toInt())
 
         data =
-            listOf(
-                DivideResult("43", "87"),
-                DivideResult("80", "115"),
-                DivideResult("65", "187"),
-            )
+            listOf(DivideResult("43", "87"), DivideResult("80", "115"), DivideResult("65", "187"))
         assertEquals(1000, crt(data).toInt())
 
-        data =
-            listOf(
-                DivideResult("13", "100"),
-                DivideResult("20", "301"),
-            )
+        data = listOf(DivideResult("13", "100"), DivideResult("20", "301"))
 
         println(crt(data))
     }

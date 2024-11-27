@@ -9,7 +9,7 @@ const val DEFAULT_POLYBIUS_ENCODE_MAP = "12345"
 fun String.polybius(
     table: String = TABLE_A_Z_WO_J,
     encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
-    replacePair: Pair<String, String> = "J" to "I"
+    replacePair: Pair<String, String> = "J" to "I",
 ): String {
     val properTable = table.stripAllSpace().uppercase()
     val map =
@@ -25,7 +25,7 @@ fun String.polybius(
 
 fun String.polybiusDecrypt(
     table: String = TABLE_A_Z_WO_J,
-    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
+    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
 ): String {
     val properTable = table.stripAllSpace().uppercase()
     val map =

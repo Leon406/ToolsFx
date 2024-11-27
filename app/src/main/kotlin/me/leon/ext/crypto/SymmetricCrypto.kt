@@ -11,14 +11,14 @@ fun ByteArray.encrypt(
     key: ByteArray,
     iv: ByteArray,
     alg: String,
-    associatedData: ByteArray = byteArrayOf()
+    associatedData: ByteArray = byteArrayOf(),
 ): ByteArray = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE, associatedData).doFinal(this)
 
 fun ByteArray.decrypt(
     key: ByteArray,
     iv: ByteArray,
     alg: String,
-    associatedData: ByteArray = byteArrayOf()
+    associatedData: ByteArray = byteArrayOf(),
 ): ByteArray = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE, associatedData).doFinal(this)
 
 fun makeCipher(
@@ -26,7 +26,7 @@ fun makeCipher(
     key: ByteArray,
     iv: ByteArray,
     cipherMode: Int,
-    associatedData: ByteArray = byteArrayOf()
+    associatedData: ByteArray = byteArrayOf(),
 ): Cipher =
     Cipher.getInstance(alg).apply {
         val keySpec: SecretKey = SecretKeySpec(key, alg.substringBefore("/"))
@@ -39,7 +39,7 @@ fun makeCipher(
                 cipherMode,
                 keySpec,
                 runCatching { ChaCha20ParameterSpec(iv, 0) }
-                    .getOrElse { AEADParameterSpec(iv, 128) }
+                    .getOrElse { AEADParameterSpec(iv, 128) },
             )
         } else {
             init(cipherMode, keySpec, IvParameterSpec(iv)).also {
@@ -55,7 +55,7 @@ fun String.encryptFile(
     iv: ByteArray,
     alg: String,
     outFileName: String,
-    associatedData: ByteArray = byteArrayOf()
+    associatedData: ByteArray = byteArrayOf(),
 ) {
     val cipher = makeCipher(alg, key, iv, Cipher.ENCRYPT_MODE, associatedData)
     doStreamCrypto(outFileName, cipher, this)
@@ -66,7 +66,7 @@ fun String.decryptFile(
     iv: ByteArray,
     alg: String,
     outFileName: String,
-    associatedData: ByteArray = byteArrayOf()
+    associatedData: ByteArray = byteArrayOf(),
 ) {
     val cipher = makeCipher(alg, key, iv, Cipher.DECRYPT_MODE, associatedData)
     doStreamCrypto(outFileName, cipher, this)

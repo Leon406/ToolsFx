@@ -75,7 +75,7 @@ fun BigInteger.fermat(timeOut: Int = TIME_OUT): MutableList<BigInteger> {
 /** 适用因子相差较小 时间复杂度 O(|p-q|) */
 fun BigInteger.fermatMore(
     num: Int = 2,
-    timeOut: Int = TIME_OUT
+    timeOut: Int = TIME_OUT,
 ): MutableSet<Pair<BigInteger, BigInteger>> {
     val result = mutableSetOf<Pair<BigInteger, BigInteger>>()
     with(root()) {
@@ -131,7 +131,7 @@ fun BigInteger.fullFermat2(timeOut: Int = TIME_OUT): List<BigInteger> {
 
 fun BigInteger.pollardsRhoFactors(
     timeOut: Int = TIME_OUT,
-    funBias: BigInteger = ONE
+    funBias: BigInteger = ONE,
 ): MutableList<BigInteger> {
 
     // optimize, avoid prime loop

@@ -55,7 +55,7 @@ object ImageUtil {
             BufferedImage(
                 srcImage.getWidth(null),
                 srcImage.getHeight(null),
-                BufferedImage.TYPE_INT_ARGB
+                BufferedImage.TYPE_INT_ARGB,
             )
         val g = bufferedImage.createGraphics()
         g.drawImage(srcImage, null, null)

@@ -20,7 +20,7 @@ const val LOOPBACK_IP = "127.0.0.1"
 fun String.connect(
     port: Int = 80,
     timeout: Int = 1000,
-    exceptionHandler: (info: String) -> Unit = {}
+    exceptionHandler: (info: String) -> Unit = {},
 ) =
     if (!contains(".") && !contains(":") || port < 0) {
         //        println("quick fail from cache")

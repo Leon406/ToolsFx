@@ -22,7 +22,7 @@ class DigestController : Controller() {
         method: String,
         data: String,
         inputEncode: String = "raw",
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
     ) =
         catch({ "digest error: $it" }) {
             if (singleLine) {

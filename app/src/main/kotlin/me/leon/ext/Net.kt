@@ -15,7 +15,7 @@ const val DEFAULT_UA =
 fun String.headRequest(
     method: String = "HEAD",
     timeout: Int = DEFAULT_TIME_OUT,
-    headers: Map<String, Any> = emptyMap()
+    headers: Map<String, Any> = emptyMap(),
 ) =
     runCatching {
             URL(this)
@@ -39,7 +39,7 @@ fun String.readBytesFromNet(
     method: String = "GET",
     timeout: Int = DEFAULT_TIME_OUT,
     data: String = "",
-    headers: Map<String, Any> = emptyMap()
+    headers: Map<String, Any> = emptyMap(),
 ) =
     runCatching {
             URL(this)
@@ -87,7 +87,7 @@ fun String.readFromNet(
     method: String = "GET",
     timeout: Int = DEFAULT_TIME_OUT,
     data: String = "",
-    headers: Map<String, Any> = emptyMap()
+    headers: Map<String, Any> = emptyMap(),
 ) = readBytesFromNet(method, timeout, data, headers).decodeToString()
 
 fun String.readStreamFromNet(method: String = "GET", timeout: Int = DEFAULT_TIME_OUT) =

@@ -18,7 +18,7 @@ class SymmetricCryptoController : Controller() {
         singleLine: Boolean = false,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
-        associatedData: ByteArray = byteArrayOf()
+        associatedData: ByteArray = byteArrayOf(),
     ): String =
         catch({ "encrypt error: $it" }) {
             if (DEBUG) println("encrypt  $alg")
@@ -39,7 +39,7 @@ class SymmetricCryptoController : Controller() {
         iv: ByteArray,
         alg: String,
         outputEncode: String,
-        associatedData: ByteArray = byteArrayOf()
+        associatedData: ByteArray = byteArrayOf(),
     ) =
         if (alg.startsWith("XXTEA")) {
             XXTEA.encrypt(data.decodeToByteArray(inputEncode, charset), key)
@@ -58,7 +58,7 @@ class SymmetricCryptoController : Controller() {
         path: String,
         iv: ByteArray,
         alg: String,
-        associatedData: ByteArray = byteArrayOf()
+        associatedData: ByteArray = byteArrayOf(),
     ) =
         catch({ "encrypt error: $it" }) {
             if (DEBUG) println("encrypt  $alg")
@@ -90,7 +90,7 @@ class SymmetricCryptoController : Controller() {
         path: String,
         iv: ByteArray,
         alg: String,
-        associatedData: ByteArray = byteArrayOf()
+        associatedData: ByteArray = byteArrayOf(),
     ) =
         catch({ "decrypt error: $it" }) {
             if (DEBUG) println("decrypt  $alg")
@@ -123,7 +123,7 @@ class SymmetricCryptoController : Controller() {
         singleLine: Boolean = false,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
-        associatedData: ByteArray = byteArrayOf()
+        associatedData: ByteArray = byteArrayOf(),
     ): String =
         catch({ "decrypt error: $it" }) {
             if (DEBUG) println("decrypt  $alg")
@@ -144,7 +144,7 @@ class SymmetricCryptoController : Controller() {
         iv: ByteArray,
         alg: String,
         outputEncode: String,
-        associatedData: ByteArray = byteArrayOf()
+        associatedData: ByteArray = byteArrayOf(),
     ) =
         if (alg.startsWith("XXTEA")) {
             XXTEA.decrypt(data.decodeToByteArray(inputEncode, charset), key)

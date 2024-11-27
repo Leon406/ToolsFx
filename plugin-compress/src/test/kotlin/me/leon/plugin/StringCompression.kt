@@ -127,11 +127,11 @@ class StringCompression {
 
         assertEquals(
             "Advanced indent guides line highlighting can be enabled for",
-            Compression.LZString.decompress(bytes, "base64", "raw")
+            Compression.LZString.decompress(bytes, "base64", "raw"),
         )
         assertEquals(
             "nasller",
-            Compression.LZString.decompress("HYQwzgNhCmBOQ===", "base64", "raw")
+            Compression.LZString.decompress("HYQwzgNhCmBOQ===", "base64", "raw"),
         )
 
         println(LzString.compressToBase64("ba"))

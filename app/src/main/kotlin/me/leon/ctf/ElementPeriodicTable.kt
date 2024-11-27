@@ -121,7 +121,7 @@ val PERIOD_LIST =
         "Mc",
         "Lv",
         "Ts",
-        "Og"
+        "Og",
     )
 
 private val umap =

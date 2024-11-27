@@ -89,7 +89,7 @@ fun String.base91(dict: String = BASE91_DICT, charset: String = "UTF-8") =
 fun ByteArray.base91(dict: String = BASE91_DICT, charset: String = "UTF-8") =
     String(
         Base91.encode(this, dict.ifEmpty { BASE91_DICT }.toByteArray()),
-        Charset.forName(charset)
+        Charset.forName(charset),
     )
 
 fun String.base91Decode(dict: String = BASE91_DICT) =

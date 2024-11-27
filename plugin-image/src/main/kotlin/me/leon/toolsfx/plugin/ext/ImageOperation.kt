@@ -33,5 +33,5 @@ enum class ImageOperation : SimpleService {
     OIL_PAINT {
         override fun process(file: String, params: Map<String, String>) =
             file.autoConvertToBufferImage()!!.oilPaint()
-    }
+    },
 }

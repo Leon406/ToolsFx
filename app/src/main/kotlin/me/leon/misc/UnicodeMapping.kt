@@ -133,7 +133,7 @@ val FONTS_ADDITION =
                 "ş" to "𝗌̧",
                 "Ş" to "𝖲̧",
                 "ı" to "ı",
-                "İ" to "𝖨̇"
+                "İ" to "𝖨̇",
             ),
         "sansBold" to
             mapOf(
@@ -186,7 +186,7 @@ val FONTS_ADDITION =
                 "ş" to "𝘀̧",
                 "Ş" to "𝗦̧",
                 "ı" to "ı",
-                "İ" to "𝗜̇"
+                "İ" to "𝗜̇",
             ),
         "sansItalic" to
             mapOf(
@@ -239,7 +239,7 @@ val FONTS_ADDITION =
                 "ş" to "𝘴̧",
                 "Ş" to "𝘚̧",
                 "ı" to "ı",
-                "İ" to "𝘐̇"
+                "İ" to "𝘐̇",
             ),
         "sansBoldItalic" to
             mapOf(
@@ -292,7 +292,7 @@ val FONTS_ADDITION =
                 "ş" to "𝙨̧",
                 "Ş" to "𝙎̧",
                 "ı" to "ı",
-                "İ" to "𝙄̇"
+                "İ" to "𝙄̇",
             ),
         "serifBold" to
             mapOf(
@@ -345,7 +345,7 @@ val FONTS_ADDITION =
                 "ş" to "𝐬̧",
                 "Ş" to "𝐒̧",
                 "ı" to "ı",
-                "İ" to "𝐈̇"
+                "İ" to "𝐈̇",
             ),
         "serifItalic" to
             mapOf(
@@ -398,7 +398,7 @@ val FONTS_ADDITION =
                 "ş" to "𝑠̧",
                 "Ş" to "𝑆̧",
                 "ı" to "ı",
-                "İ" to "𝐼̇"
+                "İ" to "𝐼̇",
             ),
         "serifBoldItalic" to
             mapOf(
@@ -447,7 +447,7 @@ val FONTS_ADDITION =
                 "ş" to "𝒔̧",
                 "Ş" to "𝑺̧",
                 "ı" to "ı",
-                "İ" to "𝑰̇"
+                "İ" to "𝑰̇",
             ),
         "doubleStruck" to
             mapOf(
@@ -500,7 +500,7 @@ val FONTS_ADDITION =
                 "ş" to "𝕤̧",
                 "Ş" to "𝕊̧",
                 "ı" to "ı",
-                "İ" to "𝕀̇"
+                "İ" to "𝕀̇",
             ),
         "monospace" to
             mapOf(
@@ -553,7 +553,7 @@ val FONTS_ADDITION =
                 "ş" to "𝚜̧",
                 "Ş" to "𝚂̧",
                 "ı" to "ı",
-                "İ" to "𝙸̇"
+                "İ" to "𝙸̇",
             ),
         "script" to
             mapOf(
@@ -606,7 +606,7 @@ val FONTS_ADDITION =
                 "ş" to "𝓈̧",
                 "Ş" to "𝒮̧",
                 "ı" to "ı",
-                "İ" to "ℐ̇"
+                "İ" to "ℐ̇",
             ),
         "boldScript" to
             mapOf(
@@ -659,7 +659,7 @@ val FONTS_ADDITION =
                 "ş" to "𝓼̧",
                 "Ş" to "𝓢̧",
                 "ı" to "ı",
-                "İ" to "𝓘̇"
+                "İ" to "𝓘̇",
             ),
         "subscript" to
             mapOf(
@@ -712,7 +712,7 @@ val FONTS_ADDITION =
                 "ş" to "ₛ̧",
                 "Ş" to "Ş",
                 "ı" to "ı",
-                "İ" to "İ"
+                "İ" to "İ",
             ),
         "superscript" to
             mapOf(
@@ -765,7 +765,7 @@ val FONTS_ADDITION =
                 "ş" to "ˢ̧",
                 "Ş" to "ˢ̧",
                 "ı" to "ı",
-                "İ" to "ᴵ̇"
+                "İ" to "ᴵ̇",
             ),
         "supersubCombo1" to
             mapOf(
@@ -818,7 +818,7 @@ val FONTS_ADDITION =
                 "ş" to "ₛ̧",
                 "Ş" to "ˢ̧",
                 "ı" to "ı",
-                "İ" to "ᴵ̇"
+                "İ" to "ᴵ̇",
             ),
         "supersubCombo2" to
             mapOf(
@@ -871,7 +871,7 @@ val FONTS_ADDITION =
                 "ş" to "ş",
                 "Ş" to "ˢ̧",
                 "ı" to "ı",
-                "İ" to "İ"
+                "İ" to "İ",
             ),
         "fraktur" to
             mapOf(
@@ -924,7 +924,7 @@ val FONTS_ADDITION =
                 "ş" to "𝔰̧",
                 "Ş" to "𝔖̧",
                 "ı" to "ı",
-                "İ" to "ℑ̇"
+                "İ" to "ℑ̇",
             ),
         "boldFraktur" to
             mapOf(
@@ -977,8 +977,8 @@ val FONTS_ADDITION =
                 "ş" to "𝖘̧",
                 "Ş" to "𝕾̧",
                 "ı" to "ı",
-                "İ" to "𝕴̇"
-            )
+                "İ" to "𝕴̇",
+            ),
     )
 
 fun String.unicodeChar() =

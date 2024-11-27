@@ -113,7 +113,7 @@ val magics =
         "0061736d" to "wasm",
         "4f54544f" to "otf",
         "2321414d52" to "amr",
-        "2e736e64" to "snd"
+        "2e736e64" to "snd",
     )
 
 val multiExts = listOf("zip", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "jar", "apk")

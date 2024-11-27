@@ -11,7 +11,7 @@ operator fun Color.minus(other: Color): Color =
     Color(
         (red - other.red).coerceAtLeast(0),
         (green - other.green).coerceAtLeast(0),
-        (blue - other.blue).coerceAtLeast(0)
+        (blue - other.blue).coerceAtLeast(0),
     )
 
 fun Color.invert() = Color(255 - red, 255 - green, 255 - blue)

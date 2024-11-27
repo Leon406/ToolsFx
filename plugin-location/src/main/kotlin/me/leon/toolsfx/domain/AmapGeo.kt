@@ -7,7 +7,7 @@ data class AmapGeo(
     val info: String?,
     val infocode: String?,
     val count: String?,
-    val geocodes: List<Geocode>?
+    val geocodes: List<Geocode>?,
 ) {
     data class Geocode(
         @SerializedName("formatted_address") val formattedAddress: String?,
@@ -21,7 +21,7 @@ data class AmapGeo(
         val street: Any?,
         val number: Any?,
         val location: String?,
-        val level: String?
+        val level: String?,
     )
 
     fun geoInfo(): String {

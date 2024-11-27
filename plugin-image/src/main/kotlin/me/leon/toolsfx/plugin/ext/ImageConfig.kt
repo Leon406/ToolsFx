@@ -20,7 +20,7 @@ val IMAGE_CONFIG =
         ImageServiceType.MORPHOLOGY to
             mapOf(
                 HINT to arrayOf("kernel size default is 3"),
-                OPTIONS to ImageMorphology.values().map { it.toString() }.toTypedArray()
+                OPTIONS to ImageMorphology.values().map { it.toString() }.toTypedArray(),
             ),
-        ImageServiceType.SCALE to mapOf(HINT to arrayOf("scale ratio"))
+        ImageServiceType.SCALE to mapOf(HINT to arrayOf("scale ratio")),
     )

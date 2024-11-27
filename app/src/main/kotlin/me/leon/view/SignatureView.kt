@@ -56,14 +56,14 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     "SHA512(256)withRSA/X9.31",
                     "RIPEMD128withRSA/X9.31",
                     "RIPEMD160withRSA/X9.31",
-                    "WHIRLPOOLwithRSA/X9.31"
+                    "WHIRLPOOLwithRSA/X9.31",
                 ),
             "RSASSA-PSS" to
                 listOf(
                     "RAWRSASSA-PSS",
                     "SHA256withRSA/PSS",
                     "SHAKE128WITHRSAPSS",
-                    "SHAKE256WITHRSAPSS"
+                    "SHAKE256WITHRSAPSS",
                 ),
             "DSA" to
                 listOf(
@@ -77,7 +77,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     "SHA3-224withDSA",
                     "SHA3-256withDSA",
                     "SHA3-384withDSA",
-                    "SHA3-512withDSA"
+                    "SHA3-512withDSA",
                 ),
             "ECDSA" to
                 listOf(
@@ -93,7 +93,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     "SHA3-384withECDSA",
                     "SHA3-512withECDSA",
                     "SHAKE128withECDSA",
-                    "SHAKE256withECDSA"
+                    "SHAKE256withECDSA",
                 ),
             "SM2" to listOf("SHA256withSM2", "SM3withSM2"),
             "Ed448" to listOf("Ed448"),
@@ -104,7 +104,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     "SHA224withECNR",
                     "SHA256withECNR",
                     "SHA384withECNR",
-                    "SHA512withECNR"
+                    "SHA512withECNR",
                 ),
             "JWT" to
                 listOf(
@@ -119,7 +119,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                     "ES512",
                     "PS256",
                     "PS384",
-                    "PS512"
+                    "PS512",
                 ),
         )
     private var timeConsumption = 0L
@@ -341,7 +341,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                         msg,
                         inputEncode,
                         outputEncode,
-                        singleLine.get()
+                        singleLine.get(),
                     )
                 }
                 .getOrElse { it.stacktrace() }
@@ -365,7 +365,7 @@ class SignatureView : Fragment(messages["signVerify"]) {
                         inputEncode,
                         outputEncode,
                         signText,
-                        singleLine.get()
+                        singleLine.get(),
                     )
                 }
                 .getOrElse { it.stacktrace() }

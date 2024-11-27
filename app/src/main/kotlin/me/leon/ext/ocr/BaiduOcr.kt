@@ -33,7 +33,7 @@ object BaiduOcr {
             .readBytesFromNet(
                 "POST",
                 headers = mutableMapOf("Content-Type" to "application/x-www-form-urlencoded"),
-                data = data
+                data = data,
             )
             .decodeToString()
             .also { println(it) }

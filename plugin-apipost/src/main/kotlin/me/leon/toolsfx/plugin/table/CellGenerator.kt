@@ -50,7 +50,7 @@ internal object CellGenerator {
         converter: StringConverter<T>?,
         hbox: HBox?,
         graphic: Node?,
-        textField: TextField?
+        textField: TextField?,
     ) {
         if (cell.isEmpty) {
             cell.text = null
@@ -80,7 +80,7 @@ internal object CellGenerator {
         converter: StringConverter<T>?,
         hbox: HBox?,
         graphic: Node?,
-        textField: TextField?
+        textField: TextField?,
     ) {
         if (textField != null) {
             textField.text = getItemText(cell, converter)

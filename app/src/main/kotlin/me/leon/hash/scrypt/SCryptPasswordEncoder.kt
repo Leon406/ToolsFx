@@ -51,7 +51,7 @@ constructor(
     var memoryCost: Int = 8,
     var parallelization: Int = 1,
     var keyLength: Int = 32,
-    var saltLength: Int = 64
+    var saltLength: Int = 64,
 ) : PasswordEncoder {
     private val saltGenerator: BytesKeyGenerator
 
@@ -116,7 +116,7 @@ constructor(
                 cpuCost,
                 memoryCost,
                 parallelization,
-                keyLength
+                keyLength,
             )
         return MessageDigest.isEqual(derived, generated)
     }
@@ -129,7 +129,7 @@ constructor(
                 cpuCost,
                 memoryCost,
                 parallelization,
-                keyLength
+                keyLength,
             )
         val params =
             ((ln(cpuCost.toDouble()) / ln(2.0)).toInt() shl

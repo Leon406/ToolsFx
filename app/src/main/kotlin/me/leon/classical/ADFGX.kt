@@ -8,7 +8,7 @@ fun String.adfgx(
     table: String,
     keyword: String,
     encodeMap: String = ADFGX_ENCODE_MAP,
-    replacePair: Pair<String, String> = "J" to "I"
+    replacePair: Pair<String, String> = "J" to "I",
 ): String {
     val key = keyword.distinct()
     val polybius = polybius(table, encodeMap, replacePair)
@@ -29,7 +29,7 @@ fun String.adfgx(
 fun String.adfgxDecrypt(
     table: String,
     keyword: String,
-    encodeMap: String = ADFGX_ENCODE_MAP
+    encodeMap: String = ADFGX_ENCODE_MAP,
 ): String {
     val key = keyword.distinct()
     val sortedKey = key.sorted()

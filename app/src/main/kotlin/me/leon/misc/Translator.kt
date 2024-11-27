@@ -56,7 +56,7 @@ object Translator {
             "https://yyownuse.top",
             "https://seele.saobby.com",
             "https://gtranslate.darkluna.top",
-            "http://a.bomea.com"
+            "http://a.bomea.com",
         )
     //    SimplyTranslate
     private val mirrors =
@@ -117,7 +117,7 @@ object Translator {
         URL_LINGVA.format(
                 src.replace("-CN", ""),
                 target.replace("-CN", ""),
-                URLEncoder.encode(text, "utf-8")
+                URLEncoder.encode(text, "utf-8"),
             )
             .readFromNet()
             .fromJson(Map::class.java)["translation"]

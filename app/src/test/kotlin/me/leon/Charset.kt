@@ -14,7 +14,7 @@ class Charset {
         URLEncoder.encode(raw, "utf-8").also {
             assertEquals(
                 "%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E9%9B%86%E5%90%88+by+leon406%4052pojie.cn",
-                it
+                it,
             )
             assertEquals(raw, URLDecoder.decode(it, "utf-8"))
         }

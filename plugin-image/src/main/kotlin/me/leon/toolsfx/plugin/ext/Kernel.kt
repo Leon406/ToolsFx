@@ -45,7 +45,7 @@ val LOG_KERNEL =
             1F,
             0F,
             0F,
-        )
+        ),
     )
 
 /** 总和为 1, 中心与边缘差 */
@@ -71,6 +71,6 @@ val DENOISE_KERNEL_GAUSSIAN =
             2F / 16F,
             1F / 16F,
             2F / 16F,
-            1F / 16F
-        )
+            1F / 16F,
+        ),
     )

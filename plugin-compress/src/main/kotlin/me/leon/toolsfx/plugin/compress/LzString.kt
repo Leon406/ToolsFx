@@ -28,7 +28,7 @@ object LzString {
     private fun compress(
         source: String,
         bitsPerChar: Int,
-        getCharFromInt: (code: Int) -> Char
+        getCharFromInt: (code: Int) -> Char,
     ): String {
         var contextC: String
         var value: Int
@@ -155,7 +155,7 @@ object LzString {
     private fun decompress(
         length: Int,
         resetValue: Int,
-        getNextValue: (idx: Int) -> Char
+        getNextValue: (idx: Int) -> Char,
     ): String? {
         val builder = StringBuilder()
         val dictionary = mutableListOf(0.string, 1.string, 2.string)

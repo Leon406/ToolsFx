@@ -16,7 +16,7 @@ class QMCDecode {
             intArrayOf(0xf3, 0xd6, 0xa1, 0x90, 0xa0, 0xf7, 0xf0),
             intArrayOf(0x1d, 0x95, 0xde, 0x9f, 0x84, 0x11, 0xf4),
             intArrayOf(0x0e, 0x74, 0xbb, 0x90, 0xbc, 0x3f, 0x92),
-            intArrayOf(0x00, 0x09, 0x5b, 0x9f, 0x62, 0x66, 0xa1)
+            intArrayOf(0x00, 0x09, 0x5b, 0x9f, 0x62, 0x66, 0xa1),
         )
 
     fun nextMask(): Int {
@@ -51,7 +51,7 @@ fun File.qmcDecode() {
                 .replace("qmc[03]".toRegex(), "mp3")
                 .replace("qmc[2468]".toRegex(), "m4a")
                 // qmcogg qmcflac
-                .replace(".qmc", ".")
+                .replace(".qmc", "."),
         )
     outputFile.outputStream().use { output ->
         output.write(

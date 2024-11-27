@@ -35,7 +35,7 @@ class ClassicalTest {
             "introvert at NSA? Va gur ryringbef," + "gur rkgebireg ybbxf ng gur BGURE thl'f fubrf. "
         assertEquals(
             "vagebireg ng AFN? In the elevators,the extrovert looks at the OTHER guy's shoes. ",
-            rot13.shift26(13)
+            rot13.shift26(13),
         )
         assertEquals(rot13, rot13.shift26(13).shift26(13))
 

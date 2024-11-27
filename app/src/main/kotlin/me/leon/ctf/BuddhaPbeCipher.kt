@@ -93,6 +93,6 @@ fun String.buddhaPbeDecrypt(pass: String = KEY): String {
         pass.ifEmpty { KEY },
         "U2FsdGVkX1" + substringAfter("：").map { decode[it] }.joinToString(""),
         8,
-        ALG
+        ALG,
     )
 }

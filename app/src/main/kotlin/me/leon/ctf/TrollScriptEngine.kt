@@ -12,7 +12,7 @@ open class TrollScriptEngine
 constructor(
     cells: Int = 64,
     out: OutputStream? = ByteArrayOutputStream(),
-    inputStream: InputStream? = System.`in`
+    inputStream: InputStream? = System.`in`,
 ) : BrainfuckEngine(cells, out!!, inputStream) {
     /** The default length of a token. */
     open var defaultTokenLength = 3

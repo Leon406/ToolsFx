@@ -167,7 +167,7 @@ class TranslateTest {
 
     private fun readData(
         toTranslate: File = noMeaning,
-        noTranslation: File = nodata
+        noTranslation: File = nodata,
     ): List<String> {
 
         val translatedFile = File(toTranslate.parentFile, "trans.txt")

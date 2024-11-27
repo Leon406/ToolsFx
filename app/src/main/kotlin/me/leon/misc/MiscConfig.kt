@@ -64,16 +64,7 @@ val MISC_CONFIG =
 val MISC_OPTIONS_CONFIG =
     mapOf(
         MiscServiceType.TIME_STAMP to
-            mapOf(
-                OPTIONS to
-                    arrayOf(
-                        "milliseconds",
-                        "seconds",
-                        "minutes",
-                        "hours",
-                        "days",
-                    )
-            ),
+            mapOf(OPTIONS to arrayOf("milliseconds", "seconds", "minutes", "hours", "days")),
         MiscServiceType.UUID to mapOf(OPTIONS to arrayOf("normal", "w/o '-'")),
         MiscServiceType.ROMANJI to
             mapOf(OPTIONS to KawaType.entries.map { it.toString() }.toTypedArray()),
@@ -87,7 +78,7 @@ val MISC_OPTIONS_CONFIG =
                         "1-30000",
                         "1-40000",
                         "1-49151",
-                        "1-65535"
+                        "1-65535",
                     )
             ),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
@@ -113,7 +104,7 @@ val MISC_OPTIONS_CONFIG =
                         "hk2s",
                         "hk2t",
                         "jp2t",
-                        "t2jp"
+                        "t2jp",
                     )
             ),
         MiscServiceType.CODE_EXPLAIN to mapOf(OPTIONS to CodeMapping.TYPE.keys.toTypedArray()),

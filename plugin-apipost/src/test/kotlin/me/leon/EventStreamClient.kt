@@ -24,7 +24,7 @@ class EventStreamClient {
         url: String,
         body: String,
         headers: Map<String, String> = emptyMap(),
-        listener: EventSourceListener? = null
+        listener: EventSourceListener? = null,
     ): EventSource {
         val start = System.currentTimeMillis()
         if (debug) {
@@ -57,7 +57,7 @@ class EventStreamClient {
                     eventSource: EventSource,
                     id: String?,
                     type: String?,
-                    data: String
+                    data: String,
                 ) {
                     super.onEvent(eventSource, id, type, data)
                     val stripeData = data.replace("<br>", System.lineSeparator()).replace("*", "")
@@ -78,7 +78,7 @@ class EventStreamClient {
                 override fun onFailure(
                     eventSource: EventSource,
                     t: Throwable?,
-                    response: Response?
+                    response: Response?,
                 ) {
                     super.onFailure(eventSource, t, response)
                     if (debug) {
@@ -89,7 +89,7 @@ class EventStreamClient {
                         listener?.onFailure(eventSource, t, response)
                     }
                 }
-            }
+            },
         )
     }
 

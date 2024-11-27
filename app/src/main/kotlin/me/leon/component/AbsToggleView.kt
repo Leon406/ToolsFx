@@ -15,7 +15,7 @@ import tornadofx.visibleWhen
 abstract class AbsToggleView(
     val data: List<String> = listOf("raw", "hex", "base64"),
     var selectedIndex: Int = 0,
-    private val visible: BooleanProperty = SimpleBooleanProperty(true)
+    private val visible: BooleanProperty = SimpleBooleanProperty(true),
 ) : View() {
 
     val tg: ToggleGroup = ToggleGroup()

@@ -262,14 +262,7 @@ val FIVE = 5.toBigInteger()
 val SIX = 6.toBigInteger()
 val SEVEN = 7.toBigInteger()
 val EIGHT = 8.toBigInteger()
-val MAP =
-    mapOf(
-        THREE to TWO,
-        FOUR to THREE,
-        FIVE to THREE,
-        SIX to FIVE,
-        SEVEN to FIVE,
-    )
+val MAP = mapOf(THREE to TWO, FOUR to THREE, FIVE to THREE, SIX to FIVE, SEVEN to FIVE)
 
 /** todo performance */
 fun BigInteger.preProbablePrime(): BigInteger {

@@ -14,5 +14,5 @@ data class NcmMeta(
     val musicId: Int,
     val musicName: String,
     val mvId: Int,
-    val transNames: List<Any>
+    val transNames: List<Any>,
 )

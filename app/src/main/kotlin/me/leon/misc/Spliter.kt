@@ -98,7 +98,7 @@ object Spliter {
     private fun bestMatch(
         partSentence: String,
         cost: List<Pair<Number, Number>>,
-        index: Int
+        index: Int,
     ): Pair<Number, Number> {
 
         val candidates =

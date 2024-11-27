@@ -239,8 +239,7 @@ enum class MiscServiceType(val type: String) : MiscService {
                 runCatching { it.unicodeFont(type) }.getOrElse { it.stacktrace() }
             }
         }
-    },
-    ;
+    };
 
     override fun hint(): String {
         return MISC_CONFIG[this]!![HINT].orEmpty()

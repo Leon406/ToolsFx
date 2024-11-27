@@ -14,7 +14,7 @@ open class BrainfuckEngine
 constructor(
     cells: Int = 64,
     out: OutputStream = ByteArrayOutputStream(),
-    inputStream: InputStream? = System.`in`
+    inputStream: InputStream? = System.`in`,
 ) {
 
     /** The memory that's available for this brainfuck program. */

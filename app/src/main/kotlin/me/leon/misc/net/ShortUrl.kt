@@ -22,7 +22,7 @@ object ShortUrl {
             .readFromNet(
                 "POST",
                 headers = mapOf("Content-Type" to "application/x-www-form-urlencoded"),
-                data = "url=$url"
+                data = "url=$url",
             )
             .fromJson(Map::class.java)["tinyurl"]
             .toString()
@@ -32,7 +32,7 @@ object ShortUrl {
             .readFromNet(
                 "POST",
                 headers = mapOf("Authorization" to "Token cH4lpSuC6LgqoDidiqB5"),
-                data = "{\"url\":\"$url\"}"
+                data = "{\"url\":\"$url\"}",
             )
             .fromJson(Map::class.java)["short"]
             .toString()
@@ -42,7 +42,7 @@ object ShortUrl {
             .readFromNet(
                 "POST",
                 headers = mapOf("Authorization" to "Token xxHQfao69Ra9G7EI87mC"),
-                data = "{\"url\":\"$url\"}"
+                data = "{\"url\":\"$url\"}",
             )
             .fromJson(Map::class.java)["short"]
             .toString()

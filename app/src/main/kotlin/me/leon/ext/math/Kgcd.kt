@@ -14,7 +14,7 @@ object Kgcd {
         a: BigInteger,
         b: BigInteger,
         x: Array<BigInteger>,
-        y: Array<BigInteger>
+        y: Array<BigInteger>,
     ): Array<BigInteger> {
         val result = Array<BigInteger>(3) { BigInteger.ONE }
         if (b == BigInteger.ZERO) {
@@ -56,6 +56,6 @@ fun crt(remainders: List<BigInteger>, modulusList: List<BigInteger>): BigInteger
 data class DivideResult(val remainder: BigInteger, val quotient: BigInteger) {
     constructor(
         remainder: String,
-        quotient: String
+        quotient: String,
     ) : this(remainder.toBigInteger(), quotient.toBigInteger())
 }

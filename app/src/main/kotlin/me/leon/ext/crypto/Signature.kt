@@ -28,12 +28,7 @@ fun ByteArray.verify(kpAlg: String, sigAlg: String, pub: String, signed: ByteArr
             .verify(signed)
     }
 
-val ecdsaCurveMap =
-    mapOf(
-        "ES256" to "secp256r1",
-        "ES384" to "secp384r1",
-        "ES512" to "secp521r1",
-    )
+val ecdsaCurveMap = mapOf("ES256" to "secp256r1", "ES384" to "secp384r1", "ES512" to "secp521r1")
 
 fun generateEcKeyPair(jwtAlg: String = "ES256"): KeyPair? {
     val kpg = KeyPairGenerator.getInstance("EC")

@@ -333,7 +333,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                                 inputText,
                                 singleLine.get(),
                                 inputEncode = inputEncode,
-                                outputEncode = outputEncode
+                                outputEncode = outputEncode,
                             )
                         } else {
                             controller.pubEncrypt(
@@ -342,7 +342,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                                 inputText,
                                 singleLine.get(),
                                 inputEncode = inputEncode,
-                                outputEncode = outputEncode
+                                outputEncode = outputEncode,
                             )
                         }
                     } else if (privateKeyEncrypt.get()) {
@@ -352,7 +352,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             inputText,
                             singleLine.get(),
                             inputEncode,
-                            outputEncode
+                            outputEncode,
                         )
                     } else {
                         controller.priDecrypt(
@@ -361,7 +361,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             inputText,
                             singleLine.get(),
                             inputEncode,
-                            outputEncode
+                            outputEncode,
                         )
                     }
                 }

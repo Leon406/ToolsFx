@@ -169,19 +169,19 @@ class EncodeTest {
         assertEquals("xesef-disof-gytuf-katof-movif-baxux", "1234567890".bubbleBabble())
         assertEquals(
             "1234567890",
-            "xesef-disof-gytuf-katof-movif-baxux".bubbleBabbleDecode2String()
+            "xesef-disof-gytuf-katof-movif-baxux".bubbleBabbleDecode2String(),
         )
         assertEquals(
             "Pineapple1",
-            "xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String()
+            "xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String(),
         )
         assertEquals(
             "Pineap ple3",
-            "xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String()
+            "xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String(),
         )
         assertEquals(
             "Pineapplea",
-            "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String()
+            "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String(),
         )
     }
 
@@ -194,12 +194,12 @@ class EncodeTest {
 
         assertContentEquals(
             arrayOf("🗾", "🗾"),
-            arrayOf("&#128510;".unicode2String(), "128510".toInt().toUnicodeChar())
+            arrayOf("&#128510;".unicode2String(), "128510".toInt().toUnicodeChar()),
         )
 
         assertContentEquals(
             intArrayOf(128_510, 128_507),
-            intArrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
+            intArrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt()),
         )
         println("🗾".unicodeCharToInt())
     }
@@ -219,7 +219,7 @@ class EncodeTest {
         assertEquals(raw, base58.base58Decode2String())
         assertEquals(
             "flag{8ea44e39c914c5ddfbb9808c10033421}",
-            "G9mzcaHeFrtWbmbyVxTUN1NeWS1kNJiYRU41cZcaYq9Hsor7QnA8".base58Decode2String()
+            "G9mzcaHeFrtWbmbyVxTUN1NeWS1kNJiYRU41cZcaYq9Hsor7QnA8".base58Decode2String(),
         )
 
         measureNanoTime {

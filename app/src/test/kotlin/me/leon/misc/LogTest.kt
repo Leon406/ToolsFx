@@ -139,7 +139,7 @@ class LogTest {
                 acc.apply {
                     put(
                         s.first,
-                        getOrPut(s.first) { hashSetOf() }.apply { add(s.second.userAgent) }
+                        getOrPut(s.first) { hashSetOf() }.apply { add(s.second.userAgent) },
                     )
                 }
             }

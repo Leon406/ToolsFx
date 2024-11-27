@@ -57,14 +57,9 @@ class IpTest {
 
         println("43.97.0.1".cidr())
         println("43.97.0.1/25".cidr())
-        arrayOf(
-                "ip count",
-                "mask",
-                "net",
-                "range",
-                "broadcast",
-            )
-            .forEach { println(it.center(10) + ":") }
+        arrayOf("ip count", "mask", "net", "range", "broadcast").forEach {
+            println(it.center(10) + ":")
+        }
     }
 
     @Test

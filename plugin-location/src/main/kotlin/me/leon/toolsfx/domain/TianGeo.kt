@@ -4,7 +4,7 @@ data class TianGeo(
     val location: Location,
     val status: String,
     val msg: String,
-    val searchVersion: String
+    val searchVersion: String,
 ) {
     data class Location(val lon: String, val level: String, val lat: String)
 

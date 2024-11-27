@@ -39,8 +39,7 @@ class MacTest {
                 "HmacKeccak224" to "d50b18b8a15d6d147c3f21564d8711d023ba8f5d000452c4b61afc34",
                 "HmacDSTU7564-256" to
                     "5bbdd461892e5bf9e9c734f10a391df48f4336032a5e3686a89b2e43244f38ff",
-                "HmacGOST3411" to
-                    "374c2efa55f0d06fb355d93039f55949a9d0c7f50b35cb71d9e79b2d4aa5f3d1",
+                "HmacGOST3411" to "374c2efa55f0d06fb355d93039f55949a9d0c7f50b35cb71d9e79b2d4aa5f3d1",
             )
         for ((name, expected) in expectedMap) assertEquals(expected, data.mac(key, name).toHex())
     }
@@ -66,7 +65,7 @@ class MacTest {
 
         for ((name, expected) in expectedMap) assertEquals(
             expected,
-            data.macWithIv(key, iv, name).toHex()
+            data.macWithIv(key, iv, name).toHex(),
         )
     }
 
@@ -91,7 +90,7 @@ class MacTest {
 
         for ((name, expected) in expectedMap) assertEquals(
             expected,
-            data.macWithIv(key, iv, name).toHex()
+            data.macWithIv(key, iv, name).toHex(),
         )
     }
 
@@ -107,8 +106,7 @@ class MacTest {
                 "DESEDECMAC" to "ee0b9cd33cb6d298",
                 "BLOWFISHCMAC" to "339e0dc83afcd195",
                 "SEED-CMAC" to "0f385da442586a0f1faf832533a8685a",
-                "Shacal-2CMAC" to
-                    "1db2fede16d06e4761c8b975d471eb8a8ed5024a12e98799caf9b78ac0e1038a",
+                "Shacal-2CMAC" to "1db2fede16d06e4761c8b975d471eb8a8ed5024a12e98799caf9b78ac0e1038a",
             )
 
         for ((name, expected) in expectedMap) assertEquals(expected, data.mac(key, name).toHex())

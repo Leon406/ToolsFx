@@ -34,7 +34,7 @@ object PcMoeOnlineCipher {
                     mapOf(
                             "mode" to mode,
                             "code" to if (isEncode) "isEncode" else "Decode",
-                            "txt" to data
+                            "txt" to data,
                         )
                         .toParams(),
                 headers =
@@ -43,7 +43,7 @@ object PcMoeOnlineCipher {
                         "X-Token" to xToken,
                         "Content-type" to "application/x-www-form-urlencoded",
                         "Referer" to "http://hi.pcmoe.net/index.html",
-                    )
+                    ),
             )
             .decodeToString()
 }

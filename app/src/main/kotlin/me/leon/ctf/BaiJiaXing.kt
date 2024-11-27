@@ -78,7 +78,7 @@ val DICT_BAI_JIA_XING =
         '顾' to '#',
         '尹' to '%',
         '江' to '&',
-        '钟' to '*'
+        '钟' to '*',
     )
 
 val DICT_REVERSE = DICT_BAI_JIA_XING.values.zip(DICT_BAI_JIA_XING.keys).toMap()

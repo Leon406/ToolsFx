@@ -25,7 +25,7 @@ fun String.curveAdd(
     x: BigInteger,
     y: BigInteger,
     x2: BigInteger,
-    y2: BigInteger
+    y2: BigInteger,
 ): Pair<String, String> {
     with(curve) {
         val hex = createPoint(x, y).add(createPoint(x2, y2)).getEncoded(false).toHex()
@@ -37,7 +37,7 @@ fun String.curveSubtract(
     x: BigInteger,
     y: BigInteger,
     x2: BigInteger,
-    y2: BigInteger
+    y2: BigInteger,
 ): Pair<String, String> {
     with(curve) {
         val hex = createPoint(x, y).subtract(createPoint(x2, y2)).getEncoded(false).toHex()

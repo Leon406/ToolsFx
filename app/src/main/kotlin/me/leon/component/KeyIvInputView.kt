@@ -11,7 +11,7 @@ import tornadofx.*
 class KeyIvInputView(
     private val enableIv: SimpleBooleanProperty = SimpleBooleanProperty(true),
     private val enableAssociatedData: SimpleBooleanProperty = SimpleBooleanProperty(false),
-    private val autoConvert: SimpleBooleanProperty = SimpleBooleanProperty(false)
+    private val autoConvert: SimpleBooleanProperty = SimpleBooleanProperty(false),
 ) : View() {
     private val toggleKey = ToggleVerticalView()
     private val toggleIv = ToggleVerticalView(show = enableIv)

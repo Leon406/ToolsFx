@@ -14,7 +14,7 @@ class PBEController : Controller() {
         alg: String,
         iteration: Int,
         keyLength: Int,
-        singleLine: Boolean
+        singleLine: Boolean,
     ) =
         catch({ "encrypt error: $it" }) {
             if (DEBUG) println("encrypt  $alg $data")
@@ -34,7 +34,7 @@ class PBEController : Controller() {
         alg: String,
         iteration: Int,
         keyLength: Int,
-        singleLine: Boolean
+        singleLine: Boolean,
     ) =
         catch({ "decrypt error: $it" }) {
             if (DEBUG) println("decrypt  $alg $data")

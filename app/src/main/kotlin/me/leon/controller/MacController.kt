@@ -14,7 +14,7 @@ class MacController : Controller() {
         alg: String,
         inputEncode: String,
         outputEncode: String,
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
     ) =
         catch({ "mac error: $it" }) {
             if (DEBUG) println("mac $msg  $alg ")
@@ -34,7 +34,7 @@ class MacController : Controller() {
         alg: String,
         inputEncode: String,
         outputEncode: String,
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
     ) =
         catch({ "mac error: $it" }) {
             if (singleLine) {

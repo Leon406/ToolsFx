@@ -130,7 +130,7 @@ class DigestView : Fragment(messages["hash"]) {
                             .replace(
                                 "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)"
                                     .toRegex(),
-                                "$1-"
+                                "$1-",
                             )
                     }
                 println("算法 $method")
@@ -224,7 +224,7 @@ class DigestView : Fragment(messages["hash"]) {
                         .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
                         .encodeTo("hex"),
                     tfMask.text,
-                    tfCustomDict.text
+                    tfCustomDict.text,
                 )
             } else {
                 if (method.startsWith("SpringSecurity")) {
@@ -238,7 +238,7 @@ class DigestView : Fragment(messages["hash"]) {
                             inputText
                                 .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
                                 .encodeTo("hex")
-                        }
+                        },
                     )
                 }
             }
@@ -269,7 +269,7 @@ class DigestView : Fragment(messages["hash"]) {
                             method,
                             result,
                             "raw".takeIf { time > 0 } ?: inputEncode,
-                            singleLine.get()
+                            singleLine.get(),
                         )
                 }
                 result

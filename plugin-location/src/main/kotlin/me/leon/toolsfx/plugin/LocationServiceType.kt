@@ -12,7 +12,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             CoordinatorTransform.wgs2GCJ(
                     raw.substringAfter(",").toDouble(),
-                    raw.substringBefore(",").toDouble()
+                    raw.substringBefore(",").toDouble(),
                 )
                 .reversed()
                 .joinToString(",") { String.format("%.6f", it) }
@@ -21,7 +21,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             CoordinatorTransform.wgs2BD09(
                     raw.substringAfter(",").toDouble(),
-                    raw.substringBefore(",").toDouble()
+                    raw.substringBefore(",").toDouble(),
                 )
                 .reversed()
                 .joinToString(",") { String.format("%.6f", it) }
@@ -30,7 +30,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             CoordinatorTransform.gcj2BD09(
                     raw.substringAfter(",").toDouble(),
-                    raw.substringBefore(",").toDouble()
+                    raw.substringBefore(",").toDouble(),
                 )
                 .reversed()
                 .joinToString(",") { String.format("%.6f", it) }
@@ -39,7 +39,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             CoordinatorTransform.gcj2WGSExactly(
                     raw.substringAfter(",").toDouble(),
-                    raw.substringBefore(",").toDouble()
+                    raw.substringBefore(",").toDouble(),
                 )
                 .reversed()
                 .joinToString(",") { String.format("%.6f", it) }
@@ -48,7 +48,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             CoordinatorTransform.bd092WGSExactly(
                     raw.substringAfter(",").toDouble(),
-                    raw.substringBefore(",").toDouble()
+                    raw.substringBefore(",").toDouble(),
                 )
                 .reversed()
                 .joinToString(",") { String.format("%.6f", it) }
@@ -57,7 +57,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
         override fun process(raw: String, params: MutableMap<String, String>) =
             CoordinatorTransform.bd092GCJ(
                     raw.substringAfter(",").toDouble(),
-                    raw.substringBefore(",").toDouble()
+                    raw.substringBefore(",").toDouble(),
                 )
                 .reversed()
                 .joinToString(",") { String.format("%.6f", it) }
@@ -69,7 +69,7 @@ enum class LocationServiceType(val type: String) : ILocationService {
             val (p2Lng, p2Lat) = p2.split(",").map { it.toDouble() }
             return String.format(
                 "%.2f m",
-                CoordinatorTransform.distance(p1Lat, p1Lng, p2Lat, p2Lng)
+                CoordinatorTransform.distance(p1Lat, p1Lng, p2Lat, p2Lng),
             )
         }
     },

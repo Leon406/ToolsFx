@@ -83,7 +83,7 @@ object ApiConfig {
                 proxyHost,
                 proxyPort.toInt(),
                 proxyUser,
-                proxyPassword
+                proxyPassword,
             )
         }
         HttpUrlUtil.globalHeaders.putAll(parseHeaderString(globalHeaders))
@@ -103,7 +103,7 @@ object ApiConfig {
         pPass: String,
         tOut: Int,
         redirect: Boolean,
-        ignoreCert: Boolean = false
+        ignoreCert: Boolean = false,
     ) {
         isEnableProxy = isEnablePro
         if (isEnableProxy) {
@@ -112,7 +112,7 @@ object ApiConfig {
                 proxyHost,
                 proxyPort.toInt(),
                 pUser,
-                pPass
+                pPass,
             )
         } else {
             HttpUrlUtil.setupProxy()

@@ -277,7 +277,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     tfCustomDict.text,
                                     selectedCharset.get(),
                                     singleLine.get(),
-                                    fileMode.get()
+                                    fileMode.get(),
                                 )
                             } else {
                                 controller.decode2String(
@@ -286,7 +286,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     tfCustomDict.text,
                                     selectedCharset.get(),
                                     singleLine.get(),
-                                    fileMode.get()
+                                    fileMode.get(),
                                 )
                             }
                     }

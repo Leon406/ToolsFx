@@ -9,12 +9,12 @@ interface ICompress {
     fun compress(
         raw: String,
         inputEncode: String = "raw",
-        outputEncode: String = "base64"
+        outputEncode: String = "base64",
     ): String = ""
 
     fun decompress(
         raw: String,
         inputEncode: String = "raw",
-        outputEncode: String = "base64"
+        outputEncode: String = "base64",
     ): String = ""
 }

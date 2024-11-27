@@ -92,7 +92,7 @@ class AsymmetricTest {
         val alg2 = "RSA/NONE/OAEP"
         assertEquals(
             "EKO{classic_rsa_challenge_is_boring_but_necessary}",
-            controller.priDecrypt(key, alg2, ss)
+            controller.priDecrypt(key, alg2, ss),
         )
 
         assertEquals(2048, controller.lengthFromPub(pub))

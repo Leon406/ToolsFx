@@ -19,7 +19,7 @@ fun makeAI(baseUrl: String, sk: String): SimpleOpenAI {
 fun SimpleOpenAI.complete(
     model: String,
     messages: List<ChatMessage>,
-    temperature: Double = 0.7
+    temperature: Double = 0.7,
 ): Chat? {
     val chatRequest =
         ChatRequest.builder().model(model).messages(messages).temperature(temperature).build()
@@ -30,7 +30,7 @@ fun SimpleOpenAI.complete(
 fun SimpleOpenAI.completeStream(
     model: String,
     messages: List<ChatMessage>,
-    temperature: Double = 0.7
+    temperature: Double = 0.7,
 ): Stream<Chat>? {
     val chatRequest =
         ChatRequest.builder().model(model).messages(messages).temperature(temperature).build()
@@ -53,7 +53,7 @@ fun quota(baseUrl: String, sk: String): Triple<Double, Double, Long> {
     runCatching {
         HttpUrlUtil.get(
                 baseUrl + PATH_SUBSCRIPTION,
-                headers = mutableMapOf("Authorization" to "Bearer $sk")
+                headers = mutableMapOf("Authorization" to "Bearer $sk"),
             )
             .data
             .also {
@@ -62,7 +62,7 @@ fun quota(baseUrl: String, sk: String): Triple<Double, Double, Long> {
                 time = sub.accessUntil
                 HttpUrlUtil.get(
                         baseUrl + PATH_USAGE,
-                        headers = mutableMapOf("Authorization" to "Bearer $sk")
+                        headers = mutableMapOf("Authorization" to "Bearer $sk"),
                     )
                     .data
                     .also { used = it.fromJson(Usage::class.java).totalUsageInUsd }
@@ -75,7 +75,7 @@ fun models(baseUrl: String, sk: String): List<ModelInfo.Model> {
     runCatching {
             return HttpUrlUtil.get(
                     baseUrl + PATH_MODELS,
-                    headers = mutableMapOf("Authorization" to "Bearer $sk")
+                    headers = mutableMapOf("Authorization" to "Bearer $sk"),
                 )
                 .data
                 .fromJson(ModelInfo::class.java)
@@ -89,7 +89,7 @@ fun group(baseUrl: String, sk: String): List<Group.GP> {
     runCatching {
             return HttpUrlUtil.get(
                     baseUrl + PATH_GROUP,
-                    headers = mutableMapOf("Authorization" to "Bearer $sk")
+                    headers = mutableMapOf("Authorization" to "Bearer $sk"),
                 )
                 .data
                 .also { println(it) }
@@ -106,12 +106,12 @@ data class Subscription(
     @SerializedName("has_payment_method") val hasPaymentMethod: Boolean,
     @SerializedName("object") val obj: String,
     @SerializedName("soft_limit_usd") val softLimitUsd: Double,
-    @SerializedName("system_hard_limit_usd") val systemHardLimitUsd: Double
+    @SerializedName("system_hard_limit_usd") val systemHardLimitUsd: Double,
 )
 
 data class Usage(
     @SerializedName("object") val obj: String,
-    @SerializedName("total_usage") val totalUsage: Double
+    @SerializedName("total_usage") val totalUsage: Double,
 ) {
     val totalUsageInUsd
         get() = totalUsage / 100
@@ -132,7 +132,7 @@ data class ModelInfo(val data: List<Model>, val success: Boolean) {
         val `object`: String,
         @SerializedName("owned_by") val ownedBy: String,
         val parent: Any,
-        val root: String
+        val root: String,
     )
 }
 

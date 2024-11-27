@@ -86,8 +86,7 @@ private fun String.jsDelivrPath() =
 enum class GithubAction(val func: String.() -> String) {
     Mirror(String::githubMirror),
     RAW(String::githubRawUrl),
-    RepoUrl(String::githubRepoUrl),
-    ;
+    RepoUrl(String::githubRepoUrl);
 
     fun convert(s: String) = func(s)
 }

@@ -38,6 +38,6 @@ private fun speedFormat(len: Double) =
             len,
             len / speedFactor["km/h"]!!,
             len / speedFactor["knot"]!!,
-            len / speedFactor["mi/h"]!!
+            len / speedFactor["mi/h"]!!,
         )
         .replace(REG_TRIM_ZERO, "")

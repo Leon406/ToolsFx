@@ -55,7 +55,7 @@ val DEFAULT_QWE =
         'w' to 'v',
         'x' to 'b',
         'y' to 'n',
-        'z' to 'm'
+        'z' to 'm',
     )
 
 val DEFAULT_QWE_DECODE =

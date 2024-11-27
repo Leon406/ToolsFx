@@ -234,7 +234,7 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
                             "$javaHome${File.separator}bin${File.separator}java",
                             "-jar",
                             "-Dsun.java2d.uiScale=${ToolsApp.scale}",
-                            absolutePath
+                            absolutePath,
                         )
                 }
         }

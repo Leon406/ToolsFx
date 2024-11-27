@@ -24,7 +24,7 @@ fun String.kawa(type: KawaType = KawaType.JAPANESE) =
     KAWA_API.readFromNet(
             "POST",
             data = mapOf("mode" to type.mode, "q" to this).toParams(),
-            headers = mapOf("Content-type" to "application/x-www-form-urlencoded")
+            headers = mapOf("Content-type" to "application/x-www-form-urlencoded"),
         )
         .lines()
         .mapNotNull {

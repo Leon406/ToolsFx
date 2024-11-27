@@ -91,7 +91,7 @@ fun String.toPublicKey(alg: String): PublicKey? =
                     .generatePublic(
                         RSAPublicKeySpec(
                             this["n"] ?: BigInteger(this@toPublicKey, 16),
-                            this["e"] ?: BigInteger("10001", 16)
+                            this["e"] ?: BigInteger("10001", 16),
                         )
                     )
             }
@@ -274,7 +274,7 @@ private val ecGenParameterSpec =
         "ECGOST3410-2012" to "Tc26-Gost-3410-12-512-paramSetA",
         "ECGOST3410-2012-512" to "Tc26-Gost-3410-12-512-paramSetA",
         "ECGOST3410-2012-256" to "Tc26-Gost-3410-12-256-paramSetA",
-        "SM2" to "sm2p256v1"
+        "SM2" to "sm2p256v1",
     )
 
 fun genBase64KeyArray(alg: String, params: List<Any> = emptyList()) =
@@ -292,7 +292,7 @@ fun genKeyPair(alg: String, params: List<Any> = emptyList()): KeyPair =
                 initialize(
                     LMSKeyGenParameterSpec(
                         params[0] as LMSigParameters,
-                        params[1] as LMOtsParameters
+                        params[1] as LMOtsParameters,
                     )
                 )
             alg == ELGAMAL -> {
@@ -314,7 +314,7 @@ fun genKeyPair(alg: String, params: List<Any> = emptyList()): KeyPair =
                     ECGenParameterSpec(
                         ecGenParameterSpec[alg.uppercase() + "-${params[0] as Int}"]
                     ),
-                    SecureRandom()
+                    SecureRandom(),
                 )
             alg in arrayOf("ED448", "ED25519") -> {
                 // nop
@@ -345,7 +345,7 @@ fun pkcs8ToPkcs1(pkcs8: String) =
 fun pkcs1ToPkcs8(pkcs1: String) =
     PrivateKeyInfo(
             AlgorithmIdentifier(PKCSObjectIdentifiers.rsaEncryption),
-            ASN1Primitive.fromByteArray(pkcs1.base64Decode())
+            ASN1Primitive.fromByteArray(pkcs1.base64Decode()),
         )
         .encoded
         .run {

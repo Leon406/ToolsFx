@@ -21,7 +21,7 @@ data class Rdap(
     val rdapConformance: List<String>,
     val secureDNS: SecureDNS,
     val status: List<String>,
-    val unicodeName: String
+    val unicodeName: String,
 ) {
 
     var errorCode = ""
@@ -152,7 +152,7 @@ data class Entity(
     val publicIds: List<PublicId>?,
     val remarks: List<Remark>,
     val roles: List<String>,
-    val vcardArray: List<Any>
+    val vcardArray: List<Any>,
 )
 
 data class Event(val eventAction: String, val eventDate: String)
@@ -165,14 +165,14 @@ data class Nameserver(
     val ldhName: String,
     val links: List<Link>,
     val objectClassName: String,
-    val unicodeName: String
+    val unicodeName: String,
 )
 
 data class Notice(
     val description: List<String>,
     val links: List<Link>,
     val title: String,
-    val type: String
+    val type: String,
 )
 
 data class SecureDNS(val delegationSigned: Boolean)
@@ -181,7 +181,7 @@ data class EntityX(
     val handle: String,
     val objectClassName: String,
     val roles: List<String>,
-    val vcardArray: List<Any>
+    val vcardArray: List<Any>,
 )
 
 data class PublicId(val identifier: String, val type: String)

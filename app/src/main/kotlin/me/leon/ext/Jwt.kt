@@ -5,12 +5,7 @@ import me.leon.ext.crypto.*
 
 const val JWT = "JWT"
 
-val JWT_HMAC_ALGS =
-    mapOf(
-        "HS256" to "HmacSHA256",
-        "HS384" to "HmacSHA384",
-        "HS512" to "HmacSHA512",
-    )
+val JWT_HMAC_ALGS = mapOf("HS256" to "HmacSHA256", "HS384" to "HmacSHA384", "HS512" to "HmacSHA512")
 
 val JWT_SIGNATURE_ALGS =
     mapOf(

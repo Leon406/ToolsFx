@@ -42,14 +42,14 @@ object HttpUrlUtil {
         object : X509TrustManager {
             override fun checkClientTrusted(
                 paramArrayOfX509Certificate: Array<X509Certificate?>?,
-                paramString: String?
+                paramString: String?,
             ) {
                 // nop
             }
 
             override fun checkServerTrusted(
                 paramArrayOfX509Certificate: Array<X509Certificate?>?,
-                paramString: String?
+                paramString: String?,
             ) {
                 // nop
             }
@@ -66,7 +66,7 @@ object HttpUrlUtil {
         host: String,
         port: Int,
         user: String = "",
-        pass: String = ""
+        pass: String = "",
     ) {
         proxy =
             if (type == Proxy.Type.DIRECT) {
@@ -128,7 +128,7 @@ object HttpUrlUtil {
         url: String,
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf(),
-        isDownload: Boolean = false
+        isDownload: Boolean = false,
     ): Response {
         val req = Request(url, "GET", params, headers)
         preAction(req)
@@ -183,7 +183,7 @@ object HttpUrlUtil {
         url: String,
         method: String,
         params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
+        headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
         val req = Request(url, method, params, headers)
         preAction(req)
@@ -245,7 +245,7 @@ object HttpUrlUtil {
     fun getBody(
         url: String,
         data: String,
-        headers: MutableMap<String, Any> = mutableMapOf()
+        headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
         val req = Request(url, "GET", mutableMapOf(), headers)
         preAction(req)
@@ -279,7 +279,7 @@ object HttpUrlUtil {
     fun postData(
         url: String,
         data: String,
-        headers: MutableMap<String, Any> = mutableMapOf()
+        headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
         val req = Request(url, "POST", mutableMapOf(), headers)
         preAction(req)
@@ -315,7 +315,7 @@ object HttpUrlUtil {
         files: List<File>,
         name: String = "file",
         params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
+        headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
         val req = Request(url, "POST", params, headers)
         val boundary = "Leon406_" + UUID.randomUUID().toString().replace("-", "")
@@ -358,7 +358,7 @@ object HttpUrlUtil {
     private fun makeMultipartFileBody(
         boundary: String,
         name: String,
-        file: File
+        file: File,
     ): java.lang.StringBuilder? {
         return StringBuilder(PREFIX)
             .append(boundary)

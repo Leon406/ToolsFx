@@ -135,7 +135,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                             selectedMethod.get(),
                             reqTableParams,
                             reqHeaders,
-                            taReqContent.text
+                            taReqContent.text,
                         )
                         .apply {
                             isJson = selectedBodyType.get() == BodyType.JSON.type
@@ -332,14 +332,14 @@ class ApiPostView : PluginFragment("ApiPost") {
                                         this.value.split(",", ";").map { it.toFile() },
                                         this.key,
                                         reqTableParams,
-                                        reqHeaders
+                                        reqHeaders,
                                     )
                                 }
                                     ?: controller.post(
                                         tfUrl.text,
                                         reqTableParams,
                                         reqHeaders,
-                                        bodyType == BodyType.JSON
+                                        bodyType == BodyType.JSON,
                                     )
                             BodyType.RAW ->
                                 controller.postRaw(tfUrl.text, taReqContent.text, reqHeaders)
@@ -349,7 +349,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                             tfUrl.text,
                             selectedMethod.get(),
                             reqTableParams,
-                            reqHeaders
+                            reqHeaders,
                         )
                     }
                     .also {
@@ -386,7 +386,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                                             countMap.map { "\t\tresp len: ${it.key.length}  num: ${it.value}" }
                                                 .joinToString(System.lineSeparator())
                                         }",
-                                3000
+                                3000,
                             )
                         }
                     }

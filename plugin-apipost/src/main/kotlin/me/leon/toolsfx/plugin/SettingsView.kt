@@ -123,7 +123,7 @@ class SettingsView : View("Setting") {
                     tfPassword.text,
                     tfTime.text.toInt(),
                     followRedirect.get(),
-                    ignoreCert.get()
+                    ignoreCert.get(),
                 )
                 close()
             }

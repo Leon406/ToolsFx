@@ -11,7 +11,7 @@ data class NginxLog(
     val status: Int,
     val length: Int,
     val refer: String,
-    val userAgent: String
+    val userAgent: String,
 ) {
     fun timeRangeCondition(start: Date, end: Date = Date()): Boolean {
         return date.after(start) && date.before(end)
@@ -69,6 +69,6 @@ fun MatchResult.toNginxLog() =
             this["code"]!!.value.toInt(),
             this["len"]!!.value.toInt(),
             this["refer"]!!.value,
-            this["ua"]!!.value
+            this["ua"]!!.value,
         )
     }

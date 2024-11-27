@@ -37,7 +37,7 @@ class HttpTest {
         HttpUrlUtil.post(
             "https://lab.magiconch.com/api/nbnhhsh/guess",
             mutableMapOf("text" to "cylx"),
-            isJson = true
+            isJson = true,
         )
     }
 
@@ -124,7 +124,7 @@ class HttpTest {
             mutableMapOf(
                 "apiType" to "bilibili,muke",
                 "token" to "5c483f653d928ef0c83d3547efb12792",
-            )
+            ),
         )
     }
 
@@ -136,7 +136,7 @@ class HttpTest {
             listOf(
                 File("E:\\prj\\Android-app\\app\\src\\main\\res\\drawable\\icon_photograph.png")
             ),
-            "image"
+            "image",
         )
     }
 
@@ -156,7 +156,7 @@ class HttpTest {
                         ),
                         api.file,
                         api.body.toMutableMap(),
-                        api.headers.toMutableMap()
+                        api.headers.toMutableMap(),
                     )
                     .data
 
@@ -208,7 +208,7 @@ class HttpTest {
             "https://193.110.201.185:11000/find_cached_nodes",
             "{\"network\":\"pnet\",\"target_id\":\"dzlOMk52c2RCU1Q4NmZHZnlTT2ZzSkUxY0tPWFlqV3dzdzVtc1k4REtwWTZiR" +
                 "kxYcmo5dW4yNmQ0RWtsRVpKcQ==\",\"local_continent_code\":\"AS\",\"local_country_code\":\"CN\",\"tar" +
-                "get_country_code\":\"KR\",\"num_nodes\":20}"
+                "get_country_code\":\"KR\",\"num_nodes\":20}",
         )
         TrustManager.parseFromPkcs12("$httpConfigPath/baidu.p12", "123456")
         HttpUrlUtil.get("https://www.baidu.com")

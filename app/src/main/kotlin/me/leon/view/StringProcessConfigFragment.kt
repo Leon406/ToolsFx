@@ -84,7 +84,7 @@ class StringProcessConfigFragment : Fragment(FX.messages["stringProcess"]) {
                     selectedVoice,
                     TTSVoice.provides()
                         .filter { it.Locale == selectedLocale.get() && it.Gender == selectGender }
-                        .toObservable()
+                        .toObservable(),
                 ) {
                     tooltip(selectedVoice.get().FriendlyName)
                     cellFormat { text = it.ShortName }
@@ -148,7 +148,7 @@ class StringProcessConfigFragment : Fragment(FX.messages["stringProcess"]) {
                         volumeLabel.text,
                         pitchLabel.text,
                         cacheable.get(),
-                        longSentence.get()
+                        longSentence.get(),
                     )
                     Prefs.configOcr(tfOcrKey.text, tfOcrSecret.text)
                     Prefs.translateTargetLan = selectedTargetLanguage.get()

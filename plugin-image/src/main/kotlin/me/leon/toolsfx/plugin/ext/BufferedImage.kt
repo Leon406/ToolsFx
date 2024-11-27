@@ -116,7 +116,7 @@ private fun isLine(
     leftBottom: Int,
     rightTop: Int,
     leftTop: Int,
-    rightBottom: Int
+    rightBottom: Int,
 ) =
     left.isWhite &&
         right.isWhite &&
@@ -403,7 +403,7 @@ fun File.toBufferImage(): BufferedImage = ImageIO.read(this)
  */
 fun BufferedImage.scale(
     scale: Double,
-    interpolationType: Int = AffineTransformOp.TYPE_BILINEAR
+    interpolationType: Int = AffineTransformOp.TYPE_BILINEAR,
 ): BufferedImage {
     val w2 = (width * scale).toInt()
     val h2 = (height * scale).toInt()

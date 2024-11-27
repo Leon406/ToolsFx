@@ -176,7 +176,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                             it,
                             srcEncodeType,
                             tfCustomDict.text,
-                            selectedSrcCharset.get()
+                            selectedSrcCharset.get(),
                         )
                     val encodeString = decode.toString(Charset.forName(selectedSrcCharset.get()))
                     println("transfer $encodeString")
@@ -188,7 +188,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
                         inputText,
                         srcEncodeType,
                         tfCustomDict.text,
-                        selectedSrcCharset.get()
+                        selectedSrcCharset.get(),
                     )
                 val encodeString = decode.toString(Charset.forName(selectedSrcCharset.get()))
                 println("transfer $encodeString")

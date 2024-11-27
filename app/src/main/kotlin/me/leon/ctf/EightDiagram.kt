@@ -71,7 +71,7 @@ val EIGHT_MAP =
         "大壮",
         "大有",
         "夬",
-        "乾"
+        "乾",
     )
 
 fun String.eightDiagram(delimiter: String = "") =

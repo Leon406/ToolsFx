@@ -152,12 +152,12 @@ enum class Compression(val alg: String) : ICompress {
                         .encodeTo(outputEncode)
                 else -> error("Wrong Encoding!!!")
             }
-    }
+    },
 }
 
 private fun compress(
     data: ByteArray,
-    action: (ByteArrayInputStream, ByteArrayOutputStream) -> Unit
+    action: (ByteArrayInputStream, ByteArrayOutputStream) -> Unit,
 ): ByteArray =
     ByteArrayInputStream(data).use { input ->
         val outputStream = ByteArrayOutputStream()
@@ -167,7 +167,7 @@ private fun compress(
 
 private fun decompress(
     compressed: ByteArray,
-    action: (ByteArrayInputStream, ByteArrayOutputStream) -> Unit
+    action: (ByteArrayInputStream, ByteArrayOutputStream) -> Unit,
 ): ByteArray =
     ByteArrayInputStream(compressed).use { input ->
         val outputStream = ByteArrayOutputStream()

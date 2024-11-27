@@ -36,9 +36,9 @@ class OpenAiTest {
                     ChatMessage.SystemMessage.of("You are an expert in AI."),
                     ChatMessage.UserMessage.of(
                         "Write a technical article about ChatGPT, no more than 100 words."
-                    )
+                    ),
                 ),
-                0.0
+                0.0,
             )
         if (chatResponse?.choices?.isNotEmpty() == true) {
             println(chatResponse.firstContent())
@@ -57,9 +57,9 @@ class OpenAiTest {
                     ChatMessage.SystemMessage.of("You are an expert in AI."),
                     ChatMessage.UserMessage.of(
                         "Write a technical article about ChatGPT, no more than 100 words."
-                    )
+                    ),
                 ),
-                0.0
+                0.0,
             )
         println("----------------------")
         chatResponse

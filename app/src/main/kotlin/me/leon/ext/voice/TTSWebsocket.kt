@@ -9,7 +9,7 @@ import org.java_websocket.handshake.ServerHandshake
 class TTSWebsocket(
     serverUri: String,
     httpHeaders: Map<String, String>,
-    private val findHeadHook: Boolean
+    private val findHeadHook: Boolean,
 ) : WebSocketClient(URI(serverUri), httpHeaders) {
 
     var byteArrays: MutableList<Byte> = mutableListOf()
