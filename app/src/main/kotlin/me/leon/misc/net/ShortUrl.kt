@@ -9,12 +9,6 @@ import me.leon.ext.readFromNet
  * @email deadogone@gmail.com
  */
 object ShortUrl {
-    fun baka(url: String): String =
-        ("https://baka.link/shorten?url=$url")
-            .readFromNet()
-            .fromJson(Map::class.java)["s_url"]
-            .toString()
-
     fun tinyUrl(url: String) = ("https://tinyurl.com/api-create.php?url=$url").readFromNet()
 
     fun aadTw(url: String) =
@@ -62,9 +56,6 @@ enum class ShortUrlEnum : Shorten {
     },
     DWZ {
         override fun short(url: String) = ShortUrl.dwz(url)
-    },
-    BAKA {
-        override fun short(url: String) = ShortUrl.baka(url)
     },
     TINY_URL {
         override fun short(url: String) = ShortUrl.tinyUrl(url)
