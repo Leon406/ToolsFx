@@ -11,36 +11,37 @@ import me.leon.ext.readFromNet
  */
 fun dnsSolve(urls: List<String>): String =
     dnsSolveResult(urls)
-        .groupBy { it.second.ipCloudFlare() }
+        .groupBy { it.second.ipCdnType() }
         .toList()
         .joinToString(System.lineSeparator()) { (k, v) ->
-            v.joinToString(
-                System.lineSeparator(),
-                "# CloudFlare ip ${System.lineSeparator()}".takeIf { k }.orEmpty(),
-            ) {
+            v.joinToString(System.lineSeparator(), "# $k ip ${System.lineSeparator()}") {
                 it.second + "\t" + it.first
             }
         }
 
-fun dnsSolveResult(urls: List<String>): List<Pair<String, String>> = runBlocking {
-    val aliOkUrls =
-        urls
+fun dnsSolveResult(domains: List<String>): List<Pair<String, String>> = runBlocking {
+    val aliOkDomains =
+        domains
             .sorted()
             .distinct()
             .map { domain -> async(DISPATCHER) { domain to fastestIp(resolveDomainByAli(domain)) } }
             .awaitAll()
             .filter { it.second != null }
     // if alidns ip is not available, try cloudfare dns
-    val cfOkUrls =
-        (urls - aliOkUrls.map { it.first }.toSet())
-            .also { println("ali dns failed ips: ${it.size}") }
+    val cfOkDomains =
+        (domains - aliOkDomains.map { it.first }.toSet())
+            .also {
+                println("ali dns failed ips: ${it.size} ${it.joinToString(System.lineSeparator())}")
+            }
             .map { domain ->
                 async(DISPATCHER) { domain to fastestIp(resolveDomainsByCloudfare(domain)) }
             }
             .awaitAll()
             .filter { it.second != null }
-
-    (aliOkUrls + cfOkUrls).map { it.first to it.second!!.first }
+    val errorDomain =
+        domains - aliOkDomains.map { it.first }.toSet() - cfOkDomains.map { it.first }.toSet()
+    (aliOkDomains + cfOkDomains).map { it.first to it.second!!.first } +
+        errorDomain.map { it to "127.0.0.1" }
 }
 
 fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long>? {
@@ -56,8 +57,10 @@ fun fastestIp(ips: List<String>, timeout: Int = 2000): Pair<String, Long>? {
         .getOrNull()
 }
 
+val ALI_DNS = listOf("223.5.5.5", "223.6.6.6")
+
 fun resolveDomainByAli(name: String): List<String> =
-    "https://dns.alidns.com/resolve?name=$name&type=1".readFromNet().parseDnsIp()
+    "https://${ALI_DNS.random()}/resolve?name=$name&type=1".readFromNet().parseDnsIp()
 
 fun resolveDomainsByCloudfare(name: String): List<String> =
     "https://1.1.1.1/dns-query?name=$name&type=A"
@@ -65,4 +68,4 @@ fun resolveDomainsByCloudfare(name: String): List<String> =
         .parseDnsIp()
 
 private fun String.parseDnsIp() =
-    fromJson(DnsResponse::class.java).Answer.filter { it.type == 1 }.map { it.data }
+    fromJson(DnsResponse::class.java).Answer?.filter { it.type == 1 }?.map { it.data }.orEmpty()

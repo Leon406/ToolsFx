@@ -10,7 +10,7 @@ import me.leon.ext.headRequest
  * @since 2023-01-31 17:00
  * @email deadogone@gmail.com
  */
-@OptIn(ExperimentalCoroutinesApi::class) val DISPATCHER = Dispatchers.IO.limitedParallelism(128)
+val DISPATCHER = Dispatchers.IO.limitedParallelism(128)
 
 val LOCAL_IP_A = "^10\\.".toRegex()
 val LOCAL_IP_B = "^172\\.(1[6-9]|2[0-9]|3[0-1])\\.".toRegex()

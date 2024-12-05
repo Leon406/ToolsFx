@@ -2,6 +2,9 @@ package me.leon.misc.net
 
 import kotlin.math.pow
 import me.leon.ext.*
+import me.leon.misc.net.cdn.CLOUD_FLARE_CIDR
+import me.leon.misc.net.cdn.CLOUD_FRONT_CIDR
+import me.leon.misc.net.cdn.GCORE_CIDR
 
 /**
  * @author Leon
@@ -78,6 +81,7 @@ fun String.cidr(): String {
         .toString()
 }
 
+/** 包含头尾 */
 fun String.cidrRange(): UIntRange {
     val (ipStr, cidrStr) = split("/").takeIf { it.size > 1 } ?: listOf(this, "24")
     val cidr = cidrStr.takeIf { it.isNotEmpty() }?.toInt() ?: 24
@@ -86,33 +90,30 @@ fun String.cidrRange(): UIntRange {
     val count = 2.0.pow(sub).toInt()
     val mask = cidr.ipMask().ip2Uint()
     val net = mask and ip
-    return (net + 1U)..(net + (count - 2).toUInt())
+    return net..(net + (count - 1).toUInt())
 }
 
 private const val IP_API = "http://ip-api.com/json/%s?lang=zh-CN"
 private const val PCONLINE_API = "http://whois.pconline.com.cn/ipJson.jsp?ip=%s&json=true"
 
-val cfCidrs =
-    setOf(
-            "103.21.244.0/22",
-            "103.22.200.0/22",
-            "103.31.4.0/22",
-            "104.16.0.0/13",
-            "104.24.0.0/14",
-            "108.162.192.0/18",
-            "131.0.72.0/22",
-            "141.101.64.0/18",
-            "162.158.0.0/15",
-            "172.64.0.0/13",
-            "173.245.48.0/20",
-            "188.114.96.0/20",
-            "190.93.240.0/20",
-            "197.234.240.0/22",
-            "198.41.128.0/17",
-        )
-        .map { it.cidrRange() }
+val cfCidrs = CLOUD_FLARE_CIDR.map { it.cidrRange() }
+
+val cloudFrontCidrs = CLOUD_FRONT_CIDR.map { it.cidrRange() }
+val gcoreCidrs = GCORE_CIDR.map { it.cidrRange() }
 
 fun String.ipCloudFlare() = cfCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipCloudFront() = cloudFrontCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipGcore() = gcoreCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipCdnType() =
+    when {
+        ipCloudFlare() -> "CloudFlare"
+        ipCloudFront() -> "CloudFront"
+        ipGcore() -> "Gcore"
+        else -> "Normal"
+    }
 
 fun String.ipLocation() =
     runCatching {

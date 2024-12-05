@@ -70,6 +70,24 @@ class IpTest {
     }
 
     @Test
+    fun ipCloudFront() {
+        val ip = "108.138.217.44"
+        println(ip.ipCloudFront())
+    }
+
+    @Test
+    fun ipGcore() {
+        val ip = "82.117.226.240"
+        println(ip.ipGcore())
+    }
+
+    @Test
+    fun dns() {
+        println(resolveDomainByAli("baidu.com"))
+        println(resolveDomainByAli("www.d-555.com"))
+    }
+
+    @Test
     fun ipLocation() {
         val url = "baidu.com"
         println(url.ipLocation())
