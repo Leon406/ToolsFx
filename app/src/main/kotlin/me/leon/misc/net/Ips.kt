@@ -59,6 +59,7 @@ fun Int.ipMask() = ipMaskBinary().binary2Ip()
 fun String.cidr(): String {
     val (ipStr, cidrStr) = split("/").takeIf { it.size > 1 } ?: listOf(this, "24")
     val cidr = cidrStr.takeIf { it.isNotEmpty() }?.toInt() ?: 24
+    require(cidr in 0..32) { "Error CIDR" }
     val ip = ipStr.ip2Uint()
     val sub = 32 - cidr
     val count = 2.0.pow(sub).toInt()
@@ -66,15 +67,13 @@ fun String.cidr(): String {
     val net = mask and ip
 
     return StringBuilder()
-        .append("${"ip count".center(12)}:\t${count - 2}")
+        .append("${"ip count".center(12)}:\t$count")
         .appendLine()
         .append("${"mask".center(12)}:\t" + cidr.ipMask())
         .appendLine()
         .append("${"net".center(12)}:\t" + net.toIp())
         .appendLine()
-        .append(
-            "${"range".center(12)}:\t${(net + 1U).toIp()} - ${(net + (count - 2).toUInt()).toIp()}"
-        )
+        .append("${"range".center(12)}:\t${net.toIp()} - ${(net + (count - 1).toUInt()).toIp()}")
         .appendLine()
         .append("${"broadcast".center(12)}:\t" + (net + (count - 1).toUInt()).toIp())
         .appendLine()
