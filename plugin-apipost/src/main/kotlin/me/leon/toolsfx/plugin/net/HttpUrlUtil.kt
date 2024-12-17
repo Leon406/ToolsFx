@@ -13,6 +13,7 @@ import kotlin.collections.component2
 import kotlin.collections.set
 import kotlin.system.measureTimeMillis
 import me.leon.encode.base.base64
+import me.leon.ext.toHex
 import tornadofx.*
 
 object HttpUrlUtil {
@@ -25,14 +26,15 @@ object HttpUrlUtil {
     const val HEADER_PROXY_AUTH = "Proxy-Authorization"
     const val PROPERTY_AUTH_TUNNELING = "jdk.http.auth.tunneling.disabledSchemes"
     private val DEFAULT_PRE_ACTION: (Request) -> Unit = {}
-    private val DEFAULT_POST_ACTION: (ByteArray) -> String = { it.decodeToString() }
+    val POST_ACTION_DEFAULT: (ByteArray) -> String = { it.decodeToString() }
+    val POST_ACTION_HEX: (ByteArray) -> String = { it.toHex() }
     var isDebug = false
     var timeOut = 10_000
     private var proxy: Proxy = Proxy.NO_PROXY
     var followRedirect: Boolean = false
     var downloadFolder = File(File("").absoluteFile, "downloads")
     private var preAction: (Request) -> Unit = DEFAULT_PRE_ACTION
-    private var postAction: (ByteArray) -> String = DEFAULT_POST_ACTION
+    private var postAction: (ByteArray) -> String = POST_ACTION_DEFAULT
 
     private const val PREFIX = "--"
     private const val LINE_END = "\r\n"

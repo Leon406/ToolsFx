@@ -15,14 +15,16 @@ import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.ApiConfig.restoreFromConfig
 import me.leon.toolsfx.plugin.net.*
+import me.leon.toolsfx.plugin.net.HttpUrlUtil.POST_ACTION_DEFAULT
+import me.leon.toolsfx.plugin.net.HttpUrlUtil.POST_ACTION_HEX
 import me.leon.toolsfx.plugin.table.EditingCell
 import tornadofx.*
 
 private const val MAX_SHOW_LENGTH = 1_000_000
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.9.1"
-    override val date: String = "2024-11-18"
+    override val version = "v1.9.2"
+    override val date: String = "2024-12-17"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -43,6 +45,7 @@ class ApiPostView : PluginFragment("ApiPost") {
     private var tfConcurrent: TextField by singleAssign()
     private var tfDelay: TextField by singleAssign()
     private val prettyProperty = SimpleBooleanProperty(true)
+    private val hexProperty = SimpleBooleanProperty(false)
     private val showJsonPath = SimpleBooleanProperty(false)
     private val methods =
         mutableListOf(
@@ -131,12 +134,12 @@ class ApiPostView : PluginFragment("ApiPost") {
                 tooltip(messages["copy"])
                 action {
                     Request(
-                            tfUrl.text,
-                            selectedMethod.get(),
-                            reqTableParams,
-                            reqHeaders,
-                            taReqContent.text,
-                        )
+                        tfUrl.text,
+                        selectedMethod.get(),
+                        reqTableParams,
+                        reqHeaders,
+                        taReqContent.text,
+                    )
                         .apply {
                             isJson = selectedBodyType.get() == BodyType.JSON.type
                             requestParams
@@ -271,6 +274,16 @@ class ApiPostView : PluginFragment("ApiPost") {
             }
 
             checkbox("pretty", prettyProperty)
+            checkbox("hex", hexProperty)
+            hexProperty.addListener { _, _, newValue ->
+                HttpUrlUtil.addPostHandle(
+                    if (newValue) {
+                        POST_ACTION_HEX
+                    } else {
+                        POST_ACTION_DEFAULT
+                    }
+                )
+            }
             checkbox("jsonpath", showJsonPath)
             tfJsonPath = textfield {
                 visibleWhen(showJsonPath)
@@ -321,37 +334,37 @@ class ApiPostView : PluginFragment("ApiPost") {
             val countMap: MutableMap<String, Int> = mutableMapOf()
             fun req() =
                 if (selectedMethod.get() == "POST") {
-                        val bodyType = bodyTypeMap[selectedBodyType.get()]
-                        requireNotNull(bodyType)
-                        when (bodyType) {
-                            BodyType.JSON,
-                            BodyType.FORM_DATA ->
-                                uploadParams?.run {
-                                    controller.uploadFile(
-                                        tfUrl.text,
-                                        this.value.split(",", ";").map { it.toFile() },
-                                        this.key,
-                                        reqTableParams,
-                                        reqHeaders,
-                                    )
-                                }
-                                    ?: controller.post(
-                                        tfUrl.text,
-                                        reqTableParams,
-                                        reqHeaders,
-                                        bodyType == BodyType.JSON,
-                                    )
-                            BodyType.RAW ->
-                                controller.postRaw(tfUrl.text, taReqContent.text, reqHeaders)
-                        }
-                    } else {
-                        controller.request(
-                            tfUrl.text,
-                            selectedMethod.get(),
-                            reqTableParams,
-                            reqHeaders,
-                        )
+                    val bodyType = bodyTypeMap[selectedBodyType.get()]
+                    requireNotNull(bodyType)
+                    when (bodyType) {
+                        BodyType.JSON,
+                        BodyType.FORM_DATA ->
+                            uploadParams?.run {
+                                controller.uploadFile(
+                                    tfUrl.text,
+                                    this.value.split(",", ";").map { it.toFile() },
+                                    this.key,
+                                    reqTableParams,
+                                    reqHeaders,
+                                )
+                            }
+                                ?: controller.post(
+                                    tfUrl.text,
+                                    reqTableParams,
+                                    reqHeaders,
+                                    bodyType == BodyType.JSON,
+                                )
+                        BodyType.RAW ->
+                            controller.postRaw(tfUrl.text, taReqContent.text, reqHeaders)
                     }
+                } else {
+                    controller.request(
+                        tfUrl.text,
+                        selectedMethod.get(),
+                        reqTableParams,
+                        reqHeaders,
+                    )
+                }
                     .also {
                         if (it.code == 200) {
                             success++
@@ -359,30 +372,30 @@ class ApiPostView : PluginFragment("ApiPost") {
                         }
                     }
             runCatching {
-                    runBlocking {
-                        (1..count)
-                            .map {
-                                async(dispatcher) {
-                                    req().also {
-                                        if (delayMillis > 0) {
-                                            // delay 无法阻塞其他
-                                            Thread.sleep(delayMillis)
-                                        }
+                runBlocking {
+                    (1..count)
+                        .map {
+                            async(dispatcher) {
+                                req().also {
+                                    if (delayMillis > 0) {
+                                        // delay 无法阻塞其他
+                                        Thread.sleep(delayMillis)
                                     }
                                 }
                             }
-                            .awaitAll()
-                            .last()
-                    }
+                        }
+                        .awaitAll()
+                        .last()
                 }
+            }
                 .onSuccess {
                     handleSuccess(it)
                     if (count > 1) {
                         ui {
                             primaryStage.showToast(
                                 "  time  costs : ${System.currentTimeMillis() - start} ms" +
-                                    "\nsuccess/total: $success/$count" +
-                                    "\n    detail   :\n${
+                                        "\nsuccess/total: $success/$count" +
+                                        "\n    detail   :\n${
                                             countMap.map { "\t\tresp len: ${it.key.length}  num: ${it.value}" }
                                                 .joinToString(System.lineSeparator())
                                         }",
@@ -445,7 +458,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                                         valueProperty.value = mutableEntry.value.toString()
                                         fileProperty.value =
                                             mutableEntry.key in fileKeys ||
-                                                mutableEntry.value.toString() == "@file"
+                                                    mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }
