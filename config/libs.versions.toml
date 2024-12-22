@@ -11,7 +11,7 @@ javaxJsonVer = "1.1.4"
 # openjfx LTS version needs Subscription https://mvnrepository.com/artifact/org.openjfx/javafx-controls
 # jfx 20.x+ requires jdk 17+
 jfxVer = "23.0.1"
-jnaVer = "5.15.0"
+jnaVer = "5.16.0"
 kotlinSerVer = "1.7.3"
 kotlinVer = "2.1.0"
 mockitoCoreVer = "5.14.2"
