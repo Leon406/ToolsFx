@@ -33,6 +33,14 @@ class CodeExplainTest {
     }
 
     @Test
+    fun districtNo() {
+        println(CodeMapping.CN_DISTRICT_NO["0577"])
+        println(CodeMapping.CN_DISTRICT_NO["57"])
+        println(CodeMapping.CN_DISTRICT_NO["47"])
+        println(CodeMapping.CN_DISTRICT_NO["470"])
+    }
+
+    @Test
     fun language() {
         println(CodeMapping.LANGUAGE["鞑靼语"])
         println(CodeMapping.LANGUAGE["vi"])
