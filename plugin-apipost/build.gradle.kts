@@ -26,5 +26,5 @@ dependencies {
     testImplementation(libs.kotlin.test)
     testImplementation(libs.selenium)
     testImplementation("com.squareup.okhttp3:okhttp-sse:4.12.0")
-    testImplementation("io.github.sashirestela:simple-openai:3.13.0")
+    testImplementation("io.github.sashirestela:simple-openai:3.14.0")
 }
