@@ -64,7 +64,9 @@ val MISC_CONFIG =
 val MISC_OPTIONS_CONFIG =
     mapOf(
         MiscServiceType.TIME_STAMP to
-            mapOf(OPTIONS to arrayOf("milliseconds", "seconds", "minutes", "hours", "days")),
+            mapOf(
+                OPTIONS to arrayOf("milliseconds", "seconds", "WebKit", "minutes", "hours", "days")
+            ),
         MiscServiceType.UUID to mapOf(OPTIONS to arrayOf("normal", "w/o '-'")),
         MiscServiceType.ROMANJI to
             mapOf(OPTIONS to KawaType.entries.map { it.toString() }.toTypedArray()),

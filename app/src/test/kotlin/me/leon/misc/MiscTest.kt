@@ -358,4 +358,10 @@ class MiscTest {
         println("喜欢你".kawa(KawaType.CANTONESE).pretty())
         println(("여보세요\n" + "안녕하세요\n" + "배용준").kawa(KawaType.HANGUL).pretty())
     }
+
+    @Test
+    fun timestamp() {
+        MiscServiceType.TIME_STAMP.process("13380944510000000", mutableMapOf("c1" to "WebKit"))
+            .also { println(it) }
+    }
 }

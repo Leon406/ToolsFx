@@ -13,6 +13,7 @@ import me.leon.misc.zhconvert.convert
 val SDF_TIME = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 val SDF_DATE = SimpleDateFormat("yyyy-MM-dd")
 val SDF_DATE2 = SimpleDateFormat("yyyyMMdd")
+const val MILLIS_DIFF_1970_1601 = 11644473600000L
 private const val NOW = "NOW"
 
 enum class MiscServiceType(val type: String) : MiscService {
@@ -33,16 +34,29 @@ enum class MiscServiceType(val type: String) : MiscService {
     },
     TIME_STAMP("stamp2date") {
         override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+
             val factor =
-                when (requireNotNull(params[C1])) {
+                when (type) {
                     "seconds" -> 1000L
                     "milliseconds" -> 1L
+                    "WebKit" -> 1L
                     "minutes" -> 60_000L
                     "hours" -> 3_600_000L
                     "days" -> 86_400_000L
                     else -> 1L
                 }
-            return raw.lineAction { SDF_TIME.format(Date(it.toLong() * factor)) }
+            return raw.lineAction {
+                    SDF_TIME.format(
+                        Date(
+                            if (type == "WebKit") {
+                                (it.toLong() / 1000 - MILLIS_DIFF_1970_1601)
+                            } else {
+                                it.toLong()
+                            } * factor
+                        )
+                    )
+                }
                 .joinToString(System.lineSeparator())
         }
     },
