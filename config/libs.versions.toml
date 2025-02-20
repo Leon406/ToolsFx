@@ -19,7 +19,7 @@ nashornVer = "15.6"
 seleniumVer = "4.27.0"
 sqliteVer = "3.49.1.0"
 tornadofxVer = "1.7.20"
-zstdVer = "1.5.6-10"
+zstdVer = "1.5.7-1"
 zxingVer = "3.5.3"
 jsoupVer = "1.18.3"
 
