@@ -5,7 +5,7 @@ asmVer = "3.2.0"
 bcVer = "1.80"
 commonCompressVer = "1.27.1"
 coroutineVer = "1.10.2"
-gsonVer = "2.12.1"
+gsonVer = "2.13.0"
 javassistVer = "3.30.2-GA"
 javaxJsonVer = "1.1.4"
 # openjfx LTS version needs Subscription https://mvnrepository.com/artifact/org.openjfx/javafx-controls
