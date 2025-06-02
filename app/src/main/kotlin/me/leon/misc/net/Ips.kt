@@ -5,6 +5,8 @@ import me.leon.ext.*
 import me.leon.misc.net.cdn.CLOUD_FLARE_CIDR
 import me.leon.misc.net.cdn.CLOUD_FRONT_CIDR
 import me.leon.misc.net.cdn.GCORE_CIDR
+import me.leon.misc.net.cdn.GSTATIC_CIDR
+import me.leon.misc.net.cdn.LOCAL_CIDR
 
 /**
  * @author Leon
@@ -96,9 +98,11 @@ private const val IP_API = "http://ip-api.com/json/%s?lang=zh-CN"
 private const val PCONLINE_API = "http://whois.pconline.com.cn/ipJson.jsp?ip=%s&json=true"
 
 val cfCidrs = CLOUD_FLARE_CIDR.map { it.cidrRange() }
+val googleCidrs = GSTATIC_CIDR.map { it.cidrRange() }
 
 val cloudFrontCidrs = CLOUD_FRONT_CIDR.map { it.cidrRange() }
 val gcoreCidrs = GCORE_CIDR.map { it.cidrRange() }
+val localCidrs = LOCAL_CIDR.map { it.cidrRange() }
 
 fun String.ipCloudFlare() = cfCidrs.any { it.contains(ip2Uint()) }
 
@@ -106,11 +110,17 @@ fun String.ipCloudFront() = cloudFrontCidrs.any { it.contains(ip2Uint()) }
 
 fun String.ipGcore() = gcoreCidrs.any { it.contains(ip2Uint()) }
 
+fun String.ipGoogle() = googleCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipLocal() = localCidrs.any { it.contains(ip2Uint()) }
+
 fun String.ipCdnType() =
     when {
         ipCloudFlare() -> "CloudFlare"
         ipCloudFront() -> "CloudFront"
         ipGcore() -> "Gcore"
+        ipGoogle() -> "Google"
+        ipLocal() -> "Local"
         else -> "Normal"
     }
 
