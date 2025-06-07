@@ -16,6 +16,7 @@ import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier
+import org.bouncycastle.crypto.engines.SM2Engine
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.pqc.crypto.lms.LMOtsParameters
 import org.bouncycastle.pqc.crypto.lms.LMSigParameters
@@ -23,6 +24,7 @@ import org.bouncycastle.pqc.jcajce.spec.LMSKeyGenParameterSpec
 import org.bouncycastle.pqc.jcajce.spec.SPHINCSPlusParameterSpec
 
 private const val ELGAMAL = "ElGamal"
+const val SM2_C1C2C3 = "SM2-C1C2C3"
 
 val ASYMMETRIC_ALGOS =
     mapOf(
@@ -30,6 +32,7 @@ val ASYMMETRIC_ALGOS =
         // todo
         "ElGamal" to listOf(512, 1024, 2048),
         "SM2" to listOf(256),
+        SM2_C1C2C3 to listOf(256),
     )
 
 val RSA_PADDINGS =
@@ -57,6 +60,8 @@ val OAEP_PARAM_SPEC_SHA1 =
 
 fun String.removePemArmor() =
     replace("---+(?:END|BEGIN) (?:RSA |EC |DSA )?\\w+ KEY---+|\n|\r|\r\n".toRegex(), "")
+
+fun String.propCipherAlgorithm() = properOAEPAlg().properKeyPairAlg()
 
 fun getPropPublicKey(key: String): ByteArray =
     if (key.contains("-----BEGIN CERTIFICATE-----")) {
@@ -118,7 +123,7 @@ fun String.toPrivateKey(alg: String): PrivateKey? =
 fun ByteArray.pubDecrypt(key: String, alg: String) = pubDecrypt(key.toPublicKey(alg), alg)
 
 fun ByteArray.pubDecrypt(publicKey: PublicKey?, alg: String): ByteArray =
-    Cipher.getInstance(alg.properOAEPAlg()).run {
+    Cipher.getInstance(alg.propCipherAlgorithm()).run {
         if (alg.isOAEP()) {
             init(Cipher.DECRYPT_MODE, publicKey, OAEP_PARAM_SPEC_SHA1)
             return@pubDecrypt doFinal(this@pubDecrypt)
@@ -132,7 +137,7 @@ fun ByteArray.pubDecrypt(publicKey: PublicKey?, alg: String): ByteArray =
     }
 
 fun ByteArray.pubEncrypt(publicKey: PublicKey?, alg: String, reserved: Int = 11): ByteArray {
-    return Cipher.getInstance(alg.properOAEPAlg()).run {
+    return Cipher.getInstance(alg.propCipherAlgorithm()).run {
         if (alg.isOAEP()) {
             init(Cipher.ENCRYPT_MODE, publicKey, OAEP_PARAM_SPEC_SHA1)
             println("_______isOAEP")
@@ -163,10 +168,10 @@ private fun String.properOAEPAlg() = if (isOAEP()) this.replace("OAEP", RSA_PADD
 private fun String.isOAEP() = endsWith("OAEP")
 
 fun ByteArray.pubEncrypt(key: String, alg: String, reserved: Int = 11) =
-    if (alg == "SM2") {
-        sm2(true, getPropPublicKey(key).toECPublicKeyParams())
-    } else {
-        pubEncrypt(key.toPublicKey(alg), alg, reserved)
+    when (alg) {
+        "SM2" -> sm2(true, getPropPublicKey(key).toECPublicKeyParams())
+        SM2_C1C2C3 -> sm2(true, getPropPublicKey(key).toECPublicKeyParams(), SM2Engine.Mode.C1C2C3)
+        else -> pubEncrypt(key.toPublicKey(alg), alg, reserved)
     }
 
 fun String.keyAutoDecode(): ByteArray =
@@ -177,7 +182,7 @@ fun String.keyAutoDecode(): ByteArray =
     }
 
 fun ByteArray.asymmetricDecrypt(key: Key?, alg: String): ByteArray =
-    Cipher.getInstance(alg.properOAEPAlg()).run {
+    Cipher.getInstance(alg.propCipherAlgorithm()).run {
         println("alg $alg $key")
         if (alg.isOAEP()) {
             init(Cipher.DECRYPT_MODE, key, OAEP_PARAM_SPEC_SHA1)
@@ -187,15 +192,9 @@ fun ByteArray.asymmetricDecrypt(key: Key?, alg: String): ByteArray =
         }
         val bitLen =
             when (key) {
-                is PublicKey -> {
-                    key.bitLength()
-                }
-                is PrivateKey -> {
-                    key.bitLength()
-                }
-                else -> {
-                    1024
-                }
+                is PublicKey -> key.bitLength()
+                is PrivateKey -> key.bitLength()
+                else -> 1024
             }
 
         println(bitLen)
@@ -210,14 +209,14 @@ fun ByteArray.asymmetricDecrypt(key: Key?, alg: String): ByteArray =
     }
 
 fun ByteArray.privateDecrypt(key: String, alg: String): ByteArray =
-    if (alg == "SM2") {
-        sm2(false, key.keyAutoDecode().toECPrivateKeyParams())
-    } else {
-        asymmetricDecrypt(key.toPrivateKey(alg), alg)
+    when (alg) {
+        "SM2" -> sm2(false, key.keyAutoDecode().toECPrivateKeyParams())
+        SM2_C1C2C3 -> sm2(false, key.keyAutoDecode().toECPrivateKeyParams(), SM2Engine.Mode.C1C2C3)
+        else -> asymmetricDecrypt(key.toPrivateKey(alg), alg)
     }
 
 fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): ByteArray =
-    Cipher.getInstance(alg.properOAEPAlg()).run {
+    Cipher.getInstance(alg.propCipherAlgorithm()).run {
         if (alg.isOAEP()) {
             init(Cipher.ENCRYPT_MODE, key, OAEP_PARAM_SPEC_SHA1)
         } else {
@@ -225,15 +224,9 @@ fun ByteArray.asymmetricEncrypt(key: Key?, alg: String, reserved: Int = 11): Byt
         }
         val bitLen =
             when (key) {
-                is PublicKey -> {
-                    key.bitLength()
-                }
-                is PrivateKey -> {
-                    key.bitLength()
-                }
-                else -> {
-                    1024
-                }
+                is PublicKey -> key.bitLength()
+                is PrivateKey -> key.bitLength()
+                else -> 1024
             }
 
         if (alg == ELGAMAL) {
@@ -263,7 +256,7 @@ fun genBase64KeyArray(alg: String, keySize: Int) =
 
 private fun String.properKeyPairAlg() =
     when {
-        this == "SM2" -> "EC"
+        this.startsWith("SM2") -> "EC"
         this.startsWith("RSA") -> "RSA"
         this.contains("/") -> substringBefore('/')
         else -> this
@@ -283,7 +276,7 @@ fun genBase64KeyArray(alg: String, params: List<Any> = emptyList()) =
 fun genKeyPair(alg: String, params: List<Any> = emptyList()): KeyPair =
     KeyPairGenerator.getInstance(alg.properKeyPairAlg(), BouncyCastleProvider.PROVIDER_NAME).run {
         when {
-            alg == "SM2" -> initialize(ECGenParameterSpec(ecGenParameterSpec[alg.uppercase()]))
+            alg.startsWith("SM2") -> initialize(ECGenParameterSpec(ecGenParameterSpec["SM2"]))
             alg.startsWith("EC") ->
                 initialize(ECGenParameterSpec(ecGenParameterSpec[alg.uppercase()]))
             alg == "SPHINCSPLUS" ->
