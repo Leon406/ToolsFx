@@ -43,7 +43,6 @@ object Translator {
             "https://tr.iass.top",
             "https://translate.industrysourcing.com",
             "https://translate.yunkuerp.cn",
-            "http://fy.qtjx.net",
             "https://test1.tripgpt.cn",
             "https://translate.renwole.com",
             "http://translate.sosel.net",

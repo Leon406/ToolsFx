@@ -9,6 +9,7 @@ import me.leon.encode.base.BASE64_DICT
 import me.leon.ext.*
 import me.leon.ext.crypto.BINARY_REGEX
 import me.leon.ext.crypto.HEX_REGEX
+import org.junit.Test
 
 class CtfTest2 {
     @Test
@@ -227,5 +228,32 @@ class CtfTest2 {
         val encoded = "JEDB"
         assertEquals(encoded, data.citrixCtx1())
         assertEquals(data, encoded.citrixCtx1Decode())
+    }
+
+    @Test
+    fun caseCrack() {
+        val encode = "ZMXHZ3TZMHVFSDR2M19GMHVUZF83ADNFUJFNADDFNG41DZNYFQ=="
+        val raw = "flag{Y0u_H4v3_F0und_7h3_R1gh7_4n5w3r}"
+        println(encode.base64CaseCrack())
+        assertEquals(encode, raw.base64UpperCase())
+    }
+
+    @Test
+    fun caseCrack2() {
+        val encode = "zmxhz3s1yjg0ntu5ms0zmdayltriztctywrios1lodnkntu3mjewztv9"
+        val raw = "flag{5b845591-3f0d-4be7-ae86-h89d557210e5}"
+        println(encode.base64CaseCrack("/[a-z0-9{}-]+/"))
+        //        assertEquals(encode.uppercase(), raw.base64UpperCase())
+    }
+
+    @Test
+    fun hackString() {
+        val hackWord =
+            ("This message serves to prove how our minds can do amazing things!" +
+                    "In the beginning it was hard but now, on this line your mind is reading it automatically" +
+                    " without even thinking about it, be proud!Only certain people can read this!")
+                .hackWord()
+        println(hackWord)
+        println(hackWord.hackWordDecode().lowercase())
     }
 }

@@ -20,14 +20,26 @@ val DEFAULT_CONDITION = { s: String ->
 }
 
 fun String.base64CaseCrack(words: String = ""): String {
+    var reg: Regex? = null
+    var isReg = false
     if (words.isNotEmpty()) {
-        Words.DICT_WORDS.addAll(words.tokenize())
+        if (words.startsWith("/")) {
+            reg = words.trim('/').toRegex()
+            println(reg)
+            isReg = true
+        } else {
+            Words.DICT_WORDS.addAll(words.tokenize())
+        }
     }
+
     return chunked(4)
         .map { it.caseEnum() }
         .enums()
         .map { it to it.base64Decode2String() }
-        .filter { it.second.hackWordDecode().tokenize().all { it.isWord() } }
+        .filter {
+            isReg && reg!!.matches(it.second) ||
+                it.second.hackWordDecode().tokenize().all { it.isWord() }
+        }
         .joinToString(System.lineSeparator()) { "${it.second} ${it.first}" }
 }
 

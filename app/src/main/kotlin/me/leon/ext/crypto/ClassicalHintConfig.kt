@@ -86,7 +86,7 @@ val CLASSIC_CONFIG =
         ClassicalCryptoType.BACON24 to mapOf(CHECK to arrayOf("bacon26")),
         ClassicalCryptoType.TYPE7 to mapOf(HINT to arrayOf("seed(need in encrypt), from 0 to 52")),
         ClassicalCryptoType.BASE64_CASE to
-            mapOf(HINT to arrayOf("addition words, separate by non-letter")),
+            mapOf(HINT to arrayOf("addition words or regexp (/[a-z]/), separate by non-letter")),
         ClassicalCryptoType.BuddhaSay to
             mapOf(
                 HINT to arrayOf("custom password for encrypt version, default is TakuronDotTop"),
