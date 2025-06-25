@@ -134,12 +134,12 @@ class ApiPostView : PluginFragment("ApiPost") {
                 tooltip(messages["copy"])
                 action {
                     Request(
-                            tfUrl.text,
-                            selectedMethod.get(),
-                            reqTableParams,
-                            reqHeaders,
-                            taReqContent.text,
-                        )
+                        tfUrl.text,
+                        selectedMethod.get(),
+                        reqTableParams,
+                        reqHeaders,
+                        taReqContent.text,
+                    )
                         .apply {
                             isJson = selectedBodyType.get() == BodyType.JSON.type
                             requestParams
@@ -327,13 +327,15 @@ class ApiPostView : PluginFragment("ApiPost") {
         }
 
         val dispatcher = Dispatchers.IO.limitedParallelism(concurrent)
-
+        var lastResp: Response? = null
         runAsync {
             val start = System.currentTimeMillis()
             var success = 0
             val countMap: MutableMap<String, Int> = mutableMapOf()
+
             fun req() =
-                if (selectedMethod.get() == "POST") {
+                runCatching {
+                    if (selectedMethod.get() == "POST") {
                         val bodyType = bodyTypeMap[selectedBodyType.get()]
                         requireNotNull(bodyType)
                         when (bodyType) {
@@ -354,6 +356,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                                         reqHeaders,
                                         bodyType == BodyType.JSON,
                                     )
+
                             BodyType.RAW ->
                                 controller.postRaw(tfUrl.text, taReqContent.text, reqHeaders)
                         }
@@ -364,43 +367,48 @@ class ApiPostView : PluginFragment("ApiPost") {
                             reqTableParams,
                             reqHeaders,
                         )
-                    }
-                    .also {
-                        if (it.code == 200) {
-                            success++
-                            countMap[it.data] = countMap[it.data]?.let { it + 1 } ?: 1
+                    }.also { lastResp = it }
+                        .toLiteResponse()
+                        .also {
+                            if (it.code == 200) {
+                                success++
+                                countMap[it.hash] = countMap[it.hash]?.let { it + 1 } ?: 1
+                            }
                         }
-                    }
+                }.onFailure {
+                    Response(-1, it.message ?: "", mutableMapOf(), System.currentTimeMillis(),)
+                }
+
             runCatching {
-                    runBlocking {
-                        (1..count)
-                            .map {
-                                async(dispatcher) {
-                                    req().also {
-                                        if (delayMillis > 0) {
-                                            // delay 无法阻塞其他
-                                            Thread.sleep(delayMillis)
-                                        }
+                runBlocking {
+                    (1..count)
+                        .map {
+                            async(dispatcher) {
+                                req().also {
+                                    if (delayMillis > 0) {
+                                        // delay 无法阻塞其他
+                                        Thread.sleep(delayMillis)
                                     }
                                 }
                             }
-                            .awaitAll()
-                            .last()
-                    }
+                        }
+                        .awaitAll()
+
+                    lastResp!!
                 }
+            }
                 .onSuccess {
                     handleSuccess(it)
                     if (count > 1) {
                         ui {
-                            primaryStage.showToast(
-                                "  time  costs : ${System.currentTimeMillis() - start} ms" +
+                            val statisticInfo = "  time  costs : ${System.currentTimeMillis() - start} ms" +
                                     "\nsuccess/total: $success/$count" +
                                     "\n    detail   :\n${
-                                            countMap.map { "\t\tresp len: ${it.key.length}  num: ${it.value}" }
-                                                .joinToString(System.lineSeparator())
-                                        }",
-                                3000,
-                            )
+                                        countMap.map { "\t\tresp hash: ${it.key}  num: ${it.value}" }
+                                            .joinToString(System.lineSeparator())
+                                    }"
+                            primaryStage.showToast(statisticInfo, 3000)
+                            taRspContent.text = statisticInfo + "\n" + taRspContent.text
                         }
                     }
                 }
@@ -458,7 +466,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                                         valueProperty.value = mutableEntry.value.toString()
                                         fileProperty.value =
                                             mutableEntry.key in fileKeys ||
-                                                mutableEntry.value.toString() == "@file"
+                                                    mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }
