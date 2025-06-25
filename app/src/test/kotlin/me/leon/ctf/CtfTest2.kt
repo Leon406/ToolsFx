@@ -241,9 +241,9 @@ class CtfTest2 {
     @Test
     fun caseCrack2() {
         val encode = "zmxhz3s1yjg0ntu5ms0zmdayltriztctywrios1lodnkntu3mjewztv9"
-        val raw = "flag{5b845591-3f0d-4be7-ae86-h89d557210e5}"
-        println(encode.base64CaseCrack("/[a-z0-9{}-]+/"))
-        //        assertEquals(encode.uppercase(), raw.base64UpperCase())
+        val raw = "flag{5b845591-3002-4be7-adb9-e83d557210e5}"
+        val result = encode.base64CaseCrack("/[a-z0-9{}-]+/")
+        assertEquals(raw, result.split(" ").first())
     }
 
     @Test

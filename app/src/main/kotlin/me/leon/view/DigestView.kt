@@ -183,8 +183,8 @@ class DigestView : Fragment(messages["hash"]) {
 
             label("custom dict:")
             tfCustomDict =
-                textfield("0123456789") {
-                    prefWidth = DEFAULT_SPACING_32X
+                textfield("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") {
+                    prefWidth = DEFAULT_SPACING_50X
                     tooltip("for mask ?*")
                 }
         }
@@ -218,14 +218,7 @@ class DigestView : Fragment(messages["hash"]) {
             processing.value = true
             startTime = System.currentTimeMillis()
             if (maskMode.get()) {
-                controller.maskCrack(
-                    method,
-                    inputText
-                        .decodeToByteArray(inputEncode.takeUnless { it == "raw" } ?: "hex")
-                        .encodeTo("hex"),
-                    tfMask.text,
-                    tfCustomDict.text,
-                )
+                controller.maskCrack(method, inputText, tfMask.text, tfCustomDict.text)
             } else {
                 if (method.startsWith("SpringSecurity")) {
                     controller.passwordHashingCrack(method, inputText)

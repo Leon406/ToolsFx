@@ -89,9 +89,16 @@ class DigestController : Controller() {
     fun maskCrack(method: String, hashed: String, mask: String, dict: String): String =
         catch({ "digest crack error: $it" }) {
             val lower = hashed.lowercase()
-            require(digest(method, "", "raw").length == hashed.length) { "Wrong Method!!! " }
+            val regex = lower.regexpParse()
+
+            require(regex != null || digest(method, "", "raw").length == hashed.length) {
+                "Wrong Method!!! "
+            }
+
             val cond =
-                if (method.startsWith("SpringSecurity")) {
+                if (regex != null) {
+                    { pw: String -> regex.containsMatchIn(digest(method, pw, "raw")) }
+                } else if (method.startsWith("SpringSecurity")) {
                     { pw: String -> method.passwordHashingType()!!.check(pw, lower) }
                 } else {
                     { pw: String -> digest(method, pw, "raw") == lower }

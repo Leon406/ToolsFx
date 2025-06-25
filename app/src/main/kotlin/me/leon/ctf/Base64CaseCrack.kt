@@ -6,6 +6,7 @@ import me.leon.ctf.Words.isWord
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode2String
 import me.leon.ext.crypto.next
+import me.leon.ext.regexpParse
 
 /**
  * @author Leon
@@ -23,13 +24,10 @@ fun String.base64CaseCrack(words: String = ""): String {
     var reg: Regex? = null
     var isReg = false
     if (words.isNotEmpty()) {
-        if (words.startsWith("/")) {
-            reg = words.trim('/').toRegex()
-            println(reg)
+        words.regexpParse()?.let {
+            reg = it
             isReg = true
-        } else {
-            Words.DICT_WORDS.addAll(words.tokenize())
-        }
+        } ?: run { Words.DICT_WORDS.addAll(words.tokenize()) }
     }
 
     return chunked(4)
