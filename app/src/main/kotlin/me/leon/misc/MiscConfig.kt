@@ -1,5 +1,6 @@
 package me.leon.misc
 
+import me.leon.misc.net.DnsQueryDict
 import me.leon.misc.net.GithubAction
 import me.leon.misc.net.ShortUrlEnum
 import me.leon.misc.unit.UNIT_TYPES
@@ -33,9 +34,11 @@ val MISC_CONFIG =
         MiscServiceType.INT2IP to
             mapOf(HINT to "int, transform integer to ip,  eg. 3232235521,separate by line"),
         MiscServiceType.CIDR to mapOf(HINT to "ip, format 192.168.0.1/25,separate by line"),
-        MiscServiceType.LINK_CHECK to mapOf(HINT to "url links,separate by line"),
+        MiscServiceType.LINK_CHECK to
+            mapOf(HINT to "url links,separate by line, or url \\t file path/file url"),
         MiscServiceType.IP_LOCATION to mapOf(HINT to "ip/url"),
         MiscServiceType.DNS_SOLVE to mapOf(HINT to "domains,separate by line, comment by #"),
+        MiscServiceType.DNS_DIG to mapOf(HINT to "domains,separate by line,"),
         MiscServiceType.CRON_EXPLAIN to
             mapOf(HINT to "cron expression, support crontab, quarts and normal format"),
         MiscServiceType.GITHUB to mapOf(HINT to "github repo or raw link"),
@@ -90,6 +93,7 @@ val MISC_OPTIONS_CONFIG =
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
         MiscServiceType.LINK_CHECK to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
+        MiscServiceType.DNS_DIG to mapOf(OPTIONS to DnsQueryDict.keys.toTypedArray()),
         MiscServiceType.TCPING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
         MiscServiceType.SHORT_URL to
             mapOf(OPTIONS to ShortUrlEnum.values().map { it.name }.toTypedArray()),

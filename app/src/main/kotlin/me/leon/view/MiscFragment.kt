@@ -147,9 +147,22 @@ class MiscFragment : PluginFragment("Misc") {
 
     private fun doProcess() {
         if (inputText.isEmpty() && serviceType != MiscServiceType.IP_LOCATION) return
+
         runAsync {
+            var properInput = inputText
+            if (serviceType == MiscServiceType.LINK_CHECK && inputText.contains("\t")) {
+                val (url, files) = inputText.split("\t")
+                val filePaths = mutableSetOf<String>()
+                if (files.startsWith("http")) {
+                    filePaths.addAll(files.readFromNet().lines())
+                } else {
+                    val file = files.toFile()
+                    filePaths.addAll(file.readLines())
+                }
+                properInput = filePaths.joinToString(System.lineSeparator()) { "$url/$it" }
+            }
             processing.value = true
-            controller.process(serviceType, inputText, paramsMap)
+            controller.process(serviceType, properInput, paramsMap)
         } ui
             {
                 processing.value = false

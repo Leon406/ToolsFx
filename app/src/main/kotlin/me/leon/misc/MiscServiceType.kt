@@ -134,6 +134,14 @@ enum class MiscServiceType(val type: String) : MiscService {
         override fun process(raw: String, params: Map<String, String>) =
             dnsSolve(raw.lines().filterNot { it.startsWith("#") || it.isEmpty() })
     },
+    DNS_DIG("DNS dig") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return raw.lineAction2String {
+                runCatching { it.dnsQuery(type) }.getOrElse { it.stacktrace() }
+            }
+        }
+    },
     CRON_EXPLAIN("Cron Explain") {
         override fun process(raw: String, params: Map<String, String>) =
             raw.lines()
