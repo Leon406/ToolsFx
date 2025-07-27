@@ -2,7 +2,7 @@
 asmVer = "3.2.0"
 # https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
 # https://www.bouncycastle.org/releasenotes.html
-bcVer = "1.80"
+bcVer = "1.81"
 commonCompressVer = "1.27.1"
 coroutineVer = "1.10.2"
 gsonVer = "2.13.1"
