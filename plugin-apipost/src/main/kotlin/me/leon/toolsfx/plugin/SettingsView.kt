@@ -6,6 +6,8 @@ import javafx.geometry.Pos
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.layout.Priority
+import me.leon.IMG_IMPORT
+import me.leon.ext.fx.clipboardText
 import me.leon.ext.fx.fileDraggedHandler
 import me.leon.toolsfx.plugin.ApiConfig.saveConfig
 import me.leon.toolsfx.plugin.net.TrustManager
@@ -64,7 +66,31 @@ class SettingsView : View("Setting") {
             }
             checkbox("ignoreSSL", ignoreCert)
         }
-        label("Proxy")
+        hbox {
+            spacing = 8.0
+            alignment = Pos.CENTER_LEFT
+            label("Proxy")
+            button(graphic = imageview(IMG_IMPORT)) {
+                tooltip(messages["pasteFromClipboard"])
+                action {
+                    val proxyInfos = clipboardText().split("@").map { it.split(":") }
+                    runCatching {
+                        if (proxyInfos.size == 2) {
+                            tfIp.text = proxyInfos[1][0]
+                            tfPort.text = proxyInfos[1][1]
+                            tfUserName.text = proxyInfos[0][0]
+                            tfPassword.text = proxyInfos[0][1]
+                        } else {
+                            tfIp.text = proxyInfos[0][0]
+                            tfPort.text = proxyInfos[0][1]
+                            tfUserName.text = null
+                            tfPassword.text = null
+                        }
+                    }
+                }
+            }
+        }
+
         hbox {
             spacing = 8.0
             alignment = Pos.CENTER
