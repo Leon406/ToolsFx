@@ -125,7 +125,7 @@ fun String.unicode2String() =
             .drop(1)
             .fold(StringBuilder()) { acc, c ->
                 val properChar = c.replace("{", "").replace("}", "")
-                acc.append(properChar.toInt(HEX_RADIX).toChar())
+                acc.append(properChar.toInt(HEX_RADIX).toUnicodeChar())
             }
             .toString()
     }
@@ -157,7 +157,7 @@ fun String.toHtmlEntity(radix: Int = 10, isAll: Boolean = true) =
 
 fun String.unicodeMix2String() =
     StringBuilder(this).replace(
-        "(?i:\\\\u(\\+?[0-9a-f]{1,4}|\\{[0-9a-f]{1,4}})|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
+        "(?i:\\\\u(\\+?[0-9a-f]{1,5}|\\{[0-9a-f]{1,5}})|(?i)&#x([0-9a-f]+);|&#(\\d+);)+".toRegex()
     ) {
         it.value.unicode2String()
     }
