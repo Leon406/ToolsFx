@@ -13,6 +13,7 @@ object ApiConfig {
     private const val PROXY_PORT = "proxyPort"
     private const val PROXY_USER = "proxyUser"
     private const val PROXY_PASSWORD = "proxyPassword"
+    private const val CURL_DIR = "curlDir"
     private const val TIME_OUT = "timeout"
     private const val FOLLOW_REDIRECT = "followRedirect"
     private const val IGNORE_CERT = "ignoreCert"
@@ -70,6 +71,12 @@ object ApiConfig {
             Prefs.preference().putInt(TIME_OUT, value)
         }
 
+    var curlDir: String
+        get() = Prefs.preference().get(CURL_DIR, "")
+        set(value) {
+            Prefs.preference().put(CURL_DIR, value)
+        }
+
     var followRedirect: Boolean
         get() = Prefs.preference().getBoolean(FOLLOW_REDIRECT, false)
         set(value) {
@@ -104,6 +111,7 @@ object ApiConfig {
         tOut: Int,
         redirect: Boolean,
         ignoreCert: Boolean = false,
+        cDir: String = "",
     ) {
         isEnableProxy = isEnablePro
         if (isEnableProxy) {
@@ -128,6 +136,7 @@ object ApiConfig {
         proxyPort = pPort
         proxyUser = pUser
         proxyPassword = pPass
+        curlDir = cDir
         HttpUrlUtil.timeOut = tOut
         timeOut = tOut
         HttpUrlUtil.followRedirect = redirect

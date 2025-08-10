@@ -28,26 +28,37 @@ class SettingsView : View("Setting") {
     private lateinit var tfUserName: TextField
     private lateinit var tfPassword: TextField
     private lateinit var tfTime: TextField
+    private lateinit var tfCurlDir: TextField
     private lateinit var tfCerPath: TextField
     private lateinit var tfCerPass: TextField
     private val eventHandler = fileDraggedHandler {
-        with(it.first()) {
-            println(absolutePath)
-            tfCerPath.text = absolutePath
-        }
+        with(it.first()) { tfCerPath.text = absolutePath }
+    }
+    private val curlEventHandler = fileDraggedHandler {
+        with(it.first()) { tfCurlDir.text = absolutePath }
     }
     override val root = vbox {
         paddingAll = 8
         spacing = 8.0
         alignment = Pos.CENTER
-        label("TimeOut")
-        tfTime = textfield(ApiConfig.timeOut.toString()) { promptText = "global header" }
 
         hbox {
+            label("TimeOut")
+            tfTime = textfield(ApiConfig.timeOut.toString()) { promptText = "Time in millisecond" }
             label("FollowRedirect")
             spacing = 8.0
             alignment = Pos.CENTER_LEFT
             checkbox("", followRedirect)
+        }
+        hbox {
+            label("Curl File Dir")
+            tfCurlDir =
+                textfield(ApiConfig.curlDir) {
+                    promptText = "File Path of Your curl"
+                    onDragEntered = curlEventHandler
+                }
+            spacing = 8.0
+            alignment = Pos.CENTER_LEFT
         }
 
         label("Certification")
@@ -150,6 +161,7 @@ class SettingsView : View("Setting") {
                     tfTime.text.toInt(),
                     followRedirect.get(),
                     ignoreCert.get(),
+                    tfCurlDir.text,
                 )
                 close()
             }

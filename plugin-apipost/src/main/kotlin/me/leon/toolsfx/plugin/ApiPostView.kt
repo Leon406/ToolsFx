@@ -2,6 +2,7 @@
 
 package me.leon.toolsfx.plugin
 
+import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
@@ -70,7 +71,7 @@ class ApiPostView : PluginFragment("ApiPost") {
     private val requestParams = FXCollections.observableArrayList(HttpParams())
     private val showTableList = listOf("json", "form-data")
     private val fileKeys = arrayOf("file", "files", "image", "images")
-
+    private val selectedUrl = SimpleStringProperty("plz set curl dir first!")
     private val reqHeaders
         get() = controller.parseHeaderString(taReqHeaders.text)
 
@@ -150,7 +151,18 @@ class ApiPostView : PluginFragment("ApiPost") {
                         .copy()
                 }
             }
-
+            val curlFiles = ApiConfig.curlDir.toFile().listFiles()?.map { it.nameWithoutExtension }
+            if (curlFiles != null && curlFiles.isNotEmpty()) {
+                selectedUrl.set(curlFiles.first())
+                combobox(selectedUrl, curlFiles.toMutableList()) { cellFormat { text = it } }
+                selectedUrl.addListener { _, _, newValue ->
+                    println("selectedUrl $newValue")
+                    tfUrl.text = newValue as String
+                    println("selectedUrl2 ${tfUrl.text}")
+                    val curl = File(ApiConfig.curlDir.toFile(), "$newValue.curl")
+                    resetUi(curl.readText())
+                }
+            }
             tfRepeatNum = textfield {
                 promptText = "number"
                 prefWidth = DEFAULT_SPACING_10X
@@ -191,7 +203,6 @@ class ApiPostView : PluginFragment("ApiPost") {
                     }
                 }
             }
-
             combobox(selectedBodyType, bodyType)
             selectedBodyType.addListener { _, _, newValue ->
                 showReqTable.value = (newValue as String) in showTableList
@@ -411,9 +422,9 @@ class ApiPostView : PluginFragment("ApiPost") {
                                 "  time  costs : ${System.currentTimeMillis() - start} ms" +
                                     "\nsuccess/total: $success/$count" +
                                     "\n    detail   :\n${
-                                        countMap.map { "\t\tresp hash: ${it.key}  num: ${it.value}" }
-                                            .joinToString(System.lineSeparator())
-                                    }"
+                                            countMap.map { "\t\tresp hash: ${it.key}  num: ${it.value}" }
+                                                .joinToString(System.lineSeparator())
+                                        }"
                             primaryStage.showToast(statisticInfo, 3000)
                             taRspContent.text = statisticInfo + "\n" + taRspContent.text
                         }
