@@ -153,12 +153,16 @@ class ApiPostView : PluginFragment("ApiPost") {
             }
             val curlFiles = ApiConfig.curlDir.toFile().listFiles()?.map { it.nameWithoutExtension }
             if (curlFiles != null && curlFiles.isNotEmpty()) {
-                selectedUrl.set(curlFiles.first())
-                combobox(selectedUrl, curlFiles.toMutableList()) { cellFormat { text = it } }
+                val newCurlFiles = curlFiles.toMutableList()
+                newCurlFiles.add(0, "")
+                selectedUrl.set("")
+                combobox(selectedUrl, newCurlFiles) { cellFormat { text = it } }
                 selectedUrl.addListener { _, _, newValue ->
-                    println("selectedUrl $newValue")
+                    if (newValue.isEmpty()) {
+                        resetUi("https://httpbin.org/anything")
+                        return@addListener
+                    }
                     tfUrl.text = newValue as String
-                    println("selectedUrl2 ${tfUrl.text}")
                     val curl = File(ApiConfig.curlDir.toFile(), "$newValue.curl")
                     resetUi(curl.readText())
                 }
