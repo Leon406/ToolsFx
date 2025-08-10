@@ -121,7 +121,10 @@ class ApiPostView : PluginFragment("ApiPost") {
                 }
             button(graphic = imageview(IMG_IMPORT)) {
                 tooltip(messages["pasteFromClipboard"])
-                action { resetUi(clipboardText()) }
+                action {
+                    selectedUrl.set("")
+                    resetUi(clipboardText())
+                }
             }
             button(graphic = imageview(IMG_RUN)) {
                 enableWhen(!running)
