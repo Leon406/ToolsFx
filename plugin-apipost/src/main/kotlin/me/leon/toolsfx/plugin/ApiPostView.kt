@@ -454,7 +454,8 @@ class ApiPostView : PluginFragment("ApiPost") {
         }
         val showdata =
             if (showJsonPath.get() && tfJsonPath.text.trim().isNotEmpty()) {
-                resp.data.simpleJsonPath(tfJsonPath.text.trim())
+                runCatching { resp.data.simpleJsonPath(tfJsonPath.text.trim()) }
+                    .getOrElse { resp.data }
             } else {
                 resp.data
             }

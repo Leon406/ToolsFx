@@ -39,6 +39,7 @@ fun String.methodCall(args: String): String {
         "base64" -> args.base64()
         "base64File" -> args.toFile().readBytes().base64()
         "binary" -> args.toBinaryString()
+        "env" -> System.getenv(args)
         "uppercase" -> args.uppercase()
         "lowercase" -> args.lowercase()
         "date2Mills" ->
