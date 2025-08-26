@@ -21,6 +21,7 @@ import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
 import me.leon.ext.voice.*
 import me.leon.misc.Translator
+import me.leon.misc.unicodeChar
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -96,9 +97,9 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
     private val info: String
         get() =
             " ${messages["inputLength"]}: " +
-                "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
-                "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
-                "cost: $timeConsumption ms"
+                    "${inputText.length}  ${messages["outputLength"]}: ${outputText.length} " +
+                    "lines(in/out): ${inputText.lineCount()} / ${outputText.lineCount()} " +
+                    "cost: $timeConsumption ms"
 
     private var inputText: String
         get() = taInput.text
@@ -213,13 +214,22 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 tooltip(messages["letterStatistics"])
                 action {
                     processInput(
-                        inputText
+                        inputText.unicodeChar()
                             .groupingBy { it }
                             .eachCount()
                             .toList()
-                            .filter { it.first.code > 32 }
                             .sortedByDescending { it.second }
-                            .joinToString(System.lineSeparator()) { "${it.first}: ${it.second}" }
+                            .filter { it.first.unicodeCharToInt() > 32 }
+                            .joinToString(System.lineSeparator()) {
+
+                                val unicode = it.first.unicodeCharToInt()
+                                val unicodeStr = if (PUA_RANGE.contains(unicode)) {
+                                    "\tU+${unicode.toString(16).uppercase()}"
+                                } else {
+                                    ""
+                                }
+                                "${it.first}$unicodeStr: ${it.second}"
+                            }
                     )
                 }
             }
@@ -258,8 +268,8 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         } else {
                             selectThisTab()
                             runCatching {
-                                    taInput.text = BaiduOcr.ocrBase64(it.toByteArray().base64())
-                                }
+                                taInput.text = BaiduOcr.ocrBase64(it.toByteArray().base64())
+                            }
                                 .onFailure { taInput.text = it.stackTraceToString() }
                         }
                     }
@@ -369,17 +379,17 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                         runAsync {
                             Translator.translate(text, target = Prefs.translateTargetLan)
                         } ui
-                            {
-                                Alert(Alert.AlertType.WARNING)
-                                    .apply {
-                                        title = "Translate"
-                                        headerText = ""
-                                        dialogPane.maxWidth = DEFAULT_SPACING_80X
-                                        graphic =
-                                            text(it).apply { wrappingWidth = DEFAULT_SPACING_80X }
-                                    }
-                                    .show()
-                            }
+                                {
+                                    Alert(Alert.AlertType.WARNING)
+                                        .apply {
+                                            title = "Translate"
+                                            headerText = ""
+                                            dialogPane.maxWidth = DEFAULT_SPACING_80X
+                                            graphic =
+                                                text(it).apply { wrappingWidth = DEFAULT_SPACING_80X }
+                                        }
+                                        .show()
+                                }
                     }
                 }
             }
@@ -571,13 +581,13 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun speakMulti(start: Int, content: String) {
         ttsMultiStream(
-                content,
-                voiceModel = Prefs.ttsVoice,
-                rate = Prefs.ttsSpeed,
-                volume = Prefs.ttsVolume,
-                pitch = Prefs.ttsPitch,
-                cacheable = Prefs.ttsCacheable,
-            )
+            content,
+            voiceModel = Prefs.ttsVoice,
+            rate = Prefs.ttsSpeed,
+            volume = Prefs.ttsVolume,
+            pitch = Prefs.ttsPitch,
+            cacheable = Prefs.ttsCacheable,
+        )
             ?.forEach {
                 val (rangePair, bytes) = it
                 val (range, _) = rangePair
@@ -652,11 +662,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
         words.clear()
         val tokens =
             (inputText
-                    .replace("[^a-zA-Z'-]+".toRegex(), "\n")
-                    .lines()
-                    .map { it.lowercase().trim('\'') }
-                    .distinct()
-                    .sorted() - inputs2())
+                .replace("[^a-zA-Z'-]+".toRegex(), "\n")
+                .lines()
+                .map { it.lowercase().trim('\'') }
+                .distinct()
+                .sorted() - inputs2())
                 .filterNot { it.isEmpty() || !it.first().isLetter() || it.endsWith("'s") }
                 .also {
                     words.addAll(
@@ -675,11 +685,11 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                             }
                         val newWords =
                             words.filter { it.mean.isNullOrEmpty() }.map { it.word } -
-                                outOfDict.readText().lines().toSet()
+                                    outOfDict.readText().lines().toSet()
                         if (newWords.isNotEmpty()) {
                             outOfDict.appendText(
                                 newWords.joinToString(System.lineSeparator()) +
-                                    System.lineSeparator()
+                                        System.lineSeparator()
                             )
                         }
                     }
@@ -706,12 +716,12 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
 
     private fun processInput(text: String) {
         measureTimeMillis {
-                if (overrideInput.get()) {
-                    inputText = text
-                } else {
-                    outputText = text
-                }
+            if (overrideInput.get()) {
+                inputText = text
+            } else {
+                outputText = text
             }
+        }
             .also {
                 timeConsumption = it
                 labelInfo.text = info
