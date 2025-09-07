@@ -10,6 +10,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.control.cell.CheckBoxTableCell
 import javafx.scene.text.Text
+import kotlin.io.walk
 import kotlinx.coroutines.*
 import me.leon.*
 import me.leon.ext.*
@@ -24,8 +25,8 @@ import tornadofx.*
 private const val MAX_SHOW_LENGTH = 1_000_000
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.10.0"
-    override val date: String = "2025-07-27"
+    override val version = "v1.11.0"
+    override val date: String = "2025-09-07"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -154,8 +155,20 @@ class ApiPostView : PluginFragment("ApiPost") {
                         .copy()
                 }
             }
-            val curlFiles = ApiConfig.curlDir.toFile().listFiles()?.map { it.nameWithoutExtension }
-            if (curlFiles != null && curlFiles.isNotEmpty()) {
+            val configFile = ApiConfig.curlDir.toFile()
+            val curlFiles =
+                configFile
+                    .walk()
+                    .filter { it.isFile && it.extension == "curl" }
+                    .map {
+                        it.absolutePath
+                            .replace(configFile.absolutePath, "")
+                            .trimStart('/', '\\')
+                            .replace(".curl", "")
+                            .replace("\\", "/")
+                    }
+                    .toList()
+            if (curlFiles.isNotEmpty()) {
                 val newCurlFiles = curlFiles.toMutableList()
                 newCurlFiles.add(0, "")
                 selectedUrl.set("")
