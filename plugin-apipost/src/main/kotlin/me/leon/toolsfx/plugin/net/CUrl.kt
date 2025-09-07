@@ -39,21 +39,42 @@ fun String.parseCurl(): Request {
         .map { it.trim() }
         .fold(Request("")) { req, s ->
             when {
-                s.startsWith("-X") -> req.method = s.removeFirstAndEndQuotes(3).trim()
-                s.startsWith("-H") ->
+                s.startsWith("-X ") -> req.method = s.removeFirstAndEndQuotes(3).trim()
+                s.startsWith("-H ") ->
                     with(s.removeFirstAndEndQuotes(3)) {
                         req.headers[substringBefore(":")] = substringAfter(":").trim().winEscape()
                     }
 
-                s.startsWith("-d") -> req.rawBody = s.removeFirstAndEndQuotes(3).winEscape()
-                s.startsWith("--data-raw") ->
-                    req.rawBody = s.removeFirstAndEndQuotes(11).winEscape().winEscape()
+                s.startsWith("--data-raw ") -> {
+                    if (req.method == "GET") {
+                        req.method = "POST"
+                    }
+                    req.rawBody =
+                        s.removeFirstAndEndQuotes(11).winEscape().also { println("raw $it") }
+                }
 
-                s.startsWith("--data-binary") ->
-                    req.rawBody = s.removeFirstAndEndQuotes(14).trim().winEscape()
+                s.startsWith("--data-binary ") -> {
+                    if (req.method == "GET") {
+                        req.method = "POST"
+                    }
+                    req.rawBody = s.removeFirstAndEndQuotes(14).winEscape()
+                }
 
-                s.startsWith("--data") -> req.rawBody = s.removeFirstAndEndQuotes(7).winEscape()
-                s.startsWith("curl") ->
+                s.startsWith("--data ") -> {
+                    if (req.method == "GET") {
+                        req.method = "POST"
+                    }
+                    req.rawBody = s.removeFirstAndEndQuotes(7).winEscape()
+                }
+
+                s.startsWith("-d ") -> {
+                    if (req.method == "GET") {
+                        req.method = "POST"
+                    }
+                    req.rawBody = s.removeFirstAndEndQuotes(3).winEscape()
+                }
+
+                s.startsWith("curl ") ->
                     with(s.removeFirstAndEndQuotes(5)) {
                         if (startsWith("-X")) {
                             val str = substring(3)
@@ -98,4 +119,4 @@ fun Request.toCurl(): String =
         .trim()
 
 fun String.removeFirstAndEndQuotes(from: Int = 0) =
-    substring(from).replace("^([\"'])(.*?)\\1?$".toRegex(), "$2").trim()
+    substring(from).replace("^([\"'])(.*?)\\1?$".toRegex(), "$2").trim('\'', '"')
