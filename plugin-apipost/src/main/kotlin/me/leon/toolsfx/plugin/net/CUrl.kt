@@ -1,11 +1,11 @@
 package me.leon.toolsfx.plugin.net
 
+import me.leon.ext.fromJson
 import me.leon.ext.toJson
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.toParams
 
 fun String.paramsParse() =
     split("&").fold(mutableMapOf<String, Any>()) { acc, param ->
-        println(param)
         acc.apply {
             if (param.isNotEmpty()) {
                 val (key, value) = param.split("=")
@@ -25,57 +25,53 @@ fun String.cookieParse() =
     }
 
 val separator = """\s*[\^\\]\s+""".toRegex()
-val winEscapeReg = """\^([{%\d])""".toRegex()
+val winEscapeReg = """\^(\W)""".toRegex()
 
 fun String.winEscape() = replace("^\\^\"", "\"").replace(winEscapeReg, "$1")
 
 fun String.parseCurl(): Request {
-    var r = this
+    var r = this.winEscape()
     // 兼容旧版
     if (r.contains("\n") && !r.contains(separator)) {
         r = r.replace("\n", " \\\n")
     }
+
     return r.split(separator)
         .map { it.trim() }
         .fold(Request("")) { req, s ->
+            val startIndex = s.indexOf(" ") + 1
             when {
-                s.startsWith("-X ") -> req.method = s.removeFirstAndEndQuotes(3).trim()
+                s.startsWith("-X ") -> req.method = s.removeFirstAndEndQuotes(startIndex).trim()
                 s.startsWith("-H ") ->
-                    with(s.removeFirstAndEndQuotes(3)) {
-                        req.headers[substringBefore(":")] = substringAfter(":").trim().winEscape()
+                    with(s.removeFirstAndEndQuotes(startIndex)) {
+                        req.headers[substringBefore(":")] = substringAfter(":").trim()
                     }
-
-                s.startsWith("--data-raw ") -> {
+                s.startsWith("--data-binary ") || s.startsWith("--data-raw ") -> {
                     if (req.method == "GET") {
                         req.method = "POST"
                     }
-                    req.rawBody =
-                        s.removeFirstAndEndQuotes(11).winEscape().also { println("raw $it") }
+                    val offset =
+                        if (s.substring(startIndex).startsWith("$")) {
+                            1
+                        } else {
+                            0
+                        }
+                    req.rawBody = s.removeFirstAndEndQuotes(startIndex + offset)
                 }
-
-                s.startsWith("--data-binary ") -> {
+                s.startsWith("--data") -> {
                     if (req.method == "GET") {
                         req.method = "POST"
                     }
-                    req.rawBody = s.removeFirstAndEndQuotes(14).winEscape()
+                    s.properBody(req, r, startIndex)
                 }
-
-                s.startsWith("--data ") -> {
-                    if (req.method == "GET") {
-                        req.method = "POST"
-                    }
-                    req.rawBody = s.removeFirstAndEndQuotes(7).winEscape()
-                }
-
                 s.startsWith("-d ") -> {
                     if (req.method == "GET") {
                         req.method = "POST"
                     }
-                    req.rawBody = s.removeFirstAndEndQuotes(3).winEscape()
+                    s.properBody(req, r, startIndex)
                 }
-
                 s.startsWith("curl ") ->
-                    with(s.removeFirstAndEndQuotes(5)) {
+                    with(s.removeFirstAndEndQuotes(startIndex)) {
                         if (startsWith("-X")) {
                             val str = substring(3)
                             req.method = str.substringBefore(" ").trim()
@@ -84,7 +80,6 @@ fun String.parseCurl(): Request {
                             req.url = this
                         }
                     }
-
                 else ->
                     if (s.startsWith("http")) {
                         req.url = this
@@ -92,6 +87,21 @@ fun String.parseCurl(): Request {
             }
             req
         }
+}
+
+private fun String.properBody(acc: Request, s: String, from: Int = 3) {
+    val value = removeFirstAndEndQuotes(from)
+    if (value.contains("@file")) {
+        if (value.startsWith("{") || value.startsWith("[")) {
+            acc.params.putAll(value.fromJson(MutableMap::class.java) as Map<out String, Any>)
+        } else {
+            acc.params.putAll(value.paramsParse())
+        }
+    } else if (s.contains("Content-Type: application/json", true)) {
+        acc.rawBody = value
+    } else {
+        acc.params.putAll(value.paramsParse())
+    }
 }
 
 fun Request.toCurl(): String =
