@@ -155,23 +155,11 @@ class ApiPostView : PluginFragment("ApiPost") {
             }
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
-                action {
-                    Request(
-                        tfUrl.text,
-                        selectedMethod.get(),
-                        reqTableParams,
-                        reqHeaders,
-                        taReqContent.text,
-                    )
-                        .apply {
-                            isJson = selectedBodyType.get() == BodyType.JSON.type
-                            requestParams
-                                .firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
-                                ?.let { fileParamName = it.key }
-                        }
-                        .toCurl()
-                        .copy()
-                }
+                action { makeCurl().copy() }
+            }
+            button(graphic = imageview(IMG_SAVE)) {
+                tooltip(messages["save"])
+                action { saveRequestToFile() }
             }
             val configFile = ApiConfig.curlDir.toFile()
             val curlFiles =
@@ -390,6 +378,21 @@ class ApiPostView : PluginFragment("ApiPost") {
         }
         title = "ApiPost"
     }
+
+    private fun makeCurl(): String = Request(
+        tfUrl.text,
+        selectedMethod.get(),
+        reqTableParams,
+        reqHeaders,
+        taReqContent.text,
+    )
+        .apply {
+            isJson = selectedBodyType.get() == BodyType.JSON.type
+            requestParams
+                .firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
+                ?.let { fileParamName = it.key }
+        }
+        .toCurl()
 
     private fun doRequest() {
         resetResponse()
@@ -621,6 +624,26 @@ class ApiPostView : PluginFragment("ApiPost") {
                     }
                 }
         } ?: run { primaryStage.showToast("没有可保存的响应数据") }
+    }
+
+    private fun saveRequestToFile() {
+        chooseFile(
+            "Save to File",
+            arrayOf(FileChooser.ExtensionFilter("All", "*.curl")),
+            ApiConfig.curlDir.toFile(),
+            FileChooserMode.Save,
+        )
+            .firstOrNull()
+            ?.let { file ->
+                runAsync {
+                    runCatching {
+                        file.writeText(makeCurl())
+                        runOnUi { primaryStage.showToast("Success: ${file.absolutePath}") }
+                    }.onFailure {
+                        runOnUi { primaryStage.showToast("Failed: ${it.message}") }
+                    }
+                }
+            }
     }
 
     private fun resetResponse() {
