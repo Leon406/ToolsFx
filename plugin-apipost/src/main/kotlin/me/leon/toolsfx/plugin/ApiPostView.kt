@@ -6,13 +6,23 @@ import java.io.File
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
+import javafx.event.EventHandler
 import javafx.geometry.Pos
-import javafx.scene.control.*
+import javafx.scene.control.TableView
+import javafx.scene.control.TextArea
+import javafx.scene.control.TextField
+import javafx.scene.control.ToggleGroup
 import javafx.scene.control.cell.CheckBoxTableCell
+import javafx.scene.layout.Priority
 import javafx.scene.text.Text
-import kotlin.io.walk
-import kotlinx.coroutines.*
+import javafx.scene.web.WebView
+import javafx.stage.FileChooser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import me.leon.*
+import me.leon.encode.base.base64
 import me.leon.ext.*
 import me.leon.ext.fx.*
 import me.leon.toolsfx.plugin.ApiConfig.restoreFromConfig
@@ -20,13 +30,16 @@ import me.leon.toolsfx.plugin.net.*
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.POST_ACTION_DEFAULT
 import me.leon.toolsfx.plugin.net.HttpUrlUtil.POST_ACTION_HEX
 import me.leon.toolsfx.plugin.table.EditingCell
+import me.leon.view.OnlineWebView
 import tornadofx.*
 
 private const val MAX_SHOW_LENGTH = 1_000_000
 
+private const val TAB_STYLE = "-fx-base: lightblue;"
+
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.11.1"
-    override val date: String = "2025-09-13"
+    override val version = "v1.12.0"
+    override val date: String = "2025-09-19"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -35,17 +48,20 @@ class ApiPostView : PluginFragment("ApiPost") {
     }
 
     private val controller: ApiPostController by inject()
-    private lateinit var tfUrl: TextField
-    private lateinit var taReqHeaders: TextArea
-    private lateinit var taReqContent: TextArea
-    private lateinit var textRspStatus: Text
-    private lateinit var taRspHeaders: TextArea
-    private lateinit var taRspContent: TextArea
-    private lateinit var tfJsonPath: TextField
-    private lateinit var table: TableView<HttpParams>
+    private var tfUrl: TextField by singleAssign()
+    private var taReqHeaders: TextArea by singleAssign()
+    private var taReqContent: TextArea by singleAssign()
+    private var textRspStatus: Text by singleAssign()
+    private var taRspHeaders: TextArea by singleAssign()
+    private var taRspContent: TextArea by singleAssign()
+    private var tfJsonPath: TextField by singleAssign()
+    private var table: TableView<HttpParams> by singleAssign()
     private var tfRepeatNum: TextField by singleAssign()
     private var tfConcurrent: TextField by singleAssign()
     private var tfDelay: TextField by singleAssign()
+    private var web: WebView by singleAssign()
+    private var tgRsp: ToggleGroup by singleAssign()
+
     private val prettyProperty = SimpleBooleanProperty(true)
     private val hexProperty = SimpleBooleanProperty(false)
     private val showJsonPath = SimpleBooleanProperty(false)
@@ -66,6 +82,7 @@ class ApiPostView : PluginFragment("ApiPost") {
     private val selectedMethod = SimpleStringProperty(methods.first())
     private val selectedBodyType = SimpleStringProperty(bodyType.first())
     private val showRspHeader = SimpleBooleanProperty(false)
+    private val showRenderHtml = SimpleBooleanProperty(false)
     private val showReqHeader = SimpleBooleanProperty(false)
     private val showReqTable = SimpleBooleanProperty(false)
     private val running = SimpleBooleanProperty(false)
@@ -104,6 +121,7 @@ class ApiPostView : PluginFragment("ApiPost") {
             }
         }
     }
+    private var response: Response? = null
     override val root = vbox {
         restoreFromConfig()
         prefWidth = 800.0
@@ -139,12 +157,12 @@ class ApiPostView : PluginFragment("ApiPost") {
                 tooltip(messages["copy"])
                 action {
                     Request(
-                            tfUrl.text,
-                            selectedMethod.get(),
-                            reqTableParams,
-                            reqHeaders,
-                            taReqContent.text,
-                        )
+                        tfUrl.text,
+                        selectedMethod.get(),
+                        reqTableParams,
+                        reqHeaders,
+                        taReqContent.text,
+                    )
                         .apply {
                             isJson = selectedBodyType.get() == BodyType.JSON.type
                             requestParams
@@ -208,14 +226,14 @@ class ApiPostView : PluginFragment("ApiPost") {
                 alignment = Pos.CENTER
                 togglegroup {
                     togglebutton("Body") {
-                        style = "-fx-base: lightblue;"
+                        style = TAB_STYLE
                         action {
                             showReqHeader.value = false
                             showReqTable.value = selectedBodyType.get() in showTableList
                         }
                     }
                     togglebutton("Header") {
-                        style = "-fx-base: lightblue;"
+                        style = TAB_STYLE
                         action {
                             showReqHeader.value = true
                             showReqTable.value = false
@@ -287,14 +305,27 @@ class ApiPostView : PluginFragment("ApiPost") {
             spacing = 8.0
             hbox {
                 alignment = Pos.CENTER
-                togglegroup {
+                tgRsp = togglegroup {
                     togglebutton("Body") {
-                        style = "-fx-base: lightblue;"
-                        action { showRspHeader.value = false }
+                        style = TAB_STYLE
+                        action {
+                            showRspHeader.value = false
+                            showRenderHtml.value = false
+                        }
                     }
                     togglebutton("Header") {
-                        style = "-fx-base: lightblue;"
-                        action { showRspHeader.value = true }
+                        style = TAB_STYLE
+                        action {
+                            showRspHeader.value = true
+                            showRenderHtml.value = false
+                        }
+                    }
+                    togglebutton("Render") {
+                        style = TAB_STYLE
+                        action {
+                            showRspHeader.value = false
+                            showRenderHtml.value = true
+                        }
                     }
                 }
             }
@@ -302,6 +333,11 @@ class ApiPostView : PluginFragment("ApiPost") {
             button(graphic = imageview(IMG_COPY)) {
                 tooltip(messages["copy"])
                 action { taRspContent.text.copy() }
+            }
+
+            button(graphic = imageview(IMG_SAVE)) {
+                tooltip(messages["save"])
+                action { saveResponseToFile() }
             }
 
             checkbox("pretty", prettyProperty)
@@ -327,6 +363,7 @@ class ApiPostView : PluginFragment("ApiPost") {
         }
         stackpane {
             prefHeight = 300.0
+            vgrow = Priority.ALWAYS
             spacing = 8.0
             taRspHeaders = textarea {
                 promptText = "response headers"
@@ -340,11 +377,22 @@ class ApiPostView : PluginFragment("ApiPost") {
                 isWrapText = true
                 visibleWhen(!showRspHeader)
             }
+            web = webview {
+                engine.isJavaScriptEnabled = true
+                engine.userStyleSheetLocation =
+                    (OnlineWebView::class.java).getResource("/css/webview.css")?.toExternalForm()
+                engine.onError = EventHandler { println("error ${it.message}") }
+                engine.loadWorker.exceptionProperty().addListener { _, _, newValue ->
+                    println("exception $newValue")
+                }
+                visibleWhen(showRenderHtml)
+            }
         }
         title = "ApiPost"
     }
 
     private fun doRequest() {
+        resetResponse()
         if (tfUrl.text.isEmpty() || !tfUrl.text.startsWith("http") && tfUrl.text.length < 11) {
             primaryStage.showToast("plz input legal url")
             return
@@ -366,82 +414,87 @@ class ApiPostView : PluginFragment("ApiPost") {
 
             fun req() =
                 runCatching {
-                        if (selectedMethod.get() == "POST") {
-                                val bodyType = bodyTypeMap[selectedBodyType.get()]
-                                requireNotNull(bodyType)
-                                when (bodyType) {
-                                    BodyType.JSON,
-                                    BodyType.FORM_DATA ->
-                                        uploadParams?.run {
-                                            controller.uploadFile(
-                                                tfUrl.text,
-                                                this.value.split(",", ";").map { it.toFile() },
-                                                this.key,
-                                                reqTableParams,
-                                                reqHeaders,
-                                            )
-                                        }
-                                            ?: controller.post(
-                                                tfUrl.text,
-                                                reqTableParams,
-                                                reqHeaders,
-                                                bodyType == BodyType.JSON,
-                                            )
-
-                                    BodyType.RAW ->
-                                        controller.postRaw(
-                                            tfUrl.text,
-                                            taReqContent.text,
-                                            reqHeaders,
-                                        )
+                    if (selectedMethod.get() == "POST") {
+                        val bodyType = bodyTypeMap[selectedBodyType.get()]
+                        requireNotNull(bodyType)
+                        when (bodyType) {
+                            BodyType.JSON,
+                            BodyType.FORM_DATA ->
+                                uploadParams?.run {
+                                    controller.uploadFile(
+                                        tfUrl.text,
+                                        this.value.split(",", ";").map { it.toFile() },
+                                        this.key,
+                                        reqTableParams,
+                                        reqHeaders,
+                                    )
                                 }
-                            } else {
-                                controller.request(
+                                    ?: controller.post(
+                                        tfUrl.text,
+                                        reqTableParams,
+                                        reqHeaders,
+                                        bodyType == BodyType.JSON,
+                                    )
+
+                            BodyType.RAW ->
+                                controller.postRaw(
                                     tfUrl.text,
-                                    selectedMethod.get(),
-                                    reqTableParams,
+                                    taReqContent.text,
                                     reqHeaders,
                                 )
-                            }
-                            .also { lastResp = it }
-                            .toLiteResponse()
-                            .also {
-                                if (it.code == 200) {
-                                    success++
-                                    countMap[it.hash] = countMap[it.hash]?.let { it + 1 } ?: 1
-                                }
-                            }
+                        }
+                    } else {
+                        controller.request(
+                            tfUrl.text,
+                            selectedMethod.get(),
+                            reqTableParams,
+                            reqHeaders,
+                        )
                     }
+                        .also { lastResp = it }
+                        .toLiteResponse()
+                        .also {
+                            if (it.code == 200) {
+                                success++
+                                countMap[it.hash] = countMap[it.hash]?.let { it + 1 } ?: 1
+                            }
+                        }
+                }
                     .onFailure {
-                        Response(-1, it.message ?: "", mutableMapOf(), System.currentTimeMillis())
+                        Response(
+                            -1,
+                            (it.message ?: "").toByteArray(),
+                            mutableMapOf(),
+                            System.currentTimeMillis(),
+                        )
                     }
 
             runCatching {
-                    runBlocking {
-                        (1..count)
-                            .map {
-                                async(dispatcher) {
-                                    req().also {
-                                        if (delayMillis > 0) {
-                                            // delay 无法阻塞其他
-                                            Thread.sleep(delayMillis)
-                                        }
+                runBlocking {
+                    (1..count)
+                        .map {
+                            async(dispatcher) {
+                                req().also {
+                                    if (delayMillis > 0) {
+                                        // delay 无法阻塞其他
+                                        Thread.sleep(delayMillis)
                                     }
                                 }
                             }
-                            .awaitAll()
+                        }
+                        .awaitAll()
 
-                        lastResp!!
-                    }
+                    lastResp!!
                 }
+            }
                 .onSuccess {
                     handleSuccess(it)
                     if (count > 1) {
                         ui {
                             val statisticInfo =
                                 "  time  costs : ${System.currentTimeMillis() - start} ms" +
-                                    "\nsuccess/total: $success/$count" +
-                                    "\n    detail   :\n${
+                                        "\nsuccess/total: $success/$count" +
+                                        "\n    detail   :\n${
                                             countMap.map { "\t\tresp hash: ${it.key}  num: ${it.value}" }
                                                 .joinToString(System.lineSeparator())
                                         }"
@@ -460,26 +513,51 @@ class ApiPostView : PluginFragment("ApiPost") {
     }
 
     private fun handleSuccess(resp: Response) {
+        response = resp
         textRspStatus.text = resp.statusInfo
         taRspHeaders.text = resp.headerInfo
+        val contentType = resp.headers["Content-Type"]?.toString().orEmpty()
+        val rspString = resp.data.decodeToString()
+        val properData =
+            when {
+                contentType.startsWith("audio") || contentType.startsWith("video") -> {
+                    // fixme 不支持data协议, 只能播放一次
+                    val tmpFile = File.createTempFile("apipost", "")
+                    val tag = contentType.substringBefore("/")
+                    tmpFile.deleteOnExit()
+                    tmpFile.writeBytes(resp.data)
+                    "<$tag controls src=\"file://${tmpFile.absolutePath}\"></$tag>"
+                }
 
-        if (resp.length > MAX_SHOW_LENGTH || resp.data.length > MAX_SHOW_LENGTH) {
+                contentType.startsWith("image/svg+xml") -> rspString
+                contentType.startsWith("image") ->
+                    "<img src=\"data:$contentType;base64,${resp.data.base64()}\">"
+
+                else -> rspString
+            }
+
+        runOnUi {
+            println("data $contentType: $properData")
+            web.engine.loadContent(properData)
+        }
+
+        if (resp.length > MAX_SHOW_LENGTH || resp.data.size > MAX_SHOW_LENGTH) {
             taRspContent.text = "Data is Too Large! ${resp.length} "
             running.value = false
             return
         }
-        val showdata =
+        val showData =
             if (showJsonPath.get() && tfJsonPath.text.trim().isNotEmpty()) {
-                runCatching { resp.data.simpleJsonPath(tfJsonPath.text.trim()) }
-                    .getOrElse { resp.data }
+                runCatching { rspString.simpleJsonPath(tfJsonPath.text.trim()) }
+                    .getOrElse { rspString }
             } else {
-                resp.data
+                rspString
             }
         taRspContent.text =
             if (prettyProperty.get()) {
-                showdata.unicodeMix2String().prettyJson()
+                showData.unicodeMix2String().prettyJson()
             } else {
-                showdata
+                showData
             }
 
         running.value = false
@@ -493,6 +571,7 @@ class ApiPostView : PluginFragment("ApiPost") {
             if (params.isNotEmpty()) {
                 showReqTable.value = true
                 showReqHeader.value = false
+                showRenderHtml.value = false
                 selectedBodyType.value = bodyType[1]
 
                 val tmpParam =
@@ -505,7 +584,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                                         valueProperty.value = mutableEntry.value.toString()
                                         fileProperty.value =
                                             mutableEntry.key in fileKeys ||
-                                                mutableEntry.value.toString() == "@file"
+                                                    mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }
@@ -520,5 +599,38 @@ class ApiPostView : PluginFragment("ApiPost") {
                 showReqTable.value = false
             }
         }
+    }
+
+    private fun saveResponseToFile() {
+        response?.let { resp ->
+            chooseFile(
+                "Save to File",
+                arrayOf(FileChooser.ExtensionFilter("All", "*.*")),
+                File(System.getProperty("user.home")),
+                FileChooserMode.Save,
+            )
+                .firstOrNull()
+                ?.let { file ->
+                    runAsync {
+                        runCatching {
+                            file.writeBytes(resp.data)
+                            runOnUi { primaryStage.showToast("Success: ${file.absolutePath}") }
+                        }.onFailure {
+                            runOnUi { primaryStage.showToast("Failed: ${it.message}") }
+                        }
+                    }
+                }
+        } ?: run { primaryStage.showToast("没有可保存的响应数据") }
+    }
+
+    private fun resetResponse() {
+        response = null
+        taRspContent.text = ""
+        taRspHeaders.text = ""
+        textRspStatus.text = ""
+
+        showRspHeader.value = false
+        showRenderHtml.value = false
+        tgRsp.toggles.first().isSelected = true
     }
 }

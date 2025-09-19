@@ -137,7 +137,7 @@ object HttpUrlUtil {
         val realUrl =
             URL(req.url.takeIf { req.params.isEmpty() } ?: "${req.url}?${req.params.toParams()}")
         val conn = realUrl.openConnection(proxy) as HttpURLConnection
-        var rsp: String
+        var rsp: ByteArray = byteArrayOf()
         val realHeaders = makeHeaders(req.headers)
         val time = measureTimeMillis {
             conn.requestMethod = req.method
@@ -146,17 +146,15 @@ object HttpUrlUtil {
             conn.connect()
             if (isDownload) {
                 if (!downloadFolder.exists()) downloadFolder.mkdirs()
-                File(downloadFolder, NetHelper.getNetFileName(conn))
-                    .also { rsp = "fileLocation: ${it.absolutePath}" }
-                    .outputStream()
-                    .buffered()
-                    .use { it.write(conn.inputStream.readBytes()) }
+                File(downloadFolder, NetHelper.getNetFileName(conn)).outputStream().buffered().use {
+                    it.write(conn.inputStream.readBytes())
+                }
             } else {
                 rsp =
                     if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                        conn.inputStream.use { postAction(it.readBytes()) }
+                        conn.inputStream.use { it.readBytes() }
                     } else {
-                        conn.body().decodeToString()
+                        conn.body()
                     }
             }
         }
@@ -171,7 +169,7 @@ object HttpUrlUtil {
         showRequestInfo(conn, info)
     }
 
-    private fun afterResponse(conn: HttpURLConnection, time: Long, rsp: String): Response {
+    private fun afterResponse(conn: HttpURLConnection, time: Long, rsp: ByteArray): Response {
         if (conn.doInput) (conn.errorStream ?: conn.inputStream).close()
         showResponseInfo(conn, time, rsp)
         val responseHeaders =
@@ -194,7 +192,7 @@ object HttpUrlUtil {
             req.url.takeIf { req.params.isEmpty() }
                 ?: "${req.url}$paramConcatChar${req.params.toParams()}"
         val conn = URL(realUrl).openConnection(proxy) as HttpURLConnection
-        var rsp: String
+        var rsp: ByteArray
         val header = makeHeaders(req.headers)
         val time = measureTimeMillis {
             if (method == "PATCH" || method == "CONNECT") {
@@ -207,9 +205,9 @@ object HttpUrlUtil {
             conn.connect()
             rsp =
                 if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                    conn.inputStream.use { postAction(it.readBytes()) }
+                    conn.inputStream.use { it.readBytes() }
                 } else {
-                    conn.body().decodeToString()
+                    conn.body()
                 }
         }
         return afterResponse(conn, time, rsp)
@@ -252,7 +250,7 @@ object HttpUrlUtil {
         val req = Request(url, "GET", mutableMapOf(), headers)
         preAction(req)
         val conn = URL(url).openConnection(proxy) as HttpURLConnection
-        var rsp: String
+        var rsp: ByteArray
 
         val header = makeHeaders(req.headers)
         val dataBytes = data.toByteArray()
@@ -269,9 +267,9 @@ object HttpUrlUtil {
             conn.outputStream.close()
             rsp =
                 if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                    conn.inputStream.use { postAction(it.readBytes()) }
+                    conn.inputStream.use { it.readBytes() }
                 } else {
-                    conn.body().decodeToString()
+                    conn.body()
                 }
         }
 
@@ -286,7 +284,7 @@ object HttpUrlUtil {
         val req = Request(url, "POST", mutableMapOf(), headers)
         preAction(req)
         val conn = URL(url).openConnection(proxy) as HttpURLConnection
-        var rsp: String
+        var rsp: ByteArray
 
         val header = makeHeaders(req.headers)
         val dataBytes = data.toByteArray()
@@ -303,9 +301,9 @@ object HttpUrlUtil {
             conn.outputStream.close()
             rsp =
                 if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                    conn.inputStream.use { postAction(it.readBytes()) }
+                    conn.inputStream.use { it.readBytes() }
                 } else {
-                    conn.body().decodeToString()
+                    conn.body()
                 }
         }
 
@@ -324,7 +322,7 @@ object HttpUrlUtil {
 
         preAction(req)
         val conn = URL(url).openConnection(proxy) as HttpURLConnection
-        var rsp: String
+        var rsp: ByteArray
         val header = makeHeaders(req.headers)
         val time = measureTimeMillis {
             conn.requestMethod = req.method
@@ -349,9 +347,9 @@ object HttpUrlUtil {
             conn.connect()
             rsp =
                 if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                    conn.inputStream.use { postAction(it.readBytes()) }
+                    conn.inputStream.use { it.readBytes() }
                 } else {
-                    conn.body().decodeToString()
+                    conn.body()
                 }
         }
         return afterResponse(conn, time, rsp)
@@ -388,7 +386,7 @@ object HttpUrlUtil {
         return sbParams
     }
 
-    private fun showResponseInfo(conn: HttpURLConnection, time: Long, rsp: String) {
+    private fun showResponseInfo(conn: HttpURLConnection, time: Long, rsp: ByteArray) {
         if (!isDebug) return
         val sb = StringBuilder()
         sb.append("<-- ")
@@ -408,7 +406,7 @@ object HttpUrlUtil {
                     it.append("\t")
                         .append("body:")
                         .appendLine()
-                        .append(rsp.split("\n").joinToString("\n") { "\t\t$it" })
+                        .append(rsp.decodeToString().split("\n").joinToString("\n") { "\t\t$it" })
                         .appendLine()
                 }
             }
