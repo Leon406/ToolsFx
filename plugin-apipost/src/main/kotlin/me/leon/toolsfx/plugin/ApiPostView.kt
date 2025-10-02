@@ -38,8 +38,8 @@ private const val MAX_SHOW_LENGTH = 1_000_000
 private const val TAB_STYLE = "-fx-base: lightblue;"
 
 class ApiPostView : PluginFragment("ApiPost") {
-    override val version = "v1.12.0"
-    override val date: String = "2025-09-19"
+    override val version = "v1.12.1"
+    override val date: String = "2025-10-02"
     override val author = "Leon406"
     override val description = "ApiPost"
 
@@ -47,6 +47,8 @@ class ApiPostView : PluginFragment("ApiPost") {
         println("Plugin Info:$description $version $date $author  ")
     }
 
+    private val removedHeaderRegexp =
+        "(?i)^(sec-|accept|dnt|connection|cache|referer|host|pragma)".toRegex()
     private val controller: ApiPostController by inject()
     private var tfUrl: TextField by singleAssign()
     private var taReqHeaders: TextArea by singleAssign()
@@ -284,6 +286,17 @@ class ApiPostView : PluginFragment("ApiPost") {
                 promptText = "request headers"
                 isWrapText = true
                 visibleWhen(showReqHeader)
+                contextmenu {
+                    item("Remove Headers") {
+                        action {
+                            taReqHeaders.text =
+                                taReqHeaders.text
+                                    .lines()
+                                    .filter { it.isNotBlank() && !it.contains(removedHeaderRegexp) }
+                                    .joinToString("\n")
+                        }
+                    }
+                }
             }
         }
 
@@ -379,20 +392,15 @@ class ApiPostView : PluginFragment("ApiPost") {
         title = "ApiPost"
     }
 
-    private fun makeCurl(): String = Request(
-        tfUrl.text,
-        selectedMethod.get(),
-        reqTableParams,
-        reqHeaders,
-        taReqContent.text,
-    )
-        .apply {
-            isJson = selectedBodyType.get() == BodyType.JSON.type
-            requestParams
-                .firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
-                ?.let { fileParamName = it.key }
-        }
-        .toCurl()
+    private fun makeCurl(): String =
+        Request(tfUrl.text, selectedMethod.get(), reqTableParams, reqHeaders, taReqContent.text)
+            .apply {
+                isJson = selectedBodyType.get() == BodyType.JSON.type
+                requestParams
+                    .firstOrNull { it.isEnable && it.key.isNotEmpty() && it.isFile }
+                    ?.let { fileParamName = it.key }
+            }
+            .toCurl()
 
     private fun doRequest() {
         resetResponse()
@@ -417,52 +425,52 @@ class ApiPostView : PluginFragment("ApiPost") {
 
             fun req() =
                 runCatching {
-                    if (selectedMethod.get() == "POST") {
-                        val bodyType = bodyTypeMap[selectedBodyType.get()]
-                        requireNotNull(bodyType)
-                        when (bodyType) {
-                            BodyType.JSON,
-                            BodyType.FORM_DATA ->
-                                uploadParams?.run {
-                                    controller.uploadFile(
-                                        tfUrl.text,
-                                        this.value.split(",", ";").map { it.toFile() },
-                                        this.key,
-                                        reqTableParams,
-                                        reqHeaders,
-                                    )
-                                }
-                                    ?: controller.post(
-                                        tfUrl.text,
-                                        reqTableParams,
-                                        reqHeaders,
-                                        bodyType == BodyType.JSON,
-                                    )
+                        if (selectedMethod.get() == "POST") {
+                                val bodyType = bodyTypeMap[selectedBodyType.get()]
+                                requireNotNull(bodyType)
+                                when (bodyType) {
+                                    BodyType.JSON,
+                                    BodyType.FORM_DATA ->
+                                        uploadParams?.run {
+                                            controller.uploadFile(
+                                                tfUrl.text,
+                                                this.value.split(",", ";").map { it.toFile() },
+                                                this.key,
+                                                reqTableParams,
+                                                reqHeaders,
+                                            )
+                                        }
+                                            ?: controller.post(
+                                                tfUrl.text,
+                                                reqTableParams,
+                                                reqHeaders,
+                                                bodyType == BodyType.JSON,
+                                            )
 
-                            BodyType.RAW ->
-                                controller.postRaw(
+                                    BodyType.RAW ->
+                                        controller.postRaw(
+                                            tfUrl.text,
+                                            taReqContent.text,
+                                            reqHeaders,
+                                        )
+                                }
+                            } else {
+                                controller.request(
                                     tfUrl.text,
-                                    taReqContent.text,
+                                    selectedMethod.get(),
+                                    reqTableParams,
                                     reqHeaders,
                                 )
-                        }
-                    } else {
-                        controller.request(
-                            tfUrl.text,
-                            selectedMethod.get(),
-                            reqTableParams,
-                            reqHeaders,
-                        )
-                    }
-                        .also { lastResp = it }
-                        .toLiteResponse()
-                        .also {
-                            if (it.code == 200) {
-                                success++
-                                countMap[it.hash] = countMap[it.hash]?.let { it + 1 } ?: 1
                             }
-                        }
-                }
+                            .also { lastResp = it }
+                            .toLiteResponse()
+                            .also {
+                                if (it.code == 200) {
+                                    success++
+                                    countMap[it.hash] = countMap[it.hash]?.let { it + 1 } ?: 1
+                                }
+                            }
+                    }
                     .onFailure {
                         Response(
                             -1,
@@ -473,31 +481,31 @@ class ApiPostView : PluginFragment("ApiPost") {
                     }
 
             runCatching {
-                runBlocking {
-                    (1..count)
-                        .map {
-                            async(dispatcher) {
-                                req().also {
-                                    if (delayMillis > 0) {
-                                        // delay 无法阻塞其他
-                                        Thread.sleep(delayMillis)
+                    runBlocking {
+                        (1..count)
+                            .map {
+                                async(dispatcher) {
+                                    req().also {
+                                        if (delayMillis > 0) {
+                                            // delay 无法阻塞其他
+                                            Thread.sleep(delayMillis)
+                                        }
                                     }
                                 }
                             }
-                        }
-                        .awaitAll()
+                            .awaitAll()
 
-                    lastResp!!
+                        lastResp!!
+                    }
                 }
-            }
                 .onSuccess {
                     handleSuccess(it)
                     if (count > 1) {
                         ui {
                             val statisticInfo =
                                 "  time  costs : ${System.currentTimeMillis() - start} ms" +
-                                        "\nsuccess/total: $success/$count" +
-                                        "\n    detail   :\n${
+                                    "\nsuccess/total: $success/$count" +
+                                    "\n    detail   :\n${
                                             countMap.map { "\t\tresp hash: ${it.key}  num: ${it.value}" }
                                                 .joinToString(System.lineSeparator())
                                         }"
@@ -521,6 +529,7 @@ class ApiPostView : PluginFragment("ApiPost") {
         taRspHeaders.text = resp.headerInfo
         val contentType = resp.headers["Content-Type"]?.toString().orEmpty()
         val rspString = resp.data.decodeToString()
+
         val properData =
             when {
                 contentType.startsWith("audio") || contentType.startsWith("video") -> {
@@ -538,6 +547,17 @@ class ApiPostView : PluginFragment("ApiPost") {
 
                 else -> rspString
             }
+        val binaryPreivew =
+            contentType.startsWith("image") ||
+                contentType.startsWith("audio") ||
+                contentType.startsWith("video")
+        if (binaryPreivew) {
+            tgRsp.toggles.last().isSelected = true
+            showRenderHtml.value = true
+            showRspHeader.value = false
+        } else {
+            showRenderHtml.value = false
+        }
 
         runOnUi {
             println("data $contentType: $properData")
@@ -550,12 +570,14 @@ class ApiPostView : PluginFragment("ApiPost") {
             return
         }
         val showData =
-            if (showJsonPath.get() && tfJsonPath.text.trim().isNotEmpty()) {
-                runCatching { rspString.simpleJsonPath(tfJsonPath.text.trim()) }
-                    .getOrElse { rspString }
-            } else {
-                rspString
+            when {
+                binaryPreivew -> "See Render Tab"
+                showJsonPath.get() && tfJsonPath.text.trim().isNotEmpty() ->
+                    runCatching { rspString.simpleJsonPath(tfJsonPath.text.trim()) }
+                        .getOrElse { rspString }
+                else -> rspString
             }
+
         taRspContent.text =
             if (prettyProperty.get()) {
                 showData.unicodeMix2String().prettyJson()
@@ -587,7 +609,7 @@ class ApiPostView : PluginFragment("ApiPost") {
                                         valueProperty.value = mutableEntry.value.toString()
                                         fileProperty.value =
                                             mutableEntry.key in fileKeys ||
-                                                    mutableEntry.value.toString() == "@file"
+                                                mutableEntry.value.toString() == "@file"
                                     }
                                 )
                             }
@@ -607,20 +629,21 @@ class ApiPostView : PluginFragment("ApiPost") {
     private fun saveResponseToFile() {
         response?.let { resp ->
             chooseFile(
-                "Save to File",
-                arrayOf(FileChooser.ExtensionFilter("All", "*.*")),
-                File(System.getProperty("user.home")),
-                FileChooserMode.Save,
-            )
+                    "Save to File",
+                    arrayOf(FileChooser.ExtensionFilter("All", "*.*")),
+                    File(System.getProperty("user.home")),
+                    FileChooserMode.Save,
+                )
                 .firstOrNull()
                 ?.let { file ->
                     runAsync {
                         runCatching {
-                            file.writeBytes(resp.data)
-                            runOnUi { primaryStage.showToast("Success: ${file.absolutePath}") }
-                        }.onFailure {
-                            runOnUi { primaryStage.showToast("Failed: ${it.message}") }
-                        }
+                                file.writeBytes(resp.data)
+                                runOnUi { primaryStage.showToast("Success: ${file.absolutePath}") }
+                            }
+                            .onFailure {
+                                runOnUi { primaryStage.showToast("Failed: ${it.message}") }
+                            }
                     }
                 }
         } ?: run { primaryStage.showToast("没有可保存的响应数据") }
@@ -628,20 +651,19 @@ class ApiPostView : PluginFragment("ApiPost") {
 
     private fun saveRequestToFile() {
         chooseFile(
-            "Save to File",
-            arrayOf(FileChooser.ExtensionFilter("All", "*.curl")),
-            ApiConfig.curlDir.toFile(),
-            FileChooserMode.Save,
-        )
+                "Save to File",
+                arrayOf(FileChooser.ExtensionFilter("All", "*.curl")),
+                ApiConfig.curlDir.toFile(),
+                FileChooserMode.Save,
+            )
             .firstOrNull()
             ?.let { file ->
                 runAsync {
                     runCatching {
-                        file.writeText(makeCurl())
-                        runOnUi { primaryStage.showToast("Success: ${file.absolutePath}") }
-                    }.onFailure {
-                        runOnUi { primaryStage.showToast("Failed: ${it.message}") }
-                    }
+                            file.writeText(makeCurl())
+                            runOnUi { primaryStage.showToast("Success: ${file.absolutePath}") }
+                        }
+                        .onFailure { runOnUi { primaryStage.showToast("Failed: ${it.message}") } }
                 }
             }
     }

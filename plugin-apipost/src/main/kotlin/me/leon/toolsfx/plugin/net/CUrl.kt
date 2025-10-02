@@ -25,7 +25,7 @@ fun String.cookieParse() =
     }
 
 val separator = """\s*[\^\\]\s+""".toRegex()
-val winEscapeReg = """\^([\W\d])""".toRegex()
+val winEscapeReg = """\^([\W\dA-Fa-f])""".toRegex()
 
 fun String.winEscape() = replace("^\\^\"", "\"").replace(winEscapeReg, "$1")
 
