@@ -63,15 +63,19 @@ object NetHelper {
     }
 
     fun parseHeaderString(headers: String) =
-        regexHeader.findAll(headers).fold(mutableMapOf<String, Any>()) { acc, matchResult ->
-            acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
-        }
+        regexHeader.findAll(headers.preProcess())
+            .fold(mutableMapOf<String, Any>()) { acc, matchResult ->
+                acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
+            }
+
+    private fun String.preProcess() = replace("(\r\n|\n)+".toRegex(), "")
 
     fun String.proxyType() =
         when (this) {
             "DIRECT" -> Proxy.Type.DIRECT
             "SOCKS4",
             "SOCKS5" -> Proxy.Type.SOCKS
+
             "HTTP" -> Proxy.Type.HTTP
             else -> Proxy.Type.DIRECT
         }

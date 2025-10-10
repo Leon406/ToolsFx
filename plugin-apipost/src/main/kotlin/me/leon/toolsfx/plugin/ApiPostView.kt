@@ -48,7 +48,8 @@ class ApiPostView : PluginFragment("ApiPost") {
     }
 
     private val removedHeaderRegexp =
-        "(?i)^(sec-|accept|dnt|connection|cache|referer|host|pragma)".toRegex()
+        "(?i)^(sec-|accept|dnt|connection|cache|host|pragma)".toRegex()
+
     private val controller: ApiPostController by inject()
     private var tfUrl: TextField by singleAssign()
     private var taReqHeaders: TextArea by singleAssign()

@@ -41,11 +41,12 @@ class JbLicenseTest {
         val server = "http://vip.52shizhan.cn"
         HttpUrlUtil.get("$server$RPC_RELEASE$queries").also {
             println(it)
-            if (it.data.contains("<responseCode>OK</responseCode>")) {
+            val dataStr = it.data.decodeToString()
+            if (dataStr.contains("<responseCode>OK</responseCode>")) {
                 HttpUrlUtil.get("$server$RPC$queries".also { println(it) }).also {
-                    println(regMsg.find(it.data)?.groupValues?.get(1))
+                    println(regMsg.find(dataStr)?.groupValues?.get(1))
                     println()
-                    println(it.data)
+                    println(dataStr)
                 }
             }
         }
@@ -100,9 +101,10 @@ class JbLicenseTest {
 
         runCatching {
             HttpUrlUtil.get("$url$RPC_RELEASE$queries").also {
-                if (it.data.contains("<responseCode>OK</responseCode>")) {
+                val data = it.data.decodeToString()
+                if (data.contains("<responseCode>OK</responseCode>")) {
                     HttpUrlUtil.get("$url$RPC$queries").also {
-                        regMsg.find(it.data)?.groupValues?.get(1).also { println("$url\t\t$it") }
+                        regMsg.find(data)?.groupValues?.get(1).also { println("$url\t\t$it") }
                             ?: return true
                     }
                 } else {
@@ -116,16 +118,16 @@ class JbLicenseTest {
     @Test
     fun check() {
         checkUrl("https://35.188.104.230").also { println(it) }
-        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.size) }
         verifySSL(false)
         checkUrl("https://35.188.104.230").also { println(it) }
-        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.size) }
         verifySSL(true)
         checkUrl("https://35.188.104.230").also { println(it) }
-        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.size) }
         verifySSL(false)
         checkUrl("https://35.188.104.230").also { println(it) }
-        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.length) }
+        HttpUrlUtil.get("https://www.baidu.com/").also { println(it.data.size) }
     }
 
     @Test
