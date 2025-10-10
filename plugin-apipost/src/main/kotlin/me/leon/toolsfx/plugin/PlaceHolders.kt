@@ -7,6 +7,7 @@ import me.leon.encode.base.base64
 import me.leon.ext.toBinaryString
 import me.leon.ext.toFile
 import me.leon.hash
+import tornadofx.urlEncoded
 
 const val TIMESTAMP = "{{timestamp}}"
 const val TIMESTAMP_SECONDS = "{{timestamp2}}"
@@ -36,6 +37,7 @@ fun String.methodCall(args: String): String {
     return when (this) {
         "md5" -> args.hash(this)
         "digest" -> args.substringAfter(",").hash(args.substringBefore(","))
+        "urlencode" -> args.urlEncoded
         "base64" -> args.base64()
         "base64File" -> args.toFile().readBytes().base64()
         "binary" -> args.toBinaryString()
