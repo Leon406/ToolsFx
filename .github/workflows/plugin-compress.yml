@@ -47,7 +47,7 @@ jobs:
          restore-keys: ${{ runner.os }}-gradle
       - name: Run plugin-compress jar
         run: ./gradlew  :plugin-compress:jar
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           path: |
             plugin-compress/build/libs

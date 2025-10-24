@@ -47,7 +47,7 @@ jobs:
          restore-keys: ${{ runner.os }}-gradle
       - name: Run plugin-location jar
         run: ./gradlew  :plugin-location:jar
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           path: |
             plugin-location/build/libs
