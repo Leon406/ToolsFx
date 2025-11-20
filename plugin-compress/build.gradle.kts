@@ -24,7 +24,7 @@ dependencies {
     implementation(libs.commons.compress)
     implementation(libs.zstd)
     implementation(libs.asm)
-    implementation("org.tukaani:xz:1.10")
+    implementation("org.tukaani:xz:1.11")
     implementation("org.brotli:dec:0.1.2")
     testImplementation(libs.kotlin.test)
 }
