@@ -36,26 +36,14 @@ object Translator {
         listOf(
             "https://translate.google.com",
             "https://translate.googleapis.com",
-            "https://translate.amz.wang",
-            "https://translate.homegu.com",
-            "http://t.yuxuantech.com",
             "https://google-translate-proxy.tantu.com",
             "https://tr.iass.top",
             "https://translate.industrysourcing.com",
             "https://translate.yunkuerp.cn",
-            "https://test1.tripgpt.cn",
             "https://translate.renwole.com",
-            "http://translate.sosel.net",
-            "https://57650aef.vvvvvv.pages.dev",
-            "https://gt1.yifan.ai",
-            "https://gtranslate.aquilainteractive.io",
+            "https://translate.sosel.net",
             "https://translate.willbon.top",
-            "https://translate.wuliwala.net",
-            "https://www.lvshitou.com",
-            "https://yyownuse.top",
             "https://seele.saobby.com",
-            "https://gtranslate.darkluna.top",
-            "http://a.bomea.com",
         )
     //    SimplyTranslate
     private val mirrors =
@@ -63,7 +51,6 @@ object Translator {
             "https://simplytranslate.pussthecat.org",
             "https://t.opnxng.com",
             "https://simplytranslate.leemoon.network",
-            "https://translate.bus-hit.me",
         )
 
     private val okServer = mutableSetOf<String>()
