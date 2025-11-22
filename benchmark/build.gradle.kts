@@ -5,16 +5,7 @@ plugins {
     `java-library`
     id("kotlin-kapt")
 }
-val jvmTarget = "11"
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-    targetCompatibility = jvmTarget
-    sourceCompatibility = jvmTarget
-}
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = jvmTarget
-}
 dependencies {
     implementation("androidx.collection:collection-ktx:1.5.0")
     implementation("org.openjdk.jol:jol-core:0.17")

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("jvm") version libs.versions.kotlinVer.get()
     alias(libs.plugins.detekt)
@@ -5,7 +7,7 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
-val jvmTarget = "1.8"
+val jvmTargetVer = "1.8"
 
 subprojects {
     apply(from = "${rootProject.projectDir}/config/codeQuality.gradle")
@@ -16,12 +18,16 @@ subprojects {
         detektPlugins(rootProject.libs.detekt.formatting)
     }
     tasks.withType<JavaCompile> {
+
         options.encoding = "UTF-8"
-        targetCompatibility = jvmTarget
-        sourceCompatibility = jvmTarget
+        targetCompatibility = jvmTargetVer
+        sourceCompatibility = jvmTargetVer
     }
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = jvmTarget
+
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.fromTarget(jvmTargetVer)
+        }
     }
 }
 
