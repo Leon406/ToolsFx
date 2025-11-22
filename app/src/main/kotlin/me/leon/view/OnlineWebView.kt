@@ -3,6 +3,7 @@ package me.leon.view
 import javafx.beans.property.SimpleStringProperty
 import javafx.concurrent.Worker
 import javafx.scene.control.TextField
+import javafx.scene.layout.Priority
 import javafx.scene.web.WebView
 import me.leon.*
 import me.leon.ext.DEFAULT_SPACING_50X
@@ -82,6 +83,7 @@ class OnlineWebView : Fragment("Browser") {
                         web.engine.executeScript(fontJS).also { println(it) }
                     }
                 }
+                vgrow = Priority.ALWAYS
             }
         }
 
