@@ -286,14 +286,19 @@ class MiscTest {
 
     @Test
     fun ieee754() {
-        val floatToRawIntBits = java.lang.Float.floatToRawIntBits(220.5F)
-        println(Integer.toBinaryString(floatToRawIntBits))
-        println(Integer.toHexString(floatToRawIntBits))
-        println(Integer.toBinaryString(java.lang.Float.floatToRawIntBits(-220.5F)))
-        println(java.lang.Long.toBinaryString(java.lang.Double.doubleToRawLongBits(1.111)))
-        println(java.lang.Long.toHexString(java.lang.Double.doubleToRawLongBits(1.111)))
-        println(java.lang.Long.toBinaryString(java.lang.Double.doubleToRawLongBits(-1.111)))
-        println(java.lang.Long.toHexString(java.lang.Double.doubleToRawLongBits(-1.111)))
+        val f = -220.5F
+        println(f.ieee754())
+        println(f.ieee754Readable())
+        println(f.ieee754LE())
+        println(f.ieee754Hex())
+        println(f.ieee754HexLE())
+        val d = 1.111
+        println("-----------")
+        println(d.ieee754())
+        println(d.ieee754Readable())
+        println(d.ieee754LE())
+        println(d.ieee754Hex())
+        println(d.ieee754HexLE())
     }
 
     @Test

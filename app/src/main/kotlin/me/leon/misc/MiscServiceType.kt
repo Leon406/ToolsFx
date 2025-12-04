@@ -229,11 +229,19 @@ enum class MiscServiceType(val type: String) : MiscService {
             }
         }
     },
-    ENDIA("endia") {
+    ENDIA("Endia") {
         override fun process(raw: String, params: Map<String, String>): String {
             val type = requireNotNull(params[C1])
             return raw.lineAction2String {
                 runCatching { Endia.valueOf(type).convert(it) }.getOrElse { it.stacktrace() }
+            }
+        }
+    },
+    IEEE754("IEEE754") {
+        override fun process(raw: String, params: Map<String, String>): String {
+            val type = requireNotNull(params[C1])
+            return raw.lineAction2String {
+                runCatching { Floats.valueOf(type).convert(it) }.getOrElse { it.stacktrace() }
             }
         }
     },
