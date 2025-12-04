@@ -63,10 +63,11 @@ object NetHelper {
     }
 
     fun parseHeaderString(headers: String) =
-        regexHeader.findAll(headers.preProcess())
-            .fold(mutableMapOf<String, Any>()) { acc, matchResult ->
-                acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
-            }
+        regexHeader.findAll(headers.preProcess()).fold(mutableMapOf<String, Any>()) {
+            acc,
+            matchResult ->
+            acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
+        }
 
     private fun String.preProcess() = replace("(\r\n|\n)+".toRegex(), "")
 

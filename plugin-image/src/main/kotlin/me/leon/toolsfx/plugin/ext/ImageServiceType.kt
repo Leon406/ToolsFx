@@ -74,6 +74,6 @@ enum class ImageServiceType(val type: String) : ImageService {
     override fun paramsHints(): Array<out String> = IMAGE_CONFIG[this]?.get(HINT).orEmpty()
 }
 
-val serviceTypeMap = ImageServiceType.values().associateBy { it.type }
+val serviceTypeMap = ImageServiceType.entries.associateBy { it.type }
 
 fun String.locationServiceType() = serviceTypeMap[this] ?: ImageServiceType.FIX_PNG

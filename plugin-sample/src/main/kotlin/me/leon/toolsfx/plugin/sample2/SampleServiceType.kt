@@ -18,6 +18,6 @@ enum class SampleServiceType(val type: String) : Sample2Service {
     },
 }
 
-val serviceTypeMap = SampleServiceType.values().associateBy { it.type }
+val serviceTypeMap = SampleServiceType.entries.associateBy { it.type }
 
 fun String.locationServiceType() = serviceTypeMap[this] ?: SampleServiceType.FUNC_1

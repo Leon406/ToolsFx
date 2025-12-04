@@ -175,6 +175,6 @@ private fun decompress(
         outputStream.toByteArray()
     }
 
-val compressTypeMap = Compression.values().sortedBy { it.alg.lowercase() }.associateBy { it.alg }
+val compressTypeMap = Compression.entries.sortedBy { it.alg.lowercase() }.associateBy { it.alg }
 
 fun String.compressType() = compressTypeMap[this] ?: Compression.GZIP

@@ -51,7 +51,7 @@ class Tmp {
     fun digest() {
         val salt = "12345678".toByteArray()
         // salt在前面
-        for (algorithm in Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values()) {
+        for (algorithm in Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.entries) {
             Pbkdf2PasswordEncoder().apply {
                 setAlgorithm(algorithm)
                 val r = encode("123")
@@ -166,7 +166,7 @@ class Tmp {
     @Test
     fun big() {
         "12".toBigInteger().toString(16).also { println(it) }
-        println(EncodeType.values().joinToString(" "))
+        println(EncodeType.entries.joinToString(" "))
     }
 
     @Test

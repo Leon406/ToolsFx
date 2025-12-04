@@ -158,6 +158,6 @@ enum class LocationServiceType(val type: String) : ILocationService {
     }
 }
 
-val locationServiceTypeMap = LocationServiceType.values().associateBy { it.type }
+val locationServiceTypeMap = LocationServiceType.entries.associateBy { it.type }
 
 fun String.locationServiceType() = locationServiceTypeMap[this] ?: LocationServiceType.WGS2GCJ

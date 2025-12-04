@@ -55,7 +55,8 @@ fun quota(baseUrl: String, sk: String): Triple<Double, Double, Long> {
                 baseUrl + PATH_SUBSCRIPTION,
                 headers = mutableMapOf("Authorization" to "Bearer $sk"),
             )
-            .data.decodeToString()
+            .data
+            .decodeToString()
             .also {
                 val sub = it.fromJson(Subscription::class.java)
                 total = sub.hardLimitUsd
@@ -64,7 +65,8 @@ fun quota(baseUrl: String, sk: String): Triple<Double, Double, Long> {
                         baseUrl + PATH_USAGE,
                         headers = mutableMapOf("Authorization" to "Bearer $sk"),
                     )
-                    .data.decodeToString()
+                    .data
+                    .decodeToString()
                     .also { used = it.fromJson(Usage::class.java).totalUsageInUsd }
             }
     }
@@ -77,7 +79,8 @@ fun models(baseUrl: String, sk: String): List<ModelInfo.Model> {
                     baseUrl + PATH_MODELS,
                     headers = mutableMapOf("Authorization" to "Bearer $sk"),
                 )
-                .data.decodeToString()
+                .data
+                .decodeToString()
                 .fromJson(ModelInfo::class.java)
                 .data
         }
@@ -91,7 +94,8 @@ fun group(baseUrl: String, sk: String): List<Group.GP> {
                     baseUrl + PATH_GROUP,
                     headers = mutableMapOf("Authorization" to "Bearer $sk"),
                 )
-                .data.decodeToString()
+                .data
+                .decodeToString()
                 .also { println(it) }
                 .fromJson(Group::class.java)
                 .data

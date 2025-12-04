@@ -6,4 +6,4 @@ enum class BodyType(val type: String) {
     JSON("json"),
 }
 
-val bodyTypeMap = BodyType.values().associateBy { it.type }
+val bodyTypeMap = BodyType.entries.associateBy { it.type }

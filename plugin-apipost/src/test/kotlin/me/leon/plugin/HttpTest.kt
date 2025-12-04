@@ -158,7 +158,8 @@ class HttpTest {
                         api.body.toMutableMap(),
                         api.headers.toMutableMap(),
                     )
-                    .data.decodeToString()
+                    .data
+                    .decodeToString()
 
             println(r.simpleJsonPath(api.result))
         }

@@ -318,7 +318,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         val encodeMethods = mutableListOf<String>()
         runAsync {
             while (true) {
-                EncodeType.values()
+                EncodeType.entries
                     .filterNot { it in CRACK_EXCLUDE_ENCODE }
                     .asSequence()
                     .map { encode ->

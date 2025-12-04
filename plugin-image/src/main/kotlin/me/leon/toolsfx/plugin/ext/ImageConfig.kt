@@ -16,11 +16,11 @@ val IMAGE_CONFIG =
         ImageServiceType.IMAGE_TO_01 to
             mapOf(OPTIONS to arrayOf(ColorMode.WHITE1.toString(), ColorMode.BLACK1.toString())),
         ImageServiceType.IMAGE_PROCESS to
-            mapOf(OPTIONS to ImageOperation.values().map { it.toString() }.toTypedArray()),
+            mapOf(OPTIONS to ImageOperation.entries.map { it.toString() }.toTypedArray()),
         ImageServiceType.MORPHOLOGY to
             mapOf(
                 HINT to arrayOf("kernel size default is 3"),
-                OPTIONS to ImageMorphology.values().map { it.toString() }.toTypedArray(),
+                OPTIONS to ImageMorphology.entries.map { it.toString() }.toTypedArray(),
             ),
         ImageServiceType.SCALE to mapOf(HINT to arrayOf("scale ratio")),
     )

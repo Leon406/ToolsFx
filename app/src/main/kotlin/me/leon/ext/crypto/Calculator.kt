@@ -63,9 +63,7 @@ enum class Calculator(val algo: String) : ICalculator {
         override fun calculate(ints: List<BigInteger>): String {
             val isMutualPrime = ints[1].mutualPrime(ints[2])
             require(isMutualPrime) { "P and N are not mutual prime!" }
-            return (ints[0].mod(ints[2]) * (ints[1].modInverse(ints[2])))
-                .mod(ints[2])
-                .toString()
+            return (ints[0].mod(ints[2]) * (ints[1].modInverse(ints[2]))).mod(ints[2]).toString()
         }
     },
     MOD_POW("P^e mod N") {

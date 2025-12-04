@@ -80,7 +80,7 @@ class ApiPostView : PluginFragment("ApiPost") {
             "TRACE",
             "CONNECT",
         )
-    private val bodyType = BodyType.values().map { it.type }
+    private val bodyType = BodyType.entries.map { it.type }
 
     private val selectedMethod = SimpleStringProperty(methods.first())
     private val selectedBodyType = SimpleStringProperty(bodyType.first())

@@ -399,7 +399,7 @@ class EncodeTest {
         val propInput = inputText.split(".+ :\\s*".toRegex()).filterNot(String::isBlank).first()
         println("$inputText \n $propInput")
         println(controller.decode2String(propInput, EncodeType.BASE16, ""))
-        EncodeType.values()
+        EncodeType.entries
             .map { it.type to controller.decode2String(propInput, it, "") }
             .filterNot {
                 it.second.isEmpty() ||
