@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Cache Qodana dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/work/_temp/_github_home/qodana-cache
           key: ${{ runner.os }}-qodana-${{ github.ref }}
