@@ -38,7 +38,7 @@ jobs:
       # Gradle 缓存配置 https://docs.github.com/cn/actions/using-workflows/caching-dependencies-to-speed-up-workflows
       # GitHub 将删除 7 天内未被访问的任何缓存条目。 可以存储的缓存数没有限制，但大小10 GB
       - name: Cache Gradle packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
          path: |
            ~/.gradle
