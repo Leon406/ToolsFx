@@ -49,7 +49,7 @@ jobs:
         run: ./gradlew  :plugin-image:jar
       - name: Copy libs jar for package
         run:  cp -r plugin-image/libs/  plugin-image/build/libs
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           path: |
             plugin-image/build/libs
