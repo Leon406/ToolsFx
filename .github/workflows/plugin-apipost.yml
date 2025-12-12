@@ -47,7 +47,7 @@ jobs:
          restore-keys: ${{ runner.os }}-gradle
       - name: Run plugin-apipost jar
         run: ./gradlew  :plugin-apipost:jar
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           path: |
             plugin-apipost/build/libs
