@@ -1,6 +1,63 @@
  <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406/count.svg" alt="Leon406:: Visitor's Count" />
 <img width=0 height=0 src="https://profile-counter.glitch.me/Leon406_ToolsFx/count.svg" alt="ToolsFx:: Visitor's Count" />
 
+# 1.19.0
+## feature:
+- feat(app): Misc add IEEE754 convert
+- feat(app): Webview vgrow alwasys
+- feat(apipost):  支持urlencode函数
+- feat(apipost): 手动移除无用请求头，图音视频响应自动切换渲染tab
+- feat(apipost): 支持保存请到文件
+- feat(apipost): 支持图片、音频、视频、html预览，保持到文件
+- feat(apipost): 新Curl Parser，支持本地curl文件目录
+- feat(app): 字符串统计支持超过4位unicode
+- feat(api-post): 支持读取curl配置目录，jsonpath支持数组索引 *
+- feat(app): unicode support length 5
+- feat(plugin-apipost): Proxy support importing from clipboard
+- feat(app): Misc update github mirror urls
+- feat(app): Misc add DNS dig and Link Check support directory
+- feat(app): Hash crack support regexp target
+- feat(app): CTF Base64CaseCrack support Regexp
+- feat(app): SM2 support C1C2C3 mode
+- feat(app): MISC update dns solve
+- feat(app): Misc timestamp 支持Webkit格式
+- feat(app): Misc 支持区号匹配
+- feat(api-post): response support hex
+- feat(app): Misc DNS hosts支持gcore/cloudfront判断，失效域名
+- feat(app): update Misc github mirror url
+- feat(api): SM2 support CERTIFICATE PEM public key
+- feat(plugin-apipost): support delay option
+- feat(app): Misc optimize LinkCheck
+- feat(app): support DSA PEM armor format #337
+- feat(plugin-apipost): support multithread request
+- feat(app): ClassicalView add case revert
+- feat(plugin-image): support clipboard image
+- feat(plugin-apipost): support upload multi files
+- feat(plugin-apipost): support proxy authentication
+- feat(app): Misc add unicode font
+- feat(app): update opencc dict
+- Revert "feat(app): 支持windows 离线ocr(微信引擎)"
+- feat(app): 支持windows 离线ocr(微信引擎)
+- feat(app): wordninja support full sentence
+- feat(app): MISC DNS host support CloudFlare ip
+- feat(app): Misc add wordninja
+## bug fix:
+- fix(app): Gson Int 未指定类型时，默认反序列化为double
+- fix(apipost):  请求头空行请求错误
+- fix(apipost): cmd curl未正常转义
+- fix(apipost): form & cmd curl未正常解析
+- fix(apipost): -data解析错误，部分数据未去除引号
+- fix(api-post): 导入链接，选中curl不重置
+- fix(api-post): jsonpath异常无法操作
+- fix(api-post): curl配置默认显示问题
+- fix(app): BigInt (P/Q) mod N, Q与N不互质错误
+- fix(app): misc remove error short url source
+- fix(app): EdgeTts失效
+- test(app): fix test convertJp
+- fix(app): tts选项不存在数据错误
+- fix(app): p mod q negative result #265
+- fix(plugin-compress): Lzstring 编码单独处理
+
 # v1.18.0
 ## feature:
 - feat(app): misc github 新增地址转raw直链，直链转浏览地址，更新镜像
