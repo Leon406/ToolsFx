@@ -5,5 +5,5 @@ data class Api(
     val file: String,
     val headers: LinkedHashMap<String, String>,
     val body: LinkedHashMap<String, String>,
-    val result: String
+    val result: String,
 )

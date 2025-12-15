@@ -344,12 +344,11 @@ bouncy castle文档 https://www.bouncycastle.org/specifications.html
 见 [changelog.md](changelog.md)
 
 ## CREDIT
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
 
 [bouncy castle](https://github.com/bcgit/bc-java)
 
 [tornadofx](https://github.com/edvin/tornadofx)
-
-[JetBrains](https://jb.gg/OpenSourceSupport)
 
 [badge maker](https://shields.io/)
 

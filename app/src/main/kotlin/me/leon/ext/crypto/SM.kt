@@ -75,8 +75,8 @@ private fun generatePrivateKeyParameter(key: PrivateKey): AsymmetricKeyParameter
                         s.g,
                         s.n,
                         s.h,
-                        s.seed
-                    )
+                        s.seed,
+                    ),
                 )
             } else {
                 ECPrivateKeyParameters(key.d, ECDomainParameters(s!!.curve, s.g, s.n, s.h, s.seed))
@@ -104,7 +104,7 @@ private fun generatePublicKeyParameter(key: PublicKey): AsymmetricKeyParameter =
             val s = EC5Util.convertSpec(key.params)
             ECPublicKeyParameters(
                 EC5Util.convertPoint(key.params, key.w),
-                ECDomainParameters(s.curve, s.g, s.n, s.h, s.seed)
+                ECDomainParameters(s.curve, s.g, s.n, s.h, s.seed),
             )
         }
         else -> {
@@ -119,7 +119,7 @@ private fun generatePublicKeyParameter(key: PublicKey): AsymmetricKeyParameter =
 fun ByteArray.sm2(
     isEncrypt: Boolean,
     params: CipherParameters,
-    mode: SM2Engine.Mode = SM2Engine.Mode.C1C3C2
+    mode: SM2Engine.Mode = SM2Engine.Mode.C1C3C2,
 ): ByteArray =
     with(SM2Engine(mode)) {
         init(isEncrypt, if (isEncrypt) ParametersWithRandom(params, SecureRandom()) else params)

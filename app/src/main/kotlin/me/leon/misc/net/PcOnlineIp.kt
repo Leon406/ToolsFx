@@ -15,5 +15,5 @@ data class PcOnlineIp(
     val regionCode: String?,
     val addr: String?,
     val regionNames: String?,
-    val err: String?
+    val err: String?,
 )

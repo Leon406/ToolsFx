@@ -7,5 +7,5 @@ package me.leon.toolsfx.plugin.ext
  */
 enum class ColorMode {
     WHITE1,
-    BLACK1
+    BLACK1,
 }

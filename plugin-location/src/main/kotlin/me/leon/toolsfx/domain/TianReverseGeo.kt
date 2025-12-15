@@ -5,7 +5,7 @@ data class TianReverseGeo(val result: Result, val msg: String, val status: Strin
     data class Result(
         val formatted_address: String,
         val location: TianGeo.Location,
-        val addressComponent: AddressComponent
+        val addressComponent: AddressComponent,
     ) {
         data class AddressComponent(
             val address: String,
@@ -22,7 +22,7 @@ data class TianReverseGeo(val result: Result, val msg: String, val status: Strin
             val road: String,
             val road_distance: Int,
             val poi_distance: Int,
-            val address_distance: Int
+            val address_distance: Int,
         )
     }
 

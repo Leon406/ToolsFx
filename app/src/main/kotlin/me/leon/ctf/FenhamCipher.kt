@@ -33,7 +33,7 @@ val FENHAM_DICT =
         "1010111",
         "1011000",
         "1011001",
-        "1011010"
+        "1011010",
     )
 
 fun String.fenham(key: String): String {

@@ -6,21 +6,13 @@ package me.leon.misc
  * @email deadogone@gmail.com
  */
 private val ROMAN_DECODE_DICT =
-    mapOf(
-        'I' to 1,
-        'V' to 5,
-        'X' to 10,
-        'L' to 50,
-        'C' to 100,
-        'D' to 500,
-        'M' to 1000,
-    )
+    mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
 private val ROMAN_DICT =
     arrayOf(
         arrayOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"),
         arrayOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"),
         arrayOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"),
-        arrayOf("", "M", "MM", "MMM")
+        arrayOf("", "M", "MM", "MMM"),
     )
 
 fun Int.toRoman(): String {

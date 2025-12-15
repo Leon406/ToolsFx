@@ -1,11 +1,16 @@
 package me.leon.ext
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
+import com.google.gson.ToNumberPolicy
 import com.google.gson.reflect.TypeToken
 
 object GsonUtil {
-    private val gson = Gson()
+    private val gson =
+        GsonBuilder()
+            .setNumberToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+            .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+            .create()
 
     fun toJson(s: Any): String = gson.toJson(s)
 

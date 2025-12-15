@@ -47,7 +47,7 @@ constructor(
     private val secret: String = "",
     saltLength: Int = DEFAULT_SALT_LENGTH,
     private var iterations: Int = DEFAULT_ITERATIONS,
-    private var hashWidth: Int = DEFAULT_HASH_WIDTH
+    private var hashWidth: Int = DEFAULT_HASH_WIDTH,
 ) : PasswordEncoder {
     private val saltGenerator: BytesKeyGenerator
     private var algorithm = SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA1.name
@@ -95,7 +95,7 @@ constructor(
     fun matchesWithSalt(
         rawPassword: CharSequence,
         encodedPassword: String,
-        salt: ByteArray
+        salt: ByteArray,
     ): Boolean {
         val digested = decode(encodedPassword)
         return MessageDigest.isEqual(digested, encode(rawPassword, salt))
@@ -116,7 +116,7 @@ constructor(
                     rawPassword.toString().toCharArray(),
                     salt + secret.toByteArray(),
                     iterations,
-                    hashWidth
+                    hashWidth,
                 )
             salt + SecretKeyFactory.getInstance(algorithm).generateSecret(spec).encoded
         } catch (ex: GeneralSecurityException) {
@@ -151,13 +151,13 @@ constructor(
 }
 
 val PBE_ENCODERS =
-    Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values().fold(
+    SecretKeyFactoryAlgorithm.entries.fold(
         mutableMapOf<SecretKeyFactoryAlgorithm, Pbkdf2PasswordEncoder>()
     ) { acc, secretKeyFactoryAlgorithm ->
         acc.apply {
             put(
                 secretKeyFactoryAlgorithm,
-                Pbkdf2PasswordEncoder().apply { setAlgorithm(secretKeyFactoryAlgorithm) }
+                Pbkdf2PasswordEncoder().apply { setAlgorithm(secretKeyFactoryAlgorithm) },
             )
         }
     }

@@ -20,7 +20,7 @@ val MASK_MAP =
         'c' to C_LETTER_DICT,
         's' to S_SPECIAL_DICT,
         'a' to A_ALL,
-        'q' to "?"
+        'q' to "?",
     )
 
 fun String.mask(customDict: String = D_DIGIT_DICT, condition: (String) -> Boolean): String? {

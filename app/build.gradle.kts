@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 
 group = "me.leon.tools"
-version = "1.18.0"
+version = "1.19.0"
 
 plugins {
     application
@@ -66,8 +66,8 @@ dependencies {
     implementation(libs.zxing)
     api(libs.gson)
     implementation(libs.nashron)
-    implementation(libs.kotlinx.coroutines)
-    implementation("org.java-websocket:Java-WebSocket:1.5.6")
+    api(libs.kotlinx.coroutines)
+    implementation("org.java-websocket:Java-WebSocket:1.6.0")
     // mp3格式支持
     implementation("com.googlecode.soundlibs:mp3spi:1.9.5.4") {
         exclude(group = "junit")
@@ -80,7 +80,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.jsoup)
 
-    testImplementation("dnsjava:dnsjava:3.5.3")
+    testImplementation("dnsjava:dnsjava:3.6.3")
 
 //    testImplementation("org.springframework.security:spring-security-web:5.6.2")
     testImplementation("org:jaudiotagger:2.0.3")

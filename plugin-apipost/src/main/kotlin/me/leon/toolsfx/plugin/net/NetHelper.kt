@@ -18,16 +18,15 @@ object NetHelper {
             URLDecoder.decode(
                 response.getHeaderField("Content-Disposition")?.let { getFileName(it) }
                     ?: response.getHeaderField("content-disposition")?.let { getFileName(it) }
-                        ?: getUrlFileName(response.url.toString())
-                        ?: "unknownfile_${System.currentTimeMillis()}"
+                    ?: getUrlFileName(response.url.toString())
+                    ?: "unknownfile_${System.currentTimeMillis()}"
             )
         )
 
     private fun getCorrectUrl(url: String) =
         url.toByteArray(Charsets.ISO_8859_1).toString(Charsets.UTF_8).takeIf {
             REG_CHINESE.matcher(it).find()
-        }
-            ?: url
+        } ?: url
 
     /**
      * 通过 ‘？’ 和 ‘/’ 判断文件名
@@ -64,15 +63,20 @@ object NetHelper {
     }
 
     fun parseHeaderString(headers: String) =
-        regexHeader.findAll(headers).fold(mutableMapOf<String, Any>()) { acc, matchResult ->
+        regexHeader.findAll(headers.preProcess()).fold(mutableMapOf<String, Any>()) {
+            acc,
+            matchResult ->
             acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2] }
         }
+
+    private fun String.preProcess() = replace("(\r\n|\n)+".toRegex(), "")
 
     fun String.proxyType() =
         when (this) {
             "DIRECT" -> Proxy.Type.DIRECT
             "SOCKS4",
             "SOCKS5" -> Proxy.Type.SOCKS
+
             "HTTP" -> Proxy.Type.HTTP
             else -> Proxy.Type.DIRECT
         }

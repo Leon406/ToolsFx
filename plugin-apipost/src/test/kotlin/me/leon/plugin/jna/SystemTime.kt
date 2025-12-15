@@ -10,7 +10,7 @@ import com.sun.jna.Structure
     "wHour",
     "wMinute",
     "wSecond",
-    "wMilliseconds"
+    "wMilliseconds",
 )
 class SystemTime : Structure() {
     @JvmField var wYear: Short = 0

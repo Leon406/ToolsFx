@@ -46,10 +46,6 @@ class ParamsTest(private val p1: Int, private val p2: Int, private val p3: Strin
     companion object {
         @Parameterized.Parameters
         @JvmStatic
-        fun params() =
-            listOf(
-                arrayOf(1, 2, "ddd"),
-                arrayOf(3, 4, "555"),
-            )
+        fun params() = listOf(arrayOf(1, 2, "ddd"), arrayOf(3, 4, "555"))
     }
 }

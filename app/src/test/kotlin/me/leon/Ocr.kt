@@ -27,14 +27,14 @@ class Ocr {
                 object : X509TrustManager {
                     override fun checkClientTrusted(
                         chain: Array<out X509Certificate>?,
-                        authType: String?
+                        authType: String?,
                     ) {
                         // nop
                     }
 
                     override fun checkServerTrusted(
                         chain: Array<out X509Certificate>?,
-                        authType: String?
+                        authType: String?,
                     ) {
                         // nop
                     }

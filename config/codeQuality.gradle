@@ -22,12 +22,12 @@ detekt {
 spotless {
     java {
         target "src/**/*.java"
-        // https://github.com/google/google-java-format/releases
-        googleJavaFormat('1.17.0').aosp()
+        // https://github.com/google/google-java-format/releases  1.25.0 needs jdk 17+
+        googleJavaFormat('1.24.0').aosp()
     }
     kotlin {
         target "src/**/*.kt"
         // https://github.com/facebookincubator/ktfmt/releases
-        ktfmt('0.44').kotlinlangStyle()
+        ktfmt('0.53').kotlinlangStyle()
     }
 }

@@ -6,7 +6,7 @@ data class BaiduGeo(val status: Int?, val result: Result?) {
         val precise: Int?,
         val confidence: Int?,
         val comprehension: Int?,
-        val level: String?
+        val level: String?,
     )
 
     data class Location(val lng: Double?, val lat: Double?)

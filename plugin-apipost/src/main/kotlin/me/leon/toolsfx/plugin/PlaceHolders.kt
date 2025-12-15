@@ -7,9 +7,10 @@ import me.leon.encode.base.base64
 import me.leon.ext.toBinaryString
 import me.leon.ext.toFile
 import me.leon.hash
+import tornadofx.urlEncoded
 
 const val TIMESTAMP = "{{timestamp}}"
-const val TIMESTAMP2 = "{{timestamp2}}"
+const val TIMESTAMP_SECONDS = "{{timestamp2}}"
 const val UUID = "{{uuid}}"
 const val UUID2 = "{{uuid2}}"
 val METHOD = """\{\{(\w+)\((.*)\)}}""".toRegex()
@@ -26,7 +27,7 @@ fun String.addHttp() =
 fun String.replacePlaceHolders() =
     replace(UUID, uuid())
         .replace(UUID2, uuid2())
-        .replace(TIMESTAMP2, (timeStamp() / 1000).toString())
+        .replace(TIMESTAMP_SECONDS, (timeStamp() / 1000).toString())
         .replace(TIMESTAMP, timeStamp().toString())
         .methodParse()
 
@@ -36,9 +37,11 @@ fun String.methodCall(args: String): String {
     return when (this) {
         "md5" -> args.hash(this)
         "digest" -> args.substringAfter(",").hash(args.substringBefore(","))
+        "urlencode" -> args.urlEncoded
         "base64" -> args.base64()
         "base64File" -> args.toFile().readBytes().base64()
         "binary" -> args.toBinaryString()
+        "env" -> System.getenv(args)
         "uppercase" -> args.uppercase()
         "lowercase" -> args.lowercase()
         "date2Mills" ->
@@ -65,6 +68,5 @@ fun String.methodParse(): String {
             tmp = tmp.methodParse()
         }
         replace(this.groupValues.first(), this.groupValues[1].methodCall(tmp))
-    }
-        ?: this
+    } ?: this
 }

@@ -26,7 +26,12 @@ class CompressController : Controller() {
         alg: Compression = Compression.GZIP,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
-    ): String = alg.compress(raw.decodeToByteArray(inputEncode)).encodeTo(outputEncode)
+    ): String =
+        if (alg == Compression.LZString) {
+            Compression.LZString.compress(raw, inputEncode, outputEncode)
+        } else {
+            alg.compress(raw.decodeToByteArray(inputEncode)).encodeTo(outputEncode)
+        }
 
     fun decompress(
         raw: String,
@@ -49,5 +54,10 @@ class CompressController : Controller() {
         alg: Compression = Compression.GZIP,
         inputEncode: String = "raw",
         outputEncode: String = "base64",
-    ) = alg.decompress(raw.decodeToByteArray(inputEncode)).encodeTo(outputEncode)
+    ) =
+        if (alg == Compression.LZString) {
+            Compression.LZString.decompress(raw, inputEncode, outputEncode)
+        } else {
+            alg.decompress(raw.decodeToByteArray(inputEncode)).encodeTo(outputEncode)
+        }
 }

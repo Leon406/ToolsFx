@@ -14,7 +14,7 @@ class AsymmetricCryptoController : Controller() {
         singleLine: Boolean = false,
         reserved: Int = 11,
         inputEncode: String = "raw",
-        outputEncode: String = "base64"
+        outputEncode: String = "base64",
     ): String =
         catch({ "encrypt error: $it}" }) {
             if (DEBUG) println("encrypt $key  $alg $data")
@@ -48,7 +48,7 @@ class AsymmetricCryptoController : Controller() {
         data: String,
         singleLine: Boolean = false,
         inputEncode: String = "base64",
-        outputEncode: String = "raw"
+        outputEncode: String = "raw",
     ): String =
         catch({ "decrypt error: $it" }) {
             if (DEBUG) println("decrypt $key  $alg $data")
@@ -70,7 +70,7 @@ class AsymmetricCryptoController : Controller() {
         singleLine: Boolean = false,
         reserved: Int = 11,
         inputEncode: String = "raw",
-        outputEncode: String = "base64"
+        outputEncode: String = "base64",
     ): String =
         catch({ "encrypt error: $it" }) {
             if (singleLine) {
@@ -93,7 +93,7 @@ class AsymmetricCryptoController : Controller() {
         data: String,
         singleLine: Boolean = false,
         inputEncode: String = "base64",
-        outputEncode: String = "raw"
+        outputEncode: String = "raw",
     ) =
         catch({ "decrypt error: $it" }) {
             if (DEBUG) println("decrypt $key  $alg $data")

@@ -5,12 +5,12 @@ import me.leon.ext.crypto.TABLE_A_Z_WO_K
 /** @link http://www.hiencode.com/tapcode.html */
 fun String.tapCode(
     table: String = TABLE_A_Z_WO_K,
-    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
+    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
 ) = polybius(table, encodeMap, "K" to "C")
 
 fun String.tapCodeDecrypt(
     table: String = TABLE_A_Z_WO_K,
-    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP
+    encodeMap: String = DEFAULT_POLYBIUS_ENCODE_MAP,
 ) = propTapCode().polybiusDecrypt(table, encodeMap)
 
 private fun String.propTapCode() =

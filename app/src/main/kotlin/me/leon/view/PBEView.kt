@@ -202,7 +202,7 @@ class PBEView : Fragment("PBE") {
                             cipher,
                             tfIteration.text.toInt(),
                             keyLength,
-                            singleLine.get()
+                            singleLine.get(),
                         )
                     } else {
                         saltByteArray =
@@ -214,7 +214,7 @@ class PBEView : Fragment("PBE") {
                             cipher,
                             tfIteration.text.toInt(),
                             keyLength,
-                            singleLine.get()
+                            singleLine.get(),
                         )
                     }
                 }

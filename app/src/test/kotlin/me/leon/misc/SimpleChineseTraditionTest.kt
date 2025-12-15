@@ -111,8 +111,9 @@ class SimpleChineseTraditionTest {
 
     @Test
     fun convertJp() {
+        // https://opencc.byvoid.com/
         val old = "壓邊國號變步缺罐屍篰"
-        val newHanzi = "圧辺国号変歩欠缶死部"
+        val newHanzi = "圧辺国号変歩欠缶屍篰"
 
         var config = CONFIG.first { it.name == "jp2t" }
         assertEquals(old, config.convert(newHanzi))

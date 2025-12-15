@@ -6,8 +6,6 @@ import kotlin.test.Ignore
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import me.leon.TEST_ENCODE_DIR
-import me.leon.classical.hackWord
-import me.leon.classical.hackWordDecode
 import me.leon.controller.EncodeController
 import me.leon.ctf.*
 import me.leon.encode.base.*
@@ -17,7 +15,8 @@ import me.leon.ext.crypto.encodeTypeMap
 import org.junit.Before
 import org.junit.Test
 
-@Ignore
+@Ignore class EncodeTe
+
 class EncodeTest {
 
     lateinit var controller: EncodeController
@@ -169,19 +168,19 @@ class EncodeTest {
         assertEquals("xesef-disof-gytuf-katof-movif-baxux", "1234567890".bubbleBabble())
         assertEquals(
             "1234567890",
-            "xesef-disof-gytuf-katof-movif-baxux".bubbleBabbleDecode2String()
+            "xesef-disof-gytuf-katof-movif-baxux".bubbleBabbleDecode2String(),
         )
         assertEquals(
             "Pineapple1",
-            "xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String()
+            "xigak-nyryk-humil-bosek-sonaf-cuxix".bubbleBabbleDecode2String(),
         )
         assertEquals(
             "Pineap ple3",
-            "xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String()
+            "xigak-nyryk-humil-bimel-byrik-hesox".bubbleBabbleDecode2String(),
         )
         assertEquals(
             "Pineapplea",
-            "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String()
+            "xigak-nyryk-humil-bosek-sonak-cuxux".bubbleBabbleDecode2String(),
         )
     }
 
@@ -192,14 +191,16 @@ class EncodeTest {
         assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
         assertEquals("🗻", "🗻".toUnicodeString().unicode2String())
 
+        assertEquals("𝠇", "\\u1D807".unicode2String())
+
         assertContentEquals(
             arrayOf("🗾", "🗾"),
-            arrayOf("&#128510;".unicode2String(), "128510".toInt().toUnicodeChar())
+            arrayOf("&#128510;".unicode2String(), "128510".toInt().toUnicodeChar()),
         )
 
         assertContentEquals(
             intArrayOf(128_510, 128_507),
-            intArrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt())
+            intArrayOf("\uD83D\uDDFE".unicodeCharToInt(), "🗻".unicodeCharToInt()),
         )
         println("🗾".unicodeCharToInt())
     }
@@ -219,7 +220,7 @@ class EncodeTest {
         assertEquals(raw, base58.base58Decode2String())
         assertEquals(
             "flag{8ea44e39c914c5ddfbb9808c10033421}",
-            "G9mzcaHeFrtWbmbyVxTUN1NeWS1kNJiYRU41cZcaYq9Hsor7QnA8".base58Decode2String()
+            "G9mzcaHeFrtWbmbyVxTUN1NeWS1kNJiYRU41cZcaYq9Hsor7QnA8".base58Decode2String(),
         )
 
         measureNanoTime {
@@ -398,7 +399,7 @@ class EncodeTest {
         val propInput = inputText.split(".+ :\\s*".toRegex()).filterNot(String::isBlank).first()
         println("$inputText \n $propInput")
         println(controller.decode2String(propInput, EncodeType.BASE16, ""))
-        EncodeType.values()
+        EncodeType.entries
             .map { it.type to controller.decode2String(propInput, it, "") }
             .filterNot {
                 it.second.isEmpty() ||
@@ -444,24 +445,5 @@ class EncodeTest {
         println(controller.encode2String("37123123", EncodeType.DECIMAL_RADIX_N, base37))
         assertEquals("JTWZO", "37123123".toBigInteger().radixNEncode(base37))
         assertEquals("37123123", "JTWZO".radixNDecode2DecimalString(base37.map { it.toString() }))
-    }
-
-    @Test
-    fun caseCrack() {
-        val encode = "ZMXHZ3TZMHVFSDR2M19GMHVUZF83ADNFUJFNADDFNG41DZNYFQ=="
-        val raw = "flag{Y0u_H4v3_F0und_7h3_R1gh7_4n5w3r}"
-        println(encode.base64CaseCrack())
-        assertEquals(encode, raw.base64UpperCase())
-    }
-
-    @Test
-    fun hackString() {
-        val hackWord =
-            ("This message serves to prove how our minds can do amazing things!" +
-                    "In the beginning it was hard but now, on this line your mind is reading it automatically" +
-                    " without even thinking about it, be proud!Only certain people can read this!")
-                .hackWord()
-        println(hackWord)
-        println(hackWord.hackWordDecode().lowercase())
     }
 }

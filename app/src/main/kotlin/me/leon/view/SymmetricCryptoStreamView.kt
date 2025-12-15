@@ -196,7 +196,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                     it,
                                     keyIvInputView.ivByteArray,
                                     cipher,
-                                    keyIvInputView.associatedData
+                                    keyIvInputView.associatedData,
                                 )
                             }
                         } else {
@@ -209,7 +209,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                 singleLine.get(),
                                 inputEncode,
                                 outputEncode,
-                                keyIvInputView.associatedData
+                                keyIvInputView.associatedData,
                             )
                         }
                     } else if (fileProperty.get()) {
@@ -219,7 +219,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                                 it,
                                 keyIvInputView.ivByteArray,
                                 cipher,
-                                keyIvInputView.associatedData
+                                keyIvInputView.associatedData,
                             )
                         }
                     } else {
@@ -232,7 +232,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
                             singleLine.get(),
                             inputEncode,
                             outputEncode,
-                            keyIvInputView.associatedData
+                            keyIvInputView.associatedData,
                         )
                     }
                 }

@@ -50,7 +50,7 @@ class LocationParse {
     fun amapLocation(
         addr: List<String>,
         key: String = "282f521c5c372f233da702769e43bfba",
-        city: String = "杭州"
+        city: String = "杭州",
     ) {
         "https://restapi.amap.com/v3/geocode/geo?address=${addr[1] + addr.last()}&output=json&key=$key&city=$city"
             .readStreamFromNet()
@@ -64,7 +64,7 @@ class LocationParse {
                                         addr[4].toDouble(),
                                         addr[3].toDouble(),
                                         this[1].toDouble(),
-                                        this[0].toDouble()
+                                        this[0].toDouble(),
                                     )
                                     .also {
                                         if (it > 200) {
@@ -82,7 +82,7 @@ class LocationParse {
     fun amapPoi(
         addr: List<String>,
         key: String = "282f521c5c372f233da702769e43bfba",
-        city: String = "杭州"
+        city: String = "杭州",
     ) {
         val location =
             (addr[1] + addr[2] + addr.last().replace("上城区".toRegex(), ""))
@@ -122,10 +122,9 @@ class LocationParse {
                             ?: bean.pois?.firstOrNull {
                                 it.name?.run {
                                     contains(addr[2]) && contains("居委会|村委会|综合服务中心|党群服务中心".toRegex())
-                                }
-                                    ?: false
+                                } ?: false
                             }
-                                ?: bean.pois?.first().also {
+                            ?: bean.pois?.first().also {
                                 println("$location 可能不准确  \n\t\t${bean.pois}")
                             }
                     calculateDistance(poi, addr, location)
@@ -139,7 +138,7 @@ class LocationParse {
                     addr[4].toDouble(),
                     addr[3].toDouble(),
                     this[1].toDouble(),
-                    this[0].toDouble()
+                    this[0].toDouble(),
                 )
                 .also {
                     if (it > 200) {

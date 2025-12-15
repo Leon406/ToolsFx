@@ -2,6 +2,11 @@ package me.leon.misc.net
 
 import kotlin.math.pow
 import me.leon.ext.*
+import me.leon.misc.net.cdn.CLOUD_FLARE_CIDR
+import me.leon.misc.net.cdn.CLOUD_FRONT_CIDR
+import me.leon.misc.net.cdn.GCORE_CIDR
+import me.leon.misc.net.cdn.GSTATIC_CIDR
+import me.leon.misc.net.cdn.LOCAL_CIDR
 
 /**
  * @author Leon
@@ -56,6 +61,7 @@ fun Int.ipMask() = ipMaskBinary().binary2Ip()
 fun String.cidr(): String {
     val (ipStr, cidrStr) = split("/").takeIf { it.size > 1 } ?: listOf(this, "24")
     val cidr = cidrStr.takeIf { it.isNotEmpty() }?.toInt() ?: 24
+    require(cidr in 0..32) { "Error CIDR" }
     val ip = ipStr.ip2Uint()
     val sub = 32 - cidr
     val count = 2.0.pow(sub).toInt()
@@ -63,23 +69,60 @@ fun String.cidr(): String {
     val net = mask and ip
 
     return StringBuilder()
-        .append("${"ip count".center(12)}:\t${count - 2}")
+        .append("${"ip count".center(12)}:\t$count")
         .appendLine()
         .append("${"mask".center(12)}:\t" + cidr.ipMask())
         .appendLine()
         .append("${"net".center(12)}:\t" + net.toIp())
         .appendLine()
-        .append(
-            "${"range".center(12)}:\t${(net + 1U).toIp()} - ${(net + (count - 2).toUInt()).toIp()}"
-        )
+        .append("${"range".center(12)}:\t${net.toIp()} - ${(net + (count - 1).toUInt()).toIp()}")
         .appendLine()
         .append("${"broadcast".center(12)}:\t" + (net + (count - 1).toUInt()).toIp())
         .appendLine()
         .toString()
 }
 
+/** 包含头尾 */
+fun String.cidrRange(): UIntRange {
+    val (ipStr, cidrStr) = split("/").takeIf { it.size > 1 } ?: listOf(this, "24")
+    val cidr = cidrStr.takeIf { it.isNotEmpty() }?.toInt() ?: 24
+    val ip = ipStr.ip2Uint()
+    val sub = 32 - cidr
+    val count = 2.0.pow(sub).toInt()
+    val mask = cidr.ipMask().ip2Uint()
+    val net = mask and ip
+    return net..(net + (count - 1).toUInt())
+}
+
 private const val IP_API = "http://ip-api.com/json/%s?lang=zh-CN"
 private const val PCONLINE_API = "http://whois.pconline.com.cn/ipJson.jsp?ip=%s&json=true"
+
+val cfCidrs = CLOUD_FLARE_CIDR.map { it.cidrRange() }
+val googleCidrs = GSTATIC_CIDR.map { it.cidrRange() }
+
+val cloudFrontCidrs = CLOUD_FRONT_CIDR.map { it.cidrRange() }
+val gcoreCidrs = GCORE_CIDR.map { it.cidrRange() }
+val localCidrs = LOCAL_CIDR.map { it.cidrRange() }
+
+fun String.ipCloudFlare() = cfCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipCloudFront() = cloudFrontCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipGcore() = gcoreCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipGoogle() = googleCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipLocal() = localCidrs.any { it.contains(ip2Uint()) }
+
+fun String.ipCdnType() =
+    when {
+        ipCloudFlare() -> "CloudFlare"
+        ipCloudFront() -> "CloudFront"
+        ipGcore() -> "Gcore"
+        ipGoogle() -> "Google"
+        ipLocal() -> "Local"
+        else -> "Normal"
+    }
 
 fun String.ipLocation() =
     runCatching {

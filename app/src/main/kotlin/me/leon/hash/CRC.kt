@@ -21,7 +21,7 @@ data class CRC(
     val initial: ULong = 0UL,
     val xorOut: ULong = 0UL,
     val refIn: Boolean = false,
-    val refOut: Boolean = false
+    val refOut: Boolean = false,
 ) {
     private val mask = if (width == 64) 0xFFFFFFFFFFFFFFFFUL else (1UL shl width) - 1UL
     private val half = (1UL shl (width - 1)).coerceAtLeast(0x80UL)
@@ -76,7 +76,7 @@ fun ByteArray.crc(
     initial: Long = 0L,
     xorOut: Long = 0L,
     refIn: Boolean = false,
-    refOut: Boolean = false
+    refOut: Boolean = false,
 ): String = crc(width, poly.toULong(), initial.toULong(), xorOut.toULong(), refIn, refOut)
 
 fun ByteArray.crc(
@@ -85,7 +85,7 @@ fun ByteArray.crc(
     initial: ULong = 0UL,
     xorOut: ULong = 0UL,
     refIn: Boolean = false,
-    refOut: Boolean = false
+    refOut: Boolean = false,
 ) =
     CRC(width, poly, initial, xorOut, refIn, refOut).run {
         update(this@crc)
@@ -100,7 +100,7 @@ fun File.crc(
     initial: ULong = 0UL,
     xorOut: ULong = 0UL,
     refIn: Boolean = false,
-    refOut: Boolean = false
+    refOut: Boolean = false,
 ) =
     CRC(width, poly, initial, xorOut, refIn, refOut).run {
         this@crc.inputStream().use {
@@ -123,7 +123,7 @@ fun ByteArray.crcReverse(
     width: Int,
     poly: ULong = 0UL,
     initial: ULong = 0UL,
-    xorOut: ULong = 0UL
+    xorOut: ULong = 0UL,
 ): String {
     val mask = if (width == 64) 0xFFFFFFFFFFFFFFFFUL else (1UL shl width) - 1UL
     var crc = initial
@@ -164,7 +164,7 @@ data class CrcParam(
     val initial: ULong = 0UL,
     val xorOut: ULong = 0UL,
     val refIn: Boolean = false,
-    val refOut: Boolean = false
+    val refOut: Boolean = false,
 )
 
 fun CrcParam.crc() = CRC(width, poly, initial, xorOut, refIn, refOut)
@@ -180,7 +180,7 @@ val CRC_MAPPING =
                 0xFFFFFFFFFFFFFFFFUL,
                 0xFFFFFFFFFFFFFFFFUL,
                 refIn = true,
-                refOut = true
+                refOut = true,
             ),
         "CRC-8" to CrcParam(8, 0x7U),
         "CRC-16" to CrcParam(16, 0x8005U, refIn = true, refOut = true),
@@ -297,7 +297,7 @@ val CRC_MAPPING =
                 0xFFFFFFFFFFFFFFFFUL,
                 0xFFFFFFFFFFFFFFFFUL,
                 refIn = true,
-                refOut = true
+                refOut = true,
             ),
         "CRC-64/MS" to
             CrcParam(64, 0x259C84CBA6426349UL, 0xFFFFFFFFFFFFFFFFUL, refIn = true, refOut = true),
@@ -311,6 +311,6 @@ val CRC_MAPPING =
                 0xFFFFFFFFFFFFFFFFUL,
                 0xFFFFFFFFFFFFFFFFUL,
                 refIn = true,
-                refOut = true
+                refOut = true,
             ),
     )

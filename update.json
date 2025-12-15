@@ -1,28 +1,22 @@
-{"version":"1.18.0","info":"1.18.0 2024-04-29
+{"version":"1.19.0","info":"1.19.0 2025-12-15
 
 新功能
-
-  🔥 misc新增 中英文转换优化
-  🔥 misc新增 github 新增地址转raw直链，直链转浏览地址，更新镜像
-  🔥 misc新增 变量命名
-  🔥 非对称加密中秘钥可带到签名与验签模块
-  🔥 非对称加密新增公私钥指数模模解析
-  🔥 非对称加密/签名支持key,der,pk8后缀 文本解析
-  🔥 key base64自动解析移除 pem header 和 footer
+  🔥 misc新增 IEEE754浮点转换
+  🔥 SM2 support C1C2C3 mode
   🔥 其他 详见Changelog.md
 
 Bug修复
-  🐛 remove mit info
-  🐛 radix8 dict错误
+  🐛 EdgeTts失效
+  🐛 翻译链接报毒
+  🐛 移除CTF失效在线算法
   🐛 哈希算法: base64,hex编码迭代计算错误
 
 插件
   🔥 plugin-location 新增天地图及逆地理编码,支持环境变量配置key
-  🐛 plugin-compress Lzstring base64 decoding padding处理
+  🔥🐛 plugin-apipost 功能增强及bug修复
 
   使用前请看README和wiki
 
-github项目已开通打赏(sponsor)入口,
-感谢  naonaonao师傅 大力支持！
+github项目已开通打赏(sponsor)入口
 
   "}

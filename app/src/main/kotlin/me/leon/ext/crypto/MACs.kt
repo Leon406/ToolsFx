@@ -38,7 +38,7 @@ object MACs {
                     "512-512",
                     "1024-384",
                     "1024-512",
-                    "1024-1024"
+                    "1024-1024",
                 ),
             "HmacGOST3411" to listOf("256"),
             "HmacGOST3411-2012" to listOf("256", "512"),
@@ -53,7 +53,7 @@ object MACs {
                     "SEED",
                     "SERPENT",
                     "SM4",
-                    "Twofish"
+                    "Twofish",
                 ),
             "GMAC" to
                 listOf(
@@ -66,7 +66,7 @@ object MACs {
                     "SEED",
                     "SERPENT",
                     "SM4",
-                    "Twofish"
+                    "Twofish",
                 ),
             "AESCMAC" to listOf("256"),
             "IDEAMAC" to listOf("-"),
@@ -94,7 +94,7 @@ object MACs {
         data: ByteArray,
         keyByteArray: ByteArray,
         ivByteArray: ByteArray,
-        alg: String
+        alg: String,
     ): ByteArray =
         if (alg.contains("POLY1305")) {
             Poly1305Serial.getInstance(alg).macWithIv(keyByteArray, ivByteArray, data)

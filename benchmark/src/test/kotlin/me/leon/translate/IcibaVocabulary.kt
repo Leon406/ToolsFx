@@ -12,7 +12,7 @@ data class IcibaVocabulary(
         val word_name: String?,
         val is_CRI: String?,
         val exchange: Exchange?,
-        val symbols: List<Symbol?>?
+        val symbols: List<Symbol?>?,
     ) {
         fun info(): String {
             println(this)
@@ -36,7 +36,7 @@ data class IcibaVocabulary(
             val ph_en_mp3_bk: String?,
             val ph_am_mp3_bk: String?,
             val ph_tts_mp3_bk: String?,
-            val parts: List<Part>?
+            val parts: List<Part>?,
         ) {
             data class Part(val part: String?, val means: List<String?>?)
         }
@@ -58,7 +58,7 @@ data class IcibaVocabulary(
         val word_past: List<String>?,
         val word_done: List<String>?,
         val word_ing: List<String>?,
-        val word_adj: List<String>?
+        val word_adj: List<String>?,
     ) {
         val info
             get() =

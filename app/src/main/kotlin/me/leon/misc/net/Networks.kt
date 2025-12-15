@@ -10,7 +10,7 @@ import me.leon.ext.headRequest
  * @since 2023-01-31 17:00
  * @email deadogone@gmail.com
  */
-@OptIn(ExperimentalCoroutinesApi::class) val DISPATCHER = Dispatchers.IO.limitedParallelism(128)
+val DISPATCHER = Dispatchers.IO.limitedParallelism(128)
 
 val LOCAL_IP_A = "^10\\.".toRegex()
 val LOCAL_IP_B = "^172\\.(1[6-9]|2[0-9]|3[0-1])\\.".toRegex()
@@ -20,7 +20,7 @@ const val LOOPBACK_IP = "127.0.0.1"
 fun String.connect(
     port: Int = 80,
     timeout: Int = 1000,
-    exceptionHandler: (info: String) -> Unit = {}
+    exceptionHandler: (info: String) -> Unit = {},
 ) =
     if (!contains(".") && !contains(":") || port < 0) {
         //        println("quick fail from cache")
@@ -118,8 +118,21 @@ fun Collection<String>.batchTcPing(port: Int) = runBlocking {
     map { async(DISPATCHER) { it to it.connect(port) } }.awaitAll().sortedByDescending { it.second }
 }
 
-fun String.linkCheck(timeout: Int = 2000, type: String = "All") =
-    linkCheckResult(timeout).linkCheckProperResult(type)
+fun String.linkCheck(timeout: Int = 3000, type: String = "All"): String =
+    if (type == "Fail") {
+        var checkResult = linkCheckResult(timeout)
+        repeat(10) {
+            checkResult =
+                checkResult
+                    .filterNot { it.second }
+                    .joinToString(System.lineSeparator()) { it.first }
+                    .linkCheckResult(timeout)
+        }
+
+        checkResult.linkCheckProperResult(type)
+    } else {
+        linkCheckResult(timeout).linkCheckProperResult(type)
+    }
 
 fun List<Pair<String, Boolean>>.linkCheckProperResult(type: String) =
     when (type) {
@@ -129,10 +142,10 @@ fun List<Pair<String, Boolean>>.linkCheckProperResult(type: String) =
         else -> joinToString(System.lineSeparator()) { "${it.first}\t${it.second}" }
     }
 
-fun String.linkCheckResult(timeout: Int = 2000) =
-    lines().filter { it.isNotEmpty() }.linkCheck(timeout)
+fun String.linkCheckResult(timeout: Int = 3000) =
+    lines().filter { it.isNotEmpty() && it.startsWith("http") }.linkCheck(timeout)
 
-fun Collection<String>.linkCheck(timeout: Int = 2000) = runBlocking {
+fun Collection<String>.linkCheck(timeout: Int = 3000) = runBlocking {
     filter { it.isNotEmpty() }
         .map { it.substringBefore("\t").substringBefore(" ") }
         .map { async(DISPATCHER) { it to it.headRequest("GET", timeout) } }

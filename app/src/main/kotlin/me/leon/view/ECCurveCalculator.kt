@@ -75,7 +75,7 @@ class ECCurveCalculator : View("ECCurveCalculator") {
                                 tfX1.text.also { println(it) }.toBigInteger(radix),
                                 tfY1.text.toBigInteger(radix),
                                 tfX2.text.toBigInteger(radix),
-                                tfY2.text.toBigInteger(radix)
+                                tfY2.text.toBigInteger(radix),
                             )
                     "subtract" ->
                         selectedCurve
@@ -84,7 +84,7 @@ class ECCurveCalculator : View("ECCurveCalculator") {
                                 tfX1.text.toBigInteger(radix),
                                 tfY1.text.toBigInteger(radix),
                                 tfX2.text.toBigInteger(radix),
-                                tfY2.text.toBigInteger(radix)
+                                tfY2.text.toBigInteger(radix),
                             )
                     "multiply" ->
                         selectedCurve
@@ -92,7 +92,7 @@ class ECCurveCalculator : View("ECCurveCalculator") {
                             .curveMultiply(
                                 tfX1.text.toBigInteger(radix),
                                 tfY1.text.toBigInteger(radix),
-                                tfX2.text.toBigInteger(radix)
+                                tfX2.text.toBigInteger(radix),
                             )
                     else -> throw IllegalArgumentException("Unknown method: $eccMethod")
                 }

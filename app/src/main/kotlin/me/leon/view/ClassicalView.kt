@@ -58,7 +58,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 P1 to tfParam1.text,
                 P2 to tfParam2.text,
                 C1 to cb1.isSelected.toString(),
-                C2 to cb2.isSelected.toString()
+                C2 to cb2.isSelected.toString(),
             )
 
     private val eventHandler = fileDraggedHandler { taInput.text = it.first().properText() }
@@ -93,6 +93,20 @@ class ClassicalView : Fragment(messages["classical"]) {
 
             contextmenu {
                 item(messages["reverse"]) { action { taInput.text = inputText.reversed() } }
+                item(messages["caseReverse"]) {
+                    action {
+                        taInput.text =
+                            inputText
+                                .map {
+                                    if (it.isUpperCase()) {
+                                        it.lowercaseChar()
+                                    } else {
+                                        it.uppercaseChar()
+                                    }
+                                }
+                                .joinToString("")
+                    }
+                }
             }
         }
         hbox {
@@ -227,7 +241,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 item("binary2hex") {
                     action { taOutput.text = taOutput.text.binary2ByteArray().toHex() }
                 }
-                item("reverse") {
+                item(messages["reverse"]) {
                     action {
                         taOutput.text =
                             taOutput.text.split("\r\n|\n".toRegex()).joinToString("\r\n") {
@@ -251,12 +265,7 @@ class ClassicalView : Fragment(messages["classical"]) {
         startTime = System.currentTimeMillis()
         runAsync {
             if (isEncrypt) {
-                controller.encrypt(
-                    inputText,
-                    encodeType,
-                    cryptoParams,
-                    singleLine.get(),
-                )
+                controller.encrypt(inputText, encodeType, cryptoParams, singleLine.get())
             } else {
                 controller.decrypt(inputText, encodeType, cryptoParams, singleLine.get())
             }
@@ -281,7 +290,7 @@ class ClassicalView : Fragment(messages["classical"]) {
                 encodeType,
                 tfCrackKey.text.takeUnless { it.isNullOrEmpty() } ?: "flag",
                 singleLine.get(),
-                cryptoParams
+                cryptoParams,
             )
         } ui
             {

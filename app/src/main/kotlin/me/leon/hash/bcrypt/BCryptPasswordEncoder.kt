@@ -34,7 +34,7 @@ class BCryptPasswordEncoder
 constructor(
     var version: BCryptVersion = BCryptVersion.`$2A`,
     var strength: Int = -1,
-    private var random: SecureRandom? = null
+    private var random: SecureRandom? = null,
 ) : PasswordEncoder {
 
     init {
@@ -90,7 +90,7 @@ constructor(
     enum class BCryptVersion(val version: String) {
         `$2A`("$2a"),
         `$2Y`("$2y"),
-        `$2B`("$2b")
+        `$2B`("$2b"),
     }
 
     companion object {

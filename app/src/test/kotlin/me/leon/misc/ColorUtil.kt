@@ -64,7 +64,7 @@ object ColorUtil {
         Triple(
             (255 * (1 - c) * (1 - k)).toInt(),
             (255 * (1 - m) * (1 - k)).toInt(),
-            (255 * (1 - y) * (1 - k)).toInt()
+            (255 * (1 - y) * (1 - k)).toInt(),
         )
 
     fun hsv2Rgb(h: Float, s: Float, v: Float): Triple<Int, Int, Int> {
@@ -86,7 +86,7 @@ object ColorUtil {
         return Triple(
             ((r1 + m) * 255).roundToInt(),
             ((g1 + m) * 255).roundToInt(),
-            ((b1 + m) * 255).roundToInt()
+            ((b1 + m) * 255).roundToInt(),
         )
     }
 
@@ -137,7 +137,7 @@ object ColorUtil {
         return Triple(
             (rr[0] * 255).roundToInt(),
             (rr[1] * 255).roundToInt(),
-            (rr[2] * 255).roundToInt()
+            (rr[2] * 255).roundToInt(),
         )
     }
 }

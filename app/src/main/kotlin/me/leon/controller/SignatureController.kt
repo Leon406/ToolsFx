@@ -14,7 +14,7 @@ class SignatureController : Controller() {
         msg: String,
         inputEncode: String,
         outEncode: String,
-        singleLine: Boolean
+        singleLine: Boolean,
     ) =
         catch({ it }) {
             if (singleLine) {
@@ -44,7 +44,7 @@ class SignatureController : Controller() {
         inputEncode: String,
         outEncode: String,
         signed: String,
-        singleLine: Boolean
+        singleLine: Boolean,
     ) =
         catch({ it }) {
             if (singleLine) {
@@ -57,7 +57,7 @@ class SignatureController : Controller() {
                                 kpAlg,
                                 sigAlg,
                                 pub,
-                                signed.lines()[i].decodeToByteArray(outEncode)
+                                signed.lines()[i].decodeToByteArray(outEncode),
                             )
                             .toString()
                     }

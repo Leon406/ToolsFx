@@ -38,7 +38,7 @@ class MyTest {
         println(now)
         LocalDateTime.parse(
                 "2020-10-11 10:00:00",
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
             )
             .toInstant(ZoneOffset.of("+8"))
             .toEpochMilli()

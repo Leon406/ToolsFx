@@ -154,7 +154,7 @@ class QrcodeView : Fragment("Qrcode") {
 
     private fun createQR(
         data: String = "this is test data",
-        errLv: ErrorCorrectionLevel = ErrorCorrectionLevel.L
+        errLv: ErrorCorrectionLevel = ErrorCorrectionLevel.L,
     ): Image {
         return data.createQR(errorCorrectionLevel = errLv).toFxImg()
     }

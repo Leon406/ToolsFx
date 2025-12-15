@@ -13,39 +13,27 @@ private const val GITHUB = "https://github.com"
 private val RAW_MIRRORS =
     listOf(
         "https://raw.kkgithub.com",
-        "https://mirror.ghproxy.com/https://raw.githubusercontent.com",
         "https://ghproxy.net/https://raw.githubusercontent.com",
-        "https://fastraw.ixnic.net",
-        "https://raw.cachefly.998111.xyz",
-        "https://github.moeyy.xyz/https://raw.githubusercontent.com",
+        // 有缓存
         "https://fastly.jsdelivr.net/gh",
-        "https://gcore.jsdelivr.net/gh",
-        "https://cdn.jsdelivr.us/gh",
-        "https://jsdelivr.b-cdn.net/gh",
+        "https://github.3x25.com/https://raw.githubusercontent.com",
     )
 private const val RELEASE_RESOURCE_KEY = "/releases/download/"
 
 /** true 完整url false 仅path */
 private val RELEASE_MIRRORS =
     listOf(
-        "https://mirror.ghproxy.com" to true,
         "https://ghproxy.net" to true,
         "https://kkgithub.com" to false,
         "https://gh.h233.eu.org" to true,
         "https://gh.ddlc.top" to true,
-        "https://dl.ghpig.to" to true,
         "https://slink.ltd" to true,
-        "https://gh.con.sh" to true,
+        "https://gh-proxy.com" to true,
+        "https://github.moeyy.xyz" to true,
         "https://cors.isteed.cc" to true,
         "https://hub.gitmirror.com" to true,
         "https://sciproxy.com" to true,
-        "https://ghproxy.cc" to true,
-        "https://cf.ghproxy.cc" to true,
-        "https://gh.jiasu.in" to true,
         "https://dgithub.xyz" to true,
-        "https://download.scholar.rr.nu" to false,
-        "https://download.nuaa.cf" to false,
-        "https://download.yzuu.cf" to false,
     )
 
 val REG_GITHUB_RAW = "(https://raw\\.githubusercontent\\.com)/([^/]+/[^/]+)/".toRegex()
@@ -86,8 +74,7 @@ private fun String.jsDelivrPath() =
 enum class GithubAction(val func: String.() -> String) {
     Mirror(String::githubMirror),
     RAW(String::githubRawUrl),
-    RepoUrl(String::githubRepoUrl),
-    ;
+    RepoUrl(String::githubRepoUrl);
 
     fun convert(s: String) = func(s)
 }

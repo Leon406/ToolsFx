@@ -33,13 +33,12 @@ object BaiduOcr {
             .readBytesFromNet(
                 "POST",
                 headers = mutableMapOf("Content-Type" to "application/x-www-form-urlencoded"),
-                data = data
+                data = data,
             )
             .decodeToString()
             .also { println(it) }
             .fromJson(BaiduOcrBean::class.java)
             .results
-            ?.joinToString(System.lineSeparator()) { it.words }
-            ?: error("request failed")
+            ?.joinToString(System.lineSeparator()) { it.words } ?: error("request failed")
     }
 }

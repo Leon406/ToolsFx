@@ -51,7 +51,7 @@ class Tmp {
     fun digest() {
         val salt = "12345678".toByteArray()
         // salt在前面
-        for (algorithm in Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.values()) {
+        for (algorithm in Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.entries) {
             Pbkdf2PasswordEncoder().apply {
                 setAlgorithm(algorithm)
                 val r = encode("123")
@@ -87,7 +87,7 @@ class Tmp {
             println(digest("123", salt))
             assertEquals(
                 "\$e0801\$MTIzNDU2\$yToN3hhqWNrcFErZVOmOjF5mcVbrV9hj/SQl2x0ykQU=",
-                digest("123", salt)
+                digest("123", salt),
             )
             assertTrue { matches("123", encode("123")) }
             assertTrue { matches("123", digest("123", salt)) }
@@ -107,7 +107,7 @@ class Tmp {
             println(encode("123", salt))
             assertEquals(
                 "\$2a\$10\$KRGxLBS0KRGxLBS0KRGxL.UgZ0Pz.x0KwrgWDPUNirAXO0CnTUpI2",
-                encode("123", salt)
+                encode("123", salt),
             )
 
             strength = 12
@@ -166,7 +166,7 @@ class Tmp {
     @Test
     fun big() {
         "12".toBigInteger().toString(16).also { println(it) }
-        println(EncodeType.values().joinToString(" "))
+        println(EncodeType.entries.joinToString(" "))
     }
 
     @Test
@@ -179,7 +179,7 @@ class Tmp {
                     "80990192745708230644342256236014173435685606613945005625896333595456890957431",
                     "80990192745708230644342256236014173435685606613945005625896333595456890957431",
                     "107843756547496736191228190917322558471918750590609940965721119253640998815543",
-                    "107843756547496736191228190917322558471918750590609940965721119253640998815543"
+                    "107843756547496736191228190917322558471918750590609940965721119253640998815543",
                 )
                 .map { it.toBigInteger() }
 
@@ -227,11 +227,11 @@ class Tmp {
         println(dateField.constantValue)
         modifyField(
             dateField,
-            "public static final java.lang.String BUILD_DATE =\"" + "2022" + "\";"
+            "public static final java.lang.String BUILD_DATE =\"" + "2022" + "\";",
         )
         modifyField(
             versionField,
-            "public static final java.lang.String VERSION =\"" + "1.15.6" + "\";"
+            "public static final java.lang.String VERSION =\"" + "1.15.6" + "\";",
         )
         dateField = ctClass.getDeclaredField("BUILD_DATE")
         versionField = ctClass.getDeclaredField("VERSION")

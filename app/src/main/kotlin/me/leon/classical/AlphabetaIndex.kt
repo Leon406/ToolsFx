@@ -5,7 +5,7 @@ import me.leon.ext.crypto.TABLE_A_Z
 fun String.alphabetIndex(
     table: String = TABLE_A_Z,
     delimiter: String = " ",
-    fromZero: Boolean = false
+    fromZero: Boolean = false,
 ) =
     uppercase()
         .asIterable()

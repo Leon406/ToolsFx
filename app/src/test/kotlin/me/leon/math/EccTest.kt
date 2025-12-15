@@ -70,7 +70,7 @@ class EccTest {
             EccCurve(
                 "16546484".toBigInteger(),
                 "4548674875".toBigInteger(),
-                "15424654874903".toBigInteger()
+                "15424654874903".toBigInteger(),
             )
         eccCurve.g = EccPoint("6478678675".toBigInteger(), "5636379357093".toBigInteger(), eccCurve)
 
@@ -90,7 +90,7 @@ class EccTest {
 open class EccPoint(
     val x: BigInteger? = null,
     val y: BigInteger? = null,
-    var curve: EccCurve? = null
+    var curve: EccCurve? = null,
 ) {
     private val _curve: EccCurve
         get() = requireNotNull(curve)

@@ -12,7 +12,7 @@ class OokEngine
 constructor(
     cells: Int = 64,
     out: OutputStream? = ByteArrayOutputStream(),
-    inputStream: InputStream? = System.`in`
+    inputStream: InputStream? = System.`in`,
 ) : TrollScriptEngine(cells, out, inputStream) {
     /** The default length of a token. */
     override var defaultTokenLength = 9

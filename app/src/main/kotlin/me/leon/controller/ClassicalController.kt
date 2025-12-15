@@ -11,7 +11,7 @@ class ClassicalController : Controller() {
         raw: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
         params: Map<String, String>,
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
     ) =
         catch({ "编码错误: $it" }) {
             if (singleLine) {
@@ -24,7 +24,7 @@ class ClassicalController : Controller() {
     private fun encrypt(
         raw: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
-        params: Map<String, String>
+        params: Map<String, String>,
     ): String =
         if (raw.isEmpty()) {
             ""
@@ -36,7 +36,7 @@ class ClassicalController : Controller() {
         encoded: String,
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
         params: Map<String, String>,
-        singleLine: Boolean = false
+        singleLine: Boolean = false,
     ) =
         catch({ "解密错误: $it" }) {
             if (singleLine) {
@@ -51,7 +51,7 @@ class ClassicalController : Controller() {
         type: ClassicalCryptoType = ClassicalCryptoType.CAESAR,
         keyword: String,
         singleLine: Boolean = false,
-        params: Map<String, String>
+        params: Map<String, String>,
     ) =
         catch({ "解密错误: $it" }) {
             if (singleLine) {

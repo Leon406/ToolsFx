@@ -55,9 +55,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                 isEncode ||
                     encodeType in arrayOf(EncodeType.DECIMAL, EncodeType.OCTAL) ||
                     fileMode.get()
-            }
-                ?: taInput.text.takeUnless { decodeIgnoreSpace.get() }
-                    ?: taInput.text.stripAllSpace()
+            } ?: taInput.text.takeUnless { decodeIgnoreSpace.get() } ?: taInput.text.stripAllSpace()
 
     private val outputText: String
         get() = taOutput.text
@@ -279,7 +277,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     tfCustomDict.text,
                                     selectedCharset.get(),
                                     singleLine.get(),
-                                    fileMode.get()
+                                    fileMode.get(),
                                 )
                             } else {
                                 controller.decode2String(
@@ -288,7 +286,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                                     tfCustomDict.text,
                                     selectedCharset.get(),
                                     singleLine.get(),
-                                    fileMode.get()
+                                    fileMode.get(),
                                 )
                             }
                     }
@@ -320,7 +318,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
         val encodeMethods = mutableListOf<String>()
         runAsync {
             while (true) {
-                EncodeType.values()
+                EncodeType.entries
                     .filterNot { it in CRACK_EXCLUDE_ENCODE }
                     .asSequence()
                     .map { encode ->
@@ -350,8 +348,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
                     ?.run {
                         encodeMethods.add(first)
                         encoded = second
-                    }
-                    ?: break
+                    } ?: break
             }
             encodeMethods.mapIndexed { i, type -> "${i + 1} $type" }.joinToString("-->")
         } ui

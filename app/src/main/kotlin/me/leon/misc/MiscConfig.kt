@@ -1,5 +1,6 @@
 package me.leon.misc
 
+import me.leon.misc.net.DnsQueryDict
 import me.leon.misc.net.GithubAction
 import me.leon.misc.net.ShortUrlEnum
 import me.leon.misc.unit.UNIT_TYPES
@@ -19,8 +20,7 @@ val MISC_CONFIG =
         MiscServiceType.DATE2STAMP to
             mapOf(
                 HINT to
-                    ("date, support format " +
-                        "like 2023-02-01 12:00:00, 2023-02-01, 2023/02/01, 20230201,separate by line")
+                    ("date, support format like 2023-02-01 12:00:00, 2023-02-01, 2023/02/01, 20230201,separate by line")
             ),
         MiscServiceType.PORT_SCAN to mapOf(HINT to "ip or domain (port from 1 to 10000)"),
         MiscServiceType.IP_SCAN to mapOf(HINT to "ip w/o last dot,like 192.168.0"),
@@ -33,9 +33,11 @@ val MISC_CONFIG =
         MiscServiceType.INT2IP to
             mapOf(HINT to "int, transform integer to ip,  eg. 3232235521,separate by line"),
         MiscServiceType.CIDR to mapOf(HINT to "ip, format 192.168.0.1/25,separate by line"),
-        MiscServiceType.LINK_CHECK to mapOf(HINT to "url links,separate by line"),
+        MiscServiceType.LINK_CHECK to
+            mapOf(HINT to "url links,separate by line, or url \\t file path/file url"),
         MiscServiceType.IP_LOCATION to mapOf(HINT to "ip/url"),
         MiscServiceType.DNS_SOLVE to mapOf(HINT to "domains,separate by line, comment by #"),
+        MiscServiceType.DNS_DIG to mapOf(HINT to "domains,separate by line,"),
         MiscServiceType.CRON_EXPLAIN to
             mapOf(HINT to "cron expression, support crontab, quarts and normal format"),
         MiscServiceType.GITHUB to mapOf(HINT to "github repo or raw link"),
@@ -55,22 +57,19 @@ val MISC_CONFIG =
                 HINT to
                     "convert raw string or hex string to byte order hex(add '0x' prefix to hex string),separate by line"
             ),
+        MiscServiceType.IEEE754 to
+            mapOf(HINT to "convert float or double to ieee754 format,separate by line"),
         MiscServiceType.VARIABLE_NAMING to
             mapOf(HINT to "variable naming convert, separate by line"),
+        MiscServiceType.WORD_SPLITER to mapOf(HINT to "split no space letters, eg. whoseyourdaddy"),
+        MiscServiceType.UNICODE_FONT to mapOf(HINT to "Unicode Font,separate by line"),
     )
 
 val MISC_OPTIONS_CONFIG =
     mapOf(
         MiscServiceType.TIME_STAMP to
             mapOf(
-                OPTIONS to
-                    arrayOf(
-                        "milliseconds",
-                        "seconds",
-                        "minutes",
-                        "hours",
-                        "days",
-                    )
+                OPTIONS to arrayOf("milliseconds", "seconds", "WebKit", "minutes", "hours", "days")
             ),
         MiscServiceType.UUID to mapOf(OPTIONS to arrayOf("normal", "w/o '-'")),
         MiscServiceType.ROMANJI to
@@ -85,18 +84,20 @@ val MISC_OPTIONS_CONFIG =
                         "1-30000",
                         "1-40000",
                         "1-49151",
-                        "1-65535"
+                        "1-65535",
                     )
             ),
         MiscServiceType.FULL_WIDTH to mapOf(OPTIONS to arrayOf("toFull", "toHalf")),
         MiscServiceType.PUNCTUATION to mapOf(OPTIONS to arrayOf("ZH", "EN")),
         MiscServiceType.TRANSLATE to mapOf(OPTIONS to Translator.SUPPORT_LANGUAGE),
+        MiscServiceType.UNICODE_FONT to mapOf(OPTIONS to FONTS.keys.drop(1).toTypedArray()),
         MiscServiceType.UNIT_CONVERT to mapOf(OPTIONS to UNIT_TYPES),
         MiscServiceType.BATCH_PING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
         MiscServiceType.LINK_CHECK to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
+        MiscServiceType.DNS_DIG to mapOf(OPTIONS to DnsQueryDict.keys.toTypedArray()),
         MiscServiceType.TCPING to mapOf(OPTIONS to arrayOf("All", "Ok", "Fail")),
         MiscServiceType.SHORT_URL to
-            mapOf(OPTIONS to ShortUrlEnum.values().map { it.name }.toTypedArray()),
+            mapOf(OPTIONS to ShortUrlEnum.entries.map { it.name }.toTypedArray()),
         MiscServiceType.TRADITION_CHINESE_CONVERT to
             mapOf(
                 OPTIONS to
@@ -110,13 +111,14 @@ val MISC_OPTIONS_CONFIG =
                         "hk2s",
                         "hk2t",
                         "jp2t",
-                        "t2jp"
+                        "t2jp",
                     )
             ),
         MiscServiceType.CODE_EXPLAIN to mapOf(OPTIONS to CodeMapping.TYPE.keys.toTypedArray()),
-        MiscServiceType.ENDIA to mapOf(OPTIONS to Endia.values().map { it.name }.toTypedArray()),
+        MiscServiceType.ENDIA to mapOf(OPTIONS to Endia.entries.map { it.name }.toTypedArray()),
+        MiscServiceType.IEEE754 to mapOf(OPTIONS to Floats.entries.map { it.name }.toTypedArray()),
         MiscServiceType.VARIABLE_NAMING to
-            mapOf(OPTIONS to VariableNaming.values().map { it.name }.toTypedArray()),
+            mapOf(OPTIONS to VariableNaming.entries.map { it.name }.toTypedArray()),
         MiscServiceType.GITHUB to
-            mapOf(OPTIONS to GithubAction.values().map { it.name }.toTypedArray()),
+            mapOf(OPTIONS to GithubAction.entries.map { it.name }.toTypedArray()),
     )

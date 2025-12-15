@@ -69,7 +69,7 @@ val dnaDecodeMap =
         "TTA" to "9",
         "TTC" to "0",
         "TTG" to " ",
-        "TTT" to "."
+        "TTT" to ".",
     )
 val dnaMap = dnaDecodeMap.values.zip(dnaDecodeMap.keys).toMap()
 

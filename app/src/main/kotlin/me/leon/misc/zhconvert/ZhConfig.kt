@@ -15,43 +15,43 @@ val CONFIG =
         ZhConvertConfig(
             "t2s",
             "Traditional Chinese to Simplified Chinese",
-            listOf(listOf("TSPhrases", "TSCharacters"))
+            listOf(listOf("TSPhrases", "TSCharacters")),
         ),
         ZhConvertConfig(
             "t2tw",
             "Traditional Chinese to Traditional Chinese (Taiwan standard)",
-            listOf(listOf("TWVariants"))
+            listOf(listOf("TWVariants")),
         ),
         ZhConvertConfig(
             "t2hk",
             "Traditional Chinese to Traditional Chinese (Hong Kong variant)",
-            listOf(listOf("HKVariants"))
+            listOf(listOf("HKVariants")),
         ),
         ZhConvertConfig(
             "t2jp",
             "Traditional Chinese Characters (Kyūjitai) to New Japanese Kanji (Shinjitai)",
-            listOf(listOf("JPVariants"))
+            listOf(listOf("JPVariants")),
         ),
         // 简体转换 (4个)
         ZhConvertConfig(
             "s2t",
             "Traditional Chinese to Simplified Chinese",
-            listOf(listOf("STPhrases", "STCharacters"))
+            listOf(listOf("STPhrases", "STCharacters")),
         ),
         ZhConvertConfig(
             "s2tw",
             "Traditional Chinese to Traditional Chinese (Taiwan standard)",
-            listOf(listOf("STPhrases", "STCharacters"), listOf("TWVariants"))
+            listOf(listOf("STPhrases", "STCharacters"), listOf("TWVariants")),
         ),
         ZhConvertConfig(
             "s2hk",
             "Traditional Chinese to Traditional Chinese (Hong Kong variant)",
-            listOf(listOf("STPhrases", "STCharacters"), listOf("HKVariants"))
+            listOf(listOf("STPhrases", "STCharacters"), listOf("HKVariants")),
         ),
         ZhConvertConfig(
             "s2twp",
             "Simplified Chinese to Traditional Chinese (Taiwan standard, with phrases)",
-            listOf(listOf("STPhrases", "STCharacters"), listOf("TWPhrases", "TWVariants"))
+            listOf(listOf("STPhrases", "STCharacters"), listOf("TWPhrases", "TWVariants")),
         ),
 
         //  繁体(港)
@@ -60,19 +60,19 @@ val CONFIG =
             "Traditional Chinese (Hong Kong variant) to Simplified Chinese",
             listOf(
                 listOf("HKVariantsRevPhrases", "HKVariantsRev"),
-                listOf("TSPhrases", "TSCharacters")
-            )
+                listOf("TSPhrases", "TSCharacters"),
+            ),
         ),
         ZhConvertConfig(
             "hk2t",
             "Traditional Chinese (Hong Kong variant) to Traditional Chinese",
-            listOf(listOf("HKVariantsRevPhrases", "HKVariantsRev"))
+            listOf(listOf("HKVariantsRevPhrases", "HKVariantsRev")),
         ),
         //  繁体(日)
         ZhConvertConfig(
             "jp2t",
             "New Japanese Kanji (Shinjitai) to Traditional Chinese Characters (Kyūjitai)",
-            listOf(listOf("JPShinjitaiPhrases", "JPShinjitaiCharacters", "JPVariantsRev"))
+            listOf(listOf("JPShinjitaiPhrases", "JPShinjitaiCharacters", "JPVariantsRev")),
         ),
         //  繁体(台)
         ZhConvertConfig(
@@ -80,21 +80,21 @@ val CONFIG =
             "Traditional Chinese (Taiwan standard) to Simplified Chinese",
             listOf(
                 listOf("TWVariantsRevPhrases", "TWVariantsRev"),
-                listOf("TSPhrases", "TSCharacters")
-            )
+                listOf("TSPhrases", "TSCharacters"),
+            ),
         ),
         ZhConvertConfig(
             "tw2sp",
             "Traditional Chinese (Taiwan standard) to Simplified Chinese (with phrases)",
             listOf(
                 listOf("TWPhrasesRev", "TWVariantsRevPhrases", "TWVariantsRev"),
-                listOf("TSPhrases", "TSCharacters")
-            )
+                listOf("TSPhrases", "TSCharacters"),
+            ),
         ),
         ZhConvertConfig(
             "tw2t",
             "Traditional Chinese (Taiwan standard) to Traditional Chinese",
-            listOf(listOf("TWVariantsRevPhrases", "TWVariantsRev"))
+            listOf(listOf("TWVariantsRevPhrases", "TWVariantsRev")),
         ),
     )
 
@@ -109,7 +109,7 @@ fun ZhConvertConfig.convert(text: String): String {
                         dicts.drop(1).forEach {
                             translator.loadDict(
                                 "/zhconvert/${it.replace("Rev$".toRegex(), "")}.txt",
-                                it.endsWith("Rev")
+                                it.endsWith("Rev"),
                             )
                         }
                         CACHE_TRANSLATOR[dicts.toString()] = translator

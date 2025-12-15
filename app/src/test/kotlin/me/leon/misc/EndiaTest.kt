@@ -14,13 +14,7 @@ import me.leon.ext.toHex
 class EndiaTest {
     @Test
     fun endia() {
-        val data =
-            arrayOf(
-                "12345678",
-                "0x12345678",
-                "0X12345678",
-                "abcd",
-            )
+        val data = arrayOf("12345678", "0x12345678", "0X12345678", "abcd")
         for (datum in data) {
             if (datum.contains(HEX_LEAD_REGEX)) {
                 println("$datum\t" + datum.hex2ByteArray().reversedArray().toHex())

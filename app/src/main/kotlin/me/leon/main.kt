@@ -8,7 +8,7 @@ fun main() {
     System.setProperty("glass.win.uiScale", ToolsApp.scale)
     System.setProperty(
         "prism.allowhidpi",
-        Prefs.hidpi.toString().takeIf { ToolsApp.scale == "-1" } ?: "true"
+        Prefs.hidpi.toString().takeIf { ToolsApp.scale == "-1" } ?: "true",
     )
     launch<ToolsApp>()
 }

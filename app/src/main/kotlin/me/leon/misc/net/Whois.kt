@@ -321,7 +321,7 @@ val whoisServers =
         "mo" to "whois.monic.mo",
         "news" to "whois.rightside.co",
         "bi" to "whois1.nic.bi",
-        "tn" to "whois.ati.tn"
+        "tn" to "whois.ati.tn",
     )
 
 fun String.whoisSocket(): String {

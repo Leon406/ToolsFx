@@ -4,20 +4,10 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import me.leon.misc.net.*
 
-/**
- * @author Leon
- * @since 2023-07-28 14:45
- * @email deadogone@gmail.com
- */
 @Ignore
 class ShortUrlTest {
 
     private val url = "https://github.com/Leon406/ToolsFx"
-
-    @Test
-    fun baka() {
-        println(ShortUrl.baka(url))
-    }
 
     @Test
     fun tinyUrl() {

@@ -167,7 +167,7 @@ class TranslateTest {
 
     private fun readData(
         toTranslate: File = noMeaning,
-        noTranslation: File = nodata
+        noTranslation: File = nodata,
     ): List<String> {
 
         val translatedFile = File(toTranslate.parentFile, "trans.txt")
@@ -175,8 +175,7 @@ class TranslateTest {
             runCatching { translatedFile.readText() }
                 .getOrNull()
                 ?.lines()
-                ?.map { it.split("\t")[0] }
-                ?: emptyList()
+                ?.map { it.split("\t")[0] } ?: emptyList()
         val lines = toTranslate.readText().lines()
         val exclusion = noTranslation.readText().lines().toSet()
         val diff = lines - translated.toSet() - exclusion

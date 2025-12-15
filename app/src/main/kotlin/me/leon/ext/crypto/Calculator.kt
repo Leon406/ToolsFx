@@ -41,7 +41,7 @@ enum class Calculator(val algo: String) : ICalculator {
     },
     MOD("P mod Q") {
         override fun calculate(ints: List<BigInteger>): String {
-            return (ints[0] % (ints[1])).toString()
+            return (ints[0].mod(ints[1])).toString()
         }
     },
     PLUS_MOD("(P+Q) mod N") {
@@ -62,10 +62,8 @@ enum class Calculator(val algo: String) : ICalculator {
     DIVIDE_MOD("(P/Q) mod N") {
         override fun calculate(ints: List<BigInteger>): String {
             val isMutualPrime = ints[1].mutualPrime(ints[2])
-            val gcd = if (isMutualPrime) BigInteger.ONE else ints[0].gcd(ints[1])
-            return (ints[0].divide(gcd).mod(ints[2]) * (ints[1].divide(gcd).modInverse(ints[2])))
-                .mod(ints[2])
-                .toString()
+            require(isMutualPrime) { "P and N are not mutual prime!" }
+            return (ints[0].mod(ints[2]) * (ints[1].modInverse(ints[2]))).mod(ints[2]).toString()
         }
     },
     MOD_POW("P^e mod N") {

@@ -26,19 +26,19 @@ jobs:
     steps:
       - run: sudo timedatectl set-timezone Asia/Shanghai
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       # 运行 JDK 配置  https://github.com/marketplace/actions/setup-java-jdk
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
-          java-version: 17
+          java-version: 21
       # Runs a single command using the runners shell
       - run: chmod  777 ./gradlew
       # Gradle 缓存配置 https://docs.github.com/cn/actions/using-workflows/caching-dependencies-to-speed-up-workflows
       # GitHub 将删除 7 天内未被访问的任何缓存条目。 可以存储的缓存数没有限制，但大小10 GB
       - name: Cache Gradle packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
          path: |
            ~/.gradle
@@ -50,7 +50,7 @@ jobs:
       # test will auto execute jar task
       - name: Make app jar
         run: ./gradlew  :app:jar
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           path: |
             app/build/libs

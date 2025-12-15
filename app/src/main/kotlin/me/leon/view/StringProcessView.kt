@@ -21,6 +21,7 @@ import me.leon.ext.fx.*
 import me.leon.ext.ocr.BaiduOcr
 import me.leon.ext.voice.*
 import me.leon.misc.Translator
+import me.leon.misc.unicodeChar
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -214,12 +215,22 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                 action {
                     processInput(
                         inputText
+                            .unicodeChar()
                             .groupingBy { it }
                             .eachCount()
                             .toList()
-                            .filter { it.first.code > 32 }
                             .sortedByDescending { it.second }
-                            .joinToString(System.lineSeparator()) { "${it.first}: ${it.second}" }
+                            .filter { it.first.unicodeCharToInt() > 32 }
+                            .joinToString(System.lineSeparator()) {
+                                val unicode = it.first.unicodeCharToInt()
+                                val unicodeStr =
+                                    if (PUA_RANGE.contains(unicode)) {
+                                        "\tU+${unicode.toString(16).uppercase()}"
+                                    } else {
+                                        ""
+                                    }
+                                "${it.first}$unicodeStr: ${it.second}"
+                            }
                     )
                 }
             }
@@ -601,8 +612,7 @@ class StringProcessView : Fragment(messages["stringProcess"]) {
                     .lines()
                     .filter { it.isNotEmpty() }
                     .map { it.toFile() }
-                    .firstOrNull { it.exists() && it.name.contains(dictType) }
-                    ?: defaultFile
+                    .firstOrNull { it.exists() && it.name.contains(dictType) } ?: defaultFile
             } else {
                 defaultFile
             }

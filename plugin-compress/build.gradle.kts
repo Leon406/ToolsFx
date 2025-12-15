@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.2.1"
+version = "1.2.2"
 
 plugins {
     `java-library`
@@ -24,7 +24,7 @@ dependencies {
     implementation(libs.commons.compress)
     implementation(libs.zstd)
     implementation(libs.asm)
-    implementation("org.tukaani:xz:1.9")
+    implementation("org.tukaani:xz:1.10")
     implementation("org.brotli:dec:0.1.2")
     testImplementation(libs.kotlin.test)
 }

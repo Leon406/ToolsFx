@@ -8,12 +8,7 @@ import me.leon.ext.crypto.EncodeType
  * @email deadogone@gmail.com
  */
 val BASE_ENCODE_EXCLUDED_DICT_LIST =
-    arrayOf(
-        EncodeType.BASE100,
-        EncodeType.BASE2048,
-        EncodeType.BASE32768,
-        EncodeType.BASE65536,
-    )
+    arrayOf(EncodeType.BASE100, EncodeType.BASE2048, EncodeType.BASE32768, EncodeType.BASE65536)
 
 val SHOW_DICT_LIST = arrayOf(EncodeType.RADIX_N, EncodeType.DECIMAL_RADIX_N)
 

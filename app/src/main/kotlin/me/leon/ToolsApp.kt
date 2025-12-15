@@ -108,6 +108,7 @@ class ToolsApp : App(Home::class, Styles::class) {
                     }
                 }
                 println(dict)
+                copyResourceFileIfNotExist("/wordninja_words.txt", WORDNINJA_DICT_FILE)
                 // 提前加载class,进行init
                 Translator.init()
             }

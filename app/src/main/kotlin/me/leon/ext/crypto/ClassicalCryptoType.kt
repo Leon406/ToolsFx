@@ -13,13 +13,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.shift26(
                 requireNotNull(params[P1]).toInt(),
-                requireNotNull(params[P2]).ifEmpty { params[P1] }!!.toInt()
+                requireNotNull(params[P2]).ifEmpty { params[P1] }!!.toInt(),
             )
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.shift26(
                 26 - params[P1]!!.toInt(),
-                26 - params[P2]!!.ifEmpty { params[P1] }!!.toInt()
+                26 - params[P2]!!.ifEmpty { params[P1] }!!.toInt(),
             )
 
         override fun isIgnoreSpace() = false
@@ -175,13 +175,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.polybius(
                 params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
             )
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.polybiusDecrypt(
                 params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
             )
 
         override fun isIgnoreSpace() = false
@@ -190,13 +190,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.nihilist(
                 params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
             )
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.nihilistDecrypt(
                 params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
             )
 
         override fun isIgnoreSpace() = false
@@ -206,12 +206,12 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
             if (requireNotNull(params[C1]).toBoolean()) {
                 raw.adfgvx(
                     params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
                 )
             } else {
                 raw.adfgx(
                     params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
                 )
             }
 
@@ -219,12 +219,12 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
             if (requireNotNull(params[C1]).toBoolean()) {
                 raw.adfgvxDecrypt(
                     params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
                 )
             } else {
                 raw.adfgxDecrypt(
                     params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP
+                    params[P2].takeUnless { it.isNullOrEmpty() } ?: DEFAULT_POLYBIUS_ENCODE_MAP,
                 )
             }
     },
@@ -311,7 +311,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.alphabetIndex(
                     params[P1]?.ifEmpty { TABLE_A_Z } ?: " ",
-                    params[P2]?.ifEmpty { " " } ?: " "
+                    params[P2]?.ifEmpty { " " } ?: " ",
                 )
                 .also { println("alphabetIndex $raw $params") }
 
@@ -360,12 +360,12 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
             if (requireNotNull(params[C1]).toBoolean()) {
                 raw.zwcUnicodeBinary(
                     params[P1]?.ifEmpty { "show" } ?: "show",
-                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT,
                 )
             } else {
                 raw.zwcUnicode(
                     params[P1]?.ifEmpty { "show" } ?: "show",
-                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT
+                    params[P2]?.ifEmpty { ZWC_UNICODE_DICT } ?: ZWC_UNICODE_DICT,
                 )
             }
 
@@ -463,13 +463,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.fourSquare(
                 params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
             )
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.fourSquareDecrypt(
                 params[P1].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
-                params[P2].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J
+                params[P2].takeUnless { it.isNullOrEmpty() } ?: TABLE_A_Z_WO_J,
             )
 
         override fun isIgnoreSpace() = false
@@ -490,33 +490,33 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.trifidDecrypt(
                 params[P1]!!,
-                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5
+                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5,
             )
     },
     Bifid("bifid") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.bifid(
                 params[P1]!!.ifEmpty { TABLE_A_Z_WO_J },
-                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5
+                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5,
             )
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.bifidDecrypt(
                 params[P1]!!.ifEmpty { TABLE_A_Z_WO_J },
-                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5
+                params[P2].takeUnless { it.isNullOrEmpty() }?.toInt() ?: 5,
             )
     },
     GrayCode("grayCode") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.grayEncode(
                 params[P1]?.ifEmpty { "0" }?.toInt() ?: 0,
-                params[P2]?.ifEmpty { " " } ?: " "
+                params[P2]?.ifEmpty { " " } ?: " ",
             )
 
         override fun decrypt(raw: String, params: Map<String, String>): String =
             raw.grayDecode(
                 params[P1]?.ifEmpty { "0" }?.toInt() ?: 0,
-                params[P2]?.ifEmpty { " " } ?: " "
+                params[P2]?.ifEmpty { " " } ?: " ",
             )
 
         override fun isIgnoreSpace() = false
@@ -535,27 +535,6 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
             } else {
                 raw.buddhaExplain()
             }
-    },
-    BuddhaSay2("新佛曰(online)") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Buddha, raw)
-
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Buddha, raw)
-    },
-    Roar("兽音(online)") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Roar, raw)
-
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Roar, raw)
-    },
-    Bear("熊曰(online)") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Bear, raw)
-
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Bear, raw)
     },
     HILL("hill") {
         override fun encrypt(raw: String, params: Map<String, String>) =
@@ -664,13 +643,13 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.manchester(
                 requireNotNull(params[C1]).toBoolean(),
-                requireNotNull(params[C2]).toBoolean()
+                requireNotNull(params[C2]).toBoolean(),
             )
 
         override fun decrypt(raw: String, params: Map<String, String>) =
             raw.manchesterDecode(
                 requireNotNull(params[C1]).toBoolean(),
-                requireNotNull(params[C2]).toBoolean()
+                requireNotNull(params[C2]).toBoolean(),
             )
     },
     MANCHESTER_DIFF("manchester-diff") {
@@ -735,7 +714,7 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
                     BASE32_DICT
                 } else {
                     BASE64_DICT
-                }
+                },
             )
 
         override fun decrypt(raw: String, params: Map<String, String>) =

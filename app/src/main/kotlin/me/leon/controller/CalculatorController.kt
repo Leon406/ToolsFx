@@ -7,11 +7,7 @@ import me.leon.ext.crypto.calculatorType
 import tornadofx.*
 
 class CalculatorController : Controller() {
-    fun calculate(
-        algo: String,
-        radix: Int,
-        params: List<String>,
-    ): String =
+    fun calculate(algo: String, radix: Int, params: List<String>): String =
         catch({ "error $it" }) {
             if (DEBUG) println("alg $algo radix $radix")
             algo

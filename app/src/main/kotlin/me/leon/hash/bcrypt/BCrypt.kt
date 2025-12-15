@@ -215,7 +215,7 @@ class BCrypt {
         salt: ByteArray,
         logRounds: Int,
         signExtBug: Boolean,
-        safety: Int
+        safety: Int,
     ): ByteArray {
         var j: Int
         val cdata = bf_crypt_ciphertext.clone()
@@ -281,7 +281,7 @@ class BCrypt {
                 0x3f84d5b5,
                 -0x4ab8f6e9,
                 -0x6de92a27,
-                -0x768604e5
+                -0x768604e5,
             )
         private val S_orig =
             intArrayOf(
@@ -1308,7 +1308,7 @@ class BCrypt {
                 -0x48b19ece,
                 -0x31881da5,
                 0x578fdfe3,
-                0x3ac372e6
+                0x3ac372e6,
             )
 
         // bcrypt IV: "OrpheanBeholderScryDoubt"
@@ -1381,7 +1381,7 @@ class BCrypt {
                 '6',
                 '7',
                 '8',
-                '9'
+                '9',
             )
 
         // Table for Base64 decoding
@@ -1514,7 +1514,7 @@ class BCrypt {
                 -1,
                 -1,
                 -1,
-                -1
+                -1,
             )
         const val MIN_LOG_ROUNDS = 4
         const val MAX_LOG_ROUNDS = 31
@@ -1763,7 +1763,7 @@ class BCrypt {
         fun genSalt(
             prefix: String = "$2a",
             logRounds: Int = GENSALT_DEFAULT_LOG2_ROUNDS,
-            random: SecureRandom = SecureRandom()
+            random: SecureRandom = SecureRandom(),
         ): String {
             val rnd = ByteArray(BCRYPT_SALT_LEN)
             random.nextBytes(rnd)

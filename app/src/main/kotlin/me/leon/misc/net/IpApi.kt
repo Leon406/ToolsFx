@@ -20,7 +20,7 @@ data class IpApi(
     val isp: String,
     val org: String,
     val `as`: String,
-    val query: String
+    val query: String,
 ) {
     val info
         get() = "$query\n$country $regionName $city\n$lon,$lat\n$isp,$org\n$`as`"

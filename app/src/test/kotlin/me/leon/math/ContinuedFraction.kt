@@ -18,7 +18,7 @@ class ContinuedFraction {
             mutableListOf(1 to 1, 10 to 9, 2461 to 2215, 2471 to 2224, 12_345 to 11_111).map {
                 it.first.toBigInteger() to it.second.toBigInteger()
             },
-            fraction.convergent()
+            fraction.convergent(),
         )
     }
 

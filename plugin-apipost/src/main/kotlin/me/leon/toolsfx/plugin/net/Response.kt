@@ -1,10 +1,12 @@
 package me.leon.toolsfx.plugin.net
 
+import me.leon.hash2String
+
 data class Response(
     val code: Int,
-    val data: String,
+    val data: ByteArray,
     val headers: MutableMap<String?, Any>,
-    val time: Long
+    val time: Long,
 ) {
     val statusInfo: String
         get() =
@@ -21,3 +23,7 @@ data class Response(
                 .entries
                 .joinToString("\n\n") { "${it.key}: ${it.value}" }
 }
+
+data class LiteResponse(val code: Int, val dataLength: Int, val hash: String)
+
+fun Response.toLiteResponse() = LiteResponse(code, length, data.hash2String())

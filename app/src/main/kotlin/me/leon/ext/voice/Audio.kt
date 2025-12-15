@@ -55,7 +55,7 @@ object Audio {
                     audioFormat.channels,
                     audioFormat.frameSize * 2,
                     audioFormat.frameRate,
-                    true
+                    true,
                 )
             ais = AudioSystem.getAudioInputStream(newFormat, ais)
             audioFormat = newFormat
@@ -68,7 +68,7 @@ object Audio {
                     audioFormat.channels,
                     audioFormat.channels * 2,
                     audioFormat.sampleRate,
-                    false
+                    false,
                 )
             ais = AudioSystem.getAudioInputStream(newFormat, ais)
             audioFormat = newFormat
@@ -104,7 +104,7 @@ object Audio {
     private fun writeData(
         audioFormat: AudioFormat,
         srcDataLine: SourceDataLine,
-        ais: AudioInputStream
+        ais: AudioInputStream,
     ) {
         val frameSize = audioFormat.frameSize
         val bufferSize = srcDataLine.bufferSize / 8

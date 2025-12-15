@@ -24,7 +24,7 @@ class Collections {
                     6,
                     { _: String, _: String -> 2 },
                     { k: String -> "$k+111" },
-                    { b, k, old, new -> if (!b) println("$k change : $old --> $new") }
+                    { b, k, old, new -> if (!b) println("$k change : $old --> $new") },
                 )
                 .also { println(it) }
         cache.put("1", "1")

@@ -9,12 +9,6 @@ import me.leon.ext.readFromNet
  * @email deadogone@gmail.com
  */
 object ShortUrl {
-    fun baka(url: String): String =
-        ("https://baka.link/shorten?url=$url")
-            .readFromNet()
-            .fromJson(Map::class.java)["s_url"]
-            .toString()
-
     fun tinyUrl(url: String) = ("https://tinyurl.com/api-create.php?url=$url").readFromNet()
 
     fun aadTw(url: String) =
@@ -22,7 +16,7 @@ object ShortUrl {
             .readFromNet(
                 "POST",
                 headers = mapOf("Content-Type" to "application/x-www-form-urlencoded"),
-                data = "url=$url"
+                data = "url=$url",
             )
             .fromJson(Map::class.java)["tinyurl"]
             .toString()
@@ -32,7 +26,7 @@ object ShortUrl {
             .readFromNet(
                 "POST",
                 headers = mapOf("Authorization" to "Token cH4lpSuC6LgqoDidiqB5"),
-                data = "{\"url\":\"$url\"}"
+                data = "{\"url\":\"$url\"}",
             )
             .fromJson(Map::class.java)["short"]
             .toString()
@@ -42,7 +36,7 @@ object ShortUrl {
             .readFromNet(
                 "POST",
                 headers = mapOf("Authorization" to "Token xxHQfao69Ra9G7EI87mC"),
-                data = "{\"url\":\"$url\"}"
+                data = "{\"url\":\"$url\"}",
             )
             .fromJson(Map::class.java)["short"]
             .toString()
@@ -62,9 +56,6 @@ enum class ShortUrlEnum : Shorten {
     },
     DWZ {
         override fun short(url: String) = ShortUrl.dwz(url)
-    },
-    BAKA {
-        override fun short(url: String) = ShortUrl.baka(url)
     },
     TINY_URL {
         override fun short(url: String) = ShortUrl.tinyUrl(url)

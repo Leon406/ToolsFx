@@ -107,7 +107,7 @@ class TTS(private val voice: Voice?, private val content: String) {
             fileName += ".opus"
         }
         return try {
-            val client = TTSWebsocket(EDGE_URL, headers, findHeadHook)
+            val client = TTSWebsocket(EDGE_URL.also { println(it) }, headers, findHeadHook)
             client.connect()
             while (!client.isOpen) {
                 // wait open
@@ -190,16 +190,31 @@ class TTS(private val voice: Voice?, private val content: String) {
     }
 
     companion object {
-        const val EDGE_URL =
-            "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1" +
-                "?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+        private const val CHROMIUM_FULL_VERSION = "130.0.2849.68"
+        private const val TRUSTED_CLIENT_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+        private const val WINDOWS_FILE_TIME_EPOCH = 11644473600L
+
+        val EDGE_URL
+            get() =
+                "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1" +
+                    "?TrustedClientToken=${TRUSTED_CLIENT_TOKEN}&${genSec()}"
+
         const val EDGE_UA =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                "Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55"
+                "Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0"
         const val EDGE_ORIGIN = "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold"
-        const val VOICES_LIST_URL =
-            "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/voices/list?" +
-                "trustedclienttoken=6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+        val VOICES_LIST_URL
+            get() =
+                "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/voices/list?" +
+                    "trustedclienttoken=${TRUSTED_CLIENT_TOKEN}&${genSec()}"
+
+        private fun genSec(): String {
+            val nowInSecs = System.currentTimeMillis() / 1000
+            val ticks = (nowInSecs + WINDOWS_FILE_TIME_EPOCH) * 10_000_000L
+            val roundedTicks = ticks - (ticks % 3_000_000_000L)
+            val hash = "$roundedTicks$TRUSTED_CLIENT_TOKEN".hash("sha256").uppercase()
+            return "Sec-MS-GEC=$hash&Sec-MS-GEC-Version=1-${CHROMIUM_FULL_VERSION}"
+        }
     }
 }
 

@@ -77,7 +77,7 @@ fun String.radixNDecode(dict: List<String>): ByteArray {
         if (stripSignByte) 1 else 0,
         decoded,
         leadingZeros,
-        decoded.size - leadingZeros
+        decoded.size - leadingZeros,
     )
     return decoded
 }

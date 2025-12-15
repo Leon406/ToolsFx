@@ -15,7 +15,7 @@ data class YouDaoResponse(
     val lang: String,
     val ec: Ec?,
     @SerializedName("rel_word") val relWord: RelWord?,
-    val etym: Etym?
+    val etym: Etym?,
 ) {
 
     fun simple(): String = buildString {
@@ -158,7 +158,7 @@ data class Etym(val etyms: Etyms, val word: String) {
             val word: String,
             val value: String,
             val url: String,
-            val desc: String
+            val desc: String,
         ) {
             override fun toString(): String {
                 return buildString {
@@ -182,10 +182,7 @@ data class Tran(val summary: Summary?, val value: String, val support: Int?, val
 
 data class Summary(val line: List<String>)
 
-data class Word(
-    val usphone: String?,
-    val ukphone: String?,
-)
+data class Word(val usphone: String?, val ukphone: String?)
 
 data class Headword(val l: L) {
     data class L(val i: String)
@@ -195,12 +192,7 @@ data class Headword(val l: L) {
     }
 }
 
-data class WordX(
-    val usphone: String,
-    val ukphone: String,
-    val trs: List<TrXX>,
-    val wfs: List<Wf>,
-) {
+data class WordX(val usphone: String, val ukphone: String, val trs: List<TrXX>, val wfs: List<Wf>) {
 
     override fun toString(): String {
         return buildString {

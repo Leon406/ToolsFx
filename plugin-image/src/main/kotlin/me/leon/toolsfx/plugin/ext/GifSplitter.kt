@@ -106,7 +106,7 @@ private fun IIOMetadataNode.parseSize(): Rectangle {
         rect =
             Rectangle(
                 screenDescriptor.getAttribute("logicalScreenWidth").toInt(),
-                screenDescriptor.getAttribute("logicalScreenHeight").toInt()
+                screenDescriptor.getAttribute("logicalScreenHeight").toInt(),
             )
     }
     return rect

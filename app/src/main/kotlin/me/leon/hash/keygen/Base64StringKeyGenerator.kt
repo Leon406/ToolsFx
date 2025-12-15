@@ -30,7 +30,7 @@ class Base64StringKeyGenerator
 @JvmOverloads
 constructor(
     private val encoder: Base64.Encoder = Base64.getEncoder(),
-    keyLength: Int = DEFAULT_KEY_LENGTH
+    keyLength: Int = DEFAULT_KEY_LENGTH,
 ) : StringKeyGenerator {
     private val keyGenerator: BytesKeyGenerator
 

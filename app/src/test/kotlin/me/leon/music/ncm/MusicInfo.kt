@@ -9,5 +9,5 @@ data class MusicInfo(
     val artist: String,
     val album: String,
     val format: String,
-    val filePath: String
+    val filePath: String,
 )

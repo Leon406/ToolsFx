@@ -269,14 +269,7 @@ class BigIntFragment : Fragment("BigInt") {
             controller.calculate(
                 selectedAlgo,
                 selectedRadix.get().toInt(),
-                listOf(
-                    ta1.text,
-                    ta2.text,
-                    ta3.text,
-                    ta4.text,
-                    ta5.text,
-                    ta6.text,
-                )
+                listOf(ta1.text, ta2.text, ta3.text, ta4.text, ta5.text, ta6.text),
             )
         } ui
             {

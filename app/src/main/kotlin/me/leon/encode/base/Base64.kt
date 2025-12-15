@@ -13,7 +13,7 @@ const val BYTE_MASK = 0xFF
 fun String.base64(
     dict: String = BASE64_DICT,
     charset: Charset = Charsets.UTF_8,
-    needPadding: Boolean = true
+    needPadding: Boolean = true,
 ) = toByteArray(charset).base64(dict, needPadding)
 
 fun ByteArray.base64(dict: String = BASE64_DICT, needPadding: Boolean = true) =

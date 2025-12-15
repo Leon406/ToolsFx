@@ -162,7 +162,7 @@ class EditingCell<S, T> : TableCell<S, T> {
 
         fun <S, T> forTableColumn(
             converter: StringConverter<T>?,
-            isFieldEditable: Boolean
+            isFieldEditable: Boolean,
         ): Callback<TableColumn<S, T>, TableCell<S, T>> {
             return Callback { EditingCell(converter, isFieldEditable) }
         }

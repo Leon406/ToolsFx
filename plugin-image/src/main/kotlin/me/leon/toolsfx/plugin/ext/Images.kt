@@ -89,7 +89,7 @@ val QR_MARK =
         intArrayOf(1, 0, 1, 1, 1, 0, 1),
         intArrayOf(1, 0, 1, 1, 1, 0, 1),
         intArrayOf(1, 0, 0, 0, 0, 0, 1),
-        intArrayOf(1, 1, 1, 1, 1, 1, 1)
+        intArrayOf(1, 1, 1, 1, 1, 1, 1),
     )
 
 fun List<Int>.fxImage(width: Int, height: Int) =
@@ -99,7 +99,7 @@ fun List<Int>.fxImage(width: Int, height: Int) =
                 for (x in 0 until width) for (y in 0 until height) setRGB(
                     x,
                     y,
-                    this@fxImage[x * height + y]
+                    this@fxImage[x * height + y],
                 )
             }
         }
@@ -147,7 +147,7 @@ fun String.zeroOneImage(isNormal: Boolean = true, isBlackOne: Boolean = true) =
                                             .toString()
                                             .toInt()
                                             .toColorInt(isBlackOne)
-                                }
+                                },
                             )
                         }
                     }
@@ -182,7 +182,7 @@ fun Image.save() {
         FileChooser.ExtensionFilter("JPG", "*.jpg"),
         FileChooser.ExtensionFilter("JPEG", "*.jpeg"),
         FileChooser.ExtensionFilter("PNG", "*.png"),
-        FileChooser.ExtensionFilter("ALL", "*.*")
+        FileChooser.ExtensionFilter("ALL", "*.*"),
     )
 
     fileChooser.showSaveDialog(null)?.outputStream()?.use {

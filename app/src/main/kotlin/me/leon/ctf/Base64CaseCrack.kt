@@ -6,6 +6,7 @@ import me.leon.ctf.Words.isWord
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode2String
 import me.leon.ext.crypto.next
+import me.leon.ext.regexpParse
 
 /**
  * @author Leon
@@ -20,14 +21,23 @@ val DEFAULT_CONDITION = { s: String ->
 }
 
 fun String.base64CaseCrack(words: String = ""): String {
+    var reg: Regex? = null
+    var isReg = false
     if (words.isNotEmpty()) {
-        Words.DICT_WORDS.addAll(words.tokenize())
+        words.regexpParse()?.let {
+            reg = it
+            isReg = true
+        } ?: run { Words.DICT_WORDS.addAll(words.tokenize()) }
     }
+
     return chunked(4)
         .map { it.caseEnum() }
         .enums()
         .map { it to it.base64Decode2String() }
-        .filter { it.second.hackWordDecode().tokenize().all { it.isWord() } }
+        .filter {
+            isReg && reg!!.matches(it.second) ||
+                it.second.hackWordDecode().tokenize().all { it.isWord() }
+        }
         .joinToString(System.lineSeparator()) { "${it.second} ${it.first}" }
 }
 

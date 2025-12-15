@@ -35,6 +35,6 @@ include(
     "plugin-compress",
     "plugin-apipost",
     "plugin-location",
+    "plugin-image",
+    "benchmark",
 )
-include("benchmark")
-include("plugin-image")

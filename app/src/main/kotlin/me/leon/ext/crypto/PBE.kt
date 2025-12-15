@@ -53,7 +53,7 @@ object PBE {
             "SHAand128bitRC2-CBC",
             "SHAand40bitRC2-CBC",
             "SHAandTwoFISH-CBC",
-            "SHAandIDEA-CBC"
+            "SHAandIDEA-CBC",
         )
 
     fun decrypt(
@@ -62,7 +62,7 @@ object PBE {
         saltLength: Int,
         alg: String,
         iteration: Int = 1,
-        keyLength: Int = 128
+        keyLength: Int = 128,
     ): String {
         val base64Decode = data.base64Decode()
         val salt = base64Decode.sliceArray(8 until (8 + saltLength))
@@ -86,7 +86,7 @@ object PBE {
         salt: ByteArray,
         alg: String,
         iteration: Int = 1,
-        keyLength: Int = 128
+        keyLength: Int = 128,
     ) =
         when {
             alg.contains("HMAC", true) ->
@@ -115,7 +115,7 @@ object PBE {
         salt: ByteArray,
         iteration: Int,
         keyLength: Int,
-        cipherMode: Int
+        cipherMode: Int,
     ) =
         Cipher.getInstance(alg).apply {
             val key = generatePBEKey(pwd, salt, alg, keyLength, iteration)
@@ -130,7 +130,7 @@ object PBE {
         alg: String,
         keyLen: Int = 128,
         saltLen: Int = 8,
-        iterations: Int = 1
+        iterations: Int = 1,
     ): SecretKey {
         val chars = password.toCharArray()
         val saltBytes = salt.takeUnless { it.isEmpty() } ?: getSalt(saltLen)

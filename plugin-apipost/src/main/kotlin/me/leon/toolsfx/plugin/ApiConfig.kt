@@ -11,6 +11,9 @@ object ApiConfig {
     private const val PROXY_TYPE = "proxyType"
     private const val PROXY_HOST = "proxyHost"
     private const val PROXY_PORT = "proxyPort"
+    private const val PROXY_USER = "proxyUser"
+    private const val PROXY_PASSWORD = "proxyPassword"
+    private const val CURL_DIR = "curlDir"
     private const val TIME_OUT = "timeout"
     private const val FOLLOW_REDIRECT = "followRedirect"
     private const val IGNORE_CERT = "ignoreCert"
@@ -50,10 +53,28 @@ object ApiConfig {
             Prefs.preference().put(PROXY_PORT, value)
         }
 
+    var proxyUser: String
+        get() = Prefs.preference().get(PROXY_USER, "")
+        set(value) {
+            Prefs.preference().put(PROXY_USER, value)
+        }
+
+    var proxyPassword: String
+        get() = Prefs.preference().get(PROXY_PASSWORD, "")
+        set(value) {
+            Prefs.preference().put(PROXY_PASSWORD, value)
+        }
+
     var timeOut: Int
         get() = Prefs.preference().getInt(TIME_OUT, 10_000)
         set(value) {
             Prefs.preference().putInt(TIME_OUT, value)
+        }
+
+    var curlDir: String
+        get() = Prefs.preference().get(CURL_DIR, "")
+        set(value) {
+            Prefs.preference().put(CURL_DIR, value)
         }
 
     var followRedirect: Boolean
@@ -64,7 +85,13 @@ object ApiConfig {
 
     fun restoreFromConfig() {
         if (isEnableProxy) {
-            HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
+            HttpUrlUtil.setupProxy(
+                proxyType.proxyType(),
+                proxyHost,
+                proxyPort.toInt(),
+                proxyUser,
+                proxyPassword,
+            )
         }
         HttpUrlUtil.globalHeaders.putAll(parseHeaderString(globalHeaders))
         HttpUrlUtil.timeOut = timeOut
@@ -72,19 +99,29 @@ object ApiConfig {
         HttpUrlUtil.verifySSL(!isIgnoreCert)
     }
 
+    @Suppress("All")
     fun saveConfig(
         isEnablePro: Boolean,
         headers: String,
         pType: String,
         pHost: String,
         pPort: String,
+        pUser: String,
+        pPass: String,
         tOut: Int,
         redirect: Boolean,
-        ignoreCert: Boolean = false
+        ignoreCert: Boolean = false,
+        cDir: String = "",
     ) {
         isEnableProxy = isEnablePro
         if (isEnableProxy) {
-            HttpUrlUtil.setupProxy(proxyType.proxyType(), proxyHost, proxyPort.toInt())
+            HttpUrlUtil.setupProxy(
+                proxyType.proxyType(),
+                proxyHost,
+                proxyPort.toInt(),
+                pUser,
+                pPass,
+            )
         } else {
             HttpUrlUtil.setupProxy()
         }
@@ -97,6 +134,9 @@ object ApiConfig {
         proxyType = pType
         proxyHost = pHost
         proxyPort = pPort
+        proxyUser = pUser
+        proxyPassword = pPass
+        curlDir = cDir
         HttpUrlUtil.timeOut = tOut
         timeOut = tOut
         HttpUrlUtil.followRedirect = redirect

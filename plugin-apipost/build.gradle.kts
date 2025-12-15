@@ -1,5 +1,5 @@
 group = "me.leon.toolsfx"
-version = "1.7.2"
+version = "1.12.1"
 
 plugins {
     `java-library`
@@ -25,4 +25,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.selenium)
+    testImplementation("com.squareup.okhttp3:okhttp-sse:4.12.0")
+    testImplementation("io.github.sashirestela:simple-openai:3.22.2")
 }

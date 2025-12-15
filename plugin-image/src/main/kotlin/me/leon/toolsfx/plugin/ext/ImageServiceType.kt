@@ -39,11 +39,9 @@ enum class ImageServiceType(val type: String) : ImageService {
     },
     IMAGE_TO_01("image to 01") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
-            raw.toFile()
-                .toBufferImage()
-                .toBinaryString(
-                    isBlackOne = requireNotNull(params[C1]) == ColorMode.BLACK1.toString()
-                )
+            raw.autoConvertToBufferImage()!!.toBinaryString(
+                isBlackOne = requireNotNull(params[C1]) == ColorMode.BLACK1.toString()
+            )
     },
     RGB_IMAGE("rgb to image") {
         override fun process(raw: String, isFile: Boolean, params: Map<String, String>) =
@@ -76,6 +74,6 @@ enum class ImageServiceType(val type: String) : ImageService {
     override fun paramsHints(): Array<out String> = IMAGE_CONFIG[this]?.get(HINT).orEmpty()
 }
 
-val serviceTypeMap = ImageServiceType.values().associateBy { it.type }
+val serviceTypeMap = ImageServiceType.entries.associateBy { it.type }
 
 fun String.locationServiceType() = serviceTypeMap[this] ?: ImageServiceType.FIX_PNG

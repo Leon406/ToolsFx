@@ -142,6 +142,12 @@ classloader目前遇到插件resource资源无法加载的问题,临时只能将
 
 ![location](/art/plugin/location.gif)
 
+#### 地图key环境变量 
+
+- 百度 `ToolsFx-Location-KEY-BD`
+- 高德 `ToolsFx-Location-KEY-AMAP`
+- 天地图 `ToolsFx-Location-KEY-TIAN`
+
 ### Compression (压缩)
 
 ### 图片模块

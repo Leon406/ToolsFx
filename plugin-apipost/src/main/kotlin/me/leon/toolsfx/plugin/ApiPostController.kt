@@ -19,12 +19,11 @@ class ApiPostController : Controller() {
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
-        println("req: $url")
         return HttpUrlUtil.request(
             url.addHttp().replacePlaceHolders(),
             method,
             replacePlaceHolder(params),
-            replacePlaceHolder(headers)
+            replacePlaceHolder(headers),
         )
     }
 
@@ -44,7 +43,7 @@ class ApiPostController : Controller() {
                 url.addHttp().replacePlaceHolders(),
                 replacePlaceHolder(params),
                 replacePlaceHolder(headers),
-                bodyType == BodyType.JSON
+                bodyType == BodyType.JSON,
             )
         }
 
@@ -56,7 +55,7 @@ class ApiPostController : Controller() {
         return HttpUrlUtil.postData(
             url.addHttp().replacePlaceHolders(),
             data.replacePlaceHolders(),
-            replacePlaceHolder(headers)
+            replacePlaceHolder(headers),
         )
     }
 
@@ -64,13 +63,13 @@ class ApiPostController : Controller() {
         url: String,
         params: MutableMap<String, Any> = mutableMapOf(),
         headers: MutableMap<String, Any> = mutableMapOf(),
-        isJson: Boolean = false
+        isJson: Boolean = false,
     ): Response {
         return HttpUrlUtil.post(
             url.addHttp().replacePlaceHolders(),
             replacePlaceHolder(params),
             replacePlaceHolder(headers),
-            isJson
+            isJson,
         )
     }
 
@@ -79,14 +78,14 @@ class ApiPostController : Controller() {
         files: List<File>,
         fileParamName: String,
         params: MutableMap<String, Any> = mutableMapOf(),
-        headers: MutableMap<String, Any> = mutableMapOf()
+        headers: MutableMap<String, Any> = mutableMapOf(),
     ): Response {
         return HttpUrlUtil.postFile(
             url.addHttp().replacePlaceHolders(),
             files,
             fileParamName,
             replacePlaceHolder(params),
-            replacePlaceHolder(headers)
+            replacePlaceHolder(headers),
         )
     }
 

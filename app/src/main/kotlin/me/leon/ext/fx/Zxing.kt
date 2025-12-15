@@ -47,7 +47,7 @@ fun String.createQR(
     height: Int = 400,
     charset: String = "utf-8",
     errorCorrectionLevel: ErrorCorrectionLevel = ErrorCorrectionLevel.L,
-    margin: Int = 1
+    margin: Int = 1,
 ): BufferedImage {
     val hints = Hashtable<EncodeHintType, Any>()
     hints[EncodeHintType.CHARACTER_SET] = charset

@@ -1039,7 +1039,7 @@ val MAPPING =
         129_490,
         129_491,
         129_492,
-        129_493
+        129_493,
     )
 
 fun revMapGetOrZero(k: Int): Int {
@@ -1146,7 +1146,7 @@ fun String.ecojiDecode(): ByteArray {
                     (ints[0] and 0x3 shl 6 or (ints[1] shr 4)).toByte(),
                     (ints[1] and 0xf shl 4 or (ints[2] shr 6)).toByte(),
                     (ints[2] and 0x3f shl 2 or (ints[3] shr 8)).toByte(),
-                    (ints[3] and 0xff).toByte()
+                    (ints[3] and 0xff).toByte(),
                 )
                 .take(len)
         }

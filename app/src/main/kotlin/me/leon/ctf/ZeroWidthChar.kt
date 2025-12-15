@@ -34,7 +34,7 @@ val zeroWidthDict =
         ZERO_WIDTH_NON_JOINER,
         ZERO_WIDTH_JOINER,
         ZERO_WIDTH_NO_BREAK_SPACE,
-        ZERO_WIDTH_SPACE
+        ZERO_WIDTH_SPACE,
     )
 
 val zeroWidthThreeDict =
@@ -44,7 +44,7 @@ val zeroWidthThreeDict =
         // 1
         ZERO_WIDTH_SPACE,
         // split
-        ZERO_WIDTH_JOINER
+        ZERO_WIDTH_JOINER,
     )
 
 val indexDict = zeroWidthDict.mapIndexed { index, c -> c to index }.toMap()

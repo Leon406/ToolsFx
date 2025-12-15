@@ -6,14 +6,7 @@ package me.leon.classical
  * @email deadogone@gmail.com
  */
 private val HACKER_DICT =
-    mapOf(
-        "A" to "4",
-        "E" to "3",
-        "I" to "1",
-        "O" to "0",
-        "S" to "5",
-        "T" to "7",
-    )
+    mapOf("A" to "4", "E" to "3", "I" to "1", "O" to "0", "S" to "5", "T" to "7")
 
 private val HACKER_DICT_REVERSE = HACKER_DICT.values.zip(HACKER_DICT.keys).toMap()
 

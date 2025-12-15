@@ -139,3 +139,10 @@ val ALPHABETA_DICT =
 
 fun String.normalCharacter() =
     map { ALPHABETA_DICT[it] ?: it }.joinToString("").replace("’", "'").replace("‘", "'")
+
+fun String.regexpParse() =
+    if (startsWith("/") && endsWith("/")) {
+        trim('/').toRegex()
+    } else {
+        null
+    }

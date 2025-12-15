@@ -36,7 +36,7 @@ class LocationView : PluginFragment("LocationView") {
         arrayOf(
             "输入经纬度,格式: 120.233920,30.349616",
             "输入两个地点经纬度,格式: 120.233920,30.349616-120.233920,30.349616",
-            "输入地址,格式: 北京天安门"
+            "输入地址,格式: 北京天安门",
         )
 
     override val root = vbox {

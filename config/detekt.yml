@@ -298,7 +298,7 @@ style:
   CanBeNonNullable:
     active: false
   CascadingCallWrapping:
-    active: true
+    active: false
   ClassOrdering:
     active: true
   CollapsibleIfStatements:

@@ -9,7 +9,7 @@ data class DictionaryConfig(
     val active: Int,
     val dictFileName: String? = null,
     val autoPronounce: Boolean = true,
-    val dicts: List<Dict>
+    val dicts: List<Dict>,
 ) {
 
     val dictFile
@@ -19,7 +19,7 @@ data class DictionaryConfig(
         val name: String,
         val url: String,
         val hideCssElement: String,
-        val js: String?
+        val js: String?,
     ) {
         var autoPronounce: Boolean = true
     }

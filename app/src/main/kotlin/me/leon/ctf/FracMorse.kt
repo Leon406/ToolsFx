@@ -36,7 +36,7 @@ val FRAC_DICT =
         "x--",
         "x-x",
         "xx.",
-        "xx-"
+        "xx-",
     )
 val MORSE_REG = "[^A-Z0-9 (,.:')\\-/;\\\\?_]".toRegex()
 val MORSE_SPACE_REG = " +".toRegex()

@@ -9,5 +9,5 @@ data class WhoisServiceBean(
     val description: String,
     val publication: String,
     val services: List<List<List<String>>>,
-    val version: String
+    val version: String,
 )

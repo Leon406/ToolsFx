@@ -10,7 +10,7 @@ class ImageController : Controller() {
         type: ImageServiceType,
         input: String,
         isFile: Boolean = false,
-        params: Map<String, String> = emptyMap()
+        params: Map<String, String> = emptyMap(),
     ): Any {
         return runCatching { type.process(input, isFile, params) }.getOrElse { it.stacktrace() }
     }

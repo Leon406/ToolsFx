@@ -29,7 +29,7 @@ class NamingTest {
                 "HELLO Leon",
             )
 
-        println(VariableNaming.values().map { it.name })
+        println(VariableNaming.entries.map { it.name })
         list = list.map { it.normalSpaceFormat() }.toSet()
 
         //        list.forEach { println(it.camelNaming()) }

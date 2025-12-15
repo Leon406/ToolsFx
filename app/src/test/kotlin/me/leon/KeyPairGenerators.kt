@@ -44,5 +44,5 @@ val lmsParamsList =
         LMOtsParameters.sha256_n32_w1,
         LMOtsParameters.sha256_n32_w2,
         LMOtsParameters.sha256_n32_w4,
-        LMOtsParameters.sha256_n32_w8
+        LMOtsParameters.sha256_n32_w8,
     )

@@ -14,27 +14,28 @@ fun String.simpleJsonPath(path: String): String {
     }
     val params = path.split(".")
     var d: Any = fromJson(LinkedHashMap::class.java)
-    for (param in params) {
+    for ((i, param) in params.withIndex()) {
         if (!param.contains("[")) {
             if (d is Map<*, *>) {
                 d = d[param]!!
+            } else if (d is List<*>) {
+                d = d.map { (it as Map<*, *>)[param]!! }
+            } else if (d is Array<*>) {
+                d = d.map { (it as Map<*, *>)[param]!! }
             }
         } else {
             val key = param.substringBefore("[")
             val index = param.substringAfter("[").replace("]", "")
+            val isAll = index == "*"
             if (d is Map<*, *>) {
                 d = d[key]!!
                 if (d is List<*>) {
-                    d = d[index.toInt()]!!
+                    d = if (isAll) d else d[index.toInt()]!!
                 } else if (d is Array<*>) {
-                    d = d[index.toInt()]!!
+                    d = if (isAll) d else d[index.toInt()]!!
                 }
             }
         }
     }
-    return if (d is String) {
-        d
-    } else {
-        d.toJson()
-    }
+    return d as? String ?: d.toJson()
 }

@@ -29,6 +29,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
     private val processing = SimpleBooleanProperty(false)
     private val enablePadding = SimpleBooleanProperty(true)
     private val showDerivedKey = SimpleBooleanProperty(true)
+    private val showRsaInfo = SimpleBooleanProperty(true)
     private val selectedAlg = SimpleStringProperty(algos.first())
     private val selectedBits = SimpleIntegerProperty(ASYMMETRIC_ALGOS[selectedAlg.get()]!!.first())
 
@@ -188,8 +189,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                     cbBits.items = ASYMMETRIC_ALGOS[newValue]!!.asObservable()
                     selectedBits.set(ASYMMETRIC_ALGOS[newValue]!!.first())
                     cbBits.isDisable = ASYMMETRIC_ALGOS[newValue]?.size == 1
-                    enablePadding.value = newValue == "RSA"
-                    showDerivedKey.value = newValue == "RSA"
+                    val isRsa = newValue == "RSA"
+                    enablePadding.value = isRsa
+                    showDerivedKey.value = isRsa
+                    showRsaInfo.value = isRsa
                 }
             }
             label(messages["bits"])
@@ -247,6 +250,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
             }
             button("RSA info") {
                 enableWhen(!processing)
+                visibleWhen(showRsaInfo)
                 action {
                     processing.value = true
                     runAsync {
@@ -333,7 +337,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                                 inputText,
                                 singleLine.get(),
                                 inputEncode = inputEncode,
-                                outputEncode = outputEncode
+                                outputEncode = outputEncode,
                             )
                         } else {
                             controller.pubEncrypt(
@@ -342,7 +346,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                                 inputText,
                                 singleLine.get(),
                                 inputEncode = inputEncode,
-                                outputEncode = outputEncode
+                                outputEncode = outputEncode,
                             )
                         }
                     } else if (privateKeyEncrypt.get()) {
@@ -352,7 +356,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             inputText,
                             singleLine.get(),
                             inputEncode,
-                            outputEncode
+                            outputEncode,
                         )
                     } else {
                         controller.priDecrypt(
@@ -361,7 +365,7 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                             inputText,
                             singleLine.get(),
                             inputEncode,
-                            outputEncode
+                            outputEncode,
                         )
                     }
                 }

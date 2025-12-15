@@ -184,7 +184,7 @@ class HashTest {
                             .replace(
                                 "(Haraka|GOST3411-2012|Keccak|SHA3|Blake2b|Blake2s|DSTU7564|Skein)"
                                     .toRegex(),
-                                "$1-"
+                                "$1-",
                             )
                     })
                     .also {
@@ -195,15 +195,15 @@ class HashTest {
                                     expectedMap[it.replace("PasswordHashing", "")],
                                     digestController.digest(
                                         it.replace("PasswordHashing", ""),
-                                        testData
-                                    )
+                                        testData,
+                                    ),
                                 )
                             }
                         } else if (it.contains("Windows")) {
                             if (it.contains("LM")) {
                                 assertEquals(
                                     expectedMap[it.replace("Windows", "")],
-                                    digestController.digest(it.replace("Windows", ""), testData)
+                                    digestController.digest(it.replace("Windows", ""), testData),
                                 )
                             }
                         } else if (it.contains("512")) {
@@ -233,48 +233,48 @@ class HashTest {
         // md5(md5($pass)  md5加密后，结果转换成小写,再进行md5
         assertEquals(
             "14e1b600b1fd579f47433b88e8d85291",
-            PasswordHashingType.DoubleMd5.hash(data2.toByteArray())
+            PasswordHashingType.DoubleMd5.hash(data2.toByteArray()),
         )
 
         // MD5(MD5($pass)) 解密  md5加密后，结果转换成大写,再进行md5
         assertEquals(
             "f59bd65f7edafb087a81d4dca06c4910",
-            PasswordHashingType.DoubleMd5Uppercase.hash(data2.toByteArray())
+            PasswordHashingType.DoubleMd5Uppercase.hash(data2.toByteArray()),
         )
 
         // md5(md5(md5($pass))  md5加密后，结果转换成小写,再进行md5
         assertEquals(
             "c56d0e9a7ccec67b4ea131655038d604",
-            PasswordHashingType.TripleMd5.hash(data2.toByteArray())
+            PasswordHashingType.TripleMd5.hash(data2.toByteArray()),
         )
 
         // MD5(MD5(MD5($pass))) 解密	 md5加密后，结果转换成大写,再进行md5
         assertEquals(
             "cf814721358d09942b255746542ad2a4",
-            PasswordHashingType.TripleMd5Uppercase.hash(data2.toByteArray())
+            PasswordHashingType.TripleMd5Uppercase.hash(data2.toByteArray()),
         )
 
         // md5(SHA1)
         assertEquals(
             "fe85e814fd656a2d490b842c6d33019d",
-            PasswordHashingType.Md5Sha1.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha1.hash(data2.toByteArray()),
         )
 
         // md5(SHA256)
         assertEquals(
             "05b371cbb333cb82d98b11d4f5960b9a",
-            PasswordHashingType.Md5Sha256.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha256.hash(data2.toByteArray()),
         )
 
         // md5(SHA384)
         assertEquals(
             "1de321163aa049944ad52f333b9c7c46",
-            PasswordHashingType.Md5Sha384.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha384.hash(data2.toByteArray()),
         )
         // md5(SHA512)
         assertEquals(
             "bb16e8d698bb2a61668c1eee494a777e",
-            PasswordHashingType.Md5Sha512.hash(data2.toByteArray())
+            PasswordHashingType.Md5Sha512.hash(data2.toByteArray()),
         )
     }
 

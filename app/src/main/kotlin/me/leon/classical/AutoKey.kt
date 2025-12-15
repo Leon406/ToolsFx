@@ -21,7 +21,7 @@ fun String.autoKeyDecrypt(keyword: String): String {
                 .virgeneneDecode(keyBuilder.toString(), keyBuilder.length)
                 .substring(
                     keyBuilder.length - key.length,
-                    keyBuilder.length.takeIf { it < stripText.length } ?: stripText.length
+                    keyBuilder.length.takeIf { it < stripText.length } ?: stripText.length,
                 )
         keyBuilder.append(substring)
     }

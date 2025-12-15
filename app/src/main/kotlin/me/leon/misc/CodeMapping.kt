@@ -71,6 +71,28 @@ object CodeMapping {
             }
             .toMap()
 
+    /**
+     * data from
+     * https://wuu.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E5%A2%83%E5%86%85%E5%9C%B0%E5%8C%BA%E7%94%B5%E8%AF%9D%E5%8C%BA%E5%8F%B7
+     */
+    val CN_DISTRICT_NO =
+        readResourceText("/mapping/district.txt")
+            .lines()
+            .filterNot { it.isBlank() }
+            .map { it.split("\t") }
+            .fold(mutableMapOf<String, String>()) { acc, p ->
+                acc.also {
+                    val key = p.first()
+                    acc[key] = p[1]
+                    if (key.startsWith("0")) {
+                        acc[key.drop(1)] = p[1]
+                    } else {
+                        acc["0$key"] = p[1]
+                    }
+                }
+            }
+            .toMap()
+
     /** https://ww2.24timezones.com/shi_jie3.php */
     val TIME_ZONE =
         with(
@@ -131,7 +153,8 @@ object CodeMapping {
             "PORT" to PORT_DICT,
             "HTTP RESPONSE CODE" to HTTP_CODE_DICT,
             "MIME" to MIME_DICT,
-            "China CAR NO" to CN_CAR_NO,
+            "中国车牌号" to CN_CAR_NO,
+            "中国区号" to CN_DISTRICT_NO,
             "Time Zone" to TIME_ZONE,
             "Currency" to CURRENCY,
             "Language" to LANGUAGE,

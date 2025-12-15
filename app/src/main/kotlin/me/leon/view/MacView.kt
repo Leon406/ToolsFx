@@ -179,7 +179,7 @@ class MacView : Fragment("MAC") {
                             method,
                             inputEncode,
                             outputEncode,
-                            singleLine.get()
+                            singleLine.get(),
                         )
                     } else {
                         controller.mac(
@@ -188,7 +188,7 @@ class MacView : Fragment("MAC") {
                             method,
                             inputEncode,
                             outputEncode,
-                            singleLine.get()
+                            singleLine.get(),
                         )
                     }
                 }

@@ -76,7 +76,7 @@ class ScreenShot {
                                 Paint.valueOf("#c03700"),
                                 BorderStrokeStyle.SOLID,
                                 null,
-                                BorderWidths(2.0)
+                                BorderWidths(2.0),
                             )
                         )
                 }
@@ -97,7 +97,7 @@ class ScreenShot {
         primaryStage: Stage,
         anchorPane: AnchorPane,
         stage: Stage,
-        callback: (BufferedImage?) -> Unit
+        callback: (BufferedImage?) -> Unit,
     ) {
         anchorPane.onMouseReleased = EventHandler { event: MouseEvent ->
             // 记录最终长宽
@@ -112,7 +112,7 @@ class ScreenShot {
                         Paint.valueOf("#85858544"),
                         BorderStrokeStyle.SOLID,
                         null,
-                        BorderWidths(2.0)
+                        BorderWidths(2.0),
                     )
                 )
             hBox.children.add(b)

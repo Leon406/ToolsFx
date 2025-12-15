@@ -6,7 +6,7 @@ data class AmapSearchBean(
     val infocode: String?,
     val pois: List<Poi>?,
     val status: String?,
-    val info: String?
+    val info: String?,
 ) {
     data class Suggestion(val keywords: List<Any>?, val cities: List<Any>?)
 
