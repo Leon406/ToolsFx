@@ -536,27 +536,6 @@ enum class ClassicalCryptoType(val type: String) : IClassical {
                 raw.buddhaExplain()
             }
     },
-    BuddhaSay2("新佛曰(online)") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Buddha, raw)
-
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Buddha, raw)
-    },
-    Roar("兽音(online)") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Roar, raw)
-
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Roar, raw)
-    },
-    Bear("熊曰(online)") {
-        override fun encrypt(raw: String, params: Map<String, String>) =
-            PcMoeOnlineCipher.encrypt(PcMoeOnlineCipher.Bear, raw)
-
-        override fun decrypt(raw: String, params: Map<String, String>): String =
-            PcMoeOnlineCipher.decrypt(PcMoeOnlineCipher.Bear, raw)
-    },
     HILL("hill") {
         override fun encrypt(raw: String, params: Map<String, String>) =
             raw.hillEncrypt(params[P1].orEmpty(), fromZero = params[P2]?.isEmpty() ?: true)
