@@ -190,7 +190,7 @@ class TTS(private val voice: Voice?, private val content: String) {
     }
 
     companion object {
-        private const val CHROMIUM_FULL_VERSION = "130.0.2849.68"
+        private const val CHROMIUM_FULL_VERSION = "143.0.3650.75"
         private const val TRUSTED_CLIENT_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
         private const val WINDOWS_FILE_TIME_EPOCH = 11644473600L
 
@@ -201,7 +201,7 @@ class TTS(private val voice: Voice?, private val content: String) {
 
         const val EDGE_UA =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                "Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0"
+                    "Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0"
         const val EDGE_ORIGIN = "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold"
         val VOICES_LIST_URL
             get() =
