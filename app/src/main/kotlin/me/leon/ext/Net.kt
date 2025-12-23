@@ -4,7 +4,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-private const val DEFAULT_TIME_OUT = 10_000
+const val DEFAULT_TIME_OUT = 10_000
 const val RESPONSE_OK = 200
 const val RESPONSE_NOT_FOUND = 404
 

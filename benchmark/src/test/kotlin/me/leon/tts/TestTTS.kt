@@ -1,11 +1,10 @@
 package me.leon.tts
 
-import javax.sound.sampled.*
 import me.leon.DESKTOP
 import me.leon.ext.fx.Prefs
 import me.leon.ext.toFile
-import me.leon.ext.voice.*
 import me.leon.ext.voice.Audio.play
+import me.leon.ext.voice.ttsMultiStream
 
 object TestTTS {
 
