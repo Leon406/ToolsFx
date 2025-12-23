@@ -155,6 +155,7 @@ class DigestView : Fragment(messages["hash"]) {
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doHash() }
+                taInput.ctrlEnterActionBy(this)
             }
             button("crack", imageview(IMG_CRACK)) {
                 enableWhen(!processing)

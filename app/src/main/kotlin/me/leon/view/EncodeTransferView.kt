@@ -109,6 +109,7 @@ class EncodeTransferView : Fragment(messages["encodeTransfer"]) {
             button(messages["transfer"], imageview(IMG_RUN)) {
                 action { run() }
                 setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+                taInput.ctrlEnterActionBy(this)
             }
             button(messages["up"], imageview(IMG_UP)) {
                 tooltip(messages["up"])

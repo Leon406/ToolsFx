@@ -4,10 +4,15 @@ import java.math.BigInteger
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.RadioButton
+import javafx.scene.control.TextArea
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import me.leon.*
+import me.leon.IMG_COPY
+import me.leon.IMG_RUN
+import me.leon.IMG_UP
+import me.leon.Styles
 import me.leon.controller.CalculatorController
 import me.leon.encode.base.base64
 import me.leon.encode.base.base64Decode

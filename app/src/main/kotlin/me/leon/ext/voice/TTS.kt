@@ -201,7 +201,7 @@ class TTS(private val voice: Voice?, private val content: String) {
 
         const val EDGE_UA =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                    "Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0"
+                "Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0"
         const val EDGE_ORIGIN = "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold"
         val VOICES_LIST_URL
             get() =

@@ -14,6 +14,7 @@ val lengthFactor =
         "mm" to 0.001,
         "inch" to 0.0254,
         "in" to 0.0254,
+        "mil" to 0.0000254,
         "mile" to 1609.34,
         "mi" to 1609.34,
         "ft" to 0.3048,

@@ -109,6 +109,7 @@ class MiscFragment : PluginFragment("Misc") {
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doProcess() }
+                taInput.ctrlEnterActionBy(this)
             }
         }
         hbox {

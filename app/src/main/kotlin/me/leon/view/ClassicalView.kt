@@ -199,6 +199,7 @@ class ClassicalView : Fragment(messages["classical"]) {
             button(messages["run"], imageview(IMG_RUN)) {
                 action { run() }
                 enableWhen(!processing)
+                taInput.ctrlEnterActionBy(this)
             }
             button(messages["codeFrequency"]) { action { "https://quipqiup.com/".openInBrowser() } }
 

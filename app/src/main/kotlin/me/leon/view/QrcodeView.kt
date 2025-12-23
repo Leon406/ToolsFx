@@ -112,6 +112,7 @@ class QrcodeView : Fragment("Qrcode") {
                 }
                 shortcut(KeyCombination.valueOf("F9"))
                 tooltip("快捷键F9")
+                ta.ctrlEnterActionBy(this)
             }
         }
         hbox {

@@ -160,6 +160,7 @@ class PBEView : Fragment("PBE") {
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doCrypto() }
+                taInput.ctrlEnterActionBy(this)
             }
         }
         hbox {

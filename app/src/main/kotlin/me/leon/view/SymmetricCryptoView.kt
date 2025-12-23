@@ -212,6 +212,7 @@ class SymmetricCryptoView : Fragment(messages["symmetricBlock"]) {
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doCrypto() }
+                taInput.ctrlEnterActionBy(this)
             }
         }
         hbox {

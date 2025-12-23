@@ -143,6 +143,7 @@ class SymmetricCryptoStreamView : Fragment(messages["symmetricStream"]) {
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { doCrypto() }
+                taInput.ctrlEnterActionBy(this)
             }
         }
         hbox {

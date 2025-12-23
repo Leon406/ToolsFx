@@ -136,6 +136,7 @@ class MacView : Fragment("MAC") {
                         outputText = ""
                     }
                 }
+                taInput.ctrlEnterActionBy(this)
             }
         }
 

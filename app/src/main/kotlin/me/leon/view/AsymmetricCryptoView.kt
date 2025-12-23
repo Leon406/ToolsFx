@@ -223,7 +223,10 @@ class AsymmetricCryptoView : Fragment(FX.messages["asymmetric"]) {
                 tooltip("默认公钥加密，私钥解密。开启后私钥加密，公钥解密")
             }
 
-            button(messages["run"], imageview(IMG_RUN)) { action { doCrypto() } }
+            button(messages["run"], imageview(IMG_RUN)) {
+                action { doCrypto() }
+                taInput.ctrlEnterActionBy(this)
+            }
             button(messages["genKeypair"]) {
                 enableWhen(!processing)
                 action {

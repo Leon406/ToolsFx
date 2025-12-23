@@ -99,7 +99,10 @@ class LocationView : PluginFragment("LocationView") {
             paddingLeft = DEFAULT_SPACING
             checkbox(messages["singleLine"], singleLine)
 
-            button(messages["run"], imageview(IMG_RUN)) { action { doProcess() } }
+            button(messages["run"], imageview(IMG_RUN)) {
+                action { doProcess() }
+                taInput.ctrlEnterActionBy(this)
+            }
             button("百度坐标拾取") {
                 action { "https://api.map.baidu.com/lbsapi/getpoint/index.html".openInBrowser() }
             }

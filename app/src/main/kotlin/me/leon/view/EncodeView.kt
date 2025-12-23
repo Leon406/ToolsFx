@@ -208,6 +208,7 @@ class EncodeView : Fragment(messages["encodeAndDecode"]) {
             button(messages["run"], imageview(IMG_RUN)) {
                 enableWhen(!processing)
                 action { run() }
+                taInput.ctrlEnterActionBy(this)
             }
             button("crack", imageview(IMG_CRACK)) {
                 enableWhen(!processing)

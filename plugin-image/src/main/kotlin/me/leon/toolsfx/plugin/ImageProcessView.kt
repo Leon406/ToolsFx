@@ -147,7 +147,10 @@ class ImageProcessView : PluginFragment("ImageProcessView") {
             alignment = Pos.CENTER_LEFT
             spacing = DEFAULT_SPACING
             paddingLeft = DEFAULT_SPACING
-            button(messages["run"], imageview(IMG_RUN)) { action { doProcess() } }
+            button(messages["run"], imageview(IMG_RUN)) {
+                action { doProcess() }
+                taInput.ctrlEnterActionBy(this)
+            }
         }
         hbox {
             spacing = DEFAULT_SPACING
