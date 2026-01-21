@@ -12,7 +12,7 @@ javaxJsonVer = "1.1.4"
 # jfx 20.x+ requires jdk 17+
 jfxVer = "23.0.1"
 jnaVer = "5.18.0"
-kotlinSerVer = "1.9.0"
+kotlinSerVer = "1.10.0"
 kotlinVer = "2.2.21"
 mockitoCoreVer = "5.20.0"
 nashornVer = "15.7"
