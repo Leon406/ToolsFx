@@ -3,6 +3,7 @@ package me.leon.ext.crypto
 import java.security.*
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
+import me.leon.ext.hex2ByteArray
 import org.bouncycastle.asn1.gm.GMNamedCurves
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
@@ -10,6 +11,7 @@ import org.bouncycastle.asn1.x9.ECNamedCurveTable
 import org.bouncycastle.crypto.CipherParameters
 import org.bouncycastle.crypto.engines.SM2Engine
 import org.bouncycastle.crypto.params.*
+import org.bouncycastle.crypto.signers.SM2Signer
 import org.bouncycastle.jcajce.provider.asymmetric.util.EC5Util
 import org.bouncycastle.jcajce.provider.asymmetric.util.ECUtil
 import org.bouncycastle.jcajce.spec.OpenSSHPrivateKeySpec
@@ -19,8 +21,10 @@ import org.bouncycastle.jce.interfaces.ECPublicKey
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec
 import org.bouncycastle.util.BigIntegers
+import org.bouncycastle.util.Strings
 
 private val x9ECParameters = GMNamedCurves.getByName("sm2p256v1")
+private val USER_ID = Strings.toByteArray("1234567812345678")
 private val ecDomainParameters =
     ECDomainParameters(x9ECParameters.curve, x9ECParameters.g, x9ECParameters.n, x9ECParameters.h)
 
@@ -58,6 +62,33 @@ fun ByteArray.toECPublicKeyParams(): AsymmetricKeyParameter {
     return generatePublicKeyParameter(public)
 }
 
+fun ByteArray.sm2Sign(privateKeyHex: String, userId: ByteArray = USER_ID): ByteArray {
+    val sm2Signer = SM2Signer()
+    val param = privateKeyHex.hex2ByteArray().toECPrivateKeyParams()
+
+    sm2Signer.init(
+        true,
+        ParametersWithID(ParametersWithRandom(param, SecureRandom.getInstance("SHA1PRNG")), userId),
+    )
+    sm2Signer.update(this, 0, this.size)
+    return sm2Signer.generateSignature()
+}
+
+fun ByteArray.sm2Verify(publicKey: String, signedHex: String) =
+    sm2Verify(publicKey, signedHex.hex2ByteArray())
+
+fun ByteArray.sm2Verify(
+    publicKey: String,
+    signed: ByteArray,
+    userId: ByteArray = USER_ID,
+): Boolean {
+    val sm2Signer = SM2Signer()
+    val param = publicKey.hex2ByteArray().toECPublicKeyParams()
+    sm2Signer.init(false, ParametersWithID(param, userId))
+    sm2Signer.update(this, 0, this.size)
+    return sm2Signer.verifySignature(signed)
+}
+
 private fun generatePrivateKeyParameter(key: PrivateKey): AsymmetricKeyParameter =
     when (key) {
         is ECPrivateKey -> {
@@ -82,10 +113,12 @@ private fun generatePrivateKeyParameter(key: PrivateKey): AsymmetricKeyParameter
                 ECPrivateKeyParameters(key.d, ECDomainParameters(s!!.curve, s.g, s.n, s.h, s.seed))
             }
         }
+
         is java.security.interfaces.ECPrivateKey -> {
             val s = EC5Util.convertSpec(key.params)
             ECPrivateKeyParameters(key.s, ECDomainParameters(s.curve, s.g, s.n, s.h, s.seed))
         }
+
         else -> {
             // see if we can build a key from key.getEncoded()
             val bytes = key.encoded
@@ -100,6 +133,7 @@ private fun generatePublicKeyParameter(key: PublicKey): AsymmetricKeyParameter =
             val s = key.parameters
             ECPublicKeyParameters(key.q, ECDomainParameters(s.curve, s.g, s.n, s.h, s.seed))
         }
+
         is java.security.interfaces.ECPublicKey -> {
             val s = EC5Util.convertSpec(key.params)
             ECPublicKeyParameters(
@@ -107,6 +141,7 @@ private fun generatePublicKeyParameter(key: PublicKey): AsymmetricKeyParameter =
                 ECDomainParameters(s.curve, s.g, s.n, s.h, s.seed),
             )
         }
+
         else -> {
             // see if we can build a key from key.getEncoded()
             val bytes = key.encoded
