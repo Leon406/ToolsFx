@@ -19,7 +19,7 @@ jobs:
             ${{ runner.os }}-qodana-
 
       - name: Qodana - Code Inspection
-        uses: JetBrains/qodana-action@v2.2.1-eap
+        uses: JetBrains/qodana-action@v5.1.0
 
       - uses: actions/upload-artifact@v7
         with:
