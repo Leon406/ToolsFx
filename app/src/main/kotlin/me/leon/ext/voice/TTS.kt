@@ -9,6 +9,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import me.leon.ext.splitParagraph
 import me.leon.ext.voice.Audio.play
+import me.leon.ext.voice.EdgeTtsV2Token.generateSecMsGecV2
 import me.leon.hash
 import me.leon.misc.net.DISPATCHER
 
@@ -210,10 +211,11 @@ class TTS(private val voice: Voice?, private val content: String) {
 
         private fun genSec(): String {
             val nowInSecs = System.currentTimeMillis() / 1000
-            val ticks = (nowInSecs + WINDOWS_FILE_TIME_EPOCH) * 10_000_000L
-            val roundedTicks = ticks - (ticks % 3_000_000_000L)
-            val hash = "$roundedTicks$TRUSTED_CLIENT_TOKEN".hash("sha256").uppercase()
-            return "Sec-MS-GEC=$hash&Sec-MS-GEC-Version=1-${CHROMIUM_FULL_VERSION}"
+
+//            val ticks = (nowInSecs + WINDOWS_FILE_TIME_EPOCH) * 10_000_000L
+//            val roundedTicks = ticks - (ticks % 3_000_000_000L)
+//            val hash = "$roundedTicks$TRUSTED_CLIENT_TOKEN".hash("sha256").uppercase()
+            return "Sec-MS-GEC=${generateSecMsGecV2(nowInSecs)}&Sec-MS-GEC-Version=2-${CHROMIUM_FULL_VERSION}"
         }
     }
 }
